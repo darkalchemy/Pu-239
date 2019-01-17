@@ -7,6 +7,9 @@ function grab_url(event) {
     var loader = document.querySelector('#loader');
     var poster = document.querySelector('#poster');
     var image_url = document.querySelector('#image_url');
+    var textarea = document.getElementsByTagName('textarea');
+    var editor = textarea[0].value;
+
     comment.classList.add('is-hidden');
     loader.classList.remove('is-hidden');
 
@@ -30,6 +33,9 @@ function grab_url(event) {
                         '<div class="padding20 margin20 round10 bg-00">' +
                         '<img src="' + response.url + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
+                    if (textarea[0]) {
+                        textarea[0].value = '[img]' + response.url + '[/img][br]' + editor;
+                    }
                 } else {
                     output.innerHTML = '' +
                         '<div class="padding20">' +

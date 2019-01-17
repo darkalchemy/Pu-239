@@ -16,7 +16,7 @@ function showMe(event) {
         clicked.checked = true;
         el.classList.remove('is_hidden');
         checkboxes = el.querySelectorAll('input[type=checkbox]');
-        toggle(checkboxes, true);
+        //toggle(checkboxes, true);
     }
 }
 

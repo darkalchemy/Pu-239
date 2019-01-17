@@ -1,3 +1,9 @@
+### 17 Jan, 2019
+update: database files  
+update: add poster to start of descr upload.php  
+fix: missing lougout icon  
+update: do not check all subcats on parent selection  
+
 ### 16 Jan, 2019
 update: require bitbucket for poster requests.php offers.php  
 update: require bitbucket for poster upload.php  

@@ -10,7 +10,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/2/chat_uranium_e6ff1dde.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/2/css_fc51890c.css";
+            return "{$site_config['baseurl']}/css/2/css_c89acc04.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e11d3062.css";
         case 'sceditor_css':
@@ -30,7 +30,7 @@ function get_file_name($file)
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/2/chat_log_e081be8f.js";
         case 'categories_js':
-            return "{$site_config['baseurl']}/js/2/categories_ab858fca.js";
+            return "{$site_config['baseurl']}/js/2/categories_5ad7e17e.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/2/browse_d96450ea.js";
         case 'scroller_js':
@@ -43,8 +43,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/2/recaptcha_8313f33d.js";
         case 'bookmarks_js':
             return "{$site_config['baseurl']}/js/2/bookmarks_8e719a09.js";
-        case 'iframe_js':
-            return "{$site_config['baseurl']}/js/2/iframe_f74a311b.js";
+        case '':
+            return "{$site_config['baseurl']}/";
         case 'navbar_show_js':
             return "{$site_config['baseurl']}/js/2/navbar_show_6a493036.js";
         case '':
@@ -66,7 +66,7 @@ function get_file_name($file)
         case 'pStrength_js':
             return "{$site_config['baseurl']}/js/2/pStrength_28866856.js";
         case 'upload_js':
-            return "{$site_config['baseurl']}/js/2/upload_dbe8405d.js";
+            return "{$site_config['baseurl']}/js/2/upload_229081f4.js";
         case 'request_js':
             return "{$site_config['baseurl']}/js/2/request_d5161ee2.js";
         case 'parallax_js':
@@ -74,7 +74,7 @@ function get_file_name($file)
         case 'acp_js':
             return "{$site_config['baseurl']}/js/2/acp_22d19c79.js";
         case 'dragndrop_js':
-            return "{$site_config['baseurl']}/js/2/dragndrop_21881c17.js";
+            return "{$site_config['baseurl']}/js/2/dragndrop_18338f2d.js";
         case 'details_js':
             return "{$site_config['baseurl']}/js/2/details_fa26612c.js";
         case 'forums_js':

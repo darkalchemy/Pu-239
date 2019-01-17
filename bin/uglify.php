@@ -53,6 +53,7 @@ if ($site_config['in_production']) {
 exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 
 foreach ($styles as $folder) {
+    echo "Processing Template: {$folder}\n";
     $update = TEMPLATE_DIR . "{$folder}/files.php";
     $dirs = [
         PUBLIC_DIR . "js/{$folder}/",

@@ -49,6 +49,8 @@ function callback(files) {
     var droppable = document.querySelector('#droppable');
     var comment = document.querySelector('#comment');
     var loader = document.querySelector('#loader');
+    var textarea = document.getElementsByTagName('textarea');
+    var editor = textarea[0].value;
 
     comment.classList.add('is-hidden');
     loader.classList.remove('is-hidden');
@@ -81,6 +83,9 @@ function callback(files) {
                         '<div class="padding20 margin20 round10 bg-00">' +
                         '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
+                    if (textarea[0]) {
+                        textarea[0].value = '[img]' + response.url + '[/img][br]' + editor;
+                    }
                 } else {
                     output.innerHTML += '' +
                         '<div class="padding20">' +

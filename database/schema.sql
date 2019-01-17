@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.24-27, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.13-3, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: master
 -- ------------------------------------------------------
--- Server version	5.7.24-27
+-- Server version	8.0.13-3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8mb4 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -30,10 +30,10 @@
 
 DROP TABLE IF EXISTS `ach_bonus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ach_bonus` (
   `bonus_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `bonus_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bonus_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bonus_type` tinyint(4) NOT NULL DEFAULT '0',
   `bonus_do` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`bonus_id`)
@@ -46,12 +46,12 @@ CREATE TABLE `ach_bonus` (
 
 DROP TABLE IF EXISTS `achievementist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `achievementist` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `achievname` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notes` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `clienticon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `achievname` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `clienticon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `hostname` (`achievname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -63,14 +63,14 @@ CREATE TABLE `achievementist` (
 
 DROP TABLE IF EXISTS `achievements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `achievements` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `achievement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `achievement` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date` int(10) unsigned NOT NULL DEFAULT '0',
-  `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `achievementid` int(5) NOT NULL DEFAULT '0',
   UNIQUE KEY `id` (`id`),
   KEY `userid` (`userid`),
@@ -84,10 +84,10 @@ CREATE TABLE `achievements` (
 
 DROP TABLE IF EXISTS `ajax_chat_bans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ajax_chat_bans` (
   `userID` int(10) unsigned NOT NULL DEFAULT '0',
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `dateTime` datetime NOT NULL,
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
@@ -103,7 +103,7 @@ CREATE TABLE `ajax_chat_bans` (
 
 DROP TABLE IF EXISTS `ajax_chat_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ajax_chat_invitations` (
   `userID` int(10) unsigned NOT NULL DEFAULT '0',
   `channel` int(10) unsigned NOT NULL,
@@ -120,16 +120,16 @@ CREATE TABLE `ajax_chat_invitations` (
 
 DROP TABLE IF EXISTS `ajax_chat_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ajax_chat_messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userID` int(10) unsigned NOT NULL DEFAULT '0',
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `userRole` int(1) NOT NULL,
   `channel` int(10) unsigned NOT NULL DEFAULT '0',
   `dateTime` datetime NOT NULL,
   `ip` varbinary(16) NOT NULL,
-  `text` mediumtext COLLATE utf8mb4_unicode_ci,
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `ttl` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `message_condition` (`id`,`channel`,`dateTime`),
@@ -149,10 +149,10 @@ CREATE TABLE `ajax_chat_messages` (
 
 DROP TABLE IF EXISTS `ajax_chat_online`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ajax_chat_online` (
   `userID` int(10) unsigned NOT NULL DEFAULT '0',
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userName` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `userRole` int(1) NOT NULL,
   `channel` int(10) unsigned NOT NULL,
   `dateTime` datetime NOT NULL,
@@ -170,16 +170,16 @@ CREATE TABLE `ajax_chat_online` (
 
 DROP TABLE IF EXISTS `anime_titles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `anime_titles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `anidb_id` int(10) unsigned NOT NULL DEFAULT '0',
   `anilist_id` int(10) unsigned NOT NULL DEFAULT '0',
   `myanimelist_id` int(10) unsigned NOT NULL DEFAULT '0',
   `kitsu_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` enum('tv','movie','ova','ona','special','music') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tv',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('tv','movie','ova','ona','special','music') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tv',
   PRIMARY KEY (`id`),
   UNIQUE KEY `title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -191,15 +191,15 @@ CREATE TABLE `anime_titles` (
 
 DROP TABLE IF EXISTS `announcement_main`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `announcement_main` (
   `main_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `owner_id` int(10) unsigned NOT NULL DEFAULT '0',
   `created` int(10) unsigned NOT NULL DEFAULT '0',
   `expires` int(10) unsigned NOT NULL DEFAULT '0',
-  `sql_query` mediumtext COLLATE utf8mb4_unicode_ci,
-  `subject` mediumtext COLLATE utf8mb4_unicode_ci,
-  `body` mediumtext COLLATE utf8mb4_unicode_ci,
+  `sql_query` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `subject` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `body` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`main_id`),
   KEY `owner_id` (`owner_id`),
   CONSTRAINT `announcement_main_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -212,7 +212,7 @@ CREATE TABLE `announcement_main` (
 
 DROP TABLE IF EXISTS `announcement_process`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `announcement_process` (
   `process_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `main_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -230,15 +230,15 @@ CREATE TABLE `announcement_process` (
 
 DROP TABLE IF EXISTS `attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `attachments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `extension` enum('zip','rar') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'zip',
+  `extension` enum('zip','rar') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'zip',
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   `times_downloaded` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -254,10 +254,10 @@ CREATE TABLE `attachments` (
 
 DROP TABLE IF EXISTS `auth_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `auth_tokens` (
-  `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hashedValidator` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `selector` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hashedValidator` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `userid` int(10) unsigned NOT NULL,
   `expires` datetime NOT NULL,
   `created_at` datetime NOT NULL,
@@ -275,10 +275,10 @@ CREATE TABLE `auth_tokens` (
 
 DROP TABLE IF EXISTS `avps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `avps` (
-  `arg` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `value_s` mediumtext COLLATE utf8mb4_unicode_ci,
+  `arg` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `value_s` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `value_i` int(10) unsigned NOT NULL DEFAULT '0',
   `value_u` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`arg`)
@@ -291,13 +291,13 @@ CREATE TABLE `avps` (
 
 DROP TABLE IF EXISTS `bannedemails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bannedemails` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `addedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   KEY `addedby` (`addedby`)
@@ -310,12 +310,12 @@ CREATE TABLE `bannedemails` (
 
 DROP TABLE IF EXISTS `bans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bans` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `addedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `first` varbinary(16) NOT NULL,
   `last` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
@@ -330,17 +330,17 @@ CREATE TABLE `bans` (
 
 DROP TABLE IF EXISTS `blackjack`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `blackjack` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `points` int(10) unsigned NOT NULL DEFAULT '0',
-  `status` enum('playing','waiting') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'playing',
-  `cards` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dealer_cards` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('playing','waiting') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'playing',
+  `cards` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dealer_cards` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` int(10) unsigned NOT NULL DEFAULT '0',
-  `gameover` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `ddown` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `gameover` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `ddown` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `game_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
@@ -358,17 +358,17 @@ CREATE TABLE `blackjack` (
 
 DROP TABLE IF EXISTS `blackjack_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `blackjack_history` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `date` int(10) unsigned NOT NULL DEFAULT '0',
   `game` int(10) unsigned NOT NULL DEFAULT '0',
   `player1_userid` int(10) unsigned NOT NULL DEFAULT '0',
   `player1_points` int(10) unsigned NOT NULL DEFAULT '0',
-  `player1_cards` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `player1_cards` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `player2_points` int(10) unsigned NOT NULL DEFAULT '0',
   `player2_userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `player2_cards` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `player2_cards` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `game` (`game`),
   KEY `player1_userid` (`player1_userid`),
@@ -384,7 +384,7 @@ CREATE TABLE `blackjack_history` (
 
 DROP TABLE IF EXISTS `blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `blocks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -401,19 +401,19 @@ CREATE TABLE `blocks` (
 
 DROP TABLE IF EXISTS `bonus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bonus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` int(5) DEFAULT '0',
-  `bonusname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bonusname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `points` decimal(10,1) NOT NULL DEFAULT '0.0',
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `art` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `art` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `menge` bigint(20) unsigned NOT NULL DEFAULT '0',
   `pointspool` decimal(10,1) NOT NULL DEFAULT '1.0',
-  `enabled` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes' COMMENT 'This will determined a switch if the bonus is enabled or not! enabled by default',
+  `enabled` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes' COMMENT 'This will determined a switch if the bonus is enabled or not! enabled by default',
   `minpoints` decimal(10,1) NOT NULL,
-  `ratio` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `ratio` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `minclass` int(5) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `bonusname` (`bonusname`),
@@ -428,11 +428,11 @@ CREATE TABLE `bonus` (
 
 DROP TABLE IF EXISTS `bonuslog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bonuslog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `donation` int(10) unsigned NOT NULL,
-  `type` varchar(44) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(44) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added_at` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `id` (`id`),
   KEY `added_at` (`added_at`),
@@ -446,12 +446,12 @@ CREATE TABLE `bonuslog` (
 
 DROP TABLE IF EXISTS `bookmarks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bookmarks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
-  `private` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `private` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `torrentid` (`torrentid`),
@@ -466,16 +466,16 @@ CREATE TABLE `bookmarks` (
 
 DROP TABLE IF EXISTS `bugs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bugs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `priority` enum('low','high','veryhigh') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
-  `problem` mediumtext COLLATE utf8mb4_unicode_ci,
-  `status` enum('fixed','ignored','na') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'na',
+  `priority` enum('low','high','veryhigh') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
+  `problem` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('fixed','ignored','na') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'na',
   `staff` int(10) NOT NULL DEFAULT '0',
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sender` (`sender`),
   CONSTRAINT `bugs_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
@@ -488,11 +488,11 @@ CREATE TABLE `bugs` (
 
 DROP TABLE IF EXISTS `cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `cards` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `points` int(10) unsigned NOT NULL DEFAULT '0',
-  `pic` mediumtext COLLATE utf8mb4_unicode_ci,
+  `pic` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -503,14 +503,14 @@ CREATE TABLE `cards` (
 
 DROP TABLE IF EXISTS `casino`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `casino` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `win` bigint(20) NOT NULL DEFAULT '0',
   `lost` bigint(20) NOT NULL DEFAULT '0',
   `trys` int(10) unsigned NOT NULL DEFAULT '0',
   `date` int(10) unsigned NOT NULL DEFAULT '0',
-  `enableplay` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `enableplay` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `deposit` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userid`),
   CONSTRAINT `casino_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -523,15 +523,15 @@ CREATE TABLE `casino` (
 
 DROP TABLE IF EXISTS `casino_bets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `casino_bets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `proposed` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `challenged` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `proposed` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `challenged` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `amount` bigint(20) NOT NULL DEFAULT '0',
   `time` int(10) unsigned NOT NULL DEFAULT '0',
-  `winner` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `winner` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   CONSTRAINT `casino_bets_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -544,12 +544,12 @@ CREATE TABLE `casino_bets` (
 
 DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cat_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cat_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ordered` smallint(6) NOT NULL DEFAULT '0',
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -564,17 +564,17 @@ CREATE TABLE `categories` (
 
 DROP TABLE IF EXISTS `cheaters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `cheaters` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) NOT NULL DEFAULT '0',
-  `client` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rate` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `beforeup` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `upthis` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `timediff` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `beforeup` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upthis` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `timediff` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `userip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
@@ -588,14 +588,14 @@ CREATE TABLE `cheaters` (
 
 DROP TABLE IF EXISTS `class_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `class_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` int(3) DEFAULT NULL,
-  `classname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `classcolor` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `classpic` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `classname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `classcolor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `classpic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `value_name_template` (`value`,`name`,`template`)
@@ -608,10 +608,10 @@ CREATE TABLE `class_config` (
 
 DROP TABLE IF EXISTS `class_promo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `class_promo` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_ratio` decimal(10,2) NOT NULL DEFAULT '0.00',
   `uploaded` bigint(20) NOT NULL DEFAULT '0',
   `time` int(10) unsigned NOT NULL DEFAULT '0',
@@ -627,17 +627,17 @@ CREATE TABLE `class_promo` (
 
 DROP TABLE IF EXISTS `cleanup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `cleanup` (
   `clean_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `clean_title` char(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `clean_file` char(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `clean_title` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `clean_file` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `clean_time` int(11) NOT NULL DEFAULT '0',
   `clean_increment` int(10) unsigned NOT NULL DEFAULT '0',
   `clean_log` tinyint(1) NOT NULL DEFAULT '0',
-  `clean_desc` mediumtext COLLATE utf8mb4_unicode_ci,
+  `clean_desc` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `clean_on` tinyint(1) NOT NULL DEFAULT '1',
-  `function_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'docleanup',
+  `function_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'docleanup',
   PRIMARY KEY (`clean_id`),
   UNIQUE KEY `clean_file` (`clean_file`),
   KEY `clean_time` (`clean_time`)
@@ -650,7 +650,7 @@ CREATE TABLE `cleanup` (
 
 DROP TABLE IF EXISTS `coins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `coins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -669,21 +669,21 @@ CREATE TABLE `coins` (
 
 DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `text` mediumtext COLLATE utf8mb4_unicode_ci,
-  `ori_text` mediumtext COLLATE utf8mb4_unicode_ci,
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ori_text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `editedby` int(10) unsigned NOT NULL DEFAULT '0',
   `editedat` int(10) unsigned NOT NULL DEFAULT '0',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `request` int(10) unsigned NOT NULL DEFAULT '0',
   `offer` int(10) unsigned NOT NULL DEFAULT '0',
   `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
-  `checked_by` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `checked_by` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `checked_when` int(10) unsigned NOT NULL DEFAULT '0',
   `checked` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -699,11 +699,11 @@ CREATE TABLE `comments` (
 
 DROP TABLE IF EXISTS `countries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flagpic` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `flagpic` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -714,10 +714,10 @@ CREATE TABLE `countries` (
 
 DROP TABLE IF EXISTS `database_updates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `database_updates` (
   `id` int(10) unsigned NOT NULL DEFAULT '0',
-  `query` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `query` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `added` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -729,11 +729,11 @@ CREATE TABLE `database_updates` (
 
 DROP TABLE IF EXISTS `dbbackup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `dbbackup` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
@@ -746,12 +746,12 @@ CREATE TABLE `dbbackup` (
 
 DROP TABLE IF EXISTS `deathrow`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `deathrow` (
   `uid` int(10) unsigned NOT NULL DEFAULT '0',
-  `username` char(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` char(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tid` int(10) NOT NULL,
-  `torrent_name` char(140) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `torrent_name` char(140) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reason` tinyint(1) NOT NULL,
   `notified` int(10) unsigned NOT NULL DEFAULT '0',
   UNIQUE KEY `tid` (`tid`),
@@ -765,11 +765,11 @@ CREATE TABLE `deathrow` (
 
 DROP TABLE IF EXISTS `decks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `decks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `gameid` int(10) unsigned NOT NULL DEFAULT '0',
-  `cards` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cards` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `shuffled` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `gameid` (`gameid`)
@@ -782,13 +782,13 @@ CREATE TABLE `decks` (
 
 DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `events` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `startTime` int(10) unsigned NOT NULL DEFAULT '0',
   `endTime` int(10) unsigned NOT NULL DEFAULT '0',
-  `overlayText` mediumtext COLLATE utf8mb4_unicode_ci,
+  `overlayText` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `displayDates` tinyint(1) NOT NULL DEFAULT '0',
   `freeleechEnabled` tinyint(1) NOT NULL DEFAULT '0',
   `duploadEnabled` tinyint(1) NOT NULL DEFAULT '0',
@@ -806,12 +806,12 @@ CREATE TABLE `events` (
 
 DROP TABLE IF EXISTS `failedlogins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `failedlogins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varbinary(16) NOT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `banned` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `attempts` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip` (`ip`)
@@ -824,11 +824,11 @@ CREATE TABLE `failedlogins` (
 
 DROP TABLE IF EXISTS `files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `files` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
-  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `torrent` (`torrent`),
@@ -843,10 +843,10 @@ CREATE TABLE `files` (
 
 DROP TABLE IF EXISTS `flashscores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `flashscores` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `game` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `game` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `level` int(10) unsigned NOT NULL DEFAULT '0',
   `score` int(10) unsigned NOT NULL DEFAULT '0',
@@ -864,17 +864,17 @@ CREATE TABLE `flashscores` (
 
 DROP TABLE IF EXISTS `forum_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `forum_config` (
   `id` smallint(1) NOT NULL DEFAULT '1',
   `delete_for_real` smallint(6) NOT NULL DEFAULT '0',
   `min_delete_view_class` smallint(2) unsigned NOT NULL DEFAULT '7',
   `readpost_expiry` smallint(3) NOT NULL DEFAULT '14',
   `min_upload_class` smallint(2) unsigned NOT NULL DEFAULT '2',
-  `accepted_file_extension` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `accepted_file_types` varchar(280) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accepted_file_extension` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accepted_file_types` varchar(280) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `max_file_size` int(10) unsigned NOT NULL DEFAULT '2097152',
-  `upload_folder` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_folder` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`readpost_expiry`),
   KEY `delete_for_real` (`delete_for_real`),
   KEY `id` (`id`)
@@ -887,18 +887,18 @@ CREATE TABLE `forum_config` (
 
 DROP TABLE IF EXISTS `forum_poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `forum_poll` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `question` varchar(280) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `poll_answers` mediumtext COLLATE utf8mb4_unicode_ci,
+  `question` varchar(280) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `poll_answers` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `number_of_options` smallint(2) unsigned NOT NULL DEFAULT '0',
   `poll_starts` int(10) unsigned NOT NULL DEFAULT '0',
   `poll_ends` int(10) unsigned NOT NULL DEFAULT '0',
-  `change_vote` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `change_vote` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `multi_options` smallint(2) unsigned NOT NULL DEFAULT '1',
-  `poll_closed` enum('yes','no') COLLATE utf8mb4_unicode_ci DEFAULT 'no',
+  `poll_closed` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `forum_poll_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -911,7 +911,7 @@ CREATE TABLE `forum_poll` (
 
 DROP TABLE IF EXISTS `forum_poll_votes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `forum_poll_votes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `poll_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -932,12 +932,12 @@ CREATE TABLE `forum_poll_votes` (
 
 DROP TABLE IF EXISTS `forums`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `forums` (
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_read` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `min_class_write` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `post_count` int(10) unsigned NOT NULL DEFAULT '0',
@@ -957,13 +957,13 @@ CREATE TABLE `forums` (
 
 DROP TABLE IF EXISTS `freeleech`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `freeleech` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `var` int(10) NOT NULL DEFAULT '0',
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `amount` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `type` (`type`)
@@ -976,12 +976,12 @@ CREATE TABLE `freeleech` (
 
 DROP TABLE IF EXISTS `freeslots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `freeslots` (
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `doubleup` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `free` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `doubleup` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `free` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `addedup` int(10) unsigned NOT NULL DEFAULT '0',
   `addedfree` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `userid` (`userid`),
@@ -997,12 +997,12 @@ CREATE TABLE `freeslots` (
 
 DROP TABLE IF EXISTS `friends`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `friends` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `friendid` int(10) unsigned NOT NULL DEFAULT '0',
-  `confirmed` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `confirmed` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `friendid` (`friendid`),
@@ -1017,7 +1017,7 @@ CREATE TABLE `friends` (
 
 DROP TABLE IF EXISTS `funds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `funds` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cash` decimal(8,2) NOT NULL DEFAULT '0.00',
@@ -1035,7 +1035,7 @@ CREATE TABLE `funds` (
 
 DROP TABLE IF EXISTS `happyhour`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `happyhour` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1055,7 +1055,7 @@ CREATE TABLE `happyhour` (
 
 DROP TABLE IF EXISTS `happylog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `happylog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1076,10 +1076,10 @@ CREATE TABLE `happylog` (
 
 DROP TABLE IF EXISTS `highscores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `highscores` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `game` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `game` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `level` int(10) unsigned NOT NULL DEFAULT '0',
   `score` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1097,10 +1097,10 @@ CREATE TABLE `highscores` (
 
 DROP TABLE IF EXISTS `hit_and_run_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `hit_and_run_settings` (
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1111,16 +1111,16 @@ CREATE TABLE `hit_and_run_settings` (
 
 DROP TABLE IF EXISTS `images`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `images` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `tmdb_id` int(10) unsigned NOT NULL DEFAULT '0',
   `tvmaze_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `isbn` char(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` enum('poster','banner','background') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'poster',
-  `fetched` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `imdb_id` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isbn` char(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('poster','banner','background') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'poster',
+  `fetched` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `updated` int(10) unsigned DEFAULT '0',
   `checked` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -1135,10 +1135,10 @@ CREATE TABLE `images` (
 
 DROP TABLE IF EXISTS `imdb_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `imdb_info` (
-  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `plot` longtext COLLATE utf8mb4_unicode_ci,
+  `imdb_id` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plot` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `runtime` smallint(5) unsigned DEFAULT '0',
   `updated` int(10) unsigned DEFAULT '0',
   `top250` tinyint(1) unsigned NOT NULL DEFAULT '255',
@@ -1154,12 +1154,12 @@ CREATE TABLE `imdb_info` (
 
 DROP TABLE IF EXISTS `imdb_person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `imdb_person` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` enum('director','composer','producer','cast','writing') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cast',
+  `imdb_id` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `person_id` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('director','composer','producer','cast','writing') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cast',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_person` (`imdb_id`,`person_id`),
   KEY `person_id` (`person_id`),
@@ -1173,11 +1173,11 @@ CREATE TABLE `imdb_person` (
 
 DROP TABLE IF EXISTS `imdb_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `imdb_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `imdb_name` (`imdb_id`,`name`),
   KEY `name` (`name`),
@@ -1191,11 +1191,11 @@ CREATE TABLE `imdb_role` (
 
 DROP TABLE IF EXISTS `infolog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `infolog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `txt` mediumtext COLLATE utf8mb4_unicode_ci,
+  `txt` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1207,15 +1207,15 @@ CREATE TABLE `infolog` (
 
 DROP TABLE IF EXISTS `invite_codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `invite_codes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `status` enum('Pending','Confirmed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('Pending','Confirmed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sender` (`sender`),
   CONSTRAINT `invite_codes_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1228,12 +1228,12 @@ CREATE TABLE `invite_codes` (
 
 DROP TABLE IF EXISTS `ips`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ips` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varbinary(16) NOT NULL,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `type` enum('login','announce','browse','like') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('login','announce','browse','like') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `seedbox` tinyint(1) NOT NULL DEFAULT '0',
   `lastbrowse` int(10) unsigned NOT NULL DEFAULT '0',
   `lastlogin` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1252,7 +1252,7 @@ CREATE TABLE `ips` (
 
 DROP TABLE IF EXISTS `likes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `likes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1274,10 +1274,10 @@ CREATE TABLE `likes` (
 
 DROP TABLE IF EXISTS `lottery_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `lottery_config` (
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1288,20 +1288,20 @@ CREATE TABLE `lottery_config` (
 
 DROP TABLE IF EXISTS `messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `msg` mediumtext COLLATE utf8mb4_unicode_ci,
-  `unread` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `msg` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `unread` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `poster` int(10) unsigned NOT NULL DEFAULT '0',
   `location` smallint(6) NOT NULL DEFAULT '1',
-  `saved` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `urgent` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `draft` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `saved` enum('no','yes') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `urgent` enum('no','yes') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `draft` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`),
@@ -1322,15 +1322,15 @@ CREATE TABLE `messages` (
 
 DROP TABLE IF EXISTS `modscredits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `modscredits` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `category` enum('Addon','Forum','Message/Email','Display/Style','Staff/Tools','Browse/Torrent/Details','Misc') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Misc',
-  `status` enum('Complete','In-Progress') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Complete',
-  `pu239lnk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `credit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` enum('Addon','Forum','Message/Email','Display/Style','Staff/Tools','Browse/Torrent/Details','Misc') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Misc',
+  `status` enum('Complete','In-Progress') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Complete',
+  `pu239lnk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `credit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1341,11 +1341,11 @@ CREATE TABLE `modscredits` (
 
 DROP TABLE IF EXISTS `moods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `moods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bonus` int(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1357,15 +1357,15 @@ CREATE TABLE `moods` (
 
 DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `news` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `body` mediumtext COLLATE utf8mb4_unicode_ci,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sticky` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `body` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sticky` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `added` (`added`),
   KEY `userid` (`userid`),
@@ -1379,10 +1379,10 @@ CREATE TABLE `news` (
 
 DROP TABLE IF EXISTS `newsrss`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `newsrss` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `link` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `added` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `link` (`link`),
@@ -1396,7 +1396,7 @@ CREATE TABLE `newsrss` (
 
 DROP TABLE IF EXISTS `notconnectablepmlog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `notconnectablepmlog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1413,7 +1413,7 @@ CREATE TABLE `notconnectablepmlog` (
 
 DROP TABLE IF EXISTS `now_viewing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `now_viewing` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1432,12 +1432,12 @@ CREATE TABLE `now_viewing` (
 
 DROP TABLE IF EXISTS `offer_votes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `offer_votes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `offer_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `vote` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `vote` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   KEY `user_offer` (`offer_id`),
   KEY `user_id` (`user_id`),
@@ -1451,12 +1451,12 @@ CREATE TABLE `offer_votes` (
 
 DROP TABLE IF EXISTS `offers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `offers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `offer_name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(180) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
+  `offer_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `category` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `offered_by_user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1464,8 +1464,8 @@ CREATE TABLE `offers` (
   `vote_yes_count` int(10) unsigned NOT NULL DEFAULT '0',
   `vote_no_count` int(10) unsigned NOT NULL DEFAULT '0',
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
-  `link` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('approved','pending','denied') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `link` varchar(240) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('approved','pending','denied') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
@@ -1481,10 +1481,10 @@ CREATE TABLE `offers` (
 
 DROP TABLE IF EXISTS `options`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `options` (
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1495,11 +1495,11 @@ CREATE TABLE `options` (
 
 DROP TABLE IF EXISTS `over_forums`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `over_forums` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_view` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `forum_id` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -1514,29 +1514,29 @@ CREATE TABLE `over_forums` (
 
 DROP TABLE IF EXISTS `peers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `peers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
-  `torrent_pass` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `torrent_pass` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `peer_id` binary(20) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `seeder` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `seeder` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `started` int(10) unsigned NOT NULL DEFAULT '0',
   `last_action` int(10) unsigned NOT NULL DEFAULT '0',
   `prev_action` int(10) unsigned NOT NULL DEFAULT '0',
-  `connectable` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `connectable` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `finishedat` int(10) unsigned NOT NULL DEFAULT '0',
   `downloadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
   `uploadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
   `corrupt` int(10) NOT NULL DEFAULT '0',
-  `compact` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `compact` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `torrent_peer_id_port` (`torrent`,`peer_id`,`ip`,`port`),
   KEY `torrent` (`torrent`),
@@ -1558,17 +1558,17 @@ CREATE TABLE `peers` (
 
 DROP TABLE IF EXISTS `person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `person` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `realname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bio` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `realname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bio` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `birthday` datetime DEFAULT NULL,
   `died` datetime DEFAULT NULL,
-  `birth_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birth_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
@@ -1584,12 +1584,12 @@ CREATE TABLE `person` (
 
 DROP TABLE IF EXISTS `pmboxes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `pmboxes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `boxnumber` tinyint(4) NOT NULL DEFAULT '2',
-  `name` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   CONSTRAINT `pmboxes_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1602,11 +1602,11 @@ CREATE TABLE `pmboxes` (
 
 DROP TABLE IF EXISTS `poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `poll` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `question` varchar(320) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `answers` mediumtext COLLATE utf8mb4_unicode_ci,
+  `question` varchar(320) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `answers` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `votes` int(5) NOT NULL DEFAULT '0',
   `multi` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
@@ -1619,7 +1619,7 @@ CREATE TABLE `poll` (
 
 DROP TABLE IF EXISTS `poll_voters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `poll_voters` (
   `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varbinary(16) NOT NULL,
@@ -1639,14 +1639,14 @@ CREATE TABLE `poll_voters` (
 
 DROP TABLE IF EXISTS `polls`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `polls` (
   `pid` mediumint(10) unsigned NOT NULL AUTO_INCREMENT,
   `start_date` int(10) DEFAULT NULL,
-  `choices` longtext COLLATE utf8mb4_unicode_ci,
+  `choices` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `starter_id` mediumint(8) NOT NULL DEFAULT '0',
   `votes` smallint(5) NOT NULL DEFAULT '0',
-  `poll_question` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `poll_question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`pid`),
   KEY `start_date` (`start_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1658,24 +1658,24 @@ CREATE TABLE `polls` (
 
 DROP TABLE IF EXISTS `posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `posts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `topic_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `body` mediumtext COLLATE utf8mb4_unicode_ci,
+  `body` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `edited_by` int(10) unsigned NOT NULL DEFAULT '0',
   `edit_date` int(10) unsigned NOT NULL DEFAULT '0',
-  `icon` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `post_title` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bbcode` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `post_history` mediumtext COLLATE utf8mb4_unicode_ci,
-  `edit_reason` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `icon` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `post_title` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bbcode` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `post_history` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `edit_reason` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varbinary(16) NOT NULL,
-  `status` enum('deleted','recycled','postlocked','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
+  `status` enum('deleted','recycled','postlocked','ok') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `staff_lock` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `topicid` (`topic_id`),
@@ -1694,17 +1694,17 @@ CREATE TABLE `posts` (
 
 DROP TABLE IF EXISTS `promo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `promo` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `days_valid` int(2) NOT NULL DEFAULT '0',
   `accounts_made` int(3) NOT NULL DEFAULT '0',
   `max_users` int(3) NOT NULL DEFAULT '0',
-  `link` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `creator` int(10) NOT NULL DEFAULT '0',
-  `users` mediumtext COLLATE utf8mb4_unicode_ci,
+  `users` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `bonus_upload` bigint(10) NOT NULL DEFAULT '0',
   `bonus_invites` int(2) NOT NULL DEFAULT '0',
   `bonus_karma` int(3) NOT NULL DEFAULT '0',
@@ -1718,7 +1718,7 @@ CREATE TABLE `promo` (
 
 DROP TABLE IF EXISTS `rating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `rating` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `topic` int(10) NOT NULL DEFAULT '0',
@@ -1739,7 +1739,7 @@ CREATE TABLE `rating` (
 
 DROP TABLE IF EXISTS `read_posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `read_posts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1758,13 +1758,13 @@ CREATE TABLE `read_posts` (
 
 DROP TABLE IF EXISTS `referrers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `referrers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `browser` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `browser` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varbinary(16) NOT NULL,
-  `referer` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `page` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `referer` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `page` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1776,17 +1776,17 @@ CREATE TABLE `referrers` (
 
 DROP TABLE IF EXISTS `reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `reports` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `reported_by` int(10) unsigned NOT NULL DEFAULT '0',
   `reporting_what` int(10) unsigned NOT NULL DEFAULT '0',
-  `reporting_type` enum('User','Comment','Request_Comment','Offer_Comment','Request','Offer','Torrent','Hit_And_Run','Post') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Torrent',
-  `reason` mediumtext COLLATE utf8mb4_unicode_ci,
+  `reporting_type` enum('User','Comment','Request_Comment','Offer_Comment','Request','Offer','Torrent','Hit_And_Run','Post') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Torrent',
+  `reason` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `who_delt_with_it` int(10) unsigned NOT NULL DEFAULT '0',
   `delt_with` tinyint(1) NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `how_delt_with` mediumtext COLLATE utf8mb4_unicode_ci,
+  `how_delt_with` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `2nd_value` int(10) unsigned NOT NULL DEFAULT '0',
   `when_delt_with` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -1802,14 +1802,14 @@ CREATE TABLE `reports` (
 
 DROP TABLE IF EXISTS `reputation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `reputation` (
   `reputationid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `reputation` int(10) NOT NULL DEFAULT '0',
   `whoadded` int(10) unsigned NOT NULL DEFAULT '0',
-  `reason` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reason` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dateadd` int(10) NOT NULL DEFAULT '0',
-  `locale` enum('posts','comments','torrents','users') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'posts',
+  `locale` enum('posts','comments','torrents','users') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'posts',
   `postid` int(10) NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`reputationid`),
@@ -1829,11 +1829,11 @@ CREATE TABLE `reputation` (
 
 DROP TABLE IF EXISTS `reputationlevel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `reputationlevel` (
   `reputationlevelid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `minimumreputation` int(10) NOT NULL DEFAULT '0',
-  `level` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`reputationlevelid`),
   KEY `reputationlevel` (`minimumreputation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1845,12 +1845,12 @@ CREATE TABLE `reputationlevel` (
 
 DROP TABLE IF EXISTS `request_votes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `request_votes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `request_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `vote` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `vote` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   KEY `user_request` (`request_id`),
   KEY `user_id` (`user_id`),
@@ -1864,12 +1864,12 @@ CREATE TABLE `request_votes` (
 
 DROP TABLE IF EXISTS `requests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `requests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `request_name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(180) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
+  `request_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `category` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `requested_by_user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1878,7 +1878,7 @@ CREATE TABLE `requests` (
   `vote_yes_count` int(10) unsigned NOT NULL DEFAULT '0',
   `vote_no_count` int(10) unsigned NOT NULL DEFAULT '0',
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
-  `link` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(240) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
@@ -1894,11 +1894,11 @@ CREATE TABLE `requests` (
 
 DROP TABLE IF EXISTS `searchcloud`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `searchcloud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `searchedfor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `search_column` enum('name','descr','imdb','isbn','person','fuzzy','genre','role') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name',
+  `searchedfor` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `search_column` enum('name','descr','imdb','isbn','person','fuzzy','genre','role') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name',
   `howmuch` int(10) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
@@ -1912,13 +1912,13 @@ CREATE TABLE `searchcloud` (
 
 DROP TABLE IF EXISTS `shit_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `shit_list` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `suspect` int(10) unsigned NOT NULL DEFAULT '0',
   `shittyness` int(2) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `text` mediumtext COLLATE utf8mb4_unicode_ci,
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   KEY `userid` (`userid`),
   CONSTRAINT `shit_list_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1930,11 +1930,11 @@ CREATE TABLE `shit_list` (
 
 DROP TABLE IF EXISTS `site_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `site_config` (
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1945,11 +1945,11 @@ CREATE TABLE `site_config` (
 
 DROP TABLE IF EXISTS `sitelog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `sitelog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `txt` mediumtext COLLATE utf8mb4_unicode_ci,
+  `txt` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1961,7 +1961,7 @@ CREATE TABLE `sitelog` (
 
 DROP TABLE IF EXISTS `snatched`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `snatched` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1971,7 +1971,7 @@ CREATE TABLE `snatched` (
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downspeed` bigint(20) NOT NULL DEFAULT '0',
   `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `seeder` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `seeder` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `seedtime` int(10) unsigned NOT NULL DEFAULT '0',
   `leechtime` int(10) unsigned NOT NULL DEFAULT '0',
   `start_date` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1979,8 +1979,8 @@ CREATE TABLE `snatched` (
   `complete_date` int(10) unsigned NOT NULL DEFAULT '0',
   `timesann` int(10) unsigned NOT NULL DEFAULT '0',
   `hit_and_run` int(10) unsigned NOT NULL DEFAULT '0',
-  `mark_of_cain` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `finished` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `mark_of_cain` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `finished` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tr_usr` (`torrentid`,`userid`),
   KEY `userid` (`userid`),
@@ -1997,17 +1997,17 @@ CREATE TABLE `snatched` (
 
 DROP TABLE IF EXISTS `staffmessages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `staffmessages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `msg` mediumtext COLLATE utf8mb4_unicode_ci,
-  `subject` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `msg` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `subject` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `answeredby` int(10) unsigned NOT NULL DEFAULT '0',
   `answered` int(1) NOT NULL DEFAULT '0',
-  `answer` mediumtext COLLATE utf8mb4_unicode_ci,
-  `new` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `answer` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `new` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `answeredby` (`answeredby`),
   KEY `sender` (`sender`),
@@ -2021,15 +2021,15 @@ CREATE TABLE `staffmessages` (
 
 DROP TABLE IF EXISTS `staffmessages_answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `staffmessages_answers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `staff_id` int(10) unsigned NOT NULL DEFAULT '0',
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `answeredby` int(10) unsigned NOT NULL DEFAULT '0',
-  `answer` mediumtext COLLATE utf8mb4_unicode_ci,
+  `answer` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `subject` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2040,13 +2040,13 @@ CREATE TABLE `staffmessages_answers` (
 
 DROP TABLE IF EXISTS `staffpanel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `staffpanel` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `page_name` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file_name` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` enum('user','settings','stats','other') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
+  `page_name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('user','settings','stats','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
   `av_class` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `added_by` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2063,11 +2063,11 @@ CREATE TABLE `staffpanel` (
 
 DROP TABLE IF EXISTS `stylesheets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `stylesheets` (
   `id` int(10) NOT NULL DEFAULT '0',
-  `uri` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2078,7 +2078,7 @@ CREATE TABLE `stylesheets` (
 
 DROP TABLE IF EXISTS `subscriptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `subscriptions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2095,16 +2095,16 @@ CREATE TABLE `subscriptions` (
 
 DROP TABLE IF EXISTS `subtitles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `subtitles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `filename` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imdb` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lang` tinyint(4) NOT NULL DEFAULT '1',
-  `comment` mediumtext COLLATE utf8mb4_unicode_ci,
-  `fps` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `poster` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `fps` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `poster` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cds` int(3) NOT NULL DEFAULT '0',
   `hits` int(10) NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2121,7 +2121,7 @@ CREATE TABLE `subtitles` (
 
 DROP TABLE IF EXISTS `thanks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `thanks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2140,7 +2140,7 @@ CREATE TABLE `thanks` (
 
 DROP TABLE IF EXISTS `thankyou`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `thankyou` (
   `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2160,7 +2160,7 @@ CREATE TABLE `thankyou` (
 
 DROP TABLE IF EXISTS `tickets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tickets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2176,12 +2176,12 @@ CREATE TABLE `tickets` (
 
 DROP TABLE IF EXISTS `tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tokens` (
-  `id` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `new_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `new_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   KEY `id` (`id`),
   KEY `email` (`email`)
@@ -2194,25 +2194,25 @@ CREATE TABLE `tokens` (
 
 DROP TABLE IF EXISTS `topics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `topics` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `topic_name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `locked` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `topic_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `locked` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `forum_id` int(10) unsigned NOT NULL DEFAULT '0',
   `last_post` int(10) unsigned NOT NULL DEFAULT '0',
-  `sticky` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `sticky` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `views` int(10) unsigned NOT NULL DEFAULT '0',
   `poll_id` int(10) unsigned NOT NULL DEFAULT '0',
   `num_ratings` int(10) unsigned NOT NULL DEFAULT '0',
   `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
-  `topic_desc` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `topic_desc` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `post_count` int(10) unsigned NOT NULL DEFAULT '0',
   `first_post` int(10) unsigned NOT NULL DEFAULT '0',
-  `status` enum('deleted','recycled','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
+  `status` enum('deleted','recycled','ok') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `main_forum_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -2232,16 +2232,16 @@ CREATE TABLE `topics` (
 
 DROP TABLE IF EXISTS `torrents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `torrents` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `info_hash` binary(20) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `save_as` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `search_text` mediumtext COLLATE utf8mb4_unicode_ci,
-  `descr` mediumtext COLLATE utf8mb4_unicode_ci,
-  `ori_descr` mediumtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `save_as` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `search_text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `descr` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ori_descr` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `category` int(10) unsigned NOT NULL DEFAULT '0',
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2253,47 +2253,47 @@ CREATE TABLE `torrents` (
   `leechers` int(10) unsigned NOT NULL DEFAULT '0',
   `seeders` int(10) unsigned NOT NULL DEFAULT '0',
   `last_action` int(10) unsigned NOT NULL DEFAULT '0',
-  `visible` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `visible` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `banned` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `owner` int(10) unsigned NOT NULL DEFAULT '0',
   `num_ratings` int(10) unsigned NOT NULL DEFAULT '0',
   `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
   `nfo` blob,
-  `client_created_by` char(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown',
+  `client_created_by` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown',
   `free` int(10) unsigned NOT NULL DEFAULT '0',
-  `sticky` enum('yes','fly','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `url` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sticky` enum('yes','fly','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `url` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `year` smallint(6) NOT NULL DEFAULT '0',
   `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
   `checked_by` int(10) unsigned NOT NULL DEFAULT '0',
   `points` int(10) unsigned NOT NULL DEFAULT '0',
-  `allow_comments` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `poster` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nuked` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `nukereason` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `allow_comments` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `poster` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nuked` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `nukereason` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_reseed` int(10) unsigned NOT NULL DEFAULT '0',
-  `release_group` enum('scene','p2p','none') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
-  `subs` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vip` enum('1','0') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `newgenre` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `release_group` enum('scene','p2p','none') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
+  `subs` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vip` enum('1','0') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `newgenre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pretime` int(10) unsigned NOT NULL DEFAULT '0',
-  `bump` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `bump` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `request` int(10) unsigned NOT NULL DEFAULT '0',
   `offer` int(10) unsigned NOT NULL DEFAULT '0',
   `thanks` int(10) unsigned NOT NULL DEFAULT '0',
-  `description` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `youtube` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tags` mediumtext COLLATE utf8mb4_unicode_ci,
-  `recommended` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `description` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `youtube` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tags` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `recommended` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `silver` int(10) unsigned NOT NULL DEFAULT '0',
   `checked_when` int(10) unsigned NOT NULL DEFAULT '0',
   `flags` int(10) unsigned NOT NULL DEFAULT '0',
   `mtime` int(10) unsigned NOT NULL DEFAULT '0',
   `ctime` int(10) unsigned NOT NULL DEFAULT '0',
   `freetorrent` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isbn` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `staff_picks` int(10) unsigned NOT NULL DEFAULT '0',
   `info_updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -2318,19 +2318,19 @@ CREATE TABLE `torrents` (
 
 DROP TABLE IF EXISTS `triviaq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `triviaq` (
   `qid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `question` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `answer1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `answer2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `answer3` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `answer4` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `answer5` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `canswer` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `question` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer4` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer5` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `canswer` char(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `asked` tinyint(1) NOT NULL DEFAULT '0',
   `current` tinyint(1) NOT NULL DEFAULT '0',
-  `hash` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hash` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`qid`),
   UNIQUE KEY `hash` (`hash`),
   KEY `current` (`current`),
@@ -2344,7 +2344,7 @@ CREATE TABLE `triviaq` (
 
 DROP TABLE IF EXISTS `triviasettings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `triviasettings` (
   `gamenum` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `started` datetime NOT NULL,
@@ -2361,7 +2361,7 @@ CREATE TABLE `triviasettings` (
 
 DROP TABLE IF EXISTS `triviausers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `triviausers` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `qid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2385,13 +2385,13 @@ CREATE TABLE `triviausers` (
 
 DROP TABLE IF EXISTS `tvmaze`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tvmaze` (
   `tvmaze_id` int(10) unsigned NOT NULL DEFAULT '0',
   `tvrage_id` int(10) unsigned NOT NULL DEFAULT '0',
   `thetvdb_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`tvmaze_id`),
   KEY `tvrageid` (`tvrage_id`),
   KEY `thetvdbid` (`thetvdb_id`),
@@ -2407,23 +2407,23 @@ CREATE TABLE `tvmaze` (
 
 DROP TABLE IF EXISTS `uploadapp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `uploadapp` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `applied` int(10) unsigned NOT NULL DEFAULT '0',
-  `speed` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `offer` longtext COLLATE utf8mb4_unicode_ci,
-  `reason` longtext COLLATE utf8mb4_unicode_ci,
-  `sites` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `sitenames` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scene` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `creating` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `seeding` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `connectable` enum('yes','no','pending') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `status` enum('accepted','rejected','pending') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `moderator` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `speed` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `offer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `reason` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `sites` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `sitenames` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scene` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `creating` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `seeding` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `connectable` enum('yes','no','pending') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `status` enum('accepted','rejected','pending') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `moderator` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users` (`userid`),
   KEY `status` (`status`),
@@ -2437,7 +2437,7 @@ CREATE TABLE `uploadapp` (
 
 DROP TABLE IF EXISTS `user_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
   `index_page` int(10) unsigned NOT NULL DEFAULT '33554431',
@@ -2454,14 +2454,14 @@ CREATE TABLE `user_blocks` (
 
 DROP TABLE IF EXISTS `usercomments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `usercomments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `text` mediumtext COLLATE utf8mb4_unicode_ci,
-  `ori_text` mediumtext COLLATE utf8mb4_unicode_ci,
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ori_text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `editedby` int(10) unsigned NOT NULL DEFAULT '0',
   `editedat` int(10) unsigned NOT NULL DEFAULT '0',
   `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2478,7 +2478,7 @@ CREATE TABLE `usercomments` (
 
 DROP TABLE IF EXISTS `userhits`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `userhits` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2499,126 +2499,126 @@ CREATE TABLE `userhits` (
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `passhash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `torrent_pass` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `auth` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `apikey` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('pending','confirmed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `passhash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `torrent_pass` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `auth` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apikey` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('pending','confirmed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login` int(10) unsigned NOT NULL DEFAULT '0',
   `last_access` int(10) unsigned NOT NULL DEFAULT '0',
   `curr_ann_last_check` int(10) unsigned NOT NULL DEFAULT '0',
   `curr_ann_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `privacy` enum('strong','normal','low') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal',
+  `privacy` enum('strong','normal','low') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal',
   `stylesheet` int(10) unsigned NOT NULL DEFAULT '1',
-  `info` mediumtext COLLATE utf8mb4_unicode_ci,
-  `acceptpms` enum('yes','friends','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `info` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `acceptpms` enum('yes','friends','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `ip` varbinary(16) NOT NULL,
   `class` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `override_class` tinyint(3) unsigned NOT NULL DEFAULT '255',
   `language` int(10) unsigned NOT NULL DEFAULT '1',
-  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `title` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country` int(10) unsigned NOT NULL DEFAULT '0',
-  `notifs` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `modcomment` mediumtext COLLATE utf8mb4_unicode_ci,
-  `enabled` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `donor` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `notifs` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `modcomment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `enabled` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `donor` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `warned` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentsperpage` int(3) unsigned NOT NULL DEFAULT '0',
   `topicsperpage` int(3) unsigned NOT NULL DEFAULT '0',
   `postsperpage` int(3) unsigned NOT NULL DEFAULT '0',
-  `deletepms` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `savepms` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `deletepms` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `savepms` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `reputation` int(10) unsigned NOT NULL DEFAULT '10',
-  `time_offset` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `time_offset` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dst_in_use` tinyint(1) NOT NULL DEFAULT '0',
   `auto_correct_dst` tinyint(1) NOT NULL DEFAULT '1',
   `chatpost` int(10) unsigned NOT NULL DEFAULT '1',
   `smile_until` int(10) NOT NULL DEFAULT '0',
   `seedbonus` decimal(20,1) NOT NULL DEFAULT '200.0',
-  `bonuscomment` mediumtext COLLATE utf8mb4_unicode_ci,
-  `vip_added` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `bonuscomment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `vip_added` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `vip_until` int(10) NOT NULL DEFAULT '0',
   `freeslots` int(10) unsigned NOT NULL DEFAULT '5',
   `free_switch` int(10) unsigned NOT NULL DEFAULT '0',
   `invites` int(10) unsigned NOT NULL DEFAULT '0',
   `invitedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `invite_rights` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `invite_rights` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `anonymous` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `uploadpos` int(10) unsigned NOT NULL DEFAULT '1',
   `forumpost` int(10) unsigned NOT NULL DEFAULT '1',
   `downloadpos` int(10) unsigned NOT NULL DEFAULT '1',
   `immunity` int(10) unsigned NOT NULL DEFAULT '0',
   `leechwarn` int(10) unsigned NOT NULL DEFAULT '0',
-  `disable_reason` mediumtext COLLATE utf8mb4_unicode_ci,
-  `clear_new_tag_manually` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `disable_reason` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `clear_new_tag_manually` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `last_browse` int(10) unsigned NOT NULL DEFAULT '0',
-  `signatures` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `signature` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `signatures` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `signature` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `forum_access` int(10) unsigned NOT NULL DEFAULT '0',
-  `forum_sort` enum('ASC','DESC') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
-  `highspeed` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `hnrwarn` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `forum_sort` enum('ASC','DESC') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
+  `highspeed` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `hnrwarn` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `hit_and_run_total` int(10) unsigned NOT NULL DEFAULT '0',
   `donoruntil` int(10) unsigned NOT NULL DEFAULT '0',
   `donated` int(3) NOT NULL DEFAULT '0',
   `total_donated` decimal(8,2) NOT NULL DEFAULT '0.00',
   `vipclass_before` int(10) NOT NULL DEFAULT '0',
-  `parked` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `parked` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `passhint` int(10) unsigned DEFAULT '0',
-  `hintanswer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hintanswer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `avatarpos` int(10) unsigned NOT NULL DEFAULT '1',
-  `support` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `supportfor` mediumtext COLLATE utf8mb4_unicode_ci,
+  `support` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `supportfor` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `sendpmpos` int(10) unsigned NOT NULL DEFAULT '1',
   `invitedate` int(10) unsigned NOT NULL DEFAULT '0',
-  `invitees` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invite_on` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `subscription_pm` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `gender` enum('Male','Female','NA') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NA',
+  `invitees` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `invite_on` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `subscription_pm` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `gender` enum('Male','Female','NA') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NA',
   `anonymous_until` int(10) NOT NULL DEFAULT '0',
-  `viewscloud` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `tenpercent` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `avatars` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `offavatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `viewscloud` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `tenpercent` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `avatars` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `offavatar` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `pirate` int(10) unsigned NOT NULL DEFAULT '0',
   `king` int(10) unsigned NOT NULL DEFAULT '0',
-  `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `signature_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `forum_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `avatar_rights` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `offensive_avatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `view_offensive_avatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `hidecur` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `signature_post` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `forum_post` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `avatar_rights` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `offensive_avatar` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `view_offensive_avatar` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `paranoia` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `google_talk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `msn` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `aim` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `yahoo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `icq` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `show_email` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `google_talk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `msn` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `aim` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `yahoo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `icq` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `show_email` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `parked_until` int(10) NOT NULL DEFAULT '0',
-  `gotgift` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `suspended` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `gotgift` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `suspended` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `bjwins` int(10) NOT NULL DEFAULT '0',
   `bjlosses` int(10) NOT NULL DEFAULT '0',
-  `warn_reason` mediumtext COLLATE utf8mb4_unicode_ci,
-  `onirc` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `warn_reason` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `onirc` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `irctotal` bigint(20) unsigned NOT NULL DEFAULT '0',
   `birthday` date DEFAULT '1970-01-01',
-  `got_blocks` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `got_blocks` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `last_access_numb` bigint(30) NOT NULL DEFAULT '0',
   `onlinetime` bigint(30) NOT NULL DEFAULT '0',
-  `commentpm` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `browser` mediumtext COLLATE utf8mb4_unicode_ci,
+  `commentpm` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `browser` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `hits` int(10) NOT NULL DEFAULT '0',
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
   `categorie_icon` int(10) unsigned NOT NULL DEFAULT '1',
@@ -2626,12 +2626,12 @@ CREATE TABLE `users` (
   `mood` int(10) unsigned NOT NULL DEFAULT '1',
   `pms_per_page` tinyint(3) unsigned DEFAULT '20',
   `watched_user` int(10) unsigned NOT NULL DEFAULT '0',
-  `watched_user_reason` mediumtext COLLATE utf8mb4_unicode_ci,
-  `staff_notes` mediumtext COLLATE utf8mb4_unicode_ci,
+  `watched_user_reason` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `staff_notes` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `game_access` int(10) unsigned NOT NULL DEFAULT '1',
-  `where_is` text COLLATE utf8mb4_unicode_ci,
-  `request_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `browse_icons` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `where_is` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `request_uri` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `browse_icons` enum('yes','no') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `numuploads` int(10) NOT NULL DEFAULT '0',
   `corrupt` int(10) NOT NULL DEFAULT '0',
   `opt1` int(11) NOT NULL DEFAULT '182927957',
@@ -2666,7 +2666,7 @@ CREATE TABLE `users` (
 
 DROP TABLE IF EXISTS `usersachiev`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `usersachiev` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `totalshoutlvl` tinyint(2) NOT NULL DEFAULT '0',
@@ -2717,13 +2717,13 @@ CREATE TABLE `usersachiev` (
 
 DROP TABLE IF EXISTS `ustatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `ustatus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `last_status` varchar(140) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_status` varchar(140) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_update` int(10) unsigned NOT NULL DEFAULT '0',
-  `archive` mediumtext COLLATE utf8mb4_unicode_ci,
+  `archive` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userid` (`userid`),
   CONSTRAINT `ustatus_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -2736,11 +2736,11 @@ CREATE TABLE `ustatus` (
 
 DROP TABLE IF EXISTS `wiki`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `wiki` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `body` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `userid` int(10) unsigned DEFAULT '0',
   `time` int(10) unsigned DEFAULT '0',
   `lastedit` int(10) unsigned DEFAULT '0',
@@ -2764,4 +2764,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-12 20:25:39
+-- Dump completed on 2019-01-17  9:13:23
