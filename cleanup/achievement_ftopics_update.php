@@ -24,6 +24,7 @@ function achievement_ftopics_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $topics = (int) $arr['forumtopics'];
             $lvl = (int) $arr['topicachiev'];
+            $msg = '';
             if ($topics >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Forum Topic Starter Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ftopic1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Topic Starter LVL1\', \'ftopic1.png\' , \'Started at least 1 topic in the forums.\')';

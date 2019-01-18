@@ -24,6 +24,7 @@ function achievement_request_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $reqfilled = (int) $arr['reqfilled'];
             $lvl = (int) $arr['reqlvl'];
+            $msg = '';
             if ($reqfilled >= 1 && $lvl == 0) {
                 $msg = 'Congratulations, you have just earned the [b]Request Filler LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/reqfiller1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL1\', \'reqfiller1.png\' , \'Filled at least 1 request from the request page.\')';

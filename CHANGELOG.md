@@ -1,3 +1,6 @@
+### 18 Jan, 2019
+fix: achievements incrementing wrong users  
+
 ### 17 Jan, 2019
 update: database files  
 update: add poster to start of descr upload.php  

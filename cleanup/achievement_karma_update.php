@@ -14,7 +14,7 @@ function achievement_karma_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $res = sql_query("SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE enabled = 'yes' AND u.seedbonus >= 1 AND a.bonus >= 0") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE enabled = 'yes' AND u.seedbonus >= 250 AND a.bonus >= 0") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
@@ -24,6 +24,7 @@ function achievement_karma_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $seedbonus = (float) $arr['seedbonus'];
             $lvl = (int) $arr['bonus'];
+            $msg = '';
             if ($seedbonus >= 250 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Bonus Banker LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus1.png[/img]';
                 $achievements_buffer[] = [

@@ -30,6 +30,7 @@ function achievement_bday_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $bday = (int) $arr['bday'];
             $added = (int) $arr['added'];
+            $msg = '';
             if ($bday === 0 && $added < $maxdt) {
                 $msg = 'Congratulations, you have just earned the [b]First Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'First Birthday\', \'birthday1.png\' , \'Been a member for at least 1 year.\')';

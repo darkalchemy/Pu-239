@@ -46,6 +46,7 @@ function achievement_seedtime_update($data)
         foreach ($query as $arr) {
             $timeseeded = $arr['seedtime'];
             $dayseed = $arr['dayseed'];
+            $msg = '';
             if ($dayseed === 0 && $timeseeded >= $seedtime && !in_array($arr['user_id'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]7 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/7dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'7 Day Seeder\', \'7dayseed.png\' , \'Seeded a snatched torrent for a total of at least 7 days.\')';

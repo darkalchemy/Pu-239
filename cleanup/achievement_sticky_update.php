@@ -24,6 +24,7 @@ function achievement_sticky_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $stickyup = (int) $arr['stickyup'];
             $lvl = (int) $arr['stickyachiev'];
+            $msg = '';
             if ($stickyup >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL1\', \'sticky1.png\' , \'Uploading at least 1 sticky torrent to the site.\')';

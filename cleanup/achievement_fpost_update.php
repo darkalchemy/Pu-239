@@ -24,6 +24,7 @@ function achievement_fpost_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $posts = (int) $arr['forumposts'];
             $lvl = (int) $arr['postachiev'];
+            $msg = '';
             if ($posts >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Forum Poster Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL1\', \'fpost1.png\' , \'Made at least 1 post in the forums.\')';

@@ -24,6 +24,7 @@ function achievement_invite_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $invited = (int) $arr['invited'];
             $lvl = (int) $arr['inviterach'];
+            $msg = '';
             if ($invited >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Inviter Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL1\', \'invite1.png\' , \'Invited at least 1 new user to the site.\')';

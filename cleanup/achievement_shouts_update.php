@@ -24,6 +24,7 @@ function achievement_shouts_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $shouts = (int) $arr['dailyshouts'];
             $lvl = (int) $arr['dailyshoutlvl'];
+            $msg = '';
             if ($shouts >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]AJAX Chat Spammer Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL1\', \'spam1.png\' , \'Made at least 10 posts to AJAX Chat today.\')';

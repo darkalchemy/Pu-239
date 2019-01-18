@@ -23,6 +23,7 @@ function achievement_up_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $uploads = (int) $arr['numuploads'];
             $lvl = (int) $arr['ul'];
+            $msg = '';
             if ($uploads >= 1 && $lvl === 0) {
                 $msg = 'Congratulations, you have just earned the [b]Uploader LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL1\', \'ul1.png\' , \'Uploaded at least 1 torrent to the site.\')';
