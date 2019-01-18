@@ -1243,6 +1243,10 @@ img.bar {
     transform: translate(0, 50%);
 }
 
+ul li ul li {
+    margin-left: .625em;
+}
+
 @media (max-width: 1087px) {
     .parallax {
         display: flex;

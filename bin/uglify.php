@@ -311,19 +311,17 @@ foreach ($styles as $folder) {
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
-                CHAT_DIR . "css/{$folder}/print.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
                 CHAT_DIR . "css/{$folder}/classcolors.css",
-                CHAT_DIR . "css/{$folder}/transparent.css",
+                CHAT_DIR . "css/{$folder}/default.css",
             ],
             'chat_css_uranium' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
-                CHAT_DIR . "css/{$folder}/print.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
                 CHAT_DIR . "css/{$folder}/classcolors.css",
-                CHAT_DIR . "css/{$folder}/Uranium.css",
+                CHAT_DIR . "css/{$folder}/default.css",
             ],
         ], $css_list);
     }

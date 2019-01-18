@@ -26,19 +26,28 @@ if (isset($_GET['act'])) {
         $HTML .= "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
             <input type='hidden' value='{$template['id']}' name='tid'>
+            <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
-        $HTML .= main_table("
+        $body = "
             <tr>
                 <td>{$lang['themes_id']}<br>{$lang['themes_explain_id']}</td>
-                <td><input type='text' value='{$template['id']}' name='id'></td>
-            </tr>
-            <tr>
-                <td>{$lang['themes_uri']}</td>
-                <td><input type='text' value='{$template['uri']}' name='uri'></td>
+                <td><input type='text' value='{$template['id']}' name='id' class='w-100' required></td>
             </tr>
             <tr>
                 <td>{$lang['themes_name']}</td>
-                <td><input type='text' value='" . htmlsafechars($template['name']) . "' name='title'></td>
+                <td><input type='text' value='" . htmlsafechars($template['name']) . "' name='title' class='w-100' required></td>
+            </tr>
+            <tr>
+                <td>{$lang['themes_min_class']}</td>
+                <td>
+                    <select name='class' class='w-100'>";
+            for ($i = 0; $i <= UC_MAX; ++$i) {
+                $body .= "
+                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+            }
+            $body .= "
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>{$lang['themes_is_folder']}</td>
@@ -46,8 +55,8 @@ if (isset($_GET['act'])) {
                     <b>" . (file_exists(TEMPLATE_DIR . $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b>
                 </td>
             </tr>
-            <tr>');
-        $HTML .= "
+            <tr>';
+        $HTML .= main_table($body) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' value='{$lang['themes_save']}' class='button is-small'>
             </div>
@@ -74,8 +83,9 @@ if (isset($_GET['act'])) {
         }
         $HTML .= "
         <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post'>
+            <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_addnew']}</h1>";
-        $HTML .= main_table("
+        $body = "
                 <tr>
                     <td>{$lang['themes_id']}</td>
                     <td>
@@ -83,16 +93,25 @@ if (isset($_GET['act'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>{$lang['themes_uri']}</td>
-                    <td><input type='text' value='default.css' name='uri'></td>
-                </tr>
-                <tr>
                     <td>{$lang['themes_name']}</td>
                     <td><input type='text' value='' name='name' placeholder='Template Name'></td>
                 </tr>
                 <tr>
+                    <td>{$lang['themes_min_class']}</td>
+                    <td>
+                        <select name='class'>";
+                for ($i = 0; $i <= UC_MAX; ++$i) {
+                    $body .= "
+                            <option value='$i'>" . get_user_class_name($i) . '</option>';
+                }
+                $body .= "
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan='2'>{$lang['themes_guide']}</td>
-                </tr>") . "
+                </tr>";
+        $HTML .= main_table($body) . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' value='{$lang['themes_add']}' class='button is-small'>
                 </div>
@@ -111,6 +130,7 @@ if (isset($_GET['act'])) {
         $tid = (int) $_POST['tid'];
         $id = (int) $_POST['id'];
         $uri = $_POST['uri'];
+        $min_class = $_POST['class'];
         $name = htmlsafechars($_POST['title']);
         if (!is_valid_id($id)) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
@@ -128,6 +148,9 @@ if (isset($_GET['act'])) {
         }
         if ($name != $cur['name']) {
             $set['name'] = $name;
+        }
+        if ($min_class != $cur['min_class_to_view']) {
+            $set['min_class_to_view'] = $min_class;
         }
         $update = $fluent->update('stylesheets')
             ->set($set)
@@ -190,10 +213,15 @@ if (isset($_GET['act'])) {
             stderr("{$lang['themes_nofile']}", "{$lang['themes_inv_file']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes'>{$lang['themes_not_exists']}</a>");
         }
+        if (!isset($_POST['class'])) {
+            stderr("{$lang['themes_error']}", "{$lang['themes_inv_class']}");
+        }
+
         $values = [
             'id' => $_POST['id'],
             'uri' => $_POST['uri'],
             'name' => htmlsafechars($_POST['name']),
+            'min_class_to_view' => $_POST['class'],
         ];
         $fluent->insertInto('stylesheets')
             ->values($values)
@@ -238,6 +266,7 @@ if (!isset($_GET['act'])) {
                 <th>{$lang['themes_uri']}</th>
                 <th>{$lang['themes_name']}</th>
                 <th>{$lang['themes_is_folder']}</th>
+                <th>{$lang['themes_min_class']}</th>
                 <th>{$lang['themes_e_d']}</th>
             </tr>";
 
@@ -252,6 +281,7 @@ if (!isset($_GET['act'])) {
             <td>" . htmlsafechars($template['uri'], ENT_QUOTES) . '</td>
             <td>' . htmlsafechars($template['name'], ENT_QUOTES) . '</td>
             <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b></td>
+            <td>" . get_user_class_name($template['min_class_to_view']) . "</td>
             <td>
                 <span>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_edit']}'>

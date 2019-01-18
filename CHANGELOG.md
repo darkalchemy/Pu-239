@@ -1,4 +1,7 @@
 ### 18 Jan, 2019
+update: dependencies  
+update: template creation message  
+update: min class to view use template  
 fix: achievements incrementing wrong users  
 
 ### 17 Jan, 2019

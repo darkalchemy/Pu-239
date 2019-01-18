@@ -8,6 +8,7 @@ $lang = [
     'themes_name' => 'Name',
     'themes_uri' => 'Uri',
     'themes_is_folder' => 'Folder Exists?',
+    'themes_min_class' => 'Min Class To View',
     'themes_e_d' => 'Edit/Delete',
     'themes_edit' => 'Edit',
     'themes_delete' => 'Delete',
@@ -35,8 +36,13 @@ $lang = [
     //Guide/Explains
     'themes_guide' => '
 <ul class="left20">
-    <li class="bullet">Make a folder in Templates dir</li>
-    <li class="bullet">Make a php file called template.php inside of the folder made in step 1</li>
+    <li class="bullet">Make a folder in the Templates dir: ' .  TEMPLATE_DIR . ' and create files:
+        <ul>
+            <li class="bullet">default.css</li>
+            <li class="bullet">custom.css</li>
+            <li class="bullet">template.php</li>
+        </ul>
+    </li><br>
     <li class="bullet">In template.php there shall be minimum 4 functions
         <ul>
             <li class="bullet">stdhead</li>
@@ -44,7 +50,15 @@ $lang = [
             <li class="bullet">stdmsg</li>
             <li class="bullet">StatusBar</li>
         </ul>
-    </li>
+    </li><br>
+    <li class="bullet">Make a folder in the AJAX Chat dir: ' .  AJAX_CHAT_PATH . 'css/ and copy these files from ' .  AJAX_CHAT_PATH . 'css/1/:
+        <ul>
+            <li class="bullet">global.css</li>
+            <li class="bullet">fonts.css</li>
+            <li class="bullet">custom.css</li>
+            <li class="bullet">default.css</li>
+        </ul>
+    </li><br>
 </ul>',
     'themes_explain_id' => 'This shall be the same as the folder name',
     //Errors
@@ -53,6 +67,7 @@ $lang = [
     'themes_inv_id' => 'Invalid ID',
     'themes_inv_uri' => 'Invalid Uri',
     'themes_inv_name' => 'Invalid Name',
+    'themes_inv_class' => 'Invalid Class',
     'themes_nofile' => 'Template file does not exist',
     'themes_inv_file' => 'Continue?',
     //Credits

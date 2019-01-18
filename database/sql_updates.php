@@ -2118,4 +2118,32 @@ CREATE TABLE `categories` (
         'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600 WHERE `clean_title` = "Failed Logins"',
         'flush' => false,
     ],
+    [
+        'id' => 1547804325,
+        'info' => 'Add column min_class_to_view',
+        'date' => '18 Jan, 2019',
+        'query' => 'ALTER TABLE `stylesheets` ADD COLUMN `min_class_to_view` tinyint unsigned NOT NULL DEFAULT ' . UC_USER,
+        'flush' => false,
+    ],
+    [
+        'id' => 1547804326,
+        'info' => 'Add index',
+        'date' => '18 Jan, 2019',
+        'query' => 'ALTER TABLE `stylesheets` ADD INDEX `min_class_to_view`(`min_class_to_view`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1547804327,
+        'info' => 'Change min_class_to_view',
+        'date' => '18 Jan, 2019',
+        'query' => 'UPDATE `stylesheets` SET `min_class_to_view` = ' . UC_STAFF . ' WHERE `id` = 2',
+        'flush' => false,
+    ],
+    [
+        'id' => 1547804328,
+        'info' => 'Change user templates',
+        'date' => '18 Jan, 2019',
+        'query' => 'UPDATE `users` SET `stylesheet` = 1 WHERE `stylesheet` = 2',
+        'flush' => false,
+    ],
 ];

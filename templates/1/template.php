@@ -416,13 +416,14 @@ function platform_menu()
 {
     global $site_config, $fluent, $CURUSER, $cache;
 
-    $templates = $cache->get('templates_');
+    $templates = $cache->get('templates_' . $CURUSER['class']);
     if ($templates === false || is_null($templates)) {
         $templates = $fluent->from('stylesheets')
             ->orderBy('id')
+            ->where('min_class_to_view > ?', $CURUSER['class'])
             ->fetchAll();
 
-        $cache->set('templates_', $templates, 0);
+        $cache->set('templates_' . $CURUSER['class'], $templates, 0);
     }
 
     $styles = '';
