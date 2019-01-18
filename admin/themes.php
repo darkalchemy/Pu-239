@@ -9,6 +9,14 @@ global $site_config, $lang, $fluent, $session, $cache;
 $lang = array_merge($lang, load_language('ad_themes'));
 $HTML = '';
 
+function clear_template_cache()
+{
+    global $cache;
+    for ($i = 0; $i <= UC_MAX; ++$i) {
+        $cache->delete('templates_' . $i);
+    }
+}
+
 if (isset($_GET['act'])) {
     if (!isset($_GET['act'])) {
         stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
@@ -159,7 +167,7 @@ if (isset($_GET['act'])) {
         if (!$update) {
             $session->set('is-danger', $lang['themes_some_wrong']);
         } else {
-            $cache->delete('templates_');
+            clear_template_cache();
             $session->set('is-success', $lang['themes_msg']);
         }
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
@@ -194,7 +202,7 @@ if (isset($_GET['act'])) {
             ->where('stylesheet = ?', $id)
             ->execute();
 
-        $cache->delete('templates_');
+        clear_template_cache();
         $session->set('is-success', $lang['themes_msg2']);
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
@@ -227,7 +235,7 @@ if (isset($_GET['act'])) {
             ->values($values)
             ->execute();
 
-        $cache->delete('templates_');
+        clear_template_cache();
         $session->set('is-success', $lang['themes_msg']);
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
@@ -252,7 +260,7 @@ if (isset($_GET['act'])) {
             ->values($values)
             ->execute();
 
-        $cache->delete('templates_');
+        clear_template_cache();
         $session->set('is-success', $lang['themes_msg3']);
         header('Location: staffpanel.php?tool=themes&action=themes');
         die();

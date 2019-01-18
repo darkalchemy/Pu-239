@@ -420,7 +420,7 @@ function platform_menu()
     if ($templates === false || is_null($templates)) {
         $templates = $fluent->from('stylesheets')
             ->orderBy('id')
-            ->where('min_class_to_view > ?', $CURUSER['class'])
+            ->where('min_class_to_view <= ?', $CURUSER['class'])
             ->fetchAll();
 
         $cache->set('templates_' . $CURUSER['class'], $templates, 0);

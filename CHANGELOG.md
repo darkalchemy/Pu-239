@@ -1,4 +1,6 @@
 ### 18 Jan, 2019
+fix: delete templates cache on update/add/delete  
+fix: get templates  
 update: tidy up a few scripts  
 update: incorrect css file  
 add: cli database updater bin/update_db.php  
