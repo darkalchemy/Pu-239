@@ -1,4 +1,5 @@
 ### 18 Jan, 2019
+update: tidy up a few scripts  
 update: incorrect css file  
 add: cli database updater bin/update_db.php  
 update: dependencies  

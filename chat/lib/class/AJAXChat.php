@@ -412,7 +412,6 @@ class AJAXChat
         $userID = ($userID === null) ? $this->getUserID() : $userID;
         for ($i = 0; $i < count($this->_onlineUsersData); ++$i) {
             if ($this->_onlineUsersData[$i]['userID'] == $userID) {
-                //array_splice($this->_onlineUsersData, $i, 1);
                 unset($this->_onlineUsersData[$i]);
                 break;
             }

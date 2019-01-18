@@ -120,7 +120,7 @@ $site_config['connectable_check'] = true;
 $site_config['signup_timeout'] = 86400 * 3;
 $site_config['sub_max_size'] = 500 * 1024;
 $site_config['minvotes'] = 1;
-$site_config['max_dead_torrent_time'] = 6 * 3600;
+$site_config['max_dead_torrent_time'] = 6;
 $site_config['language'] = 1;
 // Site Bot
 $site_config['chatBotID'] = 2;
@@ -296,7 +296,10 @@ $site_config['tagline'] = [
     'tagline' => 'Making progress, 1 day at a time...',
 ];
 $site_config['video_banners'] = [];
-$site_config['banners'] = [];
+$site_config['banners'] = [
+//    'site_banner_01.png',
+//    'site_banner_02.png',
+];
 $site_config['query_limit'] = 65536; // mysql placeholder limit
 
 // Auto Lottery, you must first start a lottery, then this will restart it based on the settings below

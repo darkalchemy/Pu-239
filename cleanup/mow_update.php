@@ -6,30 +6,49 @@
 function mow_update($data)
 {
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $res_tor = sql_query('SELECT id, name
-                            FROM torrents
-                            WHERE times_completed > 0 AND category IN (' . implode(', ', $site_config['movie_cats']) . ')
-                            ORDER BY times_completed DESC
-                            LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res_tor);
-    if (!empty($arr)) {
-        sql_query('UPDATE avps SET value_u = ' . sqlesc($arr['id']) . ', value_i = ' . sqlesc(TIME_NOW) . " WHERE avps.arg = 'bestfilmofweek'") or sqlerr(__FILE__, __LINE__);
-        $cache->delete('motw_');
+    $mow = $fluent->from('torrents')
+        ->select(null)
+        ->select('id')
+        ->select('name')
+        ->where('times_completed > 10')
+        ->where('category', $site_config['movie_cats'])
+        ->orderBy('RAND()')
+        ->limit(1)
+        ->fetch();
+
+    if (!empty($mow)) {
+        $set = [
+            'value_u' => $mow['id'],
+            'value_i' => TIME_NOW,
+        ];
+        if ($data['clean_log']) {
+            write_log('Torrent [' . (int) $arr['id'] . '] [' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
+        }
+    } else {
+        $set = [
+            'value_u' => 0,
+            'value_i' => TIME_NOW,
+        ];
+        if ($data['clean_log']) {
+            write_log("'Best Film of the Week' was emptied by system");
+        }
     }
-    if ($data['clean_log']) {
-        write_log('Torrent [' . (int) $arr['id'] . '] [' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
-    }
+    $fluent->update('avps')
+        ->set($set)
+        ->where("avps.arg = 'bestfilmofweek'")
+        ->execute();
+
+    $cache->delete('motw_');
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Movie of the Week Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log("Movie of the Week Cleanup: Completed." . $text);
     }
 }
