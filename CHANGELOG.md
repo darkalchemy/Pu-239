@@ -1,4 +1,6 @@
 ### 18 Jan, 2019
+update: incorrect css file  
+add: cli database updater bin/update_db.php  
 update: dependencies  
 update: template creation message  
 update: min class to view use template  

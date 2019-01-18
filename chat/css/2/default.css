@@ -1,6 +1,5 @@
 /*
  * @package AJAX_Chat
- * @author Rosina Ramirez
  */
 
 html {
@@ -9,21 +8,18 @@ html {
 
 input, select, textarea, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3, #content #inputFieldContainer, #loginContent input {
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
+    border-radius: .3125em;
     border: 0;
 }
 
 #content #inputFieldContainer {
-    background: #0e0e0e;
     padding: 0;
 }
 
 #content #inputFieldContainer #inputField {
-    box-shadow: inset 1px 1px 5px 1px #000;
     border: 0;
-    padding: 3px 12px;
-    width: calc(100% - 27px);
+    padding: 8px 12px;
+    width: calc(100% - 24px);
 }
 
 #content #inputFieldContainer #inputField:focus {
@@ -31,9 +27,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #loginContent #loginButton {
-    background-color: #424242;
-    color: #b0b8a8;
-    border-radius: 3px;
+    border-radius: .18755em;
 }
 
 #loginContent #errorContainer {
@@ -47,9 +41,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 .ajax-chat {
     height: 100%;
-    background-color: #464646;
-    background-image: linear-gradient(to bottom, #464646, #181818);
-    color: #b0b8a8;
+    color: #fff;
 }
 
 .ajax-chat h1, .ajax-chat h3 {
@@ -63,27 +55,13 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #loginContent input, #loginContent select {
     background: #171717;
+}
+
+#content textarea {
     color: #b0b8a8;
-}
-
-#content input, #content select, #content textarea {
-    background-color: #0e0e0e;
-    color: #b0b8a8;
-}
-
-.ajax-chat .popup, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
-#content #inputFieldContainer, #loginContent input[type=text], #loginContent input[type=password] {
-    box-shadow: 0 0 8px 1px #495a49;
-    -webkit-box-shadow: 0 0 8px 1px #495a49;
-}
-
-.logoutChannelInner .popup {
-    box-shadow: none;
-    -webkit-box-shadow: none;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-    background-color: #171717;
     border: 0;
 }
 
@@ -91,7 +69,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     content: '';
     display: block;
     position: absolute;
-    border-radius: 5px;
+    border-radius: .3125em;
 }
 
 #content #chatList:before {
@@ -99,7 +77,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     left: 0;
     width: 0;
     height: 98%;
-    box-shadow: 1px 0 8px 1px #000;
 }
 
 #content #chatList:after {
@@ -107,7 +84,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     left: 17px;
     width: 98%;
     height: 0;
-    box-shadow: 0 1px 8px 1px #000;
 }
 
 #content #onlineListContainer #onlineList div {
@@ -125,7 +101,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #emoticonsContainer {
-    border-radius: 3px;
+    border-radius: .3125em;
 }
 
 #content #bbCodeContainer {
@@ -147,42 +123,19 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #bbCodeContainer input {
-    background-color: #d8ffd6;
-    background-image: linear-gradient(to bottom, #d8ffd6, #467a44);
     color: #1d1d1d;
 }
 
 #content #bbCodeContainer input:hover {
-    background-color: #fff;
-    background-image: linear-gradient(to bottom, #fff, #08ff35);
-}
-
-#content #bbCodeContainer input:active, #content #logoutButton:active, #content #submitButton:active, #loginContent #loginButton:active {
-    box-shadow: 0 0 8px 1px #38ff56;
-}
-
-#content #logoutButton, #content #submitButton, #loginContent #loginButton {
-    background-color: #4fff58;
-    background-image: linear-gradient(to bottom, #4fff58, #194221);
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 5px #000;
-}
-
-#content #logoutButton:hover, #content #submitButton:hover, #loginContent #loginButton:hover {
-    background-color: #99ffa8;
-    background-image: linear-gradient(to bottom, #99ffa8, #002405);
 }
 
 .ajax-chat .popup, .ajax-chat #content .popup#colorCodesContainer {
     border: 0;
-    background: rgba(0, 0, 0, 0.7);
     padding: 5px;
 }
 
 #content #colorCodesContainer a {
-    border-radius: 10px;
-    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3);
+    border-radius: .625em;
     margin: 5px;
     border: 0;
 }
@@ -198,7 +151,22 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color: #131413;
+    background-color: rgba(0, 0, 0, .3);
+    border: 1px solid rgba(255, 255, 255, .1);
+}
+
+#content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
+    border: 1px solid transparent;
+}
+
+#content .rowEven:hover, #helpList dl:nth-child(even):hover, #settingsList dl:nth-child(even):hover {
+    border: 1px solid rgba(255, 255, 255, .1);
+    transition: all 0.35s ease-in-out;
+}
+
+#content .rowOdd:hover, #helpList dl:nth-child(odd):hover, #settingsList dl:nth-child(odd):hover {
+    border: 1px solid rgba(255, 255, 255, .1);
+    transition: all 0.35s ease-in-out;
 }
 
 #content #chatList .rowOdd.private, #content #chatList .rowEven.private {
@@ -213,14 +181,54 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     border-color: red;
 }
 
-#content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color: #171717;
-    background-image: linear-gradient(to bottom, #3b6c37, #223220, #171717);
-}
-
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
     font-size: .7em;
+}
+
+#content #chatList div.monospace {
+    font-family: "Lucida Console", Monaco, monospace;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: antialiased;
+    white-space: pre-wrap;
+}
+
+input[type=button] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    align-items: center;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: none;
+    display: inline-flex;
+    height: 2.25em;
+    line-height: 1.5;
+    padding: calc(0.375em - 1px) calc(0.625em - 1px);
+    position: relative;
+    vertical-align: top;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #363636;
+    cursor: pointer;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: .125em;
+    font-size: 0.75rem;
+}
+
+input[type=button]:hover {
+    border-color: #b5b5b5;
+}
+
+input[type=button]:active {
+    outline: none;
+    border-color: #4a4a4a;
 }
 
 .text-center {
@@ -228,3 +236,29 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     margin-left: auto;
     margin-right: auto;
 }
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 .5em rgba(0, 0, 0, .1);
+    border-radius: .3125em;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+::-webkit-scrollbar {
+    width: 1em;
+    background-color: rgba(255, 255, 255, .1);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    border-radius: .3125em;
+    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    border-radius: .625em;
+    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
+}
+
