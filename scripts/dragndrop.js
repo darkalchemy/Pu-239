@@ -50,7 +50,9 @@ function callback(files) {
     var comment = document.querySelector('#comment');
     var loader = document.querySelector('#loader');
     var textarea = document.getElementsByTagName('textarea');
-    var editor = textarea[0].value;
+    if (textarea[0]) {
+        var editor = textarea[0].value;
+    }
 
     comment.classList.add('is-hidden');
     loader.classList.remove('is-hidden');

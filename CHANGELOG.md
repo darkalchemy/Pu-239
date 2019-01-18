@@ -1,4 +1,5 @@
 ### 18 Jan, 2019
+fix: bitbucket  
 fix: delete templates cache on update/add/delete  
 fix: get templates  
 update: tidy up a few scripts  

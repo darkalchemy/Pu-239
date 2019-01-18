@@ -8,7 +8,9 @@ function grab_url(event) {
     var poster = document.querySelector('#poster');
     var image_url = document.querySelector('#image_url');
     var textarea = document.getElementsByTagName('textarea');
-    var editor = textarea[0].value;
+    if (textarea[0]) {
+        var editor = textarea[0].value;
+    }
 
     comment.classList.add('is-hidden');
     loader.classList.remove('is-hidden');
