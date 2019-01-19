@@ -8,7 +8,7 @@
  * @author  Andrew Collington, andy@amnuts.com
  * @license MIT, http://acollington.mit-license.org/
  */
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);
 if (!function_exists('opcache_get_status')) {

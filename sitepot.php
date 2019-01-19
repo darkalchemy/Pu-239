@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $mysqli;
 
@@ -55,7 +55,7 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . " karma points to the site pot. {$Remaining} karma points remaining.");
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . " 
                      WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
-        require_once INCL_DIR . 'bbcode_functions.php';
+        require_once INCL_DIR . 'function_bbcode.php';
         $msg = $CURUSER['username'] . ' put ' . $want_pot . ' karma point' . ($want_pot > 1 ? 's' : '') . ' into the site pot! * Only [b]' . $Remaining . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Site Pot:[/b][/color] [url={$site_config['baseurl']}/sitepot.php]" . $give . '/' . $potsize . '[/url]';
         autoshout($msg);
         header('Location: sitepot.php');
@@ -75,7 +75,7 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
                      value_u = '" . (86400 + TIME_NOW) . "', 
                      value_s = '1' WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
         write_log('24 HR FREELEECH is now active! It was started on ' . get_date(TIME_NOW, 'DATE') . '.');
-        require_once INCL_DIR . 'bbcode_functions.php';
+        require_once INCL_DIR . 'function_bbcode.php';
         $res = sql_query("SELECT value_u FROM avps WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_array($res);
         $msg = ' [color=green][b]24 HR FREELEECH[/b][/color] is now active! It will end at ' . get_date($arr['value_u'], 'DATE') . '.';

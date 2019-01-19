@@ -10,9 +10,9 @@
  */
 function stdhead($title = '', $stdhead = null)
 {
-    require_once INCL_DIR . 'bbcode_functions.php';
+    require_once INCL_DIR . 'function_bbcode.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
-    require_once INCL_DIR . 'html_functions.php';
+    require_once INCL_DIR . 'function_html.php';
     require_once 'navbar.php';
     global $CURUSER, $site_config, $BLOCKS, $session;
 
@@ -197,7 +197,7 @@ function stdhead($title = '', $stdhead = null)
  */
 function stdfoot($stdfoot = false)
 {
-    require_once INCL_DIR . 'bbcode_functions.php';
+    require_once INCL_DIR . 'function_bbcode.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
@@ -372,7 +372,7 @@ function stdfoot($stdfoot = false)
  */
 function stdmsg($heading, $text, $class = null)
 {
-    require_once INCL_DIR . 'html_functions.php';
+    require_once INCL_DIR . 'function_html.php';
 
     $htmlout = '';
     if ($heading) {

@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 global $CURUSER, $site_config, $lang, $cache;
 
 $dt = TIME_NOW - 180;

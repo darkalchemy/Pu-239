@@ -8,7 +8,7 @@
 function birthday_update($data)
 {
     $time_start = microtime(true);
-    require_once INCL_DIR . 'user_functions.php';
+    require_once INCL_DIR . 'function_users.php';
     global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);

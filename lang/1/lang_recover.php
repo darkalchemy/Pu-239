@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 
 $lang = [
     //stderr

@@ -1,9 +1,9 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'torrenttable_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_torrenttable.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);

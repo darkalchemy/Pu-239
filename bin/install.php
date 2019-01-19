@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_password.php';
 
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
@@ -63,10 +63,10 @@ if (!file_put_contents(ROOT_DIR . '.env', $config)) {
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'site.php';
-require_once INCL_DIR . 'common_functions.php';
+require_once INCL_DIR . 'function_common.php';
 require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_password.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();

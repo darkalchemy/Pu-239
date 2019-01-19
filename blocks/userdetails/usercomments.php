@@ -16,7 +16,7 @@ if (!$count) {
     $text .= "
         <h2>{$lang['userdetails_comm_yet']}</h2>\n";
 } else {
-    require_once INCL_DIR . 'pager_functions.php';
+    require_once INCL_DIR . 'function_pager.php';
     $perpage = 5;
     $pager = pager($perpage, $count, "userdetails.php?id=$id&amp;", [
         'lastpagedefault' => 1,

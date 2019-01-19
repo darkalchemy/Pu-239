@@ -1,11 +1,11 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session, $message_stuffs;
 

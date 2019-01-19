@@ -1,7 +1,7 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -417,7 +417,7 @@ function view_list()
         $deflimit = 10;
         $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;{$lang['rep_ad_view_records']}</span>";
         if ($total['cnt'] > $deflimit) {
-            require_once INCL_DIR . 'pager_functions.php';
+            require_once INCL_DIR . 'function_pager.php';
             $links = pager_rep([
                 'count' => $total['cnt'],
                 'perpage' => $deflimit,

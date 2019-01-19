@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
-require_once INCL_DIR . 'ann_functions.php';
+require_once INCL_DIR . 'function_announce.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 global $torrent_stuffs, $user_stuffs;
 

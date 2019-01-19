@@ -1,11 +1,11 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'torrenttable_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
-require_once INCL_DIR . 'searchcloud_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_torrenttable.php';
+require_once INCL_DIR . 'function_pager.php';
+require_once INCL_DIR . 'function_searchcloud.php';
 require_once INCL_DIR . 'share_images.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';

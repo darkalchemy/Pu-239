@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_bbcode.php';
 global $session, $cache, $torrent_stuffs;
 
 extract($_POST);

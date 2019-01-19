@@ -1,7 +1,7 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_html.php';
 global $CURUSER, $site_config, $lang, $cache, $user_stuffs, $message_stuffs;
 
 use Nette\Mail\Message;

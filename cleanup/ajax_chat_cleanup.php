@@ -9,7 +9,7 @@ function ajax_chat_cleanup($data)
     dbconn();
     global $site_config, $queries;
 
-    require_once INCL_DIR . 'user_functions.php';
+    require_once INCL_DIR . 'function_users.php';
     set_time_limit(1200);
     ignore_user_abort(true);
 

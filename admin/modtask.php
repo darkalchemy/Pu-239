@@ -1,10 +1,10 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_autopost.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'staff_functions.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_staff.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);

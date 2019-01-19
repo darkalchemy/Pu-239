@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'geoip.inc';
 require_once INCL_DIR . 'geoipcity.inc';
 require_once INCL_DIR . 'geoipregionvars.php';

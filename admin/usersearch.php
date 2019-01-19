@@ -1,9 +1,9 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $fluent, $cache;

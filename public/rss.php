@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_bbcode.php';
 global $site_config, $user_stuffs, $fluent, $cache;
 
 $torrent_pass = isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '';

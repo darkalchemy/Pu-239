@@ -1,11 +1,11 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'comment_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_pager.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_comments.php';
 check_user_status();
 global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session, $mysqli;
 

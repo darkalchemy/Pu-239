@@ -12,7 +12,7 @@ function peer_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    require_once INCL_DIR . 'ann_functions.php';
+    require_once INCL_DIR . 'function_announce.php';
     $torrent_seeds = $torrent_leeches = [];
     $deadtime = TIME_NOW - floor($site_config['announce_interval'] * 1.3);
     $dead_peers = sql_query('SELECT torrent, userid, peer_id, seeder FROM peers WHERE last_action < ' . $deadtime) or sqlerr(__FILE__, __LINE__);

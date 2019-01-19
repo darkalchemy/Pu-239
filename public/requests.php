@@ -1,12 +1,12 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'comment_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_comments.php';
 require_once INCL_DIR . 'function_imdb.php';
-require_once INCL_DIR . 'pager_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_pager.php';
+require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli, $commentid;
 
@@ -393,7 +393,7 @@ switch ($action) {
         break;
 
     case 'edit_request':
-        require_once INCL_DIR . 'bbcode_functions.php';
+        require_once INCL_DIR . 'function_bbcode.php';
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
@@ -533,7 +533,7 @@ switch ($action) {
         break;
 
     case 'edit':
-        require_once INCL_DIR . 'bbcode_functions.php';
+        require_once INCL_DIR . 'function_bbcode.php';
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }

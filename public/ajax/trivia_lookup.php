@@ -1,8 +1,8 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'trivia_functions.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_trivia.php';
 global $session;
 
 $lang = array_merge(load_language('global'), load_language('trivia'));

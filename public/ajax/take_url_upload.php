@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'dragndrop.php';
 global $site_config, $cache, $session, $user_stuffs;
 

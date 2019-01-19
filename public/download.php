@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_happyhour.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 dbconn();
 global $site_config, $cache, $user_stuffs;

@@ -1,7 +1,7 @@
 <?php
 
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_pager.php';
 global $CURUSER, $site_config, $lang, $user_stuffs, $user;
 
 if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_STAFF) {

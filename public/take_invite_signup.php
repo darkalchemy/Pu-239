@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'password_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_password.php';
+require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_bemail.php';
 require_once INCL_DIR . 'function_recaptcha.php';
 

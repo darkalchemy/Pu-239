@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-require_once INCL_DIR . 'common_functions.php';
+require_once INCL_DIR . 'function_common.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $torrent_stuffs, $user_stuffs;
 

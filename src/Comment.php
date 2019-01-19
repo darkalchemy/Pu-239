@@ -31,7 +31,7 @@ class Comment
      */
     public function get_torrent_comment(int $tid, int $count, int $perpage)
     {
-        require_once INCL_DIR . 'pager_functions.php';
+        require_once INCL_DIR . 'function_pager.php';
         $pager = pager($perpage, $count, $this->site_config['baseurl'] . "/details.php?id=$tid&amp;", [
             'lastpagedefault' => 1,
         ]);

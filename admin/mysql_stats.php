@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 global $lang;
 

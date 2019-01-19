@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
-require_once INCL_DIR . 'ann_functions.php';
+require_once INCL_DIR . 'function_announce.php';
 global $site_config, $cache, $ip_stuffs, $peer_stuffs, $event_stuffs, $snatched_stuffs, $torrent_stuffs, $user_stuffs;
 
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {

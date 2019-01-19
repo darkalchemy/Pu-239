@@ -1,10 +1,10 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-require_once INCL_DIR . 'ann_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_announce.php';
+require_once INCL_DIR . 'function_html.php';
 dbconn();
 global $site_config, $fluent, $session, $user_stuffs, $cache, $message_stuffs, $torrent_stuffs, $CURUSER;
 

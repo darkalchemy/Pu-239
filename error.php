@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 global $site_config;
 
 $string = $_SERVER['QUERY_STRING'];

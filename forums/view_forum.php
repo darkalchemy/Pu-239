@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 global $lang, $site_config, $CURUSER, $fluent;
 
 $posts = $delete_me = $rpic = $content = $child = $parent_forum_name = $first_post_arr = $post_status_image = $sub_forums = $locked = '';

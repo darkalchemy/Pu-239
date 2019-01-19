@@ -1,7 +1,7 @@
 <?php
 
 require_once CLASS_DIR . 'class_check.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache, $session;

@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'trivia_functions.php';
+require_once INCL_DIR . 'function_trivia.php';
 global $lang, $site_config, $fluent, $session;
 
 $table = trivia_table();

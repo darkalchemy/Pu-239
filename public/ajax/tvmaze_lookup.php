@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_get_images.php';
 check_user_status();

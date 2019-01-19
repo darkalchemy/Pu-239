@@ -1,7 +1,7 @@
 <?php
 
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'function_users.php';
+require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang, $fluent;
