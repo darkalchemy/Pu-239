@@ -111,7 +111,7 @@ if (portblacklisted($port)) {
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
-if ($connectable === 'no' && $site_config('require_connectable']) {
+if ($connectable === 'no' && $site_config['require_connectable']) {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 if ($site_config['ip_logging']) {
