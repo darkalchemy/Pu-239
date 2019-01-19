@@ -4,7 +4,7 @@ $starttime = microtime(true);
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'site.php';
-require_once INCL_DIR . 'common_functions.php';
+require_once INCL_DIR . 'function_common.php';
 require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
 
@@ -12,7 +12,7 @@ $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
 $free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
-require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_password.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $fluent = new DarkAlchemy\Pu239\Database();
 $session = new DarkAlchemy\Pu239\Session();
@@ -301,7 +301,7 @@ function userlogin()
             $banned = true;
         }
         if ($banned) {
-            require_once INCL_DIR . 'html_functions.php';
+            require_once INCL_DIR . 'function_html.php';
             header('Content-Type: text/html; charset=' . $site_config['char_set']);
             echo doc_head() . "
 <title>Forbidden</title>

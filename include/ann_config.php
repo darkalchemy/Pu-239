@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'site.php';
-require_once INCL_DIR . 'common_functions.php';
+require_once INCL_DIR . 'function_common.php';
 require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
 

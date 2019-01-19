@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR . 'staff_functions.php';
+require_once INCL_DIR . 'function_staff.php';
 /**
  * @param     $response
  * @param int $timeout

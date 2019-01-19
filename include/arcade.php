@@ -52,7 +52,7 @@ if ($highScore < $score) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a measly " . number_format($score) . '. Try again. The high score remains ' . number_format($highScore) . '.';
 }
 
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 if ($site_config['autoshout_on']) {
     autoshout($message);
 }

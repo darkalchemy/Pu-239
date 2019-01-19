@@ -1,8 +1,8 @@
 <?php
 
 require_once INCL_DIR . 'function_autopost.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'staff_functions.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_staff.php';
 /**
  * @param int  $class
  * @param bool $staff

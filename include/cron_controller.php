@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'function_users.php';
 dbconn();
 global $cache;
 
@@ -72,7 +72,7 @@ function autoclean()
             }
 
             $cache->set('tfreak_cron_', TIME_NOW, 30);
-            require_once INCL_DIR . 'newsrss.php';
+            require_once INCL_DIR . 'function_newsrss.php';
             if (empty($tfreak_news)) {
                 github_shout();
                 foxnews_shout();

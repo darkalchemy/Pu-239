@@ -4,7 +4,7 @@ require_once INCL_DIR . 'function_fanart.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_details.php';
-require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_html.php';
 
 use Imdb\Config;
 
