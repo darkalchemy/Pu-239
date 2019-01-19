@@ -1,6 +1,7 @@
 .env
 .idea
 .php_cs.cache
+.config/site.php
 node_modules/
 vendor/
 /include/config.php
