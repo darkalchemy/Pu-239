@@ -14,13 +14,13 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
         $topicid = $fluent->from('topics')
             ->select(null)
             ->select('id')
-            ->where('forum_id = ?', $site_config['staff']['forumid'])
+            ->where('forum_id = ?', $site_config['staff_forums'][0])
             ->where('topic_name = ?', $subject)
             ->fetch('id');
         if (!$topicid) {
             $values = [
                 'user_id' => $site_config['chatBotID'],
-                'forum_id' => $site_config['staff']['forumid'],
+                'forum_id' => $site_config['staff_forums'][0],
                 'topic_name' => $subject,
             ];
             $topicid = $fluent->insertInto('topics')
@@ -32,7 +32,7 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             ];
             $fluent->update('forums')
                 ->set($set)
-                ->where('id = ?', $site_config['staff']['forumid'])
+                ->where('id = ?', $site_config['staff_forums'][0])
                 ->execute();
         }
 
@@ -60,7 +60,7 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
         ];
         $fluent->update('forums')
             ->set($set)
-            ->where('id = ?', $site_config['staff']['forumid'])
+            ->where('id = ?', $site_config['staff_forums'][0])
             ->execute();
 
         $cache->delete('last_posts_' . $CURUSER['class']);

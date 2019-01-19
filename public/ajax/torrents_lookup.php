@@ -19,7 +19,7 @@ if (empty($current_user)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }
-$isStaff = in_array($current_user, $site_config['is_staff']['allowed']);
+$isStaff = in_array($current_user, $site_config['is_staff']);
 $hasAccess = $current_user === $uid || $isStaff ? true : false;
 
 if ($type === 'torrents' && $hasAccess) {

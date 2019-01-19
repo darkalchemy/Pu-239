@@ -1,4 +1,9 @@
 ### 19 Jan, 2019
+update: flush entire cache or specific cache from cli bin/clear_cache.php  
+update: remove auto download admin/backup.php  
+update: use bzip2 admin/backup.php  
+remove: site_config table  
+update: move site settings to 1 file  
 update: navbar  
 add: php-cs-fixer [does not yet work with PHP 7.3]  
 fix: forums.php  

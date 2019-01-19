@@ -35,7 +35,7 @@ define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 define('SQL_DEBUG', true);
 define('IP_LOGGING', false);
 define('REQUIRE_CONNECTABLE', true);
-define('SOCKET', true);
+define('SOCKET', false);
 define('NFO_SIZE', 65536);
 
 define('PM_DELETED', 0);

@@ -2146,4 +2146,11 @@ CREATE TABLE `categories` (
         'query' => 'UPDATE `users` SET `stylesheet` = 1 WHERE `stylesheet` = 2',
         'flush' => false,
     ],
+    [
+        'id' => 1547909376,
+        'info' => 'Delete backup settings',
+        'date' => '19 Jan, 2019',
+        'query' => 'DROP TABLE `site_config`',
+        'flush' => true,
+    ],
 ];

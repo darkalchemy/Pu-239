@@ -316,7 +316,7 @@ function userlogin()
         }
     }
     if ($users_data['class'] >= UC_STAFF) {
-        if (!in_array($users_data['id'], $site_config['is_staff']['allowed'], true)) {
+        if (!in_array($users_data['id'], $site_config['is_staff'], true)) {
             require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
@@ -487,9 +487,9 @@ function get_stylesheet()
     $class_config = $cache->get('class_config_' . $style);
     if ($class_config === false || is_null($class_config)) {
         $class_config = $fluent->from('class_config')
-                               ->orderBy('value ASC')
-                               ->where('template = ?', $style)
-                               ->fetchAll();
+            ->orderBy('value ASC')
+            ->where('template = ?', $style)
+            ->fetchAll();
 
         $cache->set('class_config_' . $style, $class_config, 86400);
     }
@@ -1779,10 +1779,8 @@ function get_anonymous_name()
 {
     global $site_config;
 
-    $names = str_replace(', ', ',', $site_config['anonymous_names']);
-    $array = explode(',', $names);
-    $index = array_rand($array);
-    $anon = $array[$index];
+    $index = array_rand($site_config['anonymous_names']);
+    $anon = $site_config['anonymous_names'][$index];
 
     return $anon;
 }

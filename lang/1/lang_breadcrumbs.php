@@ -34,6 +34,7 @@ $lang = [
     'games.php' => 'Games',
     'getrss.php' => 'Get RSS',
     'gift.php' => 'Christmas Gifts',
+    'groups.php' => 'Grouped Torrents',
     'happylog.php' => 'Happy Hour Log',
     'hnrs.php' => "Hit 'n Runs",
     'invites.php' => 'Invites',

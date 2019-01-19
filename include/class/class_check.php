@@ -20,7 +20,7 @@ function class_check($class = 0, $staff = true)
 
     if ($CURUSER['class'] >= $class) {
         if ($staff) {
-            if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']['allowed']))) {
+            if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']))) {
                 $ip = getip();
                 $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
                 $subject = 'Warning Class Check System!';

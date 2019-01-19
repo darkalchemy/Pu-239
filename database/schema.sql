@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.13-3, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.13-4, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: master
 -- ------------------------------------------------------
--- Server version	8.0.13-3
+-- Server version	8.0.13-4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1925,21 +1925,6 @@ CREATE TABLE `shit_list` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `site_config`
---
-
-DROP TABLE IF EXISTS `site_config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `site_config` (
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `sitelog`
 --
 
@@ -2766,4 +2751,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-18  6:24:29
+-- Dump completed on 2019-01-19 11:16:37

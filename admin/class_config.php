@@ -9,7 +9,7 @@ global $CURUSER, $site_config, $lang, $cache, $session;
 $lang = array_merge($lang, load_language('ad_class_config'));
 
 $style = get_stylesheet();
-if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
+if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
 $pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__,

@@ -8,7 +8,7 @@ class_check($class);
 global $CURUSER, $site_config, $lang, $session, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_backup'));
-if (!in_array($CURUSER['id'], $staff_settings['is_staff']['allowed'])) {
+if (!in_array($CURUSER['id'], $staff_settings['is_staff'])) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 
@@ -38,6 +38,7 @@ if (is_array($required_class)) {
     }
 }
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''));
+
 if (empty($mode)) {
     $res = sql_query('SELECT db.id, db.name, db.added, u.id AS uid, u.username
                         FROM dbbackup AS db
@@ -95,14 +96,14 @@ if (empty($mode)) {
                     <table class='table table-bordered table-striped'>
                         <tbody>
                             <tr>
-                                <td>{$lang['backup_qzip']}</td>
+                                <td>{$lang['backup_bzip2']}</td>
                                 <td>{$lang['backup_optional']}</td>
-                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td class='rowhead'>" . ($site_config['db_use_bzip2'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
-                                <td>{$lang['backup_qzippath']}</td>
-                                <td>{$site_config['db_backup_gzip_path']}</td>
-                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>{$lang['backup_bzip2path']}</td>
+                                <td>{$site_config['db_backup_bzip2_path']}</td>
+                                <td>" . (is_file($site_config['db_backup_bzip2_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
@@ -123,14 +124,6 @@ if (empty($mode)) {
                                 <td>" . (is_file($site_config['db_backup_mysqldump_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
-                                <td colspan='2'>{$lang['backup_downafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
-                            </tr>
-                            <tr>
-                                <td colspan='2'>{$lang['backup_delafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
-                            </tr>
-                            <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
                                 <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . '</td>
                             </tr>
@@ -139,7 +132,13 @@ if (empty($mode)) {
                 </div>
             </div>';
     } else {
-        $HTMLOUT .= "<h2>'{$lang['backup_nofound']}'</h2>";
+        $HTMLOUT .= main_div("
+                <div class='padding20 has-text-centered'>
+                    {$lang['backup_nofound']}
+                    <div class='top20'>
+                        <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    </div>
+                </div>");
     }
 
     if (isset($_GET['backedup'])) {
@@ -152,66 +151,25 @@ if (empty($mode)) {
     echo stdhead($lang['backup_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($mode === 'backup') {
     global $site_config;
-    $mysql_host = $_ENV['DB_HOST'];
-    $mysql_user = $_ENV['DB_USERNAME'];
-    $mysql_pass = $_ENV['DB_PASSWORD'];
-    $mysql_db = $_ENV['DB_DATABASE'];
-    $ext = $mysql_db . '-' . date('m') . '-' . date('d') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '.sql';
+
+    $host = $_ENV['DB_HOST'];
+    $user = $_ENV['DB_USERNAME'];
+    $pass = quotemeta($_ENV['DB_PASSWORD']);
+    $db = $_ENV['DB_DATABASE'];
+    $ext = $db . '-' . date('m') . '-' . date('d') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '.sql';
     $filepath = BACKUPS_DIR . $ext;
-    exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
-    if ($site_config['db_backup_use_gzip']) {
-        exec("{$site_config['db_backup_gzip_path']} --best $filepath");
+    if ($site_config['db_backup_use_bzip2']) {
+        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u $user -p$pass $db | bzip2 -9 > {$filepath}.bz2");
+    } else {
+        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u $user -p$pass $db > $filepath");
     }
-    sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($site_config['db_backup_use_gzip'] ? '.gz' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
-    $location = 'mode=backup';
-    if ($site_config['db_backup_auto_download']) {
-        $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-        $location = 'mode=download&id=' . $id;
-    }
+    sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($site_config['db_backup_use_bzip2'] ? '.bz2' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
+    $location = '';
     if ($site_config['db_backup_write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
-    header('Location: staffpanel.php?tool=backup');
+    header('Location: staffpanel.php?tool=backup&' . $location);
     die();
-} elseif ($mode === 'download') {
-    $id = (isset($_GET['id']) ? (int) $_GET['id'] : 0);
-    if (!is_valid_id($id)) {
-        stderr($lang['backup_stderr'], $lang['backup_id']);
-    }
-    $res = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res);
-    $filename = BACKUPS_DIR . $arr['name'];
-
-    if (!is_file($filename)) {
-        stderr($lang['backup_stderr'], $lang['backup_inexistent']);
-    }
-    $file_extension = strtolower(substr(strrchr($filename, '.'), 1));
-    switch ($file_extension) {
-        case 'sql':
-            $ctype = 'application/sql';
-            break;
-
-        case 'sql.gz':
-        case 'gz':
-            $ctype = 'application/x-gzip';
-            break;
-
-        default:
-            $ctype = 'application/force-download';
-    }
-    if ($site_config['db_backup_write_to_log']) {
-        write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') downloaded a database(' . htmlsafechars($arr['name']) . ').');
-    }
-    header('Refresh: 0; url=staffpanel.php' . ($site_config['db_backup_auto_download'] && !$site_config['db_backup_auto_delete'] ? '' : '?tool=backup&mode=delete&id=' . $id));
-    header('Pragma: public');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Cache-Control: private', false);
-    header("Content-Type: $ctype");
-    header('Content-Disposition: attachment; filename="' . basename($filename) . '";');
-    header('Content-Transfer-Encoding: binary');
-    header('Content-Length: ' . filesize($filename));
-    readfile($filename);
 } elseif ($mode === 'delete') {
     $ids = (isset($_POST['ids']) ? $_POST['ids'] : (isset($_GET['id']) ? [
         $_GET['id'],
@@ -242,7 +200,7 @@ if (empty($mode)) {
     } else {
         $location = 'noselection';
     }
-    header('Location:staffpanel.php?tool=backup&mode=' . $location);
+    header('Location: staffpanel.php?tool=backup&mode=' . $location);
     die();
 } else {
     stderr($lang['backup_srry'], $lang['backup_unknow']);

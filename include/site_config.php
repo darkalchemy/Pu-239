@@ -139,9 +139,9 @@ $site_config['staff_picks_limit'] = 5;
 $site_config['latest_torrents_limit_scroll'] = 25;
 $site_config['latest_torrents_limit_slider'] = 25;
 /* Settings **/
-$site_config['reports'] = 1; // 1/0 on/off
-$site_config['karma'] = 1; // 1/0 on/off
-$site_config['BBcode'] = 1; // 1/0 on/off
+$site_config['reports'] = true;
+$site_config['karma'] = true;
+$site_config['BBcode'] = true;
 $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; // comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
@@ -158,16 +158,16 @@ if (empty($_SERVER['HTTP_HOST'])) {
 
 $site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
 
-$site_config['msg_alert'] = 1; // saves a query when off
-$site_config['report_alert'] = 1; // saves a query when off
-$site_config['staffmsg_alert'] = 1; // saves a query when off
-$site_config['uploadapp_alert'] = 1; // saves a query when off
-$site_config['bug_alert'] = 1; // saves a query when off
+$site_config['msg_alert'] = true;
+$site_config['report_alert'] = true;
+$site_config['staffmsg_alert'] = true;
+$site_config['uploadapp_alert'] = true;
+$site_config['bug_alert'] = true;
 $site_config['pic_baseurl'] = '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['pic_baseurl_chat'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
-$site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
+$site_config['comment_check'] = true;
 // for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
     13,
@@ -223,8 +223,6 @@ $site_config['site']['owner'] = 1;
 $site_config['adminer_allowed_ids'] = [
     1,
 ];
-
-$site_config['staff']['forumid'] = 1;
 
 // Arcade Games
 $site_config['arcade_games'] = [
@@ -304,8 +302,8 @@ $site_config['query_limit'] = 65536; // mysql placeholder limit
 
 // Auto Lottery, you must first start a lottery, then this will restart it based on the settings below
 $site_config['auto_lotto'] = [
-    'enable' => 0,
-    'use_prize_fund' => 1,
+    'enable' => true,
+    'use_prize_fund' => true,
     'prize_fund' => 1000000,
     'ticket_amount' => 100,
     'ticket_amount_type' => 'seedbonus',
@@ -342,3 +340,42 @@ $site_config['staff_allowed'] = [
     'enable_invincible' => UC_MAX,
     'lock_topics' => UC_MAX,
 ];
+
+$site_config['db_backup_use_bzip2'] = true;
+$site_config['db_use_bzip2'] = true;
+$site_config['db_backup_bzip2_path'] = '/bin/bzip2';
+$site_config['db_backup_write_to_log'] = true;
+$site_config['db_backup_mysqldump_path'] = '/usr/bin/mysqldump';
+$site_config['anonymizer_url'] = 'https://nullrefer.com/?';
+$site_config['anonymous_names'] = ['Tom Sawyer', 'Keyser Söze', 'Capt. Kirk', 'Walter Cronkite', 'El Rushbo', 'Simple Simon'];
+$site_config['auto_confirm'] = true;
+$site_config['autoshout_on'] = true;
+$site_config['backgrounds_on_all_pages'] = true;
+$site_config['bonus_irc_per_duration'] = .25;
+$site_config['bonus_max_torrents'] = 100;
+$site_config['bonus_per_comment'] = 3;
+$site_config['bonus_per_delete'] = 15;
+$site_config['bonus_per_download'] = 20;
+$site_config['bonus_per_duration'] = .25;
+$site_config['bonus_per_post'] = 5;
+$site_config['bonus_per_rating'] = 5;
+$site_config['bonus_per_thanks'] = 5;
+$site_config['bonus_per_topic'] = 8;
+$site_config['bonus_per_upload'] = 15;
+$site_config['bucket_allowed'] = true;
+$site_config['coders_log_allowed_ext'] = ['php', 'css', 'js'];
+$site_config['dupeip_check_on'] = false;
+$site_config['email_confirm'] = false;
+$site_config['failedlogins'] = 5;
+$site_config['forums_online'] = true;
+$site_config['image_proxy'] = true;
+$site_config['in_production'] = false;
+$site_config['invites'] = 5000;
+$site_config['maxusers'] = 10000;
+$site_config['newsrss_on'] = true;
+$site_config['openreg'] = true;
+$site_config['openreg_invites'] = true;
+$site_config['seedbonus_on'] = true;
+$site_config['site_online'] = true;
+$site_config['totalneeded'] = 100;
+$site_config['use_12_hour'] = true;

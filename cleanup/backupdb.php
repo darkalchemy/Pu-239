@@ -38,14 +38,14 @@ function backupdb($data)
 
     $host = $_ENV['DB_HOST'];
     $user = $_ENV['DB_USERNAME'];
-    $pass = $_ENV['DB_PASSWORD'];
+    $pass = quotemeta($_ENV['DB_PASSWORD']);
     $db = $_ENV['DB_DATABASE'];
     $dt = TIME_NOW;
     $bdir = BACKUPS_DIR;
     $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
 
-    $c1 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db -d > {$bdir}db_structure.sql";
-    $c2 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db " . tables('peers') . " | bzip2 -9 > $bdir{$filename}.bz2";
+    $c1 = "mysqldump -h $host -u{$user} -p'{$pass}' $db -d | sed 's/ AUTO_INCREMENT=[0-9]*//g' > {$bdir}db_structure.sql";
+    $c2 = "mysqldump -h $host -u{$user} -p'{$pass}' $db " . tables('peers') . " | bzip2 -9 > $bdir{$filename}.bz2";
 
     system($c1);
     exec($c2);
@@ -55,7 +55,7 @@ function backupdb($data)
     foreach ($tables as $table) {
         if ($table !== 'peers') {
             $filename = "tbl_{$table}_" . date('m_d_y_H', TIME_NOW) . '.sql';
-            $c2 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db $table | bzip2 -cq9 > $bdir{$filename}.bz2";
+            $c2 = "mysqldump -h $host -u{$user} -p'{$pass}' $db $table | bzip2 -cq9 > $bdir{$filename}.bz2";
             system($c2);
         }
     }

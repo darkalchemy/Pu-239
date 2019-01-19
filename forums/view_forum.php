@@ -356,7 +356,7 @@ if (!empty($topic_arrs)) {
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
 
-        if ($CURUSER['class'] >= UC_MAX && $forum_id === $site_config['staff']['forumid']) {
+        if ($CURUSER['class'] >= UC_MAX && $forum_id === $site_config['staff_forums'][0]) {
             $delete_me = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: x-small;">[ <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_topic&amp;topic_id=' . $topic_id . '&amp;sure=1&amp;send_me_back=666">' . $lang['fe_delete'] . '</a> ]</span>';
         }
 

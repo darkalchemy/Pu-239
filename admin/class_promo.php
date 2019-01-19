@@ -11,7 +11,7 @@ $lang = array_merge($lang, load_language('ad_class_promo'));
 /*$allowed_ids = array(
 1
 ); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids*/)) {
+if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
 $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);

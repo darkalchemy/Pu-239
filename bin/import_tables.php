@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 
 $host = $_ENV['DB_HOST'];
 $user = $_ENV['DB_USERNAME'];
-$pass = $_ENV['DB_PASSWORD'];
+$pass = quotemeta($_ENV['DB_PASSWORD']);
 $db = $_ENV['DB_DATABASE'];
 
 $tables = [
@@ -17,14 +17,14 @@ if (empty($argv[1])) {
     foreach ($tables as $table) {
         if (file_exists($table)) {
             ++$i;
-            exec("bunzip2 < '$table' | mysql -u'{$user}' -p'{$pass}' '$db'");
+            exec("bunzip2 < '$table' | mysql -h $host -u'{$user}' -p'{$pass}' '$db'");
         }
     }
 } else {
-    $table = DATABASE_DIR . $argv[1];
+    $table = $argv[1];
     if (file_exists($table)) {
         ++$i;
-        exec("bunzip2 < '$table' | mysql -u'{$user}' -p'{$pass}' '$db'");
+        exec("bunzip2 < '$table' | mysql -h $host -u'{$user}' -p'{$pass}' '$db'");
     }
 }
 

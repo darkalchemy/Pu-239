@@ -47,7 +47,7 @@ $config = file_get_contents($file);
 $keys = array_map('regex', array_keys($vars));
 $values = array_values($vars);
 $config = preg_replace($keys, $values, $config);
-for ($i = 1; $i <= 6; ++$i) {
+for ($i = 1; $i <= 4; ++$i) {
     $config = preg_replace("/#pass{$i}/", bin2hex(random_bytes(16)), $config);
 }
 
@@ -71,24 +71,29 @@ require_once INCL_DIR . 'password_functions.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
-$mysql_test = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE']);
+$host = $_ENV['DB_HOST'];
+$user = $_ENV['DB_USERNAME'];
+$pass = quotemeta($_ENV['DB_PASSWORD']);
+$db = $db;
+
+$mysql_test = new mysqli($host, $user, $pass, $db);
 if ($mysql_test->connect_error) {
     die("There was an error while selecting the database\n" . $mysql_test->error . "\n");
 }
 
 $query = 'SELECT VERSION() AS ver';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
 $retval = shell_exec($sql);
 if (!preg_match('/10\.\d+\.\d+\-MariaDB|8\.\d+\.\d+/i', $retval)) {
     $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
-    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
     $retval = shell_exec($sql);
     if (!preg_match('/innodb_large_prefix\s+ON/', $retval)) {
         die("Please add/update my.cnf 'innodb_large_prefix = 1' and restart mysql.\n");
     }
 
     $query = 'SHOW VARIABLES LIKE "innodb_file_format"';
-    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
     $retval = shell_exec($sql);
     if (!preg_match('/innodb_file_format\s+Barracuda/', $retval)) {
         die("Please add/update my.cnf 'innodb_file_format = Barracuda' and restart mysql.\n");
@@ -96,14 +101,14 @@ if (!preg_match('/10\.\d+\.\d+\-MariaDB|8\.\d+\.\d+/i', $retval)) {
 }
 
 $query = 'SHOW VARIABLES LIKE "innodb_file_per_table"';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
 $retval = shell_exec($sql);
 if (!preg_match('/innodb_file_per_table\s+ON/', $retval)) {
     die("Please add/update my.cnf 'innodb_file_per_table = 1' and restart mysql.\n");
 }
 
 $query = 'SHOW VARIABLES LIKE "innodb_autoinc_lock_mode"';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
 $retval = shell_exec($sql);
 if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
     die("Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.\n");
@@ -150,12 +155,12 @@ foreach ($sources as $name => $source) {
         add_user($source);
     } elseif (preg_match('/bz2/', $source)) {
         echo 'Importing database table: ' . $name . "\n";
-        exec("bunzip2 < '$source' | /usr/bin/mysql -u'{$_ENV['DB_USERNAME']}' -h '{$_ENV['DB_HOST']}' -p'{$_ENV['DB_PASSWORD']}' '{$_ENV['DB_DATABASE']}'", $output, $retval);
+        exec("bunzip2 < '$source' | /usr/bin/mysql -u'{$user}' -h '{$host}' -p'{$pass}' '{$db}'", $output, $retval);
     } else {
         if (preg_match('/source/', $source)) {
             echo 'Importing database ' . $name . "\n";
         }
-        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $source);
+        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $source);
         exec($sql, $output, $retval);
     }
     if ($retval != 0) {

@@ -20,7 +20,7 @@ $i = 0;
 $directories = [ROOT_DIR];
 global $site_config;
 
-$included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
+$included_extentions = $site_config['coders_log_allowed_ext'];
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {

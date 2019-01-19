@@ -202,7 +202,7 @@ function stdfoot($stdfoot = false)
 
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
-    $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0;
+    $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
