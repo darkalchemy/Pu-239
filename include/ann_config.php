@@ -1,21 +1,18 @@
 <?php
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once CONFIG_DIR . 'site.php';
+require_once INCL_DIR . 'common_functions.php';
+require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
 
-$dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
+$dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
-
-require_once INCL_DIR . 'common_functions.php';
-require_once INCL_DIR . 'config.php';
-require_once INCL_DIR . 'site_config.php';
 
 $cache = new DarkAlchemy\Pu239\Cache();
 $fluent = new DarkAlchemy\Pu239\Database();
 $session = new DarkAlchemy\Pu239\Session();
-
 require_once INCL_DIR . 'site_settings.php';
-
 $ip_stuffs = new DarkAlchemy\Pu239\IP();
 $peer_stuffs = new DarkAlchemy\Pu239\Peer();
 $event_stuffs = new DarkAlchemy\Pu239\Event();
@@ -28,16 +25,3 @@ require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'database.php';
 
 $agent = $_SERVER['HTTP_USER_AGENT'];
-
-$hnr_settings = $cache->get('hnr_settings_');
-if ($hnr_settings === false || is_null($hnr_settings)) {
-    $sql = $fluent->from('hit_and_run_settings');
-
-    foreach ($sql as $res) {
-        $hnr_settings['hnr_config'][$res['name']] = $res['value'];
-    }
-
-    $cache->set('hnr_settings_', $hnr_settings, 86400);
-}
-
-$site_config = array_merge($site_config, $hnr_settings);
