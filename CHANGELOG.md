@@ -1,4 +1,5 @@
 ### 19 Jan, 2019
+NOTES: you will need to 'mv include/config.php config/site.php'  
 moved: several define'd items to site_config  
 update: flush entire cache or specific cache from cli bin/clear_cache.php  
 update: remove auto download admin/backup.php  
