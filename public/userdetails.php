@@ -87,7 +87,7 @@ if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $lastseen = get_date($user['last_access'], '', 0, 1);
 }
 
-if ((($user['class'] == UC_MAX || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && $CURUSER['class'] == UC_MAX) && isset($_GET['invincible'])) {
+if ((($user['class'] >= $site_config['staff_allowed']['enable_invincible'] || $user['id'] == $CURUSER['id']) || ($user['class'] < $site_config['staff_allowed']['enable_invincible']) && $CURUSER['class'] >= $site_config['staff_allowed']['enable_invincible']) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] === 'yes') {
         $HTMLOUT .= invincible($id, true, true);
@@ -251,7 +251,7 @@ $HTMLOUT .= "
         $sharemark_link
         $shitty_link
         $friend_links
-        $edit_profile" . ($CURUSER['class'] === UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
+        $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
         <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
         <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
         <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
@@ -277,7 +277,7 @@ $HTMLOUT .= "
                 <li class='top20'><a href='#general'>{$lang['userdetails_general']}</a></li>
                 <li class='top20'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
                 <li class='top20'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
     $HTMLOUT .= "
                 <li class='top20'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
@@ -477,7 +477,7 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS && $B
 $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask'>";
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
@@ -539,7 +539,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                       <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . htmlsafechars($user['website']) . "'></td>
                 </tr>";
 
-    if ($CURUSER['class'] === UC_MAX) {
+    if ($CURUSER['class'] >= UC_MAX) {
         $donor = $user['donor'] === 'yes';
         $HTMLOUT .= "
                 <tr>
@@ -595,7 +595,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}'>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='3' class='has-text-left'><select name='class' class='w-100'>";
-        if ($CURUSER['class'] === UC_MAX) {
+        if ($CURUSER['class'] >= UC_MAX) {
             $maxclass = UC_MAX;
         } elseif ($CURUSER['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
@@ -862,8 +862,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] == UC_MAX) {
-        //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='checkbox' name='highspeed' value='yes'" . (($user['opt1'] & user_options::HIGHSPEED) ? " checked" : "") . ">Yes</td></tr>";
+    if ($CURUSER['class'] >= UC_MAX) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     }
 

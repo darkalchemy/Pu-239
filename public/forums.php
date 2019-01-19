@@ -396,12 +396,12 @@ switch ($action) {
         break;
 
     case 'forum':
-        $query = $fluent->from('over_forums AS of')
+        $query = $fluent->from('over_forums AS ovf')
             ->select(null)
-            ->select('of.id AS over_forum_id')
-            ->select('of.name AS over_forum_name')
-            ->select('of.description AS over_forum_description')
-            ->select('of.min_class_view AS over_forum_min_class_view')
+            ->select('ovf.id AS over_forum_id')
+            ->select('ovf.name AS over_forum_name')
+            ->select('ovf.description AS over_forum_description')
+            ->select('ovf.min_class_view AS over_forum_min_class_view')
             ->select('f.id AS real_forum_id')
             ->select('f.name')
             ->select('f.description')
@@ -409,10 +409,10 @@ switch ($action) {
             ->select('f.topic_count')
             ->select('f.forum_id')
             ->select('f.parent_forum')
-            ->innerJoin('forums AS f ON f.forum_id = of.id')
-            ->where('of.min_class_view <= ?', $CURUSER['class'])
+            ->innerJoin('forums AS f ON f.forum_id = ovf.id')
+            ->where('ovf.min_class_view <= ?', $CURUSER['class'])
             ->where('f.min_class_read <= ?', $CURUSER['class'])
-            ->orderBy('of.sort, f.sort')
+            ->orderBy('ovf.sort, f.sort')
             ->fetchAll();
 
         foreach ($query as $forum) {

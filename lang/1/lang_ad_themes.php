@@ -36,7 +36,7 @@ $lang = [
     //Guide/Explains
     'themes_guide' => '
 <ul class="left20">
-    <li class="bullet">Make a folder in the Templates dir: ' .  TEMPLATE_DIR . ' and create files:
+    <li class="bullet">Make a folder in the Templates dir: ' . TEMPLATE_DIR . ' and create files:
         <ul>
             <li class="bullet">default.css</li>
             <li class="bullet">custom.css</li>
@@ -51,7 +51,7 @@ $lang = [
             <li class="bullet">StatusBar</li>
         </ul>
     </li><br>
-    <li class="bullet">Make a folder in the AJAX Chat dir: ' .  AJAX_CHAT_PATH . 'css/ and copy these files from ' .  AJAX_CHAT_PATH . 'css/1/:
+    <li class="bullet">Make a folder in the AJAX Chat dir: ' . AJAX_CHAT_PATH . 'css/ and copy these files from ' . AJAX_CHAT_PATH . 'css/1/:
         <ul>
             <li class="bullet">global.css</li>
             <li class="bullet">fonts.css</li>

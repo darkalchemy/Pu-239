@@ -120,7 +120,7 @@ $site_config['connectable_check'] = true;
 $site_config['signup_timeout'] = 86400 * 3;
 $site_config['sub_max_size'] = 500 * 1024;
 $site_config['minvotes'] = 1;
-$site_config['max_dead_torrent_time'] = 6;
+$site_config['max_dead_torrent_time'] = 6 * 3600;
 $site_config['language'] = 1;
 // Site Bot
 $site_config['chatBotID'] = 2;
@@ -331,4 +331,14 @@ $site_config['tmdb_movie_region'] = 'US';
 // if this array is empty, then all images will be retrieved from fanart.tv, else only specific languages
 $site_config['image_lang'] = [
     'en',
+];
+
+$site_config['staff_allowed'] = [
+    'fast_delete' => UC_MAX,
+    'fast_edit' => UC_STAFF,
+    'staff_picks' => UC_MAX,
+    'show_edited_by' => UC_MAX,
+    'torrents_disable_comments' => UC_MAX,
+    'enable_invincible' => UC_MAX,
+    'lock_topics' => UC_MAX,
 ];

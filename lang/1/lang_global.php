@@ -17,6 +17,7 @@ $lang = [
     'gl_tv_today' => 'TV Airing',
     'gl_tvmaze_today' => 'TV Airing',
     'gl_admin' => 'AdminCP',
+    'gl_users' => 'User',
     'gl_userblocks' => 'User Blocks',
     'gl_profile' => 'Profile',
     'gl_logout' => 'Logout',

@@ -34,7 +34,7 @@ if ($remove > 0) {
         unset($_GET);
     }
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     $first = trim($_POST['first']);
     $last = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
@@ -84,7 +84,7 @@ $HTMLOUT = "
                 <h2>{$lang['text_current']}</h2>
             </div>";
 if ($count == 0) {
-    $HTMLOUT .= main_div("<p><b>{$lang['text_nothing']}</b></p>");
+    $HTMLOUT .= main_div("<div class='padding20'>{$lang['text_nothing']}</div>");
 } else {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -117,7 +117,7 @@ if ($count == 0) {
 }
 $HTMLOUT .= '
         </div>';
-if ($CURUSER['class'] == UC_MAX) {
+if ($CURUSER['class'] >= UC_MAX) {
     $HTMLOUT .= "
         <div class='top20 bg-00 round10'>
             <div class='padding20'>

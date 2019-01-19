@@ -48,7 +48,7 @@ if (mysqli_num_rows($res) === 0) {
 }
 $HTMLOUT .= main_table($body, $heading);
 
-if ($CURUSER['class'] === UC_MAX) {
+if ($CURUSER['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <h2>{$lang['achlst_add_an_ach_lst']}</h2>
     <form method='post' action='achievementlist.php'>" . main_table("

@@ -151,7 +151,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
 }
 
-if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
+if ($CURUSER['class'] >= $site_config['staff_allowed']['torrents_disable_comments']) {
     if ($row['allow_comments'] === 'yes') {
         $messc = '&#160;Comments are allowed for everyone on this torrent!';
     } else {

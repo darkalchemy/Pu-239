@@ -67,7 +67,7 @@ ksort($staff_tools);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
-    if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] == UC_MAX) {
+    if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
         $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
@@ -106,7 +106,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'add' && $CURUSER['class'] == UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] == UC_MAX)) {
+    } elseif (($action === 'add' && $CURUSER['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX)) {
         $names = [
             'page_name',
             'file_name',
@@ -361,7 +361,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <th><div class='has-text-centered'>Show in Navbar</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_added_by']}</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_date_added']}</div></th>";
-            if ($CURUSER['class'] == UC_MAX) {
+            if ($CURUSER['class'] >= UC_MAX) {
                 $header .= "
                         <th><div class='has-text-centered'>{$lang['spanel_links']}</div></th>";
             }
@@ -402,7 +402,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                                 <span>" . get_date($arr['added'], 'DATE', 0, 1) . '</span>
                             </div>
                         </td>';
-                if ($CURUSER['class'] == UC_MAX) {
+                if ($CURUSER['class'] >= UC_MAX) {
                     $body .= "
                         <td>
                             <div class='level-center'>

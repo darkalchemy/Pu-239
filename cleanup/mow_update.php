@@ -49,6 +49,6 @@ function mow_update($data)
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Movie of the Week Cleanup: Completed." . $text);
+        write_log('Movie of the Week Cleanup: Completed.' . $text);
     }
 }

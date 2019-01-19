@@ -335,12 +335,12 @@ switch ($action) {
     </td>
     </tr>
     <tr>
-    <td class="rowhead"><b>' . $lang["upload_bitbucket"] . '</b></td>
+    <td class="rowhead"><b>' . $lang['upload_bitbucket'] . '</b></td>
     <td class="has-text-centered">
         <div id="droppable" class="droppable bg-03">
-            <span id="comment">' . $lang["bitbucket_dragndrop"] . '</span>
+            <span id="comment">' . $lang['bitbucket_dragndrop'] . '</span>
             <div id="loader" class="is-hidden">
-                <img src="' . $site_config["pic_baseurl"] . 'forums/updating.svg" alt="Loading...">
+                <img src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading...">
             </div>
         </div>
         <div class="output-wrapper output"></div>

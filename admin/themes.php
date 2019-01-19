@@ -49,11 +49,11 @@ if (isset($_GET['act'])) {
                 <td>{$lang['themes_min_class']}</td>
                 <td>
                     <select name='class' class='w-100'>";
-            for ($i = 0; $i <= UC_MAX; ++$i) {
-                $body .= "
-                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
-            }
+        for ($i = 0; $i <= UC_MAX; ++$i) {
             $body .= "
+                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+        }
+        $body .= "
                     </select>
                 </td>
             </tr>
@@ -108,11 +108,11 @@ if (isset($_GET['act'])) {
                     <td>{$lang['themes_min_class']}</td>
                     <td>
                         <select name='class'>";
-                for ($i = 0; $i <= UC_MAX; ++$i) {
-                    $body .= "
+        for ($i = 0; $i <= UC_MAX; ++$i) {
+            $body .= "
                             <option value='$i'>" . get_user_class_name($i) . '</option>';
-                }
-                $body .= "
+        }
+        $body .= "
                         </select>
                     </td>
                 </tr>
@@ -288,8 +288,8 @@ if (!isset($_GET['act'])) {
             <td>$template[id]</td>
             <td>" . htmlsafechars($template['uri'], ENT_QUOTES) . '</td>
             <td>' . htmlsafechars($template['name'], ENT_QUOTES) . '</td>
-            <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b></td>
-            <td>" . get_user_class_name($template['min_class_to_view']) . "</td>
+            <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b></td>
+            <td>' . get_user_class_name($template['min_class_to_view']) . "</td>
             <td>
                 <span>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_edit']}'>

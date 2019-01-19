@@ -73,9 +73,9 @@ switch (true) {
                             <div class='bottom20'>
                                 Nobody has won, because nobody has played yet :)
                             </div>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : "
-                            <span>Nothing Configured ATM Sorry.</span>") . "
-                        </div>");
+                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : '
+                            <span>Nothing Configured ATM Sorry.</span>') . '
+                        </div>');
         }
 
         echo stdhead('Lottery') . wrapper($html) . stdfoot();

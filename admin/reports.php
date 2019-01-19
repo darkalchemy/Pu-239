@@ -78,7 +78,7 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
 
 $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['reports_active']}</h1>";
 
-if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
+if ((isset($_GET['delete'])) && ($CURUSER['class'] >= UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
     $session->set('is-success', $lang['reports_deleted']);
@@ -103,7 +103,7 @@ if ($count == '0') {
             <th>{$lang['reports_type']}</th>
             <th>{$lang['reports_reason']}</th>
             <th>{$lang['reports_dealt']}</th>
-            <th>{$lang['reports_deal']}</th>" . ($CURUSER['class'] == UC_MAX ? "
+            <th>{$lang['reports_deal']}</th>" . ($CURUSER['class'] >= UC_MAX ? "
             <th>{$lang['reports_delete']}</th>" : '') . '
         </tr>';
 
@@ -200,7 +200,7 @@ if ($count == '0') {
             <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . '</td>
             <td>' . htmlsafechars($arr_info['reason']) . "</td>
             <td>{$dealtwith} {$delt_link}</td>
-            <td>{$checkbox}</td>" . ($CURUSER['class'] == UC_MAX ? "
+            <td>{$checkbox}</td>" . ($CURUSER['class'] >= UC_MAX ? "
             <td><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
                     <span class='has-text-danger'>{$lang['reports_delete']}</span>
                 </a>
@@ -209,10 +209,10 @@ if ($count == '0') {
         if ($arr_info['how_delt_with']) {
             $HTMLOUT .= "
         <tr>
-            <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
-            <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>
         </tr>';
         }
     }

@@ -6,9 +6,9 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/2/chat_trans_2769ea27.css";
+            return "{$site_config['baseurl']}/css/2/chat_trans_f80a181e.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/2/chat_uranium_2769ea27.css";
+            return "{$site_config['baseurl']}/css/2/chat_uranium_f80a181e.css";
         case 'css':
             return "{$site_config['baseurl']}/css/2/css_c89acc04.css";
         case 'vendor_css':
@@ -74,7 +74,7 @@ function get_file_name($file)
         case 'acp_js':
             return "{$site_config['baseurl']}/js/2/acp_22d19c79.js";
         case 'dragndrop_js':
-            return "{$site_config['baseurl']}/js/2/dragndrop_18338f2d.js";
+            return "{$site_config['baseurl']}/js/2/dragndrop_5647940a.js";
         case 'details_js':
             return "{$site_config['baseurl']}/js/2/details_fa26612c.js";
         case 'forums_js':

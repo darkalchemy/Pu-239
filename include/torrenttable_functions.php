@@ -426,25 +426,25 @@ function torrenttable($res, $variant = 'index')
         if ($CURUSER['class'] >= UC_STAFF) {
             $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
 
-            $edit_link = "
+            $edit_link = ($CURUSER['class'] >= $site_config['staff_allowed']['fast_edit'] ? "
                 <span>
                     <a href='{$site_config['baseurl']}/edit.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
                         <i class='icon-edit icon' aria-hidden='true'></i>
                     </a>
-                </span>";
-            $del_link = ($CURUSER['class'] === UC_MAX ? "
+                </span>" : '');
+            $del_link = ($CURUSER['class'] >= $site_config['staff_allowed']['fast_delete'] ? "
                 <span>
                     <a href='{$site_config['baseurl']}/fastdelete.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
                         <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
             $staff_pick = '';
-            if ($CURUSER['class'] === UC_MAX && $row['staff_picks'] > 0) {
+            if ($CURUSER['class'] >= $site_config['staff_allowed']['staff_picks'] && $row['staff_picks'] > 0) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
                     <i class='icon-minus icon has-text-danger' aria-hidden='true'></i>
                 </span>";
-            } elseif ($CURUSER['class'] === UC_MAX) {
+            } elseif ($CURUSER['class'] >= $site_config['staff_allowed']['staff_picks']) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
                     <i class='icon-plus icon has-text-success' aria-hidden='true'></i>

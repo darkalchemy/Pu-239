@@ -58,7 +58,7 @@ $icon = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($
 $show_bbcode = isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode'];
 $bb_code = $show_bbcode;
 $edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
-$show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] == UC_MAX && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
+$show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] >= $site_config['staff_allowed']['show_edited_by'] && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
 if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
@@ -86,7 +86,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
 	</tr>
 	</table><br>' . $arr_post['post_history'];
     //=== let the sysop have the power to not show they edited their own post if they wish...
-    if ($show_edited_by === 'no' && $CURUSER['class'] == UC_MAX) {
+    if ($show_edited_by === 'no' && $CURUSER['class'] >= UC_MAX) {
         $edit_reason = htmlsafechars($arr_post['edit_reason']);
         $edited_by = htmlsafechars($arr_post['edited_by']);
         $edit_date = (int) $arr_post['edit_date'];

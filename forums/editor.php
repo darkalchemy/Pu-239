@@ -11,7 +11,7 @@ $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? "
 		<td>
 			<input type='text' maxlength='60' name='edit_reason' value='" . trim(strip_tags($edit_reason)) . "' class='w-100' placeholder='Optional'>
 		</td>
-	</tr>" . ($CURUSER['class'] === UC_MAX || $CURUSER['id'] === $arr_post['id'] ? "
+	</tr>" . ($CURUSER['class'] >= $site_config['staff_allowed']['show_edited_by'] || $CURUSER['id'] === $arr_post['id'] ? "
 	<tr>
 		<td>Edited By</td>
 		<td>

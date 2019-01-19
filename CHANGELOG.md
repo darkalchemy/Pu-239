@@ -1,3 +1,9 @@
+### 19 Jan, 2019
+update: navbar  
+add: php-cs-fixer [does not yet work with PHP 7.3]  
+fix: forums.php  
+update: move many hard coded min staff class to site_config  
+
 ### 18 Jan, 2019
 fix: bitbucket  
 fix: delete templates cache on update/add/delete  

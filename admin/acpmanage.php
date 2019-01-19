@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
         $cache->update_row('user' . $id, [
             'status' => 'confirmed',
         ], $site_config['expires']['user_cache']);
-    } elseif ($do == 'delete' && ($CURUSER['class'] === UC_MAX)) {
+    } elseif ($do == 'delete' && ($CURUSER['class'] >= UC_MAX)) {
         foreach ($ids as $id) {
             $username = account_delete($id);
             if ($username) {
@@ -103,7 +103,7 @@ if (mysqli_num_rows($res) != 0) {
             <td>{$enabled}</td>
         </tr>";
     }
-    if (($CURUSER['class'] === UC_MAX)) {
+    if (($CURUSER['class'] >= UC_MAX)) {
         $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
     } else {
         $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
