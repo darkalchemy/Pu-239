@@ -402,7 +402,7 @@ switch ($staff_action) {
 
     case 'move_to_recycle_bin':
         $status = ($_POST['status'] === 'yes' ? 'recycled' : 'ok');
-        sql_query('UPDATE topics SET status = "' . sqlesc($status_ . '" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET status = "' . sqlesc($status) . '" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
