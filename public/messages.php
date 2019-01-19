@@ -137,7 +137,7 @@ isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved'])
 isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
 isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
 
-$mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : ($mailbox === PM_DELETED ? $lang['pm_deleted'] : $lang['pm_drafts'])));
+$mailbox_name = ($mailbox === $site_config['pm_inbox'] ? $lang['pm_inbox'] : ($mailbox === $site_config['pm_sentbox'] ? $lang['pm_sentbox'] : ($mailbox === $site_config['pm_deleted'] ? $lang['pm_deleted'] : $lang['pm_drafts'])));
 switch ($action) {
     case 'view_mailbox':
         require_once PM_DIR . 'view_mailbox.php';

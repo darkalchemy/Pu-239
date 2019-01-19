@@ -9,8 +9,8 @@ global $CURUSER, $site_config, $cache, $message_stuffs;
 
 $HTMLOUT = $debugout = '';
 
-if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play blackjack!');
+if ($CURUSER['class'] < $site_config['min_to_play']) {
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['min_to_play']] . ' to play blackjack!');
 }
 
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
@@ -216,7 +216,7 @@ if ($game) {
             } else {
                 $ratio = 0;
             }
-            if (RATIO_FREE === false && $ratio < $required_ratio) {
+            if (!$site_config['ratio_free'] && $ratio < $required_ratio) {
                 stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_your_ratio_is_lower_req']} " . $required_ratio . '%.');
             }
             $sql = 'SELECT * FROM blackjack WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND game_id = ' . sqlesc($blackjack['gameid']);

@@ -28,90 +28,10 @@ if (!function_exists('sys_getloadavg')) {
 }
 
 date_default_timezone_set('UTC');
+require_once CACHE_DIR . 'class_config.php';
+require_once CONFIG_DIR . 'expires.php';
+require_once CONFIG_DIR . 'hnr.php';
 
-// Cache Expires
-// 0 = permanent (doesn't expires);
-// 1 - 2591999 (30 days) = relative time, in seconds from now;
-// 2592000 and over = absolute time, unix timestamp
-$site_config['expires']['remember_me'] = 14; // number of days to keep long term cookie
-$site_config['expires']['latestuser'] = 3600; // 3600 = 1 hour
-$site_config['expires']['motw'] = 3600; // 3600 = 1 hour
-$site_config['expires']['peers_'] = 1800; // 1800 = 15 minutes
-$site_config['expires']['unread'] = 86400; // 86400 = 1 day
-$site_config['expires']['alerts'] = 86400; // 86400 = 1 day
-$site_config['expires']['searchcloud'] = 86400; // 86400 = 1 day
-$site_config['expires']['user_cache'] = 2591999; // 30 days
-$site_config['expires']['curuser'] = 2591999; // 30 days
-$site_config['expires']['u_status'] = 2591999; // 30 days
-$site_config['expires']['user_status'] = 2591999; // 30 days
-$site_config['expires']['announcement'] = 600; // 600 = 10 min
-$site_config['expires']['forum_posts'] = 86400;
-$site_config['expires']['torrent_comments'] = 900; // 900 = 15 min
-$site_config['expires']['latestposts'] = 300; // 300 = 5 min
-$site_config['expires']['top5_torrents'] = 3600; // 3600 = 60 min
-$site_config['expires']['last5_torrents'] = 3600; // 3600 = 60 min
-$site_config['expires']['scroll_torrents'] = 3600; // 3600 = 60 min
-$site_config['expires']['slider_torrents'] = 3600; // 3600 = 60 min
-$site_config['expires']['torrent_details'] = 2591999; // 30 days
-$site_config['expires']['torrent_details_text'] = 2591999; // 30 days
-$site_config['expires']['insertJumpTo'] = 2591999; // 30 days
-$site_config['expires']['get_all_boxes'] = 2591999; // 30 days
-$site_config['expires']['iphistory'] = 900; // 900 = 15 min
-$site_config['expires']['newpoll'] = 0; // 900 = 15 min
-$site_config['expires']['genrelist'] = 2591999; // 30 days
-$site_config['expires']['poll_data'] = 900; // 300 = 5 min
-$site_config['expires']['torrent_data'] = 900; // 900 = 15 min
-$site_config['expires']['user_flag'] = 86400 * 28; // 900 = 15 min
-$site_config['expires']['shit_list'] = 900; // 900 = 15 min
-$site_config['expires']['port_data'] = 900; // 900 = 15 min
-$site_config['expires']['port_data_xbt'] = 900; // 900 = 15 min
-$site_config['expires']['user_peers'] = 900; // 900 = 15 min
-$site_config['expires']['user_friends'] = 900; // 900 = 15 min
-$site_config['expires']['user_hash'] = 900; // 900 = 15 min
-$site_config['expires']['user_blocks'] = 900; // 900 = 15 min
-$site_config['expires']['hnr_data'] = 300; // 300 = 5 min
-$site_config['expires']['snatch_data'] = 300; // 300 = 5 min
-$site_config['expires']['user_snatches_data'] = 300; // 300 = 5 min
-$site_config['expires']['staff_snatches_data'] = 300; // 300 = 5 min
-$site_config['expires']['user_snatches_complete'] = 300; // 300 = 5 min
-$site_config['expires']['completed_torrents'] = 300; // 300 = 5 min
-$site_config['expires']['activeusers'] = 300; // 300 = 5 min
-$site_config['expires']['forum_users'] = 60; // 60 = 1 minutes
-$site_config['expires']['section_view'] = 60; // 60 = 1 minutes
-$site_config['expires']['child_boards'] = 900; // 60 = 1 minutes
-$site_config['expires']['sv_child_boards'] = 900; // 60 = 1 minutes
-$site_config['expires']['forum_insertJumpTo'] = 3600; // = 1 hour
-$site_config['expires']['last_post'] = 86400; // 86400 = 1 day
-$site_config['expires']['sv_last_post'] = 86400; // 86400 = 1 day
-$site_config['expires']['last_read_post'] = 86400; // 86400 = 1 day
-$site_config['expires']['sv_last_read_post'] = 86400; // 86400 = 1 day
-$site_config['expires']['last24'] = 300; // 300 = 5 min
-$site_config['expires']['latestcomments'] = 300; // 300 = 5 min
-$site_config['expires']['activeircusers'] = 300; // 300 = 5 min
-$site_config['expires']['birthdayusers'] = 43200; // 43200 = 12 hours
-$site_config['expires']['news_users'] = 3600; // 3600 = 1 hours
-$site_config['expires']['user_invitees'] = 900; // 900 = 15 min
-$site_config['expires']['ip_data'] = 900; // 900 = 15 min
-$site_config['expires']['latesttorrents'] = 86400; // 86400 = 1 day
-$site_config['expires']['invited_by'] = 900; // 900 = 15 min
-$site_config['expires']['user_torrents'] = 900; // 900 = 15 min
-$site_config['expires']['user_seedleech'] = 900; // 900 = 15 min
-$site_config['expires']['radio'] = 0; // 0 = infinite
-$site_config['expires']['total_funds'] = 3600; // 3600 = 1 hour
-$site_config['expires']['latest_news'] = 3600; // 3600 = 1 hour
-$site_config['expires']['site_stats'] = 300; // 300 = 5 min
-$site_config['expires']['share_ratio'] = 900; // 900 = 15 min
-$site_config['expires']['share_ratio_xbt'] = 900; // 900 = 15 min
-$site_config['expires']['checked_by'] = 0; // 0 = infinite
-$site_config['expires']['sanity'] = 0; // 0 = infinite
-$site_config['expires']['movieofweek'] = 604800; // 604800 = 1 week
-$site_config['expires']['browse_where'] = 60; // 60 = 60 seconds
-$site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
-$site_config['expires']['ismoddin'] = 0; // 0 = infinite
-$site_config['expires']['book_info'] = 604800; // 604800 = 1 week
-$site_config['expires']['browser_user_agent'] = 86400;
-$site_config['expires']['staff_picks'] = 86400;
-$site_config['expires']['contribution'] = 3 * 86400;
 // Tracker configs
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
@@ -379,3 +299,20 @@ $site_config['seedbonus_on'] = true;
 $site_config['site_online'] = true;
 $site_config['totalneeded'] = 100;
 $site_config['use_12_hour'] = true;
+
+$site_config['sql_debug'] = true;
+$site_config['ip_logging'] = false;
+$site_config['require_connectable'] = true;
+$site_config['socket'] = false;
+$site_config['nfo_size'] = 65536;
+
+$site_config['pm_deleted'] = 0;
+$site_config['pm_inbox'] = 1;
+$site_config['pm_sentbox'] = -1;
+$site_config['pm_drafts'] = -2;
+
+$site_config['crazy_hour'] = false;
+$site_config['happy_hour'] = false;
+$site_config['ratio_free'] = false;
+
+$site_config['min_to_play'] = UC_POWER_USER;

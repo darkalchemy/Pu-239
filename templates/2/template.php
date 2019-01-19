@@ -202,7 +202,7 @@ function stdfoot($stdfoot = false)
 
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
-    $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
+    $debug = $site_config['sql_debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
@@ -218,7 +218,7 @@ function stdfoot($stdfoot = false)
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'redis' && extension_loaded('redis')) {
             $client = new \Redis();
-            if (!SOCKET) {
+            if (!$site_config['socket']) {
                 $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             } else {
                 $client->connect($_ENV['REDIS_SOCKET']);
@@ -233,14 +233,14 @@ function stdfoot($stdfoot = false)
         } elseif ($_ENV['CACHE_DRIVER'] === 'memcached' && extension_loaded('memcached')) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
-                if (!SOCKET) {
+                if (!$site_config['socket']) {
                     $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
                 } else {
                     $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
                 }
             }
             $stats = $client->getStats();
-            if (!SOCKET) {
+            if (!$site_config['socket']) {
                 $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
             } else {
                 $stats = !empty($stats["{$_ENV['MEMCACHED_SOCKET']}:0"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:0"] : (!empty($stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"] : null);

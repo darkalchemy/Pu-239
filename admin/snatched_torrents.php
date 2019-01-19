@@ -18,6 +18,7 @@ $HTMLOUT = '';
 function get_snatched_color($st)
 {
     global $lang;
+
     $secs = $st;
     $mins = floor($st / 60);
     $hours = floor($mins / 60);
@@ -114,7 +115,7 @@ if (mysqli_num_rows($result) != 0) {
         <th class='w-1'>{$lang['ad_snatched_torrents_hnr']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_marked']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_announced']}</th>
-        <th class='w-1'>{$lang['ad_snatched_torrents_upload']}</th>" . (RATIO_FREE ? '' : "
+        <th class='w-1'>{$lang['ad_snatched_torrents_upload']}</th>" . ($site_config['ratio_free'] ? '' : "
         <th class='w-1'>{$lang['ad_snatched_torrents_download']}</th>") . "
         <th class='w-1'>{$lang['ad_snatched_torrents_seedtime']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_leechtime']}</th>
@@ -135,7 +136,7 @@ if (mysqli_num_rows($result) != 0) {
         <td><b>' . get_date($row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
         <td><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
         <td><b>' . htmlsafechars($row['timesann']) . '</b></td>
-        <td><b>' . mksize($row['uploaded']) . '</b></td>' . (RATIO_FREE ? '' : '
+        <td><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['ratio_free'] ? '' : '
         <td><b>' . mksize($row['downloaded']) . '</b></td>') . '
         <td><b>' . get_snatched_color($row['seedtime']) . '</b></td>
         <td><b>' . mkprettytime($row['leechtime']) . '</b></td>

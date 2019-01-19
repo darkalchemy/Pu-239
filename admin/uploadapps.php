@@ -95,7 +95,7 @@ if ($action === 'app' || $action === 'show') {
                 <td>{$membertime}</td>
                 <td>" . get_user_class_name($arr['class']) . '</td>
                 <td>' . mksize($arr['uploaded']) . '</td>
-                <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . "</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
                 <td>{$status}</td>
                 <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int) $arr['id'] . '"></td>
             </tr>';
@@ -138,14 +138,14 @@ if ($action === 'viewapp') {
         <tr>
             <td>{$lang['uploadapps_upped1']}</td>
             <td>" . htmlsafechars(mksize($arr['uploaded'])) . '</td>
-        </tr>' . (RATIO_FREE ? '' : "
+        </tr>' . ($site_config['ratio_free'] ? '' : "
         <tr>
             <td>{$lang['uploadapps_downed']}</td>
             <td>" . htmlsafechars(mksize($arr['downloaded'])) . '</td>
         </tr>') . "
         <tr>
             <td>{$lang['uploadapps_ratio1']}</td>
-            <td>" . member_ratio($arr['uploaded'], RATIO_FREE ? 0 : $arr['downloaded']) . "</td>
+            <td>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? 0 : $arr['downloaded']) . "</td>
         </tr>
         <tr>
             <td>{$lang['uploadapps_connectable']}</td>

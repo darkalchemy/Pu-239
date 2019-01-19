@@ -228,7 +228,7 @@ if (mysqli_num_rows($res) == 0) {
         if (!$title) {
             $title = get_user_class_name($friend['class']);
         }
-        $ratio = member_ratio($friend['uploaded'], RATIO_FREE ? '0' : $friend['downloaded']);
+        $ratio = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
         $delete = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link = " <span class='button is-small'><a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";

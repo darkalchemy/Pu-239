@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
-global $session, $CURUSER;
+global $session, $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
@@ -41,8 +41,8 @@ $header = "
             <th class='has-text-left'>{$lang['snatches_username']}</th>
             <th class='has-text-right'>{$lang['snatches_uploaded']}</th>
             <th class='has-text-right'>{$lang['snatches_upspeed']}</th>
-            " . (RATIO_FREE ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
-            ' . (RATIO_FREE ? '' : "<th class='has-text-right'>{$lang['snatches_downspeed']}</th>") . "
+            " . ($site_config['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
+            ' . ($site_config['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downspeed']}</th>") . "
             <th class='has-text-right'>{$lang['snatches_ratio']}</th>
             <th class='has-text-right'>{$lang['snatches_completed']}</th>
             <th class='has-text-right'>{$lang['snatches_seedtime']}</th>
@@ -71,8 +71,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
             <td class='has-text-left'>{$username}</td>
             <td class='has-text-right'>" . mksize($arr['uploaded']) . "</td>
             <td class='has-text-right'>" . htmlsafechars($upspeed) . '/s</td>
-            ' . (RATIO_FREE ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '
-            ' . (RATIO_FREE ? '' : "<td class='has-text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
+            ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '
+            ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
             <td class='has-text-right'>" . htmlsafechars($ratio) . "</td>
             <td class='has-text-right'>" . htmlsafechars($completed) . "</td>
             <td class='has-text-right'>" . mkprettytime($arr['seedtime']) . "</td>

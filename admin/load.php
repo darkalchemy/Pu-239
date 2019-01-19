@@ -90,15 +90,15 @@ function loadavg($return_all = false)
         if ($return_all) {
             $active = explode('/', $loadavg[3]);
             $res = [
-                'last1' => $loadavg[INTERVAL_1_MIN],
-                'last5' => $loadavg[INTERVAL_5_MIN],
-                'last15' => $loadavg[INTERVAL_15_MIN],
+                'last1' => $loadavg[0],
+                'last5' => $loadavg[1],
+                'last15' => $loadavg[2],
                 'tasks' => $active[0],
                 'processes' => $active[1],
                 'lastpid' => $loadavg[4],
             ];
         } else {
-            $res = $loadavg[DEFAULT_AVG];
+            $res = $loadavg[2];
         }
     }
 

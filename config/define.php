@@ -2,8 +2,8 @@
 
 define('TIME_NOW', time());
 
-define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('ROOT_DIR', dirname(INCL_DIR, 1) . DIRECTORY_SEPARATOR);
+define('ROOT_DIR', dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
+define('INCL_DIR', ROOT_DIR . 'include' . DIRECTORY_SEPARATOR);
 define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
 define('BIN_DIR', ROOT_DIR . 'bin' . DIRECTORY_SEPARATOR);
 define('SCRIPTS_DIR', ROOT_DIR . 'scripts' . DIRECTORY_SEPARATOR);
@@ -17,6 +17,7 @@ define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
 define('CLEAN_DIR', ROOT_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
 define('PUBLIC_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR);
+define('CONFIG_DIR', ROOT_DIR . 'config' . DIRECTORY_SEPARATOR);
 define('IMAGES_DIR', PUBLIC_DIR . 'images' . DIRECTORY_SEPARATOR);
 define('PROXY_IMAGES_DIR', IMAGES_DIR . 'proxy' . DIRECTORY_SEPARATOR);
 define('VENDOR_DIR', ROOT_DIR . 'vendor' . DIRECTORY_SEPARATOR);
@@ -31,26 +32,3 @@ define('USER_TORRENTS_DIR', TORRENTS_DIR . 'users' . DIRECTORY_SEPARATOR);
 define('BACKUPS_DIR', ROOT_DIR . 'backups' . DIRECTORY_SEPARATOR);
 define('AJAX_CHAT_PATH', ROOT_DIR . 'chat' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
-
-define('SQL_DEBUG', true);
-define('IP_LOGGING', false);
-define('REQUIRE_CONNECTABLE', true);
-define('SOCKET', false);
-define('NFO_SIZE', 65536);
-
-define('PM_DELETED', 0);
-define('PM_INBOX', 1);
-define('PM_SENTBOX', -1);
-define('PM_DRAFTS', -2);
-
-define('INTERVAL_1_MIN', 0);
-define('INTERVAL_5_MIN', 1);
-define('INTERVAL_15_MIN', 2);
-define('DEFAULT_AVG', INTERVAL_15_MIN);
-
-define('CRAZY_HOUR', false);
-define('HAPPY_HOUR', false);
-define('RATIO_FREE', false);
-
-require_once CACHE_DIR . 'class_config.php';
-define('MIN_TO_PLAY', UC_POWER_USER);

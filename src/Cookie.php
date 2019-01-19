@@ -9,10 +9,10 @@ use Blocktrail\CryptoJSAES\CryptoJSAES;
  */
 class Cookie
 {
-    private $config;
-    private $cache;
+    protected $config;
+    protected $cache;
     protected $key;
-    private $fluent;
+    protected $fluent;
 
     /**
      * Cookie constructor.

@@ -71,8 +71,8 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
-    if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > NFO_SIZE) {
-        $session->set('is-warning', 'NFO is too big! Max ' . number_format(NFO_SIZE) . ' bytes!');
+    if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > $site_config['nfo_size']) {
+        $session->set('is-warning', 'NFO is too big! Max ' . number_format($site_config['nfo_size']) . ' bytes!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }

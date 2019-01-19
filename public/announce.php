@@ -11,7 +11,7 @@ if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ||
 $dt = TIME_NOW;
 $info_hash = $peer_id = $compact = $no_peer_id = '';
 $torrent_updateset = $snatch_updateset = $user_updateset = [];
-$ratio_free = RATIO_FREE;
+$ratio_free = $site_config['ratio_free'];
 extract($_GET);
 unset($_GET);
 if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
@@ -111,10 +111,10 @@ if (portblacklisted($port)) {
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
-if ($connectable === 'no' && REQUIRE_CONNECTABLE) {
+if ($connectable === 'no' && $site_config('require_connectable']) {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
-if (IP_LOGGING) {
+if ($site_config['ip_logging']) {
     $no_log_ip = ($user['perms'] & bt_options::PERMS_NO_IP);
     if ($no_log_ip) {
         $connectable = 'no';
@@ -138,7 +138,7 @@ if (IP_LOGGING) {
 $torrent_modifier = get_slots($torrent['id'], $userid);
 $torrent['freeslot'] = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
-$happy_multiplier = HAPPY_HOUR ? get_happy($torrent['id'], $userid) : 0;
+$happy_multiplier = $site_config['happy_hour'] ? get_happy($torrent['id'], $userid) : 0;
 
 if ($compact != 1) {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
@@ -298,7 +298,7 @@ if (!isset($self)) {
             $downthis = $downthis / 2;
         }
 
-        $crazyhour_on = (CRAZY_HOUR ? crazyhour_announce() : false);
+        $crazyhour_on = ($site_config['crazy_hour'] ? crazyhour_announce() : false);
         if ($downthis > 0) {
             if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
                 $user_updateset['downloaded'] = $user['downloaded'] + ($ratio_free ? 0 : $downthis);

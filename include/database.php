@@ -1,6 +1,8 @@
 <?php
 
-if (!SOCKET) {
+global $site_config;
+
+if (!$site_config['socket']) {
     $pdo = new PDO("{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
 } else {
     $pdo = new PDO("{$_ENV['DB_CONNECTION']}:unix_socket={$_ENV['DB_SOCKET']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
@@ -23,7 +25,7 @@ $ignore = [
     PUBLIC_DIR . 'ajax/trivia_answers.php',
 ];
 
-if (SQL_DEBUG && !in_array($_SERVER['PHP_SELF'], $ignore)) {
+if ($site_config['sql_debug'] && !in_array($_SERVER['PHP_SELF'], $ignore)) {
     $fluent->debug = function ($BaseQuery) {
         global $pdo, $query_stat;
 

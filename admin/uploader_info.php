@@ -23,7 +23,7 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
 $i = 0;
 while ($arr = mysqli_fetch_assoc($res)) {
     ++$i;
-    $ratio = member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']);
+    $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
     $HTMLOUT .= '<tr>
 <td>' . $i . '</td>
 <td>' . (int) $arr['how_many_torrents'] . '</td>

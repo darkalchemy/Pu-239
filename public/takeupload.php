@@ -101,7 +101,7 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    if ($nfofile['size'] > NFO_SIZE) {
+    if ($nfofile['size'] > $site_config['nfo_size']) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();

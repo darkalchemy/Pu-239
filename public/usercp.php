@@ -353,7 +353,7 @@ if ($action === 'avatar') {
                                                 <a href='{$site_config['baseurl']}/topmoods.php'><div>Top Member Mood's</div></a>
                                             </td>
                                         </tr>";
-    if ($CURUSER['class'] >= MIN_TO_PLAY) {
+    if ($CURUSER['class'] >= $site_config['min_to_play']) {
         $HTMLOUT .= "
                                         <tr>
                                             <td>

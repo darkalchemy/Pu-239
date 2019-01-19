@@ -19,6 +19,7 @@ use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 class Cache extends TransactionalStore
 {
     protected $cache;
+    protected $config;
 
     /**
      * Cache constructor.
@@ -28,6 +29,10 @@ class Cache extends TransactionalStore
      */
     public function __construct()
     {
+        global $site_config;
+
+        $this->config = $site_config;
+
         switch ($_ENV['CACHE_DRIVER']) {
             case 'couchbase':
                 $cluster = new \CouchbaseCluster('couchbase://localhost');
@@ -48,7 +53,7 @@ class Cache extends TransactionalStore
                 if (extension_loaded('memcached')) {
                     $client = new \Memcached();
                     if (!count($client->getServerList())) {
-                        if (!SOCKET) {
+                        if (!$this->config['socket']) {
                             $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
                         } else {
                             $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
@@ -64,7 +69,7 @@ class Cache extends TransactionalStore
             case 'redis':
                 if (extension_loaded('redis')) {
                     $client = new \Redis();
-                    if (!SOCKET) {
+                    if (!$this->config['socket']) {
                         $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
                     } else {
                         $client->connect($_ENV['REDIS_SOCKET']);
@@ -114,7 +119,7 @@ class Cache extends TransactionalStore
     {
         if ($_ENV['CACHE_DRIVER'] === 'redis') {
             $client = new \Redis();
-            if (!SOCKET) {
+            if (!$this->config['socket']) {
                 $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             } else {
                 $client->connect($_ENV['REDIS_SOCKET']);

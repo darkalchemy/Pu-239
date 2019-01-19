@@ -8,8 +8,8 @@ $lang = load_language('global');
 
 global $site_config, $CURUSER;
 
-if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play in the arcade!');
+if ($CURUSER['class'] < $site_config['min_to_play']) {
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['min_to_play']] . ' to play in the arcade!');
 }
 
 $HTMLOUT = "

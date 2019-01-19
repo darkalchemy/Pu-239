@@ -31,7 +31,7 @@ define('MAX_ITEM_DUMP', 50);
 //$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
 
 if (extension_loaded('memcached')) {
-    if (!SOCKET) {
+    if (!$site_config['socket']) {
         $MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}";
     } else {
         $MEMCACHE_SERVERS[] = "unix://{$_ENV['MEMCACHED_SOCKET']}";

@@ -18,7 +18,7 @@ function happyhour_update($data)
     $happyHour = strtotime($happy['time']);
     $curDate = TIME_NOW;
     $happyEnd = $happyHour + 3600;
-    if ($happy['status'] == 0 && HAPPY_HOUR === true) {
+    if ($happy['status'] == 0 && $site_config['happy_hour']) {
         if ($data['clean_log']) {
             write_log('Happy hour was @ ' . get_date($happyHour, 'LONG', 1, 0) . ' and Catid ' . $happy['catid']['id'] . ' ');
         }

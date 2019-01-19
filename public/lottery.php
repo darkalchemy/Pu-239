@@ -20,7 +20,7 @@ $valid = [
         'file' => $lottery_root . 'viewtickets.php',
     ],
     'tickets' => [
-        'minclass' => MIN_TO_PLAY,
+        'minclass' => $site_config['min_to_play'],
         'file' => $lottery_root . 'tickets.php',
     ],
 ];

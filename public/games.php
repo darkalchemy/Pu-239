@@ -8,8 +8,8 @@ global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 $HTMLOUT = '';
-if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play these games!');
+if ($CURUSER['class'] < $site_config['min_to_play']) {
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['min_to_play']] . ' to play these games!');
 }
 
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {

@@ -19,7 +19,7 @@ if ($mailbox > 1) {
 }
 //==== get count from PM boxs & get image & % box full
 //=== get stuff for the pager
-$res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === PM_INBOX ? 'receiver = ' . sqlesc($CURUSER['id']) . ' AND location = 1' : ($mailbox === PM_SENTBOX ? 'sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($CURUSER['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
+$res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === $site_config['pm_inbox'] ? 'receiver = ' . sqlesc($CURUSER['id']) . ' AND location = 1' : ($mailbox === $site_config['sent_inbox'] ? 'sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($CURUSER['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
 $messages = $arr_count[0];
 //==== get count from PM boxs & get image & % box full
@@ -35,10 +35,10 @@ $LIMIT = $pager['limit'];
 
 //=== get message info we need to display then all nice and tidy like \o/
 $res = sql_query('SELECT m.id AS message_id, m.poster, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
-                            LEFT JOIN users AS u ON u.id=m.' . ($mailbox === PM_SENTBOX ? 'receiver' : 'sender') . '
+                            LEFT JOIN users AS u ON u.id=m.' . ($mailbox === $site_config['pm_sentbox'] ? 'receiver' : 'sender') . '
                             LEFT JOIN friends AS f ON f.userid = ' . $CURUSER['id'] . ' AND f.friendid = m.sender
                             LEFT JOIN blocks AS b ON b.userid = ' . $CURUSER['id'] . ' AND b.blockid = m.sender
-                            WHERE ' . ($mailbox === PM_INBOX ? 'receiver = ' . $CURUSER['id'] . ' AND location = 1' : ($mailbox === PM_SENTBOX ? 'sender = ' . $CURUSER['id'] . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . $CURUSER['id'] . ' AND location = ' . sqlesc($mailbox))) . '
+                            WHERE ' . ($mailbox === $site_config['pm_inbox'] ? 'receiver = ' . $CURUSER['id'] . ' AND location = 1' : ($mailbox === $site_config['pm_sentbox'] ? 'sender = ' . $CURUSER['id'] . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . $CURUSER['id'] . ' AND location = ' . sqlesc($mailbox))) . '
                             ORDER BY ' . $order_by . (isset($_GET['ASC']) ? ' ASC ' : ' DESC ') . $LIMIT) or sqlerr(__FILE__, __LINE__);
 //=== Start Page
 //echo stdhead(htmlsafechars($mailbox_name));
@@ -69,7 +69,7 @@ $HTMLOUT .= "
                             </a>
                         </th>
                         <th class='has-text-centered'>
-                            <a href='{$site_config['baseurl']}/messages.php?action=view_mailbox&amp;box={$mailbox}" . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
+                            <a href='{$site_config['baseurl']}/messages.php?action=view_mailbox&amp;box={$mailbox}" . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === $site_config['pm_sentbox'] ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
                             </a>
                         </th>
                         <th class='has-text-centered'>
@@ -89,7 +89,7 @@ if (mysqli_num_rows($res) === 0) {
         </tr>";
 } else {
     while ($row = mysqli_fetch_assoc($res)) {
-        if ($mailbox === PM_DRAFTS || $row['id'] == 0 || $row['sender'] == $CURUSER['id'] || $row['poster'] == $CURUSER['id']) {
+        if ($mailbox === $site_config['pm_drafts'] || $row['id'] == 0 || $row['sender'] == $CURUSER['id'] || $row['poster'] == $CURUSER['id']) {
             $friends = '';
         } else {
             if ($row['friend'] > 0) {

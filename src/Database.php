@@ -11,10 +11,14 @@ use PDO;
 class Database extends Query
 {
     protected $pdo;
+    protected $config;
 
     public function __construct()
     {
-        if (!SOCKET) {
+        global $site_config;
+
+        $this->config = $site_config;
+        if (!$this->config['socket']) {
             $this->pdo = new PDO("{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
         } else {
             $this->pdo = new PDO("{$_ENV['DB_CONNECTION']}:unix_socket={$_ENV['DB_SOCKET']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");

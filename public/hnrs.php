@@ -68,11 +68,11 @@ if (isset($_GET['torrentid'])) {
     $torrent_number = (int) $_GET['torrentid'];
     $res_snatched = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_snatched = mysqli_fetch_assoc($res_snatched);
-    $downloaded = RATIO_FREE ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
+    $downloaded = $site_config['ratio_free'] ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
     if ($arr_snatched['name'] == '') {
         stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
-    $download_amt = RATIO_FREE ? ', downloaded = ".sqlesc($downloaded)."' : '';
+    $download_amt = $site_config['ratio_free'] ? ', downloaded = ".sqlesc($downloaded)."' : '';
     sql_query("UPDATE snatched SET hit_and_run = 0, mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -125,7 +125,7 @@ if (mysqli_num_rows($r) > 0) {
             <th class='has-text-centered'>{$lang['userdetails_s']}</th>
             <th class='has-text-centered'>{$lang['userdetails_l']}</th>
             <th class='has-text-centered'>{$lang['userdetails_ul']}</th>
-            " . (RATIO_FREE ? "
+            " . ($site_config['ratio_free'] ? "
             <th class='has-text-centered'>{$lang['userdetails_size']}</th>" : "
             <th class='has-text-centered'>{$lang['userdetails_dl']}</th>") . "
             <th class='has-text-centered'>{$lang['userdetails_ratio']}</th>
@@ -216,7 +216,7 @@ if (mysqli_num_rows($r) > 0) {
             $buyout = '';
         }
 
-        $a_downloaded = RATIO_FREE ? (int) $a['size'] : (int) $a['downloaded'];
+        $a_downloaded = $site_config['ratio_free'] ? (int) $a['size'] : (int) $a['downloaded'];
         $bytes = $a_downloaded - (int) $a['uploaded'];
         if ($diff >= $bytes) {
             $buybytes = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "&amp;bytes=$bytes'><span class='has-text-success' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
@@ -237,7 +237,7 @@ if (mysqli_num_rows($r) > 0) {
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
             <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
-            ' . (RATIO_FREE ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
+            ' . ($site_config['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
             <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date($a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date($a['last_action'], 'DATE') . "</td>

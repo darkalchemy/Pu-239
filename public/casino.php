@@ -6,8 +6,8 @@ require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $site_config, $cache, $message_stuffs, $mysqli;
 
 check_user_status();
-if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play in the casino!');
+if ($CURUSER['class'] < $site_config['min_to_play']) {
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['min_to_play']] . ' to play in the casino!');
 }
 
 $lang = array_merge(load_language('global'), load_language('casino'));
@@ -96,7 +96,7 @@ if ($CURUSER['downloaded'] > 0) {
 } else {
     $ratio = 0;
 }
-if (RATIO_FREE === false && $ratio < $required_ratio) {
+if (!$site_config['ratio_free'] && $ratio < $required_ratio) {
     stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}");
 }
 $global_down2 = sql_query('SELECT (sum(win)-sum(lost)) AS globaldown,(sum(deposit)) AS globaldeposit, sum(win) AS win, sum(lost) AS lost FROM casino') or sqlerr(__FILE__, __LINE__);

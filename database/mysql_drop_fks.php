@@ -3,8 +3,6 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
 $dotenv->load();
-define('SQL_DEBUG', false);
-define('SOCKET', true);
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'database.php';
 
 $fluent = new DarkAlchemy\Pu239\Database();

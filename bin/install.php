@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'define.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once INCL_DIR . 'password_functions.php';
 
 if (empty($argv[1])) {
@@ -42,7 +42,7 @@ $vars['cookie_prefix'] = $vars['sessionName'];
 $vars['cookie_domain'] = $vars['announce_http'];
 $vars['domain'] = $vars['announce_http'];
 
-$file = INCL_DIR . 'config.php.example';
+$file = CONFIG_DIR . 'site.php.example';
 $config = file_get_contents($file);
 $keys = array_map('regex', array_keys($vars));
 $values = array_values($vars);
@@ -51,8 +51,8 @@ for ($i = 1; $i <= 4; ++$i) {
     $config = preg_replace("/#pass{$i}/", bin2hex(random_bytes(16)), $config);
 }
 
-if (!file_put_contents(INCL_DIR . 'config.php', $config)) {
-    die(INCL_DIR . 'config.php file could not be saved');
+if (!file_put_contents(CONFIG_DIR . 'site.php', $config)) {
+    die(CONFIG_DIR . 'site.php file could not be saved');
 }
 $file = ROOT_DIR . '.env.example';
 $config = file_get_contents($file);
@@ -61,10 +61,10 @@ if (!file_put_contents(ROOT_DIR . '.env', $config)) {
     die(ROOT_DIR . '.env file could not be saved');
 }
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'config.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once CONFIG_DIR . 'site.php';
 require_once INCL_DIR . 'common_functions.php';
-require_once INCL_DIR . 'site_config.php';
+require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
 require_once INCL_DIR . 'password_functions.php';
 

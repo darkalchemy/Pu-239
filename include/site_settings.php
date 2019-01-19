@@ -2,18 +2,7 @@
 
 global $site_config, $cache, $fluent, $CURUSER, $session;
 
-$hnr_settings = $cache->get('hnr_settings_');
-if ($hnr_settings === false || is_null($hnr_settings)) {
-    $sql = $fluent->from('hit_and_run_settings');
-
-    foreach ($sql as $res) {
-        $hnr_settings['hnr_config'][$res['name']] = $res['value'];
-    }
-
-    $cache->set('hnr_settings_', $hnr_settings, 86400);
-}
-
-$staff_settings = $cache->get('staff_settings_');
+$staff_settings = $cache->get('is_staff_');
 if ($staff_settings === false || is_null($staff_settings)) {
     $sql = $fluent->from('users')
         ->select(null)
@@ -26,7 +15,7 @@ if ($staff_settings === false || is_null($staff_settings)) {
     }
 
     if (!empty($staff_settings['is_staff'])) {
-        $cache->set('staff_settings_', $staff_settings, 86400);
+        $cache->set('is_staff_', $staff_settings, 86400);
     } else {
         $staff_settings['is_staff'] = 0;
     }
@@ -47,7 +36,7 @@ if ($staff_forums === false || is_null($staff_forums)) {
 
     $cache->set('staff_forums_', $staff_forums, 86400);
 }
-$site_config = array_merge($site_config, $hnr_settings, $staff_settings, $staff_forums);
+$site_config = array_merge($site_config, $staff_settings, $staff_forums);
 $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') : $site_config['use_12_hour'];
 $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
 $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';

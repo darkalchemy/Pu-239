@@ -24,7 +24,7 @@ if (isset($_POST['delete'])) {
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
             stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
         }
-        if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == PM_DELETED) {
+        if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == $site_config['pm_deleted']) {
             $result = $message_stuffs->delete($id, $CURUSER['id']);
         } elseif ($message['receiver'] == $CURUSER['id']) {
             $set = [
@@ -33,7 +33,7 @@ if (isset($_POST['delete'])) {
             ];
             $result = $message_stuffs->update($set, $id);
             $cache->decrement('inbox_' . $CURUSER['id']);
-        } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != PM_DELETED) {
+        } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != $site_config['pm_deleted']) {
             $set = [
                 'saved' => 'no',
             ];

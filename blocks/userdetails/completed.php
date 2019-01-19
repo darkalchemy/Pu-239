@@ -13,7 +13,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             <th>{$lang['userdetails_s']}</th>
             <th>{$lang['userdetails_l']}</th>
             <th>{$lang['userdetails_ul']}</th>
-            " . (RATIO_FREE ? '' : "
+            " . ($site_config['ratio_free'] ? '' : "
             <th>{$lang['userdetails_dl']}</th>") . "
             <th>{$lang['userdetails_ratio']}</th>
             <th>{$lang['userdetails_wcompleted']}</th>
@@ -114,7 +114,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>' . (int) $a['seeders'] . '</td>
                 <td>' . (int) $a['leechers'] . '</td>
                 <td>' . mksize($a['uploaded']) . '</td>
-                ' . (RATIO_FREE ? '' : '
+                ' . ($site_config['ratio_free'] ? '' : '
                 <td>' . mksize($a['downloaded']) . '</td>') . '
                 <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
                 <td>' . get_date($a['complete_date'], 'DATE') . '</td>

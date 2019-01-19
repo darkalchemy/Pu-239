@@ -2,7 +2,7 @@
 
 global $site_config;
 
-if (CRAZY_HOUR) {
+if ($site_config['crazy_hour']) {
     /**
      * @return string
      *

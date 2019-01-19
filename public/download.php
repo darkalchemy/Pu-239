@@ -44,7 +44,7 @@ if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
 }
 
-if (happyHour('check') && happyCheck('checkid', $row['category']) && HAPPY_HOUR === true) {
+if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($user['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);

@@ -339,7 +339,7 @@ function maketable(array $torrents)
             <th>{$lang['userdetails_size']}</th>
             <th>{$lang['userdetails_se']}</th>
             <th>{$lang['userdetails_le']}</th>
-            <th>{$lang['userdetails_upl']}</th>" . (RATIO_FREE ? '' : "
+            <th>{$lang['userdetails_upl']}</th>" . ($site_config['ratio_free'] ? '' : "
             <th>{$lang['userdetails_downl']}</th>") . "
             <th>{$lang['userdetails_ratio']}</th>
         </tr>";
@@ -370,7 +370,7 @@ function maketable(array $torrents)
             <td class='has-text-centered'>$size</td>
             <td class='has-text-centered'>$seeders</td>
             <td class='has-text-centered'>$leechers</td>
-            <td class='has-text-centered'>$uploaded</td>" . (RATIO_FREE ? '' : "
+            <td class='has-text-centered'>$uploaded</td>" . ($site_config['ratio_free'] ? '' : "
             <td class='has-text-centered'>$downloaded</td>") . "
             <td class='has-text-centered'>$ratio</td>
         </tr>";
@@ -395,8 +395,8 @@ function snatchtable(array $torrents)
             <th>{$lang['userdetails_s_cat']}</th>
             <th>{$lang['userdetails_s_torr']}</th>
             <th>{$lang['userdetails_s_up']}</th>
-            <th>{$lang['userdetails_rate']}</th>" . (RATIO_FREE ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . (RATIO_FREE ? '' : "
+            <th>{$lang['userdetails_rate']}</th>" . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_downl']}</th>") . ($site_config['ratio_free'] ? '' : "
             <th>{$lang['userdetails_rate']}</th>") . "
             <th>{$lang['userdetails_ratio']}</th>
             <th>{$lang['userdetails_activity']}</th>
@@ -418,8 +418,8 @@ function snatchtable(array $torrents)
                 <a href='{$site_config['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
             </td>
             <td>' . mksize($torrent['uploaded']) . "</td>
-            <td>$upspeed/s</td>" . (RATIO_FREE ? '' : '
-            <td>' . mksize($torrent['downloaded']) . '</td>') . (RATIO_FREE ? '' : "
+            <td>$upspeed/s</td>" . ($site_config['ratio_free'] ? '' : '
+            <td>' . mksize($torrent['downloaded']) . '</td>') . ($site_config['ratio_free'] ? '' : "
             <td>$downspeed/s</td>") . "
             <td>$ratio</td>
             <td>" . mkprettytime($torrent['seedtime'] + $torrent['leechtime']) . '</td>
@@ -449,7 +449,7 @@ function staff_snatchtable(array $torrents, int $userid)
                         <th>{$lang['userdetails_s_cat']}</th>
                         <th>{$lang['userdetails_s_torr']}</th>
                         <th>{$lang['userdetails_s_sl']}</th>
-                        <th>{$lang['userdetails_s_up']}" . (RATIO_FREE ? '' : "{$lang['userdetails_s_down']}") . "</th>
+                        <th>{$lang['userdetails_s_up']}" . ($site_config['ratio_free'] ? '' : "{$lang['userdetails_s_down']}") . "</th>
                         <th>{$lang['userdetails_s_tsize']}</th>
                         <th>{$lang['userdetails_ratio']}</th>
                         <th>{$lang['userdetails_client']}</th>
@@ -512,10 +512,10 @@ function staff_snatchtable(array $torrents, int $userid)
                 </td>
                 <td>{$lang['userdetails_s_seed']}" . (int) $arr['seeders'] . "<br>{$lang['userdetails_s_leech']}" . (int) $arr['leechers'] . "</td>
                 <td>
-                    <span class='has-text-lightgreen'>{$lang['userdetails_s_upld']}<br><b>" . mksize($arr['uploaded']) . '</b></span>' . (RATIO_FREE ? '' : "<br>
+                    <span class='has-text-lightgreen'>{$lang['userdetails_s_upld']}<br><b>" . mksize($arr['uploaded']) . '</b></span>' . ($site_config['ratio_free'] ? '' : "<br>
                     <span class='has-text-orange'>{$lang['userdetails_s_dld']}<br><b>" . mksize($arr['downloaded']) . '</b></span>') . '
                 </td>
-                <td>' . mksize($arr['size']) . '' . (RATIO_FREE ? '' : "<br>{$lang['userdetails_s_diff']}<br>
+                <td>' . mksize($arr['size']) . '' . ($site_config['ratio_free'] ? '' : "<br>{$lang['userdetails_s_diff']}<br>
                     <span class='has-text-orange'><b>" . mksize($arr['size'] - $arr['downloaded']) . '</b></span>') . '
                 </td>
                 <td>' . $ratio . '<br>' . ($arr['seeder'] === 'yes' ? "

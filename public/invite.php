@@ -50,14 +50,14 @@ if ($do === 'view_page') {
                     <tr>
                         <th>{$lang['invites_username']}</th>
                         <th>{$lang['invites_uploaded']}</th>
-                        " . (RATIO_FREE ? '' : "
+                        " . ($site_config['ratio_free'] ? '' : "
                         <th>{$lang['invites_downloaded']}</th>") . "
                         <th>{$lang['invites_ratio']}</th>
                         <th>{$lang['invites_status']}</th>
                         <th>{$lang['invites_confirm']}</th>
                     </tr>";
         foreach ($rows as $row) {
-            $ratio = member_ratio($row['uploaded'], RATIO_FREE ? '0' : $row['downloaded']);
+            $ratio = member_ratio($row['uploaded'], $site_config['ratio_free'] ? '0' : $row['downloaded']);
             if ($row['status'] === 'confirmed') {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
@@ -66,7 +66,7 @@ if ($do === 'view_page') {
             $body .= "
                     <tr>
                         <td class='level-left'>" . format_username($row['id']) . '</td>
-                        <td>' . mksize($row['uploaded']) . '</td>' . (RATIO_FREE ? '' : '
+                        <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : '
                         <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
                         <td>{$status}</td>";

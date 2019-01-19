@@ -7,8 +7,8 @@ check_user_status();
 global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play blackjack!');
+if ($CURUSER['class'] < $site_config['min_to_play']) {
+    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][$site_config['min_to_play']] . ' to play blackjack!');
     exit;
 }
 /**

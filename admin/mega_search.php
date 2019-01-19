@@ -93,14 +93,14 @@ if (!empty($user_names)) {
                         <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
-                    ' . (RATIO_FREE ? '
+                    ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
                     <span class="has-text-danger tooltipper" title="' . $lang['mega_downloaded'] . '">
                         <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
-                <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                 <td>' . make_nice_address($arr['ip']) . '</td>
                 <td>' . $inviter . '</td>
             </tr>';
@@ -184,14 +184,14 @@ if (isset($_POST['msg_to_analyze'])) {
                         <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
-                    ' . (RATIO_FREE ? '
+                    ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
                     <span class="tooltipper has-text-danger" title="' . $lang['mega_downloaded'] . '">
                         <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
-                <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                 <td>' . make_nice_address($arr['ip']) . '</td>
                 <td>' . $inviter . '</td>
             </tr>';
@@ -318,10 +318,10 @@ if (isset($_POST['msg_to_analyze'])) {
                     <td>
                         <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> 
                         <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
-                        ' . (RATIO_FREE ? '' : '<br>
+                        ' . ($site_config['ratio_free'] ? '' : '<br>
                         <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                         <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
+                    <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                     <td>' . make_nice_address($arr['ip']) . '<br>
                     </td>
                     <td>' . $inviter . '</td>
@@ -385,10 +385,10 @@ if (isset($_POST['invite_code'])) {
                     <td>' . get_date($user['last_access'], '') . '</td>
                     <td>' . get_date($user['added'], '') . '</td>
                     <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
-                    ' . (RATIO_FREE ? '' : '<br>
+                    ' . ($site_config['ratio_free'] ? '' : '<br>
                     <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($user['uploaded'], RATIO_FREE ? '0' : $user['downloaded']) . '</td>
+                    <td>' . member_ratio($user['uploaded'], $site_config['ratio_free'] ? '0' : $user['downloaded']) . '</td>
                     <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading), 'top20');
@@ -434,10 +434,10 @@ if (isset($_POST['invite_code'])) {
                     <td>' . get_date($user_invited['last_access'], '') . '</td>
                     <td>' . get_date($user_invited['added'], '') . '</td>
                     <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
-                    ' . (RATIO_FREE ? '' : '<br>
+                    ' . ($site_config['ratio_free'] ? '' : '<br>
                     <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($user_invited['uploaded'], RATIO_FREE ? '0' : $user_invited['downloaded']) . '</td>
+                    <td>' . member_ratio($user_invited['uploaded'], $site_config['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
                     <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading));

@@ -2,10 +2,10 @@
 
 $starttime = microtime(true);
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'config.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once CONFIG_DIR . 'site.php';
 require_once INCL_DIR . 'common_functions.php';
-require_once INCL_DIR . 'site_config.php';
+require_once CONFIG_DIR . 'main.php';
 require_once VENDOR_DIR . 'autoload.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
@@ -34,7 +34,7 @@ $pollvoter_stuffs = new DarkAlchemy\Pu239\PollVoter();
 $happylog_stuffs = new DarkAlchemy\Pu239\HappyLog();
 $snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
 
-if (SOCKET) {
+if ($site_config['socket']) {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
 } else {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
@@ -163,14 +163,14 @@ function validip($ip)
  */
 function getip($login = false)
 {
-    global $CURUSER;
+    global $CURUSER, $site_config;
 
     $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
     if (!validip($ip)) {
         $ip = '127.0.0.1';
     }
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
-    if ($login || (IP_LOGGING && !$no_log_ip)) {
+    if ($login || ($site_config['ip_logging'] && !$no_log_ip)) {
         return $ip;
     }
 
@@ -934,9 +934,9 @@ function sqlerr($file = '', $line = '')
 
     $the_error = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
-    if (SQL_DEBUG == 0) {
+    if (!$site_config['sql_debug']) {
         die();
-    } elseif ($site_config['sql_error_log'] && SQL_DEBUG == 1) {
+    } elseif ($site_config['sql_error_log'] && $site_config['sql_debug']) {
         $_error_string = "\n===================================================";
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
@@ -1274,10 +1274,10 @@ function flood_limit($table)
  */
 function sql_query($query, $log = true)
 {
-    global $query_stat, $queries, $mysqli;
-    dbconn();
+    global $query_stat, $queries, $mysqli, $site_config;
 
-    if (SQL_DEBUG) {
+    dbconn();
+    if ($site_config['sql_debug']) {
         $query_start_time = microtime(true);
 
         mysqli_set_charset($mysqli, 'utf8');
