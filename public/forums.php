@@ -38,7 +38,7 @@ $config_arr = $fluent->from('forum_config')
     ->where('id = ?', $config_id)
     ->fetch();
 
-$delete_for_real = ($config_arr['delete_for_real'] == 1 ? 1 : 0);
+$delete_for_real = $config_arr['delete_for_real'] > 0 ? true : false;
 $min_delete_view_class = htmlsafechars($config_arr['min_delete_view_class']);
 $readpost_expiry = ((int) $config_arr['readpost_expiry'] * 86400);
 $min_upload_class = htmlsafechars($config_arr['min_upload_class']);
@@ -452,10 +452,10 @@ switch ($action) {
                 $forum_description = htmlsafechars($arr_forums['description'], ENT_QUOTES);
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
-
                 $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
                     $query = $fluent->from('topics AS t')
+                        ->select(null)
                         ->select('t.id AS topic_id')
                         ->select('t.topic_name')
                         ->select('t.last_post')

@@ -39,6 +39,42 @@ function forum_update($data)
             ->execute();
         ++$i;
     }
+    $topics = $fluent->from('topics')
+        ->select(null)
+        ->select('id')
+        ->fetchAll();
+
+    foreach ($topics as $topic) {
+        $last_post = $fluent->from('posts')
+            ->select(null)
+            ->select('id')
+            ->select('added')
+            ->where('topic_id = ?', $topic['id'])
+            ->orderBy('added DESC')
+            ->limit(1)
+            ->fetch();
+
+        if (empty($last_post['id'])) {
+            $fluent->deleteFrom('topics')
+                ->where('id = ?', $topic['id'])
+                ->execute();
+        } else {
+            $count = $fluent->from('posts')
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('topic_id = ?', $topic['id'])
+                ->fetch('count');
+            $set = [
+                'last_post' => $last_post['id'],
+                'post_count' => $count,
+            ];
+            $fluent->update('topics')
+                ->set($set)
+                ->where('id = ?', $topic['id'])
+                ->execute();
+        }
+    }
+
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";

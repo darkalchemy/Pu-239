@@ -60,9 +60,8 @@ switch ($staff_action) {
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
-                //=== if you want the un-delete option (only admin and up can see "deleted" posts)
-                if ($delete_for_real < 1) {
-                    sql_query('UPDATE posts SET status = \'deleted\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                if ($delete_for_real) {
+                    sql_query('UPDATE posts SET status = "deleted" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 } else {
                     //=== if you just want the damned things deleted
                     sql_query('DELETE FROM posts WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -70,7 +69,11 @@ switch ($staff_action) {
                     //=== re-do that last post thing ;)
                     $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $arr = mysqli_fetch_assoc($res);
-                    sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                    if (empty($arr['id'])) {
+                        sql_query('DELETE FROM topics WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                    } else {
+                        sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                    }
                     sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
                 }
             } else {
@@ -91,7 +94,7 @@ switch ($staff_action) {
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
-                sql_query('UPDATE posts SET status = \'ok\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE posts SET status = "ok" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_trash']);
@@ -249,7 +252,7 @@ switch ($staff_action) {
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
-                sql_query('UPDATE posts SET status = \'recycled\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE posts SET status = "recycled" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_sent_to_recy']);
@@ -269,7 +272,7 @@ switch ($staff_action) {
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
-                sql_query('UPDATE posts SET status = \'ok\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE posts SET status = "ok" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_recy']);
@@ -312,7 +315,7 @@ switch ($staff_action) {
         if (!is_valid_id($topic_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
-        sql_query('UPDATE topics SET sticky = \'' . ('yes' === $_POST['pinned'] ? 'yes' : 'no') . '\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET sticky = "' . ('yes' === $_POST['pinned'] ? 'yes' : 'no') . '" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
@@ -323,7 +326,7 @@ switch ($staff_action) {
         if (!is_valid_id($topic_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
-        sql_query('UPDATE topics SET locked = \'' . ('yes' === $_POST['locked'] ? 'yes' : 'no') . '\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET locked = "' . ('yes' === $_POST['locked'] ? 'yes' : 'no') . '" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
@@ -399,7 +402,7 @@ switch ($staff_action) {
 
     case 'move_to_recycle_bin':
         $status = ($_POST['status'] === 'yes' ? 'recycled' : 'ok');
-        sql_query('UPDATE topics SET status = \'' . $status . '\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET status = "' . sqlesc($status_ . '" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
@@ -420,9 +423,8 @@ switch ($staff_action) {
 	<input type="submit" name="button" class="top20 button is-small" value="' . $lang['fe_del_topic'] . '" >
 	</form>');
         }
-        //=== if you want the un-delete option (only admin and up can see "deleted" posts)
-        if ($delete_for_real < 1) {
-            sql_query('UPDATE topics SET status = \'deleted\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        if ($delete_for_real) {
+            sql_query('UPDATE topics SET status = "deleted" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             header('Location: forums.php');
             die();
         } else {
@@ -450,7 +452,7 @@ switch ($staff_action) {
     //=== un_delete_topic
 
     case 'un_delete_topic':
-        sql_query('UPDATE topics SET status = \'ok\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET status = "ok" WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         //=== get post count of topic
         $res_count = sql_query('SELECT post_count FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_count = mysqli_fetch_row($res_count);
