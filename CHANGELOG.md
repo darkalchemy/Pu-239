@@ -1,6 +1,7 @@
 ### 19 Jan, 2019
 NOTES: you will need to 'mv include/config.php config/site.php'  
 NOTES: php-cs-fixer is working with PHP7.3
+update: hide php/mysql version from non staff  
 update: database files  
 fix: delete posts  
 fix: announce.php  

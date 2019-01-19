@@ -1,6 +1,7 @@
 <?php
 
 $lang = [
+    'gl_database' => 'Database',
     'gl_staffbugs' => 'Bugs',
     'gl_messages' => 'Messages',
     'gl_search_users' => 'Search Users',
@@ -171,7 +172,7 @@ $lang = [
     'gl_stdfoot_querys_mstat6' => ' Memory: ',
     'gl_stdfoot_querys_page' => 'PHP generated ',
     'gl_stdfoot_querys_seconds' => 'seconds.',
-    'gl_stdfoot_querys_server' => 'Database was hit ',
+    'gl_stdfoot_querys_server' => 'was hit ',
     'gl_stdfoot_querys_time' => 'time',
     'gl_stdfoot_querys_hits' => 'hits were handled.',
     'gl_stdfoot_uptime' => 'Uptime:',

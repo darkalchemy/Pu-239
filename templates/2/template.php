@@ -198,7 +198,7 @@ function stdhead($title = '', $stdhead = null)
 function stdfoot($stdfoot = false)
 {
     require_once INCL_DIR . 'function_bbcode.php';
-    global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
+    global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session, $pdo;
 
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
@@ -300,17 +300,32 @@ function stdfoot($stdfoot = false)
             </div>';
 
     if ($CURUSER) {
+        $sql_version = 'Database';
+        $php_version = '';
+        if ($CURUSER['class'] >= UC_STAFF) {
+            $sql_version = $cache->get('sql_version_');
+            if ($sql_version === false || is_null($sql_version)) {
+                $query = $pdo->query('SELECT VERSION() AS ver');
+                $sql_version = $query->fetch(PDO::FETCH_COLUMN);
+                if (!preg_match('/MariaDB/i', $sql_version)) {
+                    $sql_version = 'MySQL ' . $sql_version;
+                }
+                $cache->set('sql_version_', $sql_version, 3600);
+            }
+            $php_version = show_php_version();
+        }
+
         $htmlfoot .= "
             <div class='site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
+                        <p class='is-marginless'>{$sql_version} {$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
                         ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>$uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} " . show_php_version() . "</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} {$php_version}</p>
                     </div>
                 </div>
             </div>
