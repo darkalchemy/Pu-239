@@ -1,5 +1,6 @@
 ### 19 Jan, 2019
 NOTES: you will need to 'mv include/config.php config/site.php'  
+NOTES: php-cs-fixer is working with PHP7.3
 fix: install.php  
 rename: many include'd files  
 fix: ann_config.php  
@@ -10,7 +11,7 @@ update: use bzip2 admin/backup.php
 remove: site_config table  
 update: move site settings to 1 file  
 update: navbar  
-add: php-cs-fixer [does not yet work with PHP 7.3]  
+add: php-cs-fixer  
 fix: forums.php  
 update: move many hard coded min staff class to site_config  
 
