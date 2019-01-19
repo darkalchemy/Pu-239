@@ -312,7 +312,7 @@ function write_class_files($template)
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes, $config_classes);
     write_css($data, $template);
-    file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);
+    file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
 }
 
 function clear_image_cache()

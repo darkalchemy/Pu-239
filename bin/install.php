@@ -37,6 +37,8 @@ if (count($argv) === 13) {
     ];
 }
 
+$vars['mysql_pass'] = quotemeta($vars['mysql_pass']);
+$vars['admin_pass'] = quotemeta($vars['admin_pass']);
 $vars['sessionName'] = str_replace(' ', '_', $vars['site_name']);
 $vars['cookie_prefix'] = $vars['sessionName'];
 $vars['cookie_domain'] = $vars['announce_http'];
@@ -74,7 +76,7 @@ $dotenv->load();
 $host = $_ENV['DB_HOST'];
 $user = $_ENV['DB_USERNAME'];
 $pass = quotemeta($_ENV['DB_PASSWORD']);
-$db = $db;
+$db = $_ENV['DB_DATABASE'];
 
 $mysql_test = new mysqli($host, $user, $pass, $db);
 if ($mysql_test->connect_error) {

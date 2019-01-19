@@ -94,13 +94,13 @@ sudo service mysql restart
 CREATE DATABASE Pu-239;
 
 # set ownership
-sudo chown -R www-data:www-data ../Pu-239
+sudo chown -R $USER:www-data ../Pu-239
 
 # install
 php bin/install.php install
 
 # set permissions and create necessary files
-[sudo] php bin/set_perms.php
+sudo php bin/set_perms.php
 php bin/uglify.php 
 
 # goto admin cleanup and activate/deactivate scripts, they are initially enabled and set to last midnight
@@ -141,7 +141,7 @@ git pull
 composer install
 composer dump-autoload -o
 npm install
-[sudo] php bin/set_perms.php
+sudo php bin/set_perms.php
 php bin/uglify.php
 
 # update additional tables          

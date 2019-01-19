@@ -1,5 +1,6 @@
 ### 19 Jan, 2019
 NOTES: you will need to 'mv include/config.php config/site.php'  
+fix: install.php  
 rename: many include'd files  
 fix: ann_config.php  
 moved: several define'd items to site_config  
