@@ -1,4 +1,5 @@
 ### 19 Jan, 2019
+NOTE: you will need to run 'php bin/clear_cache.php' after updating, best if you are logged out, else you will have to edit class/enabled in db for your user
 update: flush entire cache or specific cache from cli bin/clear_cache.php  
 update: remove auto download admin/backup.php  
 update: use bzip2 admin/backup.php  
