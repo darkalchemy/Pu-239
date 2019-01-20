@@ -142,6 +142,10 @@ input:valid {
     border: 1px solid #000;
 }
 
+.searchbar {
+    margin: 2px auto;
+}
+
 .search > input{
     border: none;
     padding: 0;
@@ -692,7 +696,7 @@ textarea {
 }
 
 .platform-wrapper {
-    height: 30px;
+    height: 31px;
     font-size: 1.25em;
 }
 
