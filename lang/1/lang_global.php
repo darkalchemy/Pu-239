@@ -34,6 +34,7 @@ $lang = [
     'gl_home' => 'Home',
     'gl_browse' => 'Browse',
     'gl_search' => 'Search',
+    'gl_go' => 'Go',
     'gl_upload' => 'Upload',
     'gl_subtitles' => 'Subtitles',
     'gl_requests' => 'Requests',

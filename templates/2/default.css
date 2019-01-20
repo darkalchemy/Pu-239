@@ -145,11 +145,7 @@ input:valid {
 .search > input{
     border: none;
     padding: 0;
-}
-
-.search {
-    border-top: 1px solid #00d1b2;
-    border-bottom: 1px solid #00d1b2;
+    width: 10em;
 }
 
 .trivia-pointer {
@@ -733,22 +729,16 @@ textarea {
     border-bottom-right-radius: .3125em;
 }
 
-.round5-right {
-    border-top-right-radius: .3125em;
-    border-bottom-right-radius: .3125em;
-}
-
-.round5-left {
-    border-top-left-radius: .3125em;
-    border-bottom-left-radius: .3125em;
-}
-
 .round5 {
     border-radius: .3125em;
 }
 
 .round10 {
     border-radius: .625em;
+}
+
+.button.is-small.round5 {
+    border-radius: .3125em;
 }
 
 code a,
@@ -1154,7 +1144,8 @@ option.head {
 }
 
 .middle {
-    align-self: center;
+    height: 27px;
+    line-height: 27px;
 }
 
 .droppable {
@@ -1287,6 +1278,12 @@ ul li ul li {
 
     .parallax > .fl-3 {
         order: 3;
+    }
+}
+
+@media (max-width: 875px) {
+    .searchbar {
+        display: none;
     }
 }
 
