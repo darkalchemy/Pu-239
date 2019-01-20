@@ -1,6 +1,9 @@
+### 20, Jan, 2019
+fix: trivia questions not resetting  
+
 ### 19 Jan, 2019
 NOTES: you will need to 'mv include/config.php config/site.php'  
-NOTES: php-cs-fixer is working with PHP7.3
+NOTES: php-cs-fixer is working with PHP7.3  
 add: bookmark icon  
 update: center search bar  
 update: border color on search bar  

@@ -28,7 +28,6 @@ function trivia_update($data)
             ->where('gameon = 1')
             ->fetch('gamenum');
         if ($gamenum >= 1) {
-            $cache->delete('triviaquestions_');
             $qids = get_qids();
             if (!$qids || count($qids) <= 100) {
                 $set = [
@@ -52,7 +51,6 @@ function trivia_update($data)
             if (empty($qid)) {
                 return false;
             }
-            $cache->replace('triviaquestions_', $qids, 0);
             $cache->set('trivia_current_qid_', (int) $qid, 360);
             $cache->deleteMulti([
                 'trivia_gamenum_',
