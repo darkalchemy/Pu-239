@@ -148,8 +148,8 @@ input:valid {
 }
 
 .search {
-    border-top: 2px solid #ff3860;
-    border-bottom: 2px solid #ff3860;
+    border-top: 1px solid #00d1b2;
+    border-bottom: 1px solid #00d1b2;
 }
 
 .trivia-pointer {
