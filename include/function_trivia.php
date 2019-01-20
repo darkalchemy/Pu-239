@@ -54,7 +54,7 @@ function trivia_table()
             'gamenum' => $gamenum,
             'users' => $users,
         ];
-        $cache->set('triviaq_', $triviaq, 86400);
+        $cache->set('triviaq_', $triviaq, 0);
     }
     $qid = $triviaq['qid'];
     $gamenum = $triviaq['gamenum'];

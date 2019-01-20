@@ -29,14 +29,14 @@ function trivia_update($data)
             ->fetch('gamenum');
         if ($gamenum >= 1) {
             $qids = get_qids();
-            if (!$qids || count($qids) <= 100) {
+            if (empty($qids) || count($qids) <= 100) {
                 $set = [
                     'asked' => 0,
                     'current' => 0,
                 ];
                 $fluent->update('triviaq')
                     ->set($set)
-                    ->whereOr(['asked' => 1, 'current' => 1])
+                    ->where('asked = 1')
                     ->execute();
                 $cache->delete('triviaquestions_');
                 $qids = get_qids();
@@ -44,20 +44,14 @@ function trivia_update($data)
             if (empty($qids)) {
                 return false;
             }
-            for ($x = 0; $x <= 10; ++$x) {
+            for ($x = 0; $x <= 100; ++$x) {
                 shuffle($qids);
             }
             $qid = array_pop($qids);
             if (empty($qid)) {
                 return false;
             }
-            $cache->set('trivia_current_qid_', (int) $qid, 360);
-            $cache->deleteMulti([
-                'trivia_gamenum_',
-                'trivia_remaining_',
-                'trivia_current_question_',
-                'trivia_correct_answer_',
-            ]);
+            $cache->delete('triviaq_');
 
             $set = [
                 'current' => 0,
@@ -74,6 +68,18 @@ function trivia_update($data)
                 ->set($set)
                 ->where('qid = ?', $qid)
                 ->execute();
+
+            $data = $fluent->from('triviaq')
+                ->select('question')
+                ->select('answer1')
+                ->select('answer2')
+                ->select('answer3')
+                ->select('answer4')
+                ->select('answer5')
+                ->select('asked')
+                ->where('qid = ?', $qid)
+                ->fetch();
+            $cache->set('trivia_current_question_', $data, 360);
         }
     }
 

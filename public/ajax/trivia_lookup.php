@@ -13,10 +13,6 @@ if (empty($csrf) || !$session->validateToken($csrf)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }
-if (empty($gamenum) || empty($qid)) {
-    echo json_encode(['fail' => 'invalid']);
-    die();
-}
 $current_user = $session->get('userID');
 if (empty($current_user)) {
     echo json_encode(['fail' => 'csrf']);
@@ -27,17 +23,11 @@ $table = trivia_table();
 $qid = $table['qid'];
 $gamenum = $table['gamenum'];
 $table = $table['table'];
-
-$data = $fluent->from('triviaq')
-    ->select('question')
-    ->select('answer1')
-    ->select('answer2')
-    ->select('answer3')
-    ->select('answer4')
-    ->select('answer5')
-    ->select('asked')
-    ->where('qid = ?', $qid)
-    ->fetch();
+$data = $cache->get('trivia_current_question_');
+if (empty($data)) {
+    echo json_encode(['fail' => 'invalid']);
+    die();
+}
 $user = $fluent->from('triviausers')
     ->where('user_id = ?', $current_user)
     ->where('qid = ?', $qid)

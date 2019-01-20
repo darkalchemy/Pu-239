@@ -1,4 +1,5 @@
 ### 20, Jan, 2019
+fix: trivia not resetting during cleanup  
 update: staff picks icon  
 add: icon-star-empty  
 update: bookmarks.php sharemarks.php  
