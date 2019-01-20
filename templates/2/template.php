@@ -485,7 +485,7 @@ function platform_menu()
                             <li>
                                 <form action='{$site_config['baseurl']}/browse.php'>
                                     <div class='search round5 middle bg-light'>
-                                        <i class='icon-search has-text-black'></i>
+                                        <i class='icon-search has-text-black' aria-hidden='true'></i>
                                         <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-white'>
                                         <button type='submit' class='button is-small round5'>{$lang['gl_go']}</button>
                                     </div>

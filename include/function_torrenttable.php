@@ -117,7 +117,7 @@ function torrenttable($res, $variant = 'index')
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
-                            <i class='icon-ok icon' aria-hidden='true'></i>
+                            <i class='icon-bookmark-empty icon' aria-hidden='true'></i>
                         </a>
                     </th>" : '');
     if ($variant === 'mytorrents') {
@@ -355,7 +355,7 @@ function torrenttable($res, $variant = 'index')
 
         $bookmark = "
                 <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
-                    <i class='icon-ok icon has-text-success' aria-hidden='true'></i>
+                    <i class='icon-bookmark-empty icon has-text-success' aria-hidden='true'></i>
                 </span>";
 
         if (!empty($book)) {
@@ -363,7 +363,7 @@ function torrenttable($res, $variant = 'index')
                 if ($bk['torrentid'] == $id) {
                     $bookmark = "
                     <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
-                        <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
+                        <i class='icon-bookmark-empty icon has-text-danger' aria-hidden='true'></i>
                     </span>";
                 }
             }

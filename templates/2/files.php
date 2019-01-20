@@ -10,7 +10,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/2/chat_uranium_2769ea27.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/2/css_c89acc04.css";
+            return "{$site_config['baseurl']}/css/2/css_0b7bda4e.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e11d3062.css";
         case 'sceditor_css':
