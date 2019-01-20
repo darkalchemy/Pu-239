@@ -167,7 +167,7 @@ input:valid {
     border: 1px solid #fff;
 }
 
-.searchbar {
+.platform-wrapper > div > div {
     margin: 2px auto;
 }
 

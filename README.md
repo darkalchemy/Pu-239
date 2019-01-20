@@ -135,6 +135,7 @@ php bin/import_tables.php
 cd Pu-239
 git pull
 
+# check CHANGELOG for anything that neds to be done first
 # check to see if there are any database updates, from the staff panel
 
 # update dependancies:

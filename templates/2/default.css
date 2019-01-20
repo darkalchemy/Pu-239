@@ -142,7 +142,7 @@ input:valid {
     border: 1px solid #000;
 }
 
-.searchbar {
+.platform-wrapper > div > div {
     margin: 2px auto;
 }
 
