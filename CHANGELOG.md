@@ -1,4 +1,5 @@
 ### 20, Jan, 2019
+update: bookmarks.php sharemarks.php  
 fix: permissions cache/imdb  
 fix: trivia questions not resetting  
 

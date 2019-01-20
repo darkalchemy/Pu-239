@@ -22,21 +22,21 @@ $('.bookmarks').on('click', function () {
                 $(this).tooltipster('content', 'Unknown failure. Try refreshing the page.');
             } else if (data['content'] === 'private') {
                 if (data['bookmark'] === 'yes') {
-                    $(this).html('<i class=\'icon-key icon\'></i>');
+                    $(this).html('<i class=\'icon-key icon has-text-success\'></i>');
                 } else {
-                    $(this).html('<i class=\'icon-users icon\'></i>');
+                    $(this).html('<i class=\'icon-users icon has-text-danger\'></i>');
                 }
                 $(this).tooltipster('content', data['text']);
                 $(this).attr('data-tid', data['tid']);
             } else if (data['content'] === 'added') {
-                $(this).html('<i class=\'icon-trash-empty icon has-text-danger\'></i>');
+                $(this).html('<i class=\'icon-bookmark-empty icon has-text-danger\'></i>');
                 $(this).tooltipster('content', data['text']);
                 $(this).attr('data-tid', data['tid']);
             } else if (data['content'] === 'deleted') {
                 if (data['remove'] === 'true') {
                     $(this).closest('tr').remove();
                 } else {
-                    $(this).html('<i class=\'icon-ok icon has-text-success\'></i>');
+                    $(this).html('<i class=\'icon-bookmark-empty icon has-text-success\'></i>');
                     $(this).tooltipster('content', data['text']);
                     $(this).attr('data-tid', data['tid']);
                 }

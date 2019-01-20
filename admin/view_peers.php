@@ -62,7 +62,7 @@ if (mysqli_num_rows($result) != 0) {
         <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['ratio_free'] ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-danger tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
+        <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>
         <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
         <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['ratio_free'] ? '' : '

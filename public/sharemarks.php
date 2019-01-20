@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER;
+global $CURUSER, $user_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $stdfoot = [
@@ -23,42 +23,51 @@ $htmlout = '';
  *
  * @return string
  */
-function sharetable($res, $variant = 'index')
+function sharetable($res, $userid, $variant = 'index')
 {
-    global $site_config, $CURUSER, $lang, $session;
+    global $site_config, $CURUSER, $lang, $session, $fluent;
 
     $htmlout = "
-    <div class='has-text-centered bottom20'>
-        {$lang['bookmarks_icon']}
-        <i class='icon-trash-empty icon has-text-danger'></i>{$lang['bookmarks_del1']}
-        <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
-        <i class='icon-ok icon'></i>{$lang['bookmark_add']}
-    </div>
-<table class='table table-bordered table-striped'>
-<tr>
-<td class='colhead'>Type</td>
-<td class='colhead'>Name</td>";
-    $userid = (int) $_GET['id'];
-    if ($CURUSER['id'] == $userid) {
-        $htmlout .= ($variant === 'index' ? '<td class="colhead">Download</td><td class="colhead">' : '') . 'Delete</td>';
+        <div class='has-text-centered bottom20'>
+            {$lang['bookmarks_icon']}
+            <i class='icon-bookmark-empty icon has-text-danger'></i>{$lang['bookmarks_del1']}
+            <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
+            <i class='icon-bookmark-empty icon has-text-success'></i>{$lang['bookmark_add']}
+        </div>";
+
+    $heading = "
+        <tr>
+            <th>Type</th>
+            <th>Name</th>";
+    //$userid = (int) $_GET['id'];
+    if ($CURUSER['id'] === $userid) {
+        $heading .= ($variant === 'index' ? '
+            <th>Download</th>' : '') . '
+            <th>Delete</th>';
     } else {
-        $htmlout .= ($variant === 'index' ? '<td class="colhead">Download</td><td class="colhead">' : '') . 'Bookmark</td>';
+        $heading .= ($variant === 'index' ? '
+            <th>Download</th>' : '') . '
+            <th>Bookmark</th>';
     }
     if ($variant === 'mytorrents') {
-        $htmlout .= "<td class='colhead'>{$lang['torrenttable_edit']}</td>\n";
-        $htmlout .= "<td class='colhead'>{$lang['torrenttable_visible']}</td>\n";
+        $heading .= "
+            <th>{$lang['torrenttable_edit']}</th>
+            <th>{$lang['torrenttable_visible']}</th>";
     }
-    $htmlout .= "<td class='colhead'>{$lang['torrenttable_files']}</td>
-   <td class='colhead'>{$lang['torrenttable_comments']}</td>
-   <td class='colhead'>{$lang['torrenttable_added']}</td>
-   <td class='colhead'>{$lang['torrenttable_size']}</td>
-   <td class='colhead'>{$lang['torrenttable_snatched']}</td>
-   <td class='colhead'>{$lang['torrenttable_seeders']}</td>
-   <td class='colhead'>{$lang['torrenttable_leechers']}</td>";
+    $heading .= "
+            <th>{$lang['torrenttable_files']}</th>
+            <th>{$lang['torrenttable_comments']}</th>
+            <th>{$lang['torrenttable_added']}</th>
+            <th>{$lang['torrenttable_size']}</th>
+            <th>{$lang['torrenttable_snatched']}</th>
+            <th>{$lang['torrenttable_seeders']}</th>
+            <th>{$lang['torrenttable_leechers']}</th>";
     if ($variant === 'index') {
-        $htmlout .= "<td class='colhead'>{$lang['torrenttable_uppedby']}</td>\n";
+        $heading .= "
+            <th>{$lang['torrenttable_uppedby']}</th>";
     }
-    $htmlout .= "</tr>\n";
+    $heading .= "
+        </tr>";
     $categories = genrelist(false);
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
@@ -67,85 +76,92 @@ function sharetable($res, $variant = 'index')
             'image' => $value['image'],
         ];
     }
-    while ($row = mysqli_fetch_assoc($res)) {
+    $body = '';
+    foreach ($res as $row) {
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         $id = (int) $row['id'];
-        $htmlout .= "<tr>\n";
-        $htmlout .= '<td>';
+        $body .= '
+        <tr>
+            <td>';
         if (isset($row['cat_name'])) {
-            $htmlout .= "<a href='browse.php?cat=" . (int) $row['category'] . "'>";
+            $body .= "<a href='browse.php?cat=" . (int) $row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}'>";
+                $body .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}'>";
             } else {
-                $htmlout .= $row['cat_name'];
+                $body .= $row['cat_name'];
             }
-            $htmlout .= '</a>';
+            $body .= '</a>';
         } else {
-            $htmlout .= '-';
+            $body .= '-';
         }
-        $htmlout .= "</td>\n";
+        $body .= "
+            </td>";
         $dispname = htmlsafechars($row['name']);
-        $htmlout .= "<td><a href='details.php?";
+        $body .= "
+            <td><a href='details.php?";
         if ($variant === 'mytorrents') {
-            $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
+            $body .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }
-        $htmlout .= "id=$id";
+        $body .= "id=$id";
         if ($variant === 'index') {
-            $htmlout .= '&amp;hit=1';
+            $body .= '&amp;hit=1';
         }
-        $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
-        $htmlout .= ($variant === 'index' ? "
+        $body .= "'><b>$dispname</b></a>&#160;</td>";
+        $body .= ($variant === 'index' ? "
                         <td>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
                                 <i class='icon-download icon'></i>
                             </a>
                         </td>" : '');
-        $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id']));
-        $bms = mysqli_fetch_assoc($bm);
+        $bms = $fluent->from('bookmarks')
+            ->where('torrentid = ?', $id)
+            ->where('userid = ?', $userid)
+            ->fetch();
+
         $bookmarked = (empty($bms) ? "
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                                 <i class='icon-ok icon'></i>
                             </span>" : "
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
-                                <i class='icon-trash-empty icon has-text-danger'></i>
+                                <i class='icon-bookmark-empty icon has-text-danger'></i>
                             </span>");
-        $htmlout .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
+        $body .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
         if ($variant === 'mytorrents') {
-            $htmlout .= "</td><td><a href='edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int) $row['id'] . "'>{$lang['torrenttable_edit']}</a>\n";
+            $body .= "</td><td><a href='edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int) $row['id'] . "'>{$lang['torrenttable_edit']}</a>\n";
         }
         if ($variant === 'mytorrents') {
-            $htmlout .= '<td>';
+            $body .= '<td>';
             if ($row['visible'] === 'no') {
-                $htmlout .= "<b>{$lang['torrenttable_not_visible']}</b>";
+                $body .= "<b>{$lang['torrenttable_not_visible']}</b>";
             } else {
-                $htmlout .= "{$lang['torrenttable_visible']}";
+                $body .= "{$lang['torrenttable_visible']}";
             }
-            $htmlout .= "</td>\n";
+            $body .= "</td>\n";
         }
         if ($variant === 'index') {
-            $htmlout .= "<td><b><a href='filelist.php?id=$id'>" . (int) $row['numfiles'] . "</a></b></td>\n";
+            $body .= "<td><b><a href='filelist.php?id=$id'>" . (int) $row['numfiles'] . "</a></b></td>\n";
         } else {
-            $htmlout .= "<td><b><a href='filelist.php?id=$id'>" . (int) $row['numfiles'] . "</a></b></td>\n";
+            $body .= "<td><b><a href='filelist.php?id=$id'>" . (int) $row['numfiles'] . "</a></b></td>\n";
         }
         if (!$row['comments']) {
-            $htmlout .= '<td>' . (int) $row['comments'] . "</td>\n";
+            $body .= '<td>' . (int) $row['comments'] . "</td>\n";
         } else {
             if ($variant === 'index') {
-                $htmlout .= "<td><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . "</a></b></td>\n";
+                $body .= "<td><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . "</a></b></td>\n";
             } else {
-                $htmlout .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . "</a></b></td>\n";
+                $body .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . "</a></b></td>\n";
             }
         }
-        $htmlout .= '<td><span>' . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
-        $htmlout .= '
+        $body .= '<td><span>' . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
+        $body .= '
     <td>' . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
         if (1 != $row['times_completed']) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $htmlout .= "<td><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
+        $body .= "<td><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
         if ($row['seeders']) {
             if ($variant === 'index') {
                 if ($row['leechers']) {
@@ -153,29 +169,29 @@ function sharetable($res, $variant = 'index')
                 } else {
                     $ratio = 1;
                 }
-                $htmlout .= "<td><b><a href='peerlist.php?id=$id#seeders'>
+                $body .= "<td><b><a href='peerlist.php?id=$id#seeders'>
                <span style='color: " . get_slr_color($ratio) . ";'>" . (int) $row['seeders'] . "</span></a></b></td>\n";
             } else {
-                $htmlout .= "<td><b><a class='" . linkcolor($row['seeders']) . "' href='peerlist.php?id=$id#seeders'>" . (int) $row['seeders'] . "</a></b></td>\n";
+                $body .= "<td><b><a class='" . linkcolor($row['seeders']) . "' href='peerlist.php?id=$id#seeders'>" . (int) $row['seeders'] . "</a></b></td>\n";
             }
         } else {
-            $htmlout .= "<td><span class='" . linkcolor($row['seeders']) . "'>" . (int) $row['seeders'] . "</span></td>\n";
+            $body .= "<td><span class='" . linkcolor($row['seeders']) . "'>" . (int) $row['seeders'] . "</span></td>\n";
         }
         if ($row['leechers']) {
             if ('index' == $variant) {
-                $htmlout .= "<td><b><a href='peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>\n";
+                $body .= "<td><b><a href='peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>\n";
             } else {
-                $htmlout .= "<td><b><a class='" . linkcolor($row['leechers']) . "' href='peerlist.php?id=$id#leechers'>" . (int) $row['leechers'] . "</a></b></td>\n";
+                $body .= "<td><b><a class='" . linkcolor($row['leechers']) . "' href='peerlist.php?id=$id#leechers'>" . (int) $row['leechers'] . "</a></b></td>\n";
             }
         } else {
-            $htmlout .= "<td>0</td>\n";
+            $body .= "<td>0</td>\n";
         }
         if ($variant === 'index') {
-            $htmlout .= '<td>' . (isset($row['username']) ? format_username($row['owner']) : '<i>(' . get_anonymous_name() . ')</i>') . "</td>\n";
+            $body .= '<td>' . (isset($row['username']) ? format_username($row['owner']) : '<i>(' . get_anonymous_name() . ')</i>') . "</td>\n";
         }
-        $htmlout .= "</tr>\n";
+        $body .= "</tr>\n";
     }
-    $htmlout .= "</table>\n";
+    $htmlout .= main_table($body, $heading);
 
     return $htmlout;
 }
@@ -184,30 +200,60 @@ $userid = isset($_GET['id']) ? (int) $_GET['id'] : '';
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID.');
 }
-$res = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_array($res);
 $htmlout .= '
     <div class="has-text-centered bottom20">
-        <h1>Sharemarks for ' . format_username($arr['id']) . '</h1>
+        <h1>Sharemarks for ' . format_username($userid) . '</h1>
         <div class="tabs is-centered">
             <ul>
                 <li><a href="' . $site_config['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
             </ul>
         </div>
     </div>';
-$res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE private = "no" AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_array($res);
-$count = $row[0];
+$count = $fluent->from('bookmarks')
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('private = "no"')
+    ->where('userid = ?', $userid)
+    ->fetch('count');
+
 $torrentsperpage = $CURUSER['torrentsperpage'];
-if (!$torrentsperpage) {
+if (empty($torrentsperpage)) {
     $torrentsperpage = 25;
 }
 if ($count) {
     $pager = pager($torrentsperpage, $count, 'sharemarks.php?&amp;');
-    $query1 = 'SELECT bookmarks.id as bookmarkid, torrents.owner, torrents.id, torrents.name, torrents.comments, torrents.leechers, torrents.seeders, torrents.save_as, torrents.numfiles, torrents.added, torrents.filename, torrents.size, torrents.views, torrents.visible, torrents.hits, torrents.times_completed, torrents.category, users.username FROM bookmarks LEFT JOIN torrents ON bookmarks.torrentid = torrents.id LEFT JOIN users ON torrents.owner = users.id WHERE bookmarks.userid = ' . sqlesc($userid) . " AND bookmarks.private = 'no' ORDER BY id DESC {$pager['limit']}";
-    $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
+    $sharemarks = $fluent->from('bookmarks AS b')
+        ->select(null)
+        ->select('b.id as bookmarkid')
+        ->select('t.owner')
+        ->select('t.id')
+        ->select('t.name')
+        ->select('t.comments')
+        ->select('t.leechers')
+        ->select('t.seeders')
+        ->select('t.save_as')
+        ->select('t.numfiles')
+        ->select('t.added')
+        ->select('t.filename')
+        ->select('t.size')
+        ->select('t.views')
+        ->select('t.visible')
+        ->select('t.hits')
+        ->select('t.times_completed')
+        ->select('t.category')
+        ->select('u.username')
+        ->innerJoin('torrents AS t ON b.torrentid = t.id')
+        ->leftJoin('users AS u on b.userid = u.id')
+        ->where('private = "no"')
+        ->where('b.userid = ?', $userid)
+        ->orderBy('t.id DESC')
+        ->limit($pager['pdo'])
+        ->fetchAll();
+
+    $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
+    $htmlout .= sharetable($sharemarks, $userid, 'index');
+    $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
-if ($count) {
-    $htmlout .= ($count > $torrentsperpage ? $pager['pagertop'] : '') . sharetable($res, 'index') . ($count > $torrentsperpage ? $pager['pagerbottom'] : '');
-}
-echo stdhead('Sharemarks for ' . htmlsafechars($arr['username'])) . wrapper($htmlout) . stdfoot($stdfoot);
+
+$username = $user_stuffs->get_item('username', $userid);
+echo stdhead('Sharemarks for ' . htmlsafechars($username)) . wrapper($htmlout) . stdfoot($stdfoot);
