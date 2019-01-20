@@ -1,4 +1,6 @@
 ### 20, Jan, 2019
+update: staff picks icon  
+add: icon-star-empty  
 update: bookmarks.php sharemarks.php  
 fix: permissions cache/imdb  
 fix: trivia questions not resetting  

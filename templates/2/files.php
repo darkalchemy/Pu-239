@@ -10,7 +10,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/2/chat_uranium_2769ea27.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/2/css_0b7bda4e.css";
+            return "{$site_config['baseurl']}/css/2/css_32e62bfb.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e11d3062.css";
         case 'sceditor_css':
@@ -32,7 +32,7 @@ function get_file_name($file)
         case 'categories_js':
             return "{$site_config['baseurl']}/js/2/categories_5ad7e17e.js";
         case 'browse_js':
-            return "{$site_config['baseurl']}/js/2/browse_d96450ea.js";
+            return "{$site_config['baseurl']}/js/2/browse_de3939b1.js";
         case 'scroller_js':
             return "{$site_config['baseurl']}/js/2/scroller_13b47ab3.js";
         case 'slider_js':

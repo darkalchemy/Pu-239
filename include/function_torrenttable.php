@@ -442,12 +442,12 @@ function torrenttable($res, $variant = 'index')
             if ($CURUSER['class'] >= $site_config['staff_allowed']['staff_picks'] && $row['staff_picks'] > 0) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
-                    <i class='icon-minus icon has-text-danger' aria-hidden='true'></i>
+                    <i class='icon-star-empty icon has-text-danger' aria-hidden='true'></i>
                 </span>";
             } elseif ($CURUSER['class'] >= $site_config['staff_allowed']['staff_picks']) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
-                    <i class='icon-plus icon has-text-success' aria-hidden='true'></i>
+                    <i class='icon-star-empty icon has-text-success' aria-hidden='true'></i>
                 </span>";
             }
 
