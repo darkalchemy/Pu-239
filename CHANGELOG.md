@@ -1,6 +1,7 @@
 ### 19 Jan, 2019
 NOTES: you will need to 'mv include/config.php config/site.php'  
 NOTES: php-cs-fixer is working with PHP7.3
+update: center search bar  
 update: border color on search bar  
 fix: ajaxchat.php style  
 add: search bar  

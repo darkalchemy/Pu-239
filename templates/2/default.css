@@ -1154,7 +1154,6 @@ option.head {
 }
 
 .middle {
-    display: flex;
     align-self: center;
 }
 

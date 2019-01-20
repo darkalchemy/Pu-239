@@ -473,23 +473,31 @@ function platform_menu()
 
     $menu = "
         <div id='platform-menu' class='platform-menu'>
-            <div class='platform-wrapper level'>
-                <ul class='level-left size_3'>" . (!$site_config['in_production'] ? "
-                    <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['version']}</li>" : '') . "
-                </ul>
-                <ul class='level-center middle'>
-                    <li>
-                        <form action='{$site_config['baseurl']}/browse.php'>
-                            <div class='search round5 middle'>
-                                <i class='icon-search size_6'></i>
-                                <input type='text' name='sn' placeholder='Search' class='bg-none has-text-white'>
-                                <button type='submit' class='button is-small round5-right'>Go</button>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-                <ul class='level-right size_3'>{$styles}" . StatusBar() . '
-                </ul>
+            <div class='platform-wrapper'>
+                <div class='columns is-marginless'>
+                    <div class='column is-paddingless middle'>
+                        <ul class='level-left size_3'>" . (!$site_config['in_production'] ? "
+                            <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['version']}</li>" : '') . "
+                        </ul>
+                    </div>
+                    <div class='column is-paddingless'>
+                        <ul class='level-center middle'>
+                            <li>
+                                <form action='{$site_config['baseurl']}/browse.php'>
+                                    <div class='search round5 middle'>
+                                        <i class='icon-search size_6'></i>
+                                        <input type='text' name='sn' placeholder='Search' class='bg-none has-text-white'>
+                                        <button type='submit' class='button is-small round5-right'>Go</button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='column is-paddingless middle'>
+                        <ul class='level-right size_3'>{$styles}" . StatusBar() . '
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>';
 
