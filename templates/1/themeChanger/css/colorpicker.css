@@ -15,7 +15,7 @@
     left: 14px;
     top: 13px;
     position: absolute;
-    background: red;
+    background: #ff3860;
     overflow: hidden;
     cursor: crosshair;
 }
@@ -65,7 +65,7 @@
     height: 30px;
     left: 213px;
     top: 13px;
-    background: red;
+    background: #ff3860;
 }
 
 .colorpicker_current_color {
@@ -74,7 +74,7 @@
     height: 30px;
     left: 283px;
     top: 13px;
-    background: red;
+    background: #ff3860;
 }
 
 .colorpicker input {

@@ -142,6 +142,16 @@ input:valid {
     border: 1px solid #000;
 }
 
+.search > input{
+    border: none;
+    padding: 0;
+}
+
+.search {
+    border-top: 2px solid #ff3860;
+    border-bottom: 2px solid #ff3860;
+}
+
 .trivia-pointer {
     cursor: pointer;
 }
@@ -723,6 +733,16 @@ textarea {
     border-bottom-right-radius: .3125em;
 }
 
+.round5-right {
+    border-top-right-radius: .3125em;
+    border-bottom-right-radius: .3125em;
+}
+
+.round5-left {
+    border-top-left-radius: .3125em;
+    border-bottom-left-radius: .3125em;
+}
+
 .round5 {
     border-radius: .3125em;
 }
@@ -847,7 +867,7 @@ code a,
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
     color: #000;
-    border: 1px solid #f00;
+    border: 1px solid  #ff3860;
 }
 
 .slideThree {
@@ -1131,6 +1151,11 @@ option.head {
 .bottom {
     display: inline-block;
     align-self: flex-end;
+}
+
+.middle {
+    display: flex;
+    align-self: center;
 }
 
 .droppable {

@@ -37,14 +37,14 @@ table {
     line-height: 18px;
     text-align: left;
     vertical-align: top;
-    border: 1px solid red;
+    border: 1px solid #ff3860;
     border-bottom: 0;
     border-right: 0;
 }
 
 .table > tbody > tr > td:last-child,
 .table > thead > tr > th:last-child {
-    border-right: 1px solid red;
+    border-right: 1px solid #ff3860;
 }
 
 .table > thead > tr > th {
@@ -68,7 +68,7 @@ table {
 }
 
 .table-bordered {
-    border: 2px solid red;
+    border: 2px solid #ff3860;
     border-collapse: separate;
     border-left: 0;
     border-right: 0;
@@ -78,7 +78,7 @@ table {
 
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th {
-    border-left: 1px solid red;
+    border-left: 1px solid #ff3860;
 }
 
 .table-bordered > tbody:first-child > tr:first-child > td:first-child,

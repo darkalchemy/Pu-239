@@ -321,11 +321,10 @@ foreach ($styles as $folder) {
                 CHAT_DIR . "css/{$folder}/fonts.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
                 CHAT_DIR . "css/{$folder}/classcolors.css",
-                CHAT_DIR . "css/{$folder}/default.css",
+                CHAT_DIR . "css/{$folder}/Uranium.css",
             ],
         ], $css_list);
     }
-
     $css_files = [];
     foreach ($css_list as $key => $css) {
         foreach ($css as $file) {

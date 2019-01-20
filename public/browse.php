@@ -155,6 +155,9 @@ if (!empty($cats)) {
 foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
+        if (!empty($_POST['search']) && $search === 'sn') {
+            $cleaned = searchfield($_POST['search']);
+        }
         $title .= " $cleaned";
         $insert_cloud = [
             'sn',

@@ -31,7 +31,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #loginContent #errorContainer {
-    color: red;
+    color: #ff3860;
 }
 
 #errorContainer {
@@ -174,11 +174,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #chatList .chatBotErrorMessage {
-    color: red;
+    color: #ff3860;
 }
 
 #content #chatList .deleteSelected {
-    border-color: red;
+    border-color: #ff3860;
 }
 
 #content #chatList span.dateTime {
@@ -249,15 +249,15 @@ input[type=button]:active {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-top: 1px solid red;
-    border-bottom: 1px solid red;
+    border-top: 1px solid #ff3860;
+    border-bottom: 1px solid #ff3860;
     border-radius: .3125em;
     background: rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    border-left: 1px solid red;
-    border-right: 1px solid red;
+    border-left: 1px solid #ff3860;
+    border-right: 1px solid #ff3860;
     border-radius: .625em;
     background: rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }

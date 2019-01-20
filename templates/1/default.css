@@ -31,15 +31,15 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-top: 1px solid #f00;
-    border-bottom: 1px solid #f00;
+    border-top: 1px solid  #ff3860;
+    border-bottom: 1px solid  #ff3860;
     border-radius: .3125em;
     background: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent) rgba(0, 0, 0, .1);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    border-left: 1px solid #f00;
-    border-right: 1px solid #f00;
+    border-left: 1px solid  #ff3860;
+    border-right: 1px solid  #ff3860;
     border-radius: .625em;
     background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent) rgba(0, 0, 0, .1);
 }
@@ -165,6 +165,16 @@ input:invalid {
 select:valid,
 input:valid {
     border: 1px solid #fff;
+}
+
+.search > input{
+    border: none;
+    padding: 0;
+}
+
+.search {
+    border-top: 2px solid #ff3860;
+    border-bottom: 2px solid #ff3860;
 }
 
 .trivia-pointer {
@@ -472,16 +482,16 @@ span {
 }
 
 .bordered {
-    border-top: 2px solid #f00;
-    border-bottom: 2px solid #f00;
+    border-top: 2px solid  #ff3860;
+    border-bottom: 2px solid  #ff3860;
     -webkit-margin-start: .125em;
     -moz-margin-start: .125em;
     -webkit-margin-end: .125em;
 }
 
 .alt_bordered {
-    border-left: 1px solid #f00;
-    border-right: 1px solid #f00;
+    border-left: 1px solid  #ff3860;
+    border-right: 1px solid  #ff3860;
 }
 
 .bottom5 {
@@ -747,6 +757,16 @@ textarea {
     border-bottom-right-radius: .3125em;
 }
 
+.round5-right {
+    border-top-right-radius: .3125em;
+    border-bottom-right-radius: .3125em;
+}
+
+.round5-left {
+    border-top-left-radius: .3125em;
+    border-bottom-left-radius: .3125em;
+}
+
 .round5 {
     border-radius: .3125em;
 }
@@ -871,7 +891,7 @@ code a,
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
     color: #fff;
-    border: 1px solid #f00;
+    border: 1px solid  #ff3860;
 }
 
 .slideThree {
@@ -1155,6 +1175,11 @@ option.head {
 .bottom {
     display: inline-block;
     align-self: flex-end;
+}
+
+.middle {
+    display: flex;
+    align-self: center;
 }
 
 .droppable {
