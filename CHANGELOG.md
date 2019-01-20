@@ -1,4 +1,5 @@
 ### 20, Jan, 2019
+fix: permissions cache/imdb  
 fix: trivia questions not resetting  
 
 ### 19 Jan, 2019
