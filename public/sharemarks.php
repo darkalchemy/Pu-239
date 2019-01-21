@@ -35,10 +35,10 @@ function sharetable($res, $userid, $variant = 'index')
             <i class='icon-bookmark-empty icon has-text-success'></i>{$lang['bookmark_add']}
         </div>";
 
-    $heading = "
+    $heading = '
         <tr>
             <th>Type</th>
-            <th>Name</th>";
+            <th>Name</th>';
     //$userid = (int) $_GET['id'];
     if ($CURUSER['id'] === $userid) {
         $heading .= ($variant === 'index' ? '
@@ -66,8 +66,8 @@ function sharetable($res, $userid, $variant = 'index')
         $heading .= "
             <th>{$lang['torrenttable_uppedby']}</th>";
     }
-    $heading .= "
-        </tr>";
+    $heading .= '
+        </tr>';
     $categories = genrelist(false);
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
@@ -95,8 +95,8 @@ function sharetable($res, $userid, $variant = 'index')
         } else {
             $body .= '-';
         }
-        $body .= "
-            </td>";
+        $body .= '
+            </td>';
         $dispname = htmlsafechars($row['name']);
         $body .= "
             <td><a href='details.php?";

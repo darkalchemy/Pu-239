@@ -82,7 +82,7 @@ function get_file_name($file)
         case 'pollsmanager_js':
             return "{$site_config['baseurl']}/js/1/pollsmanager_801ab346.js";
         case 'trivia_js':
-            return "{$site_config['baseurl']}/js/1/trivia_6f40b5b8.js";
+            return "{$site_config['baseurl']}/js/1/trivia_28839400.js";
         default:
             return null;
     }
