@@ -1,4 +1,8 @@
-### 20, Jan, 2019
+### 21 Jan, 2019
+update: all backup files to same filename scheme  
+revert: backups to gzip for speed  
+
+### 20 Jan, 2019
 fix: trivia not resetting during cleanup  
 update: staff picks icon  
 add: icon-star-empty  

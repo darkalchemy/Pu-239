@@ -7,18 +7,21 @@
  */
 function tables($no_data = '')
 {
+    global $fluent;
+
     $tables = $temp = [];
     $no_data = explode('|', $no_data);
-    $r = sql_query('SHOW TABLES') or sqlerr(__FILE__, __LINE__);
-    while ($a = mysqli_fetch_assoc($r)) {
-        $temp[] = $a;
-    }
-    foreach ($temp as $k => $tname) {
-        $tn = $tname["Tables_in_{$_ENV['DB_DATABASE']}"];
-        if (in_array($tn, $no_data)) {
-            continue;
+    $query = $fluent->getPdo()->prepare('SHOW TABLES');
+    $query->execute();
+    $all_tables = $query->fetchAll();
+
+    foreach ($all_tables as $values) {
+        foreach ($values as $key => $value) {
+            if (in_array($value, $no_data)) {
+                continue;
+            }
+            $tables[] = $value;
         }
-        $tables[] = $tn;
     }
 
     return implode(' ', $tables);
@@ -30,8 +33,7 @@ function tables($no_data = '')
 function backupdb($data)
 {
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries;
+    global $site_config, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -42,47 +44,47 @@ function backupdb($data)
     $db = $_ENV['DB_DATABASE'];
     $dt = TIME_NOW;
     $bdir = BACKUPS_DIR;
-    $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
+    $filename = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
 
-    $c1 = "mysqldump -h $host -u{$user} -p'{$pass}' $db -d | sed 's/ AUTO_INCREMENT=[0-9]*//g' > {$bdir}db_structure.sql";
-    $c2 = "mysqldump -h $host -u{$user} -p'{$pass}' $db " . tables('peers') . " | bzip2 -9 > $bdir{$filename}.bz2";
+    exec("mysqldump -h $host -u'{$user}' -p'{$pass}' $db -d | sed 's/ AUTO_INCREMENT=[0-9]*//g' > {$bdir}{$db}_structure.sql");
+    if ($site_config['db_backup_use_gzip']) {
+        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . " | gzip -q9 > {$bdir}{$filename}.gz");
+    } else {
+        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . " > $filepath");
+    }
 
-    system($c1);
-    exec($c2);
 
     // table backup
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
         if ($table !== 'peers') {
-            $filename = "tbl_{$table}_" . date('m_d_y_H', TIME_NOW) . '.sql';
-            $c2 = "mysqldump -h $host -u{$user} -p'{$pass}' $db $table | bzip2 -cq9 > $bdir{$filename}.bz2";
-            system($c2);
+            $filename = "tbl_{$table}_" . date('Y.m.d-H.i.s', $dt) . '.sql';
+            if ($site_config['db_backup_use_gzip']) {
+                exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db $table | gzip -q9 > {$bdir}{$filename}.gz");
+            } else {
+                exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db $table > {$bdir}{$filename}");
+            }
         }
     }
 
-    // delete db files older than 3 days
-    $files = glob($bdir . '/db_*');
-    foreach ($files as $file) {
-        if (($dt - filemtime($file)) > 3 * 86400) {
-            unlink($file);
-        }
+    $filename = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
+    if ($site_config['db_backup_use_gzip']) {
+        $filename = $filename . '.gz';
     }
+    $values = [
+        'name' => $filename,
+        'added' => $dt,
+        'userid' => $site_config['site']['owner'],
+    ];
+    $fluent->insertInto('dbbackup')
+        ->values($values)
+        ->execute();
 
-    // delete table files older than 1 day
-    $files = glob($bdir . '/tbl_*');
-    foreach ($files as $file) {
-        if ((TIME_NOW - filemtime($file)) > 1 * 86400) {
-            unlink($file);
-        }
-    }
-
-    $ext = 'db_' . date('m_d_y_H', $dt) . '.sql.bz2';
-    sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext) . ', ' . $dt . ', ' . $site_config['site']['owner'] . ')') or sqlerr(__FILE__, __LINE__);
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Auto DB Backup Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log("Auto DB Backup Cleanup: Completed." . $text);
     }
 }

@@ -142,6 +142,7 @@ $lang = [
     'inactive' => 'Inactive Users',
     'index' => 'Index',
     'ipcheck' => 'Dupe IP Check',
+    'iphistory' => 'IP History',
     'last' => 'Last Page',
     'leechers' => 'Leechers',
     'leechwarn' => 'Users Leech Warned',
