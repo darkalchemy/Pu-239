@@ -1,4 +1,5 @@
 ### 21 Jan, 2019
+update: bin/import_tables.php bin/install.php  
 update: all backup files to same filename scheme  
 revert: backups to gzip for speed  
 
