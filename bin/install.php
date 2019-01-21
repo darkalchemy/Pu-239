@@ -143,8 +143,8 @@ $bot = [
 
 $timestamp = strtotime('today midnight');
 $sources = [
-    'schema' => 'source ' . DATABASE_DIR . 'schema.sql',
-    'data' => 'source ' . DATABASE_DIR . 'data.sql',
+    'schema' => 'source ' . DATABASE_DIR . 'schema.sql.gz',
+    'data' => 'source ' . DATABASE_DIR . 'data.sql.gz',
     'trivia' => DATABASE_DIR . 'trivia.sql.gz',
     'tvmaze' => DATABASE_DIR . 'tvmaze.sql.gz',
     'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
@@ -152,10 +152,11 @@ $sources = [
     'bot' => $bot,
 ];
 
+$tables = ['trivia', 'tvmaze'];
 foreach ($sources as $name => $source) {
     if ($name === 'admin' || $name === 'bot') {
         add_user($source);
-    } elseif (preg_match('/gz/', $source)) {
+    } elseif (in_array($name, $tables)) {
         echo 'Importing database table: ' . $name . "\n";
         exec("gunzip < '$source' | /usr/bin/mysql -u'{$user}' -h '{$host}' -p'{$pass}' {$db}", $output, $retval);
     } else {
