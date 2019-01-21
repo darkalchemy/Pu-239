@@ -1,23 +1,19 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
-$dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
-$dotenv->load();
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'database.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+global $pdo, $fluent;
 
 $fluent = new DarkAlchemy\Pu239\Database();
-$query = $fluent->from('INFORMATION_SCHEMA.TABLE_CONSTRAINTS')
-    ->select('null')
-    ->select('TABLE_NAME')
-    ->select('CONSTRAINT_NAME')
-    ->where('CONSTRAINT_NAME LIKE "%_ibfk_%"')
-    ->where('CONSTRAINT_TYPE = "FOREIGN KEY"')
-    ->where('TABLE_SCHEMA = ?', $_ENV['DB_DATABASE'])
-    ->execute();
+$query = $pdo->prepare('SELECT TABLE_NAME, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE (CONSTRAINT_NAME LIKE "%_ibfk_%" OR CONSTRAINT_TYPE = "FOREIGN KEY") AND TABLE_SCHEMA = ?');
+$query->execute([$_ENV['DB_DATABASE']]);
+$tables = $query->fetchAll();
 
-foreach ($query as $row) {
-    $fluent->getPdo()
-        ->query("ALTER TABLE {$_ENV['DB_DATABASE']}.{$row['TABLE_NAME']} DROP FOREIGN KEY {$row['CONSTRAINT_NAME']}");
+foreach ($tables as $row) {
+    $sql = "ALTER TABLE {$_ENV['DB_DATABASE']}.{$row['TABLE_NAME']} DROP FOREIGN KEY {$row['CONSTRAINT_NAME']}";
+    $query = $fluent->getPdo()
+        ->prepare($sql);
+    $query->execute();
     echo "Dropped foreign key '{$row['CONSTRAINT_NAME']}'\n";
 }
 echo "All default foreign keys have been removed. To recreate them import foreign_keys.sql.\n\n";
+
