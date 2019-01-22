@@ -14,9 +14,9 @@ function get_file_name($file)
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/1/vendor_e11d3062.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_4087c9b3.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_e24062f8.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/1/main_a8fc9a10.css";
+            return "{$site_config['baseurl']}/css/1/main_5b4dfaf8.css";
         case 'main_js':
             return "{$site_config['baseurl']}/js/1/main_3a013c91.js";
         case 'vendor_js':
@@ -50,7 +50,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_fc05e4cb.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_aa6d542d.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

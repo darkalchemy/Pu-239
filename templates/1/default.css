@@ -1290,6 +1290,20 @@ ul li ul li {
     margin-left: .625em;
 }
 
+.flex-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.flex-grid .col {
+    width: calc(50% - .625em);
+}
+
+.flex-grid .col:first-child {
+    margin-bottom: .625em;
+}
+
 @media (max-width: 1087px) {
     .parallax {
         display: flex;
@@ -1375,12 +1389,20 @@ ul li ul li {
         min-width: 150px !important;
     }
 
-    .stats:not(:last-child) {
-        margin-bottom: 1.25em;
-    }
-
     .badge {
         display: none;
+    }
+
+    .flex-grid {
+        display: block;
+    }
+
+    .flex-grid .col {
+        width: 100%
+    }
+
+    .flex-grid .col:not(:last-child) {
+        margin-bottom: .625em;
     }
 }
 
@@ -1388,26 +1410,6 @@ ul li ul li {
     .flex-top {
         align-items: flex-start;
         display: flex;
-    }
-
-    .stats {
-        width: calc(50% - .625em - 2px);
-        display: inline-block;
-        vertical-align: top;
-    }
-
-    .stats:nth-child(odd) {
-        margin-right: .625em;
-        margin-left: 0;
-    }
-
-    .stats:nth-child(even) {
-        margin-left: .625em;   
-        margin-right: 0;
-    }
-
-    .stats:nth-child(-n+2) {
-        margin-bottom: 1.25em;
     }
 
     #pm_count {

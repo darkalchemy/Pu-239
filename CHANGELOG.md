@@ -1,4 +1,5 @@
 ### 21 Jan, 2019
+fix: style stats.php (i hope)  
 fix: bin/install.php  
 fix: database/mysql_drop_fks.php  
 update: gzip all db files  

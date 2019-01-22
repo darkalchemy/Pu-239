@@ -46,13 +46,11 @@ $torrents = [
 
 $site_stats .= "
     <a id='stats-hash'></a>
-    <div id='stats' class='box'>
-        <div class='has-text-centered'>
-            <div class='stats'>" . wrap_this($users) . "</div>
-            <div class='stats'>" . wrap_this($gender) . "</div>
-            <div class='stats'>" . wrap_this($torrents) . "</div>
-            <div class='stats'>" . wrap_this($forums) . '</div>
-        </div>
+    <div class='flex-grid'>
+        <div class='col'>" . wrap_this($users) . "</div>
+        <div class='col'>" . wrap_this($gender) . "</div>
+        <div class='col'>" . wrap_this($torrents) . "</div>
+        <div class='col'>" . wrap_this($forums) . '</div>
     </div>';
 
 /**
