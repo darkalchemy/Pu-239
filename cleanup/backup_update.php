@@ -43,6 +43,6 @@ function backup_update($data)
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Backup Cleanup: Completed." . $text);
+        write_log('Backup Cleanup: Completed.' . $text);
     }
 }

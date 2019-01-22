@@ -53,7 +53,6 @@ function backupdb($data)
         exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . " > $filepath");
     }
 
-
     // table backup
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
@@ -85,6 +84,6 @@ function backupdb($data)
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Auto DB Backup Cleanup: Completed." . $text);
+        write_log('Auto DB Backup Cleanup: Completed.' . $text);
     }
 }

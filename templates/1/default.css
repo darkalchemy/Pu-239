@@ -1301,7 +1301,7 @@ ul li ul li {
 }
 
 .flex-grid .col:first-child {
-    margin-bottom: .625em;
+    margin-bottom: 1.25em;
 }
 
 @media (max-width: 1087px) {
@@ -1402,7 +1402,7 @@ ul li ul li {
     }
 
     .flex-grid .col:not(:last-child) {
-        margin-bottom: .625em;
+        margin-bottom: 1.25em;
     }
 }
 

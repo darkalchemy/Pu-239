@@ -1,3 +1,7 @@
+### 22 Jan, 2019
+update: dependencies  
+update: margin stats.php  
+
 ### 21 Jan, 2019
 fix: style stats.php (i hope)  
 fix: bin/install.php  

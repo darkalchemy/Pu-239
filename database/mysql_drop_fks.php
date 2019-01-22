@@ -16,4 +16,3 @@ foreach ($tables as $row) {
     echo "Dropped foreign key '{$row['CONSTRAINT_NAME']}'\n";
 }
 echo "All default foreign keys have been removed. To recreate them import foreign_keys.sql.\n\n";
-
