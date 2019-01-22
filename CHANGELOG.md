@@ -1,4 +1,5 @@
 ### 22 Jan, 2019
+fix: search bar text color  
 update: dependencies  
 update: margin stats.php  
 
