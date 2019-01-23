@@ -263,7 +263,7 @@ $site_config['staff_allowed'] = [
 
 $site_config['db_backup_use_gzip'] = true;
 $site_config['db_use_gzip'] = true;
-$site_config['db_backup_gzip_path'] = '/bin/bzip2';
+$site_config['db_backup_gzip_path'] = '/bin/gzip';
 $site_config['db_backup_write_to_log'] = true;
 $site_config['db_backup_mysqldump_path'] = '/usr/bin/mysqldump';
 $site_config['anonymizer_url'] = 'https://nullrefer.com/?';

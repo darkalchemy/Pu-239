@@ -1,3 +1,6 @@
+### 23 Jan, 2019
+fix: gzip path  
+
 ### 22 Jan, 2019
 fix: search bar text color  
 update: dependencies  
