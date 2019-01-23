@@ -222,7 +222,7 @@ $site_config['query_limit'] = 65536; // mysql placeholder limit
 
 // Auto Lottery, you must first start a lottery, then this will restart it based on the settings below
 $site_config['auto_lotto'] = [
-    'enable' => true,
+    'enable' => false,
     'use_prize_fund' => true,
     'prize_fund' => 1000000,
     'ticket_amount' => 100,

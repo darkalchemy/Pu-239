@@ -1,4 +1,5 @@
 ### 23 Jan, 2019
+fix: disable auto_lotto  
 fix: gzip path  
 
 ### 22 Jan, 2019
