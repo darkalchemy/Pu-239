@@ -349,7 +349,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = $use_12_hour;
+        var is_12_hour = " . ($use_12_hour ? $use_12_hour : 'false') . ";
     </script>";
 
     $htmlfoot .= "

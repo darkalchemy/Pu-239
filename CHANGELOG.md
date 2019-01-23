@@ -1,4 +1,5 @@
 ### 23 Jan, 2019
+fix: template not showing clouck when use_12_hour is false  
 fix: disable auto_lotto  
 fix: gzip path  
 
