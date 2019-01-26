@@ -101,7 +101,7 @@ function stdhead($title = '', $stdhead = null)
                     <img src='" . $site_config['pic_baseurl'] . $site_config['banners'][array_rand($site_config['banners'])] . "' class='w-100'>";
             }
             $htmlout .= "
-            <div id='logo' class='logo columns level is-marginless'>
+            <div id='logo' class='logo columns level is-marginless bg-04'>
                 <div class='column is-paddingless'>
                     $banner
                 </div>

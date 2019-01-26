@@ -1,4 +1,5 @@
 ### 26 Jan, 2019
+update: add some transparent background to logo  
 fix: display info_hash details.php  
 
 ### 23 Jan, 2019

@@ -5,12 +5,6 @@ header#navbar {
     left: 0;
     z-index: 100;
     height: 40px;
-    border-bottom-left-radius: .625em;
-    border-bottom-right-radius: .625em;
-}
-
-.radius-small {
-    border-radius: .3125em;
 }
 
 .home {
@@ -49,15 +43,9 @@ header#navbar ul > li {
 
 header#navbar ul > li > a {
     font-weight: lighter;
-    /*font-size: 1.1em;*/
     text-decoration: none;
     transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     line-height: 40px;
-}
-
-header#navbar ul > li:last-child a:hover {
-    border-bottom-left-radius: .3125em;
-    border-bottom-right-radius: .3125em;
 }
 
 header#navbar .nav_container ul > li > ul {
@@ -73,8 +61,6 @@ header#navbar .nav_container ul > li > ul {
     perspective: 1000px;
     min-width: inherit;
     width: 200px;
-    border-bottom-left-radius: .3125em;
-    border-bottom-right-radius: .3125em;
 }
 
 header#navbar .nav_container ul > li > ul > li {
@@ -218,7 +204,6 @@ header#navbar .nav_container ul > li > ul a:hover {
         height: 50px;
         box-shadow: 0 0 15px 0 rgba(0, 0, 0, .1);
         background-color: #333;
-        border-radius: 0;
     }
 
     header#navbar ul {
@@ -241,13 +226,10 @@ header#navbar .nav_container ul > li > ul a:hover {
         width: 100%;
         margin: 0 auto;
         border-bottom: none;
-        /*font-size: 3em;*/
     }
 
     header#navbar .nav_container ul > li > ul {
         top: 0;
-        border-top-left-radius: .3125em;
-        border-top-right-radius: .3125em;
         position: static;
         opacity: 1;
         pointer-events: auto;
@@ -288,7 +270,6 @@ header#navbar .nav_container ul > li > ul a:hover {
         position: static;
         padding: 0 5%;
         width: 100%;
-        /*font-size: .8em;*/
     }
 
     header#navbar.showNav #hamburger {
