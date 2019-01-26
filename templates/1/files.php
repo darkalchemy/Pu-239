@@ -43,8 +43,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/1/recaptcha_8313f33d.js";
         case 'bookmarks_js':
             return "{$site_config['baseurl']}/js/1/bookmarks_0673fe80.js";
-        case '':
-            return "{$site_config['baseurl']}/";
+        case 'iframe_js':
+            return "{$site_config['baseurl']}/js/1/iframe_f74a311b.js";
         case 'navbar_show_js':
             return "{$site_config['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'theme_js':
