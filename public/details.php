@@ -442,7 +442,7 @@ if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $isfree['yep'] || $
 } else {
     $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} Your new ratio if you download this torrent.</div>", 1);
 }
-$info_hash = bin2hex($torrent['info_hash']);
+$info_hash = $torrent['info_hash'];
 $points .= tr($lang['details_info_hash'], "<div title='$info_hash' class='tooltipper left10'>" . substr($info_hash, 0, 40) . '<br>' . substr($info_hash, 40, 80) . '</div>', 1);
 
 $url = $site_config['baseurl'] . '/edit.php?id=' . $torrent['id'];

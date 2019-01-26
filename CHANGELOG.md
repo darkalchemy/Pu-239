@@ -1,3 +1,6 @@
+### 26 Jan, 2019
+fix: display info_hash details.php  
+
 ### 23 Jan, 2019
 fix: template not showing clouck when use_12_hour is false  
 fix: disable auto_lotto  
