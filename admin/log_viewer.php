@@ -37,7 +37,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $content = trim($content);
 
     $date_formats = "(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?|\[\w+ \w+ \d+ \d{2}:\d{2}:\d{2}\.\d+ \d{4}\])";
-    if (!preg_match('/sqlerr_logs/i', $file) && !preg_match('/access\.log/', $name) && !preg_match('/cron.*\.log/', $name) && !preg_match('/images.*\.log/', $name)) {
+    if (!preg_match('/(sqlerr_logs|access\.log|cron.*\.log|images.*\.log|announce\.log)/i', $file)) {
         preg_match_all('!' . $date_formats . '!iU', $content, $matches);
         if (!empty($matches[1])) {
             $contents = $matches[1];
@@ -56,7 +56,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         $state = 'pre';
     }
     if (!empty($contents)) {
-        rsort($contents);
+        $contents = array_reverse($contents);
         $count = count($contents);
         $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
     }
@@ -67,7 +67,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         if (!empty($line)) {
             ++$i;
             if ($i >= $pager_pdo[0]) {
-                $class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
+                $class = $i % 2 === 0 ? 'bg-08 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
                 $line = trim($line);
                 $content[] = "<$state class='{$class}'>{$line}</$state>";
             }

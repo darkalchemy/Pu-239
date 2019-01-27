@@ -1,4 +1,5 @@
 ### 27 Jan, 2019
+fix: array_reverse log_viewer.php  
 update: cleanup time backup_update.php  
 fix: output not showing ImageProxy.php  
 update: add text-shadow to logo.description  
