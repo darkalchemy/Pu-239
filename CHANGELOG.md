@@ -1,3 +1,7 @@
+### 27 Jan, 2019
+fix: inserting incorrect var into array function_fanartp.php  
+fix: Undefined index trivia_update.php  
+
 ### 26 Jan, 2019
 update: Adminer 4.7.1  
 update: add some transparent background to logo  

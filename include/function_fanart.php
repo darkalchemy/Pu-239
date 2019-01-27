@@ -130,9 +130,9 @@ function getMovieImagesByID($id, $type = 'moviebackground')
                 'type' => str_replace('movie', '', $type),
             ];
             if (!empty($site_config['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['image_lang']))) {
-                $images[] = $images;
+                $images[] = $image;
             } elseif (empty($site_config['image_lang'])) {
-                $images[] = $images;
+                $images[] = $image;
             }
         }
         if (!empty($images)) {

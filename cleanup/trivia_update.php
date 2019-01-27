@@ -69,7 +69,7 @@ function trivia_update($data)
                 ->where('qid = ?', $qid)
                 ->execute();
 
-            $data = $fluent->from('triviaq')
+            $values = $fluent->from('triviaq')
                 ->select('question')
                 ->select('answer1')
                 ->select('answer2')
@@ -79,7 +79,7 @@ function trivia_update($data)
                 ->select('asked')
                 ->where('qid = ?', $qid)
                 ->fetch();
-            $cache->set('trivia_current_question_', $data, 360);
+            $cache->set('trivia_current_question_', $values, 360);
         }
     }
 
