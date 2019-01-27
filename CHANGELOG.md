@@ -1,5 +1,6 @@
 ### 27 Jan, 2019
-fix: output not showing Image.php  
+update: cleanup time backup_update.php  
+fix: output not showing ImageProxy.php  
 update: add text-shadow to logo.description  
 fix: inserting incorrect var into array function_fanartp.php  
 fix: Undefined index trivia_update.php  

@@ -2153,4 +2153,11 @@ CREATE TABLE `categories` (
         'query' => 'DROP TABLE `site_config`',
         'flush' => true,
     ],
+    [
+        'id' => 1548615583,
+        'info' => 'Update Cleanup Time',
+        'date' => '27 Jan, 2019',
+        'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600, clean_time = UNIX_TIMESTAMP(NOW()) WHERE `clean_title` = "Backup Clean"',
+        'flush' => false,
+    ],
 ];
