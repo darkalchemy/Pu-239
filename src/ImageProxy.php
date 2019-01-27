@@ -129,16 +129,19 @@ class ImageProxy
     protected function optimize(string $path, bool $failed, bool $debug)
     {
         if (mime_content_type($path) !== 'image/gif') {
-            $temp = '/dev/shm/temp.jpg';
-            if ($debug) {
-                'Filesize before: ' . filesize($path) . "\n";
-            }
+            $temp = tempnam('/dev/shm', 'optimize');
             $optimizerChain = OptimizerChainFactory::create();
             try {
+                if ($debug) {
+                    $before = filesize($path);
+                }
                 $optimizerChain->setTimeout(5)->optimize($path, $temp);
                 rename($temp, $path);
                 if ($debug) {
-                    echo 'Filesize after: ' . filesize($path) . "\n";
+                    $after = filesize($path);
+                    $result = ($after - $before) / $before;
+                    $bytes = mksize($before - $after);
+                    echo sprintf("Optimize Results: %.2f%% (%s)\n", $result * 100, $bytes);
                 }
             } catch (\Exception $e) {
                 unlink($temp);
