@@ -94,7 +94,7 @@ function stdhead($title = '', $stdhead = null)
                 $banner = "
                     <div class='left50'>
                         <h1>{$site_config['tagline']['banner']}</h1>
-                        <p class='description left20'><i>{$site_config['tagline']['tagline']}</i></p>
+                        <p class='description text-shadow left20'><i>{$site_config['tagline']['tagline']}</i></p>
                     </div>";
             } else {
                 $banner = "
