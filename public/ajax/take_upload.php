@@ -9,7 +9,7 @@ check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
-$image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+$image_proxy = new Pu239\ImageProxy();
 
 header('content-type: application/json');
 

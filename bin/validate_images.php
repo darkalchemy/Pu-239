@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 
-$image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+$image_proxy = new Pu239\ImageProxy();
 $paths = [
     IMAGES_DIR . 'proxy',
 ];

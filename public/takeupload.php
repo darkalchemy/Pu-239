@@ -401,7 +401,7 @@ if (!$id) {
 $torrent_stuffs->remove_torrent($infohash);
 $torrent_stuffs->get_torrent_from_hash($infohash);
 $cache->delete('peers_' . $owner_id);
-$peer = new DarkAlchemy\Pu239\Peer();
+$peer = new Pu239\Peer();
 $peer->getPeersFromUserId($owner_id);
 clear_image_cache();
 

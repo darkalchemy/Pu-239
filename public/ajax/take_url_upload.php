@@ -27,7 +27,7 @@ if (!filter_var($url, FILTER_VALIDATE_URL)) {
 }
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
-$image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+$image_proxy = new Pu239\ImageProxy();
 $SaLt = $site_config['site']['salt'];
 $SaLty = $site_config['site']['salty'];
 $skey = $site_config['site']['skey'];

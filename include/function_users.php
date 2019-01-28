@@ -468,7 +468,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     global $site_config, $user_stuffs;
 
     $users_data = $user_stuffs->getUserFromId($user_id);
-    $peer = new DarkAlchemy\Pu239\Peer();
+    $peer = new Pu239\Peer();
     $peers = $peer->getPeersFromUserId($user_id);
     $tag = $tag ? '@' : '';
 

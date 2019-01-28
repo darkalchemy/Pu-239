@@ -13,26 +13,26 @@ $dotenv->load();
 
 $free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
 require_once INCL_DIR . 'function_password.php';
-$cache = new DarkAlchemy\Pu239\Cache();
-$fluent = new DarkAlchemy\Pu239\Database();
-$session = new DarkAlchemy\Pu239\Session();
+$cache = new Pu239\Cache();
+$fluent = new Pu239\Database();
+$session = new Pu239\Session();
 require_once INCL_DIR . 'site_settings.php';
-$user_stuffs = new DarkAlchemy\Pu239\User();
-$torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
-$image_stuffs = new DarkAlchemy\Pu239\Image();
-$comment_stuffs = new DarkAlchemy\Pu239\Comment();
-$failed_logins = new DarkAlchemy\Pu239\FailedLogin();
-$message_stuffs = new DarkAlchemy\Pu239\Message();
-$ip_stuffs = new DarkAlchemy\Pu239\IP();
-$ban_stuffs = new DarkAlchemy\Pu239\Ban();
-$searchcloud_stuffs = new DarkAlchemy\Pu239\Searchcloud();
-$post_stuffs = new DarkAlchemy\Pu239\Post();
-$referer_stuffs = new DarkAlchemy\Pu239\Referer();
-$achievement_stuffs = new DarkAlchemy\Pu239\Achievement();
-$usersachiev_stuffs = new DarkAlchemy\Pu239\Usersachiev();
-$pollvoter_stuffs = new DarkAlchemy\Pu239\PollVoter();
-$happylog_stuffs = new DarkAlchemy\Pu239\HappyLog();
-$snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
+$user_stuffs = new Pu239\User();
+$torrent_stuffs = new Pu239\Torrent();
+$image_stuffs = new Pu239\Image();
+$comment_stuffs = new Pu239\Comment();
+$failed_logins = new Pu239\FailedLogin();
+$message_stuffs = new Pu239\Message();
+$ip_stuffs = new Pu239\IP();
+$ban_stuffs = new Pu239\Ban();
+$searchcloud_stuffs = new Pu239\Searchcloud();
+$post_stuffs = new Pu239\Post();
+$referer_stuffs = new Pu239\Referer();
+$achievement_stuffs = new Pu239\Achievement();
+$usersachiev_stuffs = new Pu239\Usersachiev();
+$pollvoter_stuffs = new Pu239\PollVoter();
+$happylog_stuffs = new Pu239\HappyLog();
+$snatched_stuffs = new Pu239\Snatched();
 
 if ($site_config['socket']) {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
@@ -1807,7 +1807,7 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
         return (!empty($site_config['anonymizer_url']) ? $site_config['anonymizer_url'] : '') . $url;
     }
     if ($site_config['image_proxy']) {
-        $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+        $image_proxy = new Pu239\ImageProxy();
         $image = $image_proxy->get_image($url, $width, $height, $quality);
 
         if (!$image) {

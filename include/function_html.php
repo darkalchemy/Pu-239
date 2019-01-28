@@ -343,7 +343,7 @@ function placeholder_image($size = 10)
 
     $image = $cache->get('placeholder_image_' . $size);
     if ($image === false || is_null($image)) {
-        $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+        $image_proxy = new Pu239\ImageProxy();
         $image = $image_proxy->create_image($size, $size, '#7d7e7d');
         $image = 'data:image/jpeg;base64, ' . base64_encode($image);
         $cache->set('placeholder_image_' . $size, $image, 0);

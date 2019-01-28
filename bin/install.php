@@ -183,7 +183,7 @@ function add_user($values)
 {
     global $site_config;
 
-    $fluent = new DarkAlchemy\Pu239\Database();
+    $fluent = new Pu239\Database();
     $user_id = $fluent->insertInto('users')
         ->values($values)
         ->execute();

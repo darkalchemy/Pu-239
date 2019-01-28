@@ -19,7 +19,7 @@ if (!empty($CURUSER)) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
 
-    $peer = new DarkAlchemy\Pu239\Peer();
+    $peer = new Pu239\Peer();
     $seed = $peer->getPeersFromUserId($CURUSER['id']);
 
     if (!empty($seed['conn'])) {

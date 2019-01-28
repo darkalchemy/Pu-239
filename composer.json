@@ -1,50 +1,50 @@
 {
-  "require": {
-    "php": ">=7.2.0",
-    "ext-bz2": "*",
-    "ext-ctype": "*",
-    "ext-curl": "*",
-    "ext-dom": "*",
-    "ext-exif": "*",
-    "ext-fileinfo": "*",
-    "ext-gd": "*",
-    "ext-iconv": "*",
-    "ext-imagick": "*",
-    "ext-json": "*",
-    "ext-mbstring": "*",
-    "ext-mysqli": "*",
-    "ext-pdo": "*",
-    "ext-posix": "*",
-    "ext-simplexml": "*",
-    "ext-sockets": "*",
-    "ext-xml": "*",
-    "ext-zend-opcache": "*",
-    "ext-zip": "*",
-    "ext-zlib": "*",
-    "blocktrail/cryptojs-aes-php": "^0.1.0",
-    "envms/fluentpdo": "^v2.1.0",
-    "friendsofphp/php-cs-fixer": "^2.14",
-    "google/recaptcha": "^1.2",
-    "guzzlehttp/guzzle": "~6.0",
-    "imdbphp/imdbphp": "^6.0",
-    "intervention/image": "^2.4",
-    "league/flysystem": "^1.0",
-    "matthiasmullie/scrapbook": "^1.4",
-    "mp091689/dump-die": "^1.0",
-    "nette/mail": "^2.4",
-    "php-curl-class/php-curl-class": "^8.3",
-    "scriptotek/google-books": "^0.2.3",
-    "sebastian/version": "^2.0",
-    "spatie/image": "^1.4",
-    "spatie/image-optimizer": "^1.0",
-    "vlucas/phpdotenv": "^2.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "DarkAlchemy\\Pu239\\": "src"
+    "require": {
+      "php": ">=7.2.0",
+        "ext-bz2": "*",
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-exif": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
+        "ext-imagick": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-mysqli": "*",
+        "ext-pdo": "*",
+        "ext-posix": "*",
+        "ext-simplexml": "*",
+        "ext-sockets": "*",
+        "ext-xml": "*",
+        "ext-zend-opcache": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*",
+        "blocktrail/cryptojs-aes-php": "^0.1.0",
+        "envms/fluentpdo": "^v2.1.0",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "google/recaptcha": "^1.2",
+        "guzzlehttp/guzzle": "~6.0",
+        "imdbphp/imdbphp": "^6.0",
+        "intervention/image": "^2.4",
+        "league/flysystem": "^1.0",
+        "matthiasmullie/scrapbook": "^1.4",
+        "mp091689/dump-die": "^1.0",
+        "nette/mail": "^2.4",
+        "php-curl-class/php-curl-class": "^8.3",
+        "scriptotek/google-books": "^0.2.3",
+        "sebastian/version": "^2.0",
+        "spatie/image": "^1.4",
+        "spatie/image-optimizer": "^1.0",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pu239\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

@@ -12,7 +12,7 @@ check_user_status();
 global $CURUSER, $site_config, $session, $cache, $user_stuffs, $BLOCKS, $torrent_stuffs, $comment_stuffs;
 
 $isfree = [];
-$coin_stuffs = new DarkAlchemy\Pu239\Coin();
+$coin_stuffs = new Pu239\Coin();
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkAlchemy\Pu239;
+namespace Pu239;
 
 use MatthiasMullie\Scrapbook\Adapters\Couchbase;
 use MatthiasMullie\Scrapbook\Adapters\Apc;

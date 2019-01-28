@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkAlchemy\Pu239;
+namespace Pu239;
 
 use Spatie\Image\Image;
 use Intervention\Image\ImageManager;

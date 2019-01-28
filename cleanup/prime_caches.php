@@ -10,8 +10,8 @@ function prime_caches($data)
     $time_start = microtime(true);
     global $fluent, $torrent_stuffs, $user_stuffs, $snatched_stuffs;
 
-    $peer_stuffs = new DarkAlchemy\Pu239\Peer();
-    $event_stuffs = new DarkAlchemy\Pu239\Event();
+    $peer_stuffs = new Pu239\Peer();
+    $event_stuffs = new Pu239\Event();
 
     set_time_limit(1200);
     ignore_user_abort(true);
