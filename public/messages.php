@@ -27,7 +27,7 @@ $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 $maxbox = 100 * ($CURUSER['class'] + 1);
 $maxboxes = 5 * ($CURUSER['class'] + 1);
 
-$returnto = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
+$returnto = !empty($_GET['returnto']) ? $_GET['returnto'] : !empty($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
 $possible_actions = [
     'view_mailbox',
     'use_draft',

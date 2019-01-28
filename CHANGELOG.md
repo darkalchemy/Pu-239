@@ -1,3 +1,6 @@
+### 28 Jan, 2019
+fix: hitrun_update.php
+
 ### 27 Jan, 2019
 fix: array_reverse log_viewer.php  
 update: cleanup time backup_update.php  

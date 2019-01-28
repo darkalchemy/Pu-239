@@ -62,7 +62,7 @@ function hitrun_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $_users[] = '(' . sqlesc($bad_users['userid']) . ',' . sqlesc($bad_users['count']) . ',0, \'yes\',' . $modcom . ')';
+                $_users[] = '(' . sqlesc($bad_users['userid']) . ',' . sqlesc($bad_users['username']) . ',' . sqlesc($bad_users['count']) . ',0, \'yes\',' . $modcom . ')';
 
                 $update['hit_and_run_total'] = ($bad_users['hit_and_run_total'] + $bad_users['count']);
                 $cache->update_row('user' . $bad_users['userid'], [
@@ -78,7 +78,7 @@ function hitrun_update($data)
             $message_stuffs->insert($_pms);
         }
         if (count($_users) > 0) {
-            sql_query('INSERT INTO users(id,hit_and_run_total,downloadpos,hnrwarn,modcomment) VALUES ' . implode(',', $_users) . ' ON DUPLICATE KEY UPDATE hit_and_run_total=hit_and_run_total + VALUES(hit_and_run_total),downloadpos = VALUES(downloadpos),hnrwarn = VALUES(hnrwarn),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users(id, username, hit_and_run_total, downloadpos, hnrwarn, modcomment) VALUES ' . implode(',', $_users) . ' ON DUPLICATE KEY UPDATE hit_and_run_total=hit_and_run_total + VALUES(hit_and_run_total),downloadpos = VALUES(downloadpos),hnrwarn = VALUES(hnrwarn),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
 
         $_pms = $_users = [];
