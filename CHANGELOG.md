@@ -1,6 +1,7 @@
 ### 28 Jan, 2019
+update: composer.json  
 remove: DarkAlchemy from namespace  
-fix: hitrun_update.php
+fix: hitrun_update.php  
 
 ### 27 Jan, 2019
 fix: array_reverse log_viewer.php  
