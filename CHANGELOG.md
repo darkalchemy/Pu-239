@@ -2,6 +2,8 @@
 bump: version to .6  
 update: README  
 update: dependencies  
+update: check log file being viewed, for easy deletion log_viewer.php  
+fix: empty $cats partials/categories.php  
 
 ### 28 Jan, 2019
 update: composer.json  
