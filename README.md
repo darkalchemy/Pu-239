@@ -1,7 +1,7 @@
-# Pu-239 v0.5
+# Pu-239 v0.6
 
 ## Goals:
-1. Updated to PHP 7.2 - default settings - Done
+1. Update to PHP 7.3 - default settings - Done
 2. Error free with MySQL 8.0 strict mode - default settings - Mostly Done
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
@@ -19,7 +19,7 @@ This is a fork of U-232 V4.
 PHP 7.2+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.3.  
-[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.6.0.  
+[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.7.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.  
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.  
 
@@ -46,7 +46,7 @@ couchbase(untested)
 file(FlySystem)
 
 # data storage
-MySQL or MariaDB or Percona MySQL
+MySQL, MariaDB or Percona MySQL
 Adminer is included, only user #1 has access, others can be added, by id
 ```
 ### To Install:
@@ -74,7 +74,7 @@ innodb_large_prefix = 1 # Percona removed this in 8.0, MariaDB deprecated this i
 innodb_file_per_table = 1
 
 # add/modify this in [mysqld] to increase payload capacity
-max_allowed_packet = 64M ## this may need to be increased as your user count increases
+max_allowed_packet = 128M ## this may need to be increased as your user count increases
 
 # add/modify this in [mysqld] to stop autoincrement on insert ignore(optional)
 innodb_autoinc_lock_mode = 0
@@ -138,7 +138,6 @@ git pull
 
 # update dependancies:
 composer install
-composer dump-autoload -o
 npm install
 sudo php bin/set_perms.php
 php bin/uglify.php
@@ -166,10 +165,10 @@ php bin/uglify.php
 ```
 
 ### Adding, removing changing classes   
-Make any changes, then run php bin/uglify.php to concatenate, minify and gzip the files for use.
+Make any changes, then run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.
 
 ### Cache Engines  
-couchbase, apcu, memcached, redis or file. file is set as default set in .env. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
+couchbase, apcu, memcached, redis or file. file is set as the default and is set in the .env file. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
 
 ### Image Proxy:  
 An image proxy for hot linked images is built in, enabled by default, disable/enable in staff panel => site settings, this allows for browser image caching and images with http when site is https

@@ -349,8 +349,8 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ";
-    </script>";
+        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ';
+    </script>';
 
     $htmlfoot .= "
     <script src='" . get_file_name('jquery_js') . "'></script>

@@ -1,3 +1,8 @@
+### 03 Feb, 2019
+bump: version to .6  
+update: README  
+update: dependencies  
+
 ### 28 Jan, 2019
 update: composer.json  
 remove: DarkAlchemy from namespace  
