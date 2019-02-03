@@ -2,7 +2,7 @@
 
 ## Goals:
 1. Updated to PHP 7.2 - default settings - Done
-2. Error free with MySQL 5.7 strict mode - default settings - Mostly Done
+2. Error free with MySQL 8.0 strict mode - default settings - Mostly Done
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
 5. Update all javascript files to remove jquery dependency
@@ -17,7 +17,7 @@
 
 This is a fork of U-232 V4.  
 PHP 7.2+ is required.  
-MySQL 5.6 is required. MySQL 5.7 recommended.  
+MySQL 5.6 is required. MySQL 8.0 recommended.  
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.3.  
 [NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.6.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.  
