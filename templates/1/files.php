@@ -12,13 +12,13 @@ function get_file_name($file)
         case 'css':
             return "{$site_config['baseurl']}/css/1/css_3236dad0.css";
         case 'vendor_css':
-            return "{$site_config['baseurl']}/css/1/vendor_e11d3062.css";
+            return "{$site_config['baseurl']}/css/1/vendor_0adb4a45.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_c7768740.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_909f15fe.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/1/main_896fdceb.css";
+            return "{$site_config['baseurl']}/css/1/main_0fc82e46.css";
         case 'main_js':
-            return "{$site_config['baseurl']}/js/1/main_3a013c91.js";
+            return "{$site_config['baseurl']}/js/1/main_0ee654d8.js";
         case 'vendor_js':
             return "{$site_config['baseurl']}/js/1/vendor_dcc85e11.js";
         case 'jquery_js':
@@ -36,7 +36,7 @@ function get_file_name($file)
         case 'scroller_js':
             return "{$site_config['baseurl']}/js/1/scroller_13b47ab3.js";
         case 'slider_js':
-            return "{$site_config['baseurl']}/js/1/slider_5b7c19a1.js";
+            return "{$site_config['baseurl']}/js/1/slider_b7916982.js";
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/1/userdetails_88ffe01b.js";
         case 'recaptcha_js':
@@ -50,7 +50,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_b9321b99.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_da981a70.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

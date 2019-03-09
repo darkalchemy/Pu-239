@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 global $pdo, $fluent;
 
 $fluent = new Pu239\Database();

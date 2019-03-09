@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 
 $host = $_ENV['DB_HOST'];
 $user = $_ENV['DB_USERNAME'];

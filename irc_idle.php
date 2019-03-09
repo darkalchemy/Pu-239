@@ -15,7 +15,7 @@ foreach ($vars as $k => $v) {
 if ($key !== $vars['key'] || empty($vars['username'])) {
     die('hmm something looks odd');
 }
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/include/bittorrent.php';
 dbconn();
 switch ($vars['do']) {
     case 'check':

@@ -23,7 +23,6 @@
         "ext-zlib": "*",
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "envms/fluentpdo": "^v2.1.0",
-        "friendsofphp/php-cs-fixer": "^2.14",
         "google/recaptcha": "^1.2",
         "guzzlehttp/guzzle": "~6.0",
         "imdbphp/imdbphp": "^6.0",
@@ -54,5 +53,8 @@
         "post-update-cmd": [
             "composer dump-autoload -o"
         ]
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14"
     }
 }

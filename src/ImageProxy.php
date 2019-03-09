@@ -77,7 +77,7 @@ class ImageProxy
             return false;
         }
         chmod($path, 0775);
-        if ($this->optimize($path, false, true)) {
+        if ($this->optimize($path, false, false)) {
             return true;
         }
 
@@ -115,7 +115,7 @@ class ImageProxy
                 Image::load($path)
                     ->save($new_path, $quality);
             }
-            $this->optimize($new_path, false, true);
+            $this->optimize($new_path, false, false);
         }
 
         return $hash;
@@ -193,7 +193,7 @@ class ImageProxy
             return false;
         }
         $image->save($new_path);
-        $this->optimize($new_path, false, true);
+        $this->optimize($new_path, false, false);
 
         return $hash;
     }

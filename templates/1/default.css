@@ -138,6 +138,7 @@ iframe {
 .iframe {
     width: 1px;
     min-width: 100%;
+    height: 600px;
 }
 
 fieldset {

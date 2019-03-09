@@ -72,7 +72,6 @@ function stdhead($title = '', $stdhead = null)
         </script>
         <script src='https://www.google.com/recaptcha/api.js?render={$_ENV['RECAPTCHA_SITE_KEY']}'></script>";
     }
-
     $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
     $htmlout .= "
 </head>
@@ -342,6 +341,7 @@ function stdfoot($stdfoot = false)
             $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
         }
     }
+    $height = !empty($CURUSER['ajaxchat_height']) ? $CURUSER['ajaxchat_height'] . 'px' : '600px';
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
@@ -349,8 +349,9 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ';
-    </script>';
+        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ";
+        var chat_height = '$height';
+    </script>";
 
     $htmlfoot .= "
     <script src='" . get_file_name('jquery_js') . "'></script>

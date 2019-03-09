@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../../include/bittorrent.php';
 global $site_config, $fluent, $cache, $session, $user_stuffs;
 
 extract($_POST);

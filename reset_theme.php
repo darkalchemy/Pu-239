@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/include/bittorrent.php';
 check_user_status();
 $lang = load_language('global');
 global $CURUSER, $site_config, $cache;

@@ -1,7 +1,7 @@
 <?php
 
 $time_start = microtime(true);
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 global $fluent, $site_config;
 
 if (!file_exists(CACHE_DIR . 'anime-titles.dat.gz')) {

@@ -320,6 +320,11 @@ $(function () {
         document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
         document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';
     }
+
+    var iframe_ajaxchat = document.getElementById('iframe_ajaxchat');
+    if (iframe_ajaxchat) {
+        iframe_ajaxchat.style.height = chat_height;
+    }
 });
 
 var vidWidth = $('.object-fit-video').width();

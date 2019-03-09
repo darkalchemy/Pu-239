@@ -3,7 +3,7 @@
 if (empty($_GET['wantusername'])) {
     die('<div class="margin10 has-text-info">You can\'t post nothing please enter a username!</div>');
 }
-require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../../include/bittorrent.php';
 dbconn();
 global $site_config;
 

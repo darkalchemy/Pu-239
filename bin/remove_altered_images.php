@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 
 $image_proxy = new Pu239\ImageProxy();
 $path = IMAGES_DIR . 'proxy/';
