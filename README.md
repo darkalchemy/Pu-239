@@ -29,7 +29,7 @@ A quick site intro video is available [here](https://www.youtube.com/watch?v=LyW
 
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177) 
 
-There is a demo site available at [Pu-239](https://pu-239.pw:59595) (self-signed certificate). It's a bit slow, but it's all I can do. :)
+There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)
 
 #### Please log in as a non-privileged user, NOT root, to install this.  
 ### Prior to install:
