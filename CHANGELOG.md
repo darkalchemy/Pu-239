@@ -1,5 +1,5 @@
 ### 10 Mar, 2019
-update: check user upload credit is >= torrent size before allow torrent download  
+update: check user upload credit is >= torrent size before allow torrent download, download.php, announce.php    
 update: restrict user class to 3 active downloads at one time  
 
 ### 09 Mar, 2019
