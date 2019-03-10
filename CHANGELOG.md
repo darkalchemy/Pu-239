@@ -1,6 +1,7 @@
 ### 09 Mar, 2019
-update: dependancies
-remove: "dirname(__FILE__, 2)" not correctly parsed bu IDE
+update: hide AJAX Chat until loaded  
+update: dependancies  
+remove: "dirname(__FILE__, 2)" not correctly parsed bu IDE  
 
 ### 03 Feb, 2019
 bump: version to .6  
