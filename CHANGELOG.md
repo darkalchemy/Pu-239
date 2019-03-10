@@ -1,3 +1,7 @@
+### 10 Mar, 2019
+update: check user upload credit is >= torrent size before allow torrent download  
+update: restrict user class to 3 active downloads at one time  
+
 ### 09 Mar, 2019
 update: hide AJAX Chat until loaded  
 update: dependancies  

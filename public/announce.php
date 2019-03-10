@@ -89,6 +89,11 @@ if (!$user) {
     err('Your account is parked! (Read the FAQ)');
 } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
     err('Your downloading privileges have been disabled! (Read the rules)');
+} elseif ($user['class'] === 0 && $seeder === 'no') {
+    $count = $peer_stuffs->get_torrent_count($torrent['id'], $torrent_pass, true);
+    if ($count > 3) {
+        err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
+    }
 }
 
 $userid = $user['id'];
@@ -200,7 +205,8 @@ if ($compact != 1) {
 
 if (!isset($self)) {
     foreach ($peers as $peer) {
-        if (strtolower($peer['peer_id']) === strtolower($peer_id) || strtolower($peer['peer_id']) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
+        if (strtolower($peer['peer_id']) === strtolower($peer_id) || strtolower($peer['peer_id']) === strtolower(preg_replace('/ *$/s',
+                '', $peer_id))) {
             $userid = $peer['userid'];
             $self = $peer;
         }
@@ -247,7 +253,7 @@ if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 if (!isset($self)) {
-    $count = $peer_stuffs->get_torrent_count($torrent['id'], $torrent_pass);
+    $count = $peer_stuffs->get_torrent_count($torrent['id'], $torrent_pass, false);
     if ($count > 3) {
         err('Connection limit exceeded!');
     }
