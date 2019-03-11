@@ -1,3 +1,7 @@
+### 11 Mar, 2019
+fix: delete staff cache when changing user class  
+update: add check if seeder when checking if $user['uploaded'] < $torrent['size']  
+
 ### 10 Mar, 2019
 update: check user upload credit is >= torrent size before allow torrent download, download.php, announce.php    
 update: restrict user class to 3 active downloads at one time  

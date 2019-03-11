@@ -96,6 +96,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $curuser_cache['class'] = $class;
         $user_cache['class'] = $class;
         $cache->delete('user_icons_' . $userid);
+        $cache->delete('is_staff_');
         $modcomment = get_date($dt, 'DATE', 1) . " - $what {$lang['modtask_to']} '" . get_user_class_name($class) . "'{$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
     }
     if ((isset($_POST['donated'])) && (($donated = $_POST['donated']) != $user['donated'])) {
