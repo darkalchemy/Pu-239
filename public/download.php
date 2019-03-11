@@ -40,7 +40,7 @@ if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'
 if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus_per_download'])) {
     stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]");
 }
-if ($user['uploaded'] < $row['size']) {
+if (($user['uploaded'] - $user['uploaded']) < $row['size']) {
     stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]");
 }
 if ($row['vip'] == 1 && $user['class'] < UC_VIP) {

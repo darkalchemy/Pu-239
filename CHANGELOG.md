@@ -1,4 +1,5 @@
 ### 11 Mar, 2019
+update: compare uploaded-downloaded to torrent size  
 fix: incorrect cache name used staff_settings_ should be is_staff_  
 fix: delete staff cache when changing user class  
 update: add check if seeder when checking if $user['uploaded'] < $torrent['size']  

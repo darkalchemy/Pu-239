@@ -94,7 +94,7 @@ if (!$user) {
     if ($count > 3) {
         err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
     }
-} elseif ($seeder === 'no' && $user['uploaded'] < $torrent['size']) {
+} elseif ($seeder === 'no' && ($user['uploaded'] - $user['downloaded']) < $torrent['size']) {
     err('You do not have enough upload credit to download this torrent.');
 }
 
