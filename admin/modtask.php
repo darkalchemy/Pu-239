@@ -933,7 +933,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
 
     status_change($userid);
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
-        $cache->delete('staff_settings_');
+        $cache->delete('is_staff_');
     }
     if (!empty($setbits) || !empty($countbits)) {
         sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);

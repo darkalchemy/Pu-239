@@ -230,7 +230,7 @@ unset($values);
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
 if ($users_count === 0) {
-    $cache->delete('staff_settings_');
+    $cache->delete('is_staff_');
 }
 
 $subject = 'Welcome';

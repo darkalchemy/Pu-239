@@ -7,6 +7,6 @@ class_check($class);
 
 global $site_config, $cache, $session;
 
-$cache->delete('staff_settings_');
+$cache->delete('is_staff_');
 $session->set('is-success', 'Staff List Updated');
 header("Location: {$site_config['baseurl']}/staffpanel.php");

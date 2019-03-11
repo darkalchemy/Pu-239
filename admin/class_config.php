@@ -222,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_POST);
             $cache->delete('class_config_' . $style);
             update_forum_classes($value, 'increment');
-            $cache->delete('staff_settings_');
+            $cache->delete('is_staff_');
         }
     } elseif ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'],
