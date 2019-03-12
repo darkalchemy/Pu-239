@@ -1,3 +1,6 @@
+### 12 Mar, 2019
+update: restrict check user upload credit is >= torrent size to user class  
+
 ### 11 Mar, 2019
 update: compare uploaded-downloaded to torrent size  
 fix: incorrect cache name used staff_settings_ should be is_staff_  
