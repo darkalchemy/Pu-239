@@ -1,4 +1,5 @@
 ### 12 Mar, 2019
+fix: typo  
 update: restrict check user upload credit is >= torrent size to user class  
 
 ### 11 Mar, 2019
