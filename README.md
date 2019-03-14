@@ -19,7 +19,7 @@ This is a fork of U-232 V4.
 PHP 7.2+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.4.  
-[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^10.15.3.  
+[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.9.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.  
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.  
 
@@ -152,13 +152,14 @@ php bin/validate_images.php
 ```
 
 ### API's 
-reCAPTCHA V3 needs both the site key and secret key set in .env.  
-Fanart.tv needs api key set in .env.  
-TMDb API key allows upcoming movies and many images.  
-OMDb API key allows movies and tv lookup.  
-Google API key allows up to 1000 api hits instead of 100 per day, set in .env.  
-IMDb no key needed, allow movies and tv lookup.  
-TVMaze no key needed, allows tv lookup.  
+reCAPTCHA V3 API needs both the site key and secret key.  
+Fanart.tv API provides posters, backgrounds and banners and needs an api key.  
+TMDb API allows upcoming movies and posters and needs an api key.  
+OMDb API allows movies and tv lookup and needs an api key.  
+Google API allows up to 1000 api hits instead of 100 per day, api key is optional.  
+IMDb API allow movies and tv lookup, no key needed.  
+TVMaze allows tv lookup and posters, no key needed.  
+API keys are set in .env.  
 
 ### Making Changes to css/js files  
 Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:
@@ -169,11 +170,18 @@ php bin/uglify.php
 ### Adding, removing changing classes   
 Make any changes, then run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.
 
+### Production
+Production creates minified javascript and css files when running uglify.php.  
+After changing the setting 'in_production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
+```$site_config['in_production'] = false;```
+
+
 ### Cache Engines  
-couchbase, apcu, memcached, redis or file. file is set as the default and is set in the .env file. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
+couchbase, apcu, memcached, redis or file. 'file' is set as the default and is set in the .env file. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
 
 ### Image Proxy:  
-An image proxy for hot linked images is built in, enabled by default, disable/enable in staff panel => site settings, this allows for browser image caching and images with http when site is https
+An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https
+```$site_config['image_proxy'] = true;```
 
 ### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
