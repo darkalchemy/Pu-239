@@ -1,4 +1,5 @@
 ### 14 Mar, 2019
+update: italicize new upload title  
 fix: categories not displaying browse.php  
 update: README  
 update: imdbphp  

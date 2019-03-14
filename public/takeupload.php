@@ -406,9 +406,9 @@ $peer->getPeersFromUserId($owner_id);
 clear_image_cache();
 
 if (isset($uplver) && $uplver === 'yes') {
-    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id&hit=1] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
+    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
-    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id&hit=1] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
+    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
