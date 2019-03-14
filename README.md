@@ -180,7 +180,7 @@ After changing the setting 'in_production' you will need to run ```php bin/uglif
 couchbase, apcu, memcached, redis or file. 'file' is set as the default and is set in the .env file. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
 
 ### Image Proxy:  
-An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https
+An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
 ```$site_config['image_proxy'] = true;```
 
 ### Notes: 
