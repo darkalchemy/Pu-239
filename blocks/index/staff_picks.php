@@ -31,7 +31,7 @@ if ($staff_picks === false || is_null($staff_picks)) {
         ->leftJoin('categories AS c ON t.category = c.id')
         ->leftJoin('categories AS p ON c.parent_id = p.id')
         ->where('t.staff_picks != 0')
-        ->orderBy('t.seeders + t.leechers DESC')
+        ->orderBy('t.staff_picks DESC')
         ->limit($site_config['staff_picks_limit']);
 
     foreach ($torrents as $torrent) {
