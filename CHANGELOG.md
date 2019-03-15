@@ -1,4 +1,5 @@
 ### 15 Mar, 2019
+update: README
 fix: modify user security settings without requiring password change  
 
 ### 14 Mar, 2019

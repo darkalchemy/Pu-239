@@ -60,7 +60,7 @@ git clone https://github.com/darkalchemy/Pu-239.git
 cd Pu-239
 
 # install dependancies
-composer install
+composer install -a
 npm install
 
 # set webroot to path Pu-239/public
@@ -139,7 +139,7 @@ git pull
 # check to see if there are any database updates, from the staff panel
 
 # update dependancies:
-composer install
+composer install -a (in_production add: --no-dev)
 npm install
 sudo php bin/set_perms.php
 php bin/uglify.php
