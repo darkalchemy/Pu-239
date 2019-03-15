@@ -11,7 +11,7 @@ if (empty($BLOCKS)) {
 }
 
 foreach ($argv as $arg) {
-    if ($arg === 'update' || $arg === 'all') {
+    if (!$site_config['in_production'] && ($arg === 'update' || $arg === 'all')) {
         passthru('composer self-update');
         passthru('sudo npm install -g npm');
         passthru('composer update');
@@ -355,7 +355,7 @@ foreach ($styles as $folder) {
 
 echo "All CSS and Javascript files processed\n";
 foreach ($argv as $arg) {
-    if ($arg === 'fix' || $arg === 'all') {
+    if (!$site_config['in_production'] && ($arg === 'fix' || $arg === 'all')) {
         passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
     }
 }

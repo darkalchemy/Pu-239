@@ -1,5 +1,6 @@
 ### 15 Mar, 2019
-update: README
+update: remove dev options when site is in_production uglify.php  
+update: README  
 fix: modify user security settings without requiring password change  
 
 ### 14 Mar, 2019
