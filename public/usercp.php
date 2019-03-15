@@ -463,9 +463,9 @@ if ($action === 'avatar') {
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] === 'no' ? ' checked' : '') . ' value="no"> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
     $HTMLOUT .= tr($lang['usercp_chpass'], "
-                                        <input type='password' name='chpassword' id='myElement1' class='w-100' data-display='myDisplayElement1' autocomplete='on' required minlength='6'> 
+                                        <input type='password' name='chpassword' id='myElement1' class='w-100' data-display='myDisplayElement1' autocomplete='on' minlength='6'> 
                                         <div id='myDisplayElement1'></div>
-                                        <input type='password' name='passagain' id='myElement2' class='w-100' data-display='myDisplayElement2' autocomplete='on' required minlength='6'> 
+                                        <input type='password' name='passagain' id='myElement2' class='w-100' data-display='myDisplayElement2' autocomplete='on' minlength='6'> 
                                         <div id='myDisplayElement2'></div>
                                         <p class='top20 bottom10'>You must enter your current password.</p>
                                         <input type='password' name='current_pass' class='w-100' placeholder='Current Password'>", 1);

@@ -1,3 +1,6 @@
+### 15 Mar, 2019
+fix: modify user security settings without requiring password change  
+
 ### 14 Mar, 2019
 update: order staff picks block by timestamp  
 update: italicize new upload title  
