@@ -1,6 +1,6 @@
 ### 16 Mar, 2019
+fix: minimum table column widths for head and body  
 fix: maintain anonymous when adding rep to anonymous  
-fix: minimum table column widths  
 fix: page format forums.php  
 
 ### 15 Mar, 2019
