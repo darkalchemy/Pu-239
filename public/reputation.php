@@ -39,13 +39,13 @@ if (!$check) {
     rep_output('Incorrect Access');
 }
 if ($rep_locale === 'posts') {
-    $forum = sql_query('SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read,
-users.username, users.reputation
-FROM posts
-LEFT JOIN topics ON topic_id = topics.id
-LEFT JOIN forums ON topics.forum_id = forums.id
-LEFT JOIN users ON posts.user_id = users.id
-WHERE posts.id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__, __LINE__);
+    $forum = sql_query('SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read, posts.anonymous as anon,
+                            users.username, users.reputation
+                        FROM posts
+                        LEFT JOIN topics ON topic_id = topics.id
+                        LEFT JOIN forums ON topics.forum_id = forums.id
+                        LEFT JOIN users ON posts.user_id = users.id
+                        WHERE posts.id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__, __LINE__);
 } elseif ($rep_locale === 'comments') {
     $forum = sql_query('SELECT comments.id, comments.user AS userid, comments.anonymous AS anon,
      comments.torrent AS locale,
@@ -258,9 +258,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                             </td>
                         </tr>";
     } else {
-        $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?',
-            ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
+        $res['username'] = $res['anon'] === 'yes' ? 'Anonymous' : $res['username'];
+        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', htmlsafechars($res['username']));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
         $html = "
@@ -294,13 +293,13 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                 <tr>
                                                     <td>
                                                         {$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
-                                                        <input type='text' size='40' maxlength='250' name='reason'>
+                                                        <input type='text' maxlength='250' name='reason' class='w-100'>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </fieldset>
                                     </div>
-                                    <div>
+                                    <div class='has-text-centered padding10'>
                                         <input type='hidden' name='act' value='reputation'>
                                         <input type='hidden' name='do' value='addrep'>
                                         <input type='hidden' name='pid' value='{$input['pid']}'>
