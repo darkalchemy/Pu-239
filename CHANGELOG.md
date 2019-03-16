@@ -1,4 +1,5 @@
 ### 16 Mar, 2019
+update: main.php  
 update: cleanup interval 'delete torrents' 'backup clean'  
 update: remove never seeded torrents 2 hours after uploaded  
 fix: remove torrent comments when deleting torrent  

@@ -36,7 +36,6 @@ require_once CONFIG_DIR . 'hnr.php';
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
 $site_config['min_interval'] = 60 * 15;
-$site_config['connectable_check'] = true;
 $site_config['signup_timeout'] = 86400 * 3;
 $site_config['sub_max_size'] = 500 * 1024;
 $site_config['minvotes'] = 1;
@@ -302,6 +301,7 @@ $site_config['use_12_hour'] = true;
 
 $site_config['sql_debug'] = true;
 $site_config['ip_logging'] = false;
+$site_config['connectable_check'] = true;
 $site_config['require_connectable'] = true;
 $site_config['socket'] = false;
 $site_config['nfo_size'] = 65536;
