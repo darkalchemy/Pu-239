@@ -1,5 +1,5 @@
 ### 16 Mar, 2019
-update: remove user from AJAX Chat Online when logout  
+update: remove user from AJAX Chat Online when logout or leave index page  
 fix: free leech stat AJAX Chat  
 update: youtube bbcode  
 remove: html5.js  

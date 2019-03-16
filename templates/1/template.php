@@ -14,7 +14,7 @@ function stdhead($title = '', $stdhead = null)
     require_once INCL_DIR . 'function_breadcrumbs.php';
     require_once INCL_DIR . 'function_html.php';
     require_once 'navbar.php';
-    global $CURUSER, $site_config, $BLOCKS, $session;
+    global $CURUSER, $site_config, $BLOCKS, $session, $fluent;
 
     if (!$site_config['site_online']) {
         if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
@@ -38,6 +38,11 @@ function stdhead($title = '', $stdhead = null)
         }
     }
 
+    if (!empty($CURUSER) && $_SERVER['PHP_SELF'] != '/index.php') {
+        $fluent->deleteFrom('ajax_chat_online')
+            ->where('userID = ?', $CURUSER['id'])
+            ->execute();
+    }
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
