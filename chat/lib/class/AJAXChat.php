@@ -2820,7 +2820,7 @@ class AJAXChat
                 $offset = $stats['dst_in_use'] ? ($stats['time_offset'] + 1) * 3600 : $stats['time_offset'] * 3600;
                 $stats['last_access'] = $stats['last_access'] + $offset;
                 $stats['added'] = $stats['added'] + $offset;
-                $stats['free_switch'] = $stats['free_switch'] + $offset;
+                $stats['free_switch'] = !empty($stats['free_switch']) ? $stats['free_switch'] + $offset : 0;
                 $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
                 $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
                 $uploaded = '[color=#00FF00]' . mksize($stats['uploaded']) . '[/color]';

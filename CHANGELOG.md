@@ -1,4 +1,5 @@
 ### 16 Mar, 2019
+fix: free leech stat AJAX Chat  
 update: youtube bbcode  
 remove: html5.js  
 update: youtube video to 1920x1080  
