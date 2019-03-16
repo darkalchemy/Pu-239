@@ -219,13 +219,13 @@ if (mysqli_num_rows($r) > 0) {
         $a_downloaded = $site_config['ratio_free'] ? (int) $a['size'] : (int) $a['downloaded'];
         $bytes = $a_downloaded - (int) $a['uploaded'];
         if ($diff >= $bytes) {
-            $buybytes = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "&amp;bytes=$bytes'><span class='has-text-success' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
+            $buybytes = "<a href='{$site_config['baseurl']}/hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "&amp;bytes=$bytes'><span class='has-text-success' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
         } else {
             $buybytes = '';
         }
 
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
-        //            $sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
+        //$sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
         $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
         $body .= "
@@ -248,6 +248,6 @@ if (mysqli_num_rows($r) > 0) {
     $completed .= main_table($body, $header);
 } else {
     $session->set('is-success', '[color=#' . get_user_class_color($class) . ']' . $username . "[/color] {$lang['userdetails_no_hnrs']}");
-    $completed = main_div(format_username($userid) . " doesn't have any HnRs");
+    $completed = main_div("<div class='padding20'>" . format_username($userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();
