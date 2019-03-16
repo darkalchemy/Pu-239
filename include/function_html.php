@@ -384,7 +384,6 @@ function doc_head()
     return "<!doctype html>
 <html>
 <head>
-    <!--[if lt IE 9]><script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script><![endif]-->
     <meta charset='{$site_config['char_set']}'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
