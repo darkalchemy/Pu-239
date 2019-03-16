@@ -1,4 +1,5 @@
 ### 16 Mar, 2019
+fix: AJAX Chat user stas timestamp  
 update: page format  
 update: main.php  
 update: cleanup interval 'delete torrents' 'backup clean'  
