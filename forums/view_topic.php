@@ -588,8 +588,8 @@ foreach ($posts as $arr) {
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
             <td colspan="3">
-                <div class="columns level-center">
-                    <div class="column is-one-quarter level">
+                <div class="columns level">
+                    <div class="column is-one-quarter">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '">' : '') . '
                         <input id="' . $dlink . '" type="hidden" value="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '">
                         <span onclick="copy_to_clipboard(\'' . $dlink . '\')">
@@ -603,10 +603,10 @@ foreach ($posts as $arr) {
                         </span>' . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '
                         <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy">' : get_user_ratio_image($usersdata['uploaded'], ($site_config['ratio_free'] ? '0' : $usersdata['downloaded']))) . '
                     </div>
-                    <div class="column is-one-quarter has-text-centered">
-                        <span>' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ':<br>' . get_date($arr['added'], '') . '</span>
+                    <div class="column has-text-centered is-one-quarter">
+                        ' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . '
                     </div>
-                    <div class="column">
+                    <div class="column has-text-right is-half">
                         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_quote'] . '</a>
                         ' . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $usersdata['id']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_modify'] . '</a> 
                         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_remove'] . '</a>' : '') . '
