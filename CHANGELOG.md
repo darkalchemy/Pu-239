@@ -1,3 +1,6 @@
+### 16 Mar, 2019
+fix: maintain anonymous when adding rep to anonymous  
+
 ### 15 Mar, 2019
 update: remove dev options when site is in_production uglify.php  
 update: README  

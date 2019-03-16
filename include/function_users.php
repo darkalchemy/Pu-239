@@ -59,7 +59,7 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
+function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $anonymous = false)
 {
     global $site_config, $CURUSER, $user_stuffs;
 
@@ -77,7 +77,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             return '<span title="Cache doesn\'t exist or zero length" class="tooltipper">Reputation: Offline</span>';
         }
         $user['g_rep_hide'] = isset($user['g_rep_hide']) ? $user['g_rep_hide'] : 0;
-        $user['username'] = ($user['anonymous'] != 'yes') ? $user['username'] : 'Anonymous';
+        $user['username'] = $anonymous || $user['anonymous'] === 'yes' ? 'Anonymous' : $user['username'];
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
             $user_reputation = $reputations[$max_rep];

@@ -126,7 +126,7 @@ function commenttable($rows, $variant = 'torrent')
             <div class='columns'>
                 <span class='margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
                     {$avatar}
-                    <div>" . get_reputation($row['user'], 'comments') . "</div>
+                    <div>" . get_reputation($row['user'], 'comments', true, 0, $row['anonymous']) . "</div>
                 </span>
                 <span class='margin10 bg-02 round10 column'>
                     $text

@@ -589,7 +589,7 @@ switch ($action) {
 
         $body .= main_div("
             <h2>{$lang['fm_members_currently_active']}</h2>
-	        <p>{$forum_users}</p>", 'bottom20 has-text-centered') . $legend;
+	        <div class='padding10'>{$forum_users}</div>", 'bottom20 has-text-centered') . $legend;
         $HTMLOUT .= $body;
         break;
 }

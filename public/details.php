@@ -455,7 +455,7 @@ $uprow = $torrent['anonymous'] === 'yes' ? (!$moderator && !$owner ? '' : $rowus
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
 $torrent_cache['rep'] = $user_stuffs->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
-    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', $torrent['anonymous'], $id);
+    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', $torrent['anonymous'], $id, $torrent['anonymous']);
     $audit .= tr('Reputation', "
         <div class='level-left left10'>
             $member_reputation counts towards uploaders Reputation

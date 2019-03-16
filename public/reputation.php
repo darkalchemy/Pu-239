@@ -253,7 +253,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                     </fieldset><br>";
         }
         $html .= "
-                                    <div class='formsubtitle'><strong>{$rep_points}</strong></div>
+                                    <div class='has-text-white has-text-weight-bold has-text-centered formsubtitle'>{$rep_points}</div>
                                 </div>
                             </td>
                         </tr>";
@@ -333,7 +333,9 @@ function rep_output($msg = '', $html = '')
     $htmlout = doc_head() . "
     <meta property='og:title' content='Reputation System'>
     <title>Reputation System</title>
+    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
 </head>
 <body class='$body_class'>
     <script>
