@@ -546,7 +546,9 @@ switch ($action) {
                                         </a>
                                     </span>
                                 </span>
-                            </div>' : '') . '
+                            </div>' : '
+                                </span>
+                            </div>') . '
                             <div> ' . $forum_description . '</div>' . $child_boards . $now_viewing . '
                         </td>
                         <td class="w-25">
