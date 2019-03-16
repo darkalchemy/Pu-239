@@ -13,10 +13,24 @@ function delete_torrents_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $days = 45;
-    $dt = (TIME_NOW - ($days * 86400));
+    $hours = 2;
+    $dt = TIME_NOW - ($hours * 3600);
     $i = 1;
-    $torrents = $fluent->from('torrents')
+    $never_seeded = $fluent->from('torrents')
+        ->select(null)
+        ->select('id')
+        ->select('owner')
+        ->select('name')
+        ->select('info_hash')
+        ->where('last_action = added')
+        ->where('last_action < ?', $dt)
+        ->where('seeders = 0')
+        ->where('leechers = 0');
+
+    $days = 45;
+    $dt = TIME_NOW - ($days * 86400);
+    $i = 1;
+    $dead = $fluent->from('torrents')
         ->select(null)
         ->select('id')
         ->select('owner')
@@ -28,7 +42,23 @@ function delete_torrents_update($data)
 
     $values = [];
     $dt = TIME_NOW;
-    foreach ($torrents as $torrent) {
+    foreach ($never_seeded as $torrent) {
+        $torrent_stuffs->delete_by_id($torrent['id']);
+        $torrent_stuffs->remove_torrent($torrent['info_hash']);
+        $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
+        $values[] = [
+            'sender' => 0,
+            'receiver' => $torrent['owner'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => 'Torrent Deleted [Dead]',
+        ];
+        if ($data['clean_log']) {
+            write_log($msg);
+        }
+    }
+
+    foreach ($dead as $torrent) {
         $torrent_stuffs->delete_by_id($torrent['id']);
         $torrent_stuffs->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";

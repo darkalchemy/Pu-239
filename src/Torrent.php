@@ -41,6 +41,10 @@ class Torrent
         $query->bindParam(1, $tid);
         $query->execute();
 
+        $this->fluent->deleteFrom('comments')
+            ->where('torrent = ?', $tid)
+            ->execute();
+
         $this->fluent->deleteFrom('coins')
             ->where('torrentid = ?', $tid)
             ->execute();

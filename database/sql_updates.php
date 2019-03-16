@@ -2160,4 +2160,11 @@ CREATE TABLE `categories` (
         'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600, clean_time = UNIX_TIMESTAMP(NOW()) WHERE `clean_title` = "Backup Clean"',
         'flush' => false,
     ],
+    [
+        'id' => 1552736561,
+        'info' => 'Update Cleanup Time',
+        'date' => '16 Mar, 2019',
+        'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600, clean_time = UNIX_TIMESTAMP(NOW()) WHERE `clean_title` = "Delete Torrents"',
+        'flush' => false,
+    ],
 ];
