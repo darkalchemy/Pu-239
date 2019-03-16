@@ -187,7 +187,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                     $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username($postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
-    <td class='row2' width='1%'><img src='{$site_config['pic_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
+    <td class='row2'><img src='{$site_config['pic_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
     <td class='row2'>{$postrep['reason']}</td>
 </tr>";
             }

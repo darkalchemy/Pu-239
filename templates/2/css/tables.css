@@ -115,7 +115,7 @@ table {
     overflow: auto;
 }
 
-.table > thead > tr > th {
+.table > thead > tr > th,
+.table > tbody > tr > td {
     min-width: calc(1.5em + 25px);
 }
-
