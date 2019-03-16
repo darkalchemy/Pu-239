@@ -10,11 +10,11 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/1/chat_uranium_2769ea27.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_3236dad0.css";
+            return "{$site_config['baseurl']}/css/1/css_9a31a696.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/1/vendor_0adb4a45.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_909f15fe.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_cd1fbaa2.css";
         case 'main_css':
             return "{$site_config['baseurl']}/css/1/main_0fc82e46.css";
         case 'main_js':
@@ -50,7 +50,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_da981a70.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_96310d29.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

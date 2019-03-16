@@ -106,11 +106,15 @@ table {
     background-color: rgba(0, 0, 0, .4);
 }
 
-.table tbody > tr:not(.no_hover):hover > td {
+.table > tbody > tr:not(.no_hover):hover > td {
     background-color: rgba(0, 0, 0, .5);
     transition: all .35s ease-in-out;
 }
 
 .table-wrapper {
     overflow: auto;
+}
+
+.table > thead > tr > th {
+    min-width: calc(1.5em + 25px);
 }
