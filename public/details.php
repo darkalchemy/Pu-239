@@ -250,7 +250,7 @@ if (!empty($torrent['youtube'])) {
         $youtube = "
             <a id='youtube-hash'></a>
             <div class='responsive-container'>
-                <iframe width='1920px' height='1080px' data-src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' controls autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe>
+                <iframe width='1920' height='1080' src='https://www.youtube.com/embed/{$youtube_id}?enablejsapi=1autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
             </div>";
     }
 }
