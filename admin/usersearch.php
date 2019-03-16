@@ -4,12 +4,13 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
+
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
+$search = array_merge($_POST, $_GET);
 $lang = array_merge($lang, load_language('ad_usersearch'));
-
 $oldest = $cache->get('oldest_');
 if ($oldest === false || is_null($oldest)) {
     $oldest = $fluent->from('users')
@@ -36,13 +37,12 @@ $HTMLOUT .= "
         <h1 class='has-text-centered'>{$lang['usersearch_window_title']}</h1>";
 
 $HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
-
 $HTMLOUT .= "
     <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=usersearch'>";
 $body = "
         <tr>
             <td class='w-1'>{$lang['usersearch_name']}</td>
-            <td class='w-10'><input name='n' type='text' value='" . (isset($_POST['n']) ? $_POST['n'] : '') . "' class='w-100'></td>
+            <td class='w-10'><input name='n' type='text' value='" . (isset($search['n']) ? $search['n'] : '') . "' class='w-100'></td>
             <td class='w-1'>{$lang['usersearch_ratio']}</td>
             <td class='w-10'>
                 <select name='rt' class='w-100'>";
@@ -54,12 +54,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['rt']) && $_POST['rt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['rt']) && $search['rt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='r' type='number' step='.1' value='" . (isset($_POST['r']) ? $_POST['r'] : '') . "' maxlength='4' class='top10 w-100'>
-                <input name='r2' type='number' step='.1' value='" . (isset($_POST['r2']) ? $_POST['r2'] : '') . "' maxlength='4' class='top10 w-100'>
+                <input name='r' type='number' step='.1' value='" . (isset($search['r']) ? $search['r'] : '') . "' maxlength='4' class='top10 w-100'>
+                <input name='r2' type='number' step='.1' value='" . (isset($search['r2']) ? $search['r2'] : '') . "' maxlength='4' class='top10 w-100'>
             </td>
             <td class='w-1'>{$lang['usersearch_status']}</td>
             <td class='w-10'>
@@ -71,7 +71,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['st']) && $_POST['st'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['st']) && $search['st'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -79,9 +79,9 @@ $body .= "
         </tr>
         <tr>
             <td>{$lang['usersearch_email']}</td>
-            <td><input name='em' type='text' value='" . (isset($_POST['em']) ? $_POST['em'] : '') . "' class='w-100'></td>
+            <td><input name='em' type='text' value='" . (isset($search['em']) ? $search['em'] : '') . "' class='w-100'></td>
             <td>{$lang['usersearch_ip']}</td>
-            <td><input name='ip' type='text' value='" . (isset($_POST['ip']) ? $_POST['ip'] : '') . "' maxlength='17' class='w-100'></td>
+            <td><input name='ip' type='text' value='" . (isset($search['ip']) ? $search['ip'] : '') . "' maxlength='17' class='w-100'></td>
             <td>{$lang['usersearch_acstatus']}</td>
             <td>
                 <select name='as' class='w-100'>";
@@ -92,7 +92,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['as']) && $_POST['as'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['as']) && $search['as'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -100,15 +100,15 @@ $body .= "
         </tr>
         <tr>
             <td>{$lang['usersearch_comments']}</td>
-            <td><input name='co' type='text' value='" . (isset($_POST['co']) ? $_POST['co'] : '') . "' class='w-100'></td>
+            <td><input name='co' type='text' value='" . (isset($search['co']) ? $search['co'] : '') . "' class='w-100'></td>
             <td>{$lang['usersearch_mask']}</td>
-            <td><input name='ma' type='text' value='" . (isset($_POST['ma']) ? $_POST['ma'] : '') . "' maxlength='17' class='w-100'></td>
+            <td><input name='ma' type='text' value='" . (isset($search['ma']) ? $search['ma'] : '') . "' maxlength='17' class='w-100'></td>
             <td>{$lang['usersearch_class']}</td>
             <td>
                 <select name='c' class='w-100'>
                     <option value=''>{$lang['usersearch_any']}</option>";
 
-$class = isset($_POST['c']) ? (int) $_POST['c'] : '';
+$class = isset($search['c']) ? (int) $search['c'] : '';
 if (!is_valid_id($class)) {
     $class = '';
 }
@@ -136,16 +136,17 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['dt']) && $_POST['dt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['dt']) && $search['dt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='d' type='date' value='" . (isset($_POST['d']) ? $_POST['d'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
-                <input name='d2' type='date' value='" . (isset($_POST['d2']) ? $_POST['d2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='d' type='date' value='" . (isset($search['d']) ? $search['d'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='d2' type='date' value='" . (isset($search['d2']) ? $search['d2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_uploaded']}</td>
             <td>
                 <select name='ult' id='ult' class='w-100'>";
+
 $options = [
     $lang['usersearch_equal'],
     $lang['usersearch_above'],
@@ -154,12 +155,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['ult']) && $_POST['ult'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['ult']) && $search['ult'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='ul' type='number' id='ul' maxlength='7' value='" . (isset($_POST['ul']) ? $_POST['ul'] : '') . "' class='top10 w-100'>
-                <input name='ul2' type='number' id='ul2' maxlength='7' value='" . (isset($_POST['ul2']) ? $_POST['ul2'] : '') . "' class='top10 w-100'>
+                <input name='ul' type='number' id='ul' maxlength='7' value='" . (isset($search['ul']) ? $search['ul'] : '') . "' class='top10 w-100'>
+                <input name='ul2' type='number' id='ul2' maxlength='7' value='" . (isset($search['ul2']) ? $search['ul2'] : '') . "' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_donor']}</td>
             <td>
@@ -171,7 +172,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['do']) && $_POST['do'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['do']) && $search['do'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -189,12 +190,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['lst']) && $_POST['lst'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['lst']) && $search['lst'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='ls' type='date' value='" . (isset($_POST['ls']) ? $_POST['ls'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
-                <input name='ls2' type='date' value='" . (isset($_POST['ls2']) ? $_POST['ls2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='ls' type='date' value='" . (isset($search['ls']) ? $search['ls'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='ls2' type='date' value='" . (isset($search['ls2']) ? $search['ls2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_downloaded']}</td>
             <td>
@@ -207,12 +208,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['dlt']) && $_POST['dlt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['dlt']) && $search['dlt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='dl' type='number' id='dl' maxlength='7' value='" . (isset($_POST['dl']) ? $_POST['dl'] : '') . "' class='top10 w-100'>
-                <input name='dl2' type='number' id='dl2' maxlength='7' value='" . (isset($_POST['dl2']) ? $_POST['dl2'] : '') . "' class='top10 w-100'>
+                <input name='dl' type='number' id='dl' maxlength='7' value='" . (isset($search['dl']) ? $search['dl'] : '') . "' class='top10 w-100'>
+                <input name='dl2' type='number' id='dl2' maxlength='7' value='" . (isset($search['dl2']) ? $search['dl2'] : '') . "' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_warned']}</td>
             <td>
@@ -224,7 +225,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($_POST['w']) && $_POST['w'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($search['w']) && $search['w'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -235,10 +236,10 @@ $body .= "
             <td></td>
             <td>{$lang['usersearch_active']}</td>
             <td>
-                <input name='ac' type='checkbox' value='1'" . (isset($_POST['ac']) ? ' checked' : '') . ">
+                <input name='ac' type='checkbox' value='1'" . (isset($search['ac']) ? ' checked' : '') . ">
             </td>
             <td>{$lang['usersearch_banned']}</td>
-            <td><input name='dip' type='checkbox' value='1'" . (isset($_POST['dip']) ? ' checked' : '') . "></td>
+            <td><input name='dip' type='checkbox' value='1'" . (isset($search['dip']) ? ' checked' : '') . "></td>
         </tr>
         <tr>
             <td colspan='6' class='has-text-centered'><input name='submit' type='submit' class='button is-small margin20'></td>
@@ -248,7 +249,9 @@ $HTMLOUT .= main_table($body) . '
 
 function is_set_not_empty($param)
 {
-    if (isset($_POST[$param]) && !empty($_POST[$param])) {
+    global $search;
+
+    if (isset($search[$param]) && !empty($search[$param])) {
         return true;
     } else {
         return false;
@@ -280,10 +283,10 @@ function haswildcard($text)
     }
 }
 
-if (!empty($_POST)) {
+if (!empty($search)) {
     $name_is = '';
     $names_exc = 0;
-    $names = isset($_POST['n']) ? explode(' ', trim($_POST['n'])) : [
+    $names = isset($search['n']) ? explode(' ', trim($search['n'])) : [
         0 => '',
     ];
     if ($names[0] !== '') {
@@ -335,11 +338,11 @@ if (!empty($_POST)) {
             }
             $where_is .= $name_is . ')';
         }
-        $q1 .= ($q1 ? '&amp;' : '') . 'n=' . urlencode(trim($_POST['n']));
+        $q1 .= ($q1 ? '&amp;' : '') . 'n=' . urlencode(trim($search['n']));
     }
     // email
     if (is_set_not_empty('em')) {
-        $emaila = explode(' ', trim($_POST['em']));
+        $emaila = explode(' ', trim($search['em']));
         if ($emaila[0] !== '') {
             $where_is .= !empty($where_is) ? ' AND (' : '(';
             foreach ($emaila as $email) {
@@ -362,27 +365,27 @@ if (!empty($_POST)) {
                 }
             }
             $where_is .= $email_is . ')';
-            $q1 .= ($q1 ? '&amp;' : '') . 'em=' . urlencode(trim($_POST['em']));
+            $q1 .= ($q1 ? '&amp;' : '') . 'em=' . urlencode(trim($search['em']));
         }
     }
     //class
     // NB: the c parameter is passed as two units above the real one
-    $class = is_set_not_empty('c') ? $_POST['c'] - 2 : -2;
+    $class = is_set_not_empty('c') ? $search['c'] - 2 : -2;
     if (is_valid_id($class + 1)) {
         $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.class=$class";
         $q1 .= ($q1 ? '&amp;' : '') . 'c=' . ($class + 2);
     }
     // IP
     if (is_set_not_empty('ip')) {
-        $ip = trim($_POST['ip']);
+        $ip = trim($search['ip']);
         $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
         if (!preg_match($regex, $ip)) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_badip']);
             stdfoot();
             die();
         }
-        $mask = trim($_POST['ma']);
-        if ($mask == '' || $mask === '255.255.255.255') {
+        $mask = trim($search['ma']);
+        if (empty($mask) || $mask === '255.255.255.255') {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.ip = '$ip'";
         } else {
             if (substr($mask, 0, 1) == '/') {
@@ -406,7 +409,7 @@ if (!empty($_POST)) {
     }
     // ratio
     if (is_set_not_empty('r')) {
-        $ratio = trim($_POST['r']);
+        $ratio = trim($search['r']);
         if ($ratio == '---') {
             $ratio2 = '';
             $where_is .= !empty($where_is) ? ' AND ' : '';
@@ -423,10 +426,10 @@ if (!empty($_POST)) {
             }
             $where_is .= !empty($where_is) ? ' AND ' : '';
             $where_is .= ' (u.uploaded/u.downloaded)';
-            $ratiotype = $_POST['rt'];
+            $ratiotype = (int) $search['rt'];
             $q1 .= ($q1 ? '&amp;' : '') . "rt=$ratiotype";
-            if ($ratiotype == '3') {
-                $ratio2 = trim($_POST['r2']);
+            if ($ratiotype === 3) {
+                $ratio2 = trim($search['r2']);
                 if (!$ratio2) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badratio2']);
                     stdfoot();
@@ -439,9 +442,9 @@ if (!empty($_POST)) {
                 }
                 $where_is .= " BETWEEN $ratio and $ratio2";
                 $q1 .= ($q1 ? '&amp;' : '') . "r2=$ratio2";
-            } elseif ($ratiotype == '2') {
+            } elseif ($ratiotype === 2) {
                 $where_is .= " < $ratio";
-            } elseif ($ratiotype == '1') {
+            } elseif ($ratiotype === 1) {
                 $where_is .= " > $ratio";
             } else {
                 $where_is .= " BETWEEN ($ratio - 0.004) and ($ratio + 0.004)";
@@ -451,7 +454,7 @@ if (!empty($_POST)) {
     }
     // comment
     if (is_set_not_empty('co')) {
-        $comments = explode(' ', trim($_POST['co']));
+        $comments = explode(' ', trim($search['co']));
         if ($comments[0] !== '') {
             foreach ($comments as $comment) {
                 if (substr($comment, 0, 1) == '~') {
@@ -500,14 +503,14 @@ if (!empty($_POST)) {
                 }
                 $where_is .= $comment_is . ')';
             }
-            $q1 .= ($q1 ? '&amp;' : '') . 'co=' . urlencode(trim($_POST['co']));
+            $q1 .= ($q1 ? '&amp;' : '') . 'co=' . urlencode(trim($search['co']));
             $where_is .= (isset($where_is) ? ' AND ' : '') . 'u.class<' . $CURUSER['class'];
         }
     }
     $unit = 1073741824; // 1GB
     // uploaded
     if (is_set_not_empty('ul')) {
-        $ul = trim($_POST['ul']);
+        $ul = trim($search['ul']);
         if (!is_numeric($ul) || $ul < 0) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_badup']);
             stdfoot();
@@ -515,10 +518,10 @@ if (!empty($_POST)) {
         }
         $where_is .= !empty($where_is) ? ' AND ' : '';
         $where_is .= ' u.uploaded ';
-        $ultype = $_POST['ult'];
+        $ultype = (int) $search['ult'];
         $q1 .= ($q1 ? '&amp;' : '') . "ult=$ultype";
-        if ($ultype == '3') {
-            $ul2 = trim($_POST['ul2']);
+        if ($ultype === 3) {
+            $ul2 = trim($search['ul2']);
             if (!$ul2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badup2']);
                 stdfoot();
@@ -531,9 +534,9 @@ if (!empty($_POST)) {
             }
             $where_is .= ' BETWEEN ' . $ul * $unit . ' and ' . $ul2 * $unit;
             $q1 .= ($q1 ? '&amp;' : '') . "ul2=$ul2";
-        } elseif ($ultype == '2') {
+        } elseif ($ultype === 2) {
             $where_is .= ' < ' . $ul * $unit;
-        } elseif ($ultype == '1') {
+        } elseif ($ultype === 1) {
             $where_is .= ' >' . $ul * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($ul - 0.004) * $unit . ' and ' . ($ul + 0.004) * $unit;
@@ -542,7 +545,7 @@ if (!empty($_POST)) {
     }
     // downloaded
     if (is_set_not_empty('dl')) {
-        $dl = trim($_POST['dl']);
+        $dl = trim($search['dl']);
         if (!is_numeric($dl) || $dl < 0) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_baddl']);
             stdfoot();
@@ -550,10 +553,10 @@ if (!empty($_POST)) {
         }
         $where_is .= !empty($where_is) ? ' AND ' : '';
         $where_is .= ' u.downloaded ';
-        $dltype = $_POST['dlt'];
+        $dltype = (int) $search['dlt'];
         $q1 .= ($q1 ? '&amp;' : '') . "dlt=$dltype";
-        if ($dltype == '3') {
-            $dl2 = trim($_POST['dl2']);
+        if ($dltype === 3) {
+            $dl2 = trim($search['dl2']);
             if (!$dl2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_baddl2']);
                 stdfoot();
@@ -566,9 +569,9 @@ if (!empty($_POST)) {
             }
             $where_is .= ' BETWEEN ' . $dl * $unit . ' and ' . $dl2 * $unit;
             $q1 .= ($q1 ? '&amp;' : '') . "dl2=$dl2";
-        } elseif ($dltype == '2') {
+        } elseif ($dltype === 2) {
             $where_is .= ' < ' . $dl * $unit;
-        } elseif ($dltype == '1') {
+        } elseif ($dltype === 1) {
             $where_is .= ' > ' . $dl * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($dl - 0.004) * $unit . ' and ' . ($dl + 0.004) * $unit;
@@ -577,82 +580,53 @@ if (!empty($_POST)) {
     }
     // date joined
     if (is_set_not_empty('d')) {
-        $date = trim($_POST['d']);
-        if (!$date = strtotime($date)) {
-            stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
-            stdfoot();
-            die();
-        }
-        $q1 .= ($q1 ? '&amp;' : '') . "d=$date";
-        $datetype = $_POST['dt'];
+        $date = strtotime($search['d']);
+        $q1 .= ($q1 ? '&amp;' : '') . "d={$search['d']}";
+        $datetype = (int) $search['dt'];
         $q1 .= ($q1 ? '&amp;' : '') . "dt=$datetype";
-        if ($datetype == '0') {
-            // For mySQL 4.1.1 or above use instead
-            // $where_is .= (isset($where_is)?" AND ":"")."DATE(added) = DATE('$date')";
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . "(added - $date) BETWEEN 0 and 86400";
+        if ($datetype === 0) {
+            $date2 = $date + 86400;
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.added BETWEEN $date AND $date2";
         } else {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.added ';
-            if ($datetype == '3') {
-                $date2 = strtotime(trim($_POST['d2']));
-                if ($date2) {
-                    if (!$date = strtotime($date)) {
-                        stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
-                        stdfoot();
-                        die();
-                    }
-                    $q1 .= ($q1 ? '&amp;' : '') . "d2=$date2";
-                    $where_is .= " BETWEEN '$date' and '$date2'";
-                } else {
-                    stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
-                    stdfoot();
-                    die();
-                }
-            } elseif ($datetype == '1') {
-                $where_is .= "< '$date'";
-            } elseif ($datetype == '2') {
-                $where_is .= "> '$date'";
+            if ($datetype === 3) {
+                $date2 = strtotime($search['d2']) + 86400;
+                $q1 .= ($q1 ? '&amp;' : '') . "d2={$search['d2']}";
+                $where_is .= "BETWEEN $date AND $date2";
+            } elseif ($datetype === 1) {
+                $where_is .= "< $date";
+            } elseif ($datetype === 2) {
+                $where_is .= "> $date";
             }
         }
     }
     // date last seen
     if (is_set_not_empty('ls')) {
-        $last = trim($_POST['ls']);
-        if (!$last = strtotime($last)) {
-            stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
-            stdfoot();
-            die();
-        }
-        $q1 .= ($q1 ? '&amp;' : '') . "ls=$last";
-        $lasttype = $_POST['lst'];
-        $q1 .= ($q1 ? '&amp;' : '') . "lst=$lasttype";
-        if ($lasttype == '0') {
-            // For mySQL 4.1.1 or above use instead
-            // $where_is .= (isset($where_is)?" AND ":"")."DATE(added) = DATE('$date')";
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . "(last_access - $last) BETWEEN 0 and 86400";
+        $date = strtotime($search['ls']);
+        $q1 .= ($q1 ? '&amp;' : '') . "d={$search['ls']}";
+        $datetype = (int) $search['lst'];
+        $q1 .= ($q1 ? '&amp;' : '') . "lst=$datetype";
+        if ($datetype === 0) {
+            $date2 = $date + 86400;
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.last_access BETWEEN $date AND $date2";
         } else {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.last_access ';
-            if ($lasttype == '3') {
-                $last2 = strtotime(trim($_POST['ls2']));
-                if ($last2) {
-                    $where_is .= " BETWEEN '$last' and '$last2'";
-                    $q1 .= ($q1 ? '&amp;' : '') . "ls2=$last2";
-                } else {
-                    stdmsg($lang['usersearch_error'], $lang['usersearch_baddate2']);
-                    stdfoot();
-                    die();
-                }
-            } elseif ($lasttype == '1') {
-                $where_is .= "< '$last'";
-            } elseif ($lasttype == '2') {
-                $where_is .= "> '$last'";
+            if ($datetype === 3) {
+                $date2 = strtotime($search['ls2']) + 86400;
+                $q1 .= ($q1 ? '&amp;' : '') . "ls2={$search['ls2']}";
+                $where_is .= "BETWEEN $date AND $date2";
+            } elseif ($datetype === 1) {
+                $where_is .= "< $date";
+            } elseif ($datetype === 2) {
+                $where_is .= "> $date";
             }
         }
     }
     // status
     if (is_set_not_empty('st')) {
-        $status = $_POST['st'];
+        $status = (int) $search['st'];
         $where_is .= ((!empty($where_is)) ? ' AND ' : '');
-        if ($status == '1') {
+        if ($status === 1) {
             $where_is .= "u.status = 'confirmed'";
         } else {
             $where_is .= "u.status = 'pending'";
@@ -661,9 +635,9 @@ if (!empty($_POST)) {
     }
     // account status
     if (is_set_not_empty('as')) {
-        $accountstatus = $_POST['as'];
+        $accountstatus = (int) $search['as'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if ($accountstatus == '1') {
+        if ($accountstatus === 1) {
             $where_is .= " u.enabled = 'yes'";
         } else {
             $where_is .= " u.enabled = 'no'";
@@ -672,9 +646,9 @@ if (!empty($_POST)) {
     }
     //donor
     if (is_set_not_empty('do')) {
-        $donor = $_POST['do'];
+        $donor = (int) $search['do'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if ($donor == 1) {
+        if ($donor === 1) {
             $where_is .= " u.donor = 'yes'";
         } else {
             $where_is .= " u.donor = 'no'";
@@ -683,9 +657,9 @@ if (!empty($_POST)) {
     }
     //warned
     if (is_set_not_empty('w')) {
-        $warned = $_POST['w'];
+        $warned = (int) $search['w'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if ($warned == 1) {
+        if ($warned === 1) {
             $where_is .= " u.warned >= '1'";
         } else {
             $where_is .= " u.warned = '0'";
@@ -693,7 +667,7 @@ if (!empty($_POST)) {
         $q1 .= ($q1 ? '&amp;' : '') . "w=$warned";
     }
     // disabled IP
-    $disabled = isset($_POST['dip']) ? (int) $_POST['dip'] : '';
+    $disabled = isset($search['dip']) ? (int) $search['dip'] : '';
     if (!empty($disabled)) {
         $distinct = 'DISTINCT ';
         $join_is .= ' LEFT JOIN users AS u2 ON u.ip = u2.ip';
@@ -701,8 +675,8 @@ if (!empty($_POST)) {
         $q1 .= ($q1 ? '&amp;' : '') . "dip=$disabled";
     }
     // active
-    $active = isset($_POST['ac']) ? $_POST['ac'] : '';
-    if ($active == '1') {
+    $active = isset($search['ac']) ? $search['ac'] : '';
+    if ($active === 1) {
         $distinct = 'DISTINCT ';
         $join_is .= ' LEFT JOIN peers AS p ON u.id = p.userid';
         $q1 .= ($q1 ? '&amp;' : '') . "ac=$active";
@@ -710,13 +684,12 @@ if (!empty($_POST)) {
     $from_is = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
     $distinct = isset($distinct) ? $distinct : '';
     $where_is = !empty($where_is) ? $where_is : '';
-    $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
-    $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
-    $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
+    $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (empty($where_is) ? '' : " WHERE $where_is ");
+    $querypm = 'FROM ' . $from_is . (empty($where_is) ? ' ' : " WHERE $where_is ");
+    $announcement_query = 'SELECT u.id FROM ' . $from_is . (empty($where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
     $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, INET6_NTOA(u.ip) AS ip,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
-
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
     $count = $arr[0];
@@ -755,7 +728,7 @@ if (!empty($_POST)) {
                     ->where('INET6_NTOA(first) <= ?', $user['ip'])
                     ->where('INET6_NTOA(last) >= ?', $user['ip'])
                     ->fetch('count');
-                if ($count == 0) {
+                if ($count === 0) {
                     $ipstr = $user['ip'];
                 } else {
                     $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
