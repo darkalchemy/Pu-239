@@ -1,4 +1,5 @@
 ### 16 Mar, 2019
+fix: forum view topic format  
 fix: minimum table column widths for head and body  
 fix: maintain anonymous when adding rep to anonymous  
 fix: page format forums.php  
