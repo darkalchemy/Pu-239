@@ -2749,7 +2749,7 @@ class AJAXChat
     {
         $res = sql_query("SELECT COUNT(*) AS count FROM blackjack WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
-        $msg = '[color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
+        $msg = '[code][color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
 
         $res = sql_query("SELECT COUNT(*) AS count, SUM(amount) AS amount FROM casino_bets WHERE winner = ''") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
@@ -2758,7 +2758,8 @@ class AJAXChat
             $msg .= '[color=#00FF00]There are no Casino bets in play. [/color]';
         } else {
             $count = !empty($row[0]) ? count($row[0]) : 0;
-            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
+            $msg .= '
+[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
         }
 
         unset($row);
@@ -2767,7 +2768,8 @@ class AJAXChat
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
             $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
-            $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
+            $msg .= '
+' . $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
         }
 
         unset($row);
@@ -2776,22 +2778,25 @@ class AJAXChat
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
             $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
-            $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
+            $msg .= '
+' . $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
         }
 
         unset($row);
         $res = sql_query('SELECT SUM(win) FROM casino') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
         if ($row) {
-            $msg .= '[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url].[/color] ';
+            $msg .= '
+[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url].[/color] ';
         }
 
         $resbj = sql_query('SELECT SUM(bjwins) FROM users') or sqlerr(__FILE__, __LINE__);
         $bjsum = mysqli_fetch_row($resbj);
         if ($bjsum) {
-            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
+            $msg .= '
+[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
         }
-
+        $msg .= '[/code]';
         $type = null;
         $text = $msg . $type;
         $this->insertChatBotMessage($this->getChannel(), $text, 1, 600);
@@ -2882,7 +2887,30 @@ class AJAXChat
                 $str .= isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'warned.png[/img]' : '';
                 $str .= isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'pirate.png[/img]' : '';
 
-                $text = "[level]$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]{$enabled}[/level][color=#fff]idling in irc for:[/color]  {$ircidle}, [color=#fff]Member Since:[/color]  $joined, [color=#fff]Last Seen:[/color]  $seen, [color=#fff]Downloaded:[/color]  $downloaded, [color=#fff]Uploaded:[/color]  $uploaded, [color=#fff]Ratio:[/color]  $ratio, [color=#fff]Seedbonus:[/color]  $seedbonus, [color=#fff]Invites:[/color]  $invites, [color=#fff]Reputation:[/color]  $reputation, [color=#fff]HnRs:[/color]  $hnrs, [color=#fff]Snatched:[/color]  $snatched, [color=#fff]Seeding:[/color]  $seeding, [color=#fff]Seeding Size:[/color]  $volume, [color=#fff]Leeching:[/color]  $leeching, [color=#fff]Requirements Not Met:[/color]  $count_incomplete, [color=#fff]Connectable:[/color]  $connectable, [color=#fff]Uploads:[/color]  $uploads, [color=#fff]Earning Bonus:[/color]  $earns, [color=#fff]Casino:[/color]  $casino, [color=#fff]Blackjack:[/color]  $bj, [color=#fff]Freeleech Until:[/color]  $free, [color=#fff]Free/Double Slots:[/color]  {$freeslots}";
+                $text = "[code][level]$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]{$enabled}[/level]
+[color=#fff]idling in irc for:[/color]    $ircidle
+[color=#fff]Member Since:[/color]         $joined
+[color=#fff]Last Seen:[/color]            $seen
+[color=#fff]Downloaded:[/color]           $downloaded
+[color=#fff]Uploaded:[/color]             $uploaded
+[color=#fff]Ratio:[/color]                $ratio
+[color=#fff]Seedbonus:[/color]            $seedbonus
+[color=#fff]Invites:[/color]              $invites
+[color=#fff]Reputation:[/color]           $reputation
+[color=#fff]HnRs:[/color]                 $hnrs
+[color=#fff]Snatched:[/color]             $snatched
+[color=#fff]Seeding:[/color]              $seeding
+[color=#fff]Seeding Size:[/color]         $volume
+[color=#fff]Leeching:[/color]             $leeching
+[color=#fff]Requirements Not Met:[/color] $count_incomplete
+[color=#fff]Connectable:[/color]          $connectable
+[color=#fff]Uploads:[/color]              $uploads
+[color=#fff]Earning Bonus:[/color]        $earns
+[color=#fff]Casino:[/color]               $casino
+[color=#fff]Blackjack:[/color]            $bj
+[color=#fff]Freeleech Until:[/color]      $free
+[color=#fff]Free/Double Slots:[/color]    $freeslots
+[/code]";
                 $this->insertChatBotMessage($this->getPrivateMessageID(), $text, 1, 600);
             }
         }

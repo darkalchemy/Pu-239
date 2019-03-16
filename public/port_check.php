@@ -24,7 +24,7 @@ $completed = "
     <h1 class='has-text-centered'>$user Port Status</h1>";
 $completed .= main_div("
     <div id='ipports' data-uid='{$id}'></div>
-    <div class='columns top10 is-variable is-0-mobile is-1-tablet is-2-desktop'>
+    <div class='columns top10 is-variable is-0-mobile is-1-tablet is-2-desktop padding20'>
         <span class='has-text-centered column is-one-third'>
             <input class='w-100' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]'>
         </span>
