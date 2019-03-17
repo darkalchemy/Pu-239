@@ -111,9 +111,9 @@ function torrenttable($res, $variant = 'index')
         <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
                     <th class='has-text-centered min-350 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon' aria-hidden='true'></i></th>";
+                    <th class='has-text-centered tooltipper' title='Download'><i class='icon-download icon' aria-hidden='true'></i></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
@@ -122,20 +122,21 @@ function torrenttable($res, $variant = 'index')
                     </th>" : '');
     if ($variant === 'mytorrents') {
         $htmlout .= "
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_edit']}'>{$lang['torrenttable_edit']}</th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_visible']}'>{$lang['torrenttable_visible']}</th>";
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_edit']}'>{$lang['torrenttable_edit']}</th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_visible']}'>{$lang['torrenttable_visible']}</th>";
     }
     $htmlout .= "
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link2}'>{$lang['torrenttable_files']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link3}'>C</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link4}'>{$lang['torrenttable_added']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link5}'>{$lang['torrenttable_size']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=6&amp;type={$link6}'>{$lang['torrenttable_snatched']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link7}'>S</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link8}'>L</a></th>";
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link2}'>{$lang['torrenttable_files']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link3}'>C</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link4}'>{$lang['torrenttable_added']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link5}'>{$lang['torrenttable_size']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=6&amp;type={$link6}'>{$lang['torrenttable_snatched']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_to_go']}'>{$lang['torrenttable_to_go']}</th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link7}'>S</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link8}'>L</a></th>";
     if ($variant === 'index') {
         $htmlout .= "
-                    <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_uppedby']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=9&amp;type={$link9}'>{$lang['torrenttable_uppedby']}</a></th>";
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_uppedby']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=9&amp;type={$link9}'>{$lang['torrenttable_uppedby']}</a></th>";
     }
     if ($CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
@@ -165,6 +166,13 @@ function torrenttable($res, $variant = 'index')
             </tr>';
             }
             $prevdate = get_date($row['added'], 'DATE');
+        }
+        if ($row['to_go'] == -1) {
+            $to_go = '<div class="has-text-danger tooltipper" title="Never Snatched">--</div>';
+        } elseif ($row['to_go'] == 1) {
+            $to_go = "<div class='has-text-lime tooltipper' title='Download Complete'>100%</div>";
+        } else {
+            $to_go = "<div class='has-text-yellow tooltipper' title='Download In Progress'>" . number_format($row['to_go'], 1) . '%</div>';
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
@@ -394,6 +402,7 @@ function torrenttable($res, $variant = 'index')
         }
         $What_Script_S = "{$site_config['baseurl']}/snatches.php?id=";
         $htmlout .= "<td class='has-text-centered'><a href='$What_Script_S" . "$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
+        $htmlout .= "<td class='has-text-centered'>$to_go</td>";
         if ($row['seeders']) {
             if ($variant === 'index') {
                 if ($row['leechers']) {
