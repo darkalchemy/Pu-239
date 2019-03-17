@@ -142,7 +142,7 @@ if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
     $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
         ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
         ->having('to_go = -1');
-    $addparam.= "unsnatched=1&amp;";
+    $addparam .= 'unsnatched=1&amp;';
 } else {
     $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
         ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);

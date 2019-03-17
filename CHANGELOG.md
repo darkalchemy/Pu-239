@@ -1,4 +1,5 @@
 ### 17 Mar, 2019
+update: dependancies  
 add: select torrents by snatched or not snatched  
 add: percentage snatch completed browse.php  
 
