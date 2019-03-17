@@ -136,6 +136,17 @@ if (isset($_GET['vip'])) {
     }
     $addparam .= "vip={$_GET['vip']}&amp;";
 }
+if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
+    $count = $count->where('s.to_go IS NULL')
+        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
+        ->having('to_go = -1');
+    $addparam.= "unsnatched=1&amp;";
+} else {
+    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+}
 
 $cats = [];
 if (isset($_GET['cats'])) {
@@ -311,6 +322,13 @@ $only_free_box = "
                         <option value='1'" . ($only_free == 1 ? ' selected' : '') . ">{$lang['browse_only_free']}</option>
                     </select>";
 
+$unsnatched = ((isset($_GET['unsnatched'])) ? intval($_GET['unsnatched']) : '');
+$unsnatched_box = "
+                    <select name='unsnatched' class='w-100'>
+                        <option value='0'>{$lang['browse_all']}</option>
+                        <option value='1'" . ($unsnatched == 1 ? ' selected' : '') . ">{$lang['browse_all_unsnatched']}</option>
+                    </select>";
+
 $HTMLOUT .= main_div("
                 <div class='padding20'>
                     <div class='padding10 w-100'>
@@ -393,6 +411,9 @@ $HTMLOUT .= main_div("
                             </div>
                             <div class='column'>
                                 $only_free_box
+                            </div>
+                            <div class='column'>
+                                $unsnatched_box
                             </div>
                         </div>
                         <div id='autocomplete' class='w-100 bottom10'>

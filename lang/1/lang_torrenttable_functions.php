@@ -18,6 +18,7 @@ $lang = [
     'torrenttable_views' => 'Views',
     'torrenttable_hits' => 'Hits',
     'torrenttable_snatched' => 'Snatched',
+    'torrenttable_to_go' => 'To Go',
     'torrenttable_seeders' => 'Seeders',
     'torrenttable_leechers' => 'Leechers',
     'torrenttable_uppedby' => 'Upped by',

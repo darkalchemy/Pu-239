@@ -1,3 +1,7 @@
+### 17 Mar, 2019
+add: select torrents by snatched or not snatched  
+add: percentage snatch completed browse.php  
+
 ### 16 Mar, 2019
 update: remove user from AJAX Chat Online when logout or leave index page  
 fix: free leech stat AJAX Chat  
