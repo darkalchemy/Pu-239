@@ -8,4 +8,3 @@ $fluent->deleteFrom('ajax_chat_online')
     ->where('userID = ?', $CURUSER['id'])
     ->execute();
 $session->destroy();
-
