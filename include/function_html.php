@@ -320,9 +320,8 @@ function clear_image_cache()
     global $cache;
 
     $cache->deleteMulti([
-        'lastest_tor_',
-        'last5_tor_',
-        'top5_tor_',
+        'last5_torrents_',
+        'top5_torrents_',
         'scroll_torrents_',
         'slider_torrents_',
         'torrent_poster_count_',
