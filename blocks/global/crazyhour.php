@@ -14,7 +14,7 @@ if ($site_config['crazy_hour']) {
 
         $htmlout = $cz = '';
         $crazy_hour = (TIME_NOW + 3600);
-        $crazyhour['crazyhour'] = $cache->get('crazyhour');
+        $crazyhour['crazyhour'] = $cache->get('crazyhour_');
         if ($crazyhour['crazyhour'] === false || is_null($crazyhour['crazyhour'])) {
             $crazyhour['crazyhour_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             $crazyhour['crazyhour'] = [];
@@ -25,7 +25,7 @@ if ($site_config['crazy_hour']) {
                 $crazyhour['crazyhour']['amount'] = 0;
                 sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             }
-            $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
+            $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
         }
         $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!">';
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
@@ -36,7 +36,7 @@ if ($site_config['crazy_hour']) {
                 $crazyhour['crazyhour']['amount'] = 0;
                 $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);
                 sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
-                $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
+                $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
                 write_log('Next [color=#FFCC00][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '');
                 $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG');
                 autoshout($msg);
@@ -47,7 +47,7 @@ if ($site_config['crazy_hour']) {
                 $cz_lock = $cache->set('crazyhour_lock', 1, 10);
                 if ($cz_lock !== false) {
                     sql_query('UPDATE freeleech SET amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
-                    $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
+                    $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
                     write_log('w00t! It\'s [color=#FFCC00][b]Crazyhour[/b][/color]!');
                     $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                     autoshout($msg);

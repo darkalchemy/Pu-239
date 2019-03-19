@@ -2,7 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$torrents = $cache->get('scroll_tor_');
+$torrents = $cache->get('scroll_torrents_');
 if ($torrents === false || is_null($torrents)) {
     $torrents = $fluent->from('torrents AS t')
         ->select(null)
@@ -29,6 +29,7 @@ if ($torrents === false || is_null($torrents)) {
         ->leftJoin('users AS u ON t.owner = u.id')
         ->leftJoin('categories AS c ON t.category = c.id')
         ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('visible = "yes"')
         ->where('t.imdb_id IS NOT NULL')
         ->orderBy('t.added DESC')
         ->limit(100)
@@ -41,7 +42,7 @@ if ($torrents === false || is_null($torrents)) {
         $top5torrents[] = $torrent;
     }
 
-    $cache->set('scroll_tor_', $torrents, $site_config['expires']['scroll_torrents']);
+    $cache->set('scroll_torrents_', $torrents, $site_config['expires']['scroll_torrents']);
 }
 
 foreach ($torrents as $torrent) {

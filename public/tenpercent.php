@@ -75,7 +75,7 @@ $HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
 <p class='sub'>From this page you can <b>add 10&#37;</b> of your current upload amount to your upload amount bringing it it to <b>110%</b> of its current amount. More details about how this would work out for you can be found in the tables below.</p><br>
 <p><b>However, there are some things you should know first:</b></p>
 &#8226; This can only be done <b>once</b>, so chose your moment wisely.<br>
-&#8226; The staff will <b>not</b> reset your 10&#37; addition for any reason.") . main_table('
+&#8226; The staff will <b>not</b> reset your 10&#37; addition for any reason.", null, 'padding20') . main_table('
     <tr>
         <td>Current upload amount:</td>
         <td>' . mksize($uploaded) . '</td>

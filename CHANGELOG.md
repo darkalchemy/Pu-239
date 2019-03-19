@@ -1,3 +1,14 @@
+### 19 Mar, 2019
+update: database files  
+update: cache names  
+update: show only visible torrents in torrent blocks  
+remove: create torrent_pass download.php  
+update: breadcrumbs  
+fix: missing query item rating browse.php  
+fix: missing stylesheets  
+fix: incomplete styles  
+fix: missing query item mytorrents.php  
+
 ### 17 Mar, 2019
 update: dependancies  
 add: select torrents by snatched or not snatched  

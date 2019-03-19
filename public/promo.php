@@ -291,6 +291,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 $HTMLOUT = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>$title</title>
+    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
     <style>
     body { background-color:#999999;
     color:#333333;

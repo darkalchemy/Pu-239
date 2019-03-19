@@ -6,10 +6,22 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
 $HTMLOUT = '';
+$count = $fluent->from('torrents AS t')
+    ->select(null)
+    ->select('COUNT(*) AS count');
+
+$select = $fluent->from('torrents AS t')
+    ->select("IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
+    ->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+    ->select('u.class')
+    ->select('u.username')
+    ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
+    ->leftJoin('users AS u ON t.owner = u.id');
+
 if (isset($_GET['sort'], $_GET['type'])) {
     $column = '';
     $ascdesc = '';
@@ -42,25 +54,28 @@ if (isset($_GET['sort'], $_GET['type'])) {
             $linkascdesc = 'desc';
             break;
     }
-    $orderby = 'ORDER BY torrents.' . $column . ' ' . $ascdesc;
+    $select = $select->orderBy("t.{$column} $ascdecs");
     $pagerlink = 'sort=' . intval($_GET['sort']) . '&amp;type=' . $linkascdesc . '&amp;';
 } else {
-    $orderby = 'ORDER BY torrents.sticky ASC, torrents.id DESC';
+    $select = $select->orderBy('t.staff_picks DESC')->orderBy('t.sticky')->orderBy('t.added DESC');
     $pagerlink = '';
 }
-$where = 'WHERE owner = ' . sqlesc($CURUSER['id']) . " AND banned != 'yes'";
-$res = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_array($res, MYSQLI_NUM);
-$count = $row[0];
+$count = $count->where('owner = ?', $CURUSER['id'])
+    ->where('banned != "yes"')
+    ->fetch('count');
+
+$select = $select->where('owner = ?', $CURUSER['id'])
+    ->where('banned != "yes"');
+
 if (!$count) {
-    $HTMLOUT .= "{$lang['mytorrents_no_torrents']}";
-    $HTMLOUT .= "{$lang['mytorrents_no_uploads']}";
+    $HTMLOUT .= "
+        <h1 class='has-text-centered'>{$lang['mytorrents_no_torrents']}</h1>" . main_div("
+        <div class='has-text-centered'>{$lang['mytorrents_no_uploads']}</div>", null, 'padding20');
 } else {
-    $pager = pager(20, $count, "mytorrents.php?{$pagerlink}");
-    $res = sql_query("SELECT staff_picks, sticky, vip, descr, nuked, bump, nukereason, release_group, free, silver, comments, leechers, seeders, owner, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating, id, name, save_as, numfiles, added, size, views, visible, hits, times_completed, category, description FROM torrents $where $orderby " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+    $pager = pager(20, $count, "{$site_config['baseurl']}/mytorrents.php?{$pagerlink}");
+    $select = $select->limit($pager['pdo'])->fetchAll();
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= '<br>';
-    $HTMLOUT .= torrenttable($res, 'mytorrents');
+    $HTMLOUT .= torrenttable($select, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($CURUSER['username'] . "'s torrents") . $HTMLOUT . stdfoot();
+echo stdhead($CURUSER['username'] . "'s torrents") . wrapper($HTMLOUT) . stdfoot();

@@ -3,13 +3,13 @@
 global $fluent, $site_config, $cache;
 
 $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
-$scheduled_events = $cache->get('freecontribution_datas_alerts_');
+$scheduled_events = $cache->get('scheduled_events_');
 if ($scheduled_events === false || is_null($scheduled_events)) {
     $scheduled_events = $fluent->from('events')
         ->orderBy('startTime DESC')
         ->limit(3)
         ->fetchAll();
-    $cache->set('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
+    $cache->set('scheduled_events_', $scheduled_events, 3 * 86400);
 }
 
 if (is_array($scheduled_events)) {

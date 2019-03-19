@@ -7,14 +7,9 @@ global $site_config, $cache;
 
 $HTMLOUT = '';
 $lang = load_language('global');
-$HTMLOUT .= '<table class="table table-bordered table-striped">
-      <tr>
-      <td class="embedded">
-You may select your mood by clicking on the smiley in the left side menu or clicking <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">here</a>.
-     </td>
-     </tr>
-     </table>';
-$abba = '<h2>Top Moods</h2>
+$abba = '
+        <h1 class="has-text-centered">Top Moods</h1>
+        <div class="has-text-centered bottom20">You may select your mood by clicking on the smiley in the left side menu or clicking <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);"><span class="has-text-lime">here</span></a>.</div>
          <table class="table table-bordered table-striped">
          <tr><td class="colhead">Count</td>
          <td class="colhead">Mood</td>
