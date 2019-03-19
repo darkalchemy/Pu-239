@@ -43,7 +43,7 @@ if ($do === 'view_page') {
     if (empty($rows)) {
         $body .= "
                     <tr>
-                        <td colspan='7'>{$lang['invites_nousers']}</td>
+                        <td colspan='7'><div class='padding20'>{$lang['invites_nousers']}</div></td>
                     </tr>";
     } else {
         $heading = "
@@ -94,7 +94,7 @@ if ($do === 'view_page') {
     if (!$num_row) {
         $body .= "
                     <tr>
-                        <td>{$lang['invites_nocodes']}</td>
+                        <td><div class='padding20'>{$lang['invites_nocodes']}</div></td>
                     </tr>";
     } else {
         $body .= "

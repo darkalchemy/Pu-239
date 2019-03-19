@@ -30,6 +30,7 @@ if ($top5torrents === false || is_null($top5torrents)) {
         ->leftJoin('users AS u ON t.owner = u.id')
         ->leftJoin('categories AS c ON t.category = c.id')
         ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('visible = "yes"')
         ->orderBy('t.seeders + t.leechers DESC')
         ->limit($site_config['latest_torrents_limit']);
 

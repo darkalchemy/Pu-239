@@ -284,8 +284,7 @@ function get_actionpage($lang, $queries, $path)
         'sr',
         'sort',
     ];
-
-    if (in_array($list[0], $ignore) || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {
+    if (in_array($list[0], $ignore) || $list[1] === 'view_page' || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {
         return false;
     }
 

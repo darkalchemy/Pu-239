@@ -312,12 +312,15 @@ if (count($updateset) > 0) {
 if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
     $cache->deleteMulti([
+        'motw_',
         'torrent_details_' . $id,
         'top5_tor_',
         'last5_tor_',
-        'torrent_xbt_data_' . $id,
-        'torrent_descr_',
-        $id,
+        'torrent_descr_' . $id,
+        'staff_picks_',
+        'torrent_details_' . $id,
+        'slider_torrents_',
+        'scroll_torrents_',
     ]);
 }
 $torrent_stuffs->remove_torrent($infohash);

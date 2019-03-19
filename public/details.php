@@ -124,15 +124,17 @@ if ($moderator) {
         $session->set('is-success', "Torrents has been 'Un-Checked'");
     } elseif (isset($_POST['clear_cache']) && $_POST['clear_cache'] == $id) {
         $cache->deleteMulti([
+            'motw_',
             'torrent_details_' . $id,
             'top5_tor_',
             'last5_tor_',
-            'torrent_xbt_data_' . $id,
-            'torrent_descr_',
-            $id,
+            'torrent_descr_' . $id,
+            'staff_picks_',
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
             'book_fullset_' . $torrent['id'],
+            'slider_torrents_',
+            'scroll_torrents_',
         ]);
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);

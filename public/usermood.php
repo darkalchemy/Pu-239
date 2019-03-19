@@ -24,13 +24,16 @@ if (isset($_GET['id'])) {
         write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
         $HTMLOUT = doc_head() . '
         <meta property="og:title" content=' . $lang['user_mood_title'] . '>
-        <title>' . $lang['user_mood_title'] . '</title>
+        <title>' . $lang['user_mood_title'] . "</title>
+        <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
+        <link rel='stylesheet' href='" . get_file_name('css') . "'>
+        <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
       <script>
       <!--
       opener.location.reload(true);
       self.close();
       // -->
-      </script>';
+      </script>";
     } else {
         die($lang['user_mood_hmm']);
     }
@@ -38,9 +41,11 @@ if (isset($_GET['id'])) {
 $body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= doc_head() . '
     <meta property="og:title" content=' . $lang['user_mood_title'] . '>
-    <title>' . $lang['user_mood_title'] . '</title>
-    <link rel="stylesheet" href="' . get_file_name('css') . '">
-</head>';
+    <title>' . $lang['user_mood_title'] . "</title>
+    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
+</head>";
 
 $body = '
 <body class="' . $body_class . '">

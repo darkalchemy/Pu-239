@@ -31,6 +31,7 @@ if ($torrents === false || is_null($torrents)) {
         ->leftJoin('categories AS p ON c.parent_id = p.id')
         ->where('t.imdb_id IS NOT NULL')
         ->where('t.imdb_id != ""')
+        ->where('visible = "yes"')
         ->orderBy('t.added DESC')
         ->fetchAll();
 

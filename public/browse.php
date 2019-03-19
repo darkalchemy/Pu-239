@@ -26,6 +26,7 @@ $count = $fluent->from('torrents AS t')
     ->select('COUNT(*) AS count');
 
 $select = $fluent->from('torrents AS t')
+    ->select("IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
     ->select('u.username')
     ->select('u.class')
     ->leftJoin('users AS u ON t.owner = u.id');
@@ -273,7 +274,7 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
-    $select = $select->limit("{$pager['pdo']}")->fetchAll();
+    $select = $select->limit($pager['pdo'])->fetchAll();
 }
 
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {

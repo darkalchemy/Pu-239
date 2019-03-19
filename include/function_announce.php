@@ -10,7 +10,7 @@ function crazyhour_announce()
     global $fluent, $cache;
 
     $crazy_hour = (TIME_NOW + 3600);
-    $cz['crazyhour'] = $cache->get('crazyhour');
+    $cz['crazyhour'] = $cache->get('crazyhour_');
     if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
         $cz['crazyhour'] = $fluent->from('freeleech')
             ->select(null)
@@ -30,7 +30,7 @@ function crazyhour_announce()
                 ->where('type = ?', 'crazyhour')
                 ->execute();
         }
-        $cache->set('crazyhour', $cz['crazyhour'], 0);
+        $cache->set('crazyhour_', $cz['crazyhour'], 0);
     }
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
@@ -49,7 +49,7 @@ function crazyhour_announce()
                 ->where('type = ?', 'crazyhour')
                 ->execute();
 
-            $cache->set('crazyhour', $cz['crazyhour'], 0);
+            $cache->set('crazyhour_', $cz['crazyhour'], 0);
 
             $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             autoshout($msg);
@@ -75,7 +75,7 @@ function crazyhour_announce()
                     ->where('type = ?', 'crazyhour')
                     ->execute();
 
-                $cache->set('crazyhour', $cz['crazyhour'], 0);
+                $cache->set('crazyhour_', $cz['crazyhour'], 0);
 
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);

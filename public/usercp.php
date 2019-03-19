@@ -300,9 +300,9 @@ if ($action === 'avatar') {
                         </div>";
 } elseif ($action === 'links') {
     $HTMLOUT .= "
-                        <div class='table-wrapper $width level'>
-                            <div class='table-wrapper w-50 right20'>
-                                <table class='table table-bordered table-striped w-100'>
+                        <div class='table-wrapper $width columns level is-marginless'>
+                            <div class='colum table-wrapper'>
+                                <table class='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>
@@ -340,8 +340,8 @@ if ($action === 'avatar') {
                                     </tbody>
                                 </table>
                             </div>
-                            <div class='table-wrapper w-50'>
-                                <table class='table table-bordered table-striped w-100'>
+                            <div class='column table-wrapper'>
+                                <table class='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</th>

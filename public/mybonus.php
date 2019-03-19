@@ -711,7 +711,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('freeleech_counter');
                 $cache->delete('freeleech_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'freeleech');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot and has activated freeleech for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
@@ -735,7 +735,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('freeleech_counter');
                 $cache->delete('freeleech_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'freeleech');
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
@@ -778,7 +778,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('doubleupload_counter');
                 $cache->delete('doubleupload_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'doubleupload');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot and has activated Double Upload for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
@@ -802,7 +802,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('doubleupload_counter');
                 $cache->delete('doubleupload_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'doubleupload');
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
@@ -845,7 +845,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('halfdownload_counter');
                 $cache->delete('halfdownload_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'halfdownload');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot and has activated half download for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
@@ -869,7 +869,7 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('halfdownload_counter');
                 $cache->delete('halfdownload_counter_alerts_');
                 $cache->delete('freecontribution_datas_');
-                $cache->delete('freecontribution_datas_alerts_');
+                $cache->delete('scheduled_events_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'halfdownload');
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';

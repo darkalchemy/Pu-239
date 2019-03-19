@@ -164,14 +164,14 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null,
  *
  * @return string|void
  */
-function main_div($text, $class = null)
+function main_div($text, $outer_class = null, $inner_class = null)
 {
     if ($text === '') {
         return;
     } else {
         return "
-                <div class='bordered $class'>
-                    <div class='alt_bordered bg-00'>$text
+                <div class='bordered $outer_class'>
+                    <div class='alt_bordered bg-00 $inner_class'>$text
                     </div>
                 </div>";
     }
@@ -323,12 +323,14 @@ function clear_image_cache()
         'lastest_tor_',
         'last5_tor_',
         'top5_tor_',
-        'scroll_tor_',
-        'slider_tor_',
+        'scroll_torrents_',
+        'slider_torrents_',
         'torrent_poster_count_',
         'torrent_banner_count_',
         'backgrounds_',
         'posters_',
+        'staff_picks_',
+        'motw_',
     ]);
 }
 
