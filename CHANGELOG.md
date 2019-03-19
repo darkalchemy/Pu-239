@@ -1,4 +1,7 @@
 ### 19 Mar, 2019
+update: torrent block caches when updating torrents  
+update: more text to language files  
+fix: clear caches torrents_update.php  
 update: database files  
 update: cache names  
 update: show only visible torrents in torrent blocks  
