@@ -8,7 +8,7 @@
 function torrents_update($data)
 {
     $time_start = microtime(true);
-    global $fluent;
+    global $fluent, $torrent_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -57,10 +57,7 @@ function torrents_update($data)
                 'leechers' => $torrent['leechers_num'],
                 'comments' => $torrent['comments_num'],
             ];
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $torrent['id'])
-                ->execute();
+            $torrent_stuffs->update($set, $torrent['id']);
         }
     }
 

@@ -25,7 +25,7 @@ $hasAccess = $current_user === $uid || $isStaff ? true : false;
 if ($type === 'torrents' && $hasAccess) {
     $torrents = get_uploaded($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div('You have not uploaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
         die();
     }
     $data = maketable($torrents);
@@ -33,27 +33,13 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div('You have not uploaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
         die();
     }
 } elseif ($type === 'seeding' && $hasAccess) {
     $torrents = get_seeding($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div('You are not seeding any torrents')]);
-        die();
-    }
-    $data = maketable($torrents && $hasAccess);
-    if (!empty($data)) {
-        echo json_encode(['content' => $data]);
-        die();
-    } else {
-        echo json_encode(['content' => main_div('You are not seeding any torrents')]);
-        die();
-    }
-} elseif ($type === 'leeching' && $hasAccess) {
-    $torrents = get_leeching($uid);
-    if (!$torrents) {
-        echo json_encode(['content' => main_div('You have not leeching any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
         die();
     }
     $data = maketable($torrents);
@@ -61,13 +47,27 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div('You are not leeching any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
+        die();
+    }
+} elseif ($type === 'leeching' && $hasAccess) {
+    $torrents = get_leeching($uid);
+    if (!$torrents) {
+        echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
+        die();
+    }
+    $data = maketable($torrents);
+    if (!empty($data)) {
+        echo json_encode(['content' => $data]);
+        die();
+    } else {
+        echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
         die();
     }
 } elseif ($type === 'snatched' && $hasAccess) {
     $torrents = get_snatched($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div('You have not downloaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
         die();
     }
     $data = snatchtable($torrents);
@@ -75,13 +75,13 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div('You are downloaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
         die();
     }
 } elseif ($type === 'snatched_staff' && $isStaff) {
     $torrents = get_snatched_staff($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div('You have not downloaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
         die();
     }
     $data = staff_snatchtable($torrents, $uid);
@@ -89,7 +89,7 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div('You are downloaded any torrents')]);
+        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
         die();
     }
 }
@@ -118,18 +118,21 @@ function get_uploaded(int $userid)
         return false;
     }
 
-    $query = $fluent->from('torrents')
+    $query = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id AS torrentid')
-        ->select('torrents.name')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.size')
-        ->select('categories.name AS catname')
-        ->select('categories.image')
-        ->innerJoin('categories ON torrents.category = categories.id')
-        ->where('torrents.owner = ?', $userid)
-        ->orderBy('torrents.name');
+        ->select('t.id AS torrentid')
+        ->select('t.name')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.size')
+        ->select('c.name AS catname')
+        ->select('c.image')
+        ->select('p.name AS parent_name')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('t.owner = ?', $userid)
+        ->orderBy('t.name');
+
     foreach ($query as $results) {
         $sums = $fluent->from('snatched')
             ->select(null)
@@ -163,32 +166,34 @@ function get_seeding(int $userid)
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('userid = ?', $userid)
-        ->where('peers.seeder = "yes"')
+        ->where('seeder = "yes"')
         ->fetch('count');
 
     if ($count === 0) {
         return false;
     }
 
-    $torrents = $fluent->from('peers')
+    $torrents = $fluent->from('peers AS z')
         ->select(null)
-        ->select('peers.torrent AS torrentid')
-        ->select('peers.uploaded')
-        ->select('peers.downloaded')
-        ->select('peers.seeder')
-        ->select('peers.last_action')
-        ->select('torrents.added')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.owner')
-        ->select('categories.name AS catname')
-        ->select('categories.image')
-        ->innerJoin('torrents ON peers.torrent = torrents.id')
-        ->innerJoin('categories ON torrents.category = categories.id')
-        ->where('peers.userid = ?', $userid)
-        ->where('peers.seeder = "yes"')
+        ->select('z.torrent AS torrentid')
+        ->select('z.uploaded')
+        ->select('z.downloaded')
+        ->select('z.seeder')
+        ->select('z.last_action')
+        ->select('t.added')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.owner')
+        ->select('c.name AS catname')
+        ->select('c.image')
+        ->select('p.name AS parent_name')
+        ->innerJoin('torrents AS t ON z.torrent = t.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('z.userid = ?', $userid)
+        ->where('z.seeder = "yes"')
         ->orderBy('last_action DESC')
         ->fetchAll();
 
@@ -210,32 +215,34 @@ function get_leeching(int $userid)
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('userid = ?', $userid)
-        ->where('peers.seeder = "no"')
+        ->where('seeder = "no"')
         ->fetch('count');
 
     if ($count === 0) {
         return false;
     }
 
-    $torrents = $fluent->from('peers')
+    $torrents = $fluent->from('peers AS z')
         ->select(null)
-        ->select('peers.torrent AS torrentid')
-        ->select('peers.uploaded')
-        ->select('peers.downloaded')
-        ->select('peers.seeder')
-        ->select('peers.last_action')
-        ->select('torrents.added')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.owner')
-        ->select('categories.name AS catname')
-        ->select('categories.image')
-        ->innerJoin('torrents ON peers.torrent = torrents.id')
-        ->innerJoin('categories ON torrents.category = categories.id')
-        ->where('peers.userid = ?', $userid)
-        ->where('peers.seeder = "no"')
+        ->select('z.torrent AS torrentid')
+        ->select('z.uploaded')
+        ->select('z.downloaded')
+        ->select('z.seeder')
+        ->select('z.last_action')
+        ->select('t.added')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.owner')
+        ->select('c.name AS catname')
+        ->select('c.image')
+        ->select('p.name AS parent_name')
+        ->innerJoin('torrents ON z.torrent = t.id')
+        ->leftJoin('categories ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('z.userid = ?', $userid)
+        ->where('z.seeder = "no"')
         ->orderBy('last_action DESC')
         ->fetchAll();
 
@@ -266,12 +273,14 @@ function get_snatched(int $userid)
     $torrents = $fluent->from('snatched')
         ->select(null)
         ->select('snatched.*')
-        ->select('torrents.name')
-        ->select('torrents.category AS catid')
-        ->select('categories.name AS catname')
-        ->select('categories.image')
-        ->innerJoin('torrents ON snatched.torrentid = torrents.id')
-        ->innerJoin('categories ON torrents.category = categories.id')
+        ->select('t.name')
+        ->select('t.category AS catid')
+        ->select('c.name AS catname')
+        ->select('c.image')
+        ->select('p.name AS parent_name')
+        ->innerJoin('torrents AS t ON snatched.torrentid = t.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
         ->where('snatched.userid = ?', $userid)
         ->orderBy('last_action DESC')
         ->fetchAll();
@@ -302,20 +311,22 @@ function get_snatched_staff(int $userid)
 
     $torrents = $fluent->from('snatched')
         ->select('snatched.*')
-        ->select('torrents.name AS torrent_name')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.size')
-        ->select('torrents.owner')
-        ->select('categories.name AS catname')
-        ->select('categories.image')
-        ->select('peers.agent')
-        ->select('peers.connectable')
-        ->select('peers.port')
-        ->select('INET6_NTOA(peers.ip) AS ip')
-        ->innerJoin('torrents ON snatched.torrentid = torrents.id')
-        ->innerJoin('categories ON torrents.category = categories.id')
-        ->leftJoin('peers ON torrents.id = peers.torrent')
+        ->select('t.name AS torrent_name')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.size')
+        ->select('t.owner')
+        ->select('c.name AS catname')
+        ->select('p.name AS parent_name')
+        ->select('c.image')
+        ->select('z.agent')
+        ->select('z.connectable')
+        ->select('z.port')
+        ->select('INET6_NTOA(z.ip) AS ip')
+        ->innerJoin('torrents AS t ON snatched.torrentid = t.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->leftJoin('peers AS z ON t.id = z.torrent')
         ->where('snatched.userid = ?', $userid)
         ->orderBy('last_action DESC')
         ->fetchAll();
@@ -353,9 +364,8 @@ function maketable(array $torrents)
         } else {
             $ratio = '---';
         }
-        $catimage = "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$torrent['image']}";
-        $catname = htmlsafechars($torrent['catname']);
-        $catimage = "<img src='$catimage' title='$catname' alt='$catname' width='42' height='42' class='tooltipper'>";
+
+        $cat_info = cat_image($torrent);
         $size = str_replace(' ', '<br>', mksize($torrent['size']));
         $uploaded = str_replace(' ', '<br>', mksize($torrent['uploaded']));
         $downloaded = str_replace(' ', '<br>', mksize($torrent['downloaded']));
@@ -363,7 +373,7 @@ function maketable(array $torrents)
         $leechers = number_format($torrent['leechers']);
         $body .= "
         <tr>
-            <td class='has-text-centered'>$catimage</td>
+            <td class='has-text-centered'>$cat_info</td>
             <td>
                 <a href='{$site_config['baseurl']}/details.php?id={$torrent['torrentid']}&amp;hit=1'><b>" . htmlsafechars($torrent['name']) . "</b></a>
             </td>
@@ -409,11 +419,10 @@ function snatchtable(array $torrents)
         $ratio = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
         $XBT_or_PHP = $torrent['torrentid'];
         $XBT_or_PHP_TIME = $torrent['complete_date'];
+        $cat_info = cat_image($torrent);
         $body .= "
         <tr>
-            <td>
-                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($torrent['image']) . "' alt='" . htmlsafechars($torrent['catname']) . "' width='42' height='42'>
-            </td>
+            <td>$cat_info</td>
             <td>
                 <a href='{$site_config['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
             </td>
@@ -491,13 +500,13 @@ function staff_snatchtable(array $torrents, int $userid)
         } else {
             $ratio = 'N/A';
         }
+        $cat_info = cat_image($arr);
         $body .= '
             <tr>
                 <td>' . ($arr['owner'] === $userid ? "
                     <b><span class='has-text-orange'>{$lang['userdetails_s_towner']}</span></b><br>" : '' . ($arr['complete_date'] != '0' ? "
                     <b><span class='has-text-lightgreen'>{$lang['userdetails_s_fin']}</span></b><br>" : "
-                    <b><span class='has-text-danger'>{$lang['userdetails_s_nofin']}</span></b><br>") . '') . "
-                    <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['image']) . "' alt='" . htmlsafechars($arr['catname']) . "' title='" . htmlsafechars($arr['catname']) . "' class='tooltipper'>
+                    <b><span class='has-text-danger'>{$lang['userdetails_s_nofin']}</span></b><br>") . '') . $cat_info . "
                 </td>
                 <td>
                     <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['torrentid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
@@ -532,3 +541,27 @@ function staff_snatchtable(array $torrents, int $userid)
 
     return $table;
 }
+
+function cat_image($torrent)
+{
+    global $site_config;
+
+    if (!empty($torrent['parent_name'])) {
+        $cat = $torrent['parent_name'] . '::' . $torrent['catname'];
+    }
+
+    $image = !empty($catimage) && file_exists(IMAGES_DIR . 'caticons/'. get_category_icons() . "/$catimage") ? "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$catimage" : '';
+    $catname = htmlsafechars($cat);
+    $catimage = !empty($image) ? "<img src='$image' title='$catname' alt='$catname' width='42' height='42' class='tooltipper'>" : $catname;
+
+    return $catimage;
+}
+
+/*
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $top5torrents[] = $torrent;
+    }
+*/

@@ -444,4 +444,9 @@ $lang = [
     'userdetails_comm_ledited' => 'Last edited by ',
     'userdetails_comm_left' => 'Comments left for ',
     'userdetails_comm_yet' => 'No comments yet',
+    //torrent blocks
+    'userdetails_no_upload' => 'You have not uploaded any torrents',
+    'userdetails_no_seed' => 'You are not seeding any torrents',
+    'userdetails_no_leech' => 'You are not leeching any torrents',
+    'userdetails_no_snatch' => 'You have not downloaded any torrents',
 ];
