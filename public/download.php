@@ -116,8 +116,8 @@ if (isset($_GET['slot'])) {
     ], $site_config['expires']['user_cache']);
 }
 $cache->deleteMulti([
-    'top5_tor_',
-    'last5_tor_',
+    'top5_torrents_',
+    'last5_torrents_',
     'scroll_torrents_',
     'slider_torrents_',
     'staff_picks_',

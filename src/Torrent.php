@@ -80,7 +80,7 @@ class Torrent
      * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
-    public function update(array $set, int $tid)
+    public function update(array $set, int $tid, $seeders = false)
     {
         $query = $this->fluent->update('torrents')
             ->set($set)
@@ -89,11 +89,15 @@ class Torrent
 
         if ($query) {
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
-            $this->cache->update_row('slider_torrents_' . $tid, $set, $this->site_config['expires']['slider_torrents']);
-            $this->cache->update_row('staff_picks_' . $tid, $set, $this->site_config['expires']['staff_picks']);
-            $this->cache->update_row('last5_torrents_' . $tid, $set, $this->site_config['expires']['last5_torrents']);
-            $this->cache->update_row('top5_torrents_' . $tid, $set, $this->site_config['expires']['top5_torrents']);
-            $this->cache->update_row('motw_' . $tid, $set, $this->site_config['expires']['motw']);
+            if ($seeders) {
+                $this->cache->deleteMulti([
+                    'slider_torrents_',
+                    'last5_torrents_',
+                    'top5_torrents_',
+                    'motw_',
+                    'staff_picks_',
+                ]);
+            }
         }
 
         return $query;
@@ -332,11 +336,11 @@ class Torrent
                 'peers_' . $owner,
                 'coin_points_' . $tid,
                 'latest_comments_',
-                'top5_tor_',
-                'last5_tor_',
+                'top5_torrents_',
+                'last5_torrents_',
                 'scroll_torrents_',
                 'torrent_details_' . $tid,
-                'lastest_tor_',
+                'lastest_torrents_',
                 'slider_torrents_',
                 'torrent_poster_count_',
                 'torrent_banner_count_',
@@ -344,10 +348,9 @@ class Torrent
                 'posters_',
                 'banners_',
                 'get_torrent_count_',
-                'torrent_descr_',
+                'torrent_descr_' .$tid
                 'staff_picks_',
                 'motw_',
-                $tid,
             ]);
             $this->clear_caches();
         }

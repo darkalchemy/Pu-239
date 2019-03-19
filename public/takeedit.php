@@ -314,8 +314,8 @@ if ($torrent_cache) {
     $cache->deleteMulti([
         'motw_',
         'torrent_details_' . $id,
-        'top5_tor_',
-        'last5_tor_',
+        'top5_torrents_',
+        'last5_torrents_',
         'torrent_descr_' . $id,
         'staff_picks_',
         'torrent_details_' . $id,

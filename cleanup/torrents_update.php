@@ -57,7 +57,7 @@ function torrents_update($data)
                 'leechers' => $torrent['leechers_num'],
                 'comments' => $torrent['comments_num'],
             ];
-            $torrent_stuffs->update($set, $torrent['id']);
+            $torrent_stuffs->update($set, $torrent['id'], true);
         }
     }
 
