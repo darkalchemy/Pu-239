@@ -74,13 +74,14 @@ class Torrent
     /**
      * @param array $set
      * @param int   $tid
+     * @param bool  $seeders
      *
      * @return bool|int|\PDOStatement
      *
      * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
-    public function update(array $set, int $tid, $seeders = false)
+    public function update(array $set, int $tid, bool $seeders = false)
     {
         $query = $this->fluent->update('torrents')
             ->set($set)
@@ -91,6 +92,7 @@ class Torrent
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
             if ($seeders) {
                 $this->cache->deleteMulti([
+                    'scroll_torrents_',
                     'slider_torrents_',
                     'last5_torrents_',
                     'top5_torrents_',
@@ -348,7 +350,7 @@ class Torrent
                 'posters_',
                 'banners_',
                 'get_torrent_count_',
-                'torrent_descr_' .$tid
+                'torrent_descr_' . $tid,
                 'staff_picks_',
                 'motw_',
             ]);
