@@ -1,3 +1,6 @@
+### 20 Mar, 2019
+fix: typo  
+
 ### 19 Mar, 2019
 update: cache names  
 fix: delete torrent block caches  
