@@ -301,6 +301,7 @@ function torrenttable($res, $variant = 'index')
         if (!empty($row['username'])) {
             if ($row['anonymous'] && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) {
                 $uploader = '<span>' . get_anonymous_name() . '</span>';
+                $formatted = "<i>({$uploader})</i>";
             } else {
                 $uploader = "<span class='" . get_user_class_name($row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
                 $formatted = format_username($row['owner']);
