@@ -1,3 +1,6 @@
+### 21 Mar, 2019
+add: mising $formatted var  
+
 ### 20 Mar, 2019
 fix: typo  
 
