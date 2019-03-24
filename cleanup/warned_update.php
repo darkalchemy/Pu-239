@@ -36,9 +36,9 @@ function warned_update($data)
             'subject' => $subject,
         ];
 
-        $user = $cache->get('user' . $arr['id']);
+        $user = $cache->get('user_' . $arr['id']);
         if (!empty($user)) {
-            $cache->update_row('user' . $arr['id'], [
+            $cache->update_row('user_' . $arr['id'], [
                 'warned' => 0,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);

@@ -2,7 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$last5torrents = $cache->get('last5_torrents_');
+$last5torrents = $cache->get('latest_torrents_');
 if ($last5torrents === false || is_null($last5torrents)) {
     $last5torrents = [];
     $torrents = $fluent->from('torrents AS t')
@@ -41,7 +41,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
         $last5torrents[] = $torrent;
     }
 
-    $cache->set('last5_torrents_', $last5torrents, $site_config['expires']['last5_torrents']);
+    $cache->set('latest_torrents_', $last5torrents, $site_config['expires']['last5_torrents']);
 }
 
 $latest_torrents .= "

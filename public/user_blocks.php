@@ -384,7 +384,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->where('id = ?', $CURUSER['id'])
             ->fetch();
 
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'opt1' => $opt['opt1'],
             'opt2' => $opt['opt2'],
         ], $site_config['expires']['user_cache']);

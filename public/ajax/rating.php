@@ -41,7 +41,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             $amount = ($what === 'torrent' ? $site_config['bonus_per_rating'] : $site_config['bonus_per_topic']);
             sql_query("UPDATE users SET seedbonus = seedbonus+$amount WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }

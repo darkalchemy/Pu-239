@@ -193,13 +193,13 @@ if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
     clear_image_cache();
 }
 
-if (isset($_POST['free_length']) && ($free_length = (int) $_POST['free_length'])) {
+if (isset($_POST['free_length']) && $free_length = (int) $_POST['free_length']) {
     if ($free_length == 255) {
         $free = 1;
     } elseif ($free_length == 42) {
-        $free = (86400 + TIME_NOW);
+        $free = 86400 + TIME_NOW;
     } else {
-        $free = (TIME_NOW + $free_length * 604800);
+        $free = TIME_NOW + $free_length * 604800;
     }
     $updateset[] = 'free = ' . sqlesc($free);
     $torrent_cache['free'] = $free;
@@ -314,13 +314,13 @@ if ($torrent_cache) {
     $cache->deleteMulti([
         'motw_',
         'torrent_details_' . $id,
-        'top5_torrents_',
-        'last5_torrents_',
+        'top_torrents_',
+        'latest_torrents_',
         'torrent_descr_' . $id,
         'staff_picks_',
         'torrent_details_' . $id,
         'slider_torrents_',
-        'scroll_torrents_',
+        'scroller_torrents_',
     ]);
 }
 $torrent_stuffs->remove_torrent($infohash);

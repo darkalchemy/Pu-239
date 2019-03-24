@@ -139,7 +139,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
             ->set($set)
             ->where('id = ?', $CURUSER['id'])
             ->execute();
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $CURUSER['seedbonus'] + $site_config['bonus_per_topic'],
         ]);
     }

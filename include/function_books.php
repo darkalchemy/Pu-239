@@ -23,7 +23,7 @@ function get_book_info($isbn, $name, $tid, $poster)
     }
 
     $search = !empty($isbn) && $isbn != '000000' ? $isbn : $name;
-    $api_hits = $cache->get('google_api_limits_');
+    $api_hits = $cache->get('google_api_hits_');
     $cache->delete('book_info_' . $tid);
     $ebook = $cache->get('book_info_' . $tid);
     if ($ebook === false || is_null($ebook)) {
@@ -49,7 +49,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         } else {
             date_default_timezone_set('America/Los_Angeles');
             $secs = strtotime('tomorrow 00:00:00') - TIME_NOW;
-            $cache->increment('google_api_limits_', 1, 0, $secs);
+            $cache->increment('google_api_hits_', 1, 0, $secs);
         }
 
         if (!empty($_ENV['GOOGLE_API_KEY'])) {

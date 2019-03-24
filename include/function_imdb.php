@@ -454,12 +454,6 @@ function get_imdb_info_short($imdb_id)
             $imdb_data['poster'] = $poster;
         }
     }
-    if (empty($imdb_data['poster'])) {
-        $omdb = get_omdb_info($imdbid, true, true);
-        if (!empty($omdb['Poster']) && $omdb['Poster'] != 'N/A') {
-            $imdb_data['poster'] = $omdb['Poster'];
-        }
-    }
     if (!empty($imdb_data['poster'])) {
         $image = url_proxy($imdb_data['poster'], true, 250);
         if ($image) {

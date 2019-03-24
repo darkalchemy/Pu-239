@@ -23,14 +23,14 @@ $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
-$staff_classes = $cache->get('is_staffs_');
+$staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
     $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' GROUP BY value ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
     }
-    $cache->set('is_staffs_', $staff_classes, 0);
+    $cache->set('staff_classes_', $staff_classes, 0);
 }
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
@@ -77,7 +77,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         if (!$sure) {
             stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
         }
-        $cache->delete('is_staffs_');
+        $cache->delete('staff_classes_');
         sql_query('DELETE FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('av_class_');
         $cache->delete('staff_panels_6');
@@ -170,7 +170,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                             TIME_NOW,
                             $navbar,
                         ])) . ')');
-                    $cache->delete('is_staffs_');
+                    $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
                                       ->select(null)

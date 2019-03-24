@@ -29,7 +29,7 @@ function navbar()
                             </a>
                         </li>
                         <li>
-                        </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['omdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
+                        </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
                         <li id='movies_links' class='clickable'>
                             <a href='#'>{$lang['gl_movies_tv']}</a>
                             <ul class='ddFade ddFadeFast'>" . ($BLOCKS['bluray_com_api_on'] ? "

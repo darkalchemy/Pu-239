@@ -26,12 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
         sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'enabled' => 'yes',
         ], $site_config['expires']['user_cache']);
     } elseif ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'status' => 'confirmed',
         ], $site_config['expires']['user_cache']);
     } elseif ($do == 'delete' && ($CURUSER['class'] >= UC_MAX)) {

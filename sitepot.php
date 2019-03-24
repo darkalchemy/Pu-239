@@ -48,7 +48,7 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($want_pot) . ' 
                      WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
         ], $site_config['expires']['user_cache']);
         $cache->delete('Sitepot_');
@@ -66,7 +66,7 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($want_pot) . ' 
                      WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
         ], $site_config['expires']['user_cache']);
         $cache->delete('Sitepot_');

@@ -72,7 +72,6 @@ $BLOCKS = [
     'fanart_api_on' => 1,
     'tmdb_api_on' => 1,
     'imdb_api_on' => 1,
-    'omdb_api_on' => 1,
     'bluray_com_api_on' => 1,
     'google_books_api_on' => 1,
     'tvmaze_api_on' => 1,

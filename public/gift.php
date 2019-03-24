@@ -35,7 +35,7 @@ if (isset($open) && $open == 1) {
                 $update['invites'] = ($User['invites'] + 1);
                 $update['uploaded'] = ($User['uploaded'] + 1024 * 1024 * 1024 * 10);
                 $update['freeslots'] = ($User['freeslots'] + 1);
-                $cache->update_row('user' . $userid, [
+                $cache->update_row('user_' . $userid, [
                     'invites' => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift' => 'yes',
@@ -48,7 +48,7 @@ if (isset($open) && $open == 1) {
                 sql_query("UPDATE users SET invites=invites+3,  seedbonus = seedbonus + 1750, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites'] = ($User['invites'] + 3);
                 $update['seedbonus'] = ($User['seedbonus'] + 1750);
-                $cache->update_row('user' . $userid, [
+                $cache->update_row('user_' . $userid, [
                     'invites' => $update['invites'],
                     'gotgift' => 'yes',
                     'seedbonus' => $update['seedbonus'],
@@ -61,7 +61,7 @@ if (isset($open) && $open == 1) {
                 $update['invites'] = ($User['invites'] + 2);
                 $update['seedbonus'] = ($User['seedbonus'] + 2000);
                 $update['freeslots'] = ($User['freeslots'] + 3);
-                $cache->update_row('user' . $userid, [
+                $cache->update_row('user_' . $userid, [
                     'invites' => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift' => 'yes',
@@ -76,7 +76,7 @@ if (isset($open) && $open == 1) {
                 $update['seedbonus'] = ($User['seedbonus'] + 2500);
                 $update['freeslots'] = ($User['freeslots'] + 5);
                 $update['uploaded'] = ($User['uploaded'] + 1024 * 1024 * 1024 * 20);
-                $cache->update_row('user' . $userid, [
+                $cache->update_row('user_' . $userid, [
                     'invites' => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift' => 'yes',

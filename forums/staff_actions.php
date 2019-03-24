@@ -443,7 +443,7 @@ switch ($staff_action) {
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);
 
             for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
-                $cache->delete('last_post_' . $arr_count['forum_id'] . '_' . $i);
+                $cache->delete('forum_last_post_' . $arr_count['forum_id'] . '_' . $i);
             }
             header('Location: forums.php');
             die();

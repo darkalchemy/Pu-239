@@ -38,7 +38,7 @@ class User
      */
     public function getUserFromId(int $userid, bool $fresh = false)
     {
-        $user = $this->cache->get('user' . $userid);
+        $user = $this->cache->get('user_' . $userid);
         if ($fresh || $user === false || is_null($user)) {
             $user = $this->fluent->from('users AS u')
                 ->select('INET6_NTOA(u.ip) AS ip')
@@ -59,7 +59,7 @@ class User
                     $user['it'] = 'it';
                 }
 
-                $this->cache->set('user' . $userid, $user, $this->config['expires']['user_cache']);
+                $this->cache->set('user_' . $userid, $user, $this->config['expires']['user_cache']);
             }
         }
 
@@ -137,6 +137,7 @@ class User
      * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws \Exception
      */
     public function getUserId()
     {
@@ -215,7 +216,7 @@ class User
             ->execute();
 
         if ($result && $persist) {
-            $this->cache->update_row('user' . $userid, $set, $this->config['expires']['user_cache']);
+            $this->cache->update_row('user_' . $userid, $set, $this->config['expires']['user_cache']);
         }
 
         return $result;
@@ -321,7 +322,6 @@ class User
                     'userclasses_' . $username,
                     'user_friends_' . $userid,
                     'userhnrs_' . $userid,
-                    'userlist_' . $userid,
                     'users_names_' . $username,
                     'user_rep_' . $userid,
                     'user_snatches_data_' . $userid,
@@ -370,16 +370,16 @@ class User
     }
 
     /**
-     * @param $class
-     * @param $bot
-     * @param $torrent_pass
-     * @param $auth
+     * @param int    $class
+     * @param string $bot
+     * @param string $torrent_pass
+     * @param string $auth
      *
      * @return mixed
      *
      * @throws \Envms\FluentPDO\Exception
      */
-    public function get_bot_id($class, $bot, $torrent_pass, $auth)
+    public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
     {
         $userid = $this->fluent->from('users')
             ->select(null)
@@ -433,7 +433,7 @@ class User
      *
      * @throws \Envms\FluentPDO\Exception
      */
-    public function get_user_from_torrent_pass($torrent_pass)
+    public function get_user_from_torrent_pass(string $torrent_pass)
     {
         if (strlen($torrent_pass) != 64) {
             return false;

@@ -38,7 +38,7 @@ function funds_update($data)
             ];
             $users_buffer[] = '(' . $arr['id'] . ',' . $arr['vipclass_before'] . ',\'no\',\'0\', ' . $modcom . ')';
             $update['class'] = ($arr['vipclass_before']);
-            $cache->update_row('user' . $arr['id'], [
+            $cache->update_row('user_' . $arr['id'], [
                 'class' => $update['class'],
                 'donor' => 'no',
                 'donoruntil' => 0,

@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     if (mysqli_num_rows($res_moods)) {
         $rmood = mysqli_fetch_assoc($res_moods);
         sql_query('UPDATE users SET mood = ' . sqlesc($moodid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'mood' => $moodid,
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');

@@ -155,7 +155,6 @@ php bin/validate_images.php
 reCAPTCHA V3 API needs both the site key and secret key.  
 Fanart.tv API provides posters, backgrounds and banners and needs an api key.  
 TMDb API allows upcoming movies and posters and needs an api key.  
-OMDb API allows movies and tv lookup and needs an api key.  
 Google API allows up to 1000 api hits instead of 100 per day, api key is optional.  
 IMDb API allow movies and tv lookup, no key needed.  
 TVMaze allows tv lookup and posters, no key needed.  

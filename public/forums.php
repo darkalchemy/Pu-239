@@ -452,7 +452,7 @@ switch ($action) {
                 $forum_description = htmlsafechars($arr_forums['description'], ENT_QUOTES);
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
-                $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
+                $last_post_arr = $cache->get('forum_last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
                     $query = $fluent->from('topics AS t')
                         ->select(null)
@@ -476,7 +476,7 @@ switch ($action) {
                         ->limit(1)
                         ->fetch();
 
-                    $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
+                    $cache->set('forum_last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 $last_post = '';
                 if (!empty($last_post_arr) && $last_post_arr['last_post'] > 0) {
@@ -565,7 +565,7 @@ switch ($action) {
         $body = insert_quick_jump_menu();
 
         $list = [];
-        $forum_users_cache = $cache->get('now_viewing');
+        $forum_users_cache = $cache->get('now_viewing_');
         if ($forum_users_cache === false || is_null($forum_users_cache)) {
             $forumusers = '';
             $forum_users_cache = [];
@@ -581,7 +581,7 @@ switch ($action) {
 
             $forum_users_cache['forum_users'] = $forumusers;
             $forum_users_cache['actcount'] = count($list);
-            $cache->set('now_viewing', $forum_users_cache, $site_config['expires']['forum_users']);
+            $cache->set('now_viewing_', $forum_users_cache, $site_config['expires']['forum_users']);
         }
         if (!$forum_users_cache['forum_users']) {
             $forum_users_cache['forum_users'] = $lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'];

@@ -84,4 +84,5 @@ $lang = [
     'details_tags' => 'Tags',
     'details_youtube_link' => 'Open in a new window',
     'details_info_pre' => 'Pretime Info',
+    'details_new_ratio' => 'Your new ratio if you download this torrent',
 ];

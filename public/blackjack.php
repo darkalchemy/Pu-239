@@ -457,12 +457,12 @@ if ($game) {
 
                     //==stats
                     // winner $CURUSER
-                    $cache->update_row('user' . $CURUSER['id'], [
+                    $cache->update_row('user_' . $CURUSER['id'], [
                         'uploaded' => $update['uploaded'],
                         'bjwins' => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
                     // loser $a
-                    $cache->update_row('user' . $a['userid'], [
+                    $cache->update_row('user_' . $a['userid'], [
                         'uploaded' => $update['uploaded_loser'],
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
@@ -567,13 +567,13 @@ if ($game) {
 
                     //==stats
                     // winner $a
-                    $cache->update_row('user' . $a['userid'], [
+                    $cache->update_row('user_' . $a['userid'], [
                         'uploaded' => $update['uploaded'],
                         'bjwins' => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
 
                     // loser $CURUSER
-                    $cache->update_row('user' . $CURUSER['id'], [
+                    $cache->update_row('user_' . $CURUSER['id'], [
                         'uploaded' => $update['uploaded_loser'],
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
@@ -807,12 +807,12 @@ if ($game) {
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                 //==stats
-                $cache->update_row('user' . $update['winnerid'], [
+                $cache->update_row('user_' . $update['winnerid'], [
                     'uploaded' => $update['uploaded'],
                     'bjwins' => $update['bjwins'],
                 ], $site_config['expires']['user_cache']);
 
-                $cache->update_row('user' . $update['loserid'], [
+                $cache->update_row('user_' . $update['loserid'], [
                     'uploaded' => $update['uploaded_loser'],
                     'bjlosses' => $update['bjlosses'],
                 ], $site_config['expires']['user_cache']);

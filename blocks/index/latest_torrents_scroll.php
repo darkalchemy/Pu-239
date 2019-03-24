@@ -2,7 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$torrents = $cache->get('scroll_torrents_');
+$torrents = $cache->get('scroller_torrents_');
 if ($torrents === false || is_null($torrents)) {
     $torrents = $fluent->from('torrents AS t')
         ->select(null)
@@ -42,7 +42,7 @@ if ($torrents === false || is_null($torrents)) {
         $top5torrents[] = $torrent;
     }
 
-    $cache->set('scroll_torrents_', $torrents, $site_config['expires']['scroll_torrents']);
+    $cache->set('scroller_torrents_', $torrents, $site_config['expires']['scroll_torrents']);
 }
 
 foreach ($torrents as $torrent) {

@@ -153,7 +153,7 @@ $set = [
     'last_login' => $dt,
 ];
 $user_stuffs->update($set, $userid);
-$cache->update_row('user' . $userid, [
+$cache->update_row('user_' . $userid, [
     'ip' => $ip,
 ], $site_config['expires']['user_cache']);
 

@@ -288,10 +288,10 @@ function stdfoot($stdfoot = false)
                     </div>
                 </div>';
         }
-        $uptime = $cache->get('uptime');
+        $uptime = $cache->get('uptime_');
         if ($uptime === false || is_null($uptime)) {
             $uptime = explode('up', `uptime`);
-            $cache->set('uptime', $uptime, 10);
+            $cache->set('uptime_', $uptime, 10);
         }
         if ($use_12_hour) {
             $uptime = time24to12(TIME_NOW, true) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);

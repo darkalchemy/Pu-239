@@ -12,7 +12,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     $released = $plot = $show_subs = '';
     if (!empty($imdb_id)) {
         $background = find_images($imdb_id, $type = 'background');
-        $plot = $cache->get('plot_' . $imdb_id);
+        $plot = $cache->get('imdb_plot_' . $imdb_id);
         if ($plot === false || is_null($plot)) {
             $plot = $fluent->from('imdb_info')
                 ->select(null)
@@ -20,7 +20,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                 ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
                 ->fetch('plot');
 
-            $cache->set('plot_' . $imdb_id, $plot, 86400);
+            $cache->set('imdb_plot_' . $imdb_id, $plot, 86400);
         }
 
         if (!empty($plot)) {

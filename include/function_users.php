@@ -686,29 +686,6 @@ function blacklist($fo)
 }
 
 /**
- * @param int $windows
- *
- * @return float
- */
-function get_server_load($windows = 0)
-{
-    if (class_exists('COM')) {
-        $wmi = new COM('WinMgmts:\\\\.');
-        $cpus = $wmi->InstancesOf('Win32_Processor');
-        $i = 1;
-        // Use the while loop on PHP 4 and foreach on PHP 5
-        //while ($cpu = $cpus->Next()) {
-        foreach ($cpus as $cpu) {
-            $cpu_stats = 0;
-            $cpu_stats += $cpu->LoadPercentage;
-            ++$i;
-        }
-
-        return round($cpu_stats / 4); // remove /4 for single processor systems
-    }
-}
-
-/**
  * @param $post_id
  */
 function clr_forums_cache($post_id)
@@ -717,7 +694,7 @@ function clr_forums_cache($post_id)
 
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $cache->delete('last_post_' . $post_id . '_' . $uclass);
+        $cache->delete('forum_last_post_' . $post_id . '_' . $uclass);
         $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
         $cache->delete('last_posts_' . $uclass);
         ++$uclass;

@@ -31,7 +31,6 @@ $response = !empty($_POST['token']) ? $_POST['token'] : '';
 extract($_POST);
 unset($_POST);
 
-$cache->delete('userlist_' . $site_config['chatBotID']);
 $ip = getip();
 if (!$site_config['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
@@ -253,7 +252,7 @@ foreach ($split as $to_clear) {
     $clear .= $to_clear;
     $cache->delete('all_users_' . $clear);
 }
-$cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
+$cache->set('latestuser_', format_username($user_id), $site_config['expires']['latestuser']);
 write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
 if ($user_id > 2 && $site_config['autoshout_on']) {

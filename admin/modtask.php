@@ -193,7 +193,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $fluent->deleteFrom('ajax_chat_online')
             ->where('userID = ?', $userid)
             ->execute();
-        $cache->set('forced_logout_' . $userid, $dt, 2592000);
+        $cache->set('forced_logout_' . $userid, $dt, 2591999);
     }
     if (isset($_POST['downloadpos']) && ($downloadpos = (int) $_POST['downloadpos'])) {
         unset($disable_pm);
@@ -922,7 +922,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
     }
     $user_cache['modcomment'] = $modcomment;
     if ($user_cache) {
-        $cache->update_row('user' . $userid, $user_cache, $site_config['expires']['user_cache']);
+        $cache->update_row('user_' . $userid, $user_cache, $site_config['expires']['user_cache']);
     }
     if (!empty($updateset)) {
         sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -941,7 +941,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
 
     $res = sql_query('SELECT opt1, opt2 FROM users WHERE id = ' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
-    $cache->update_row('user' . $userid, [
+    $cache->update_row('user_' . $userid, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ], $site_config['expires']['user_cache']);

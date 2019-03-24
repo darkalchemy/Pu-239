@@ -82,7 +82,7 @@ function lotteryclean($data)
             $message_stuffs->insert($_pms);
         }
         foreach ($uids as $user_id) {
-            $cache->delete('user' . $user_id);
+            $cache->delete('user_' . $user_id);
         }
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . implode(', ', $lconfig_update) . '

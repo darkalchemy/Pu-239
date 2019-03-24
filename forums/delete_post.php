@@ -47,7 +47,7 @@ if ($sanity_check > 0) {
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
         for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
-            $cache->delete('last_post_' . $arr['forum_id'] . '_' . $i);
+            $cache->delete('forum_last_post_' . $arr['forum_id'] . '_' . $i);
         }
     } else {
         sql_query('UPDATE posts SET status = \'deleted\'  WHERE id = ' . sqlesc($post_id) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);

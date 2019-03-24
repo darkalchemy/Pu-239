@@ -45,7 +45,7 @@ if ($passed) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
 
-$cache->update_row('user' . $row['user_id'], [
+$cache->update_row('user_' . $row['user_id'], [
     'email' => $row['new_email'],
 ], $site_config['expires']['user_cache']);
 $session->set('is-success', "[h2]Your email has been updated to {$row['email']}[/h2]");

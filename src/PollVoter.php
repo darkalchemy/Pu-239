@@ -11,6 +11,7 @@ class PollVoter
     protected $fluent;
     protected $site_config;
     protected $user_stuffs;
+    protected $poll_stuffs;
 
     public function __construct()
     {
@@ -20,24 +21,7 @@ class PollVoter
         $this->cache = $cache;
         $this->site_config = $site_config;
         $this->user_stuffs = $user_stuffs;
-    }
-
-    /**
-     * @param array $limit
-     *
-     * @return mixed
-     *
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function get(array $limit)
-    {
-        $search = $this->fluent->from('poll_voters')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->orderBy('howmuch DESC')
-            ->limit('?, ?', $limit[0], $limit[1])
-            ->fetchAll();
-
-        return $search;
+        $this->poll_stuffs = new Poll();
     }
 
     /**
@@ -55,18 +39,15 @@ class PollVoter
     }
 
     /**
-     * @param array $terms
+     * @param int $poll_id
      *
      * @throws \Envms\FluentPDO\Exception
      */
-    public function delete(array $terms)
+    public function delete(int $poll_id)
     {
-        foreach ($terms as $term) {
-            $this->fluent->deleteFrom('poll_voters')
-                ->where('id = ?', $term)
-                ->execute();
-        }
-        $this->cache->delete('poll_voters');
+        $this->fluent->deleteFrom('poll_voters')
+            ->where('poll_id = ?', $poll_id)
+            ->execute();
     }
 
     /**
@@ -98,13 +79,50 @@ class PollVoter
         return $id;
     }
 
+    /**
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function delete_users_cache()
     {
         $ids = $this->user_stuffs->get_all_ids();
         if (!empty($ids)) {
             foreach ($ids as $id) {
-                $this->cache->delete('poll_data_' . $id);
+                $this->cache->delete('poll_data_' . $id['id']);
             }
         }
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @return array|bool|mixed
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_user_poll(int $userid)
+    {
+        $poll_data = $this->cache->get('poll_data_' . $userid);
+        if ($poll_data === false || is_null($poll_data)) {
+            $poll_data = $this->poll_stuffs->get_all(1);
+            if (!empty($poll_data)) {
+                $vote_data = $this->fluent->from('poll_voters')
+                    ->select(null)
+                    ->select('INET6_NTOA(ip) AS ip')
+                    ->select('user_id')
+                    ->select('vote_date')
+                    ->where('user_id = ?', $userid)
+                    ->where('poll_id = ?', $poll_data['pid'])
+                    ->limit('1')
+                    ->fetch();
+
+                $poll_data['ip'] = $vote_data['ip'];
+                $poll_data['user_id'] = $vote_data['user_id'];
+                $poll_data['vote_date'] = $vote_data['vote_date'];
+                $poll_data['time'] = TIME_NOW;
+            }
+
+            $this->cache->set('poll_data_' . $userid, $poll_data, $this->site_config['expires']['poll_data']);
+        }
+
+        return $poll_data;
     }
 }

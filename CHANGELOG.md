@@ -1,4 +1,9 @@
 ### 24 Mar, 2019
+update: polls  
+remove: OMDb API  
+update: merge freeleech cache with events cache  
+rename: some cache items  
+remove: unused cache items  
 update: run 'npm audit fix'  
 update: add HnRs to navbar.php  
 update: dependancies  

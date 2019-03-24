@@ -92,7 +92,6 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
-        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was checked by {$CURUSER['username']}");
         if (!empty($_GET['returnto'])) {
             $returnto = str_replace('&amp;', '&', $_GET['returnto']);
@@ -108,7 +107,6 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
-        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was re-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Re-Checked'");
     } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] == $id) {
@@ -119,22 +117,21 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = 0;
         $torrent['checked_when'] = 0;
-        $cache->delete('checked_by_' . $id);
         write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was un-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Un-Checked'");
     } elseif (isset($_POST['clear_cache']) && $_POST['clear_cache'] == $id) {
         $cache->deleteMulti([
             'motw_',
             'torrent_details_' . $id,
-            'top5_torrents_',
-            'last5_torrents_',
+            'top_torrents_',
+            'latest_torrents_',
             'torrent_descr_' . $id,
             'staff_picks_',
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
             'book_fullset_' . $torrent['id'],
             'slider_torrents_',
-            'scroll_torrents_',
+            'scroller_torrents_',
         ]);
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);
@@ -145,8 +142,11 @@ if ($moderator) {
             $ids = get_show_id($torrent['name']);
         }
         if (!empty($ids['tvmaze_id'])) {
+            preg_match('/S(\d+)E(\d+)/i', $torrent['name'], $match);
+            $episode = !empty($match[2]) ? $match[2] : 0;
+            $season = !empty($match[1]) ? $match[1] : 0;
             $cache->deleteMulti([
-                'tvshow_episode_info_' . $ids['tvmaze_id'],
+                'tvshow_episode_info_' . $ids['tvmaze_id'] . $season . $episode,
                 'tvmaze_' . $ids['tvmaze_id'],
             ]);
         }
@@ -437,12 +437,12 @@ switch (true) {
 }
 $sr = floor(($sr * 1000) / 1000);
 $sr = "
-    <img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
-    <span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
+        <img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
+        <span class='right10' style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
 if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || $CURUSER['free_switch'] != 0) {
-    $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} Your new ratio if you download this torrent.</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
+    $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} {$lang['details_new_ratio']}</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
 } else {
-    $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} Your new ratio if you download this torrent.</div>", 1);
+    $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} {$lang['details_new_ratio']}</div>", 1);
 }
 $info_hash = $torrent['info_hash'];
 $points .= tr($lang['details_info_hash'], "<div title='$info_hash' class='tooltipper left10'>" . substr($info_hash, 0, 40) . '<br>' . substr($info_hash, 40, 80) . '</div>', 1);
@@ -491,11 +491,7 @@ if ($moderator) {
         $returnto = '&amp;returnto=' . urlencode(htmlsafechars($_GET['returnto']));
     }
     if (!empty($torrent['checked_by'])) {
-        $checked_by = $cache->get('checked_by_' . $id);
-        if ($checked_by === false || is_null($checked_by)) {
-            $checked_by = $torrent['checked_by'];
-            $cache->set('checked_by_' . $id, $checked_by, 0);
-        }
+        $checked_by = $torrent['checked_by'];
         $audit .= tr('Checked by', "
                     <div class='bottom10 left10'>" . format_username($torrent['checked_by']) . (isset($torrent['checked_when']) && $torrent['checked_when'] > 0 ? ' checked: ' . get_date($torrent['checked_when'], 'DATE', 0, 1) : '') . "</div>
                     <div class='bottom10 left10'>

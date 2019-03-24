@@ -41,7 +41,7 @@ function karma_update($data)
                     $total += $bonus;
                     $update['seedbonus'] = $arr['seedbonus'] + $bonus;
                     $users_buffer[] = "($Buffer_User, " . sqlesc($arr['username']) . ", {$update['seedbonus']}, '', '')";
-                    $cache->update_row('user' . $Buffer_User, [
+                    $cache->update_row('user_' . $Buffer_User, [
                         'seedbonus' => $update['seedbonus'],
                     ], $site_config['expires']['user_cache']);
                 }

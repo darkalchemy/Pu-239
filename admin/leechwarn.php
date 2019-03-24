@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('user' . $userid);
+                $cache->delete('user_' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Leech Warn Page');
             }
         } else {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($act === 'disable') {
         if (sql_query("UPDATE users SET enabled = 'no', modcomment = CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
-                $cache->update_row('user' . $uid, [
+                $cache->update_row('user_' . $uid, [
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = $lang['leechwarn_removed_msg1'] . $CURUSER['username'] . $lang['leechwarn_removed_msg2'];
         $pms = [];
         foreach ($_uids as $uid) {
-            $cache->update_row('user' . $uid, [
+            $cache->update_row('user_' . $uid, [
                 'leechwarn' => 0,
             ], $site_config['expires']['user_cache']);
             $pms[] = '(0,' . $uid . ', ' . sqlesc($sub) . ', ' . sqlesc($body) . ', ' . sqlesc(TIME_NOW) . ')';

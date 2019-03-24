@@ -5,7 +5,7 @@
  */
 function parse_poll()
 {
-    global $CURUSER, $site_config;
+    global $CURUSER, $site_config, $pollvoter_stuffs;
 
     $htmlout = '';
     $check = 0;
@@ -15,7 +15,7 @@ function parse_poll()
         'allow_result_view' => 1,
         'allow_poll_tags' => 1,
     ];
-    $poll_data = get_poll();
+    $poll_data = $pollvoter_stuffs->get_user_poll($CURUSER['id']);
     if (empty($poll_data)) {
         return false;
     }

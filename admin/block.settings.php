@@ -79,7 +79,6 @@ $list = [
     'fanart_api_on',
     'tmdb_api_on',
     'imdb_api_on',
-    'omdb_api_on',
     'bluray_com_api_on',
     'google_books_api_on',
     'tvmaze_api_on',
@@ -707,13 +706,6 @@ $contents[] = "
                                 <#imdb_api_on#>
                             </div>
                             <div class='w-100'>{$lang['imdb_api_set']}</div>";
-
-$contents[] = "
-                            <div class='w-100'>{$lang['omdb_api']}</div>
-                            <div class='slideThree'>
-                                <#omdb_api_on#>
-                            </div>
-                            <div class='w-100'>{$lang['omdb_api_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['bluray_com_api']}</div>

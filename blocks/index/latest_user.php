@@ -2,7 +2,7 @@
 
 global $site_config, $lang, $fluent, $cache;
 
-$latestuser = $cache->get('latestuser');
+$latestuser = $cache->get('latestuser_');
 if ($latestuser === false || is_null($latestuser)) {
     $latestuser = $fluent->from('users')
         ->select(null)
@@ -14,7 +14,7 @@ if ($latestuser === false || is_null($latestuser)) {
         ->fetch();
 
     $latestuser = format_username($latestuser['id']);
-    $cache->set('latestuser', $latestuser, $site_config['expires']['latestuser']);
+    $cache->set('latestuser_', $latestuser, $site_config['expires']['latestuser']);
 }
 
 $latest_user .= "

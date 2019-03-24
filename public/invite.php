@@ -171,7 +171,7 @@ if ($do === 'view_page') {
         ->execute();
 
     $update['invites'] = ($CURUSER['invites'] - 1);
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
@@ -299,7 +299,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         ->execute();
     $update['invites'] = ($CURUSER['invites'] + 1);
 
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
@@ -320,7 +320,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     }
     sql_query('UPDATE users SET status = "confirmed" WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="pending"') or sqlerr(__FILE__, __LINE__);
 
-    $cache->update_row('user' . $userid, [
+    $cache->update_row('user_' . $userid, [
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
 

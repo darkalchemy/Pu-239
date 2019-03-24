@@ -271,7 +271,7 @@ $fluent->insertInto('now_viewing')
     ->values($values)
     ->execute();
 
-$topic_users_cache = $cache->get('now_viewing_topic');
+$topic_users_cache = $cache->get('now_viewing_topic_');
 if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = '';
     $topic_users_cache = [];
@@ -290,7 +290,7 @@ if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = empty($list) ? '' : implode(',&nbsp;&nbsp;', $list);
     $topic_users_cache['topic_users'] = $topicusers;
     $topic_users_cache['actcount'] = empty($list) ? 0 : count($list);
-    $cache->set('now_viewing_topic', $topic_users_cache, $site_config['expires']['forum_users']);
+    $cache->set('now_viewing_topic_', $topic_users_cache, $site_config['expires']['forum_users']);
 }
 if (!$topic_users_cache['topic_users']) {
     $topic_users_cache['topic_users'] = $lang['fe_there_not_been_active_visit_15'];

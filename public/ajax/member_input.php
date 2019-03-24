@@ -62,7 +62,7 @@ if ($action == '') {
             if ($id !== $CURUSER['id'] && $CURUSER['class'] > $staff_notes_arr['class']) {
                 //=== add / edit staff_notes
                 sql_query('UPDATE users SET staff_notes = ' . sqlesc($posted_notes) . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $id, [
+                $cache->update_row('user_' . $id, [
                     'staff_notes' => $posted_notes,
                 ], $site_config['expires']['user_cache']);
                 //=== add it to the log
@@ -85,7 +85,7 @@ if ($action == '') {
                 if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] === 'yes' && $watched_arr['watched_user'] == 0) {
                     //=== set them to watched user
                     sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $id, [
+                    $cache->update_row('user_' . $id, [
                         'watched_user' => TIME_NOW,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
@@ -94,7 +94,7 @@ if ($action == '') {
                 if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] === 'no' && $watched_arr['watched_user'] > 0) {
                     //=== remove them from watched users
                     sql_query('UPDATE users SET watched_user = 0 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $id, [
+                    $cache->update_row('user_' . $id, [
                         'watched_user' => 0,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
@@ -104,7 +104,7 @@ if ($action == '') {
                 if ($_POST['watched_reason'] !== $watched_arr['watched_user_reason']) {
                     //=== edit watched users text
                     sql_query('UPDATE users SET watched_user_reason = ' . sqlesc($posted) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $id, [
+                    $cache->update_row('user_' . $id, [
                         'watched_user_reason' => $posted,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log

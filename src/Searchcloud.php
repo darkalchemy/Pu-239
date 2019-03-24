@@ -64,7 +64,7 @@ class Searchcloud
                 ->where('id = ?', $term)
                 ->execute();
         }
-        $this->cache->delete('searchcloud');
+        $this->cache->delete('searchcloud_');
     }
 
     /**

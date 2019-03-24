@@ -486,7 +486,7 @@ function do_delete_rep()
     sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
     sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
     $update['rep'] = ($User['reputation'] - $r['reputation']);
-    $cache->update_row('user' . $r['userid'], [
+    $cache->update_row('user_' . $r['userid'], [
         'reputation' => $update['rep'],
     ], $site_config['expires']['user_cache']);
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', $lang['rep_ad_delete_rep_success'], 5);
@@ -525,10 +525,10 @@ function do_edit_rep()
         $diff = $oldrep - $newrep;
         sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
         $update['rep'] = ($User['reputation'] - $diff);
-        $cache->update_row('user' . $r['userid'], [
+        $cache->update_row('user_' . $r['userid'], [
             'reputation' => $update['rep'],
         ], $site_config['expires']['user_cache']);
-        $cache->delete('user' . $r['userid']);
+        $cache->delete('user_' . $r['userid']);
     }
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', "{$lang['rep_ad_edit_saved']} {$r['reputationid']} {$lang['rep_ad_edit_success']}", 5);
 }

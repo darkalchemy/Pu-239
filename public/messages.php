@@ -83,7 +83,7 @@ $top_links = '
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);
     sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'pms_per_page' => $change_pm_number,
     ], $site_config['expires']['user_cache']);
     if (isset($_GET['edit_mail_boxes'])) {
@@ -112,7 +112,7 @@ if (isset($_GET['show_pm_avatar'])) {
         ->where('id = ?', $CURUSER['id'])
         ->fetch('opt2');
 
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'opt2' => $opt2,
     ], $site_config['expires']['user_cache']);
 
@@ -244,8 +244,8 @@ function insertJumpTo($mailbox)
 {
     global $CURUSER, $site_config, $lang, $cache;
 
-    $cache->delete('insertJumpTo' . $CURUSER['id']);
-    $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
+    $cache->delete('insertJumpTo_' . $CURUSER['id']);
+    $insertJumpTo = $cache->get('insertJumpTo_' . $CURUSER['id']);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '
@@ -265,7 +265,7 @@ function insertJumpTo($mailbox)
                     </select>
                 </label>
             </form>';
-        $cache->set('insertJumpTo' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
+        $cache->set('insertJumpTo_' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }
 
     return $insertJumpTo;

@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query('INSERT INTO tickets(user) VALUES ' . implode(', ', $t))) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
             $session->set('is-success', 'You bought [b]' . number_format($tickets) . '[/b]. You now have [b]' . number_format($tickets + $user_tickets) . '[/b] tickets!');

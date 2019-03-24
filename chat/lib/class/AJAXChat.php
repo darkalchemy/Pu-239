@@ -2400,7 +2400,7 @@ class AJAXChat
             $banMinutes = $this->getConfig('defaultBanTime');
         }
 
-        $this->_cache->delete('user' . $userID);
+        $this->_cache->delete('user_' . $userID);
 
         $now = gmdate('Y-m-d H:i:s', TIME_NOW);
         $future = strtotime($now . ' + ' . $banMinutes . ' minute');

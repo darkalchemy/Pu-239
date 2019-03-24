@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_tvmaze.php';
-require_once INCL_DIR . 'function_omdb.php';
 require_once INCL_DIR . 'function_bluray.php';
 require_once INCL_DIR . 'function_fanart.php';
 check_user_status();

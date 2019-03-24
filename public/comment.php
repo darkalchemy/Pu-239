@@ -97,7 +97,7 @@ if ($action === 'add') {
                 'comments' => $update['comments'],
             ], 0);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
             //===end
@@ -254,7 +254,7 @@ if ($action === 'add') {
             'comments' => $update['comments'],
         ], 0);
         $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_comment']);
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
     }

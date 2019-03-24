@@ -268,39 +268,28 @@ if (!isset($self)) {
     }
     $contribution = $cache->get('freecontribution_');
     if ($contribution === false || is_null($contribution)) {
-        $contribution_fields_ar_int = [
-            'startTime',
-            'endTime',
-        ];
-        $contribution_fields_ar_str = [
-            'freeleechEnabled',
-            'duploadEnabled',
-            'hdownEnabled',
-        ];
         $contribution = $event_stuffs->get_event();
         $cache->set('freecontribution_', $contribution, $site_config['expires']['contribution']);
     }
     if ($contribution['startTime'] < $dt && $contribution['endTime'] > $dt) {
-        if ($contribution['freeleechEnabled'] == 1) {
+        if ($contribution['freeleechEnabled'] === 1) {
             $downthis = 0;
         }
-        if ($contribution['duploadEnabled'] == 1) {
+        if ($contribution['duploadEnabled'] === 1) {
             $upthis = $upthis * 2;
             $downthis = 0;
         }
-        if ($contribution['hdownEnabled'] == 1) {
+        if ($contribution['hdownEnabled'] === 1) {
             $downthis = $downthis / 2;
         }
     }
     if ($upthis > 0 || $downthis > 0) {
         $isfree = $isdouble = $issilver = '';
-        $free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
+        $free = $cache->get('site_event_');
         if (!empty($free)) {
-            foreach ($free as $fl) {
-                $isfree = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires'] > $dt;
-                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires'] > $dt;
-                $issilver = ($fl['modifier'] == 4) && $fl['expires'] > $dt;
-            }
+            $isfree = ($free['modifier'] == 1 || $free['modifier'] == 3) && $free['expires'] > $dt;
+            $isdouble = ($free['modifier'] == 2 || $free['modifier'] == 3) && $free['expires'] > $dt;
+            $issilver = ($free['modifier'] == 4) && $free['expires'] > $dt;
         }
         if ($torrent['silver'] != 0 || $issilver) {
             $downthis = $downthis / 2;

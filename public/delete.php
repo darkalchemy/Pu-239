@@ -66,7 +66,7 @@ if ($site_config['seedbonus_on']) {
     if ($row['added'] > $dt) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus_per_delete']);
-        $cache->update_row('user' . $row['owner'], [
+        $cache->update_row('user_' . $row['owner'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
     }

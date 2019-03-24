@@ -2167,4 +2167,34 @@ CREATE TABLE `categories` (
         'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600, clean_time = UNIX_TIMESTAMP(NOW()) WHERE `clean_title` = "Delete Torrents"',
         'flush' => false,
     ],
+    [
+        'id' => 1553240005,
+        'info' => 'Drop table events',
+        'date' => '22 Mar, 2019',
+        'query' => 'DROP TABLE `events`',
+        'flush' => true,
+    ],
+    [
+        'id' => 1553240006,
+        'info' => 'Create table events',
+        'date' => '22 Mar, 2019',
+        'query' => "CREATE TABLE `events` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `setby` int(10) unsigned NOT NULL DEFAULT '0',
+  `begin` int(10) unsigned NOT NULL DEFAULT '0',
+  `expires` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `modifier` tinyint NOT NULL DEFAULT '0',
+PRIMARY KEY (`id`),
+KEY `expires` (`expires`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+        'flush' => false,
+    ],
+    [
+        'id' => 1553240008,
+        'info' => 'Delete staffpanel "Edit Events"',
+        'date' => '22 Mar, 2019',
+        'query' => 'DELETE FROM `staffpanel` WHERE `page_name` = "Edit Events"',
+        'flush' => true,
+    ],
 ];

@@ -497,13 +497,13 @@ if ($action == 'avatar') {
 }
 
 if ($user_cache) {
-    $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
+    $cache->update_row('user_' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
 
 if (!empty($updateset)) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($force_logout) {
-        $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW, 2592000);
+        $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW, 2591999);
     }
 }
 if ($setbits || $clrbits) {
@@ -522,7 +522,7 @@ $opt = $fluent->from('users')
     ->where('id = ?', $CURUSER['id'])
     ->fetch();
 
-$cache->update_row('user' . $CURUSER['id'], [
+$cache->update_row('user_' . $CURUSER['id'], [
     'opt1' => $opt['opt1'],
     'opt2' => $opt['opt2'],
 ], $site_config['expires']['user_cache']);

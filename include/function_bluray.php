@@ -13,14 +13,14 @@ function get_bluray_info()
         return false;
     }
 
-    $bluray_data = $cache->get('bluray_');
+    $bluray_data = $cache->get('bluray_xml_');
     if ($bluray_data === false || is_null($bluray_data)) {
         $url = 'http://www.blu-ray.com/rss/newreleasesfeed.xml';
         $bluray_data = fetch($url);
         if (!empty($bluray_data)) {
-            $cache->set('bluray_', $bluray_data, 86400);
+            $cache->set('bluray_xml_', $bluray_data, 86400);
         } else {
-            $cache->set('bluray_', 'failed', 3600);
+            $cache->set('bluray_xml_', 'failed', 3600);
         }
     }
 

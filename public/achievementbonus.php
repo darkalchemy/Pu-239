@@ -39,7 +39,7 @@ if ($bonus_type === 1) {
         $cache->delete('user_achievement_points_' . $id);
         $sql = 'UPDATE users SET downloaded = downloaded - ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'downloaded' => $down - $bonus_do,
         ], $site_config['expires']['user_cache']);
     } elseif ($down < $bonus_do) {
@@ -48,7 +48,7 @@ if ($bonus_type === 1) {
         $cache->delete('user_achievement_points_' . $id);
         $sql = "UPDATE users SET downloaded = '0' WHERE id =" . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'downloaded' => 0,
         ], $site_config['expires']['user_cache']);
     }
@@ -58,7 +58,7 @@ if ($bonus_type === 1) {
     $cache->delete('user_achievement_points_' . $id);
     $sql = 'UPDATE users SET uploaded = uploaded + ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $id, [
+    $cache->update_row('user_' . $id, [
         'uploaded' => $up + $bonus_do,
     ], $site_config['expires']['user_cache']);
 } elseif ($bonus_type == 3) {
@@ -67,7 +67,7 @@ if ($bonus_type === 1) {
     $cache->delete('user_achievement_points_' . $id);
     $sql = 'UPDATE users SET invites = invites + ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $id, [
+    $cache->update_row('user_' . $id, [
         'invites' => $invite + $bonus_do,
     ], $site_config['expires']['user_cache']);
 } elseif ($bonus_type == 4) {
@@ -76,7 +76,7 @@ if ($bonus_type === 1) {
     $cache->delete('user_achievement_points_' . $id);
     $sql = 'UPDATE users SET seedbonus = seedbonus + ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $id, [
+    $cache->update_row('user_' . $id, [
         'seedbonus' => $karma + $bonus_do,
     ], $site_config['expires']['user_cache']);
 } elseif ($bonus_type == 5) {

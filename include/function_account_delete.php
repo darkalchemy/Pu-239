@@ -17,7 +17,7 @@ function account_delete($userid)
     $user = $user_stuffs->getUserFromId($userid);
     $username = $user['username'];
     $cache->delete('all_users_');
-    $cache->delete('user' . $userid);
+    $cache->delete('user_' . $userid);
 
     sql_query("DELETE FROM users WHERE id = $userid") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages WHERE sender = $userid") or sqlerr(__FILE__, __LINE__);

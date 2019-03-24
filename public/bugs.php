@@ -39,7 +39,7 @@ if ($action === 'viewbug') {
                     $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n";
                     $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
-                    $cache->update_row('user' . $q1['sender'], [
+                    $cache->update_row('user_' . $q1['sender'], [
                         'uploaded' => $update['uploaded'],
                     ], $site_config['expires']['user_cache']);
                     break;

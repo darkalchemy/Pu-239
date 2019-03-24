@@ -93,7 +93,7 @@ function update_forum_classes(int $value, string $direction)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
     $old_max = 0;
-    $cache->delete('is_staffs_');
+    $cache->delete('staff_classes_');
     if ($mode === 'edit') {
         $edited = false;
         if (!empty($class_config)) {
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $cache->update_row('user' . $row2['id'], [
+                        $cache->update_row('user_' . $row2['id'], [
                             'class' => $row2['class'],
                         ], $site_config['expires']['user_cache']);
                     }
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $cache->update_row('user' . $row2['id'], [
+                        $cache->update_row('user_' . $row2['id'], [
                             'class' => $row2['class'],
                         ], $site_config['expires']['user_cache']);
                     }
@@ -260,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row1 = [];
             $row1[] = $row;
             foreach ($row1 as $row2) {
-                $cache->update_row('user' . $row2['id'], [
+                $cache->update_row('user_' . $row2['id'], [
                     'class' => $row2['class'],
                 ], $site_config['expires']['user_cache']);
             }

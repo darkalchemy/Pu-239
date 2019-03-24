@@ -57,7 +57,7 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_confi
 if ($site_config['seedbonus_on'] && $row['owner'] != $user['id']) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus_per_download']);
-    $cache->update_row('user' . $user['id'], [
+    $cache->update_row('user_' . $user['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
@@ -111,14 +111,14 @@ if (isset($_GET['slot'])) {
     $cache->delete('fllslot_' . $user['id']);
     make_freeslots($user['id'], 'fllslot_');
     $user['freeslots'] = ($user['freeslots'] - 1);
-    $cache->update_row('user' . $user['id'], [
+    $cache->update_row('user_' . $user['id'], [
         'freeslots' => $user['freeslots'],
     ], $site_config['expires']['user_cache']);
 }
 $cache->deleteMulti([
-    'top5_torrents_',
-    'last5_torrents_',
-    'scroll_torrents_',
+    'top_torrents_',
+    'latest_torrents_',
+    'scroller_torrents_',
     'slider_torrents_',
     'staff_picks_',
     'motw_',

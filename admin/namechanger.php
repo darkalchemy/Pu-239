@@ -27,7 +27,7 @@ if (isset($mode) && $mode == 'change') {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
         $change = sql_query('UPDATE users SET username =' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $uid, [
+        $cache->update_row('user_' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
         $added = TIME_NOW;

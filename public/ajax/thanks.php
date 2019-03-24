@@ -126,7 +126,7 @@ switch ($do) {
             $sql = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);
             $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus_per_thanks']);
-            $cache->update_row('user' . $uid, [
+            $cache->update_row('user_' . $uid, [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }

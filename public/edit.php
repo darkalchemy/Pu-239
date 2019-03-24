@@ -46,15 +46,17 @@ if (!$row) {
 if (!isset($CURUSER) || ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < UC_STAFF)) {
     stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
 }
-$HTMLOUT = $mod_cache_name = $subs_list = '';
+$HTMLOUT = $currently_editing = $subs_list = '';
 
 if ($CURUSER['class'] >= UC_STAFF) {
-    $mod_cache_name = $cache->get('editedby_' . $id);
-    if ($mod_cache_name === false || is_null($mod_cache_name)) {
-        $mod_cache_name = $CURUSER['username'];
-        $cache->set('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
+    $currently_editing = $cache->get('editedby_' . $id);
+    if ($currently_editing === false || is_null($currently_editing)) {
+        $currently_editing = $CURUSER['username'];
+        $cache->set('editedby_' . $id, $currently_editing, $site_config['expires']['ismoddin']);
     }
-    $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $mod_cache_name . '</span> is currently editing this torrent!</h1>';
+    if ($currently_editing != $CURUSER['username']) {
+        $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $currently_editing . '</span> is currently editing this torrent!</h1>';
+    }
 }
 $HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data'>
     <input type='hidden' name='id' value='$id'>";

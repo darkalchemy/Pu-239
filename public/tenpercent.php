@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = 'Today, ' . get_date($dt, 'LONG', 0, 1) . ', you have increased your total upload amount by 10% from [b]' . mksize($uploaded) . '[/b] to [b]' . mksize($newuploaded) . '[/b], which brings your ratio to [b]' . $newratio . '[/b].';
     $res = sql_query("UPDATE users SET uploaded = uploaded * 1.1, tenpercent = 'yes' WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['uploaded'] = ($CURUSER['uploaded'] * 1.1);
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'tenpercent' => 'yes',
         'uploaded' => $update['uploaded'],
     ], $site_config['expires']['user_cache']);

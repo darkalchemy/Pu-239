@@ -28,7 +28,7 @@ function class_check($class = 0, $staff = true)
                 if (user_exists($site_config['chatBotID'])) {
                     auto_post($subject, $body);
                     sql_query('UPDATE users SET class = ' . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $CURUSER['id'], [
+                    $cache->update_row('user_' . $CURUSER['id'], [
                         'class' => 0,
                         'enabled' => 'no',
                     ], $site_config['expires']['user_cache']);

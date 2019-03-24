@@ -443,7 +443,7 @@ if ($site_config['seedbonus_on']) {
     $seedbonus = $user_data['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
-    $cache->update_row('user' . $owner_id, [
+    $cache->update_row('user_' . $owner_id, [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
@@ -512,14 +512,6 @@ if (!empty($notify)) {
     if (!empty($msgs_buffer)) {
         $message_stuffs->insert($msgs_buffer);
     }
-}
-
-$keys = $cache->get('where_keys_');
-if (is_array($keys)) {
-    foreach ($keys as $key) {
-        $cache->delete($key);
-    }
-    $cache->delete('where_keys_');
 }
 
 $cache->delete('user_upload_variables_' . $owner_id);

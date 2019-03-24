@@ -48,7 +48,7 @@ if (isset($_POST['action2'])) {
                         ->values($values)
                         ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
-                    $cache->delete('insertJumpTo' . $CURUSER['id']);
+                    $cache->delete('insertJumpTo_' . $CURUSER['id']);
                 }
                 ++$box;
                 $worked = '&boxes=1';
@@ -76,7 +76,7 @@ if (isset($_POST['action2'])) {
                         ->where('id = ?', $row['id'])
                         ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
-                    $cache->delete('insertJumpTo' . $CURUSER['id']);
+                    $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
                 if ($_POST['edit' . $row['id']] == '') {
@@ -88,7 +88,7 @@ if (isset($_POST['action2'])) {
                         ->where('id = ?', $row['id'])
                         ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
-                    $cache->delete('insertJumpTo' . $CURUSER['id']);
+                    $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
                 }
             }
@@ -266,7 +266,7 @@ $HTMLOUT .= '
 $HTMLOUT .= main_table($all_my_boxes);
 $HTMLOUT .= '
         </form>';
-$cache->delete('user' . $CURUSER['id']);
+$cache->delete('user_' . $CURUSER['id']);
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_msg_settings'] . '</h2>';
 $HTMLOUT .= main_table('

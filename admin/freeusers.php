@@ -39,7 +39,7 @@ if ($remove) {
                 write_log("{$lang['freeusers_log1']} $remove ($username) {$lang['freeusers_log2']} $CURUSER[username]");
             }
             foreach ($msgs_ids as $msg_id) {
-                $cache->delete('user' . $msg_id['id']);
+                $cache->delete('user_' . $msg_id['id']);
             }
         }
     } else {

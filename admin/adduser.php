@@ -8,7 +8,6 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $cache, $session, $user_stuffs;
 
-$cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');
 
 $stdfoot = [
@@ -50,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user_id) {
         sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('all_users_');
-        $cache->set('latestuser', (int) $user_id, $site_config['expires']['latestuser']);
+        $cache->set('latestuser_', (int) $user_id, $site_config['expires']['latestuser']);
 
         $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($values['username']) . '[/user]';
         if ($user_id > 2 && $site_config['autoshout_on']) {

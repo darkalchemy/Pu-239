@@ -101,7 +101,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newusername = (isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nsetusername['id'], [
+                $cache->update_row('user_' . $nsetusername['id'], [
                     'username' => $newname,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -155,7 +155,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? (int) ($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nbonus['id'], [
+                $cache->update_row('user_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
                 ], $site_config['expires']['user_cache']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -174,7 +174,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldinvites = (int) $ninvites['invites'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $ninvites['id'], [
+                $cache->update_row('user_' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] + $amount,
                 ], $site_config['expires']['user_cache']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -193,7 +193,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldfreeslots = (int) $nfreeslots['freeslots'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nfreeslots['id'], [
+                $cache->update_row('user_' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
                 ], $site_config['expires']['user_cache']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -212,7 +212,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldreputation = (int) $nreputation['reputation'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nreputation['id'], [
+                $cache->update_row('user_' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] + $amount,
                 ], $site_config['expires']['user_cache']);
                 $res4 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -233,7 +233,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? number_format($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nbonus['id'], [
+                $cache->update_row('user_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
                 ], $site_config['expires']['user_cache']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -252,7 +252,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldinvites = (int) $ninvites['invites'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $ninvites['id'], [
+                $cache->update_row('user_' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] - $amount,
                 ], $site_config['expires']['user_cache']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -271,7 +271,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldfreeslots = (int) $nfreeslots['freeslots'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nfreeslots['id'], [
+                $cache->update_row('user_' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
                 ], $site_config['expires']['user_cache']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -290,7 +290,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldreputation = (int) $nreputation['reputation'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $nreputation['id'], [
+                $cache->update_row('user_' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] - $amount,
                 ], $site_config['expires']['user_cache']);
                 $res6 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -320,10 +320,10 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldbonus) {
                     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $mebonus['id'], [
+                    $cache->update_row('user_' . $mebonus['id'], [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('user' . $whombonus['id'], [
+                    $cache->update_row('user_' . $whombonus['id'], [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
                     ], $site_config['expires']['user_cache']);
                     $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -355,10 +355,10 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldfreeslots) {
                     sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $mefreeslots['id'], [
+                    $cache->update_row('user_' . $mefreeslots['id'], [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('user' . $whomfreeslots['id'], [
+                    $cache->update_row('user_' . $whomfreeslots['id'], [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
                     ], $site_config['expires']['user_cache']);
                     $res1 = sql_query("SELECT freeslots FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -390,10 +390,10 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldreputation) {
                     sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $mereputation['id'], [
+                    $cache->update_row('user_' . $mereputation['id'], [
                         'reputation' => $mereputation['reputation'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('user' . $whomreputation['id'], [
+                    $cache->update_row('user_' . $whomreputation['id'], [
                         'reputation' => $whomreputation['reputation'] + $amount,
                     ], $site_config['expires']['user_cache']);
                     $res1 = sql_query("SELECT reputation FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -425,10 +425,10 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldinvites) {
                     sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('user' . $meinvite['id'], [
+                    $cache->update_row('user_' . $meinvite['id'], [
                         'invite' => $meinvite['invite'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('user' . $whominvite['id'], [
+                    $cache->update_row('user_' . $whominvite['id'], [
                         'invite' => $whominvite['invite'] + $amount,
                     ], $site_config['expires']['user_cache']);
                     $res1 = sql_query("SELECT invites FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -457,7 +457,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET uploadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $upos['id'], [
+                $cache->update_row('user_' . $upos['id'], [
                     'uploadpos' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -478,7 +478,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET downloadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $dpos['id'], [
+                $cache->update_row('user_' . $dpos['id'], [
                     'downloadpos' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -499,7 +499,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET forum_post = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $fpos['id'], [
+                $cache->update_row('user_' . $fpos['id'], [
                     'forum_post' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -520,7 +520,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET chatpost = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $cpos['id'], [
+                $cache->update_row('user_' . $cpos['id'], [
                     'chatpost' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -541,7 +541,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET avatarpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $apos['id'], [
+                $cache->update_row('user_' . $apos['id'], [
                     'avatarpos' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -562,7 +562,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET invite_rights = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $ipos['id'], [
+                $cache->update_row('user_' . $ipos['id'], [
                     'invite_rights' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -583,7 +583,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET enabled = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $epos['id'], [
+                $cache->update_row('user_' . $epos['id'], [
                     'enabled' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -605,7 +605,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
             $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's support changed by ' . $modd . "\n");
             sql_query("UPDATE users SET support = 'yes', supportfor ='$supportfors', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $support['id'], [
+            $cache->update_row('user_' . $support['id'], [
                 'support' => 'yes',
                 'supportfor' => $supportfors,
                 'modcomment' => $modcomment,

@@ -75,9 +75,9 @@ function pu_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $user = $cache->get('user' . $arr['id']);
+                $user = $cache->get('user_' . $arr['id']);
                 if (!empty($user)) {
-                    $cache->update_row('user' . $arr['id'], [
+                    $cache->update_row('user_' . $arr['id'], [
                         'class' => $class_value,
                         'invites' => $arr['invites'] + 1,
                         'modcomment' => $modcomment,

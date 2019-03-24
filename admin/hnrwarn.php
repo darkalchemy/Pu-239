@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('user' . $userid);
+                $cache->delete('user_' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Hit And Run Page');
             }
         } else {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($act === 'disable') {
         if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_disabled'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
-                $cache->update_row('user' . $uid, [
+                $cache->update_row('user_' . $uid, [
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($_uids as $id) {
             $pms[] = '(0,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'hnrwarn' => 'no',
         ], $site_config['expires']['user_cache']);
         if (!empty($pms) && count($pms)) {

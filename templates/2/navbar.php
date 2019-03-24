@@ -27,85 +27,94 @@ function navbar()
                             <i class='icon-home size_6'></i>
                             <span class='home'>{$site_config['site_name']}</span>
                             </a>
-                        </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['omdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
+                        </li>
+                        <li>
+                        </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
                         <li id='movies_links' class='clickable'>
                             <a href='#'>{$lang['gl_movies_tv']}</a>
                             <ul class='ddFade ddFadeFast'>" . ($BLOCKS['bluray_com_api_on'] ? "
-                                <li class='iss_hidden'><span class='left10'>{$lang['gl_bluray']}</span></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>" : '') . ($BLOCKS['imdb_api_on'] ? "
-                                <li class='iss_hidden'><span class='left10'>{$lang['gl_imdb']}</span></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>" : '') . ($BLOCKS['tmdb_api_on'] ? "
-                                <li class='iss_hidden'><span class='left10'>{$lang['gl_tmdb']}</span></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>" : '') . ($BLOCKS['tvmaze_api_on'] ? "
-                                <li class='iss_hidden'><span class='left10'>{$lang['gl_tvmaze']}</span></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>" : '') . '
+                                <li><span class='left10'>{$lang['gl_bluray']}</span></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>" : '') . ($BLOCKS['imdb_api_on'] ? "
+                                <li><span class='left10'>{$lang['gl_imdb']}</span></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>" : '') . ($BLOCKS['tmdb_api_on'] ? "
+                                <li><span class='left10'>{$lang['gl_tmdb']}</span></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>" : '') . ($BLOCKS['tvmaze_api_on'] ? "
+                                <li><span class='left10'>{$lang['gl_tvmaze']}</span></li>
+                                <li><a href='{$site_config['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>" : '') . '
                             </ul>
                         </li>' : '') . "
                         <li id='torrents_links' class='clickable'>
                             <a href='#'>{$lang['gl_torrent']}</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/catalog.php'>{$lang['gl_catalogue']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < $site_config['upload_min_class'] ? "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
+                                <li><a href='{$site_config['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/catalog.php'>{$lang['gl_catalogue']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
+                                <li><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < $site_config['upload_min_class'] ? "
+                                <li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "
+                                <li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                             </ul>
                         </li>
                         <li id='general_links' class='clickable'>
                             <a href='#'>{$lang['gl_general']}</a>
                             <ul class='ddFade ddFadeFast'>" . ($site_config['bucket_allowed'] ? "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/mybonus.php'>{$lang['gl_karma']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
+                                <li><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/mybonus.php'>{$lang['gl_karma']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
+                                <li><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
+                                <li><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
                             </ul>
                         </li>
                         <li id='games_links' class='clickable'>
                             <a href='#'>{$lang['gl_games']}</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
                             </ul>
                         </li>
                         <li id='user_links' class='clickable'>
-                            <a href='#'>User</a>
+                            <a href='#'>{$lang['gl_users']}</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
                                 <li><a href='{$site_config['baseurl']}/hnrs.php'>{$lang['gl_hnrs']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                             </ul>
                         </li>
-                        <li class='iss_hidden'>
+                        <li>
                             <a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a>
-                        </li>
-                        <li>" . ($CURUSER['class'] < UC_STAFF ? "
-                            <a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "
-                            <a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[{$lang['gl_staffbugs']}]</a>") . '</li>
-                        <li>' . ($CURUSER['class'] < UC_STAFF ? "
-                            <a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "
-                            <a href='{$site_config['baseurl']}/staffbox.php'>[{$lang['gl_messages']}]</a>") . '</li>' . ($BLOCKS['global_staff_menu_on'] ? $staff_links : ($CURUSER['class'] >= UC_STAFF ? "
-                        <li class='iss_hidden'>
+                        </li>" . ($CURUSER['class'] < UC_STAFF ? "
+                        <li id='staff_links' class='clickable'>
+                            <a href='#'>{$lang['gl_staff']}</a>
+                            <ul class='ddFade ddFadeFast'>
+                                <li>
+                                    <a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>
+                                </li>
+                                <li>
+                                    <a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>
+                                </li>
+                            </ul>
+                        </li>" : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : ($CURUSER['class'] >= UC_STAFF ? "
+                        <li>
                             <a href='{$site_config['baseurl']}/staffpanel.php'>{$lang['gl_staffpanel']}</a>
                         </li>" : '')) . "
+                        <li>
+                        </li>
                         <li>
                             <a href='{$site_config['baseurl']}/logout.php' class='is-flex'>
                             <i class='icon-logout size_6' aria-hidden='true'></i>
@@ -132,7 +141,7 @@ function make_link($value)
     global $site_config;
 
     $link = "
-                            <li class='iss_hidden'><a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a></li>';
+                            <li><a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a></li>';
 
     return $link;
 }

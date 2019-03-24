@@ -11,7 +11,6 @@ require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
-$free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
 require_once INCL_DIR . 'function_password.php';
 $cache = new Pu239\Cache();
 $fluent = new Pu239\Database();
@@ -39,6 +38,7 @@ if ($site_config['socket']) {
 } else {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
 }
+//$free = get_event(false);
 
 require_once CACHE_DIR . 'class_config.php';
 $session->start();
@@ -320,7 +320,7 @@ function userlogin()
             require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $users_data['id'], [
+            $cache->update_row('user_' . $users_data['id'], [
                 'enabled' => 'no',
                 'class' => 0,
             ], $site_config['expires']['user_cache']);
@@ -346,7 +346,7 @@ function userlogin()
                 'archive' => '',
             ];
         }
-        $cache->set('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
+        $cache->set('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']);
     }
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
@@ -431,7 +431,7 @@ function userlogin()
         sql_query('UPDATE users
                     SET where_is =' . sqlesc($whereis) . ', last_access = ' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $users_data['id'], [
+        $cache->update_row('user_' . $users_data['id'], [
             'last_access' => TIME_NOW,
             'onlinetime' => $update_time,
             'last_access_numb' => TIME_NOW,
@@ -614,7 +614,7 @@ function genrelist(bool $grouped)
     global $site_config, $cache, $fluent;
 
     if ($grouped) {
-        $ret = $cache->get('genrelist_grouped');
+        $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
                 ->where('parent_id = 0')
@@ -629,10 +629,10 @@ function genrelist(bool $grouped)
                 $ret[] = $parent;
             }
 
-            $cache->set('genrelist_grouped', $ret, $site_config['expires']['genrelist']);
+            $cache->set('genrelist_grouped_', $ret, $site_config['expires']['genrelist']);
         }
     } else {
-        $ret = $cache->get('genrelist_ordered');
+        $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
                 ->select('p.name AS parent_name')
@@ -646,7 +646,7 @@ function genrelist(bool $grouped)
                 $ret[] = $cat;
             }
 
-            $cache->set('genrelist_ordered', $ret, $site_config['expires']['genrelist']);
+            $cache->set('genrelist_ordered_', $ret, $site_config['expires']['genrelist']);
         }
     }
 
@@ -662,7 +662,7 @@ function create_moods($force = false)
 {
     global $cache;
 
-    $mood = $cache->get('moods');
+    $mood = $cache->get('moods_');
     if ($mood === false || is_null($mood) || $force === true) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
         $mood = [];
@@ -672,7 +672,7 @@ function create_moods($force = false)
                 $mood['name'][$rmood['id']] = $rmood['name'];
             }
         }
-        $cache->set('moods', $mood, 86400);
+        $cache->set('moods_', $mood, 86400);
     }
 
     return $mood;
@@ -1513,59 +1513,14 @@ function random_color($minVal = 0, $maxVal = 255)
  */
 function user_exists($user_id)
 {
-    global $cache;
+    global $user_stuffs;
 
-    $userlist = $cache->get('userlist_' . $user_id);
-    if ($userlist === false || is_null($userlist)) {
-        $query = 'SELECT id FROM users WHERE id = ' . sqlesc($user_id);
-        $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-        $res = mysqli_fetch_assoc($res);
-        if (empty($res)) {
-            return false;
-        }
-        $cache->set('userlist_' . $user_id, $res, 86400);
+    $user = $user_stuffs->getUserFromId($user_id);
+    if (!empty($user)) {
+        return true;
     }
 
-    return true;
-}
-
-/**
- * @return bool|mixed
- *
- * @throws \Envms\FluentPDO\Exception
- */
-function get_poll()
-{
-    global $CURUSER, $site_config, $fluent, $cache;
-
-    $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
-    if ($poll_data === false || is_null($poll_data)) {
-        $poll_data = $fluent->from('polls')
-                            ->orderBy('start_date DESC')
-                            ->limit(1)
-                            ->fetch();
-
-        if (!empty($poll_data)) {
-            $vote_data = $fluent->from('poll_voters')
-                                ->select(null)
-                                ->select('INET6_NTOA(ip) AS ip')
-                                ->select('user_id')
-                                ->select('vote_date')
-                                ->where('user_id = ?', $CURUSER['id'])
-                                ->where('poll_id = ?', $poll_data['pid'])
-                                ->limit('1')
-                                ->fetch();
-
-            $poll_data['ip'] = $vote_data['ip'];
-            $poll_data['user_id'] = $vote_data['user_id'];
-            $poll_data['vote_date'] = $vote_data['vote_date'];
-            $poll_data['time'] = TIME_NOW;
-
-            $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
-        }
-    }
-
-    return $poll_data;
+    return false;
 }
 
 /**
@@ -1627,23 +1582,24 @@ function array_msort(array $array, array $cols)
     return $ret;
 }
 
-/**
- * @return array|bool|mixed
- */
 function countries()
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fluent;
 
-    $ret = $cache->get('countries_arr');
-    if ($ret === false || is_null($ret)) {
-        $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $ret[] = $row;
-        }
-        $cache->set('countries_arr', $ret, $site_config['expires']['user_flag']);
+    $countries = $cache->get('countries_arr_');
+    if ($countries === false || is_null($countries)) {
+        $countries = $fluent->from('countries')
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('flagpic')
+            ->orderBy('name')
+            ->fetchAll();
+
+        $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
 
-    return $ret;
+    return $countries;
 }
 
 /**

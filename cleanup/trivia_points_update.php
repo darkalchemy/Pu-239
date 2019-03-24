@@ -93,9 +93,9 @@ function trivia_points_update($data)
             ];
 
             $points = $winners['seedbonus'] + $points;
-            $user = $cache->get('user' . $user_id);
+            $user = $cache->get('user_' . $user_id);
             if (!empty($user)) {
-                $cache->update_row('user' . $user_id, [
+                $cache->update_row('user_' . $user_id, [
                     'modcomment' => $modcomment,
                     'seedbonus' => $points,
                 ], $site_config['expires']['user_cache']);

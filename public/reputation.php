@@ -145,7 +145,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $res['reputation'] += $score;
     sql_query('UPDATE users SET reputation = ' . intval($res['reputation']) . ' WHERE id = ' . sqlesc($res['userid'])) or sqlerr(__FILE__,
         __LINE__);
-    $cache->update_row('user' . $res['userid'], [
+    $cache->update_row('user_' . $res['userid'], [
         'reputation' => $res['reputation'],
     ], $site_config['expires']['user_cache']);
     $cache->delete('user_rep_' . $res['userid']);

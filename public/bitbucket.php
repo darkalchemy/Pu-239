@@ -61,7 +61,7 @@ if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
         ->where('id = ?', $CURUSER['id'])
         ->execute();
 
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'avatar' => $_GET['avatar'],
     ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/bitbucket.php?images=$type&updated=avatar");

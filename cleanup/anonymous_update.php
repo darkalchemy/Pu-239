@@ -47,7 +47,7 @@ function anonymous_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
+        $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }
 
     $count = count($values);

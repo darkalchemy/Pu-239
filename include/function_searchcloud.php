@@ -9,7 +9,7 @@ function searchcloud($limit = 100)
 {
     global $cache, $fluent;
 
-    $searchcloud = $cache->get('searchcloud');
+    $searchcloud = $cache->get('searchcloud_');
     if ($searchcloud === false || is_null($searchcloud)) {
         $search = $fluent->from('searchcloud')
             ->select('searchedfor')
@@ -37,7 +37,7 @@ function searchcloud($limit = 100)
                 'min' => $min,
                 'max' => $max,
             ];
-            $cache->set('searchcloud', $searchcloud, 0);
+            $cache->set('searchcloud_', $searchcloud, 0);
 
             return $searchcloud;
         }
@@ -75,9 +75,9 @@ function searchcloud_insert($word, $column)
             'howmuch' => $howmuch,
             'column' => $column,
         ];
-        $cache->set('searchcloud', $searchcloud, 0);
+        $cache->set('searchcloud_', $searchcloud, 0);
     } else {
-        $cache->delete('searchcloud');
+        $cache->delete('searchcloud_');
     }
 
     $values = [

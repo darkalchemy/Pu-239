@@ -73,11 +73,11 @@ $cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],
 ], $site_config['expires']['torrent_details']);
 //==The uploader
-$cache->update_row('user' . $userid, [
+$cache->update_row('user_' . $userid, [
     'seedbonus' => $update['seedbonus_uploader'],
 ], $site_config['expires']['user_cache']);
 //==The donator
-$cache->update_row('user' . $CURUSER['id'], [
+$cache->update_row('user_' . $CURUSER['id'], [
     'seedbonus' => $update['seedbonus_donator'],
 ], $site_config['expires']['user_cache']);
 //== delete the pm keys

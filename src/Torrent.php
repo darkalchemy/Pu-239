@@ -68,7 +68,6 @@ class Torrent
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
             unlink(TORRENTS_DIR . $tid . '.torrent');
         }
-        $this->clear_caches();
     }
 
     /**
@@ -92,10 +91,10 @@ class Torrent
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
             if ($seeders) {
                 $this->cache->deleteMulti([
-                    'scroll_torrents_',
+                    'scroller_torrents_',
                     'slider_torrents_',
-                    'last5_torrents_',
-                    'top5_torrents_',
+                    'latest_torrents_',
+                    'top_torrents_',
                     'motw_',
                     'staff_picks_',
                 ]);
@@ -255,20 +254,20 @@ class Torrent
         }
 
         $announce = [
-            'id' => $torrent['id'],
-            'category' => $torrent['category'],
-            'banned' => $torrent['banned'],
-            'free' => $torrent['free'],
-            'silver' => $torrent['silver'],
-            'vip' => $torrent['vip'],
-            'seeders' => $torrent['seeders'],
-            'leechers' => $torrent['leechers'],
+            'id'              => $torrent['id'],
+            'category'        => $torrent['category'],
+            'banned'          => $torrent['banned'],
+            'free'            => $torrent['free'],
+            'silver'          => $torrent['silver'],
+            'vip'             => $torrent['vip'],
+            'seeders'         => $torrent['seeders'],
+            'leechers'        => $torrent['leechers'],
             'times_completed' => $torrent['times_completed'],
-            'ts' => $torrent['added'],
-            'visible' => $torrent['visible'],
-            'owner' => $torrent['owner'],
-            'added' => $torrent['added'],
-            'info_hash' => $torrent['info_hash'],
+            'ts'              => $torrent['added'],
+            'visible'         => $torrent['visible'],
+            'owner'           => $torrent['owner'],
+            'added'           => $torrent['added'],
+            'info_hash'       => $torrent['info_hash'],
         ];
 
         return $announce;
@@ -281,6 +280,7 @@ class Torrent
      * @param int $times_completed
      *
      * @throws \Envms\FluentPDO\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function adjust_torrent_peers(int $tid, int $seeders = 0, int $leechers = 0, int $times_completed = 0)
     {
@@ -338,23 +338,20 @@ class Torrent
                 'peers_' . $owner,
                 'coin_points_' . $tid,
                 'latest_comments_',
-                'top5_torrents_',
-                'last5_torrents_',
-                'scroll_torrents_',
+                'top_torrents_',
+                'latest_torrents_',
+                'scroller_torrents_',
                 'torrent_details_' . $tid,
                 'lastest_torrents_',
                 'slider_torrents_',
                 'torrent_poster_count_',
                 'torrent_banner_count_',
                 'backgrounds_',
-                'posters_',
-                'banners_',
                 'get_torrent_count_',
                 'torrent_descr_' . $tid,
                 'staff_picks_',
                 'motw_',
             ]);
-            $this->clear_caches();
         }
 
         if ($added > TIME_NOW - (14 * 86400)) {
@@ -367,25 +364,10 @@ class Torrent
                 ->where('id = ?', $owner)
                 ->execute();
 
-            $this->cache->update_row('user' . $owner, $set, $this->site_config['expires']['user_cache']);
+            $this->cache->update_row('user_' . $owner, $set, $this->site_config['expires']['user_cache']);
         }
 
         return true;
-    }
-
-    public function clear_caches()
-    {
-        $keys = $this->cache->get('where_keys_');
-        if (is_array($keys)) {
-            $this->cache->deleteMulti($keys);
-            $this->cache->delete('where_keys_');
-        }
-
-        $hashes = $this->cache->get('hashes_');
-        if (!empty($hashes)) {
-            $this->cache->deleteMulti($hashes);
-            $this->cache->delete('hashes_');
-        }
     }
 
     /**
@@ -400,8 +382,6 @@ class Torrent
         $id = $this->fluent->insertInto('torrents')
             ->values($values)
             ->execute();
-
-        $this->clear_caches();
 
         return $id;
     }

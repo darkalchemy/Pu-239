@@ -51,7 +51,7 @@ $cache->update_row('torrent_details_' . $reseedid, [
 if ($site_config['seedbonus_on']) {
     sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }

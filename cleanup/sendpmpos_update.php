@@ -38,9 +38,9 @@ function sendpmpos_update($data)
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $user = $cache->get('user' . $arr['id']);
+            $user = $cache->get('user_' . $arr['id']);
             if (!empty($user)) {
-                $cache->update_row('user' . $arr['id'], [
+                $cache->update_row('user_' . $arr['id'], [
                     'sendpmpos' => 1,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);

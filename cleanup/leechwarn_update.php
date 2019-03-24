@@ -58,7 +58,7 @@ function leechwarn_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
+        $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }
 
     $count = count($values);
@@ -99,7 +99,7 @@ function leechwarn_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
+        $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }
     if (!empty($values)) {
         $message_stuffs->insert($values);
@@ -126,8 +126,8 @@ function leechwarn_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->delete('user' . $arr['id']);
-        $cache->set('forced_logout_' . $arr['id'], TIME_NOW, 2592000);
+        $cache->delete('user_' . $arr['id']);
+        $cache->set('forced_logout_' . $arr['id'], TIME_NOW, 2591999);
     }
 
     $time_end = microtime(true);

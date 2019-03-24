@@ -58,8 +58,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
             $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
         }
         //=== now_viewing
-        $keys['now_viewing'] = 'now_viewing_section_view';
-        if (($now_viewing_cache = $cache->get($keys['now_viewing'])) === false) {
+        if (($now_viewing_cache = $cache->get('now_viewing_section_view')) === false) {
             $nowviewing = '';
             $now_viewing_cache = [];
             $res = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id WHERE forum_id = ' . sqlesc($forums_arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
@@ -70,7 +69,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 $nowviewing .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>' . $lang['fe_unkn0wn'] . '</i>' : format_username($arr['user_id']));
             }
             $now_viewing_cache['now_viewing'] = $nowviewing;
-            $cache->set($keys['now_viewing'], $now_viewing_cache, $site_config['expires']['section_view']);
+            $cache->set('now_viewing_section_view', $now_viewing_cache, $site_config['expires']['section_view']);
         }
         if (!$now_viewing_cache['now_viewing']) {
             $now_viewing_cache['now_viewing'] = $lang['fe_there_not_been_active_visit_15'];

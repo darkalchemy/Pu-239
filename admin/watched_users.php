@@ -25,7 +25,7 @@ if (isset($_GET['remove'])) {
             $user = mysqli_fetch_assoc($res);
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
             sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $remove_me_Ive_been_good, [
+            $cache->update_row('user_' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
@@ -40,7 +40,7 @@ if (isset($_GET['remove'])) {
                 $user = mysqli_fetch_assoc($res);
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
                 sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user' . $id, [
+                $cache->update_row('user_' . $id, [
                     'watched_user' => 0,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
@@ -86,7 +86,7 @@ if (isset($_GET['add'])) {
         $watched_user_reason = htmlsafechars($_POST['reason']);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment = ' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $member_whos_been_bad, [
+        $cache->update_row('user_' . $member_whos_been_bad, [
             'watched_user' => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
             'modcomment' => $modcomment,

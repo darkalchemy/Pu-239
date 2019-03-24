@@ -39,8 +39,8 @@ if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
 }
 
 $hash = hash('sha256', json_encode($_POST));
-$cache->delete('rss_' . $hash);
-$data = $cache->get('rss_' . $hash);
+$cache->delete('rss_query_' . $hash);
+$data = $cache->get('rss_query_' . $hash);
 if ($data === false || is_null($data)) {
     $data = $fluent->from('torrents AS t')
         ->select(null)
@@ -72,7 +72,7 @@ if ($data === false || is_null($data)) {
         ->fetchAll();
 
     if (!empty($data)) {
-        $cache->set('rss_' . $hash, $data, 300);
+        $cache->set('rss_query_' . $hash, $data, 300);
     } else {
         $data = 'No results in your request';
     }

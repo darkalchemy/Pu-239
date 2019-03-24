@@ -76,10 +76,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     if ($site_config['seedbonus_on']) {
         sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_post']);
-        $cache->update_row('userstats_' . $CURUSER['id'], [
-            'seedbonus' => $update['seedbonus'],
-        ]);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
         ]);
     }

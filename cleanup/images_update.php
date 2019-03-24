@@ -11,7 +11,6 @@ function images_update($data)
     require_once INCL_DIR . 'function_tmdb.php';
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
-    require_once INCL_DIR . 'function_omdb.php';
     require_once INCL_DIR . 'function_bluray.php';
     require_once INCL_DIR . 'function_books.php';
     require_once INCL_DIR . 'function_fanart.php';
@@ -74,7 +73,6 @@ function images_update($data)
     foreach ($imdbids as $imdbid) {
         if (!empty($imdbid)) {
             get_imdb_info($imdbid['imdb_id'], true);
-            get_omdb_info($imdbid['imdb_id'], true);
         }
     }
 
@@ -96,7 +94,6 @@ function images_update($data)
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb)) {
             get_imdb_info($imdb, false);
-            get_omdb_info($imdb, false);
         }
     }
 

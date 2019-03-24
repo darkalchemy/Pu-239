@@ -34,7 +34,7 @@ function karmavip_update($data)
             ];
 
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
-            $cache->update_row('user' . $arr['id'], [
+            $cache->update_row('user_' . $arr['id'], [
                 'class' => 1,
                 'vip_added' => 'no',
                 'vip_until' => 0,

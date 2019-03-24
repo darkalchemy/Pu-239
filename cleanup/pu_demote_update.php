@@ -61,7 +61,7 @@ function pu_demote_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $cache->update_row('user' . $arr['id'], [
+                $cache->update_row('user_' . $arr['id'], [
                     'class' => $prev_class,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);

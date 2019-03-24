@@ -78,8 +78,8 @@ function move_cat()
 
     flush_torrents($params['id']);
     flush_torrents($params['new_cat_id']);
-    $cache->delete('genrelist_grouped');
-    $cache->delete('genrelist_ordered');
+    $cache->delete('genrelist_grouped_');
+    $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
@@ -163,8 +163,8 @@ function add_cat()
         ->values($values)
         ->execute();
 
-    $cache->delete('genrelist_grouped');
-    $cache->delete('genrelist_ordered');
+    $cache->delete('genrelist_grouped_');
+    $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if (!$insert) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
@@ -202,8 +202,8 @@ function delete_cat()
         ->where('id =?', $params['id'])
         ->execute();
 
-    $cache->delete('genrelist_grouped');
-    $cache->delete('genrelist_ordered');
+    $cache->delete('genrelist_grouped_');
+    $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
@@ -293,8 +293,8 @@ function edit_cat()
         set_ordered($params);
         reorder_cats(false);
 
-        $cache->delete('genrelist_grouped');
-        $cache->delete('genrelist_ordered');
+        $cache->delete('genrelist_grouped_');
+        $cache->delete('genrelist_ordered_');
         $cache->delete('categories');
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
         die();
@@ -479,8 +479,8 @@ function reorder_cats(bool $redirect = true)
     }
 
     flush_torrents(0);
-    $cache->delete('genrelist_grouped');
-    $cache->delete('genrelist_ordered');
+    $cache->delete('genrelist_grouped_');
+    $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
 
     if ($redirect) {

@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_comments.php';
 
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session, $mysqli;
+global $CURUSER, $site_config, $fluent, $cache, $session, $mysqli, $user_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
@@ -24,23 +24,14 @@ $id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
 }
-$user = $cache->get('user' . $id);
-if ($user === false || is_null($user)) {
-    $user = $fluent->from('users')
-                   ->select('INET6_NTOA(ip) AS ip')
-                   ->where('id = ?', $id)
-                   ->fetch();
-    unset($user['hintanswer'], $user['passhash']);
-
-    $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
-}
+$user = $user_stuffs->getUserFromId($id);
 if ($user['status'] === 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 
 $user_status = $cache->get('userstatus_' . $id);
 if ($user_status === false || is_null($user_status)) {
-    $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id));
+    $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($sql_2)) {
         $user_status = mysqli_fetch_assoc($sql_2);
     } else {
@@ -50,7 +41,7 @@ if ($user_status === false || is_null($user_status)) {
             'archive' => '',
         ];
     }
-    $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
+    $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']);
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
@@ -65,8 +56,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
-    sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__,
-        __LINE__);
+    sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     if (@mysqli_affected_rows($mysqli) === 0) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
@@ -119,19 +109,17 @@ foreach ($countries as $cntry) {
 }
 
 if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
-    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($user['id']) . ' AND hitid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__,
-        __LINE__);
+    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($user['id']) . ' AND hitid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     if (!($row[0] > TIME_NOW - 3600)) {
         $hitnumber = $user['hits'] + 1;
         sql_query('UPDATE users SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         // do update hits userdetails cache
         $update['user_hits'] = ($user['hits'] + 1);
-        $cache->update_row('user' . $id, [
+        $cache->update_row('user_' . $id, [
             'hits' => $update['user_hits'],
         ], $site_config['expires']['user_cache']);
-        sql_query('INSERT INTO userhits (userid, hitid, number, added) VALUES(' . sqlesc($user['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($hitnumber) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__,
-            __LINE__);
+        sql_query('INSERT INTO userhits (userid, hitid, number, added) VALUES(' . sqlesc($user['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($hitnumber) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
@@ -191,15 +179,13 @@ if (!$enabled) {
 } elseif ($CURUSER['id'] != $user['id']) {
     $friends = $cache->get('Friends_' . $id);
     if ($friends === false || is_null($friends)) {
-        $r3 = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__,
-            __LINE__);
+        $r3 = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     $blocks = $cache->get('Blocks_' . $id);
     if ($blocks === false || is_null($blocks)) {
-        $r4 = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__,
-            __LINE__);
+        $r4 = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
@@ -219,8 +205,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $shitty = '';
     $shit_list = $cache->get('shit_list_' . $id);
     if ($shit_list === false || is_null($shit_list)) {
-        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid = ' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__,
-            __LINE__);
+        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid = ' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list) = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);
     }
@@ -264,7 +249,7 @@ $HTMLOUT .= "
         <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
         <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
 
-$stealth = $cache->get('display_stealth' . $user['id']);
+$stealth = $cache->get('display_stealth_' . $user['id']);
 if ($stealth) {
     $session->set('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }

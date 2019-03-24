@@ -52,14 +52,14 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $row['curr_ann_body'] = $ann_row['body'];
             // Create additional set for main UPDATE query.
             $add_set = 'curr_ann_id = ' . sqlesc($ann_row['main_id']);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $cache->update_row('user_' . $CURUSER['id'], [
                 'curr_ann_id' => $ann_row['main_id'],
             ], $site_config['expires']['user_cache']);
             $status = 2;
         } else {
             // Announcement not valid for member...
             $add_set = 'curr_ann_last_check = ' . sqlesc($dt);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $cache->update_row('user_' . $CURUSER['id'], [
                 'curr_ann_last_check' => $dt,
             ], $site_config['expires']['user_cache']);
             $status = 1;
@@ -76,7 +76,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
     } else {
         // No Main Result Set. Set last update to now...
         $add_set = 'curr_ann_last_check = ' . sqlesc($dt);
-        $cache->update_row('user' . $CURUSER['id'], [
+        $cache->update_row('user_' . $CURUSER['id'], [
             'curr_ann_last_check' => $dt,
         ], $site_config['expires']['user_cache']);
     }

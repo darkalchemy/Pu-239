@@ -65,7 +65,7 @@ function hitrun_update($data)
                 $_users[] = '(' . sqlesc($bad_users['userid']) . ',' . sqlesc($bad_users['username']) . ',' . sqlesc($bad_users['count']) . ',0, \'yes\',' . $modcom . ')';
 
                 $update['hit_and_run_total'] = ($bad_users['hit_and_run_total'] + $bad_users['count']);
-                $cache->update_row('user' . $bad_users['userid'], [
+                $cache->update_row('user_' . $bad_users['userid'], [
                     'hit_and_run_total' => $update['hit_and_run_total'],
                     'downloadpos' => 0,
                     'hnrwarn' => 'yes',
@@ -100,7 +100,7 @@ function hitrun_update($data)
                     'subject' => $subject,
                 ];
                 $_users[] = '(' . sqlesc($arr_good_boy['id']) . ',1,\'no\',' . $modcom . ')';
-                $cache->update_row('user' . $arr_good_boy['id'], [
+                $cache->update_row('user_' . $arr_good_boy['id'], [
                     'downloadpos' => 1,
                     'hnrwarn' => 'no',
                     'modcomment' => $modcomment,

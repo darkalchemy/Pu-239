@@ -34,7 +34,7 @@ function crazyhour_announce()
     }
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
-        if (($cz_lock = $cache->set('crazyhour_lock', 1, 10)) !== false) {
+        if (($cz_lock = $cache->set('crazyhour_lock_', 1, 10)) !== false) {
             $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
             $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
@@ -68,7 +68,7 @@ function crazyhour_announce()
     } elseif (($cz['crazyhour']['var'] < $crazy_hour) && ($cz['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
-            if (($cz_lock = $cache->set('crazyhour_lock', 1, 10)) !== false) {
+            if (($cz_lock = $cache->set('crazyhour_lock_', 1, 10)) !== false) {
                 $set = ['amount' => $cz['crazyhour']['amount']];
                 $fluent->update('freeleech')
                     ->set($set)

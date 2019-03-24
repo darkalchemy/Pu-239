@@ -36,7 +36,7 @@ if ($results === false || is_null($results)) {
     }
     if (!in_array($hash, $hashes)) {
         $hashes[] = $hash;
-        $cache->set('suggest_torrents_hashes_', $hashes, 0);
+        $cache->set('suggest_torrents_hashes_', $hashes, 300);
     }
 }
 

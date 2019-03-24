@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_torrent_hover.php';
 check_user_status();
-global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs, $torrent_stuffs;
+global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs, $torrent_stuffs, $pollvoter_stuffs;
 
 $stdfoot = [
     'js' => [
@@ -36,7 +36,7 @@ if ($unread >= 1) {
     ]);
 }
 
-$poll_data = get_poll();
+$poll_data = $pollvoter_stuffs->get_user_poll($CURUSER['id']);
 if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     $HTMLOUT .= "
 <script>
