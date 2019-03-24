@@ -375,7 +375,7 @@ function maketable(array $torrents)
         <tr>
             <td class='has-text-centered'>$cat_info</td>
             <td>
-                <a href='{$site_config['baseurl']}/details.php?id={$torrent['torrentid']}&amp;hit=1'><b>" . htmlsafechars($torrent['name']) . "</b></a>
+                <a class='altlink' href='{$site_config['baseurl']}/details.php?id={$torrent['torrentid']}&amp;hit=1'><b>" . htmlsafechars($torrent['name']) . "</b></a>
             </td>
             <td class='has-text-centered'>$size</td>
             <td class='has-text-centered'>$seeders</td>
@@ -424,7 +424,7 @@ function snatchtable(array $torrents)
         <tr>
             <td>$cat_info</td>
             <td>
-                <a href='{$site_config['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
+                <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
             </td>
             <td>' . mksize($torrent['uploaded']) . "</td>
             <td>$upspeed/s</td>" . ($site_config['ratio_free'] ? '' : '
@@ -488,9 +488,14 @@ function staff_snatchtable(array $torrents, int $userid)
                 $dlc = 'yellow';
                 break;
 
-            case $dl_speed < 100:
+            case $dl_speed > 100:
                 $dlc = 'Chartreuse';
                 break;
+
+            default:
+                $dlc = 'white';
+                break;
+
         }
         if ($arr['downloaded'] > 0) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);

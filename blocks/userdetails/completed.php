@@ -1,11 +1,43 @@
 <?php
 
-global $CURUSER, $site_config, $user;
+global $CURUSER, $site_config, $user, $fluent;
 
 if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= (UC_MIN + 1)) {
     $completed = $count2 = $dlc = '';
-    $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, snatched.complete_date AS c, snatched.downspeed, snatched.seedtime, snatched.seeder, snatched.torrentid AS tid, snatched.id, categories.id AS category, categories.image, categories.name AS catname, snatched.uploaded, snatched.downloaded, snatched.hit_and_run, snatched.mark_of_cain, snatched.complete_date, snatched.last_action, torrents.seeders, torrents.leechers, torrents.owner, snatched.start_date AS st, snatched.start_date FROM snatched JOIN torrents ON torrents.id = snatched.torrentid JOIN categories ON categories.id = torrents.category WHERE snatched.finished = 'yes' AND userid = " . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY snatched.id DESC') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($r) > 0) {
+    $torrents = $fluent->from('snatched AS s')
+        ->select('t.name')
+        ->select('t.added AS torrent_added')
+        ->select('s.complete_date AS c')
+        ->select('s.downspeed')
+        ->select('s.seedtime')
+        ->select('s.seeder')
+        ->select('s.torrentid AS tid')
+        ->select('s.id')
+        ->select('c.id AS category')
+        ->select('c.image')
+        ->select('c.name AS catname')
+        ->select('p.name AS parent_name')
+        ->select('s.uploaded')
+        ->select('s.downloaded')
+        ->select('s.hit_and_run')
+        ->select('s.mark_of_cain')
+        ->select('s.complete_date')
+        ->select('s.last_action')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.owner')
+        ->select('s.start_date AS st')
+        ->select('s.start_date')
+        ->leftJoin('torrents AS t ON t.id = s.torrentid')
+        ->leftJoin('categories AS c ON c.id = t.category')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('s.finished = "yes"')
+        ->where('userid = ?', $id)
+        ->where('t.owner != ?', $id)
+        ->orderBy('s.id DESC')
+        ->fetchAll();
+
+    if (count($torrents) > 0) {
         $heading = "
         <tr>
             <th>{$lang['userdetails_type']}</th>
@@ -21,7 +53,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             <th>{$lang['userdetails_speed']}</th>
         </tr>";
         $body = '';
-        while ($a = mysqli_fetch_assoc($r)) {
+        foreach ($torrents as $a) {
             $What_Id = $a['id'];
             $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
             switch (true) {
@@ -105,9 +137,12 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
             $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
             $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}'>" : '');
+            $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
+            $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
+
             $body .= "
             <tr>
-                <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}'></td>
+                <td style='padding: 5px'>$caticon</td>
                 <td>
                     <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a>
                     <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . '</td>

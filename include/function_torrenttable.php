@@ -233,7 +233,7 @@ function torrenttable($res, $variant = 'index')
             <td>
                 <div class='level-wide'>
                     <div>
-                        <a href='{$site_config['baseurl']}/details.php?";
+                        <a class='altlink' href='{$site_config['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }
