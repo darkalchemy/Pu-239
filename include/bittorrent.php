@@ -38,7 +38,6 @@ if ($site_config['socket']) {
 } else {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
 }
-//$free = get_event(false);
 
 require_once CACHE_DIR . 'class_config.php';
 $session->start();

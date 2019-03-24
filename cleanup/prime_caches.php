@@ -11,7 +11,6 @@ function prime_caches($data)
     global $fluent, $torrent_stuffs, $user_stuffs, $snatched_stuffs;
 
     $peer_stuffs = new Pu239\Peer();
-    $event_stuffs = new Pu239\Event();
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -22,7 +21,6 @@ function prime_caches($data)
         ->select('info_hash')
         ->select('owner');
 
-    $event_stuffs->get_event();
     $users = $fluent->from('users')
         ->select(null)
         ->select('users.id')

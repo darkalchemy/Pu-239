@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
-global $site_config, $cache, $ip_stuffs, $peer_stuffs, $event_stuffs, $snatched_stuffs, $torrent_stuffs, $user_stuffs;
+global $site_config, $cache, $ip_stuffs, $peer_stuffs, $snatched_stuffs, $torrent_stuffs, $user_stuffs;
 
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
@@ -266,30 +266,22 @@ if (!isset($self)) {
         $upthis = $upthis * $happy_multiplier;
         $downthis = 0;
     }
-    $contribution = $cache->get('freecontribution_');
-    if ($contribution === false || is_null($contribution)) {
-        $contribution = $event_stuffs->get_event();
-        $cache->set('freecontribution_', $contribution, $site_config['expires']['contribution']);
-    }
-    if ($contribution['startTime'] < $dt && $contribution['endTime'] > $dt) {
-        if ($contribution['freeleechEnabled'] === 1) {
-            $downthis = 0;
-        }
-        if ($contribution['duploadEnabled'] === 1) {
-            $upthis = $upthis * 2;
-            $downthis = 0;
-        }
-        if ($contribution['hdownEnabled'] === 1) {
-            $downthis = $downthis / 2;
-        }
-    }
     if ($upthis > 0 || $downthis > 0) {
-        $isfree = $isdouble = $issilver = '';
+        $isfree = $isdouble = $issilver = false;
         $free = $cache->get('site_event_');
         if (!empty($free)) {
-            $isfree = ($free['modifier'] == 1 || $free['modifier'] == 3) && $free['expires'] > $dt;
-            $isdouble = ($free['modifier'] == 2 || $free['modifier'] == 3) && $free['expires'] > $dt;
-            $issilver = ($free['modifier'] == 4) && $free['expires'] > $dt;
+            if ($free['modifier'] === 1 || $free['modifier'] === 3) && $free['expires'] > $dt) {
+                $isfree = true;
+                $downthis = 0;
+            }
+            if ($free['modifier'] === 2 || $free['modifier'] === 3) && $free['expires'] > $dt) {
+                $isdouble = true;
+                $upthis = $upthis * 2;
+            }
+            if ($free['modifier'] === 4) && $free['expires'] > $dt) {
+                $issilver = true;
+                $downthis = $downthis / 2;
+            }
         }
         if ($torrent['silver'] != 0 || $issilver) {
             $downthis = $downthis / 2;

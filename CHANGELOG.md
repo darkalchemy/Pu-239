@@ -1,4 +1,5 @@
 ### 24 Mar, 2019
+remove: event_stuffs  
 update: polls  
 remove: OMDb API  
 update: merge freeleech cache with events cache  
