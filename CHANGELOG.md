@@ -1,4 +1,5 @@
 ### 24 Mar, 2019
+update: run 'npm audit fix'  
 update: add HnRs to navbar.php  
 update: dependancies  
 update: hnrs.php  
