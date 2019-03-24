@@ -1,4 +1,5 @@
 ### 24 Mar, 2019
+update: add HnRs to navbar.php  
 update: dependancies  
 update: hnrs.php  
 

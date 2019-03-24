@@ -76,6 +76,7 @@ $lang = [
     'gl_theme' => 'Theme',
     'gl_language_select' => 'Language',
     'gl_friends' => 'Friends',
+    'gl_hnrs' => 'HnRs',
     'gl_rules' => 'Rules',
     'gl_faq' => 'Faq',
     'gl_links' => 'Links',
