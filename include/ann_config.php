@@ -15,7 +15,6 @@ $session = new Pu239\Session();
 require_once INCL_DIR . 'site_settings.php';
 $ip_stuffs = new Pu239\IP();
 $peer_stuffs = new Pu239\Peer();
-$event_stuffs = new Pu239\Event();
 $snatched_stuffs = new Pu239\Snatched();
 $torrent_stuffs = new Pu239\Torrent();
 $user_stuffs = new Pu239\User();

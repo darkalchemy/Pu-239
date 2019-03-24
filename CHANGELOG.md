@@ -1,4 +1,5 @@
 ### 24 Mar, 2019
+fix: announce.php  
 remove: event_stuffs  
 update: polls  
 remove: OMDb API  

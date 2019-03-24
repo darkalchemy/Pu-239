@@ -270,15 +270,15 @@ if (!isset($self)) {
         $isfree = $isdouble = $issilver = false;
         $free = $cache->get('site_event_');
         if (!empty($free)) {
-            if ($free['modifier'] === 1 || $free['modifier'] === 3) && $free['expires'] > $dt) {
+            if (($free['modifier'] === 1 || $free['modifier'] === 3) && $free['expires'] > $dt) {
                 $isfree = true;
                 $downthis = 0;
             }
-            if ($free['modifier'] === 2 || $free['modifier'] === 3) && $free['expires'] > $dt) {
+            if (($free['modifier'] === 2 || $free['modifier'] === 3) && $free['expires'] > $dt) {
                 $isdouble = true;
                 $upthis = $upthis * 2;
             }
-            if ($free['modifier'] === 4) && $free['expires'] > $dt) {
+            if (($free['modifier'] === 4) && $free['expires'] > $dt) {
                 $issilver = true;
                 $downthis = $downthis / 2;
             }
