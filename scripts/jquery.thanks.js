@@ -13,7 +13,7 @@ function show_thanks(csrf, tid) {
         csrf: csrf
     }, function (r) {
         if (r.status) {
-            if (!r.hadTh) r.list += '<input type=\'button\' class=\'button is-small\' value=\'Say thanks\' onclick="say_thanks(\'' + csrf + '\', ' + tid + ')" id=\'thanks_button\' />';
+            if (!r.hadTh) r.list += '<div class=\'top10 bottom10\'><input type=\'button\' class=\'button is-small\' value=\'Say thanks\' onclick="say_thanks(\'' + csrf + '\', ' + tid + ')" id=\'thanks_button\' /></div>';
             holder.empty().html(r.list);
         }
     }, 'json');

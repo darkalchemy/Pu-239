@@ -38,12 +38,13 @@ function torrenttable($res, $variant = 'index')
     $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
     $oldlink = [];
 
-    global $site_config, $CURUSER, $lang, $free, $session;
+    global $site_config, $CURUSER, $lang, $session, $cache;
 
     require_once INCL_DIR . 'function_bbcode.php';
     require_once CLASS_DIR . 'class_user_options_2.php';
     require_once INCL_DIR . 'function_torrent_hover.php';
     $lang = array_merge($lang, load_language('index'));
+    $free = $cache->get('site_events_');
 
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
