@@ -2,6 +2,9 @@
 update: dependancies  
 update: hnrs.php  
 
+### 21 Mar, 2019
+add: mising $formatted var  
+
 ### 20 Mar, 2019
 fix: typo  
 
