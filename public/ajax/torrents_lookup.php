@@ -550,7 +550,7 @@ function cat_image($torrent)
         $cat = $torrent['parent_name'] . '::' . $torrent['catname'];
     }
 
-    $image = !empty($catimage) && file_exists(IMAGES_DIR . 'caticons/'. get_category_icons() . "/$catimage") ? "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$catimage" : '';
+    $image = !empty($catimage) && file_exists(IMAGES_DIR . 'caticons/' . get_category_icons() . "/$catimage") ? "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$catimage" : '';
     $catname = htmlsafechars($cat);
     $catimage = !empty($image) ? "<img src='$image' title='$catname' alt='$catname' width='42' height='42' class='tooltipper'>" : $catname;
 
