@@ -34,6 +34,7 @@ class Snatched
         if ($snatches === false || is_null($snatches)) {
             $snatches = $this->fluent->from('snatched')
                 ->select(null)
+                ->select('id')
                 ->select('seedtime')
                 ->select('leechtime')
                 ->select('uploaded')

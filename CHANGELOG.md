@@ -1,3 +1,7 @@
+### 24 Mar, 2019
+update: dependancies  
+update: hnrs.php  
+
 ### 20 Mar, 2019
 fix: typo  
 

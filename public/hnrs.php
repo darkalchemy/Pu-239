@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $site_config, $CURUSER, $lang, $cache, $session, $user_stuffs;
+global $site_config, $CURUSER, $lang, $cache, $session, $user_stuffs, $fluent, $session, $torrent_stuffs, $snatched_stuffs;
 
 $HTMLOUT = '';
 
@@ -20,105 +20,133 @@ if ($CURUSER['class'] < UC_MIN) {
 
 if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
-    $user_stuff = $user_stuffs->getUserFromId($userid);
-    $username = $user_stuff['username'];
-    $class = $user_stuff['class'];
 } else {
     $userid = $CURUSER['id'];
-    $username = $CURUSER['username'];
-    $class = $CURUSER['class'];
 }
 
-$query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
-$res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-$result = mysqli_fetch_assoc($res);
-
-$upload = $result['uploaded'];
-$download = $result['downloaded'];
-$diff = $upload - $download;
-$bonuscomment = $result['bonuscomment'];
+$user_stuff = $user_stuffs->getUserFromId($userid);
+$diff = $user_stuff['uploaded'] - $user_stuff['downloaded'];
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
-    $bp = (int) $result['seedbonus'];
+    $bp = $user_stuff['seedbonus'];
 } else {
     $bp = 0;
 }
-$cost = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
 
-unset($_GET['bytes']);
+$ratio_fix = $fluent->from('bonus')
+                    ->select(null)
+                    ->select('points')
+                    ->where('bonusname = "Ratio Fix"')
+                    ->where('enabled = "yes"')
+                    ->fetch('points');
 
-if (isset($_GET['torrentid'])) {
-    $query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
-    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $result = mysqli_fetch_assoc($res);
-
-    $upload = $result['uploaded'];
-    $download = $result['downloaded'];
-    $diff = $upload - $download;
-    $bonuscomment = $result['bonuscomment'];
-    if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
-        $bp = (int) $result['seedbonus'];
+$cost = (!$ratio_fix) ? 0 : (int) $ratio_fix;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (empty($_POST['sid']) || empty($_POST['tid']) || empty($_POST['userid'])) {
+        $session->set('is-danger', 'Invalid POST resquest');
     } else {
-        $bp = 0;
+        $torrent = $torrent_stuffs->get($_POST['tid']);
+        if (!$torrent) {
+            $session->set('is-danger', 'No torrent with that ID!');
+            header("Location: {$site_config['baseurl']}/hnrs.php");
+            die();
+        }
+        $snatched = $snatched_stuffs->get_snatched($_POST['userid'], $_POST['tid']);
+        if (!$snatched || $snatched['id'] != $_POST['sid']) {
+            $session->set('is-danger', 'No snatched torrent with that ID!');
+            header("Location: {$site_config['baseurl']}/hnrs.php");
+            die();
+        }
+        if (!empty($_POST['seed'])) {
+            if ($cost > $bp) {
+                $session->set('is-danger', 'You do not have enough bonus points!');
+                header("Location: {$site_config['baseurl']}/hnrs.php");
+                die();
+            }
+            $set = [
+                'hit_and_run' => 0,
+                'mark_of_cain' => 'no',
+                'seedtime' => $_POST['seed'],
+            ];
+            $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
+            $bonuscomment = get_date(TIME_NOW, 'DATE',
+                    1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $set = [
+                'seedbonus' => $user_stuff['seedbonus'] - $cost,
+                'bonuscomment' => $bonuscomment,
+            ];
+            $user_stuffs->update($set, $_POST['userid']);
+            $cache->delete('userhnrs_' . $userid);
+            $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
+        } elseif (!empty($_POST['bytes'])) {
+            $downloaded = $site_config['ratio_free'] ? $torrent['size'] : $snatched['downloaded'];
+            $bytes = $downloaded - $snatched['uploaded'];
+            if ($diff < $bytes) {
+                $session->set('is-danger', 'You do not have enough upload credit!');
+                header("Location: {$site_config['baseurl']}/hnrs.php");
+                die();
+            }
+            $set = [
+                'hit_and_run' => 0,
+                'mark_of_cain' => 'no',
+                'uploaded' => $snatched['downloaded'],
+            ];
+            $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
+            $bonuscomment = get_date(TIME_NOW, 'DATE',
+                    1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $set = [
+                'uploaded' => $user_stuff['uploaded'] - $bytes,
+                'bonuscomment' => $bonuscomment,
+            ];
+            $user_stuffs->update($set, $_POST['userid']);
+            $cache->delete('userhnrs_' . $userid);
+            $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
+        }
     }
-    $cost = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
-    $seedbonus = $bp - $cost;
-    if ($cost > $bp) {
-        stderr('Error', "You do not have enough bonus points!<br><br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
-    }
-    $torrent_number = (int) $_GET['torrentid'];
-    $res_snatched = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr_snatched = mysqli_fetch_assoc($res_snatched);
-    $downloaded = $site_config['ratio_free'] ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
-    if ($arr_snatched['name'] == '') {
-        stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
-    }
-    $download_amt = $site_config['ratio_free'] ? ', downloaded = ".sqlesc($downloaded)."' : '';
-    sql_query("UPDATE snatched SET hit_and_run = 0, mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
-    $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
-    sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $userid, [
-        'seedbonus' => $seedbonus,
-        'bonuscomment' => $bonuscomment,
-    ], $site_config['expires']['user_cache']);
-    $cache->delete('userhnrs_' . $userid);
-    header('Refresh: 0; url=hnrs.php?userid=' . $userid . '&ratio_success=1');
-    die();
+    unset($_POST);
 }
 
 $completed = $count2 = $dlc = '';
-$r = sql_query("SELECT
-                t.name,
-                t.added AS torrent_added,
-                s.complete_date AS c,
-                s.downspeed,
-                s.seedtime,
-                s.seeder,
-                s.torrentid AS tid,
-                s.id,
-                c.id AS category,
-                c.image,
-                c.name AS catname,
-                s.uploaded,
-                s.downloaded,
-                s.hit_and_run,
-                s.mark_of_cain,
-                s.complete_date,
-                s.last_action,
-                t.seeders,
-                t.leechers,
-                t.owner,
-                t.size,
-                s.start_date AS st,
-                s.start_date
-                FROM snatched AS s
-                JOIN torrents AS t ON t.id = s.torrentid
-                JOIN categories AS c ON c.id = t.category
-                WHERE (hit_and_run != 0 OR mark_of_cain = 'yes') AND s.seeder='no' AND s.finished='yes' AND userid=" . sqlesc($userid) . ' AND t.owner != ' . sqlesc($userid) . '
-                ORDER BY s.id DESC') or sqlerr(__FILE__, __LINE__);
+$hnrs = $fluent->from('snatched AS s')
+               ->select(null)
+               ->select('t.name')
+               ->select('t.added AS torrent_added')
+               ->select('s.complete_date AS c')
+               ->select('s.downspeed')
+               ->select('s.seedtime')
+               ->select('s.seeder')
+               ->select('s.torrentid AS tid')
+               ->select('s.id AS sid')
+               ->select('c.id AS category')
+               ->select('c.image')
+               ->select('c.name AS catname')
+               ->select('p.name AS parent_name')
+               ->select('s.uploaded')
+               ->select('s.downloaded')
+               ->select('s.hit_and_run')
+               ->select('s.mark_of_cain')
+               ->select('s.complete_date')
+               ->select('s.last_action')
+               ->select('t.seeders')
+               ->select('t.leechers')
+               ->select('t.owner')
+               ->select('t.size')
+               ->select('s.start_date AS st')
+               ->select('s.start_date')
+               ->leftJoin('torrents AS t ON t.id = s.torrentid')
+               ->leftJoin('categories AS c ON c.id = t.category')
+               ->leftJoin('categories AS p ON c.parent_id = p.id')
+               ->where('(s.hit_and_run != 0 OR s.mark_of_cain = "yes")')
+               ->where('s.seeder = "no"')
+               ->where('s.finished = "yes"')
+               ->where('s.userid = ?', $userid)
+               ->where('t.owner != ?', $userid)
+               ->orderBy('s.id DESC')
+               ->fetchAll();
 
-$completed .= '<h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
-if (mysqli_num_rows($r) > 0) {
-    $header = "
+$completed .= '
+<h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
+if (count($hnrs) > 0) {
+    $heading = "
         <tr>
             <th>{$lang['userdetails_type']}</th>
             <th>{$lang['userdetails_name']}</th>
@@ -135,8 +163,7 @@ if (mysqli_num_rows($r) > 0) {
             <th class='has-text-centered'>Buyout</th>
         </tr>";
     $body = '';
-    while ($a = mysqli_fetch_assoc($r)) {
-        $What_Id = $a['id'];
+    foreach ($hnrs as $a) {
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
             case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
@@ -179,7 +206,7 @@ if (mysqli_num_rows($r) > 0) {
                 $minus_ratio = ($days_over_14 - $a['seedtime']);
         }
         $color = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
-        $minus_ratio = mkprettytime($minus_ratio);
+        $need_to_seed = mkprettytime($minus_ratio);
 
         $dl_speed = $a['downloaded'] / ($a['c'] - $a['st'] + 1);
         switch (true) {
@@ -204,50 +231,70 @@ if (mysqli_num_rows($r) > 0) {
         }
 
         $dl_speed = mksize($dl_speed);
-        //=== mark of cain / hit and run
-        $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
-        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}'>" : '');
+        $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] != $userid ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
+        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' class='tooltipper' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
+        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' class='tooltipper' title='{$lang['userdetails_c_hitrun1']}'>" : '');
         $needs_seed = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
-        if ($bp >= $cost && $a['size'] <= 6442450944) {
-            $buyout = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "'><span class='has-text-success' title='Buyout with Bonus Points'>" . number_format($cost, 0) . ' bp</span></a>';
+        if ($bp >= $cost && $cost != 0) {
+            $buyout = "
+            <form method='post' action='{$site_config['baseurl']}/hnrs.php'>
+                <input type='hidden' name='seed' value='{$minus_ratio}'>
+                <input type='hidden' name='sid' value='{$a['sid']}'>
+                <input type='hidden' name='tid' value='{$a['tid']}'>
+                <input type='hidden' name='userid' value='{$userid}'>
+                <div class='padding10 has-text-centered'>
+                    <input type='submit' value='Seedtime Fix' class='button is-small tooltipper' title='Buyout with {$cost} bonus points to fix the seedtime for this torrent'>
+                </div>
+            </form>";
         } else {
             $buyout = '';
         }
 
-        $a_downloaded = $site_config['ratio_free'] ? (int) $a['size'] : (int) $a['downloaded'];
-        $bytes = $a_downloaded - (int) $a['uploaded'];
+        $a_downloaded = $site_config['ratio_free'] ? $a['size'] : $a['downloaded'];
+        $bytes = $a_downloaded - $a['uploaded'];
         if ($diff >= $bytes) {
-            $buybytes = "<a href='{$site_config['baseurl']}/hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "&amp;bytes=$bytes'><span class='has-text-success' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
+            $buybytes = "
+            <form method='post' action='{$site_config['baseurl']}/hnrs.php'>
+                <input type='hidden' name='bytes' value='{$bytes}'>
+                <input type='hidden' name='sid' value='{$a['sid']}'>
+                <input type='hidden' name='tid' value='{$a['tid']}'>
+                <input type='hidden' name='userid' value='{$userid}'>
+                <div class='padding10 has-text-centered'>
+                    <input type='submit' value='Ratio Fix' class='button is-small tooltipper' title='Buyout with " . mksize($bytes) . " upload credit to fix the ratio for this torrent'>
+                </div>
+            </form>";
         } else {
             $buybytes = '';
         }
 
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
-        //$sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
-        $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
-
+        $sucks = $buyout == '' ? "Seed for $need_to_seed" : "or<br>Seed for $need_to_seed";
+        $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
+        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
         $body .= "
         <tr>
-            <td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}'></td>
+            <td style='padding: 5px'>$caticon</td>
             <td align='left'><a class='altlink' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
             <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
             ' . ($site_config['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
-            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'],
+                    3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'],
+                    3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date($a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date($a['last_action'], 'DATE') . "</td>
             <td class='has-text-centered'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
-            <td class='has-text-centered'>$buyout $sucks</td>
+            <td class='has-text-centered'>{$buyout}{$buybytes}{$sucks}</td>
         </tr>";
     }
-    $completed .= main_table($body, $header);
+    $completed .= main_table($body, $heading);
 } else {
-    $session->set('is-success', '[color=#' . get_user_class_color($class) . ']' . $username . "[/color] {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success',
+        '[color=#' . get_user_class_color($user_stuff['class']) . ']' . $user_stuff['username'] . "[/color] {$lang['userdetails_no_hnrs']}");
     $completed = main_div("<div class='padding20'>" . format_username($userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();

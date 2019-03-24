@@ -34,7 +34,7 @@ function get_file_name($file)
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_de3939b1.js";
         case 'scroller_js':
-            return "{$site_config['baseurl']}/js/1/scroller_13b47ab3.js";
+            return "{$site_config['baseurl']}/js/1/scroller_4052fc2a.js";
         case 'slider_js':
             return "{$site_config['baseurl']}/js/1/slider_b7916982.js";
         case 'userdetails_js':

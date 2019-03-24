@@ -24,8 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         50,
         100,
     ];
-    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
-    $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
+    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts,
+        $_POST['count']) ? $_POST['count'] : 15;
+    $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',',
+            $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
     $HTMLOUT = "
         <div class='portlet has-text-centered w-100'>
             <h1>{$lang['getrss_result']}</h1>
@@ -37,46 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $HTMLOUT = "
         <form action='{$_SERVER['PHP_SELF']}' method='post'>";
-/*
-$text = "
-            <div class='padding20 round10 top20 bottom20 bg-02'>
-                <div id='checkbox_container' class='level-center'>";
-$catids = genrelist(true);
-if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
-    foreach ($catids as $cat) {
-        $text .= "
-                    <span class='margin10 mw-50 is-flex bg-02 round10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
-                        <span class='bordered level-center'>
-                            <input type='checkbox' name='cats[]' id='cat_" . (int) $cat['id'] . "' value='" . (int) $cat['id'] . "'>
-                            <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
-                            </span>
-                        </span>
-                    </span>";
-    }
-} else {
-    foreach ($catids as $cat) {
-        $text .= "
-                    <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
-                        <label for='c" . (int) $cat['id'] . "'>
-                            <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' value='1'>
-                        </label>
-                    </span>";
-    }
-}
-*/
 require_once PARTIALS_DIR . 'categories.php';
-/*
-$text .= "
-                </div>
-                <div class='level-center top20'>
-                    <label for='checkAll'>
-                        <input type='checkbox' id='checkAll'><span> Select All Categories</span>
-                    </label>
-                </div>
-            </div>";
-$HTMLOUT .= main_div($text, 'bottom20');
-*/
 $HTMLOUT .= main_div("
         <div class='padding20'>
             <div class='level-center'>
