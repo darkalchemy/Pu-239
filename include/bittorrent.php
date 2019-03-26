@@ -332,6 +332,7 @@ function userlogin()
         'friends' => '%s is viewing the <a href="%s">Friends List</a>',
         'users' => '%s is searching the <a href="%s">Users</a>',
         'tmovies' => '%s is viewing the <a href="%s">Movies</a>',
+        'unknown' => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
