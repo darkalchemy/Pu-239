@@ -1,6 +1,7 @@
 <?php
 
 $lang = [
+    'gl_staff_list' => 'Staff List',
     'gl_database' => 'Database',
     'gl_staffbugs' => 'Bugs',
     'gl_messages' => 'Messages',

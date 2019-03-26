@@ -1,3 +1,6 @@
+### 26 Mar, 2019
+update: navbar  
+
 ### 24 Mar, 2019
 fix: userdetails torrent blocks  
 fix: global $free  

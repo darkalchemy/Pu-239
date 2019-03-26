@@ -70,7 +70,6 @@ function navbar()
                                 <li><a href='{$site_config['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
                                 <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                 <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
                                 <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
                                 <li><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
                                 <li><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
@@ -100,14 +99,11 @@ function navbar()
                             <a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a>
                         </li>" . ($CURUSER['class'] < UC_STAFF ? "
                         <li id='staff_links' class='clickable'>
-                            <a href='#'>{$lang['gl_staff']}</a>
+                            <a href='#'>{$lang['gl_help']}</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li>
-                                    <a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>
-                                </li>
-                                <li>
-                                    <a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>
-                                </li>
+                                <li><a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a></li>
+                                <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff_list']}</a></li>
                             </ul>
                         </li>" : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : ($CURUSER['class'] >= UC_STAFF ? "
                         <li>
