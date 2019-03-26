@@ -9,6 +9,8 @@ require_once INCL_DIR . 'function_event.php';
 check_user_status();
 global $User, $site_config, $fluent, $cache, $session, $smilies, $message_stuffs, $user_stuffs;
 
+$bonuslog_stuffs = new Pu239\Bonuslog();
+
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 if (!$site_config['seedbonus_on']) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
@@ -652,7 +654,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators_');
                 $cache->delete('freeleech_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'freeleech');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'freeleech',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot and has activated freeleech for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=1&norefund=$norefund");
@@ -673,7 +680,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators_');
                 $cache->delete('freeleech_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'freeleech');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'freeleech',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
@@ -711,7 +723,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators2_');
                 $cache->delete('doubleupload_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'doubleupload');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'doubleupload',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot and has activated Double Upload for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
@@ -732,7 +749,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators2_');
                 $cache->delete('doubleupload_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'doubleupload');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'doubleupload',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
@@ -769,7 +791,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators3_');
                 $cache->delete('halfdownload_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'halfdownload');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'halfdownload',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot and has activated half download for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
@@ -789,7 +816,12 @@ if (isset($_GET['exchange'])) {
                 $cache->delete('top_donators3_');
                 $cache->delete('halfdownload_alerts_');
                 $cache->delete('bonus_points_');
-                write_bonus_log($User['id'], $donation, $type = 'halfdownload');
+                $values = [
+                    'userid' => $User['id'],
+                    'donation' => $donation,
+                    'type' => 'halfdownload',
+                ];
+                $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);

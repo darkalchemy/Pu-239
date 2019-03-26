@@ -96,6 +96,7 @@ class PollVoter
      * @param int $userid
      *
      * @return array|bool|mixed
+     *
      * @throws \Envms\FluentPDO\Exception
      */
     public function get_user_poll(int $userid)

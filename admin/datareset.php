@@ -15,7 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($tid == 0) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }
-    if (get_row_count('torrents', 'where id = ' . sqlesc($tid)) != 1) {
+    $torrents = $fluent('torrents')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('id = ?', $tid)
+        ->fetch('count');
+
+    if (empty($torrents)) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr2']);
     }
     $row = $fluent->from('torrents AS t')

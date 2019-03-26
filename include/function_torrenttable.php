@@ -155,7 +155,6 @@ function torrenttable($res, $variant = 'index')
             'image' => $value['image'],
         ];
     }
-    $book = make_bookmarks($CURUSER['id'], 'bookmm_');
     foreach ($res as $row) {
         if ($CURUSER['opt2'] & user_options_2::SPLIT) {
             if (get_date($row['added'], 'DATE') == $prevdate) {
@@ -368,6 +367,8 @@ function torrenttable($res, $variant = 'index')
                     <i class='icon-bookmark-empty icon has-text-success' aria-hidden='true'></i>
                 </span>";
 
+        $bookmark_stuffs = new Pu239\Bookmark();
+        $book = $bookmark_stuffs->get($CURUSER['id']);
         if (!empty($book)) {
             foreach ($book as $bk) {
                 if ($bk['torrentid'] == $id) {

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli, $fluent;
 
 $dt = TIME_NOW;
 $lang = array_merge(load_language('global'), load_language('staffbox'));
@@ -150,7 +150,11 @@ switch ($do) {
         break;
 
     default:
-        $count_msgs = get_row_count('staffmessages');
+        $count_msgs = $fluent('staffmessages')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->fetch('count');
+
         $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
         if (!$count_msgs) {

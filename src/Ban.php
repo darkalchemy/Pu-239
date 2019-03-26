@@ -57,4 +57,35 @@ class Ban
 
         return $count;
     }
+
+    public function check_bans(string $ip)
+    {
+        global $cache, $fluent;
+
+        if (empty($ip)) {
+            return false;
+        }
+        $key = 'bans_' . $ip;
+        $cache->delete($key);
+        $ban = $cache->get($key);
+        if (($ban === false || is_null($ban)) && $ban != 0) {
+            $ban = $this->fluent->from('bans')
+                ->select(null)
+                ->select('comment')
+                ->where('? >= first', inet_pton($ip))
+                ->where('? <= last', inet_pton($ip))
+                ->limit(1)
+                ->fetch('comment');
+
+            if (!empty($ban)) {
+                $cache->set($key, $ban, 86400);
+
+                return true;
+            } else {
+                $cache->set($key, 0, 86400);
+            }
+        }
+
+        return false;
+    }
 }

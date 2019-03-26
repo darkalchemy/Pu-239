@@ -2850,15 +2850,53 @@ class AJAXChat
                 $free = get_date($stats['free_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
                 $joined = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
                 $seen = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
-                $seeder = (int) get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));
+                $seeder = $this->_fluent->from('peers')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('seeder = "yes"')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
                 $seeding = '[color=#00FF00]' . number_format($seeder) . '[/color]';
-                $leeching = '[color=#00FF00]' . number_format((int) get_row_count('peers', 'WHERE seeder != "yes" and userid = ' . sqlesc($whereisUserID))) . '[/color]';
-                $uploads = '[color=#00FF00]' . number_format((int) get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
-                $snatched = '[color=#00FF00]' . number_format((int) get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
-                $hnrs = (int) get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
+                $leeching = $this->_fluent->from('peers')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('seeder != "yes"')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
+                $leeching = '[color=#00FF00]' . number_format($leeching) . '[/color]';
+                $uploads = $this->_fluent->from('torrents')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('owner = ?', $whereisUserID)
+                    ->fetch('count');
+                $uploads = '[color=#00FF00]' . number_format($uploads) . '[/color]';
+                $snatched = $this->_fluent->from('snatched')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
+                $snatched = '[color=#00FF00]' . number_format($snatched) . '[/color]';
+                $hnrs = $this->_fluent->from('snatched')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('mark_of_cain = "yes"')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
                 $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
-                $connectyes = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "yes" and userid = ' . sqlesc($whereisUserID));
-                $connectno = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
+                $connectyes = $this->_fluent->from('peers')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('seeder = "yes"')
+                    ->where('connectable = "yes"')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
+                $connectno = $this->_fluent->from('peers')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('seeder = "yes"')
+                    ->where('connectable = "no"')
+                    ->where('userid = ?', $whereisUserID)
+                    ->fetch('count');
                 if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
                     $connectable = '[color=#CC0000]no[/color]';
                 } elseif ($connectyes != 0 && $connectno === 0) {
@@ -2879,7 +2917,14 @@ class AJAXChat
                 $ircbonus = $stats['onirc'] == 'yes' ? .45 : 0;
                 $allbonus = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
                 $earns = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
-                $seedsize = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
+                $seedsize = $this->_fluent->from('peers AS p')
+                    ->select(null)
+                    ->select('SUM(t.size) AS size')
+                    ->innerJoin('torrents AS t ON t.id = p.torrent')
+                    ->where('p.seeder = "yes"')
+                    ->where('p.connectable = "yes"')
+                    ->where('p.userid = ?', $whereisUserID)
+                    ->fetch('size');
                 $volume = '[color=#00FF00]' . mksize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
                 $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];

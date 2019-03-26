@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $mysqli;
+global $CURUSER, $site_config, $lang, $cache, $mysqli, $fluent;
 
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $HTMLOUT = $H1_thingie = $count2 = '';
@@ -99,7 +99,13 @@ if (isset($_GET['add'])) {
     }
 }
 //=== get number of watched members
-$watched_users = number_format(get_row_count('users', 'WHERE watched_user != \'0\''));
+$watched_users = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('watched_user != 0')
+        ->fetch('count');
+$watched_users = number_format($watched_users);
+
 //=== get sort / asc desc, and be sure it's safe
 $good_stuff = [
     'username',

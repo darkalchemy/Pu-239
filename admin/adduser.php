@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $user_stuffs->add($values);
     if ($user_id) {
         sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO user_blocks (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('all_users_');
         $cache->set('latestuser_', (int) $user_id, $site_config['expires']['latestuser']);
 

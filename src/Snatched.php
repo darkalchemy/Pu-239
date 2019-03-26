@@ -9,15 +9,13 @@ class Snatched
 {
     protected $cache;
     protected $fluent;
-    protected $config;
 
     public function __construct()
     {
-        global $cache, $fluent, $site_config;
+        global $cache, $fluent;
 
         $this->cache = $cache;
         $this->fluent = $fluent;
-        $this->config = $site_config;
     }
 
     /**

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_donations'));
 $HTMLOUT = '';
@@ -23,7 +23,12 @@ if (isset($_GET['total_donors'])) {
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
-    $users = number_format(get_row_count('users', "WHERE total_donated != '0.00'"));
+    $users = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('total_donated >= 0')
+        ->fetch('count');
+    $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 } else {
     $res = sql_query("SELECT COUNT(id) FROM users WHERE donor='yes'") or sqlerr(__FILE__, __LINE__);
@@ -34,7 +39,12 @@ if (isset($_GET['total_donors'])) {
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
-    $users = number_format(get_row_count('users', "WHERE donor='yes'"));
+    $users = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('donor = "yes"')
+        ->fetch('count');
+    $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, total_donated, donoruntil FROM users WHERE donor='yes' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 }
 if ($count > $perpage) {

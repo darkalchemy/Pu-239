@@ -5,11 +5,15 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_upinfo'));
 $HTMLOUT = $count = '';
-$count1 = get_row_count('torrents');
+$count1 = $fluent('torrents')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->fetch('count');
+
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=uploader_info&amp;');
 //=== main query

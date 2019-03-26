@@ -11,7 +11,7 @@ class User
     protected $session;
     protected $cookies;
     protected $cache;
-    protected $config;
+    protected $site_config;
     protected $pdo;
     protected $limit;
 
@@ -23,9 +23,9 @@ class User
         $this->session = $session;
         $this->cache = $cache;
         $this->cookies = new Cookie('remember');
-        $this->config = $site_config;
+        $this->site_config = $site_config;
         $this->pdo = $pdo;
-        $this->limit = $this->config['query_limit'];
+        $this->limit = $this->site_config['query_limit'];
     }
 
     /**
@@ -59,7 +59,7 @@ class User
                     $user['it'] = 'it';
                 }
 
-                $this->cache->set('user_' . $userid, $user, $this->config['expires']['user_cache']);
+                $this->cache->set('user_' . $userid, $user, $this->site_config['expires']['user_cache']);
             }
         }
 
@@ -88,7 +88,7 @@ class User
                 ->where('LOWER(username) = ?', strtolower($username))
                 ->fetch('id');
 
-            $this->cache->set('userid_from_' . urldecode($username), $user, $this->config['expires']['user_cache']);
+            $this->cache->set('userid_from_' . urldecode($username), $user, $this->site_config['expires']['user_cache']);
         }
 
         return $user;
@@ -187,7 +187,7 @@ class User
                 ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
                 ->innerJoin('class_config AS c ON u.class = c.id')
                 ->where("u.acceptpms != 'no'")
-                ->where('u.username != ?', $this->config['chatBotName'])
+                ->where('u.username != ?', $this->site_config['chatBotName'])
                 ->where('u.username LIKE ?', "$username%")
                 ->where('c.classname != ""')
                 ->orderBy('LOWER(u.username)')
@@ -216,7 +216,7 @@ class User
             ->execute();
 
         if ($result && $persist) {
-            $this->cache->update_row('user_' . $userid, $set, $this->config['expires']['user_cache']);
+            $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
         }
 
         return $result;

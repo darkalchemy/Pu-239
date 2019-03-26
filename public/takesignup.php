@@ -9,7 +9,7 @@ require_once INCL_DIR . 'function_recaptcha.php';
 
 dbconn();
 get_template();
-global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs;
+global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs, $userblock_stuffs;
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
@@ -209,6 +209,7 @@ if (!$user_id) {
 }
 
 $usersachiev_stuffs->add(['userid' => $user_id]);
+$user_block_stuffs->add(['userid' => $user_id]);
 
 $psecret = '';
 if ($users_count > 0 && $site_config['email_confirm']) {

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_banemail'));
 
@@ -46,7 +46,10 @@ $body = "
         </tr>";
 $HTMLOUT .= main_table($body) . '
     </form>';
-$count1 = get_row_count('bannedemails');
+$count1 = $fluent('bannedemails')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->fetch('count');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);

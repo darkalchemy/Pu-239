@@ -49,9 +49,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     header('Location: staffpanel.php?tool=acpmanage&amp;action=acpmanage');
     exit;
 }
-$disabled = number_format(get_row_count('users', "WHERE enabled = 'no'"));
-$pending = number_format(get_row_count('users', "WHERE status = 'pending'"));
-$count = number_format(get_row_count('users', "WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC"));
+$disabled = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('enabled = "no"')
+        ->fetch('count');
+$pending = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('status = "pending"')
+        ->fetch('count');
+$count = $fluent('users')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->whereOr([
+            'enabled' => 'no',
+            'status' => 'pending',
+        ])
+        ->fetch('count');
+$disabled = number_format($disabled);
+$pending = number_format($pending);
+$count = number_format($count);
 $perpage = 25;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
 $res = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");

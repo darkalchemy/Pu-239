@@ -1,4 +1,7 @@
 ### 26 Mar, 2019
+update: dependencies
+update: refactor all mysqli queries in bittorent.php  
+update: move flood control to session  
 update: navbar  
 
 ### 24 Mar, 2019
@@ -13,7 +16,7 @@ rename: some cache items
 remove: unused cache items  
 update: run 'npm audit fix'  
 update: add HnRs to navbar.php  
-update: dependancies  
+update: dependencies  
 update: hnrs.php  
 
 ### 21 Mar, 2019
@@ -39,7 +42,7 @@ fix: incomplete styles
 fix: missing query item mytorrents.php  
 
 ### 17 Mar, 2019
-update: dependancies  
+update: dependencies  
 add: select torrents by snatched or not snatched  
 add: percentage snatch completed browse.php  
 
@@ -89,7 +92,7 @@ update: restrict user class to 3 active downloads at one time
 
 ### 09 Mar, 2019
 update: hide AJAX Chat until loaded  
-update: dependancies  
+update: dependencies  
 remove: "dirname(__FILE__, 2)" not correctly parsed bu IDE  
 
 ### 03 Feb, 2019
@@ -215,7 +218,7 @@ update: torrent_hover.php torrenttable_functions.php
 update: move font awesome icons  
 update: database files  
 fix: typo failedlogin_update.php  
-update: dependancies  
+update: dependencies  
 fix: setting perms on .cache files  
 update: make tagline site_config setting  
 fix: clear_ajaxchat  

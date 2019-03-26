@@ -76,7 +76,7 @@ function get_file_name($file)
         case 'dragndrop_js':
             return "{$site_config['baseurl']}/js/1/dragndrop_5647940a.js";
         case 'details_js':
-            return "{$site_config['baseurl']}/js/1/details_fa26612c.js";
+            return "{$site_config['baseurl']}/js/1/details_f136860e.js";
         case 'forums_js':
             return "{$site_config['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

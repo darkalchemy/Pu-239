@@ -254,20 +254,20 @@ class Torrent
         }
 
         $announce = [
-            'id'              => $torrent['id'],
-            'category'        => $torrent['category'],
-            'banned'          => $torrent['banned'],
-            'free'            => $torrent['free'],
-            'silver'          => $torrent['silver'],
-            'vip'             => $torrent['vip'],
-            'seeders'         => $torrent['seeders'],
-            'leechers'        => $torrent['leechers'],
+            'id' => $torrent['id'],
+            'category' => $torrent['category'],
+            'banned' => $torrent['banned'],
+            'free' => $torrent['free'],
+            'silver' => $torrent['silver'],
+            'vip' => $torrent['vip'],
+            'seeders' => $torrent['seeders'],
+            'leechers' => $torrent['leechers'],
             'times_completed' => $torrent['times_completed'],
-            'ts'              => $torrent['added'],
-            'visible'         => $torrent['visible'],
-            'owner'           => $torrent['owner'],
-            'added'           => $torrent['added'],
-            'info_hash'       => $torrent['info_hash'],
+            'ts' => $torrent['added'],
+            'visible' => $torrent['visible'],
+            'owner' => $torrent['owner'],
+            'added' => $torrent['added'],
+            'info_hash' => $torrent['info_hash'],
         ];
 
         return $announce;

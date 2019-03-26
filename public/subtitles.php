@@ -6,7 +6,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config, $mysqli;
+global $CURUSER, $site_config, $mysqli, $fluent;
 
 $lang = load_language('global');
 $HTMLOUT = '';
@@ -346,17 +346,21 @@ if ($mode === 'upload' || $mode === 'edit') {
 } else {
     $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
     $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
+    $count = $fluent('subtitles')
+        ->select(null)
+        ->select('COUNT(*) AS count');
     if ($s && $w === 'name') {
-        $where = 'WHERE s.name LIKE ' . sqlesc('%' . $s . '%');
+        $count = $count->where('name LIKE ?', "${$s}%");
     } elseif ($s && $w === 'imdb') {
-        $where = 'WHERE s.imdb LIKE ' . sqlesc('%' . $s . '%');
+        $count = $count->where('imdb LIKE ?', "${$s}%");
     } elseif ($s && $w === 'comment') {
-        $where = 'WHERE s.comment LIKE ' . sqlesc('%' . $s . '%');
+        $count = $count->where('comment LIKE ?', "${$s}%");
     } else {
         $where = '';
     }
     $link = ($s && $w ? "s=$s&amp;w=$w&amp;" : '');
-    $count = get_row_count('subtitles AS s', "$where");
+    $count = $count->fetch('count');
+
     if ($count == 0 && !$s && !$w) {
         stdmsg('', 'There is no subtitle, go <a href="subtitles.php?mode=upload">here</a> and start uploading.', false);
     }

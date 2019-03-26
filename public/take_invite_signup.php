@@ -9,7 +9,7 @@ require_once INCL_DIR . 'function_recaptcha.php';
 
 dbconn();
 get_template();
-global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs;
+global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs, $userblock_stuffs;
 
 $dt = TIME_NOW;
 
@@ -224,6 +224,7 @@ if (!$user_id) {
 }
 
 $usersachiev_stuffs->add(['userid' => $user_id]);
+$user_block_stuffs->add(['userid' => $user_id]);
 
 $subject = 'Welcome';
 $msg = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";

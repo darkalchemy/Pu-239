@@ -9,7 +9,7 @@ use Blocktrail\CryptoJSAES\CryptoJSAES;
  */
 class Cookie
 {
-    protected $config;
+    protected $site_config;
     protected $cache;
     protected $key;
     protected $fluent;
@@ -23,7 +23,7 @@ class Cookie
     {
         global $site_config, $cache, $fluent;
 
-        $this->config = $site_config;
+        $this->site_config = $site_config;
         $this->cache = $cache;
         $this->key = $key;
         $this->fluent = $fluent;
@@ -41,8 +41,8 @@ class Cookie
             return false;
         }
         $params = session_get_cookie_params();
-        $encrypted = CryptoJSAES::encrypt($value, $this->config['site']['salt']);
-        setcookie($this->config['cookie_prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        $encrypted = CryptoJSAES::encrypt($value, $this->site_config['site']['salt']);
+        setcookie($this->site_config['cookie_prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
     }
 
     /**
@@ -50,10 +50,10 @@ class Cookie
      */
     public function get()
     {
-        if (empty($this->key) || empty($_COOKIE[$this->config['cookie_prefix'] . $this->key])) {
+        if (empty($this->key) || empty($_COOKIE[$this->site_config['cookie_prefix'] . $this->key])) {
             return false;
         }
-        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->config['cookie_prefix'] . $this->key]), $this->config['site']['salt']);
+        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->site_config['cookie_prefix'] . $this->key]), $this->site_config['site']['salt']);
 
         return $decrypted;
     }

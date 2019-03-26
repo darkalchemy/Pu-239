@@ -32,6 +32,7 @@ $usersachiev_stuffs = new Pu239\Usersachiev();
 $pollvoter_stuffs = new Pu239\PollVoter();
 $happylog_stuffs = new Pu239\HappyLog();
 $snatched_stuffs = new Pu239\Snatched();
+$userblock_stuffs = new Pu239\Userblock();
 
 if ($site_config['socket']) {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
@@ -42,15 +43,6 @@ if ($site_config['socket']) {
 require_once CACHE_DIR . 'class_config.php';
 $session->start();
 
-/**
- * Class curuser.
- */
-class curuser
-{
-    public static $blocks = [];
-}
-
-$CURBLOCK = &curuser::$blocks;
 require_once CLASS_DIR . 'class_blocks_index.php';
 require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
@@ -216,44 +208,6 @@ function hashit($var, $addtext = '')
 }
 
 /**
- * @param        $ip
- * @param string $reason
- *
- * @return bool
- */
-function check_bans($ip, &$reason = '')
-{
-    global $cache;
-
-    if (empty($ip)) {
-        return false;
-    }
-    $key = 'bans_' . $ip;
-    $ban = $cache->get($key);
-    if ($ban === false || is_null($ban)) {
-        $nip = sqlesc($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($ban_sql)) {
-            $comment = mysqli_fetch_row($ban_sql);
-            $reason = 'Manual Ban (' . $comment[0] . ')';
-            $cache->set($key, $reason, 86400); // 86400 // banned
-
-            return true;
-        }
-        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) === 'mysqli_result'))) ? true : false);
-        $cache->set($key, 0, 86400);
-
-        return false;
-    } elseif (!$ban) {
-        return false;
-    } else {
-        $reason = $ban;
-
-        return true;
-    }
-}
-
-/**
  * @return bool
  *
  * @throws Exception
@@ -263,7 +217,7 @@ function check_bans($ip, &$reason = '')
  */
 function userlogin()
 {
-    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user_stuffs;
+    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user_stuffs, $ban_stuffs, $userblock_stuffs;
 
     unset($GLOBALS['CURUSER']);
 
@@ -295,34 +249,30 @@ function userlogin()
     }
 
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
-        $banned = false;
-        if (check_bans($ip, $reason)) {
-            $banned = true;
-        }
-        if ($banned) {
+        if ($ban_stuffs->check_bans($ip)) {
             require_once INCL_DIR . 'function_html.php';
             header('Content-Type: text/html; charset=' . $site_config['char_set']);
-            echo doc_head() . "
+            echo doc_head() . '
 <title>Forbidden</title>
 </head>
 <body>
     <h1>403 Forbidden</h1>
     <h1>Unauthorized IP address!</h1>
-    <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
 </body>
-</html>";
+</html>';
             $session->destroy();
+            die();
         }
     }
     if ($users_data['class'] >= UC_STAFF) {
         if (!in_array($users_data['id'], $site_config['is_staff'], true)) {
             require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
-            sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user_' . $users_data['id'], [
+            $set = [
                 'enabled' => 'no',
                 'class' => 0,
-            ], $site_config['expires']['user_cache']);
+            ];
+            $user_stuffs->update($set, $users_data['id']);
             write_log($msg);
             $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
             $subject = 'Fake Account Detected!';
@@ -333,40 +283,17 @@ function userlogin()
         }
     }
 
-    $ustatus = $cache->get('userstatus_' . $id);
-    if ($ustatus === false || is_null($ustatus)) {
-        $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($sql2)) {
-            $ustatus = mysqli_fetch_assoc($sql2);
-        } else {
-            $ustatus = [
-                'last_status' => '',
-                'last_update' => 0,
-                'archive' => '',
-            ];
-        }
-        $cache->set('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']);
-    }
+    $ustatus_stuffs = new Pu239\Ustatus();
+    $ustatus = $ustatus_stuffs->get($id);
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
     $users_data['archive'] = $ustatus['archive'];
-    $blocks_key = 'blocks_' . $users_data['id'];
 
-    $CURBLOCK = $cache->get($blocks_key);
-    if ($CURBLOCK === false || is_null($CURBLOCK)) {
-        $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($c_sql) == 0) {
-            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')') or sqlerr(__FILE__, __LINE__);
-            $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        }
-        $CURBLOCK = mysqli_fetch_assoc($c_sql);
-        $CURBLOCK['index_page'] = (int) $CURBLOCK['index_page'];
-        $CURBLOCK['global_stdhead'] = (int) $CURBLOCK['global_stdhead'];
-        $CURBLOCK['userdetails_page'] = (int) $CURBLOCK['userdetails_page'];
-        $cache->set($blocks_key, $CURBLOCK, 0);
-    }
-    $where_is['username'] = htmlsafechars($users_data['username']);
+    $userblocks = $userblock_stuffs->get($id);
+    $users_data['blocks'] = $userblocks;
+    $users_data['username'] = htmlsafechars($users_data['username']);
     $whereis_array = [
+        'ajaxchat' => '%s is viewing <a href="%s">AJAX Chat</a>',
         'index' => '%s is viewing the <a href="%s">Home Page</a>',
         'browse' => '%s is viewing the <a href="%s">Torrents Browse Page</a>',
         'catalog' => '%s is viewing the <a href="%s">Torrents Catalog Page</a>',
@@ -405,37 +332,30 @@ function userlogin()
         'friends' => '%s is viewing the <a href="%s">Friends List</a>',
         'users' => '%s is searching the <a href="%s">Users</a>',
         'tmovies' => '%s is viewing the <a href="%s">Movies</a>',
-        'unknown' => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
-            $whereis = sprintf($whereis_array[$whereis_temp[1]], $where_is['username'], htmlsafechars($_SERVER['REQUEST_URI']));
+            $whereis = sprintf($whereis_array[$whereis_temp[1]], $users_data['username'], htmlsafechars($_SERVER['REQUEST_URI']));
         } else {
-            $whereis = sprintf($whereis_array['unknown'], $where_is['username']);
+            $whereis = sprintf($whereis_array['unknown'], $users_data['username']);
         }
     } else {
-        $whereis = sprintf($whereis_array['unknown'], $where_is['username']);
+        $whereis = sprintf($whereis_array['unknown'], $users_data['username']);
     }
-    $userupdate0 = 'onlinetime = onlinetime + 0';
     $new_time = TIME_NOW - $users_data['last_access_numb'];
     $update_time = 0;
     if ($new_time < 300) {
-        $userupdate0 = 'onlinetime = onlinetime + ' . $new_time;
         $update_time = $new_time;
     }
     $session->set('last_access', TIME_NOW);
-    $userupdate1 = 'last_access_numb = ' . TIME_NOW;
-    $update_time = ($users_data['onlinetime'] + $update_time);
-    if (($users_data['last_access'] != '0') && (($users_data['last_access']) < (TIME_NOW - 180))) {
-        sql_query('UPDATE users
-                    SET where_is =' . sqlesc($whereis) . ', last_access = ' . TIME_NOW . ", $userupdate0, $userupdate1
-                    WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user_' . $users_data['id'], [
-            'last_access' => TIME_NOW,
-            'onlinetime' => $update_time,
-            'last_access_numb' => TIME_NOW,
+    if ($users_data['last_access'] < (TIME_NOW - 90)) {
+        $set = [
             'where_is' => $whereis,
-        ], $site_config['expires']['user_cache']);
+            'last_access' => TIME_NOW,
+            'onlinetime' => $users_data['onlinetime'] + $update_time,
+            'last_access_numb' => TIME_NOW,
+        ];
+        $user_stuffs->update($set, $users_data['id']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
         $users_data['class'] = $users_data['override_class'];
@@ -443,7 +363,8 @@ function userlogin()
     $session->set('use_12_hour', $users_data['use_12_hour']);
     $GLOBALS['CURUSER'] = $users_data;
     get_template();
-    $mood = create_moods();
+    $mood_stuffs = new Pu239\Mood();
+    $moods = $mood_stuffs->get();
 }
 
 /**
@@ -579,31 +500,6 @@ function make_freeslots($userid, $key)
 }
 
 /**
- * @param $userid
- * @param $key
- *
- * @return array|bool|mixed
- */
-function make_bookmarks($userid, $key)
-{
-    global $cache;
-
-    $book = $cache->get($key . $userid);
-    if ($book === false || is_null($book)) {
-        $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $book = [];
-        if (mysqli_num_rows($res_books)) {
-            while ($rowbook = mysqli_fetch_assoc($res_books)) {
-                $book[] = $rowbook;
-            }
-        }
-        $cache->set($key . $userid, $book, 86400 * 7); // 7 days
-    }
-
-    return $book;
-}
-
-/**
  * @return array|bool|mixed
  *
  * @throws \Envms\FluentPDO\Exception
@@ -650,31 +546,6 @@ function genrelist(bool $grouped)
     }
 
     return $ret;
-}
-
-/**
- * @param bool $force
- *
- * @return array|bool|mixed
- */
-function create_moods($force = false)
-{
-    global $cache;
-
-    $mood = $cache->get('moods_');
-    if ($mood === false || is_null($mood) || $force === true) {
-        $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
-        $mood = [];
-        if (mysqli_num_rows($res_moods)) {
-            while ($rmood = mysqli_fetch_assoc($res_moods)) {
-                $mood['image'][$rmood['id']] = $rmood['image'];
-                $mood['name'][$rmood['id']] = $rmood['name'];
-            }
-        }
-        $cache->set('moods_', $mood, 86400);
-    }
-
-    return $mood;
 }
 
 /**
@@ -873,44 +744,6 @@ function searchfield($s)
 }
 
 /**
- * @param        $table
- * @param string $suffix
- *
- * @return int
- */
-function get_row_count($table, $suffix = '')
-{
-    global $mysqli;
-
-    if ($suffix) {
-        $suffix = " $suffix";
-    }
-    ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-    ($a = mysqli_fetch_row($r)) or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-
-    return (int) $a[0];
-}
-
-/**
- * @param $table
- * @param $suffix
- * @param $where
- *
- * @return bool
- */
-function get_one_row($table, $suffix, $where)
-{
-    $sql = "SELECT $suffix FROM $table $where";
-    $r = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $a = mysqli_fetch_row($r);
-    if (isset($a[0])) {
-        return $a[0];
-    } else {
-        return false;
-    }
-}
-
-/**
  * @param      $heading
  * @param      $text
  * @param null $class
@@ -981,9 +814,12 @@ function get_dt_num()
  */
 function write_log($text)
 {
-    $text = sqlesc($text);
-    $added = TIME_NOW;
-    sql_query("INSERT INTO sitelog (added, txt) VALUES ($added, $text)") or sqlerr(__FILE__, __LINE__);
+    $sitelog = new Pu239\Sitelog();
+    $values = [
+        'added' => TIME_NOW,
+        'txt' => $text,
+    ];
+    $sitelog->insert($values);
 }
 
 /**
@@ -1246,40 +1082,53 @@ function load_language($file = '')
  */
 function flood_limit($table)
 {
-    global $CURUSER, $site_config, $lang;
+    global $CURUSER, $site_config, $lang, $session;
+
     if (!file_exists($site_config['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['flood_file'])))) {
         return;
     }
     if (!isset($max[$CURUSER['class']])) {
         return;
     }
-    $tb = [
-        'posts' => 'posts.userid',
-        'comments' => 'comments.user',
-        'messages' => 'messages.sender',
-    ];
-    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
-    $a = mysqli_fetch_assoc($q);
-    if ($a['how_many'] > $max[$CURUSER['class']]) {
-        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($site_config['flood_time'] - (TIME_NOW - $a['first_post'])));
+    $last_post = $session->get($table);
+    if (empty($last_post)) {
+        $session->set($table, [
+            TIME_NOW,
+            1,
+        ]);
+
+        return;
     }
+
+    if ($last_post[1] > $max[$CURUSER['class']] && TIME_NOW - $last_post[0] < $site_config['flood_time']) {
+        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . mkprettytime($site_config['flood_time'] - (TIME_NOW - $last_post[0])));
+    }
+
+    $count = $last_post[1] + 1;
+    $floodtime = $last_post[0];
+    if ($last_post[0] - TIME_NOW > $site_config['flood_time']) {
+        $count = 1;
+        $floodtime = TIME_NOW;
+    }
+    $session->set($table, [
+        $floodtime,
+        $count,
+    ]);
 }
 
 /**
- * @param      $query
- * @param bool $log
+ * @param $query
  *
  * @return bool|mysqli_result
  */
-function sql_query($query, $log = true)
+function sql_query($query)
 {
     global $query_stat, $queries, $mysqli, $site_config;
 
     dbconn();
     if ($site_config['sql_debug']) {
         $query_start_time = microtime(true);
-
-        mysqli_set_charset($mysqli, 'utf8');
+        mysqli_set_charset($mysqli, $_ENV['DB_CHARSET']);
         $result = mysqli_query($mysqli, $query);
         $query_end_time = microtime(true);
         $query_stat[] = [
@@ -1288,6 +1137,7 @@ function sql_query($query, $log = true)
         ];
         $queries = count($query_stat);
     } else {
+        mysqli_set_charset($mysqli, $_ENV['DB_CHARSET']);
         $result = mysqli_query($mysqli, $query);
     }
 
@@ -1371,46 +1221,6 @@ function referer()
         ];
         $referer_stuffs->insert($values);
     }
-}
-
-/**
- * @param       $query
- * @param array $default_value
- *
- * @return array|bool|string
- */
-function mysql_fetch_all($query, $default_value = [])
-{
-    global $mysqli;
-
-    $r = @sql_query($query);
-    $result = [];
-    if ($err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
-        return $err;
-    }
-    if (@mysqli_num_rows($r)) {
-        while ($row = mysqli_fetch_array($r)) {
-            $result[] = $row;
-        }
-    }
-    if (count($result) == 0) {
-        return $default_value;
-    }
-
-    return $result;
-}
-
-/**
- * @param $userid
- * @param $amount
- * @param $type
- */
-function write_bonus_log($userid, $amount, $type)
-{
-    $added = TIME_NOW;
-    $donation_type = $type;
-    sql_query('INSERT INTO bonuslog (id, donation, type, added_at)
-                VALUES(' . sqlesc($userid) . ', ' . sqlesc($amount) . ', ' . sqlesc($donation_type) . ", $added)") or sqlerr(__FILE__, __LINE__);
 }
 
 /**

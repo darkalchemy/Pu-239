@@ -90,100 +90,100 @@ $tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 
 if (in_array('slider', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10) {
-    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
+    if ($CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_slider.php';
     }
 }
 
 if (in_array('ajaxchat', $available_columns)) {
-    if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
+    if ($CURUSER['blocks']['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
-    } elseif (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] != 1) {
+    } elseif ($CURUSER['blocks']['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] != 1) {
         $ajaxchat .= main_div("<div class='has-text-centered padding20 bg-02 round5'>You have been banned from AJAX Chat!</div>", 'bg-00');
     }
 }
 
-if (in_array('trivia', $available_columns) && curuser::$blocks['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {
+if (in_array('trivia', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'trivia.php';
 }
 
-if (in_array('forum_posts', $available_columns) && curuser::$blocks['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_posts_on']) {
+if (in_array('forum_posts', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_posts_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'forum_posts.php';
 }
 
-if (in_array('staffpicks', $available_columns) && curuser::$blocks['index_page'] & block_index::STAFF_PICKS && $BLOCKS['staff_picks_on']) {
+if (in_array('staffpicks', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::STAFF_PICKS && $BLOCKS['staff_picks_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'staff_picks.php';
 }
 
-if (in_array('latest_user', $available_columns) && curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest_user_on']) {
+if (in_array('latest_user', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::LATEST_USER && $BLOCKS['latest_user_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_user.php';
 }
 
-if (in_array('birthday_users', $available_columns) && curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS && $BLOCKS['active_birthday_users_on']) {
+if (in_array('birthday_users', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS && $BLOCKS['active_birthday_users_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_birthday_users.php';
 }
 
-if (in_array('active_users_irc', $available_columns) && curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS && $BLOCKS['active_irc_users_on']) {
+if (in_array('active_users_irc', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::IRC_ACTIVE_USERS && $BLOCKS['active_irc_users_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_irc_users.php';
 }
 
-if (in_array('active_users', $available_columns) && curuser::$blocks['index_page'] & block_index::ACTIVE_USERS && $BLOCKS['active_users_on']) {
+if (in_array('active_users', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::ACTIVE_USERS && $BLOCKS['active_users_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_users.php';
 }
 
-if (in_array('active_users_24', $available_columns) && curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {
+if (in_array('active_users_24', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_24h_users.php';
 }
 
-if (in_array('site_poll', $available_columns) && !empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
+if (in_array('site_poll', $available_columns) && !empty($poll_data) && $CURUSER['blocks']['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'poll.php';
 }
 
-if (in_array('site_stats', $available_columns) && curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
+if (in_array('site_stats', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'stats.php';
 }
 
 if (in_array('christmas_gift', $available_columns) && Christmas()) {
-    if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT && $BLOCKS['christmas_gift_on']) {
+    if ($CURUSER['blocks']['index_page'] & block_index::CHRISTMAS_GIFT && $BLOCKS['christmas_gift_on']) {
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'gift.php';
     }
 }
 
 if (in_array('torrents_scroller', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10) {
-    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
+    if ($CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
     }
 }
 
-if (in_array('torrents_top', $available_columns) && curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
+if (in_array('torrents_top', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'top_torrents.php';
 }
 
-if (in_array('latest_torrents', $available_columns) && curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
+if (in_array('latest_torrents', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents.php';
 }
 
-if (in_array('site_news', $available_columns) && curuser::$blocks['index_page'] & block_index::NEWS && $BLOCKS['news_on']) {
+if (in_array('site_news', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::NEWS && $BLOCKS['news_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'news.php';
 }
 
-if (in_array('advertise', $available_columns) && curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS && $BLOCKS['ads_on']) {
+if (in_array('advertise', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::ADVERTISEMENTS && $BLOCKS['ads_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'advertise.php';
 }
 
-if (in_array('posted_comments', $available_columns) && curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
+if (in_array('posted_comments', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'comments.php';
 }
 
-if (in_array('torrents_mow', $available_columns) && curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
+if (in_array('torrents_mow', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'mow.php';
 }
 
-if (in_array('tfreak_feed', $available_columns) && curuser::$blocks['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss_on']) {
+if (in_array('tfreak_feed', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'torrentfreak.php';
 }
 
-if (in_array('disclaimer', $available_columns) && curuser::$blocks['index_page'] & block_index::DISCLAIMER && $BLOCKS['disclaimer_on']) {
+if (in_array('disclaimer', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::DISCLAIMER && $BLOCKS['disclaimer_on']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'disclaimer.php';
 }
 

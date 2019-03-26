@@ -48,7 +48,7 @@ if ($private === 'true') {
         ->where('userid = ?', $current_user)
         ->execute();
 
-    $cache->delete('bookmm_' . $current_user);
+    $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
         'bookmark' => $private,
         'content' => 'private',
@@ -70,7 +70,7 @@ if (!empty($bookmark)) {
     $fluent->delete('bookmarks')
         ->where('id = ?', $bookmark)
         ->execute();
-    $cache->delete('bookmm_' . $current_user);
+    $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
         'content' => 'deleted',
         'text' => $lang['bookmark_add'],
@@ -86,7 +86,7 @@ if (!empty($bookmark)) {
     $fluent->insertInto('bookmarks')
         ->values($values)
         ->execute();
-    $cache->delete('bookmm_' . $current_user);
+    $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
         'content' => 'added',
         'text' => $lang['bookmarks_del'],

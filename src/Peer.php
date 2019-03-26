@@ -9,7 +9,7 @@ class Peer
 {
     protected $cache;
     protected $fluent;
-    protected $config;
+    protected $site_config;
     protected $limit;
 
     public function __construct()
@@ -18,8 +18,8 @@ class Peer
 
         $this->cache = $cache;
         $this->fluent = $fluent;
-        $this->config = $site_config;
-        $this->limit = $this->config['query_limit'];
+        $this->site_config = $site_config;
+        $this->limit = $this->site_config['query_limit'];
     }
 
     /**
@@ -61,7 +61,7 @@ class Peer
                     $peers['percentage'] = ceil(($peers['conn_yes'] / $peers['count']) * 100);
                 }
             }
-            $this->cache->set('peers_' . $userid, $peers, $this->config['expires']['peers_']);
+            $this->cache->set('peers_' . $userid, $peers, $this->site_config['expires']['peers_']);
         }
 
         return $peers;

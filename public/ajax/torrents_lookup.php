@@ -495,7 +495,6 @@ function staff_snatchtable(array $torrents, int $userid)
             default:
                 $dlc = 'white';
                 break;
-
         }
         if ($arr['downloaded'] > 0) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);

@@ -4,7 +4,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 $HTMLOUT = '';
@@ -27,7 +27,12 @@ while ($count = mysqli_fetch_array($res)) {
 }
 
 // Casino
-$casino_count = get_row_count('casino', 'WHERE deposit > 0 AND userid != ' . sqlesc($CURUSER['id']));
+$casino_count = $fluent('casino')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('deposit > 0')
+        ->where('userid != ?', $CURUSER['id'])
+        ->fetch('count');
 if ($casino_count > 0) {
     $color9 = 'green';
 }

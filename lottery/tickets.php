@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
-global $session, $mysqli, $CURUSER;
+global $session, $mysqli, $CURUSER, $fluent;
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
@@ -18,7 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $session->set('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
         $fail = true;
     }
-    $user_tickets = get_row_count('tickets', 'WHERE user = ' . $CURUSER['id']);
+    $user_tickets = $fluent('tickets')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('user = ?', $CURUSER['id'])
+        ->fetch('count');
+
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
         $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
         $fail = true;

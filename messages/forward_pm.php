@@ -6,6 +6,7 @@ global $CURUSER, $message_stuffs, $user_stuffs, $fluent, $site_config;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
+flood_limit('messages');
 $message = $message_stuffs->get_by_id($pm_id);
 if (empty($message)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_notfound']);

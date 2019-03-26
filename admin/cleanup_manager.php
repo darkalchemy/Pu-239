@@ -95,9 +95,13 @@ function manualclean()
 
 function cleanup_show_main()
 {
-    global $site_config, $lang;
+    global $site_config, $lang, $fluent;
 
-    $count1 = get_row_count('cleanup');
+    $count1 = $fluent('cleanup')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->fetch('count');
+
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
