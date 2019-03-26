@@ -1,5 +1,6 @@
 ### 26 Mar, 2019
-update: dependencies
+update: static max failed login count  
+update: dependencies  
 update: refactor all mysqli queries in bittorent.php  
 update: move flood control to session  
 update: navbar  

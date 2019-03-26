@@ -44,7 +44,7 @@ if (!empty($_GET['returnto'])) {
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 
 $left = left();
-if ($left !== 5) {
+if ($left !== $site_config['failedlogins']) {
     if ($left <= 2) {
         $text = "
         <span class='has-text-danger'>{$left}</span>";
