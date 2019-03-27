@@ -1,4 +1,5 @@
 ### 26 Mar, 2019
+fix: missing user_blocks during install  
 fix: missing $this  
 update: static max failed login count  
 update: dependencies  

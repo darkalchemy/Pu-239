@@ -195,5 +195,8 @@ function add_user($values)
         $fluent->insertInto('usersachiev')
             ->values($values)
             ->execute();
+        $fluent->insertInto('user_blocks')
+            ->values($values)
+            ->execute();
     }
 }
