@@ -346,7 +346,7 @@ if ($mode === 'upload' || $mode === 'edit') {
 } else {
     $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
     $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
-    $count = $fluent('subtitles')
+    $count = $fluent->from('subtitles')
         ->select(null)
         ->select('COUNT(*) AS count');
     if ($s && $w === 'name') {

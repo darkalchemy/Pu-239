@@ -9,7 +9,7 @@ global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_upinfo'));
 $HTMLOUT = $count = '';
-$count1 = $fluent('torrents')
+$count1 = $fluent->from('torrents')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->fetch('count');

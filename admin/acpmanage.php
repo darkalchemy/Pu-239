@@ -49,17 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     header('Location: staffpanel.php?tool=acpmanage&amp;action=acpmanage');
     exit;
 }
-$disabled = $fluent('users')
+$disabled = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('enabled = "no"')
         ->fetch('count');
-$pending = $fluent('users')
+$pending = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('status = "pending"')
         ->fetch('count');
-$count = $fluent('users')
+$count = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->whereOr([

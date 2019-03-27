@@ -99,7 +99,7 @@ if (isset($_GET['add'])) {
     }
 }
 //=== get number of watched members
-$watched_users = $fluent('users')
+$watched_users = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('watched_user != 0')

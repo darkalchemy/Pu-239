@@ -1,3 +1,6 @@
+### 27 Mar, 2019
+fix: missing 'from' in fluent queries  
+
 ### 26 Mar, 2019
 fix: missing user_blocks during install  
 fix: missing $this  

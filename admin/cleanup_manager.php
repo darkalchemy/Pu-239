@@ -97,7 +97,7 @@ function cleanup_show_main()
 {
     global $site_config, $lang, $fluent;
 
-    $count1 = $fluent('cleanup')
+    $count1 = $fluent->from('cleanup')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->fetch('count');

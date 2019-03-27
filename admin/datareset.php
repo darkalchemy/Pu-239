@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($tid == 0) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }
-    $torrents = $fluent('torrents')
+    $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('id = ?', $tid)

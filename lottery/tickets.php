@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $session->set('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
         $fail = true;
     }
-    $user_tickets = $fluent('tickets')
+    $user_tickets = $fluent->from('tickets')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('user = ?', $CURUSER['id'])

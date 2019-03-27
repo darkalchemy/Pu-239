@@ -46,7 +46,7 @@ $body = "
         </tr>";
 $HTMLOUT .= main_table($body) . '
     </form>';
-$count1 = $fluent('bannedemails')
+$count1 = $fluent->from('bannedemails')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->fetch('count');

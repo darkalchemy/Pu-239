@@ -23,7 +23,7 @@ if (isset($_GET['total_donors'])) {
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
-    $users = $fluent('users')
+    $users = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('total_donated >= 0')
@@ -39,7 +39,7 @@ if (isset($_GET['total_donors'])) {
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
-    $users = $fluent('users')
+    $users = $fluent->from('users')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('donor = "yes"')

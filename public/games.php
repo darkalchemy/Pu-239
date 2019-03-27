@@ -27,7 +27,7 @@ while ($count = mysqli_fetch_array($res)) {
 }
 
 // Casino
-$casino_count = $fluent('casino')
+$casino_count = $fluent->from('casino')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('deposit > 0')

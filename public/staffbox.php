@@ -150,7 +150,7 @@ switch ($do) {
         break;
 
     default:
-        $count_msgs = $fluent('staffmessages')
+        $count_msgs = $fluent->from('staffmessages')
             ->select(null)
             ->select('COUNT(*) AS count')
             ->fetch('count');

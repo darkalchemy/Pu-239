@@ -237,7 +237,7 @@ if (!isset($dict['info'])) {
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
-$count = $fluent('torrents')
+$count = $fluent->from('torrents')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('info_hash = ?', $info_hash)
