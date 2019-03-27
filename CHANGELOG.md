@@ -1,4 +1,5 @@
 ### 26 Mar, 2019
+fix: missing $this  
 update: static max failed login count  
 update: dependencies  
 update: refactor all mysqli queries in bittorent.php  

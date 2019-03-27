@@ -24,7 +24,7 @@ class Block
     {
         $status = $this->cache->get('blocks_' . $userid);
         if ($status === false || is_null($status)) {
-            $status = $fluent->from('blocks')
+            $status = $this->fluent->from('blocks')
                 ->where('userid = ?', $userid)
                 ->fetch();
 
