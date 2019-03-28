@@ -312,17 +312,6 @@ if ($action == 'avatar') {
         $curuser_cache['title'] = $title;
         $user_cache['title'] = $title;
     }
-    if (isset($_POST['status']) && ($status = $_POST['status']) && !empty($status)) {
-        $status_archive = ((isset($CURUSER['archive']) && is_array(unserialize($CURUSER['archive']))) ? unserialize($CURUSER['archive']) : []);
-        if (!empty($CURUSER['last_status'])) {
-            $status_archive[] = [
-                'status' => $CURUSER['last_status'],
-                'date' => $CURUSER['last_update'],
-            ];
-        }
-        sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)') or sqlerr(__FILE__, __LINE__);
-        $cache->delete('userstatus_' . $CURUSER['id']);
-    }
     if (isset($_POST['stylesheet']) && (($stylesheet = (int) $_POST['stylesheet']) != $CURUSER['stylesheet']) && is_valid_id($stylesheet)) {
         $updateset[] = 'stylesheet = ' . sqlesc($stylesheet);
         $curuser_cache['stylesheet'] = $stylesheet;

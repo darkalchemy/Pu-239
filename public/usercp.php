@@ -602,57 +602,6 @@ if ($action === 'avatar') {
         $HTMLOUT .= tr($lang['usercp_title'], "
                                                 <input type='text' class='w-100' value='" . htmlsafechars($CURUSER['title']) . "' name='title'>", 1);
     }
-    $CURUSER['archive'] = unserialize($CURUSER['archive']);
-    $HTMLOUT .= "
-                                        <tr>
-                                            <td class='rowhead'>Online status</td>
-                                            <td>
-                                                <div>
-                                                    <span class='size_4'>Status update</span>
-                                                </div>";
-    if (isset($CURUSER['last_status']) && $CURUSER['last_status'] != '') {
-        $HTMLOUT .= "
-                                                <div id='current_holder'>
-                                                    <span class='size_3'>Current status</span>
-                                                    <h2 id='current_status' title='Click to edit' onclick='status_pedit()'>" . format_urls($CURUSER['last_status']) . '</h2>
-                                                </div>';
-    }
-    $HTMLOUT .= "
-                                                <span class='size_3'>Update status</span>
-                                                <textarea name='status' id='status' onkeyup='status_count()' class='w-100' rows='4'></textarea>
-                                                <div>
-                                                    <span>NO bbcode or html allowed</span>
-                                                    <div id='status_count'>140</div>
-                                                <div></div></div>";
-    if (!empty($CURUSER['archive']) && count($CURUSER['archive'])) {
-        $HTMLOUT .= "
-                                                <div>
-                                                <div>
-                                                    <span class='size_3'>Status archive</span>
-                                                </div>
-                                                <div id='status_archive_click' class='is_hidden' onclick='status_slide()'>+</div>
-                                                <div></div>
-                                                <div id='status_archive'>";
-        if (is_array($CURUSER['archive'])) {
-            foreach (array_reverse($CURUSER['archive'], true) as $a_id => $sa) {
-                $HTMLOUT .= '
-                                                    <div id="status_' . $a_id . '">
-                                                        <div>' . htmlsafechars($sa['status']) . '
-                                                            <small>added ' . get_date($sa['date'], '', 0, 1) . '</small>
-                                                        </div>
-                                                        <div>
-                                                            <span onclick="status_delete(' . $a_id . ')"></span>
-                                                        </div>
-                                                        <div></div>
-                                                    </div>';
-            }
-        }
-        $HTMLOUT .= '
-                                                </div>
-                                            </div>';
-    }
-    $HTMLOUT .= '                       </td>
-                                    </tr>';
     $HTMLOUT .= tr($lang['usercp_top_perpage'], "
                                             <input type='text' class='w-100' name='topicsperpage' value='{$CURUSER['topicsperpage']}'> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr($lang['usercp_post_perpage'], "

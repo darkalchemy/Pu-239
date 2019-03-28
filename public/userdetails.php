@@ -29,21 +29,6 @@ if ($user['status'] === 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 
-$user_status = $cache->get('userstatus_' . $id);
-if ($user_status === false || is_null($user_status)) {
-    $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($sql_2)) {
-        $user_status = mysqli_fetch_assoc($sql_2);
-    } else {
-        $user_status = [
-            'last_status' => '',
-            'last_update' => 0,
-            'archive' => '',
-        ];
-    }
-    $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']);
-}
-
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
     stderr($lang['userdetails_error'],
         '<span><img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
@@ -280,7 +265,7 @@ $HTMLOUT .= "
                 <div id='torrents' class='table-wrapper'>";
 
 $table_data = '';
-if (curuser::$blocks['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
     require_once BLOCK_DIR . 'userdetails/flush.php';
 }
 if ($CURUSER['id'] === $id || $CURUSER['class'] >= UC_ADMINISTRATOR) {
@@ -309,25 +294,25 @@ if ($CURUSER['id'] === $id || $CURUSER['class'] >= UC_ADMINISTRATOR) {
             </td>
         </tr>';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
     require_once BLOCK_DIR . 'userdetails/traffic.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/shareratio.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/seedtimeratio.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
     require_once BLOCK_DIR . 'userdetails/connectable.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
     require_once BLOCK_DIR . 'userdetails/torrents_block.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
     require_once BLOCK_DIR . 'userdetails/completed.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
     require_once BLOCK_DIR . 'userdetails/snatched_staff.php';
 }
 
@@ -386,46 +371,46 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
     }
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
     require_once BLOCK_DIR . 'userdetails/showfriends.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
     require_once BLOCK_DIR . 'userdetails/joined.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
     require_once BLOCK_DIR . 'userdetails/onlinetime.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
     require_once BLOCK_DIR . 'userdetails/browser.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
     require_once BLOCK_DIR . 'userdetails/birthday.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
     require_once BLOCK_DIR . 'userdetails/contactinfo.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
     require_once BLOCK_DIR . 'userdetails/iphistory.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
     require_once BLOCK_DIR . 'userdetails/avatar.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
     require_once BLOCK_DIR . 'userdetails/userclass.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
     require_once BLOCK_DIR . 'userdetails/gender.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
     require_once BLOCK_DIR . 'userdetails/userinfo.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
     require_once BLOCK_DIR . 'userdetails/report.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
     require_once BLOCK_DIR . 'userdetails/userstatus.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
     require_once BLOCK_DIR . 'userdetails/showpm.php';
 }
 $HTMLOUT .= '</table></div>';
@@ -442,33 +427,33 @@ $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</t
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0">
        <span class="tip">' . htmlsafechars($user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
     require_once BLOCK_DIR . 'userdetails/irc.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
     require_once BLOCK_DIR . 'userdetails/reputation.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
     require_once BLOCK_DIR . 'userdetails/userhits.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
     require_once BLOCK_DIR . 'userdetails/freestuffs.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/comments.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
     require_once BLOCK_DIR . 'userdetails/forumposts.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
     require_once BLOCK_DIR . 'userdetails/invitedby.php';
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='comments' class='table-wrapper'>";
-if (curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
+if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/usercomments.php';
 }
 $HTMLOUT .= '</div>';

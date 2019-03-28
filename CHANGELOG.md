@@ -1,3 +1,10 @@
+### 28 Mar, 2019
+fix: removal of curuser class - was incomplete  
+remove: ustatus - never set/updated/used  
+fix: Block.php  
+fix: typo takesignup.php  
+fix: typo take_invite_signup.php  
+
 ### 27 Mar, 2019
 fix: missing 'from' in fluent queries  
 

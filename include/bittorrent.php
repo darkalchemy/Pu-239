@@ -283,12 +283,6 @@ function userlogin()
         }
     }
 
-    $ustatus_stuffs = new Pu239\Ustatus();
-    $ustatus = $ustatus_stuffs->get($id);
-    $users_data['last_status'] = $ustatus['last_status'];
-    $users_data['last_update'] = $ustatus['last_update'];
-    $users_data['archive'] = $ustatus['archive'];
-
     $userblocks = $userblock_stuffs->get($id);
     $users_data['blocks'] = $userblocks;
     $users_data['username'] = htmlsafechars($users_data['username']);

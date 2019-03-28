@@ -22,20 +22,13 @@ class Block
 
     public function get(int $userid)
     {
-        $status = $this->cache->get('blocks_' . $userid);
-        if ($status === false || is_null($status)) {
-            $status = $this->fluent->from('blocks')
+        $blocks = $this->cache->get('blocks_' . $userid);
+        if ($blocks === false || is_null($blocks)) {
+            $blocks = $this->fluent->from('blocks')
                 ->where('userid = ?', $userid)
                 ->fetch();
 
-            if (empty($status)) {
-                $status = [
-                    'last_status' => '',
-                    'last_update' => 0,
-                    'archive' => '',
-                ];
-            }
-            $this->cache->set('blocks_' . $userid, $status, $this->site_config['expires']['u_status']);
+            $this->cache->set('blocks_' . $userid, $blocks, $this->site_config['expires']['user_blocks']);
         }
     }
 }

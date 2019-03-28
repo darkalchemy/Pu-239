@@ -224,7 +224,7 @@ if (!$user_id) {
 }
 
 $usersachiev_stuffs->add(['userid' => $user_id]);
-$user_block_stuffs->add(['userid' => $user_id]);
+$userblock_stuffs->add(['userid' => $user_id]);
 
 $subject = 'Welcome';
 $msg = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";

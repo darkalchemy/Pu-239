@@ -2197,4 +2197,11 @@ KEY `expires` (`expires`)
         'query' => 'DELETE FROM `staffpanel` WHERE `page_name` = "Edit Events"',
         'flush' => true,
     ],
+    [
+        'id' => 1553799801,
+        'info' => 'Drop table ustatus',
+        'date' => '28 Mar, 2019',
+        'query' => 'DROP TABLE `ustatus`',
+        'flush' => false,
+    ],
 ];
