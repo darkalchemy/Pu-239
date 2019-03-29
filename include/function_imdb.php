@@ -699,6 +699,8 @@ function get_imdb_person($person_id)
             ->fetch();
 
         if (!empty($imdb_person)) {
+            $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
+
             return $imdb_person;
         }
 
@@ -715,7 +717,6 @@ function get_imdb_person($person_id)
         } else {
             return false;
         }
-
         if (!empty($person->birthname())) {
             $imdb_person['realname'] = $person->birthname();
         }

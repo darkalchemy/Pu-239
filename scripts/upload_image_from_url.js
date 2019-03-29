@@ -8,7 +8,6 @@ function grab_url(event) {
     var poster = document.querySelector('#poster');
     var image_url = document.querySelector('#image_url');
     var textarea = document.getElementsByTagName('textarea');
-    var link = document.querySelector('#url');
     if (textarea[0]) {
         var editor = textarea[0].value;
     }
@@ -37,7 +36,6 @@ function grab_url(event) {
                         '<img src="' + response.url + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                     if (textarea[0]) {
-                        link.value = response.url;
                         textarea[0].value = '[img]' + response.url + '[/img][br]' + editor;
                     }
                 } else {

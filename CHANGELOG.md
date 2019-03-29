@@ -1,5 +1,8 @@
 ### 29 Mar, 2019
-fix: insert image url into requests/offers link  
+fix: missing global $lang take_url_upload.php  
+refactor: requests.php  
+fix: cache imdb_person db query  
+fix: insert image url into requests link  
 update: allow add/edit caticons without image  
 update: allow caticons image filename to match [A-Za-z0-9_\-]  
 

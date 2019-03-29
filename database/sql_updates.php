@@ -2204,4 +2204,18 @@ KEY `expires` (`expires`)
         'query' => 'DROP TABLE `ustatus`',
         'flush' => false,
     ],
+    [
+        'id' => 1553889430,
+        'info' => 'Add fk constraint to request_votes',
+        'date' => '29 Mar, 2019',
+        'query' => 'ALTER TABLE `request_votes` ADD FOREIGN KEY (`request_id`) REFERENCES `requests`(`id`) ON DELETE CASCADE',
+        'flush' => false,
+    ],
+    [
+        'id' => 1553889431,
+        'info' => 'Change imdb length',
+        'date' => '29 Mar, 2019',
+        'query' => 'ALTER TABLE `person` MODIFY `imdb_id` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'flush' => false,
+    ],
 ];

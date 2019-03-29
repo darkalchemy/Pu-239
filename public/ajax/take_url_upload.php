@@ -5,7 +5,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'dragndrop.php';
-global $site_config, $cache, $session, $user_stuffs;
+global $site_config, $cache, $session, $user_stuffs, $lang;
 
 header('content-type: application/json');
 if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {

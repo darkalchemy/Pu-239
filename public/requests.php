@@ -43,6 +43,7 @@ $valid_actions = [
     'add_new_request',
     'delete_request',
     'edit_request',
+    'update_request',
     'request_details',
     'vote',
     'add_comment',
@@ -54,7 +55,7 @@ $valid_actions = [
     'add_bounty',
     'pay_bounty',
 ];
-$action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
+$action = in_array($posted_action, $valid_actions) ? $posted_action : 'default';
 $bounty_note1 = 'Bounties are paid automatically 48 hours after uploaded, if not paid by the requestor before then.';
 $bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded matches this request. If not, notify staff.<br>
 2) You are responsible for paying the bounties or challenging them as not metting your request.<br>
@@ -73,37 +74,103 @@ $top_menu = '
         </ul>
     </div>';
 switch ($action) {
+    case 'update_request':
+        if (!isset($id) || !is_valid_id($id)) {
+            stderr('Error', 'Bad ID.');
+        }
+        $exists = $fluent->from('requests')
+            ->select(null)
+            ->select('requested_by_user_id')
+            ->where('id = ?', $id)
+            ->fetch();
+        if (empty($exists)) {
+            stderr('Error', 'Invalid ID.');
+        }
+        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+            stderr('Error', 'Permission denied.');
+        }
+        $set = [
+            'id' => $_POST['id'],
+            'request_name' => $_POST['request_name'],
+            'image' => $_POST['image'],
+            'link' => $_POST['link'],
+            'category' => $_POST['category'],
+            'description' => $_POST['body'],
+            'updated' => TIME_NOW,
+        ];
+        $fluent->update('requests')
+            ->set($set)
+            ->where('id = ?', $id)
+            ->execute();
+
+        header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . sqlesc($id));
+        die();
+        break;
+
     case 'vote':
         if (!isset($id) || !is_valid_id($id) || !isset($vote) || !is_valid_id($vote)) {
             stderr('USER ERROR', 'Bad id / bad vote');
         }
-        $res_did_they_vote = sql_query('SELECT vote FROM request_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND request_id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ($row_did_they_vote[0] == '') {
-            $yes_or_no = ($vote == 1 ? 'yes' : 'no');
-            sql_query('INSERT INTO request_votes (request_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($yes_or_no) . ')') or sqlerr(__FILE__, __LINE__);
-            sql_query('UPDATE requests SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            header('Location: /requests.php?action=request_details&voted=1&id=' . sqlesc($id));
-            die();
-        } else {
+        $voted = $fluent->from('request_votes')
+            ->select(null)
+            ->select('vote')
+            ->where('user_id = ?', $CURUSER['id'])
+            ->where('request_id = ?', $id)
+            ->fetch('vote');
+
+        if (!empty($voted)) {
             stderr('USER ERROR', 'You have voted on this request before.');
+        } else {
+            $yes_or_no = $vote === 1 ? 'yes' : 'no';
+            $values = [
+                'request_id' => $id,
+                'user_id' => $CURUSER['id'],
+                'vote' => $yes_or_no,
+            ];
+            $fluent->insertInto('request_votes')
+                ->values($values)
+                ->execute();
+            if ($vote === 1) {
+                $set = [
+                    'vote_yes_count' => new Envms\FluentPDO\Literal('vote_yes_count + 1'),
+                ];
+            } else {
+                $set = [
+                    'vote_no_count' => new Envms\FluentPDO\Literal('vote_no_count + 1'),
+                ];
+            }
+            $fluent->update('requests')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&voted=1&id=' . sqlesc($id));
+            die();
         }
         break;
 
     case 'default':
-        $count_query = sql_query('SELECT COUNT(id) FROM requests') or sqlerr(__FILE__, __LINE__);
-        $count_arr = mysqli_fetch_row($count_query);
-        $count = $count_arr[0];
+        $count = $fluent->from('requests')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->fetch('count');
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
         $link = $site_config['baseurl'] . '/requests.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
         $pager = pager($perpage, $count, $link);
         $menu_top = $pager['pagertop'];
         $menu_bottom = $pager['pagerbottom'];
-        $LIMIT = $pager['limit'];
 
-        $main_query_res = sql_query('SELECT r.id AS request_id, r.request_name, r.category, r.added, r.requested_by_user_id, r.filled_by_user_id, r.filled_torrent_id, r.vote_yes_count, r.vote_no_count, r.comments, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT JOIN categories AS c ON r.category = c.id LEFT JOIN users AS u ON r.requested_by_user_id = u.id ORDER BY r.added DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-        if ($count === 0) {
+        $requests = $fluent->from('requests AS r')
+            ->select('c.name AS cat_name')
+            ->select('c.image AS cat_image')
+            ->select('p.name AS parent_name')
+            ->leftJoin('categories AS c ON r.category = c.id')
+            ->leftJoin('categories AS p ON c.parent_id = p.id')
+            ->orderBy('r.added DESC')
+            ->limit($pager['pdo'])
+            ->fetchAll();
+
+        if (empty($requests)) {
             stderr('Error!', 'Sorry, there are no current requests!');
         }
         $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
@@ -118,18 +185,19 @@ switch ($action) {
             <th>Filled</th>
         </tr>';
         $body = '';
-        while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
-            $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] === 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
+        foreach ($requests as $request) {
+            $request['cat'] = $request['parent_name'] . '::' . $request['cat_name'];
+            $caticon = !empty($request['cat_image']) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($request['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($request['cat']) . "' title='" . htmlsafechars($request['cat']) . "' height='20px' width='auto'>" : htmlsafechars($request['cat']);
             $body .= '
         <tr>
-            <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
-            <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
-            <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
-            <td>' . number_format($main_query_arr['comments']) . '</td>
-            <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
-            no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-            <td>' . format_username($main_query_arr['id']) . '</td>
-            <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
+            <td>' . $caticon . '</td>
+            <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars($request['request_name'], ENT_QUOTES) . '</a></td>
+            <td>' . get_date($request['added'], 'LONG') . '</td>
+            <td>' . number_format($request['comments']) . '</td>
+            <td>yes: ' . number_format($request['vote_yes_count']) . '<br>
+            no: ' . number_format($request['vote_no_count']) . '</td>
+            <td>' . format_username($request['requested_by_user_id']) . '</td>
+            <td>' . ($request['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $request['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
         </tr>';
         }
         $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no requests</div>');
@@ -146,9 +214,14 @@ switch ($action) {
             ->select('r.id AS request_id')
             ->select('c.name AS cat_name')
             ->select('c.image AS cat_image')
+            ->select('p.name AS parent_name')
             ->leftJoin('categories AS c ON r.category = c.id')
+            ->leftJoin('categories AS p ON c.parent_id = p.id')
             ->where('r.id = ?', $id)
             ->fetch();
+
+        $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
+        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
 
         if (!empty($arr['link'])) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
@@ -156,14 +229,14 @@ switch ($action) {
         }
         $movie_info = get_imdb_info($imdb, false, false, null, null);
 
-        $row_did_they_vote = $fluent->from('request_votes')
+        $voted = $fluent->from('request_votes')
             ->select(null)
             ->select('vote')
             ->where('user_id = ?', $CURUSER['id'])
             ->where('request_id = ?', $id)
-            ->fetch();
+            ->fetch('vote');
 
-        if (!$row_did_they_vote) {
+        if (!$voted) {
             $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
@@ -180,14 +253,14 @@ switch ($action) {
         } else {
             $vote_yes = '';
             $vote_no = '';
-            $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
+            $your_vote_was = ' your vote: ' . $voted;
         }
         $usersdata = $user_stuffs->getUserFromId($arr['requested_by_user_id']);
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars($arr['request_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
-  [ <a href="requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
+  <td colspan="2"><h1>' . htmlsafechars($arr['request_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  [ <a href="' . $site_config['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
   <td>image:</td>
@@ -199,7 +272,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>category:</td>
-  <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '"></td>
+  <td>' . $caticon . '</td>
   </tr>
   <tr>
   <td>link:</td>
@@ -239,7 +312,7 @@ switch ($action) {
             <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
             <a id="startcomments"></a>
             <div class="has-text-centered margin20">
-                <a class="button is-small" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
+                <a class="button is-small" href="' . $site_config['baseurl'] . '/requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
             </div>';
         $count = (int) $arr['comments'];
         if (!$count) {
@@ -269,11 +342,12 @@ switch ($action) {
 
     case 'add_new_request':
         $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : '');
-        $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
-        $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
+        $image = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
+        $body = isset($_POST['body']) ? trim($_POST['body']) : '';
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
         $category_drop_down = '
-                <select name="category" required><option value="">Select Request Category</option>';
+                <select name="category" required>
+                    <option value="">Select Request Category</option>';
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
@@ -283,16 +357,24 @@ switch ($action) {
         }
         $category_drop_down .= '
                 </select>';
-        if (isset($_POST['category'])) {
-            $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . $category) or sqlerr(__FILE__, __LINE__);
-            $cat_arr = mysqli_fetch_assoc($cat_res);
-            $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
-            $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
-        }
         if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
-            sql_query('INSERT INTO requests (request_name, image, description, category, added, requested_by_user_id, link) VALUES (' . sqlesc($request_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($link) . ')') or sqlerr(__FILE__, __LINE__);
-            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-            header('Location: requests.php?action=request_details&new=1&id=' . $new_request_id);
+            $values = [
+                'request_name' => $request_name,
+                'image' => $image,
+                'description' => $body,
+                'category' => $category,
+                'added' => TIME_NOW,
+                'requested_by_user_id' => $CURUSER['id'],
+                'link' => $link,
+            ];
+            $new_request_id = $fluent->insertInto('requests')
+                ->values($values)
+                ->execute();
+
+            $color = get_user_class_name($CURUSER['class'], true);
+            $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url={$site_config['baseurl']}/requests.php?action=request_details&id={$new_request_id}]{$request_name}[/url]";
+            autoshout($msg);
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&new=1&id=' . $new_request_id);
             die();
         }
         $stdfoot['js'] = array_merge($stdfoot['js'], [
@@ -321,9 +403,7 @@ switch ($action) {
     <td>link:</td>
     <td>
         <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
-        <div class="imdb_outer">
-            <div class="imdb_inner">
-            </div>
+        <div id="imdb_outer">
         </div>
     </td>
     </tr>
@@ -371,22 +451,30 @@ switch ($action) {
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT request_name, requested_by_user_id FROM requests WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (!$arr) {
+        $exists = $fluent->from('requests')
+            ->select(null)
+            ->select('request_name')
+            ->select('requested_by_user_id')
+            ->where('id = ?', $id)
+            ->fetch();
+        if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete the request <b>"' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</b>? If so click
-        <a class="altlink" href="requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666" >HERE</a>.');
+            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars($exists['request_name'], ENT_QUOTES) . '"</b>? If so click
+        <a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM requests WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM request_votes WHERE request_id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM comments WHERE request =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            header('Location: /requests.php?request_deleted=1');
+            $fluent->deleteFrom('requests')
+                ->where('id = ?', $id)
+                ->execute();
+            $fluent->deleteFrom('comments')
+                ->where('request = ?', $id)
+                ->execute();
+
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?request_deleted=1');
             die();
         }
         echo stdhead('Delete Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
@@ -397,8 +485,19 @@ switch ($action) {
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
-        $edit_res = sql_query('SELECT request_name, image, description, category, requested_by_user_id, filled_by_user_id, filled_torrent_id, link FROM requests WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $edit_arr = mysqli_fetch_assoc($edit_res);
+        $edit_arr = $fluent->from('requests AS r')
+            ->select('r.id AS request_id')
+            ->select('c.name AS cat_name')
+            ->select('c.image AS cat_image')
+            ->select('p.name AS parent_name')
+            ->leftJoin('categories AS c ON r.category = c.id')
+            ->leftJoin('categories AS p ON c.parent_id = p.id')
+            ->where('r.id = ?', $id)
+            ->fetch();
+
+        $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
+        $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
+
         if ($CURUSER['class'] < UC_STAFF && $CURUSER['id'] !== $edit_arr['requested_by_user_id']) {
             stderr('Error!', 'This is not your request to edit!');
         }
@@ -422,15 +521,11 @@ switch ($action) {
         }
         $category_drop_down .= '
                 </select>';
-        $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
-        $cat_arr = mysqli_fetch_assoc($cat_res);
-        $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
-        $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
    <td class="embedded">
    <h1 class="has-text-centered">Edit Request</h1>' . $top_menu . '
-   <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=edit_request">
+   <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=update_request">
    <input type="hidden" name="id" value="' . $id . '">
    <table class="table table-bordered table-striped">
    <tr>
@@ -490,10 +585,23 @@ switch ($action) {
             if (!$body) {
                 stderr('Error', 'Comment body cannot be empty!');
             }
-            sql_query('INSERT INTO comments (user, request, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ',' . sqlesc($body) . ')') or sqlerr(__FILE__, __LINE__);
-            $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-            sql_query('UPDATE requests SET comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            header('Location: /requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
+            $values = [
+                'user' => $CURUSER['id'],
+                'request' => $id,
+                'added' => TIME_NOW,
+                'text' => $body,
+                'ori_text' => $body,
+            ];
+            $newid = $fluent->insertInto('comments')
+                ->values($values)
+                ->execute();
+            $set = [
+                'comments' => new Envms\FluentPDO\Literal('comments + 1'),
+            ];
+            $fluent->update('requests')
+                ->set($set)
+                ->execute();
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -537,8 +645,12 @@ switch ($action) {
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT c.*, r.request_name FROM comments AS c LEFT JOIN requests AS r ON c.request = r.id WHERE c.id =' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
+        $arr = $fluent->from('comments AS c')
+            ->select('r.request_name')
+            ->leftJoin('requests AS r ON c.request = r.id')
+            ->where('c.id = ?', $comment_id)
+            ->fetch();
+
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
         }
@@ -550,8 +662,16 @@ switch ($action) {
             if ($body == '') {
                 stderr('Error', 'Comment body cannot be empty!');
             }
-            sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat = ' . TIME_NOW . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
-            header('Location: /requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
+            $set = [
+                'text' => $body,
+                'editedat' => TIME_NOW,
+                'editedby' => $CURUSER['id'],
+            ];
+            $fluent->update('comments')
+                ->set($set)
+                ->where('id = ?', $comment_id)
+                ->execute();
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
@@ -585,17 +705,32 @@ switch ($action) {
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT user, request FROM requests WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (!$arr) {
+        $arr = $fluent->from('requests')
+            ->select(null)
+            ->select('user')
+            ->select('request')
+            ->select('text')
+            ->where('id =?', $comment_id)
+            ->fetch();
+        if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
-        sql_query('UPDATE comments set editedby = ' . sqlesc($CURUSER['id']) . ', editedat = ' . sqlesc(TIME_NOW) . ', ori_text = text, text = ' . sqlesc($_POST['body']) . ' WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $set = [
+            'editedby' => $CURUSER['id'],
+            'editedat' => TIME_NOW,
+            'ori_text' => $arr['text'],
+            'text' => $_POST['body'],
+        ];
+        $fluent->update('comments')
+            ->set($set)
+            ->where('id = ?', $comment_id)
+            ->execute();
+
         $session->set('is-success', 'Comment Edited Successfully.');
-        header('Location: /requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
+        header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
         die();
         break;
 
@@ -603,20 +738,32 @@ switch ($action) {
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT user, request FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (!$arr) {
+        $arr = $fluent->from('comments')
+            ->select('user')
+            ->select('request')
+            ->where('id = ?', $comment_id)
+            ->fetch();
+        if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
+            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('UPDATE requests SET comments = comments - 1 WHERE id = ' . sqlesc($arr['request'])) or sqlerr(__FILE__, __LINE__);
-            header('Location: /requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
+            $fluent->deleteFrom('comments')
+                ->where('id = ?', $comment_id)
+                ->execute();
+            $set = [
+                'comments' => new Envms\FluentPDO\Literal('comments - 1'),
+            ];
+            $fluent->update('requests')
+                ->set($set)
+                ->where('id = ?', $arr['request'])
+                ->execute();
+
+            header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
             die();
         }
         break;
