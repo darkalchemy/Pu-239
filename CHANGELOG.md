@@ -1,4 +1,5 @@
 ### 29 Mar, 2019
+fix: insert image url into requests/offers link  
 update: allow add/edit caticons without image  
 update: allow caticons image filename to match [A-Za-z0-9_\-]  
 
