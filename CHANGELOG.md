@@ -1,3 +1,7 @@
+### 29 Mar, 2019
+update: allow add/edit caticons without image  
+update: allow caticons image filename to match [A-Za-z0-9_\-]  
+
 ### 28 Mar, 2019
 fix: removal of curuser class - was incomplete  
 remove: ustatus - never set/updated/used  

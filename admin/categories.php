@@ -150,7 +150,7 @@ function add_cat()
             stderr($lang['categories_error'], $lang['categories_add_error1'] . ': ' . $x);
         }
     }
-    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
+    if (!empty($params['cat_image']) && !preg_match("/^[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_add_error2'] . ': ' . $params['cat_image']);
     }
     $values = [
@@ -274,7 +274,7 @@ function edit_cat()
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
-    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
+    if (!empty($params['cat_image']) && !preg_match("/^[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_edit_error2']);
     }
     $set = [
