@@ -1,3 +1,6 @@
+### 30 Mar, 2019
+fix: typo takeupload.php  
+
 ### 29 Mar, 2019
 fix: missing global $lang take_url_upload.php  
 refactor: requests.php  

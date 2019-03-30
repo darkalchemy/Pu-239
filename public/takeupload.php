@@ -240,7 +240,7 @@ $infohash = pack('H*', sha1(bencdec::encode($info)));
 $count = $fluent->from('torrents')
         ->select(null)
         ->select('COUNT(*) AS count')
-        ->where('info_hash = ?', $info_hash)
+        ->where('info_hash = ?', $infohash)
         ->fetch('count');
 
 if ($count > 0) {
