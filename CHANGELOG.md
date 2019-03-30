@@ -1,4 +1,5 @@
 ### 30 Mar, 2019
+fix: convert text to UTF-8 in torrent description before passing to js  
 fix: typo takeupload.php  
 
 ### 29 Mar, 2019

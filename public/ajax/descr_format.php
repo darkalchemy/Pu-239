@@ -19,7 +19,7 @@ if (!empty($tid)) {
         if (!preg_match('/\[pre\].*\[\/pre\]/isU', $descr)) {
             $descr = '[pre]' . $descr . '[/pre]';
         }
-        $descr = format_comment($descr);
+        $descr = mb_convert_encoding(format_comment($descr), 'UTF-8');
         $cache->set('torrent_descr_' . $tid, $descr, 86400);
 
         echo json_encode(['descr' => $descr]);
