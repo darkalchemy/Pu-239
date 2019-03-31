@@ -26,8 +26,8 @@ class Poll
     public function delete(int $poll_id)
     {
         $this->fluent->deleteFrom('polls')
-            ->where('pid = ?', $poll_id)
-            ->execute();
+                     ->where('pid = ?', $poll_id)
+                     ->execute();
 
         $this->cache->delete('poll_' . $poll_id);
         $this->cache->delete('polls_');
@@ -44,9 +44,9 @@ class Poll
     public function update(array $set, int $poll_id)
     {
         $result = $this->fluent->update('polls')
-            ->set($set)
-            ->where('pid = ?', $poll_id)
-            ->execute();
+                               ->set($set)
+                               ->where('pid = ?', $poll_id)
+                               ->execute();
         $this->cache->delete('poll_' . $poll_id);
         $this->cache->delete('polls_');
 
@@ -63,8 +63,8 @@ class Poll
     public function insert(array $values)
     {
         $poll_id = $this->fluent->insertInto('polls')
-            ->values($values)
-            ->execute();
+                                ->values($values)
+                                ->execute();
 
         $this->cache->delete('polls_');
 
@@ -83,8 +83,8 @@ class Poll
         $poll = $this->cache->get('poll_' . $poll_id);
         if ($poll === false || is_null($poll)) {
             $poll = $this->fluent->from('polls')
-                ->where('pid = ?', $poll_id)
-                ->fetch();
+                                 ->where('pid = ?', $poll_id)
+                                 ->fetch();
             $this->cache->set('polls_' . $poll_id, $poll, 86400);
         }
 
@@ -103,8 +103,8 @@ class Poll
         $polls = $this->cache->get('polls_');
         if ($polls === false || is_null($polls)) {
             $polls = $this->fluent->from('polls')
-                ->orderBy('start_date DESC')
-                ->fetchAll();
+                                  ->orderBy('start_date DESC')
+                                  ->fetchAll();
 
             if (!empty($polls)) {
                 $this->cache->set('polls_', $polls, 86400);

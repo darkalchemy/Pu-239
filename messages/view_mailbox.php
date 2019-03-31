@@ -55,7 +55,7 @@ $HTMLOUT .= "
             <div class='bottom20'>$mailbox_pic</div>
             " . insertJumpTo($mailbox) . $other_box_info . '
         </h3>' . ($messages > $perpage ? $menu_top : '') . "
-        <form action='messages.php' method='post' name='checkme'>
+        <form action='messages.php' method='post' name='checkme' accept-charset='utf-8'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20'>
                 <thead>
@@ -130,16 +130,16 @@ if (mysqli_num_rows($res) === 0) {
     }
 }
 
-$per_page_drop_down = '<form action="messages.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;">';
+$per_page_drop_down = '<form action="messages.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;" accept-charset="utf-8">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $link . ' & amp;change_pm_number = ' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '"></form>';
 
 $show_pm_avatar_drop_down = '
-    <form method="post" action="messages.php">
+    <form method="post" action="messages . php" accept-charset="utf-8">
         <select name="show_pm_avatar" onchange="location = this.options[this.selectedIndex].value;">
             <option value="' . $link . '&amp;show_pm_avatar=yes" ' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
             <option value="' . $link . '&amp;show_pm_avatar=no" ' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>

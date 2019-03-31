@@ -16,23 +16,23 @@ function trivia_table()
     $triviaq = $cache->get('triviaq_');
     if ($triviaq === false || is_null($triviaq)) {
         $qid = $fluent->from('triviaq')
-            ->select(null)
-            ->select('qid')
-            ->where('current = 1')
-            ->where('asked = 1')
-            ->fetch('qid');
+                      ->select(null)
+                      ->select('qid')
+                      ->where('current = 1')
+                      ->where('asked = 1')
+                      ->fetch('qid');
 
         $gamenum = $fluent->from('triviasettings')
-            ->select(null)
-            ->select('gamenum')
-            ->where('gameon = 1')
-            ->fetch('gamenum');
+                          ->select(null)
+                          ->select('gamenum')
+                          ->where('gameon = 1')
+                          ->fetch('gamenum');
 
         $results = $fluent->from('triviausers')
-            ->select(null)
-            ->select('user_id')
-            ->select('correct')
-            ->where('gamenum = ?', $gamenum);
+                          ->select(null)
+                          ->select('user_id')
+                          ->select('correct')
+                          ->where('gamenum = ?', $gamenum);
 
         $users = [];
         foreach ($results as $result) {
@@ -61,7 +61,10 @@ function trivia_table()
     $users = $triviaq['users'];
 
     if (!empty($users)) {
-        $users = array_msort($users, ['correct' => SORT_DESC, 'incorrect' => SORT_ASC]);
+        $users = array_msort($users, [
+            'correct' => SORT_DESC,
+            'incorrect' => SORT_ASC,
+        ]);
         $users = array_splice($users, 0, 5);
 
         $heading = "
@@ -139,10 +142,10 @@ function trivia_time()
     global $fluent;
 
     $cleanup = $fluent->from('cleanup')
-        ->select(null)
-        ->select('clean_time - UNIX_TIMESTAMP(NOW()) AS clean_time')
-        ->select('clean_file')
-        ->fetchAll();
+                      ->select(null)
+                      ->select('clean_time - UNIX_TIMESTAMP(NOW()) AS clean_time')
+                      ->select('clean_file')
+                      ->fetchAll();
 
     foreach ($cleanup as $item) {
         if ($item['clean_file'] === 'trivia_update.php') {

@@ -30,11 +30,11 @@ class Torrent
     public function delete_by_id(int $tid)
     {
         $this->fluent->deleteFrom('torrents')
-            ->where('id = ?', $tid)
-            ->execute();
+                     ->where('id = ?', $tid)
+                     ->execute();
 
         $query = $this->fluent->getPdo()
-            ->prepare('DELETE likes, comments
+                              ->prepare('DELETE likes, comments
                        FROM likes
                        LEFT JOIN comments ON comments.id = likes.comment_id
                        WHERE comments.torrent = ?');
@@ -42,28 +42,28 @@ class Torrent
         $query->execute();
 
         $this->fluent->deleteFrom('comments')
-            ->where('torrent = ?', $tid)
-            ->execute();
+                     ->where('torrent = ?', $tid)
+                     ->execute();
 
         $this->fluent->deleteFrom('coins')
-            ->where('torrentid = ?', $tid)
-            ->execute();
+                     ->where('torrentid = ?', $tid)
+                     ->execute();
 
         $this->fluent->deleteFrom('rating')
-            ->where('torrent = ?', $tid)
-            ->execute();
+                     ->where('torrent = ?', $tid)
+                     ->execute();
 
         $this->fluent->deleteFrom('snatched')
-            ->where('torrentid = ?', $tid)
-            ->execute();
+                     ->where('torrentid = ?', $tid)
+                     ->execute();
 
         $this->fluent->deleteFrom('peers')
-            ->where('torrent = ?', $tid)
-            ->execute();
+                     ->where('torrent = ?', $tid)
+                     ->execute();
 
         $this->fluent->deleteFrom('deathrow')
-            ->where('tid = ?', $tid)
-            ->execute();
+                     ->where('tid = ?', $tid)
+                     ->execute();
 
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
             unlink(TORRENTS_DIR . $tid . '.torrent');
@@ -83,9 +83,9 @@ class Torrent
     public function update(array $set, int $tid, bool $seeders = false)
     {
         $query = $this->fluent->update('torrents')
-            ->set($set)
-            ->where('id = ?', $tid)
-            ->execute();
+                              ->set($set)
+                              ->where('id = ?', $tid)
+                              ->execute();
 
         if ($query) {
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
@@ -117,29 +117,29 @@ class Torrent
         $torrent = $this->cache->get('torrent_details_' . $tid);
         if ($torrent === false || is_null($torrent) || $fresh) {
             $torrent = $this->fluent->from('torrents')
-                ->select('HEX(info_hash) AS info_hash')
-                ->select('LENGTH(nfo) AS nfosz')
-                ->select("IF(num_ratings < {$this->site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
-                ->where('id = ?', $tid)
-                ->fetch();
+                                    ->select('HEX(info_hash) AS info_hash')
+                                    ->select('LENGTH(nfo) AS nfosz')
+                                    ->select("IF(num_ratings < {$this->site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
+                                    ->where('id = ?', $tid)
+                                    ->fetch();
 
             $torrent['previous'] = $this->fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->where('id < ?', $torrent['id'])
-                ->orderBy('id DESC')
-                ->limit(1)
-                ->fetch();
+                                                ->select(null)
+                                                ->select('id')
+                                                ->select('name')
+                                                ->where('id < ?', $torrent['id'])
+                                                ->orderBy('id DESC')
+                                                ->limit(1)
+                                                ->fetch();
 
             $torrent['next'] = $this->fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->where('id > ?', $torrent['id'])
-                ->orderBy('id')
-                ->limit(1)
-                ->fetch();
+                                            ->select(null)
+                                            ->select('id')
+                                            ->select('name')
+                                            ->where('id > ?', $torrent['id'])
+                                            ->orderBy('id')
+                                            ->limit(1)
+                                            ->fetch();
 
             $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);
         }
@@ -158,10 +158,10 @@ class Torrent
     public function get_item(string $item, int $tid)
     {
         $result = $this->fluent->from('torrents')
-            ->select(null)
-            ->select($item)
-            ->where('id = ?', $tid)
-            ->fetch($item);
+                               ->select(null)
+                               ->select($item)
+                               ->where('id = ?', $tid)
+                               ->fetch($item);
 
         return $result;
     }
@@ -176,12 +176,12 @@ class Torrent
     public function get_all_snatched(int $userid)
     {
         $torrents = $this->fluent->from('torrents AS t')
-            ->select(null)
-            ->select('t.id')
-            ->select('t.filename')
-            ->innerJoin('snatched AS s ON t.id = s.torrentid')
-            ->where('s.userid = ?', $userid)
-            ->orderBy('id DESC');
+                                 ->select(null)
+                                 ->select('t.id')
+                                 ->select('t.filename')
+                                 ->innerJoin('snatched AS s ON t.id = s.torrentid')
+                                 ->where('s.userid = ?', $userid)
+                                 ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -196,11 +196,11 @@ class Torrent
     public function get_all_by_owner(int $userid)
     {
         $torrents = $this->fluent->from('torrents')
-            ->select(null)
-            ->select('id')
-            ->select('filename')
-            ->where('owner = ?', $userid)
-            ->orderBy('id DESC');
+                                 ->select(null)
+                                 ->select('id')
+                                 ->select('filename')
+                                 ->where('owner = ?', $userid)
+                                 ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -215,12 +215,12 @@ class Torrent
     public function get_all(string $visible)
     {
         $torrents = $this->fluent->from('torrents')
-            ->select(null)
-            ->select('id')
-            ->select('filename')
-            ->select('hits')
-            ->where('visible = ?', $visible)
-            ->orderBy('id DESC');
+                                 ->select(null)
+                                 ->select('id')
+                                 ->select('filename')
+                                 ->select('hits')
+                                 ->where('visible = ?', $visible)
+                                 ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -239,10 +239,10 @@ class Torrent
         $torrent = $this->cache->get($key);
         if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
             $tid = $this->fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->where('HEX(info_hash) = ?', bin2hex($info_hash))
-                ->fetch('id');
+                                ->select(null)
+                                ->select('id')
+                                ->where('HEX(info_hash) = ?', bin2hex($info_hash))
+                                ->fetch('id');
             if (!empty($tid)) {
                 $torrent = $this->get($tid);
                 $this->cache->set($key, $torrent, $ttl);
@@ -360,9 +360,9 @@ class Torrent
                 'seedbonus' => $seedbonus - $this->site_config['bonus_per_delete'],
             ];
             $this->fluent->update('users')
-                ->set($set)
-                ->where('id = ?', $owner)
-                ->execute();
+                         ->set($set)
+                         ->where('id = ?', $owner)
+                         ->execute();
 
             $this->cache->update_row('user_' . $owner, $set, $this->site_config['expires']['user_cache']);
         }
@@ -380,8 +380,8 @@ class Torrent
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('torrents')
-            ->values($values)
-            ->execute();
+                           ->values($values)
+                           ->execute();
 
         return $id;
     }
@@ -396,9 +396,9 @@ class Torrent
         $count = $this->cache->get('get_torrent_count_');
         if ($count === false || is_null($count)) {
             $count = $this->fluent->from('torrents')
-                ->select(null)
-                ->select('COUNT(id) AS count')
-                ->fetch('count');
+                                  ->select(null)
+                                  ->select('COUNT(id) AS count')
+                                  ->fetch('count');
 
             $this->cache->set('get_torrent_count_', $count, 86400);
         }

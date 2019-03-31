@@ -10,8 +10,8 @@ $set = [
 ];
 $user_stuffs->update($set, $CURUSER['id']);
 $fluent->deleteFrom('ajax_chat_online')
-    ->where('userID = ?', $CURUSER['id'])
-    ->execute();
+       ->where('userID = ?', $CURUSER['id'])
+       ->execute();
 
 header("Location: {$site_config['baseurl']}/index.php");
 die();

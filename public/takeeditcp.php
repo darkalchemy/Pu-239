@@ -98,10 +98,10 @@ if ($action == 'avatar') {
         }
 
         $cur_passhash = $fluent->from('users')
-            ->select(null)
-            ->select('passhash')
-            ->where('id = ?', $CURUSER['id'])
-            ->fetch('passhash');
+                               ->select(null)
+                               ->select('passhash')
+                               ->where('id = ?', $CURUSER['id'])
+                               ->fetch('passhash');
 
         if (!password_verify($current_pass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
@@ -130,10 +130,10 @@ if ($action == 'avatar') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_address_taken']);
         }
         $cur_passhash = $fluent->from('users')
-            ->select(null)
-            ->select('passhash')
-            ->where('id = ?', $CURUSER['id'])
-            ->fetch('passhash');
+                               ->select(null)
+                               ->select('passhash')
+                               ->where('id = ?', $CURUSER['id'])
+                               ->fetch('passhash');
 
         if (!password_verify($chmailpass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
@@ -194,8 +194,8 @@ if ($action == 'avatar') {
             'id' => $alt_id,
         ];
         $fluent->insertInto('tokens')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
 
         $body = str_replace([
             '<#USERNAME#>',
@@ -213,10 +213,10 @@ if ($action == 'avatar') {
 
         $mail = new Message();
         $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-            ->addTo($email)
-            ->setReturnPath($site_config['site_email'])
-            ->setSubject("{$site_config['site_name']} {$lang['takeeditcp_confirm']}")
-            ->setHtmlBody($body);
+             ->addTo($email)
+             ->setReturnPath($site_config['site_email'])
+             ->setSubject("{$site_config['site_name']} {$lang['takeeditcp_confirm']}")
+             ->setHtmlBody($body);
 
         $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
@@ -505,11 +505,11 @@ if ($setbits2 || $clrbits2) {
 }
 
 $opt = $fluent->from('users')
-    ->select(null)
-    ->select('opt1')
-    ->select('opt2')
-    ->where('id = ?', $CURUSER['id'])
-    ->fetch();
+              ->select(null)
+              ->select('opt1')
+              ->select('opt2')
+              ->where('id = ?', $CURUSER['id'])
+              ->fetch();
 
 $cache->update_row('user_' . $CURUSER['id'], [
     'opt1' => $opt['opt1'],

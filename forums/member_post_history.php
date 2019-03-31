@@ -35,11 +35,11 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $HTMLOUT .= $mini_menu . '
 		<h1 class="has-text-centered">' . $lang['fmp_search_members'] . '</h1>
 		<div class="has-text-centered">
-			<form method="get" action="forums.php?">
+			<form method="get" action="forums.php?" accept-charset="utf-8">
 				<input type="hidden" value="member_post_history" name="action">
 				<input type="text" size="30" name="search" value="' . $search . '">
 				<select name="class">
-					<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
+					<option value=" - ">(' . $lang['fmp_any_class'] . ')</option>';
     for ($i = 0;; ++$i) {
         if ($c = get_user_class_name($i)) {
             $option .= '
@@ -50,7 +50,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     }
     $HTMLOUT .= $option . '
 				</select>
-				<input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" >
+				<input type="submit" class="button is - small" value="' . $lang['gl_search'] . '" >
 			</form>
 		</div>';
     $aa = range('0', '9');
@@ -58,20 +58,20 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $next = '
-		<div class="has-text-centered margin20">
-            <div class="tabs is-centered is-small padtop10">
+		<div class="has - text - centered margin20">
+            <div class="tabs is - centered is - small padtop10">
                 <ul>';
     $count = 0;
     foreach ($cc as $L) {
         $next .= ($count === 10) ? '
                 </ul>
             </div>
-            <div class="tabs is-centered is-small padtop10">
+            <div class="tabs is - centered is - small padtop10">
                 <ul>' : '';
         $active = !empty($_GET['letter']) && $_GET['letter'] === strtoupper($L) ? " class='active'" : '';
-        $next .= "
-                    <li>
-						<a href='{$site_config['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{$active}>" . strtoupper($L) . '</a>
+        $next .= " < li>
+						<a href = '{$site_config['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{
+        $active}>" . strtoupper($L) . '</a>
 					</li>';
         ++$count;
     }
@@ -86,7 +86,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
     $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
-    $link = $site_config['baseurl'] . "/forums.php?action=member_post_history&amp;letter={$letter}&amp;";
+    $link = $site_config['baseurl'] . " / forums . php ? action = member_post_history & amp;letter ={
+        $letter}&amp;";
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
     $menu_bottom = $pager['pagerbottom'];
@@ -106,7 +107,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			</tr>';
         $body = '';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon">' : '---';
+            $country = ($row['name'] != null) ? '<img src="' . $site_config['pic_baseurl'] . 'flag / ' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon">' : '---';
             $body .= '
 			<tr>
 				<td>' . format_username($row['id']) . '</td>
@@ -115,7 +116,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				<td>' . get_user_class_name($row['class']) . '</td>
 				<td>' . $country . '</td>
 				<td>
-					<a href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a>
+					<a href="' . $site_config['baseurl'] . ' / forums . php ? action = member_post_history & amp;id = ' . (int) $row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a>
 				</td>
 			</tr>';
         }
@@ -130,8 +131,10 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $count = $arr_count[0];
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-    $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div style="font-weight: bold;">' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="" class="emoticon"></div>' : '<br><div style="font-weight: bold;">' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="" class="emoticon"></div>') : '');
-    $link = $site_config['baseurl'] . "/forums.php?action=member_post_history&amp;id={$member_id}&amp;" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+    $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div style="font - weight: bold;">' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums / subscribe . gif" alt="" class="emoticon"></div>' : '<br><div style="font - weight: bold;">' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums / unsubscribe . gif" alt="" class="emoticon"></div>') : '');
+    $link = $site_config['baseurl'] . " / forums . php ? action = member_post_history & amp;id ={
+        $member_id}&amp;" . (isset($_GET['perpage']) ? "perpage ={
+        $perpage}&amp;" : '');
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
     $menu_bottom = $pager['pagerbottom'];
@@ -141,13 +144,13 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     if ($count == 0) {
         stderr($lang['gl_sorry'], (!empty($member_id) ? format_username($member_id) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
     }
-    $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($member_id) . '</h1>
-            <ul class="level-center bottom20">
+    $HTMLOUT .= $mini_menu . '<h1 class="has - text - centered">' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($member_id) . '</h1>
+            <ul class="level - center bottom20">
                 <li>
-                    <a href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . $member_id . '" class="button is-small tooltipper" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a>
+                    <a href="' . $site_config['baseurl'] . ' / forums . php ? action = member_post_history & amp;id = ' . $member_id . '" class="button is - small tooltipper" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a>
                 </li>
                 <li>
-                    <a href="forums.php?action=member_post_history&amp;id=' . $member_id . '&amp;ASC_DESC=ASC" class="button is-small tooltipper" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a>
+                    <a href="forums . php ? action = member_post_history & amp;id = ' . $member_id . ' & amp;ASC_DESC = ASC" class="button is - small tooltipper" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a>
                 </li>
             </ul>';
 
@@ -160,11 +163,11 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
                 break;
 
             case 'recycled':
-                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
+                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums / recycle_bin . gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
                 break;
 
             case 'deleted':
-                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
+                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums / delete_icon . gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
                 break;
         }
         //=== post status
@@ -177,21 +180,21 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 
             case 'recycled':
                 $post_status = 'recycled';
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums / recycle_bin . gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
                 break;
 
             case 'deleted':
                 $post_status = 'deleted';
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums / delete_icon . gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
                 break;
 
             case 'postlocked':
                 $post_status = 'postlocked';
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" class="emoticon">';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums / thread_locked . gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" class="emoticon">';
                 break;
         }
-        $post_icon = (!empty($arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="emoticon"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" class="emoticon"> ');
-        $post_title = (!empty($arr['post_title']) ? ' <span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
+        $post_icon = (!empty($arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'smilies / ' . htmlsafechars($arr['icon']) . ' . gif" alt="icon" class="emoticon"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums / topic_normal . gif" alt="icon" class="emoticon"> ');
+        $post_title = (!empty($arr['post_title']) ? ' <span style="font - weight: bold; font - size: x - small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
         $edited_by = '';
         if ($arr['edit_date'] > 0) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
@@ -199,18 +202,18 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             //== Anonymous
             if ($arr['anonymous'] === 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-                    $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . '
-				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+                    $edited_by = '<br><br><br><span style="font - weight: bold; font - size: x - small;">' . $lang['vmp_last_edit_by_anony'] . '
+				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font - weight: bold; font - size: x - small;">' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = view_post_history & amp;post_id = ' . (int) $arr['post_id'] . ' & amp;forum_id = ' . (int) $arr['forum_id'] . ' & amp;topic_id = ' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 } else {
-                    $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username($arr['edited_by']) . ']
-				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+                    $edited_by = '<br><br><br><span style="font - weight: bold; font - size: x - small;">' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username($arr['edited_by']) . ']
+				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font - weight: bold; font - size: x - small;">' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = view_post_history & amp;post_id = ' . (int) $arr['post_id'] . ' & amp;forum_id = ' . (int) $arr['forum_id'] . ' & amp;topic_id = ' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 }
             } else {
-                $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['fe_last_edited_by'] . ' ' . format_username($arr['edited_by']) . '
-				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+                $edited_by = '<br><br><br><span style="font - weight: bold; font - size: x - small;">' . $lang['fe_last_edited_by'] . ' ' . format_username($arr['edited_by']) . '
+				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font - weight: bold; font - size: x - small;">' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = view_post_history & amp;post_id = ' . (int) $arr['post_id'] . ' & amp;forum_id = ' . (int) $arr['forum_id'] . ' & amp;topic_id = ' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
             //==
         }
@@ -218,28 +221,28 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         $post_id = (int) $arr['post_id'];
         $user_arr = $user_stuffs->getUserFromId($arr['user_id']);
         $HTMLOUT .= '
-        <table class="table table-bordered table-striped">
+        <table class="table table - bordered table - striped">
         <tr>
 		<td colspan="3" align="left">' . $lang['fe_forum'] . ':
-		<a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
-		<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-		' . $lang['fe_topic'] . ': <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
-		<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '</td>
+		<a class="altlink" href="forums . php ? action = view_forum & amp;forum_id = ' . (int) $arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		<span style="color: white;font - weight: bold;">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+		' . $lang['fe_topic'] . ': <a class="altlink" href="forums . php ? action = view_topic & amp;topic_id = ' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		<span style="color: white;font - weight: bold;">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
 		<td class="forum_head" align="left" width="100" valign="middle"><a id="' . $post_id . '"></a></td>
-		<td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;">' . $post_icon . '
-		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page=' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
-		' . $post_title . '</a>&nbsp;&nbsp;' . $post_status_image . ' &nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
-		<td class="forum_head" align="right" valign="middle"><span style="white-space:nowrap;">
-		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['pic_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" class="emoticon"></a>
-		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" class="emoticon"></a></span></td>
-		</tr>
-		<tr>
-		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($member_id)) . ($arr['anonymous'] === 'yes' || empty($user_arr['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
-		<td class="' . $post_status . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td>
-		</tr>
-        </table>';
+		<td class="forum_head" align="left" valign="middle"><span style="white - space:nowrap;">' . $post_icon . '
+		<a class="altlink" href="forums . php ? action = view_topic & amp;topic_id = ' . (int) $arr['topic_id'] . ' & amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
+		' . $post_title . ' </a >&nbsp;&nbsp;' . $post_status_image . ' & nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span ></td >
+		<td class="forum_head" align = "right" valign = "middle" ><span style = "white-space:nowrap;" >
+		<a href = "forums.php?action=view_my_posts&amp;page=' . $page . '#top" ><img src = "' . $site_config['pic_baseurl'] . 'forums/up.gif" alt = "' . $lang['fe_top'] . '" class="emoticon" ></a >
+		<a href = "forums.php?action=view_my_posts&amp;page=' . $page . '#bottom" ><img src = "' . $site_config['pic_baseurl'] . 'forums/down.gif" alt = "' . $lang['fe_bottom'] . '" class="emoticon" ></a ></span ></td >
+		</tr >
+		<tr >
+		<td class="has-text-centered w-15 mw-150" > ' . get_avatar($arr) . '<br > ' . ($arr['anonymous'] === 'yes' ? ' < i>' . get_anonymous_name() . ' </i > ' : format_username($member_id)) . ($arr['anonymous'] === 'yes' || empty($user_arr['title']) ? '' : ' < br><span style = " font-size: xx-small;" > [' . htmlsafechars($user_arr['title']) . ']</span > ') . '<br ><span style = "font-weight: bold;" > ' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($user_arr['class'])) . ' </span ><br ></td >
+		<td class="' . $post_status . '" align = "left" valign = "top" colspan = "2" > ' . $body . $edited_by . '</td >
+		</tr >
+        </table > ';
     }
-    $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<a id="bottom"></a>';
+    $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . ' < a id = "bottom" ></a > ';
 }

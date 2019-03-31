@@ -1,24 +1,29 @@
 <?php
 
 /** Use <select><option> for enum edit instead of regular input text on enum type in PostgreSQL
- * @link https://www.adminer.org/plugins/#use
- * @author Adam Kuśmierz, http://kusmierz.be/
+ * @link    https://www.adminer.org/plugins/#use
+ * @author  Adam Kuśmierz, http://kusmierz.be/
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
-class AdminerEnumTypes {
+class AdminerEnumTypes
+{
     var $_types = null;
 
-    function editInput($table, $field, $attrs, $value) {
+    function editInput($table, $field, $attrs, $value)
+    {
         // PostgreSQL only
-        if (!in_array(strtolower(connection()->extension), array('pgsql', 'pdo_pgsql'))) {
+        if (!in_array(strtolower(connection()->extension), [
+            'pgsql',
+            'pdo_pgsql',
+        ])) {
             return;
         }
 
         // read types and "cache" it
         if (is_null($this->_types)) {
             $types = types();
-            $this->_types = array();
+            $this->_types = [];
 
             foreach ($types as $type) {
                 $values = get_vals("SELECT unnest(enum_range(NULL::$type))::text AS value");
@@ -34,13 +39,13 @@ class AdminerEnumTypes {
             $selected = $value;
 
             if ($field["null"]) {
-                $options = array("" => array("" => "NULL")) + $options;
+                $options = ["" => ["" => "NULL"]] + $options;
                 if ($value === null && !isset($_GET["select"])) {
                     $selected = "";
                 }
             }
             if (isset($_GET["select"])) {
-                $options = array("" => array(-1 => lang('original'))) + $options;
+                $options = ["" => [-1 => lang('original')]] + $options;
             }
 
             return "<select$attrs>" . optionlist($options, (string) $selected, 1) . "</select>";

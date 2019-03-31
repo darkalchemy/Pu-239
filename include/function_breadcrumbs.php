@@ -385,11 +385,11 @@ function get_mailbox_name($mailbox)
             return 'Inbox';
         default:
             $name = $fluent->from('pmboxes')
-                ->select(null)
-                ->select('name')
-                ->where('boxnumber = ?', $mailbox)
-                ->where('userid = ?', $CURUSER['id'])
-                ->fetch('name');
+                           ->select(null)
+                           ->select('name')
+                           ->where('boxnumber = ?', $mailbox)
+                           ->where('userid = ?', $CURUSER['id'])
+                           ->fetch('name');
 
             return htmlspecialchars(ucwords($name));
     }

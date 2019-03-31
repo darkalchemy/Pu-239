@@ -98,9 +98,9 @@ function cleanup_show_main()
     global $site_config, $lang, $fluent;
 
     $count1 = $fluent->from('cleanup')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->fetch('count');
+                     ->select(null)
+                     ->select('COUNT(*) AS count')
+                     ->fetch('count');
 
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
@@ -187,7 +187,7 @@ function cleanup_show_edit()
     $cleanoff = !$row['clean_on'] ? 'checked' : '';
     $htmlout = "<h2>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
-    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
+    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takeedit'>
     <input type='hidden' name='cid' value='{$row['clean_id']}'>
     <input type='hidden' name='clean_time' value='{$row['clean_time']}'>
@@ -301,7 +301,7 @@ function cleanup_show_new()
     $clean_time = strtotime('today midnight');
     $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
-    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
+    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takenew'>
     <input type='hidden' name='clean_time' value='{$clean_time}'>
 

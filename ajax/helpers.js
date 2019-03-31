@@ -42,8 +42,7 @@ $(function () {
         e.preventDefault();
         if (e.type == 'mousewheel') {
             scrollTo = (e.originalEvent.wheelDelta * -1);
-        }
-        else if (e.type == 'DOMMouseScroll') {
+        } else if (e.type == 'DOMMouseScroll') {
             scrollTo = 40 * e.originalEvent.detail;
         }
         $(this).scrollTop(scrollTo + $(this).scrollTop());
@@ -75,8 +74,7 @@ $('.ajaxform').live('submit', function (e) {
 
     if (val.val().length <= 0) {
         $(res).html('Search Cannot Be empty now can it.');
-    }
-    else {
+    } else {
 
         $.ajax({
             type: fos.attr('method'),

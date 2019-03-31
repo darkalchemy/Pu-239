@@ -6,10 +6,10 @@ if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
         $delt_with = $fluent->from('reports')
-            ->select(null)
-            ->select('COUNT(id) AS count')
-            ->where('delt_with = 0')
-            ->fetch('count');
+                            ->select(null)
+                            ->select('COUNT(id) AS count')
+                            ->where('delt_with = 0')
+                            ->fetch('count');
 
         $cache->set('new_report_', $delt_with, $site_config['expires']['alerts']);
     }

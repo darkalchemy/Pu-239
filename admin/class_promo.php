@@ -54,16 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $low_ratio = $post_data[5];
 
                 if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
-                    $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($min_ratio) ? implode('|',
-                            $min_ratio) : $min_ratio) . ', ' . sqlesc(is_array($uploaded) ? implode('|',
-                            $uploaded) : $uploaded) . ', ' . sqlesc(is_array($time) ? implode('|',
-                            $time) : $time) . ', ' . sqlesc(is_array($low_ratio) ? implode('|',
-                            $low_ratio) : $low_ratio) . ')';
+                    $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($min_ratio) ? implode('|', $min_ratio) : $min_ratio) . ', ' . sqlesc(is_array($uploaded) ? implode('|', $uploaded) : $uploaded) . ', ' . sqlesc(is_array($time) ? implode('|', $time) : $time) . ', ' . sqlesc(is_array($low_ratio) ? implode('|', $low_ratio) : $low_ratio) . ')';
                 }
             }
         }
-        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . implode(', ',
-                $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
+        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
             stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_query1']);
@@ -104,7 +99,7 @@ $res = sql_query('SELECT * FROM class_promo ORDER BY id ASC');
 if (mysqli_num_rows($res) >= 1) {
     $head_top = "
     <h3 class='has-text-centered top20'>{$lang['classpromo_user_sett']}</h3>
-    <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post'>";
+    <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post' accept-charset='utf-8'>";
 
     $heading = "
         <tr>
@@ -127,7 +122,7 @@ if (mysqli_num_rows($res) >= 1) {
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'></td>
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['low_ratio']) . "'></td>
             <td>
-                <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post'>
+                <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post' accept-charset='utf-8'>
                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
                     <input type='submit' value='{$lang['classpromo_remove']}' class='button is-small'>
                 </form>
@@ -154,7 +149,7 @@ if (mysqli_num_rows($res) >= 1) {
 
 $HTMLOUT .= "
     <h3 class='has-text-centered top20'>{$lang['classpromo_add_new_rule']}</h3>
-    <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post'>";
+    <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post' accept-charset='utf-8'>";
 $heading = "
         <tr>
             <th class='w-15'>{$lang['classpromo_clsname']}</th>

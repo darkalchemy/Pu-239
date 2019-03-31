@@ -28,11 +28,11 @@ if (isset($_GET['act'])) {
 
     if ($act === 1) {
         $template = $fluent->from('stylesheets')
-            ->where('id = ?', $id)
-            ->fetch();
+                           ->where('id = ?', $id)
+                           ->fetch();
 
         $HTML .= "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post' accept-charset='utf-8'>
             <input type='hidden' value='{$template['id']}' name='tid'>
             <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
@@ -79,9 +79,9 @@ if (isset($_GET['act'])) {
     }
     if ($act === 3) {
         $ids = $fluent->from('stylesheets')
-            ->select(null)
-            ->select('id')
-            ->orderBy('id');
+                      ->select(null)
+                      ->select('id')
+                      ->orderBy('id');
         foreach ($ids as $id) {
             if (file_exists(TEMPLATE_DIR . (int) $id['id'] . '/template.php')) {
                 $taken[] = "<span class='has-text-success'>{$id['id']}</span>";
@@ -90,7 +90,7 @@ if (isset($_GET['act'])) {
             }
         }
         $HTML .= "
-        <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post'>
+        <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post' accept-charset='utf-8'>
             <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_addnew']}</h1>";
         $body = "
@@ -145,8 +145,8 @@ if (isset($_GET['act'])) {
         }
 
         $cur = $fluent->from('stylesheets')
-            ->where('id = ?', $tid)
-            ->fetch();
+                      ->where('id = ?', $tid)
+                      ->fetch();
 
         if ($id != $cur['id']) {
             $set['id'] = $id;
@@ -161,9 +161,9 @@ if (isset($_GET['act'])) {
             $set['min_class_to_view'] = $min_class;
         }
         $update = $fluent->update('stylesheets')
-            ->set($set)
-            ->where('id = ?', $tid)
-            ->execute();
+                         ->set($set)
+                         ->where('id = ?', $tid)
+                         ->execute();
         if (!$update) {
             $session->set('is-danger', $lang['themes_some_wrong']);
         } else {
@@ -191,16 +191,16 @@ if (isset($_GET['act'])) {
         }
 
         $fluent->deleteFrom('stylesheets')
-            ->where('id = ?', $id)
-            ->execute();
+               ->where('id = ?', $id)
+               ->execute();
 
         $set = [
             'stylesheet' => $site_config['stylesheet'],
         ];
         $fluent->update('users')
-            ->set($set)
-            ->where('stylesheet = ?', $id)
-            ->execute();
+               ->set($set)
+               ->where('stylesheet = ?', $id)
+               ->execute();
 
         clear_template_cache();
         $session->set('is-success', $lang['themes_msg2']);
@@ -232,8 +232,8 @@ if (isset($_GET['act'])) {
             'min_class_to_view' => $_POST['class'],
         ];
         $fluent->insertInto('stylesheets')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
 
         clear_template_cache();
         $session->set('is-success', $lang['themes_msg']);
@@ -257,8 +257,8 @@ if (isset($_GET['act'])) {
             'name' => htmlsafechars($_GET['name']),
         ];
         $fluent->insertInto('stylesheets')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
 
         clear_template_cache();
         $session->set('is-success', $lang['themes_msg3']);
@@ -279,7 +279,7 @@ if (!isset($_GET['act'])) {
             </tr>";
 
     $templates = $fluent->from('stylesheets')
-        ->orderBy('id');
+                        ->orderBy('id');
 
     $body = '';
     foreach ($templates as $template) {

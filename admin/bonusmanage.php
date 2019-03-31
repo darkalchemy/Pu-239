@@ -68,7 +68,7 @@ $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
         <tr>
-            <form name='bonusmanage' method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=bonusmanage&amp;action=bonusmanage'>
+            <form name='bonusmanage' method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=bonusmanage&amp;action=bonusmanage' accept-charset='utf-8'>
                 <td><input name='id' type='hidden' value='" . (int) $arr['id'] . "'>" . (int) $arr['id'] . "</td>
                 <td><input type='number' name='orderid' value='" . (int) $arr['orderid'] . "' class='w-100'></td>
                 <td><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . '></td>

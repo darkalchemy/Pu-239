@@ -113,7 +113,7 @@ if ($mode === 'edit') {
     } else {
         $HTMLOUT .= "
             <h1 class='has-text-centered'>{$lang['news_edit_item']}</h1>
-            <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
+            <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped'>
                     <tr>
                         <td>
@@ -173,7 +173,7 @@ if ($mode === 'news') {
     $HTMLOUT .= "
     <div class='portlet'>
         <h1 class='has-text-centered'>{$lang['news_submit_new']}</h1>
-        <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=add'>
+        <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=add' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped'>
                     <tr>
                         <td>

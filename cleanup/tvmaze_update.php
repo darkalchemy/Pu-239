@@ -17,9 +17,9 @@ function tvmaze_update($data)
     }
 
     $max = $fluent->from('tvmaze')
-        ->select(null)
-        ->select('MAX(tvmaze_id) AS id')
-        ->fetch('id');
+                  ->select(null)
+                  ->select('MAX(tvmaze_id) AS id')
+                  ->fetch('id');
 
     $pages[0] = floor($max / 250);
     $pages[1] = ceil($max / 250);
@@ -48,9 +48,9 @@ function tvmaze_update($data)
     }
     if (!empty($values)) {
         $fluent->insertInto('tvmaze')
-            ->values($values)
-            ->ignore()
-            ->execute();
+               ->values($values)
+               ->ignore()
+               ->execute();
     }
 
     $time_end = microtime(true);

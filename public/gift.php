@@ -92,10 +92,7 @@ if (isset($open) && $open == 1) {
     } elseif ($today <= $Christmasday) {
         $timezone_name = timezone_name_from_abbr('', $CURUSER['time_offset'] * 60 * 60, 0);
         $days = get_date($Christmasday - $today, '', 1, 0, 1);
-        stderr('Be patient!',
-            "You can't open your present until Christmas Day! $days to go.<br>Today : <span>" . get_date(TIME_NOW,
-                'LONG', 1, 0) . '</span><br>Christmas Day : <span>' . get_date($Christmasday, 'LONG', 1,
-                0) . " [$timezone_name]</span>", 'bottom20');
+        stderr('Be patient!', "You can't open your present until Christmas Day! $days to go.<br>Today : <span>" . get_date(TIME_NOW, 'LONG', 1, 0) . '</span><br>Christmas Day : <span>' . get_date($Christmasday, 'LONG', 1, 0) . " [$timezone_name]</span>", 'bottom20');
     } else {
         stderr('Too late!', "You missed it, you'll have to wait until Christmas comes again!!", 'bottom20');
     }

@@ -33,8 +33,8 @@ class Achievement
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('achievements', $t)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                         ->onDuplicateKeyUpdate($update)
+                         ->execute();
         }
     }
 }

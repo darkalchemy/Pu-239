@@ -64,7 +64,7 @@ if ($left !== $site_config['failedlogins']) {
         </div>', 'w-50 has-text-centered bottom20');
 }
 $HTMLOUT .= "
-            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php'>
+            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php' accept-charset='utf-8'>
                 <div class='level-center'>";
 
 $body = "

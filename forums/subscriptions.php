@@ -96,22 +96,22 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		</tr>';
 }
 
-$HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<form action="' . $site_config['baseurl'] . '/forums.php?action=delete_subscription" method="post" name="checkme">';
+$HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<form action="' . $site_config['baseurl'] . '/forums.php?action=delete_subscription" method="post" name="checkme" accept-charset="utf-8">';
 $heading = '
 		<tr>
-		<th><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></th>
-		<th><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"></th>
+		<th><img src="' . $site_config['pic_baseurl'] . 'forums / topic . gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></th>
+		<th><img src="' . $site_config['pic_baseurl'] . 'forums / topic_normal . gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title = ' . $lang['fe_thread_icon'] . '"></th>
 		<th>' . $lang['fe_topic'] . '</th>
 		<th>' . $lang['fe_started_by'] . '</th>
 		<th>' . $lang['fe_replies'] . '</th>
 		<th>' . $lang['fe_views'] . '</th>
 		<th>' . $lang['fe_last_post'] . '</th>
-		<th><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post"></th>
+		<th><img src="' . $site_config['pic_baseurl'] . 'forums / last_post . gif" class="icon tooltipper" alt="Last post" title="Last post"></th>
 		<th> <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All"></th>
 		</tr>';
 
 $HTMLOUT .= main_table($body, $heading) . '
-		<div class="has-text-centered margin20">
-		    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected" >
+		<div class="has - text - centered margin20">
+		    <input type="submit" name="button" class="button is - small" value="' . $lang['fe_remove'] . ' Selected" >
         </div>
         </form>' . ($count > $perpage ? $menu_bottom : '');

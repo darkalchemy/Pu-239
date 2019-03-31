@@ -17,22 +17,22 @@ $valid_search = [
 ];
 
 $count = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('t.category', $site_config['movie_cats']);
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('t.category', $site_config['movie_cats']);
 
 $select = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.name')
-    ->select('t.poster')
-    ->select('t.imdb_id')
-    ->select('t.seeders')
-    ->select('t.leechers')
-    ->select('t.year')
-    ->select('t.rating')
-    ->where('t.category', $site_config['movie_cats'])
-    ->groupBy('t.imdb_id, t.id');
+                 ->select(null)
+                 ->select('t.id')
+                 ->select('t.name')
+                 ->select('t.poster')
+                 ->select('t.imdb_id')
+                 ->select('t.seeders')
+                 ->select('t.leechers')
+                 ->select('t.year')
+                 ->select('t.rating')
+                 ->where('t.category', $site_config['movie_cats'])
+                 ->groupBy('t.imdb_id, t.id');
 
 $title = $addparam = '';
 foreach ($valid_search as $search) {
@@ -49,21 +49,21 @@ foreach ($valid_search as $search) {
         } elseif ($search === 'sys') {
             $count = $count->where('t.year >= ?', (int) $cleaned);
             $select = $select->where('t.year >= ?', (int) $cleaned)
-                ->orderBy('t.year DESC');
+                             ->orderBy('t.year DESC');
         } elseif ($search === 'sye') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned)
-                ->orderBy('t.year DESC');
+                             ->orderBy('t.year DESC');
         } elseif ($search === 'srs') {
             $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
             $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
             $select = $select->where('t.rating >= ?', (float) $_GET['srs'])
-                ->orderBy('t.rating DESC');
+                             ->orderBy('t.rating DESC');
         } elseif ($search === 'sre') {
             $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
             $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
             $select = $select->where('t.rating <= ?', (float) $_GET['sre'])
-                ->orderBy('t.rating DESC');
+                             ->orderBy('t.rating DESC');
         }
     }
 }
@@ -73,7 +73,7 @@ $perpage = 25;
 $addparam = empty($addparam) ? '?' : $addparam . '&amp;';
 $pager = pager($perpage, $count, "{$site_config['baseurl']}/tmovies.php{$addparam}");
 $select = $select->limit($pager['pdo'])
-    ->orderBy('t.added DESC');
+                 ->orderBy('t.added DESC');
 $HTMLOUT = "
     <h1 class='has-text-centered top20'>Movies</h1>";
 
@@ -83,15 +83,15 @@ foreach ($select as $torrent) {
     $cast = $cache->get('cast_' . $torrent['imdb_id']);
     if ($cast === false || is_null($cast)) {
         $cast = $fluent->from('person AS p')
-            ->select(null)
-            ->select('p.id')
-            ->select('p.name')
-            ->innerJoin('imdb_person AS i ON p.imdb_id = i.person_id')
-            ->where('i.imdb_id = ?', str_replace('tt', '', $torrent['imdb_id']))
-            ->where('i.type = "cast"')
-            ->orderBy('p.id')
-            ->limit(7)
-            ->fetchAll();
+                       ->select(null)
+                       ->select('p.id')
+                       ->select('p.name')
+                       ->innerJoin('imdb_person AS i ON p.imdb_id = i.person_id')
+                       ->where('i.imdb_id = ?', str_replace('tt', '', $torrent['imdb_id']))
+                       ->where('i.type = "cast"')
+                       ->orderBy('p.id')
+                       ->limit(7)
+                       ->fetchAll();
         $cache->set('cast_' . $torrent['imdb_id'], $cast, 604800);
     }
 
@@ -147,7 +147,7 @@ $body .= '
         </div>';
 
 $HTMLOUT .= main_div("
-            <form id='test1' method='get' action='{$site_config['baseurl']}/tmovies.php'>
+            <form id='test1' method='get' action='{$site_config['baseurl']}/tmovies.php' accept-charset='utf-8'>
                 <div class='padding20'>
                     <div class='padding10 w-100'>
                         <div class='columns'>

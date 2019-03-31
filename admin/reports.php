@@ -94,7 +94,7 @@ if ($count == '0') {
 } else {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "
-        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;deal_with_report=1'>";
+        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;deal_with_report=1' accept-charset='utf-8'>";
     $header = "
         <tr>
             <th>{$lang['reports_added']}</th>

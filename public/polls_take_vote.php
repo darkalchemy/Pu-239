@@ -14,9 +14,9 @@ $vote_cast = [];
 $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
 
 $poll_data = $fluent->from('polls')
-    ->where('polls.pid = ?', $poll_id)
-    ->leftJoin('poll_voters ON polls.pid = poll_voters.poll_id AND poll_voters.user_id = ?', $CURUSER['id'])
-    ->fetch();
+                    ->where('polls.pid = ?', $poll_id)
+                    ->leftJoin('poll_voters ON polls.pid = poll_voters.poll_id AND poll_voters.user_id = ?', $CURUSER['id'])
+                    ->fetch();
 
 if (empty($poll_data)) {
     stderr('ERROR', 'No poll with that ID');
@@ -80,9 +80,9 @@ if (!$_POST['nullvote']) {
         'choices' => $choices,
     ];
     $result = $fluent->update('polls')
-        ->set($set)
-        ->where('pid = ?', $poll_data['pid'])
-        ->execute();
+                     ->set($set)
+                     ->where('pid = ?', $poll_data['pid'])
+                     ->execute();
 
     if (!$result) {
         stderr('ERROR', 'Could not update records');

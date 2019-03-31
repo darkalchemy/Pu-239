@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fail = true;
     }
     $user_tickets = $fluent->from('tickets')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('user = ?', $CURUSER['id'])
-        ->fetch('count');
+                           ->select(null)
+                           ->select('COUNT(*) AS count')
+                           ->where('user = ?', $CURUSER['id'])
+                           ->fetch('count');
 
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
         $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
@@ -138,7 +138,7 @@ $html .= main_div($body) . main_table($table, '', 'top20');
 if ($lottery['current_user']['can_buy'] > 0) {
     $available = $lottery['current_user']['could_buy'] < $lottery['current_user']['can_buy'] ? $lottery['current_user']['could_buy'] : $lottery['current_user']['can_buy'];
     $html .= "
-        <form action='lottery.php?action=tickets' method='post'>
+        <form action='lottery.php?action=tickets' method='post' accept-charset='utf-8'>
             <div class='has-text-centered margin20'>
                 <input type='number' min='0' max='$available' name='tickets'>
                 <input type='submit' value='Buy tickets' class='button is-small'>

@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr($lang['text_error'], $lang['text_please']);
     }
     $id = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('username = ?', $username)
-        ->where('id = ?', $userid)
-        ->fetch('id');
+                 ->select(null)
+                 ->select('id')
+                 ->where('username = ?', $username)
+                 ->where('id = ?', $userid)
+                 ->fetch('id');
 
     if (!$id) {
         stderr($lang['text_error'], $lang['text_invalid']);
@@ -50,7 +50,7 @@ $HTMLOUT = "
 <div class='row'>
     <div class='col-md-12'>
         <h1 class='has-text-centered'>{$lang['text_delete']}</h1>
-            <form method='post' action='staffpanel.php?tool=delacct&amp;action=delacct' onsubmit='return deleteConfirm();'>
+            <form method='post' action='staffpanel.php?tool=delacct&amp;action=delacct' onsubmit='return deleteConfirm();' accept-charset='utf-8'>
                 <table class='table table-bordered'>
                     <tr>
                         <td class='rowhead'>{$lang['table_userid']}</td>

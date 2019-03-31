@@ -48,22 +48,22 @@ $draft = $message['msg'];
 
 $HTMLOUT .= '
 <legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . '
-<form name="compose" action="messages.php" method="post">
+<form name="compose" action="messages.php" method="post" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $pm_id . '">
     <input type="hidden" name="' . $save_or_edit . '" value="1">
     <input type="hidden" name="action" value="save_or_edit_draft">
-    <table class="table table-bordered">
+    <table class="table table - bordered">
         <tr>
-            <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-            <td><input type="text" class="w-100" name="subject" value="' . $subject . '"></td>
+            <td><span style="font - weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
+            <td><input type="text" class="w - 100" name="subject" value="' . $subject . '"></td>
         </tr>
         <tr>
-            <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
-            <td class="is-paddingless">' . BBcode($draft) . '</td>
+            <td><span style="font - weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
+            <td class="is - paddingless">' . BBcode($draft) . '</td>
         </tr>
         <tr>
-            <td colspan="2" class="has-text-centered">
-                <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '">
+            <td colspan="2" class="has - text - centered">
+                <input type="submit" class="button is - small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '">
             </td>
         </tr>
     </table>

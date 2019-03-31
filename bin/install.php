@@ -116,29 +116,29 @@ if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
     die("Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.\n");
 }
 $admin = [
-        'username' => $vars['admin_username'],
-        'email' => $vars['admin_email'],
-        'passhash' => make_passhash(trim($vars['admin_pass'])),
-        'status' => 'confirmed',
-        'added' => TIME_NOW,
-        'last_access' => TIME_NOW,
-        'torrent_pass' => make_password(32),
-        'auth' => make_password(32),
-        'apikey' => make_password(32),
-        'ip' => inet_pton('127.0.0.1'),
-        'class' => UC_MAX,
+    'username' => $vars['admin_username'],
+    'email' => $vars['admin_email'],
+    'passhash' => make_passhash(trim($vars['admin_pass'])),
+    'status' => 'confirmed',
+    'added' => TIME_NOW,
+    'last_access' => TIME_NOW,
+    'torrent_pass' => make_password(32),
+    'auth' => make_password(32),
+    'apikey' => make_password(32),
+    'ip' => inet_pton('127.0.0.1'),
+    'class' => UC_MAX,
 ];
 $bot = [
-        'username' => $vars['bot_username'],
-        'email' => '',
-        'passhash' => make_passhash(make_password()),
-        'status' => 'confirmed',
-        'added' => TIME_NOW,
-        'last_access' => TIME_NOW,
-        'torrent_pass' => make_password(32),
-        'auth' => make_password(32),
-        'apikey' => make_password(32),
-        'ip' => inet_pton('127.0.0.1'),
+    'username' => $vars['bot_username'],
+    'email' => '',
+    'passhash' => make_passhash(make_password()),
+    'status' => 'confirmed',
+    'added' => TIME_NOW,
+    'last_access' => TIME_NOW,
+    'torrent_pass' => make_password(32),
+    'auth' => make_password(32),
+    'apikey' => make_password(32),
+    'ip' => inet_pton('127.0.0.1'),
 ];
 
 $timestamp = strtotime('today midnight');
@@ -152,8 +152,14 @@ $sources = [
     'bot' => $bot,
 ];
 
-$tables = ['trivia', 'tvmaze'];
-$data = ['schema', 'data'];
+$tables = [
+    'trivia',
+    'tvmaze',
+];
+$data = [
+    'schema',
+    'data',
+];
 foreach ($sources as $name => $source) {
     if ($name === 'admin' || $name === 'bot') {
         add_user($source);
@@ -176,7 +182,10 @@ echo "Installation Completed!!\n\nGo to http://{$vars['announce_http']}/login.ph
 
 function regex($x)
 {
-    return '/\#' . str_replace(['https://', 'http://'], '', trim($x)) . '/';
+    return '/\#' . str_replace([
+            'https://',
+            'http://',
+        ], '', trim($x)) . '/';
 }
 
 function add_user($values)
@@ -185,18 +194,18 @@ function add_user($values)
 
     $fluent = new Pu239\Database();
     $user_id = $fluent->insertInto('users')
-        ->values($values)
-        ->execute();
+                      ->values($values)
+                      ->execute();
 
     if ($user_id) {
         $values = [
             'userid' => $user_id,
         ];
         $fluent->insertInto('usersachiev')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
         $fluent->insertInto('user_blocks')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
 }

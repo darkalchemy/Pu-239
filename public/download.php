@@ -44,8 +44,7 @@ if ($user['class'] === 0 && ($user['uploaded'] - $user['downloaded']) < $row['si
     stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]");
 }
 if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
-    stderr('VIP Access Required',
-        'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
+    stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
 }
 
 if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['happy_hour']) {

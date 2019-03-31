@@ -25,7 +25,7 @@ if ($count > $perpage) {
 }
 $searches = $searchcloud_stuffs->get($pager['pdo']);
 $HTMLOUT .= "
-<form id='checkbox_container' method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview'>";
+<form id='checkbox_container' method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview' accept-charset='utf-8'>";
 $heading = "
     <tr>
         <th>{$lang['cloudview_phrase']}</th>

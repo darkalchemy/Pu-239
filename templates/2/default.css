@@ -147,7 +147,7 @@ input:valid {
     margin: 2px auto;
 }
 
-.search > input{
+.search > input {
     border: none;
     padding: 0;
     width: 10em;
@@ -862,7 +862,7 @@ code a,
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
     color: #000;
-    border: 1px solid  #ff3860;
+    border: 1px solid #ff3860;
 }
 
 .slideThree {
@@ -942,7 +942,7 @@ code a,
     flex: none;
 }
 
-.w-5{
+.w-5 {
     width: 5%;
     flex: none;
 }
@@ -1233,9 +1233,9 @@ body.background-16 {
 .quote {
     border: 1px solid #fff;
     padding: 1.25em;
-    background-color: rgba(0, 0, 0, .1); 
+    background-color: rgba(0, 0, 0, .1);
     border-radius: .625em;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 img.bar {

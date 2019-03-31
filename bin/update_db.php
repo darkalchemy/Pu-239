@@ -17,15 +17,15 @@ if (!empty($argv[1]) && !empty($argv[2])) {
         $comment = [];
         try {
             $query = $fluent->getPdo()
-                ->prepare($sql);
+                            ->prepare($sql);
             $query->execute();
             $values = [
                 'id' => $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
 
             if ($flush) {
                 $cache->flushDB();
@@ -57,15 +57,15 @@ if (!empty($argv[1]) && !empty($argv[2])) {
             'query' => $sql,
         ];
         $fluent->insertInto('database_updates')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
 }
 $results = $fluent->from('database_updates')
-    ->select(null)
-    ->select('id')
-    ->select('added')
-    ->fetchPairs('id', 'added');
+                  ->select(null)
+                  ->select('id')
+                  ->select('added')
+                  ->fetchPairs('id', 'added');
 
 foreach ($sql_updates as $update) {
     if (array_key_exists($update['id'], $results)) {

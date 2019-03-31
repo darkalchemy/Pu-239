@@ -164,12 +164,12 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '
         <h1 class="has-text-centered">' . $lang['invite_search'] . '</h1>
-        <form method="get" action="staffpanel.php?tool=invite_tree&amp;search=1&amp;">
-            <div class="has-text-centered margin20">
+        <form method="get" action="staffpanel.php?tool=invite_tree&amp;search=1&amp;" accept-charset="utf-8">
+            <div class="has - text - centered margin20">
                 <input type="hidden" name="action" value="invite_tree"/>
                 <input type="text" size="30" name="search" value="' . $search . '"/>
                 <select name="class">
-                    <option value="-">' . $lang['invite_any'] . '</option>';
+                    <option value=" - ">' . $lang['invite_any'] . '</option>';
     for ($i = 0;; ++$i) {
         if ($c = get_user_class_name($i)) {
             $HTMLOUT .= '
@@ -180,7 +180,7 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '
                 </select>
-                <input type="submit" value="' . $lang['invite_btn'] . '" class="button is-small">
+                <input type="submit" value="' . $lang['invite_btn'] . '" class="button is - small">
             </div>
         </form>';
     $aa = range('0', '9');
@@ -188,18 +188,18 @@ if ($id !== 0) {
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $HTMLOUT .= '
-            <nav class="pagination is-centered is-marginless is-small" role="navigation" aria-label="pagination">
-                <ul class="pagination-list bottom20">
+            <nav class="pagination is - centered is - marginless is - small" role="navigation" aria-label="pagination">
+                <ul class="pagination - list bottom20">
                     <li>';
     $count = 0;
     foreach ($cc as $L) {
         $HTMLOUT .= ($count === 10) ? '<br><br>' : '';
         if (!strcmp($L, $letter)) {
             $HTMLOUT .= '
-                        <a class="pagination-link is-current" aria-label="' . strtoupper($L) . '">' . strtoupper($L) . '</a>';
+                        <a class="pagination - link is - current" aria-label="' . strtoupper($L) . '">' . strtoupper($L) . '</a>';
         } else {
             $HTMLOUT .= '
-                        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;letter=' . $L . '" class="pagination-link button">' . strtoupper($L) . '</a>';
+                        <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = invite_tree & amp;letter = ' . $L . '" class="pagination - link button">' . strtoupper($L) . '</a>';
         }
         ++$count;
     }
@@ -234,7 +234,7 @@ if ($id !== 0) {
         while ($row = mysqli_fetch_assoc($res)) {
             $country = ($row['name'] != null) ? '
                 <td>
-                    <img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" title= "' . htmlsafechars($row['name']) . '" class="tooltipper">
+                    <img src="' . $site_config['pic_baseurl'] . 'flag / ' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" title= "' . htmlsafechars($row['name']) . '" class="tooltipper">
                 </td>' : '
                 <td>---</td>';
             $body .= '
@@ -243,8 +243,8 @@ if ($id !== 0) {
                 <td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
                 <td>' . get_user_class_name($row['class']) . '</td>' . $country . '
                 <td>
-                    <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
-                        <span class="button is-small">' . $lang['invite_search_view'] . '</span>
+                    <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = invite_tree & amp;id = ' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
+                        <span class="button is - small">' . $lang['invite_search_view'] . '</span>
                     </a>
                 </td>
             </tr>';

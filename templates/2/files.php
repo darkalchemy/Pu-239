@@ -24,7 +24,7 @@ function get_file_name($file)
         case 'jquery_js':
             return "{$site_config['baseurl']}/js/2/jquery_acaf7162.js";
         case 'chat_main_js':
-            return "{$site_config['baseurl']}/js/2/chat_main_a9bfdfd7.js";
+            return "{$site_config['baseurl']}/js/2/chat_main_0d6a067f.js";
         case 'chat_js':
             return "{$site_config['baseurl']}/js/2/chat_8497c973.js";
         case 'chat_log_js':

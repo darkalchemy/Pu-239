@@ -32,13 +32,12 @@ function get_trivia_question() {
     });
 }
 
-function getTimeRemaining(endtime)
-{
+function getTimeRemaining(endtime) {
     var t = String(Date.parse(endtime) - Date.parse(String(new Date())));
-    var seconds = Math.floor( (t/1000) % 60 );
-    var minutes = Math.floor( (t/1000/60) % 60 );
-    var hours = Math.floor( (t/(1000*60*60)) % 24 );
-    var days = Math.floor( t/(1000*60*60*24) );
+    var seconds = Math.floor((t / 1000) % 60);
+    var minutes = Math.floor((t / 1000 / 60) % 60);
+    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    var days = Math.floor(t / (1000 * 60 * 60 * 24));
     return {
         'total': t,
         'days': days,
@@ -48,11 +47,11 @@ function getTimeRemaining(endtime)
     };
 }
 
-function initializeClock(id, remaining)
-{
+function initializeClock(id, remaining) {
     var clock = document.getElementById(id);
     var ending = new Date();
-    ending = new Date(ending.getTime() + 1000  * remaining);
+    ending = new Date(ending.getTime() + 1000 * remaining);
+
     function updateClock() {
         var t = getTimeRemaining(ending);
         var daysSpan = clock.querySelector('.days');
@@ -77,12 +76,12 @@ function initializeClock(id, remaining)
             button.disabled = false;
         }
     }
+
     updateClock();
-    var timeinterval = setInterval(updateClock,1000);
+    var timeinterval = setInterval(updateClock, 1000);
 }
 
-function process_trivia(elem)
-{
+function process_trivia(elem) {
     var el = document.querySelector('#' + elem);
     var content = document.querySelector('#trivia_content');
 

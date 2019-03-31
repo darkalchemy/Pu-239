@@ -3,7 +3,7 @@ var movies = JSON.parse(csrf.dataset.movies);
 var ebooks = JSON.parse(csrf.dataset.ebooks);
 var el = document.querySelector('#upload_category');
 var url = document.querySelector('#url');
-var youtube =  document.querySelector('#youtube');
+var youtube = document.querySelector('#youtube');
 var isbn = document.querySelector('#isbn');
 var subs = document.querySelector('#subs');
 
@@ -17,7 +17,7 @@ parent_youtube.style.display = 'none';
 parent_isbn.style.display = 'none';
 parent_subs.style.display = 'none';
 
-el.addEventListener('change', function(e) {
+el.addEventListener('change', function (e) {
     var cat = el.value;
     var movie = search_array(cat, movies);
     var ebook = search_array(cat, ebooks);
@@ -48,17 +48,16 @@ var parent_strip = strip.parentNode.parentNode.parentNode;
 
 parent_strip.style.display = 'none';
 
-nfo.addEventListener('change', function(e) {
+nfo.addEventListener('change', function (e) {
     parent_strip.style.display = 'table-row';
 });
 
-document.getElementById('announce_url').onclick = function() {
+document.getElementById('announce_url').onclick = function () {
     this.select();
 };
 
-function search_array(cat, arr)
-{
-    for(var i=0; i < arr.length; i++) {
+function search_array(cat, arr) {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i] == cat) {
             return true;
         }

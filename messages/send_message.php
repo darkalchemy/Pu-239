@@ -90,10 +90,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 
         $mail = new Message();
         $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-            ->addTo($arr_receiver['email'])
-            ->setReturnPath($site_config['site_email'])
-            ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
-            ->setHtmlBody($msg);
+             ->addTo($arr_receiver['email'])
+             ->setReturnPath($site_config['site_email'])
+             ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
+             ->setHtmlBody($msg);
 
         $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT .= $top_links . "
-    <form name='compose' method='post' action='messages.php'>
+    <form name='compose' method='post' action='messages.php' accept-charset='utf-8'>
         <input type='hidden' name='action' value='send_message'>";
 
 if ($receiver) {

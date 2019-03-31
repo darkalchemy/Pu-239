@@ -72,9 +72,9 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                     'type' => $type,
                 ];
                 $fluent->insertInto('images')
-                    ->values($values)
-                    ->ignore()
-                    ->execute();
+                       ->values($values)
+                       ->ignore()
+                       ->execute();
             }
 
             shuffle($images);

@@ -31,15 +31,15 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-top: 1px solid  #ff3860;
-    border-bottom: 1px solid  #ff3860;
+    border-top: 1px solid #ff3860;
+    border-bottom: 1px solid #ff3860;
     border-radius: .3125em;
     background: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent) rgba(0, 0, 0, .1);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    border-left: 1px solid  #ff3860;
-    border-right: 1px solid  #ff3860;
+    border-left: 1px solid #ff3860;
+    border-right: 1px solid #ff3860;
     border-radius: .625em;
     background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent) rgba(0, 0, 0, .1);
 }
@@ -172,7 +172,7 @@ input:valid {
     margin: 2px auto;
 }
 
-.search > input{
+.search > input {
     border: none;
     padding: 0;
     width: 10em;
@@ -483,16 +483,16 @@ span {
 }
 
 .bordered {
-    border-top: 2px solid  #ff3860;
-    border-bottom: 2px solid  #ff3860;
+    border-top: 2px solid #ff3860;
+    border-bottom: 2px solid #ff3860;
     -webkit-margin-start: .125em;
     -moz-margin-start: .125em;
     -webkit-margin-end: .125em;
 }
 
 .alt_bordered {
-    border-left: 1px solid  #ff3860;
-    border-right: 1px solid  #ff3860;
+    border-left: 1px solid #ff3860;
+    border-right: 1px solid #ff3860;
 }
 
 .bottom5 {
@@ -841,8 +841,9 @@ code a,
 .tooltip-background {
     background-size: cover;
     background: no-repeat center center;
-/*    height: 281px;*/
+    /*    height: 281px;*/
 }
+
 /*
 .tooltip-torrent {
     height: 281px;
@@ -886,7 +887,7 @@ code a,
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
     color: #fff;
-    border: 1px solid  #ff3860;
+    border: 1px solid #ff3860;
 }
 
 .slideThree {
@@ -966,7 +967,7 @@ code a,
     flex: none;
 }
 
-.w-5{
+.w-5 {
     width: 5%;
     flex: none;
 }
@@ -1242,7 +1243,7 @@ body.background-16 {
 
 .show_in_navbar,
 #mlike {
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .cat-image {
@@ -1257,9 +1258,9 @@ body.background-16 {
 .quote {
     border: 1px solid #fff;
     padding: 1.25em;
-    background-color: rgba(0, 0, 0, .1); 
+    background-color: rgba(0, 0, 0, .1);
     border-radius: .625em;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 img.bar {

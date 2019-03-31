@@ -28,12 +28,12 @@ if ($CURUSER['suspended'] === 'yes') {
 
 if ($do === 'view_page') {
     $sql = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('uploaded')
-        ->select('downloaded')
-        ->select('status')
-        ->where('invitedby = ?', $CURUSER['id']);
+                  ->select(null)
+                  ->select('id')
+                  ->select('uploaded')
+                  ->select('downloaded')
+                  ->select('status')
+                  ->where('invitedby = ?', $CURUSER['id']);
 
     foreach ($sql as $row) {
         $rows[] = $row;
@@ -132,7 +132,7 @@ if ($do === 'view_page') {
         }
     }
     $HTMLOUT .= main_table($body, $heading) . "
-            <form action='?do=create_invite' method='post'>
+            <form action='?do=create_invite' method='post' accept-charset='utf-8'>
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' value='{$lang['invites_create']}'>
                 </div>
@@ -159,16 +159,16 @@ if ($do === 'view_page') {
         'added' => TIME_NOW,
     ];
     $fluent->insertInto('invite_codes')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     $set = [
         'invites' => new Envms\FluentPDO\Literal('invites - 1'),
     ];
     $fluent->update('users')
-        ->set($set)
-        ->where('id = ?', $CURUSER['id'])
-        ->execute();
+           ->set($set)
+           ->where('id = ?', $CURUSER['id'])
+           ->execute();
 
     $update['invites'] = ($CURUSER['invites'] - 1);
     $cache->update_row('user_' . $CURUSER['id'], [
@@ -184,10 +184,10 @@ if ($do === 'view_page') {
             stderr($lang['invites_error'], $lang['invites_noemail']);
         }
         $check = $fluent->from('users')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('email = ?', $email)
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('email = ?', $email)
+                        ->fetch('count');
         if ($check != 0) {
             stderr('Error', 'This email address is already in use!');
         }
@@ -195,9 +195,9 @@ if ($do === 'view_page') {
             stderr($lang['invites_error'], $lang['invites_invalidemail']);
         }
         $fluent->update('invite_codes')
-            ->set(['email' => $email])
-            ->where('code = ?', $_POST['code'])
-            ->execute();
+               ->set(['email' => $email])
+               ->where('code = ?', $_POST['code'])
+               ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
         $title = $site_config['site_name'];
@@ -224,10 +224,10 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
 
         $mail = new Message();
         $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-            ->addTo($email)
-            ->setReturnPath($site_config['site_email'])
-            ->setSubject("You have been invited to {$site_config['site_name']}")
-            ->setHtmlBody($body);
+             ->addTo($email)
+             ->setReturnPath($site_config['site_email'])
+             ->setSubject("You have been invited to {$site_config['site_name']}")
+             ->setHtmlBody($body);
 
         $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
@@ -242,10 +242,10 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
     $fetch = $fluent->from('invite_codes')
-        ->where('id = ?', $id)
-        ->where('sender = ?', $CURUSER['id'])
-        ->where('status = "pending"')
-        ->fetch();
+                    ->where('id = ?', $id)
+                    ->where('sender = ?', $CURUSER['id'])
+                    ->where('status = "pending"')
+                    ->fetch();
 
     if (!$fetch) {
         stderr($lang['invites_error'], $lang['invites_noexsist']);
@@ -253,7 +253,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
 
     $HTMLOUT .= "
         <div class='portlet'>
-            <form method='post' action='?do=send_email'>
+            <form method='post' action='?do=send_email' accept-charset='utf-8'>
                 <table class='table table-bordered bottom20'>
                     <thead>
                         <tr>
@@ -284,19 +284,19 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $CURUSER['id'] . '&amp;sure=yes">here</a> to delete it or <a href="?do=view_page">here</a> to go back.');
     }
     $fluent->deleteFrom('invite_codes')
-        ->where('id = ?', $id)
-        ->where('sender = ?', $CURUSER['id'])
-        ->where('status = "pending"')
-        ->execute();
+           ->where('id = ?', $id)
+           ->where('sender = ?', $CURUSER['id'])
+           ->where('status = "pending"')
+           ->execute();
 
     $set = [
         'invites' => new Envms\FluentPDO\Literal('invites + 1'),
     ];
 
     $fluent->update('users')
-        ->set($set)
-        ->where('id = ?', $CURUSER['id'])
-        ->execute();
+           ->set($set)
+           ->where('id = ?', $CURUSER['id'])
+           ->execute();
     $update['invites'] = ($CURUSER['invites'] + 1);
 
     $cache->update_row('user_' . $CURUSER['id'], [

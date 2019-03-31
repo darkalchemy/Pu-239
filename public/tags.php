@@ -1,49 +1,71 @@
 <?php
 
-require_once __DIR__ . '/include/bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('tags'));
+
 /**
- * @param $name
- * @param $description
- * @param $syntax
- * @param $example
- * @param $remarks
+ * @param string $name
+ * @param string $description
+ * @param string $syntax
+ * @param string $example
+ * @param string $remarks
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
-function insert_tag($name, $description, $syntax, $example, $remarks)
+function insert_tag(string $name, string $description, string $syntax, string $example, string $remarks)
 {
     global $lang;
+
     $result = format_comment($example);
-    $htmlout = '';
-    $htmlout .= "<div class='sub'><b>$name</b></div>\n";
-    $htmlout .= "<table class='main' width='100%' >\n";
-    $htmlout .= "<tr><td width='25%'>{$lang['tags_description']}</td><td>$description</td></tr>\n";
-    $htmlout .= "<tr><td>{$lang['tags_systax']}</td><td><tt>$syntax</tt></td></tr>\n";
-    $htmlout .= "<tr><td>{$lang['tags_example']}</td><td><tt>$example</tt></td></tr>\n";
-    $htmlout .= "<tr><td>{$lang['tags_result']}</td><td>$result</td></tr>\n";
     if ($remarks != '') {
-        $htmlout .= "<tr><td>{$lang['tags_remarks']}</td><td>$remarks</td></tr>\n";
+        $remarks = "
+        <tr>
+            <td>{$lang['tags_remarks']}</td>
+            <td>$remarks</td>
+        </tr>";
     }
-    $htmlout .= "</table>\n";
+
+    $htmlout = "
+     <h2 class='top20 has-text-centered'>{$name}</h2>";
+    $body = "
+        <tr>
+            <td class='w-25'>{$lang['tags_description']}</td>
+            <td>{$description}</td>
+        </tr>
+        <tr>
+            <td class='w-25'>{$lang['tags_systax']}</td>
+            <td>{$syntax}</td>
+        </tr>
+        <tr>
+            <td class='w-25'>{$lang['tags_example']}</td>
+            <td>{$example}</td>
+        </tr>
+        <tr>
+            <td class='w-25'>{$lang['tags_result']}</td>
+            <td>{$result}</td>
+        </tr>{$remarks}";
+
+    $htmlout .= main_table($body);
 
     return $htmlout;
 }
 
-$HTMLOUT = '';
-$HTMLOUT .= begin_main_frame();
-$HTMLOUT .= begin_frame('Tags');
 $test = isset($_POST['test']) ? $_POST['test'] : '';
-$HTMLOUT .= "{$lang['tags_title']}
-
-    <form method='post' action='?'>
+$HTMLOUT = "<h1 class='has-text-centered'>BBcode Tags</h1>";
+$HTMLOUT .= main_div("<div class='has-text-centered'>
+    {$lang['tags_title']}<br><br>
+    <form method='post' action='?' accept-charset='utf-8'>
     <textarea name='test' cols='60' rows='3'>" . ($test ? htmlspecialchars($test) : '') . "</textarea>
     <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;'>
-    </form>";
+    </form>
+    </div>", '', 'padding20');
 if ($test != '') {
     $HTMLOUT .= '<p><hr>' . format_comment($test) . "<hr></p>\n";
 }
@@ -62,6 +84,5 @@ $HTMLOUT .= insert_tag($lang['tags_quote1'], $lang['tags_quote2'], $lang['tags_q
 $HTMLOUT .= insert_tag($lang['tags_quote5'], $lang['tags_quote6'], $lang['tags_quote7'], $lang['tags_quote8'], '');
 $HTMLOUT .= insert_tag($lang['tags_list1'], $lang['tags_list2'], $lang['tags_list3'], $lang['tags_list4'], '');
 $HTMLOUT .= insert_tag($lang['tags_preformat1'], $lang['tags_preformat2'], $lang['tags_preformat3'], $lang['tags_preformat4'], '');
-$HTMLOUT .= end_frame();
-$HTMLOUT .= end_main_frame();
-echo stdhead("{$lang['tags_tags']}") . $HTMLOUT . stdfoot();
+
+echo stdhead($lang['tags_tags']) . wrapper($HTMLOUT) . stdfoot();

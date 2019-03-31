@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     $HTMLOUT = "
-            <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>";
+            <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "' accept-charset='utf-8'>";
     $header = "
                     <tr>
                         <th colspan='2'>

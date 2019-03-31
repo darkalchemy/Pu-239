@@ -26,7 +26,7 @@ function images_update($data)
     $today = date('Y-m-d');
     $date = new DateTime($today);
     $tomorrow = $date->modify('+1 day')
-        ->format('Y-m-d');
+                     ->format('Y-m-d');
 
     get_movies_by_vote_average(100);
     get_tv_by_day($today);
@@ -34,16 +34,16 @@ function images_update($data)
 
     $ids = [];
     $imdb_ids = $fluent->from('images')
-        ->select(null)
-        ->select('imdb_id AS vid')
-        ->where('imdb_id IS NOT NULL')
-        ->fetchAll();
+                       ->select(null)
+                       ->select('imdb_id AS vid')
+                       ->where('imdb_id IS NOT NULL')
+                       ->fetchAll();
 
     $tmdb_ids = $fluent->from('images')
-        ->select(null)
-        ->select('tmdb_id AS vid')
-        ->where('tmdb_id > 0')
-        ->fetchAll();
+                       ->select(null)
+                       ->select('tmdb_id AS vid')
+                       ->where('tmdb_id > 0')
+                       ->fetchAll();
 
     $ids = array_merge($imdb_ids, $tmdb_ids);
 
@@ -54,21 +54,21 @@ function images_update($data)
     }
 
     $links = $fluent->from('torrents')
-        ->select(null)
-        ->select('name')
-        ->select('isbn')
-        ->select('poster')
-        ->where('isbn IS NOT NULL')
-        ->where('isbn != ""');
+                    ->select(null)
+                    ->select('name')
+                    ->select('isbn')
+                    ->select('poster')
+                    ->where('isbn IS NOT NULL')
+                    ->where('isbn != ""');
 
     foreach ($links as $link) {
         get_book_info($link);
     }
 
     $imdbids = $fluent->from('torrents')
-        ->select(null)
-        ->select('imdb_id')
-        ->where('imdb_id IS NOT NULL');
+                      ->select(null)
+                      ->select('imdb_id')
+                      ->where('imdb_id IS NOT NULL');
 
     foreach ($imdbids as $imdbid) {
         if (!empty($imdbid)) {
@@ -77,16 +77,16 @@ function images_update($data)
     }
 
     $offer_links = $fluent->from('offers')
-        ->select(null)
-        ->select('link as url')
-        ->where('link IS NOT NULL')
-        ->fetchAll();
+                          ->select(null)
+                          ->select('link as url')
+                          ->where('link IS NOT NULL')
+                          ->fetchAll();
 
     $request_links = $fluent->from('requests')
-        ->select(null)
-        ->select('link as url')
-        ->where('link IS NOT NULL')
-        ->fetchAll();
+                            ->select(null)
+                            ->select('link as url')
+                            ->where('link IS NOT NULL')
+                            ->fetchAll();
 
     $links = array_merge($offer_links, $request_links);
     foreach ($links as $link) {
@@ -98,14 +98,14 @@ function images_update($data)
     }
 
     $images = $fluent->from('images')
-        ->select(null)
-        ->select('tmdb_id')
-        ->select('type')
-        ->select('url')
-        ->where('tmdb_id != 0')
-        ->where('imdb_id IS NULL')
-        ->limit(100)
-        ->fetchAll();
+                     ->select(null)
+                     ->select('tmdb_id')
+                     ->select('type')
+                     ->select('url')
+                     ->where('tmdb_id != 0')
+                     ->where('imdb_id IS NULL')
+                     ->limit(100)
+                     ->fetchAll();
 
     foreach ($images as $tmdbid) {
         $imdb_id = get_imdbid($tmdbid['tmdb_id']);
@@ -127,24 +127,24 @@ function images_update($data)
     }
 
     $images = $fluent->from('images')
-        ->select(null)
-        ->select('imdb_id')
-        ->where('imdb_id IS NOT NULL AND (tmdb_id IS NULL OR tmdb_id = 0)')
-        ->limit(100)
-        ->fetchAll();
+                     ->select(null)
+                     ->select('imdb_id')
+                     ->where('imdb_id IS NOT NULL AND (tmdb_id IS NULL OR tmdb_id = 0)')
+                     ->limit(100)
+                     ->fetchAll();
 
     foreach ($images as $imdb_id) {
         get_movie_id($imdb_id['imdb_id'], 'tmdb_id');
     }
 
     $images = $fluent->from('images')
-        ->select(null)
-        ->select('url')
-        ->select('type')
-        ->where('fetched = "no"')
-        ->orderBy('id')
-        ->limit(100)
-        ->fetchAll();
+                     ->select(null)
+                     ->select('url')
+                     ->select('type')
+                     ->where('fetched = "no"')
+                     ->orderBy('id')
+                     ->limit(100)
+                     ->fetchAll();
 
     foreach ($images as $image) {
         if (url_proxy($image['url'], true)) {

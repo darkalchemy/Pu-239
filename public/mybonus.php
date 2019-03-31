@@ -18,10 +18,10 @@ if (!$site_config['seedbonus_on']) {
 
 $max_donation = 100000;
 $ids = $fluent->from('torrents')
-    ->select(null)
-    ->select('MIN(id) AS min')
-    ->select('MAX(id) AS max')
-    ->fetch();
+              ->select(null)
+              ->select('MIN(id) AS min')
+              ->select('MAX(id) AS max')
+              ->fetch();
 
 $free = get_event(false);
 $HTMLOUT = '';
@@ -100,11 +100,11 @@ switch (true) {
     case isset($_GET['up_success']):
         I_smell_a_rat($_GET['up_success']);
         $amounts = $fluent->from('bonus')
-            ->select(null)
-            ->select('points')
-            ->select('bonusname')
-            ->where('bonusname LIKE ?', '%Uploaded%')
-            ->orderBy('points');
+                          ->select(null)
+                          ->select('points')
+                          ->select('bonusname')
+                          ->where('bonusname LIKE ?', '%Uploaded%')
+                          ->orderBy('points');
         $check_amt = $_GET['amt'];
         foreach ($amounts as $amount) {
             if ($amount['points'] === $check_amt) {
@@ -285,8 +285,8 @@ if (isset($_GET['exchange'])) {
     $res_points = $cache->get('bonus_points_' . $option);
     if ($res_points === false || is_null($res_points)) {
         $res_points = $fluent->from('bonus')
-            ->where('id = ?', $option)
-            ->fetch();
+                             ->where('id = ?', $option)
+                             ->fetch();
         $cache->set('bonus_points_' . $option, $res_points, 0);
     }
 
@@ -388,10 +388,10 @@ if (isset($_GET['exchange'])) {
             $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($User['id']);
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $opt2 = $fluent->from('users')
-                ->select(null)
-                ->select('opt2')
-                ->where('id = ?', $User['id'])
-                ->fetch('opt2');
+                           ->select(null)
+                           ->select('opt2')
+                           ->where('id = ?', $User['id'])
+                           ->fetch('opt2');
 
             $cache->update_row('user_' . $User['id'], [
                 'opt2' => $opt2,
@@ -559,15 +559,15 @@ if (isset($_GET['exchange'])) {
             $user_limit = isset($foo[$rep_to_steal]) ? $foo[$rep_to_steal] : 3;
 
             $query = $fluent->from('users')
-                ->select(null)
-                ->select('id')
-                ->select('username')
-                ->select('reputation')
-                ->where('id != ?', $User['id'])
-                ->where('reputation > ?', $rep_to_steal)
-                ->orderBy('RAND()')
-                ->limit($user_limit)
-                ->fetchAll();
+                            ->select(null)
+                            ->select('id')
+                            ->select('username')
+                            ->select('reputation')
+                            ->where('id != ?', $User['id'])
+                            ->where('reputation > ?', $rep_to_steal)
+                            ->orderBy('RAND()')
+                            ->limit($user_limit)
+                            ->fetchAll();
             $update_users = $pms = $robbed_user = [];
 
             foreach ($query as $ar) {
@@ -1095,12 +1095,12 @@ if (!empty($free) && $free['modifier'] != 0) {
 }
 
 $total_fl = $fluent->from('bonus')
-    ->select(null)
-    ->select('SUM(pointspool) AS pointspool')
-    ->select('points')
-    ->select('enabled')
-    ->where('id = 11')
-    ->fetch();
+                   ->select(null)
+                   ->select('SUM(pointspool) AS pointspool')
+                   ->select('points')
+                   ->select('enabled')
+                   ->where('id = 11')
+                   ->fetch();
 $font_color_fl = $font_color_du = $font_color_hd = '';
 $percent_fl = number_format($total_fl['pointspool'] / $total_fl['points'] * 100, 2);
 if ($total_fl['enabled'] === 'yes') {
@@ -1132,12 +1132,12 @@ if ($total_fl['enabled'] === 'yes') {
     }
 }
 $total_du = $fluent->from('bonus')
-    ->select(null)
-    ->select('SUM(pointspool) AS pointspool')
-    ->select('points')
-    ->select('enabled')
-    ->where('id = 12')
-    ->fetch();
+                   ->select(null)
+                   ->select('SUM(pointspool) AS pointspool')
+                   ->select('points')
+                   ->select('enabled')
+                   ->where('id = 12')
+                   ->fetch();
 $percent_du = number_format($total_du['pointspool'] / $total_du['points'] * 100, 2);
 if ($total_du['enabled'] === 'yes') {
     switch ($percent_du) {
@@ -1169,12 +1169,12 @@ if ($total_du['enabled'] === 'yes') {
 }
 
 $total_hd = $fluent->from('bonus')
-    ->select(null)
-    ->select('SUM(pointspool) AS pointspool')
-    ->select('points')
-    ->select('enabled')
-    ->where('id = 13')
-    ->fetch();
+                   ->select(null)
+                   ->select('SUM(pointspool) AS pointspool')
+                   ->select('points')
+                   ->select('enabled')
+                   ->where('id = 13')
+                   ->fetch();
 $percent_hd = number_format($total_hd['pointspool'] / $total_hd['points'] * 100, 2);
 if ($total_hd['enabled'] === 'yes') {
     switch ($percent_hd) {
@@ -1337,8 +1337,8 @@ $HTMLOUT .= "
                 </thead>";
 
 $options = $fluent->from('bonus')
-    ->where('enabled = "yes"')
-    ->orderBy('orderid ASC');
+                  ->where('enabled = "yes"')
+                  ->orderBy('orderid ASC');
 
 foreach ($options as $gets) {
     $gets['points'] = floor($gets['points']);
@@ -1366,7 +1366,7 @@ foreach ($options as $gets) {
             $HTMLOUT .= "
             <tr>
                 <td>
-                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'>
+                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
                         <input type='hidden' name='option' value='" . $gets['id'] . "'>
                         <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                         <h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>
@@ -1378,7 +1378,7 @@ foreach ($options as $gets) {
             $HTMLOUT .= "
             <tr>
                 <td>
-                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'>
+                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
                         <input type='hidden' name='option' value='" . $gets['id'] . "'>
                         <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                         <h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br><br>
@@ -1387,25 +1387,25 @@ foreach ($options as $gets) {
                 <td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '<br>max.<br>100,000</td>';
             break;
         case $gets['id'] == 9:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '</td>';
             break;
         case $gets['id'] == 10:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' class='left10' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to buy a 1 to 1 ratio on.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' class='left10' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to buy a 1 to 1 ratio on.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
             break;
         case $gets['id'] == 11:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 12:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 13:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 34:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to bump.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to bump.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
             break;
         default:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">' . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">' . $gets['points_formatted'] . '</td>';
     }
 
     if ($bonus >= $gets['points'] || $bonus >= $gets['minpoints']) {
@@ -1438,12 +1438,12 @@ $bonus_per_post = $site_config['bonus_per_post'];
 $bonus_per_topic = $site_config['bonus_per_topic'];
 
 $at = $fluent->from('peers')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('seeder = ?', 'yes')
-    ->where('connectable = ?', 'yes')
-    ->where('userid = ?', $User['id'])
-    ->fetch('count');
+             ->select(null)
+             ->select('COUNT(*) AS count')
+             ->where('seeder = ?', 'yes')
+             ->where('connectable = ?', 'yes')
+             ->where('userid = ?', $User['id'])
+             ->fetch('count');
 
 $at = $at >= $bmt ? $bmt : $at;
 

@@ -20,9 +20,8 @@ function showMe(event) {
     }
 }
 
-function toggle(el, toggle)
-{
-    for(var i = 0, n = el.length; i < n; i++) {
+function toggle(el, toggle) {
+    for (var i = 0, n = el.length; i < n; i++) {
         el[i].checked = toggle;
     }
 }

@@ -45,7 +45,7 @@ if (isset($mode) && $mode == 'change') {
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['namechanger_change_u']}</h1>
-    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=namechanger&amp;mode=change'>";
+    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=namechanger&amp;mode=change' accept-charset='utf-8'>";
 $body = "
     <tr>
         <td>{$lang['namechanger_id']}</td>

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $limit = [];
     }
     $out = "
-        <form method='post' action=''>";
+        <form method='post' action='' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['floodlimit_userclass']}</th>

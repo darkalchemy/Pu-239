@@ -171,10 +171,10 @@ switch ($list) {
         }
         $date = new DateTime($today);
         $yesterday = $date->modify('-1 day')
-            ->format('Y-m-d');
+                          ->format('Y-m-d');
         $date = new DateTime($today);
         $tomorrow = $date->modify('+1 day')
-            ->format('Y-m-d');
+                         ->format('Y-m-d');
         $date = new DateTime($today);
         $display = $date->format('l Y-m-d');
 

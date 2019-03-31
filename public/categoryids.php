@@ -18,10 +18,10 @@ $body = '';
 foreach ($parents as $parent) {
     foreach ($parent['children'] as $child) {
         $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('category = ?', $child['id'])
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('category = ?', $child['id'])
+                        ->fetch('count');
         $body .= "
         <tr>
             <td class='has-text-centered'>{$child['id']}</td>

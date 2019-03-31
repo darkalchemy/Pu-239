@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $out = stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);
     $out .= main_div("
     <h2 class='has-text-centered'>{$lang['name_add']}</h2>
-    <form action='{$site_config['baseurl']}/staffpanel.php?tool=nameblacklist&amp;action=nameblacklist' method='post'>
+    <form action='{$site_config['baseurl']}/staffpanel.php?tool=nameblacklist&amp;action=nameblacklist' method='post' accept-charset='utf-8'>
         <textarea rows='3' name='badnames' class='w-100'></textarea>
         <div class='has-text-centered'>
             <p>{$lang['name_note']}</p>

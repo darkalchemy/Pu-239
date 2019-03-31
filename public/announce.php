@@ -207,8 +207,7 @@ if ($compact != 1) {
 
 if (!isset($self)) {
     foreach ($peers as $peer) {
-        if (strtolower($peer['peer_id']) === strtolower($peer_id) || strtolower($peer['peer_id']) === strtolower(preg_replace('/ *$/s',
-                '', $peer_id))) {
+        if (strtolower($peer['peer_id']) === strtolower($peer_id) || strtolower($peer['peer_id']) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
             $userid = $peer['userid'];
             $self = $peer;
         }

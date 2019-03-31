@@ -174,7 +174,7 @@ if (!$count) {
 $HTMLOUT .= "
         </table>
         </div>
-        <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
+        <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog' accept-charset='utf-8'>
             <div class='has-text-centered top20 bottom20'>
                 <input name='update' type='submit' value='{$lang['editlog_update']}' class='button is-small'>
             </div>

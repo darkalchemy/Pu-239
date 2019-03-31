@@ -38,8 +38,8 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
 }
 $lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
 $row = $fluent->from('torrents')
-    ->where('id = ?', $id)
-    ->fetch();
+              ->where('id = ?', $id)
+              ->fetch();
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }
@@ -58,7 +58,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $currently_editing . '</span> is currently editing this torrent!</h1>';
     }
 }
-$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data'>
+$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='id' value='$id'>";
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";
@@ -186,7 +186,7 @@ $HTMLOUT .= "
             </tr>
         </table>
     </form>
-    <form name='delete_form' method='post' action='delete.php'>";
+    <form name='delete_form' method='post' action='delete.php' accept-charset='utf-8'>";
 $body = "
             <tr>
                 <td class='colhead' colspan='2'>{$lang['edit_delete_torrent']}. {$lang['edit_reason']}</td>

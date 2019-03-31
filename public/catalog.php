@@ -93,10 +93,10 @@ if (strlen($search) > 4) {
 }
 
 $count = $fluent->from('torrents')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('name LIKE :name', $params)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('name LIKE :name', $params)
+                ->fetch('count');
 
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
@@ -104,21 +104,21 @@ $top = $bottom = '';
 $rows = $tids = [];
 
 $query = $fluent->from('torrents')
-    ->select(null)
-    ->select('id')
-    ->select('name')
-    ->select('leechers')
-    ->select('seeders')
-    ->select('poster')
-    ->select('times_completed AS snatched')
-    ->select('owner')
-    ->select('size')
-    ->select('added')
-    ->select('descr')
-    ->select('imdb_id')
-    ->select('anonymous')
-    ->where('name LIKE :name', $params)
-    ->limit(str_replace('LIMIT ', '', $pager['limit']));
+                ->select(null)
+                ->select('id')
+                ->select('name')
+                ->select('leechers')
+                ->select('seeders')
+                ->select('poster')
+                ->select('times_completed AS snatched')
+                ->select('owner')
+                ->select('size')
+                ->select('added')
+                ->select('descr')
+                ->select('imdb_id')
+                ->select('anonymous')
+                ->where('name LIKE :name', $params)
+                ->limit(str_replace('LIMIT ', '', $pager['limit']));
 
 foreach ($query as $ta) {
     $rows[] = $ta;
@@ -127,24 +127,24 @@ foreach ($query as $ta) {
 
 if (!empty($tid)) {
     $query = $fluent->from('peers')
-        ->select(null)
-        ->select('id')
-        ->select('torrent AS tid')
-        ->select('seeder')
-        ->select('finishedat')
-        ->select('downloadoffset')
-        ->select('uploadoffset')
-        ->select('uploaded')
-        ->select('downloaded')
-        ->select('started')
-        ->select('last_action')
-        ->select('userid AS p_uid')
-        ->select('INET6_NTOA(ip) AS ip')
-        ->select('port')
-        ->where('torrent', $tid)
-        ->where('seeder = "yes"')
-        ->where('to_go = 0')
-        ->limit(5);
+                    ->select(null)
+                    ->select('id')
+                    ->select('torrent AS tid')
+                    ->select('seeder')
+                    ->select('finishedat')
+                    ->select('downloadoffset')
+                    ->select('uploadoffset')
+                    ->select('uploaded')
+                    ->select('downloaded')
+                    ->select('started')
+                    ->select('last_action')
+                    ->select('userid AS p_uid')
+                    ->select('INET6_NTOA(ip) AS ip')
+                    ->select('port')
+                    ->where('torrent', $tid)
+                    ->where('seeder = "yes"')
+                    ->where('to_go = 0')
+                    ->limit(5);
 
     foreach ($query as $pa) {
         $peers[$pa['tid']][] = $pa;
@@ -155,7 +155,7 @@ $htmlout = "
     <h1 class='has-text-centered'>Torrent Catalog</h1>";
 $div = "
     <h2 class='has-text-centered'>{$lang['catol_search']}</h2>
-    <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered'>
+    <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' accept-charset='utf-8'>
         <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search'><br>
         <input type='submit' value='search!' class='button is-small margin20'>
     </form>

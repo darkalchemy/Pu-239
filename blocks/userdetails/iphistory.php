@@ -7,12 +7,12 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     if ($iphistory === false || is_null($iphistory)) {
         $ipuse['yes'] = $ipuse['no'] = 0;
         $ipsinuse = $fluent->from('users')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->select('enabled')
-            ->where('INET6_NTOA(ip) = ?', $user['ip'])
-            ->groupBy('enabled')
-            ->fetchAll();
+                           ->select(null)
+                           ->select('COUNT(*) AS count')
+                           ->select('enabled')
+                           ->where('INET6_NTOA(ip) = ?', $user['ip'])
+                           ->groupBy('enabled')
+                           ->fetchAll();
         if (!empty($ipsinuse[0])) {
             $ipuse[$ipsinuse[0]['enabled']] = $ipsinuse[0]['count'];
         }

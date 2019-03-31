@@ -74,11 +74,11 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     $mode = (isset($_GET['type']) && in_array($_GET['type'], $modes)) ? $_GET['type'] : stderr($lang['mtor_error'], '' . $lang['mtor_please_try_that_previous_request_again'] . '.');
     if ($mode === 'yesterday') {
         $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
-            ->where('checked_when >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
+                        ->where('checked_when >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
+                        ->fetch('count');
 
         if (!$count) {
             $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_torrents_have_been_modded'], 'top20');
@@ -87,16 +87,16 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
             $data = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('checked_when')
-                ->select('checked_by')
-                ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
-                ->where('checked_when >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
-                ->orderBy('checked_when DESC')
-                ->limit("{$pager['pdo']}")
-                ->fetchAll();
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('checked_when')
+                           ->select('checked_by')
+                           ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
+                           ->where('checked_when >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
+                           ->orderBy('checked_when DESC')
+                           ->limit($pager['pdo'])
+                           ->fetchAll();
 
             if ($data) {
                 $data = do_sort($data);
@@ -117,11 +117,11 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         }
     } elseif ($mode === 'today') {
         $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('checked_when >= UNIX_TIMESTAMP(CURDATE())')
-            ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('checked_when >= UNIX_TIMESTAMP(CURDATE())')
+                        ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
+                        ->fetch('count');
 
         if (!$count) {
             $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_torrents_have_been_modded'], 'top20');
@@ -130,16 +130,16 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
             $data = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('checked_when')
-                ->select('checked_by')
-                ->where('checked_when >= UNIX_TIMESTAMP(CURDATE())')
-                ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
-                ->orderBy('checked_when DESC')
-                ->limit("{$pager['pdo']}")
-                ->fetchAll();
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('checked_when')
+                           ->select('checked_by')
+                           ->where('checked_when >= UNIX_TIMESTAMP(CURDATE())')
+                           ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
+                           ->orderBy('checked_when DESC')
+                           ->limit($pager['pdo'])
+                           ->fetchAll();
 
             if ($data) {
                 $data = do_sort($data);
@@ -160,10 +160,10 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         }
     } elseif ($mode === 'unmodded') {
         $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('checked_when = 0')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('checked_when = 0')
+                        ->fetch('count');
 
         if (!$count) {
             $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_un-modded_torrents_detected'], 'top20');
@@ -185,13 +185,13 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                    <th>' . $lang['mtor_edit'] . ' ' . $lang['mtor_torrent'] . '</th>
                 </tr>';
             $data = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('added')
-                ->where('checked_when = 0')
-                ->limit("{$pager['pdo']}")
-                ->fetchAll();
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('added')
+                           ->where('checked_when = 0')
+                           ->limit($pager['pdo'])
+                           ->fetchAll();
 
             $HTMLOUT .= main_table(do_sort($data), $heading);
             $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
@@ -220,17 +220,17 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $beginOfDay = strtotime('midnight', strtotime($date));
             $endOfDay = strtotime('midnight', strtotime($date) + 86400);
             $data = $fluent->from('torrents AS t')
-                ->select(null)
-                ->select('t.id')
-                ->select('t.name')
-                ->select('t.checked_by')
-                ->select('t.checked_when')
-                ->where('LOWER(u.username) = ?', $whom)
-                ->where('t.checked_when >= ?', $beginOfDay)
-                ->where('t.checked_when < ?', $endOfDay)
-                ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
-                ->orderBy('checked_when DESC')
-                ->fetchAll();
+                           ->select(null)
+                           ->select('t.id')
+                           ->select('t.name')
+                           ->select('t.checked_by')
+                           ->select('t.checked_when')
+                           ->where('LOWER(u.username) = ?', $whom)
+                           ->where('t.checked_when >= ?', $beginOfDay)
+                           ->where('t.checked_when < ?', $endOfDay)
+                           ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
+                           ->orderBy('checked_when DESC')
+                           ->fetchAll();
 
             $text = "by <u>$_POST[username]</u> on $date";
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . " on $date";
@@ -238,57 +238,57 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $beginOfDay = strtotime('midnight', strtotime($date));
             $endOfDay = strtotime('midnight', strtotime($date) + 86400);
             $data = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('checked_by')
-                ->select('checked_when')
-                ->where('checked_when >= ?', $beginOfDay)
-                ->where('checked_when < ?', $endOfDay)
-                ->orderBy('checked_when DESC')
-                ->fetchAll();
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('checked_by')
+                           ->select('checked_when')
+                           ->where('checked_when >= ?', $beginOfDay)
+                           ->where('checked_when < ?', $endOfDay)
+                           ->orderBy('checked_when DESC')
+                           ->fetchAll();
 
             $text = "on $date";
             $title = $lang['mtor_modded_torrents'] . " on $date";
         } elseif ($whom && $when) {
             $data = $fluent->from('torrents AS t')
-                ->select(null)
-                ->select('t.id')
-                ->select('t.name')
-                ->select('t.checked_by')
-                ->select('t.checked_when')
-                ->where('LOWER(u.username) = ?', $whom)
-                ->where('t.checked_when >= ?', $when)
-                ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
-                ->orderBy('checked_when DESC')
-                ->fetchAll();
+                           ->select(null)
+                           ->select('t.id')
+                           ->select('t.name')
+                           ->select('t.checked_by')
+                           ->select('t.checked_when')
+                           ->where('LOWER(u.username) = ?', $whom)
+                           ->where('t.checked_when >= ?', $when)
+                           ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
+                           ->orderBy('checked_when DESC')
+                           ->fetchAll();
 
             $text = "by <u>$_POST[username]</u> within the last " . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
         } elseif ($when) {
             $data = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('checked_by')
-                ->select('checked_when')
-                ->where('checked_when >= ?', $when)
-                ->orderBy('checked_when DESC')
-                ->fetchAll();
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('checked_by')
+                           ->select('checked_when')
+                           ->where('checked_when >= ?', $when)
+                           ->orderBy('checked_when DESC')
+                           ->fetchAll();
 
             $text = 'from the past ' . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
         } elseif ($whom) {
             $data = $fluent->from('torrents AS t')
-                ->select(null)
-                ->select('t.id')
-                ->select('t.name')
-                ->select('t.checked_by')
-                ->select('t.checked_when')
-                ->where('LOWER(u.username) = ?', $whom)
-                ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
-                ->orderBy('checked_when DESC')
-                ->fetchAll();
+                           ->select(null)
+                           ->select('t.id')
+                           ->select('t.name')
+                           ->select('t.checked_by')
+                           ->select('t.checked_when')
+                           ->where('LOWER(u.username) = ?', $whom)
+                           ->innerJoin('users AS u ON t.checked_by = u.username = ?', $whom)
+                           ->orderBy('checked_when DESC')
+                           ->fetchAll();
 
             $text = "by <u>$_POST[username]</u>";
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . '';
@@ -326,7 +326,7 @@ $HTMLOUT .= $links . "
 
 $HTMLOUT .= main_div("
     <div class='has-text-centered padding20'>
-        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents&amp;type=search_modded'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents&amp;type=search_modded' accept-charset='utf-8'>
             <div class='columns is-gapless level'>
                 <div class='column has-text-right'>
                     <label for='username' class='right10'>" . $lang['mtor_username'] . "</label>

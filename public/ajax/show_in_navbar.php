@@ -26,9 +26,9 @@ $set = [
     'navbar' => $show,
 ];
 $result = $fluent->update('staffpanel')
-    ->set($set)
-    ->where('id = ?', $_POST['id'])
-    ->execute();
+                 ->set($set)
+                 ->where('id = ?', $_POST['id'])
+                 ->execute();
 
 if ($result) {
     $cache->delete('staff_panels_' . $class);

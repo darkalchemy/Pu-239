@@ -9,9 +9,6 @@ if (PHP_INT_SIZE < 8) {
 }
 $site_config['variant'] = 'Pu-239';
 
-// charset
-$site_config['char_set'] = 'UTF-8';
-
 // Windows fix
 if (!function_exists('sys_getloadavg')) {
     /**
@@ -214,8 +211,8 @@ $site_config['tagline'] = [
 ];
 $site_config['video_banners'] = [];
 $site_config['banners'] = [
-//    'site_banner_01.png',
-//    'site_banner_02.png',
+    //    'site_banner_01.png',
+    //    'site_banner_02.png',
 ];
 $site_config['query_limit'] = 65536; // mysql placeholder limit
 
@@ -266,7 +263,14 @@ $site_config['db_backup_gzip_path'] = '/bin/gzip';
 $site_config['db_backup_write_to_log'] = true;
 $site_config['db_backup_mysqldump_path'] = '/usr/bin/mysqldump';
 $site_config['anonymizer_url'] = 'https://nullrefer.com/?';
-$site_config['anonymous_names'] = ['Tom Sawyer', 'Keyser Söze', 'Capt. Kirk', 'Walter Cronkite', 'El Rushbo', 'Simple Simon'];
+$site_config['anonymous_names'] = [
+    'Tom Sawyer',
+    'Keyser Söze',
+    'Capt. Kirk',
+    'Walter Cronkite',
+    'El Rushbo',
+    'Simple Simon',
+];
 $site_config['auto_confirm'] = true;
 $site_config['autoshout_on'] = true;
 $site_config['backgrounds_on_all_pages'] = true;
@@ -282,7 +286,11 @@ $site_config['bonus_per_thanks'] = 5;
 $site_config['bonus_per_topic'] = 8;
 $site_config['bonus_per_upload'] = 15;
 $site_config['bucket_allowed'] = true;
-$site_config['coders_log_allowed_ext'] = ['php', 'css', 'js'];
+$site_config['coders_log_allowed_ext'] = [
+    'php',
+    'css',
+    'js',
+];
 $site_config['dupeip_check_on'] = false;
 $site_config['email_confirm'] = false;
 $site_config['failedlogins'] = 5;

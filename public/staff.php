@@ -11,23 +11,24 @@ $lang = array_merge(load_language('global'), load_language('staff'));
 $support = $mods = $admin = $sysop = [];
 $htmlout = $firstline = '';
 $query = $fluent->from('users')
-    ->select(null)
-    ->select('users.id')
-    ->select('users.class')
-    ->select('users.perms')
-    ->select('users.last_access')
-    ->select('users.support')
-    ->select('users.supportfor')
-    ->select('users.country')
-    ->select('countries.flagpic')
-    ->select('countries.name as flagname')
-    ->leftJoin('countries ON countries.id = users.country')
-    ->whereOr(['users.class >= ?' => UC_STAFF,
-               'users.support = ?' => 'yes',
-    ])
-    ->where('users.status = ?', 'confirmed')
-    ->orderBy('class DESC')
-    ->orderBy('username');
+                ->select(null)
+                ->select('users.id')
+                ->select('users.class')
+                ->select('users.perms')
+                ->select('users.last_access')
+                ->select('users.support')
+                ->select('users.supportfor')
+                ->select('users.country')
+                ->select('countries.flagpic')
+                ->select('countries.name as flagname')
+                ->leftJoin('countries ON countries.id = users.country')
+                ->whereOr([
+                    'users.class >= ?' => UC_STAFF,
+                    'users.support = ?' => 'yes',
+                ])
+                ->where('users.status = ?', 'confirmed')
+                ->orderBy('class DESC')
+                ->orderBy('username');
 
 foreach ($query as $arr2) {
     if ($arr2['support'] === 'yes') {

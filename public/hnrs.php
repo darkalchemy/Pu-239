@@ -68,8 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'seedtime' => $_POST['seed'],
             ];
             $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
-            $bonuscomment = get_date(TIME_NOW, 'DATE',
-                    1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'seedbonus' => $user_stuff['seedbonus'] - $cost,
                 'bonuscomment' => $bonuscomment,
@@ -91,8 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'uploaded' => $snatched['downloaded'],
             ];
             $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
-            $bonuscomment = get_date(TIME_NOW, 'DATE',
-                    1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'uploaded' => $user_stuff['uploaded'] - $bytes,
                 'bonuscomment' => $bonuscomment,
@@ -238,7 +236,7 @@ if (count($hnrs) > 0) {
 
         if ($bp >= $cost && $cost != 0) {
             $buyout = "
-            <form method='post' action='{$site_config['baseurl']}/hnrs.php'>
+            <form method='post' action='{$site_config['baseurl']}/hnrs.php' accept-charset='utf-8'>
                 <input type='hidden' name='seed' value='{$minus_ratio}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
@@ -255,7 +253,7 @@ if (count($hnrs) > 0) {
         $bytes = $a_downloaded - $a['uploaded'];
         if ($diff >= $bytes) {
             $buybytes = "
-            <form method='post' action='{$site_config['baseurl']}/hnrs.php'>
+            <form method='post' action='{$site_config['baseurl']}/hnrs.php' accept-charset='utf-8'>
                 <input type='hidden' name='bytes' value='{$bytes}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
@@ -282,9 +280,7 @@ if (count($hnrs) > 0) {
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
             <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
             ' . ($site_config['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
-            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'],
-                    3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'],
-                    3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date($a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date($a['last_action'], 'DATE') . "</td>
             <td class='has-text-centered'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
@@ -293,8 +289,7 @@ if (count($hnrs) > 0) {
     }
     $completed .= main_table($body, $heading);
 } else {
-    $session->set('is-success',
-        '[color=#' . get_user_class_color($user_stuff['class']) . ']' . $user_stuff['username'] . "[/color] {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', '[color=#' . get_user_class_color($user_stuff['class']) . ']' . $user_stuff['username'] . "[/color] {$lang['userdetails_no_hnrs']}");
     $completed = main_div("<div class='padding20'>" . format_username($userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();

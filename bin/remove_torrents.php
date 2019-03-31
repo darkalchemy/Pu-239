@@ -6,11 +6,11 @@ $time_start = microtime(true);
 global $site_config, $fluent, $torrent_stuffs;
 
 $torrents = $fluent->from('torrents')
-    ->select(null)
-    ->select('id')
-    ->select('info_hash')
-    ->select('owner')
-    ->orderBy('id');
+                   ->select(null)
+                   ->select('id')
+                   ->select('info_hash')
+                   ->select('owner')
+                   ->orderBy('id');
 
 $i = 0;
 foreach ($torrents as $torrent) {

@@ -19,7 +19,14 @@ function anime_titles_update($data)
             $cache->set('anime_data_', TIME_NOW, 43200);
 
             $values = [];
-            $types = ['TV', 'Movie', 'OVA', 'ONA', 'Special', 'Music'];
+            $types = [
+                'TV',
+                'Movie',
+                'OVA',
+                'ONA',
+                'Special',
+                'Music',
+            ];
             if (!empty($anime_data)) {
                 foreach ($anime_data['data'] as $anime_data) {
                     if (!empty($anime_data['title'])) {
@@ -67,8 +74,8 @@ function anime_titles_update($data)
 
                 foreach (array_chunk($values, $count) as $t) {
                     $fluent->insertInto('anime_titles', $t)
-                        ->onDuplicateKeyUpdate($update)
-                        ->execute();
+                           ->onDuplicateKeyUpdate($update)
+                           ->execute();
                 }
             }
 

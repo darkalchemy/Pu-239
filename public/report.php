@@ -63,7 +63,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
 }
 
 $HTMLOUT .= main_div("
-    <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>
+    <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1' accept-charset='utf-8'>
     <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
         <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
         <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>

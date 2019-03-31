@@ -11,7 +11,7 @@ $tables = $query->fetchAll();
 foreach ($tables as $row) {
     $sql = "ALTER TABLE {$_ENV['DB_DATABASE']}.{$row['TABLE_NAME']} DROP FOREIGN KEY {$row['CONSTRAINT_NAME']}";
     $query = $fluent->getPdo()
-        ->prepare($sql);
+                    ->prepare($sql);
     $query->execute();
     echo "Dropped foreign key '{$row['CONSTRAINT_NAME']}'\n";
 }

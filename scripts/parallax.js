@@ -5,7 +5,7 @@ $(window).on('load resize scroll', function (e) {
         var col3 = document.getElementById('right_column').offsetHeight;
         var max = Math.max(col1, col2, col3);
 
-        var getTop = function(col) {
+        var getTop = function (col) {
             var height = $(window).innerHeight();
             var columns = $('.parallax').outerHeight() - height;
             var travel = max - col;

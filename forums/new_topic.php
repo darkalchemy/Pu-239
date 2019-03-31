@@ -62,8 +62,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
             'multi_options' => $multi_options,
         ];
         $poll_id = $fluent->insertInto('forum_poll')
-            ->values($values)
-            ->execute();
+                          ->values($values)
+                          ->execute();
     }
     $values = [
         'user_id' => $CURUSER['id'],
@@ -76,8 +76,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         'added' => TIME_NOW,
     ];
     $topic_id = $fluent->insertInto('topics')
-        ->values($values)
-        ->execute();
+                       ->values($values)
+                       ->execute();
 
     $values = [
         'topic_id' => $topic_id,
@@ -92,16 +92,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     ];
 
     $post_id = $fluent->insertInto('posts')
-        ->values($values)
-        ->execute();
+                      ->values($values)
+                      ->execute();
 
     $set = [
         'forumtopics' => new Envms\FluentPDO\Literal('forumtopics + 1'),
     ];
     $fluent->update('usersachiev')
-        ->set($set)
-        ->where('userid = ?', $CURUSER['id'])
-        ->execute();
+           ->set($set)
+           ->where('userid = ?', $CURUSER['id'])
+           ->execute();
 
     clr_forums_cache($post_id);
     clr_forums_cache($forum_id);
@@ -113,18 +113,18 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         'post_count' => 1,
     ];
     $fluent->update('topics')
-        ->set($set)
-        ->where('id = ?', $topic_id)
-        ->execute();
+           ->set($set)
+           ->where('id = ?', $topic_id)
+           ->execute();
 
     $set = [
         'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
         'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
     ];
     $fluent->update('forums')
-        ->set($set)
-        ->where('id = ?', $forum_id)
-        ->execute();
+           ->set($set)
+           ->where('id = ?', $forum_id)
+           ->execute();
 
     if ($site_config['autoshout_on']) {
         $message = $CURUSER['username'] . ' ' . $lang['nt_created_new_topic'] . " [quote][url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url][/quote]";
@@ -137,9 +137,9 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
             'seedbonus' => new Envms\FluentPDO\Literal('seedbonus + ' . $site_config['bonus_per_topic']),
         ];
         $fluent->update('users')
-            ->set($set)
-            ->where('id = ?', $CURUSER['id'])
-            ->execute();
+               ->set($set)
+               ->where('id = ?', $CURUSER['id'])
+               ->execute();
         $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $CURUSER['seedbonus'] + $site_config['bonus_per_topic'],
         ]);
@@ -191,8 +191,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                             'size' => $size,
                         ];
                         $fluent->insertInto('attachments')
-                            ->values($values)
-                            ->execute();
+                               ->values($values)
+                               ->execute();
                         copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
                         chmod($upload_to, 0777);
                 }
@@ -205,29 +205,29 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
             'topic_id' => $topic_id,
         ];
         $fluent->insertInto('subscriptions')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error !== 0 ? '&ee=' . $extension_error : '') . ($size_error !== 0 ? '&se=' . $size_error : ''));
     die();
 }
 
 $forum_name = $fluent->from('forums')
-    ->select(null)
-    ->select('name')
-    ->where('id = ?', $forum_id)
-    ->fetch('name');
+                     ->select(null)
+                     ->select('name')
+                     ->where('id = ?', $forum_id)
+                     ->fetch('name');
 
 $section_name = htmlsafechars($forum_name, ENT_QUOTES);
 
 $HTMLOUT .= '
     <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
-    <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data">';
+    <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
-        <div class="has-text-centered margin20">
-            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '">
+        <div class="has - text - centered margin20">
+            <input type="submit" name="button" class="button is - small" value="' . $lang['fe_post'] . '">
         </div>
     </form>';

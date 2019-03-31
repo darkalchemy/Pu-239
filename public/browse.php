@@ -22,14 +22,14 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 }
 
 $count = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('COUNT(*) AS count');
+                ->select(null)
+                ->select('COUNT(*) AS count');
 
 $select = $fluent->from('torrents AS t')
-    ->select("IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
-    ->select('u.username')
-    ->select('u.class')
-    ->leftJoin('users AS u ON t.owner = u.id');
+                 ->select("IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
+                 ->select('u.username')
+                 ->select('u.class')
+                 ->leftJoin('users AS u ON t.owner = u.id');
 
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
@@ -92,7 +92,9 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $select = $select->orderBy("t.{$column} $ascdesc");
     $pagerlink = 'sort=' . intval($_GET['sort']) . "&amp;type={$linkascdesc}&amp;";
 } else {
-    $select = $select->orderBy('t.staff_picks DESC')->orderBy('t.sticky')->orderBy('t.added DESC');
+    $select = $select->orderBy('t.staff_picks DESC')
+                     ->orderBy('t.sticky')
+                     ->orderBy('t.added DESC');
     $pagerlink = '';
 }
 
@@ -139,14 +141,14 @@ if (isset($_GET['vip'])) {
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
     $count = $count->where('s.to_go IS NULL')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+                   ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
     $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
-        ->having('to_go = -1');
+                     ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
+                     ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
     $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+                     ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
 }
 
 $cats = [];
@@ -182,7 +184,25 @@ foreach ($valid_search as $search) {
             'sr',
         ];
         if (in_array($search, $insert_cloud)) {
-            $column = str_replace(['sn', 'sd', 'si', 'ss', 'spf', 'sp', 'sg', 'sr'], ['name', 'descr', 'imdb', 'isbn', 'fuzzy', 'person', 'genre', 'role'], $search);
+            $column = str_replace([
+                'sn',
+                'sd',
+                'si',
+                'ss',
+                'spf',
+                'sp',
+                'sg',
+                'sr',
+            ], [
+                'name',
+                'descr',
+                'imdb',
+                'isbn',
+                'fuzzy',
+                'person',
+                'genre',
+                'role',
+            ], $search);
             searchcloud_insert($cleaned, $column);
         }
         if ($search != 'srs' && $search != 'sre') {
@@ -228,27 +248,27 @@ foreach ($valid_search as $search) {
             }
         } elseif ($search === 'sp') {
             $count = $count->where('p.name = ?', $cleaned)
-                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                           ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                           ->innerJoin('person AS p ON i.person_id = p.imdb_id');
             $select = $select->where('p.name = ?', $cleaned)
-                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                             ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                             ->innerJoin('person AS p ON i.person_id = p.imdb_id');
         } elseif ($search === 'spf') {
             $count = $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                ->innerJoin('person AS p ON i.person_id = p.imdb_id')
-                ->groupBy('t.id');
+                           ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                           ->innerJoin('person AS p ON i.person_id = p.imdb_id')
+                           ->groupBy('t.id');
             $select = $select->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                ->innerJoin('person AS p ON i.person_id = p.imdb_id')
-                ->groupBy('t.id');
+                             ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                             ->innerJoin('person AS p ON i.person_id = p.imdb_id')
+                             ->groupBy('t.id');
         } elseif ($search === 'sr') {
             $count = $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
-                ->groupBy('t.id');
+                           ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
+                           ->groupBy('t.id');
             $select = $select->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
-                ->groupBy('t.id');
+                             ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
+                             ->groupBy('t.id');
         }
     }
 }
@@ -274,7 +294,8 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
-    $select = $select->limit($pager['pdo'])->fetchAll();
+    $select = $select->limit($pager['pdo'])
+                     ->fetchAll();
 }
 
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
@@ -282,7 +303,7 @@ if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
 }
 
 $HTMLOUT .= "
-                                <form id='catsids' method='get' action='{$site_config['baseurl']}/browse.php'>";
+                                <form id='catsids' method='get' action='{$site_config['baseurl']}/browse.php' accept-charset='utf-8'>";
 if ($today) {
     $HTMLOUT .= "
                                     <input type='hidden' name='today' value='$today'>";

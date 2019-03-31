@@ -17,13 +17,13 @@ function birthday_update($data)
     $date = getdate();
 
     $users = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('class')
-        ->select('username')
-        ->select('uploaded')
-        ->where('MONTH(birthday) = ?', $date['mon'])
-        ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
+                    ->select(null)
+                    ->select('id')
+                    ->select('class')
+                    ->select('username')
+                    ->select('uploaded')
+                    ->where('MONTH(birthday) = ?', $date['mon'])
+                    ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
 
     $count = 0;
     $msgs = [];
@@ -55,10 +55,10 @@ function birthday_update($data)
                 'uploaded' => new Envms\FluentPDO\Literal('uploaded + 10737418240'),
             ];
             $fluent->update('users')
-                ->set($set)
-                ->where('MONTH(birthday) = ?', $date['mon'])
-                ->where('DAYOFMONTH(birthday) = ?', $date['mday'])
-                ->execute();
+                   ->set($set)
+                   ->where('MONTH(birthday) = ?', $date['mon'])
+                   ->where('DAYOFMONTH(birthday) = ?', $date['mday'])
+                   ->execute();
         }
     }
     $time_end = microtime(true);

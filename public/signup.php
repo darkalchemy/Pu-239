@@ -37,9 +37,9 @@ if (!empty($signup_vars)) {
     $signup_vars = unserialize($signup_vars);
 }
 $count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->fetch('count');
 
 if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
@@ -67,7 +67,7 @@ foreach ($countries as $cntry) {
 }
 
 $HTMLOUT .= "
-    <form method='post' action='{$site_config['baseurl']}/takesignup.php'>
+    <form method='post' action='{$site_config['baseurl']}/takesignup.php' accept-charset='utf-8'>
         <div class='level-center'>";
 
 $body = "

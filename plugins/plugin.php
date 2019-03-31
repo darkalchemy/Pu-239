@@ -1,8 +1,8 @@
 <?php
 
 /** Adminer customization allowing usage of plugins
- * @link https://www.adminer.org/plugins/#use
- * @author Jakub Vrana, https://www.vrana.cz/
+ * @link    https://www.adminer.org/plugins/#use
+ * @author  Jakub Vrana, https://www.vrana.cz/
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
@@ -20,12 +20,13 @@ class AdminerPlugin extends Adminer
     }
 
     /** Register plugins
+     *
      * @param array object instances or null to register all classes starting by 'Adminer'
      */
     function __construct($plugins)
     {
         if ($plugins === null) {
-            $plugins = array();
+            $plugins = [];
             foreach (get_declared_classes() as $class) {
                 if (preg_match('~^Adminer.~i', $class) && strcasecmp($this->_findRootClass($class), 'Adminer')) { //! can use interface
                     $plugins[$class] = new $class;
@@ -38,7 +39,10 @@ class AdminerPlugin extends Adminer
 
     function _callParent($function, $args)
     {
-        return call_user_func_array(array('parent', $function), $args);
+        return call_user_func_array([
+            'parent',
+            $function,
+        ], $args);
     }
 
     function _applyPlugin($function, $args)
@@ -83,7 +87,10 @@ class AdminerPlugin extends Adminer
         $return = $this->_callParent($function, $args);
         foreach ($this->plugins as $plugin) {
             if (method_exists($plugin, $function)) {
-                $value = call_user_func_array(array($plugin, $function), $args);
+                $value = call_user_func_array([
+                    $plugin,
+                    $function,
+                ], $args);
                 if ($value) {
                     $return += $value;
                 }

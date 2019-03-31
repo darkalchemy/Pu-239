@@ -12,11 +12,11 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
 
     if (user_exists($site_config['chatBotID'])) {
         $topicid = $fluent->from('topics')
-            ->select(null)
-            ->select('id')
-            ->where('forum_id = ?', $site_config['staff_forums'][0])
-            ->where('topic_name = ?', $subject)
-            ->fetch('id');
+                          ->select(null)
+                          ->select('id')
+                          ->where('forum_id = ?', $site_config['staff_forums'][0])
+                          ->where('topic_name = ?', $subject)
+                          ->fetch('id');
         if (!$topicid) {
             $values = [
                 'user_id' => $site_config['chatBotID'],
@@ -24,16 +24,16 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
                 'topic_name' => $subject,
             ];
             $topicid = $fluent->insertInto('topics')
-                ->values($values)
-                ->execute();
+                              ->values($values)
+                              ->execute();
 
             $set = [
                 'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
             ];
             $fluent->update('forums')
-                ->set($set)
-                ->where('id = ?', $site_config['staff_forums'][0])
-                ->execute();
+                   ->set($set)
+                   ->where('id = ?', $site_config['staff_forums'][0])
+                   ->execute();
         }
 
         $values = [
@@ -44,24 +44,24 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'ip' => inet_pton(getip()),
         ];
         $postid = $fluent->insertInto('posts')
-            ->values($values)
-            ->execute();
+                         ->values($values)
+                         ->execute();
 
         $set = [
             'last_post' => $postid,
         ];
         $fluent->update('topics')
-            ->set($set)
-            ->where('id = ?', $topicid)
-            ->execute();
+               ->set($set)
+               ->where('id = ?', $topicid)
+               ->execute();
 
         $set = [
             'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
         ];
         $fluent->update('forums')
-            ->set($set)
-            ->where('id = ?', $site_config['staff_forums'][0])
-            ->execute();
+               ->set($set)
+               ->where('id = ?', $site_config['staff_forums'][0])
+               ->execute();
 
         $cache->delete('last_posts_' . $CURUSER['class']);
         $cache->delete('forum_posts_' . $CURUSER['id']);

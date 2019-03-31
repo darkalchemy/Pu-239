@@ -40,8 +40,8 @@ function stdhead($title = '', $stdhead = null)
 
     if (!empty($CURUSER) && $_SERVER['PHP_SELF'] != '/index.php') {
         $fluent->deleteFrom('ajax_chat_online')
-            ->where('userID = ?', $CURUSER['id'])
-            ->execute();
+               ->where('userID = ?', $CURUSER['id'])
+               ->execute();
     }
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
@@ -440,9 +440,9 @@ function platform_menu()
     $templates = $cache->get('templates_' . $CURUSER['class']);
     if ($templates === false || is_null($templates)) {
         $templates = $fluent->from('stylesheets')
-            ->orderBy('id')
-            ->where('min_class_to_view <= ?', $CURUSER['class'])
-            ->fetchAll();
+                            ->orderBy('id')
+                            ->where('min_class_to_view <= ?', $CURUSER['class'])
+                            ->fetchAll();
 
         $cache->set('templates_' . $CURUSER['class'], $templates, 0);
     }

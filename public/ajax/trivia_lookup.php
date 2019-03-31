@@ -29,10 +29,10 @@ if (empty($data)) {
     die();
 }
 $user = $fluent->from('triviausers')
-    ->where('user_id = ?', $current_user)
-    ->where('qid = ?', $qid)
-    ->where('gamenum = ?', $gamenum)
-    ->fetch();
+               ->where('user_id = ?', $current_user)
+               ->where('qid = ?', $qid)
+               ->where('gamenum = ?', $gamenum)
+               ->fetch();
 
 $cleanup = trivia_time();
 if (!empty($user)) {
@@ -50,7 +50,13 @@ if (!empty($user)) {
 }
 
 $question = $output = '';
-$answers = ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'];
+$answers = [
+    'answer1',
+    'answer2',
+    'answer3',
+    'answer4',
+    'answer5',
+];
 if (!empty($data['question'])) {
     $question = "
         <h2 class='bg-00 padding10 bottom10 round5'>" . htmlspecialchars_decode($data['question']) . '</h2>';

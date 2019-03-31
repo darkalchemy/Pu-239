@@ -2,16 +2,16 @@
 
 namespace Pu239;
 
-use MatthiasMullie\Scrapbook\Adapters\Couchbase;
-use MatthiasMullie\Scrapbook\Adapters\Apc;
-use MatthiasMullie\Scrapbook\Adapters\Memcached;
-use MatthiasMullie\Scrapbook\Adapters\Redis;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use MatthiasMullie\Scrapbook\Adapters\Apc;
+use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
+use MatthiasMullie\Scrapbook\Adapters\Couchbase;
 use MatthiasMullie\Scrapbook\Adapters\Flysystem;
+use MatthiasMullie\Scrapbook\Adapters\Memcached;
+use MatthiasMullie\Scrapbook\Adapters\Redis;
 use MatthiasMullie\Scrapbook\Buffered\BufferedStore;
 use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
-use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 
 /**
  * Class Cache.

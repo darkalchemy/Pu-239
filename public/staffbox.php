@@ -93,7 +93,7 @@ switch ($do) {
                 $a = mysqli_fetch_assoc($q2);
                 $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
-                    <form action='{$_SERVER['PHP_SELF']}' method='post'>
+                    <form action='{$_SERVER['PHP_SELF']}' method='post' accept-charset='utf-8'>
                         <div class='bordered top20 bottom20 bg-00'>
                             <div>{$lang['staffbox_pm_from']}: " . format_username($a['sender']) . ' at ' . get_date($a['added'], 'DATE', 1) . "</div>
                             <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
@@ -151,9 +151,9 @@ switch ($do) {
 
     default:
         $count_msgs = $fluent->from('staffmessages')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->fetch('count');
+                             ->select(null)
+                             ->select('COUNT(*) AS count')
+                             ->fetch('count');
 
         $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
@@ -164,7 +164,7 @@ switch ($do) {
         } else {
             $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_info']}</h1>
-                    <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}'>";
+                    <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>";
             $HTMLOUT .= $count_msgs > $perpage ? $pager['pagertop'] : '';
             $head = "
                         <tr>

@@ -105,11 +105,9 @@ function FABridge__bridgeInitialized(bridgeName) {
     var searchStr = 'bridgeName=' + bridgeName;
     if ((aol == 1 && !ael) || (aol == 1 && ael == 1)) {
         FABridge.attachBridge(activeObjects[0], bridgeName);
-    }
-    else if (ael == 1 && !aol) {
+    } else if (ael == 1 && !aol) {
         FABridge.attachBridge(activeEmbeds[0], bridgeName);
-    }
-    else {
+    } else {
         var flash_found = false;
         if (aol > 1) {
             for (var k = 0; k < aol; k++) {
@@ -196,10 +194,9 @@ FABridge.prototype =
     },
 //clears a specific object in AS from the type maps
     releaseNamedASObject: function (value) {
-        if (typeof(value) != 'object') {
+        if (typeof (value) != 'object') {
             return false;
-        }
-        else {
+        } else {
             return this.target.releaseNamedASObject(value.fb_instance_id);
         }
     },
@@ -222,8 +219,7 @@ FABridge.prototype =
     getPropertyFromAS: function (objRef, propName) {
         if (FABridge.refCount > 0) {
             throw new Error('You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.');
-        }
-        else {
+        } else {
             FABridge.refCount++;
             var retVal = this.target.getPropFromAS(objRef, propName);
             retVal = this.handleError(retVal);
@@ -235,8 +231,7 @@ FABridge.prototype =
     setPropertyInAS: function (objRef, propName, value) {
         if (FABridge.refCount > 0) {
             throw new Error('You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.');
-        }
-        else {
+        } else {
             FABridge.refCount++;
             var retVal = this.target.setPropInAS(objRef, propName, this.serialize(value));
             retVal = this.handleError(retVal);
@@ -249,8 +244,7 @@ FABridge.prototype =
     callASFunction: function (funcID, args) {
         if (FABridge.refCount > 0) {
             throw new Error('You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.');
-        }
-        else {
+        } else {
             FABridge.refCount++;
             var retVal = this.target.invokeASFunction(funcID, this.serialize(args));
             retVal = this.handleError(retVal);
@@ -262,8 +256,7 @@ FABridge.prototype =
     callASMethod: function (objID, funcName, args) {
         if (FABridge.refCount > 0) {
             throw new Error('You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.');
-        }
-        else {
+        } else {
             FABridge.refCount++;
             args = this.serialize(args);
             var retVal = this.target.invokeASMethod(objID, funcName, args);
@@ -334,8 +327,7 @@ FABridge.prototype =
         if (c >= 'a' && c <= 'z') {
             getterName = 'get' + c.toUpperCase() + propName.substr(1);
             setterName = 'set' + c.toUpperCase() + propName.substr(1);
-        }
-        else {
+        } else {
             getterName = 'get' + propName;
             setterName = 'set' + propName;
         }
@@ -381,28 +373,24 @@ FABridge.prototype =
     serialize: function (value) {
         var result = {};
 
-        var t = typeof(value);
+        var t = typeof (value);
         //primitives are kept as such
         if (t == 'number' || t == 'string' || t == 'boolean' || t == null || t == undefined) {
             result = value;
-        }
-        else if (value instanceof Array) {
+        } else if (value instanceof Array) {
             //arrays are serializesd recursively
             result = [];
             for (var i = 0; i < value.length; i++) {
                 result[i] = this.serialize(value[i]);
             }
-        }
-        else if (t == 'function') {
+        } else if (t == 'function') {
             //js functions are assigned an ID and stored in the local cache
             result.type = FABridge.TYPE_JSFUNCTION;
             result.value = this.getFunctionID(value);
-        }
-        else if (value instanceof ASProxy) {
+        } else if (value instanceof ASProxy) {
             result.type = FABridge.TYPE_ASINSTANCE;
             result.value = value.fb_instance_id;
-        }
-        else {
+        } else {
             result.type = FABridge.TYPE_ANONYMOUS;
             result.value = value;
         }
@@ -416,17 +404,15 @@ FABridge.prototype =
 
         var result;
 
-        var t = typeof(packedValue);
+        var t = typeof (packedValue);
         if (t == 'number' || t == 'string' || t == 'boolean' || packedValue == null || packedValue == undefined) {
             result = this.handleError(packedValue);
-        }
-        else if (packedValue instanceof Array) {
+        } else if (packedValue instanceof Array) {
             result = [];
             for (var i = 0; i < packedValue.length; i++) {
                 result[i] = this.deserialize(packedValue[i]);
             }
-        }
-        else if (t == 'object') {
+        } else if (t == 'object') {
             for (var i = 0; i < packedValue.newTypes.length; i++) {
                 this.addTypeDataToCache(packedValue.newTypes[i]);
             }
@@ -435,14 +421,11 @@ FABridge.prototype =
             }
             if (packedValue.type == FABridge.TYPE_PRIMITIVE) {
                 result = packedValue.value;
-            }
-            else if (packedValue.type == FABridge.TYPE_ASFUNCTION) {
+            } else if (packedValue.type == FABridge.TYPE_ASFUNCTION) {
                 result = this.getFunctionProxy(packedValue.value);
-            }
-            else if (packedValue.type == FABridge.TYPE_ASINSTANCE) {
+            } else if (packedValue.type == FABridge.TYPE_ASINSTANCE) {
                 result = this.getProxy(packedValue.value);
-            }
-            else if (packedValue.type == FABridge.TYPE_ANONYMOUS) {
+            } else if (packedValue.type == FABridge.TYPE_ANONYMOUS) {
                 result = packedValue.value;
             }
         }
@@ -461,15 +444,14 @@ FABridge.prototype =
     // used to marshall NPE's into flash
 
     handleError: function (value) {
-        if (typeof(value) == 'string' && value.indexOf('__FLASHERROR') == 0) {
+        if (typeof (value) == 'string' && value.indexOf('__FLASHERROR') == 0) {
             var myErrorMessage = value.split('||');
             if (FABridge.refCount > 0) {
                 FABridge.refCount--;
             }
             throw new Error(myErrorMessage[1]);
             return value;
-        }
-        else {
+        } else {
             return value;
         }
     }

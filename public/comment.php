@@ -133,7 +133,7 @@ if ($action === 'add') {
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
-      <br><form name='compose' method='post' action='comment.php?action=add'>
+      <br><form name='compose' method='post' action='comment.php?action=add' accept-charset='utf-8'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name'>";
     if ($site_config['BBcode'] && function_exists('BBcode')) {
@@ -202,7 +202,7 @@ if ($action === 'add') {
     }
     $HTMLOUT = '';
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
-      <form method='post' action='comment.php?action=edit&amp;cid=$commentid'>
+      <form method='post' action='comment.php?action=edit&amp;cid=$commentid' accept-charset='utf-8'>
       <input type='hidden' name='locale' value='$name'>
        <input type='hidden' name='tid' value='" . (int) $arr['tid'] . "'>
       <input type='hidden' name='cid' value='$commentid'>";

@@ -80,7 +80,7 @@ class GeoIP
     public $record_length;
     public $shmid;
     public $GEOIP_COUNTRY_CODE_TO_NUMBER = [
-        ""   => 0,
+        "" => 0,
         "AP" => 1,
         "EU" => 2,
         "AD" => 3,

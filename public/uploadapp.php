@@ -23,14 +23,14 @@ if (isset($_POST['form']) != 1) {
     } else {
         $HTMLOUT .= "
         <h1>{$lang['uploadapp_application']}</h1>
-        <form action='./uploadapp.php' method='post' enctype='multipart/form-data'>
+        <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
         $connect = $fluent->from('peers')
-            ->select(null)
-            ->select('connectable')
-            ->where('userid = ?', $CURUSER['id'])
-            ->fetch();
+                          ->select(null)
+                          ->select('connectable')
+                          ->where('userid = ?', $CURUSER['id'])
+                          ->fetch();
         if (!empty($connect)) {
             $Conn_Y = 'yes';
             if ($connect == $Conn_Y) {
@@ -153,8 +153,8 @@ if (isset($_POST['form']) != 1) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
     $dupe = $fluent->from('uploadapp')
-        ->where('userid = ?', $_POST['userid'])
-        ->fetch();
+                   ->where('userid = ?', $_POST['userid'])
+                   ->fetch();
     if (!empty($dupe)) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
     }
@@ -173,8 +173,8 @@ if (isset($_POST['form']) != 1) {
         'seeding' => htmlsafechars($_POST['seeding']),
     ];
     $res = $fluent->insertInto('uploadapp')
-        ->values($values)
-        ->execute();
+                  ->values($values)
+                  ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
@@ -183,10 +183,10 @@ if (isset($_POST['form']) != 1) {
         $msg = "An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=" . (int) $CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
         $dt = TIME_NOW;
         $subres = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->where('class >= ?', UC_STAFF)
-            ->fetchAll();
+                         ->select(null)
+                         ->select('id')
+                         ->where('class >= ?', UC_STAFF)
+                         ->fetchAll();
 
         foreach ($subres as $arr) {
             $msgs_buffer[] = [

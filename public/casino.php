@@ -405,7 +405,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $HTMLOUT .= "{$lang['casino_there_are_already']} " . htmlsafechars($maxtotbet) . " {$lang['casino_bets_open_take_an_open_bet']}!";
         } else {
             $HTMLOUT .= "
-            <form name='p2p' method='post' action='{$casino}'>
+            <form name='p2p' method='post' action='{$casino}' accept-charset='utf-8'>
                 <h1 class='has-text-centered'>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
@@ -474,7 +474,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 </table>';
     //== Bet on color table
     $HTMLOUT .= "
-            <form name='casino' method='post' action='{$casino}'>
+            <form name='casino' method='post' action='{$casino}' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
@@ -508,7 +508,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             </form>';
     //== Bet on number table
     $HTMLOUT .= "
-            <form name='casino' method='post' action='{$casino}'>
+            <form name='casino' method='post' action='{$casino}' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>

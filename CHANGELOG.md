@@ -1,3 +1,11 @@
+### 31 Mar, 2019
+move: all used files out of root folder  
+move: unused file to unused folder  
+add: missing files clear_announcement.php credits.php formats.php new_announcement.php tags.php videoformats.php  
+fix: BBcode quote  
+remove: site_cofig['char_set']  
+update: all code set to use UTF-8  
+
 ### 30 Mar, 2019
 fix: convert text to UTF-8 in torrent description before passing to js  
 fix: typo takeupload.php  

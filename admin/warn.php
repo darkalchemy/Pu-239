@@ -107,7 +107,7 @@ $HTMLOUT .= "
 if ($count == 0) {
     $HTMLOUT .= stdmsg('', $lang['warn_hey_msg'] . strtolower($title));
 } else {
-    $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>";
+    $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['warn_user']}</th>

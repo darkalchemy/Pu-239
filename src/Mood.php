@@ -23,7 +23,7 @@ class Mood
         $moods = $this->cache->get('moods_');
         if ($moods === false || is_null($moods)) {
             $query = $this->fluent->from('moods')
-                ->fetchAll();
+                                  ->fetchAll();
             foreach ($query as $mood) {
                 $moods['image'][$mood['id']] = $mood['image'];
                 $moods['name'][$mood['id']] = $mood['name'];

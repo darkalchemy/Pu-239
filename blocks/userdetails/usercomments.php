@@ -23,10 +23,10 @@ if (!$count) {
     ]);
 
     $res = $fluent->from('usercomments')
-        ->select('id as comment_id')
-        ->where('userid = ?', $id)
-        ->orderBy('id DESC')
-        ->limit("{$pager['pdo']}");
+                  ->select('id as comment_id')
+                  ->where('userid = ?', $id)
+                  ->orderBy('id DESC')
+                  ->limit($pager['pdo']);
 
     foreach ($res as $row) {
         $row['anonymous'] = false;

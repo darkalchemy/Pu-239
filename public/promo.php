@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $HTMLOUT .= begin_frame('Add Promo Link', true);
-    $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' >
+    $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'  accept-charset='utf-8'>
                     <table width='50%' class='has-text-centered' style='border-collapse:collapse;'>
                       <tr>
                         <td nowrap='nowrap' class='has-text-right' colspan='1'>Promo Name</td>
@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
             }
 
-            $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'>
+            $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' accept-charset='utf-8'>
                           <table width='50%' class='has-text-centered'  style='border-collapse: collapse;'>
                           <tr><td class='colhead' class='has-text-centered' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
                           <tr><td nowrap='nowrap' class='has-text-right'>Bonuses</td>

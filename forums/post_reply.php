@@ -145,13 +145,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 
 $HTMLOUT .= '
     <h1 class="has-text-centered">' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a>"</h1>
-    <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" enctype="multipart/form-data">';
+    <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
-        <div class="has-text-centered margin20">
-            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '">
+        <div class="has - text - centered margin20">
+            <input type="submit" name="button" class="button is - small" value="' . $lang['fe_post'] . '">
         </div>
     </form>';
 

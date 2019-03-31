@@ -6,7 +6,7 @@ if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');
     if ($lottery_info === false || is_null($lottery_info)) {
         $lottery_info = $fluent->from('lottery_config')
-            ->fetchPairs('name', 'value');
+                               ->fetchPairs('name', 'value');
 
         $cache->set('lottery_info_', $lottery_info, 86400);
     }

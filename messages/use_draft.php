@@ -91,10 +91,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
             $mail = new Message();
             $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-                ->addTo($arr_receiver['email'])
-                ->setReturnPath($site_config['site_email'])
-                ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-                ->setHtmlBody($body);
+                 ->addTo($arr_receiver['email'])
+                 ->setReturnPath($site_config['site_email'])
+                 ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
+                 ->setHtmlBody($body);
 
             $mailer = new SendmailMailer();
             $mailer->commandArgs = "-f{$site_config['site_email']}";
@@ -124,17 +124,17 @@ if (isset($_POST['buttonval'])) {
 //=== print out the page
 //echo stdhead('Use Draft');
 $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links . '
-        <form name="compose" action="messages.php" method="post">
+        <form name="compose" action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $pm_id . '">
         <input type="hidden" name="' . $save_or_edit . '" value="1">
         <input type="hidden" name="action" value="use_draft">
-    <table class="table table-bordered">
+    <table class="table table - bordered">
     <tr>
         <td class="colhead" colspan="2">' . $lang['pm_usedraft1'] . '</td>
     </tr>
     <tr>
-        <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
-        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && valid_username($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';">
+        <td><span style="font - weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
+        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && valid_username($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this . value = \'\';">
          ' . $lang['pm_usedraft_usr'] . '</td>
     </tr>
     <tr>

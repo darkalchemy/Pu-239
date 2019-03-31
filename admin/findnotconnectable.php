@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr('Error', 'Please Type In Some Text');
     }
     $users = $fluent->from('peers')
-        ->select(null)
-        ->select('DISTINCT userid AS userid')
-        ->where('connectable = "no"');
+                    ->select(null)
+                    ->select('DISTINCT userid AS userid')
+                    ->where('connectable = "no"');
 
     foreach ($users as $user) {
         $values[] = [
@@ -88,8 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'date' => $dt,
         ];
         $fluent->insertInto('notconnectablepmlog')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
         $session->set('is-success', 'PM Sent to all non connectable peers');
     } else {
         $session->set('is-warning', 'No non connectable peers');
@@ -107,7 +107,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     </ul>
     <div>
         <h1 class='has-text-centered'>{$lang['non_con_mass']}</h1>
-        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>";
+        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable' accept-charset='utf-8'>";
     if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
     }

@@ -16,11 +16,11 @@ function uploadpos_update($data)
     $dt = TIME_NOW;
 
     $res = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('modcomment')
-        ->where('uploadpos < ?', $dt)
-        ->where('uploadpos > 1');
+                  ->select(null)
+                  ->select('id')
+                  ->select('modcomment')
+                  ->where('uploadpos < ?', $dt)
+                  ->where('uploadpos > 1');
 
     $subject = 'Upload Ban expired.';
     $msg = "Your Upload Ban has timed out and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points again. Cheers!\n";
@@ -53,10 +53,10 @@ function uploadpos_update($data)
         ];
 
         $fluent->update('users')
-            ->set($set)
-            ->where('uploadpos < ?', $dt)
-            ->where('uploadpos > 1')
-            ->execute();
+               ->set($set)
+               ->where('uploadpos < ?', $dt)
+               ->where('uploadpos > 1')
+               ->execute();
     }
 
     $time_end = microtime(true);

@@ -53,7 +53,7 @@ if ($step == '1') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error4']}");
         } else {
             $HTMLOUT .= "
-                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=2'>
+                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=2' accept-charset='utf-8'>
                     <div class='level-center'>";
             $body = "
                         <tr class='no_hover'>
@@ -118,7 +118,7 @@ if ($step == '1') {
 
         $sechash = $fetch['hintanswer'];
         $HTMLOUT .= "
-            <form method='post' action='?step=3'>
+            <form method='post' action='?step=3' accept-charset='utf-8'>
                 <div class='level-center'>";
         $HTMLOUT .= main_table("
                     <tr class='no_hover'>
@@ -181,7 +181,7 @@ if ($step == '1') {
     }
 } else {
     $HTMLOUT .= "
-        <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
+        <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1' accept-charset='utf-8'>
             <div class='level-center'>";
     $HTMLOUT .= main_table("
                 <tr class='no_hover'>

@@ -79,10 +79,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('requests')
-            ->select(null)
-            ->select('requested_by_user_id')
-            ->where('id = ?', $id)
-            ->fetch();
+                         ->select(null)
+                         ->select('requested_by_user_id')
+                         ->where('id = ?', $id)
+                         ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -99,9 +99,9 @@ switch ($action) {
             'updated' => TIME_NOW,
         ];
         $fluent->update('requests')
-            ->set($set)
-            ->where('id = ?', $id)
-            ->execute();
+               ->set($set)
+               ->where('id = ?', $id)
+               ->execute();
 
         header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . sqlesc($id));
         die();
@@ -112,11 +112,11 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id / bad vote');
         }
         $voted = $fluent->from('request_votes')
-            ->select(null)
-            ->select('vote')
-            ->where('user_id = ?', $CURUSER['id'])
-            ->where('request_id = ?', $id)
-            ->fetch('vote');
+                        ->select(null)
+                        ->select('vote')
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
+                        ->fetch('vote');
 
         if (!empty($voted)) {
             stderr('USER ERROR', 'You have voted on this request before.');
@@ -128,8 +128,8 @@ switch ($action) {
                 'vote' => $yes_or_no,
             ];
             $fluent->insertInto('request_votes')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
             if ($vote === 1) {
                 $set = [
                     'vote_yes_count' => new Envms\FluentPDO\Literal('vote_yes_count + 1'),
@@ -140,9 +140,9 @@ switch ($action) {
                 ];
             }
             $fluent->update('requests')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
+                   ->set($set)
+                   ->where('id = ?', $id)
+                   ->execute();
             header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
         }
@@ -150,9 +150,9 @@ switch ($action) {
 
     case 'default':
         $count = $fluent->from('requests')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->fetch('count');
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
         $link = $site_config['baseurl'] . '/requests.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
@@ -161,14 +161,14 @@ switch ($action) {
         $menu_bottom = $pager['pagerbottom'];
 
         $requests = $fluent->from('requests AS r')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id = p.id')
-            ->orderBy('r.added DESC')
-            ->limit($pager['pdo'])
-            ->fetchAll();
+                           ->select('c.name AS cat_name')
+                           ->select('c.image AS cat_image')
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS c ON r.category = c.id')
+                           ->leftJoin('categories AS p ON c.parent_id = p.id')
+                           ->orderBy('r.added DESC')
+                           ->limit($pager['pdo'])
+                           ->fetchAll();
 
         if (empty($requests)) {
             stderr('Error!', 'Sorry, there are no current requests!');
@@ -211,14 +211,14 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('requests AS r')
-            ->select('r.id AS request_id')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id = p.id')
-            ->where('r.id = ?', $id)
-            ->fetch();
+                      ->select('r.id AS request_id')
+                      ->select('c.name AS cat_name')
+                      ->select('c.image AS cat_image')
+                      ->select('p.name AS parent_name')
+                      ->leftJoin('categories AS c ON r.category = c.id')
+                      ->leftJoin('categories AS p ON c.parent_id = p.id')
+                      ->where('r.id = ?', $id)
+                      ->fetch();
 
         $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
         $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
@@ -230,20 +230,20 @@ switch ($action) {
         $movie_info = get_imdb_info($imdb, false, false, null, null);
 
         $voted = $fluent->from('request_votes')
-            ->select(null)
-            ->select('vote')
-            ->where('user_id = ?', $CURUSER['id'])
-            ->where('request_id = ?', $id)
-            ->fetch('vote');
+                        ->select(null)
+                        ->select('vote')
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
+                        ->fetch('vote');
 
         if (!$voted) {
-            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php">
+            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="1">
-                    <input type="submit" class="button is-small" value="vote yes!">
+                    <input type="submit" class="button is - small" value="vote yes!">
                     </form> ~ you will be notified when this request is filled.';
-            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php">
+            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . ' / requests . php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="2">
@@ -299,20 +299,20 @@ switch ($action) {
   <tr>
   <td>Report Request</td>
   <td>
-    <form action="' . $site_config['baseurl'] . '/report.php?type=Request&amp;id=' . $id . '" method="post">
-        <div class="has-text-centered margin20">
-            <input type="submit" class="button is-small" value="Report This Request">
+    <form action="' . $site_config['baseurl'] . '/report.php?type=Request&amp;id=' . $id . '" method="post" accept-charset="utf-8">
+        <div class="has - text - centered margin20">
+            <input type="submit" class="button is - small" value="Report This Request">
         </div>
-        For breaking the <a class="altlink" href="rules.php">rules</a>
+        For breaking the <a class="altlink" href="rules . php">rules</a>
     </form>
     </td>
   </tr>
   </table>';
         $HTMLOUT .= '
-            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
+            <h1 class="has - text - centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
             <a id="startcomments"></a>
-            <div class="has-text-centered margin20">
-                <a class="button is-small" href="' . $site_config['baseurl'] . '/requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
+            <div class="has - text - centered margin20">
+                <a class="button is - small" href="' . $site_config['baseurl'] . ' / requests . php ? action = add_comment & amp;id = ' . $id . '">Add a comment</a>
             </div>';
         $count = (int) $arr['comments'];
         if (!$count) {
@@ -320,17 +320,18 @@ switch ($action) {
         } else {
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
-            $link = $site_config['baseurl'] . "/requests.php?action=request_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+            $link = $site_config['baseurl'] . " / requests . php ? action = request_details & amp;id = $id" . (isset($_GET['perpage']) ? "perpage ={
+        $perpage}&amp;" : '');
             $pager = pager($perpage, $count, $link);
             $menu_top = $pager['pagertop'];
             $menu_bottom = $pager['pagerbottom'];
 
             $allrows = $fluent->from('comments')
-                ->select('id AS comment_id')
-                ->where('request = ?', $id)
-                ->orderBy('id DESC')
-                ->limit("{$pager['pdo']}")
-                ->fetchAll();
+                              ->select('id AS comment_id')
+                              ->where('request = ?', $id)
+                              ->orderBy('id DESC')
+                              ->limit($pager['pdo'])
+                              ->fetchAll();
 
             $HTMLOUT .= '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
@@ -351,8 +352,7 @@ switch ($action) {
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
-                $category_drop_down .= "
-                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+                $category_drop_down .= " < option value = '{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -368,11 +368,12 @@ switch ($action) {
                 'link' => $link,
             ];
             $new_request_id = $fluent->insertInto('requests')
-                ->values($values)
-                ->execute();
+                                     ->values($values)
+                                     ->execute();
 
             $color = get_user_class_name($CURUSER['class'], true);
-            $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url={$site_config['baseurl']}/requests.php?action=request_details&id={$new_request_id}]{$request_name}[/url]";
+            $msg = "[{
+        $color}]{$CURUSER['username']}[/{$color}] posted a new request: [url ={$site_config['baseurl']}/requests . php ? action = request_details & id ={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
             header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&new=1&id=' . $new_request_id);
             die();
@@ -381,9 +382,9 @@ switch ($action) {
             get_file_name('dragndrop_js'),
         ]);
         $HTMLOUT .= $top_menu . '
-    <h1 class="has-text-centered">New Request</h1>
-    <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=add_new_request">
+    <h1 class="has - text - centered">New Request</h1>
+    <div class="banner_container has - text - centered w - 100"></div>
+    <form method="post" action="' . $site_config['baseurl'] . ' / requests . php ? action = add_new_request" accept-charset="utf-8">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
@@ -452,11 +453,11 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('requests')
-            ->select(null)
-            ->select('request_name')
-            ->select('requested_by_user_id')
-            ->where('id = ?', $id)
-            ->fetch();
+                         ->select(null)
+                         ->select('request_name')
+                         ->select('requested_by_user_id')
+                         ->where('id = ?', $id)
+                         ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -468,11 +469,11 @@ switch ($action) {
         <a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666" >HERE</a>.');
         } else {
             $fluent->deleteFrom('requests')
-                ->where('id = ?', $id)
-                ->execute();
+                   ->where('id = ?', $id)
+                   ->execute();
             $fluent->deleteFrom('comments')
-                ->where('request = ?', $id)
-                ->execute();
+                   ->where('request = ?', $id)
+                   ->execute();
 
             header('Location: ' . $site_config['baseurl'] . '/requests.php?request_deleted=1');
             die();
@@ -486,14 +487,14 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $edit_arr = $fluent->from('requests AS r')
-            ->select('r.id AS request_id')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id = p.id')
-            ->where('r.id = ?', $id)
-            ->fetch();
+                           ->select('r.id AS request_id')
+                           ->select('c.name AS cat_name')
+                           ->select('c.image AS cat_image')
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS c ON r.category = c.id')
+                           ->leftJoin('categories AS p ON c.parent_id = p.id')
+                           ->where('r.id = ?', $id)
+                           ->fetch();
 
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
         $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
@@ -525,23 +526,23 @@ switch ($action) {
    <tr>
    <td class="embedded">
    <h1 class="has-text-centered">Edit Request</h1>' . $top_menu . '
-   <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=update_request">
+   <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=update_request" accept-charset="utf-8">
    <input type="hidden" name="id" value="' . $id . '">
-   <table class="table table-bordered table-striped">
+   <table class="table table - bordered table - striped">
    <tr>
    <td colspan="2">Be sure to fill in all fields!</td>
    </tr>
    <tr>
    <td>name:</td>
-   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w - 100" required></td>
    </tr>
    <tr>
    <td>image:</td>
-   <td><input type="url" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="url" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w - 100" required></td>
    </tr>
    <tr>
    <td>link:</td>
-   <td><input type="url" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="url" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="w - 100" required></td>
    </tr>
    <tr>
    <td>category:</td>
@@ -549,7 +550,7 @@ switch ($action) {
    </tr>
    <tr>
    <td>description:</td>
-   <td class="is-paddingless">' . BBcode($body) . '</td>
+   <td class="is - paddingless">' . BBcode($body) . '</td>
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
@@ -557,8 +558,8 @@ switch ($action) {
    </tr>') . '
    <tr>
    <td colspan="2">
-    <div class="has-text-centered margin20">
-        <input type="submit" name="button" class="button is-small" value="Edit">
+    <div class="has - text - centered margin20">
+        <input type="submit" name="button" class="button is - small" value="Edit">
     </div>
     </td>
    </tr>
@@ -572,10 +573,10 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('requests')
-            ->select(null)
-            ->select('request_name')
-            ->where('id = ?', $id)
-            ->fetch();
+                      ->select(null)
+                      ->select('request_name')
+                      ->where('id = ?', $id)
+                      ->fetch();
 
         if (!$arr) {
             stderr('Error', 'No request with that ID.');
@@ -593,20 +594,20 @@ switch ($action) {
                 'ori_text' => $body,
             ];
             $newid = $fluent->insertInto('comments')
-                ->values($values)
-                ->execute();
+                            ->values($values)
+                            ->execute();
             $set = [
                 'comments' => new Envms\FluentPDO\Literal('comments + 1'),
             ];
             $fluent->update('requests')
-                ->set($set)
-                ->execute();
+                   ->set($set)
+                   ->execute();
             header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '
-    <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=add_comment">
+    <form method="post" action="' . $site_config['baseurl'] . ' / requests . php ? action = add_comment" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
@@ -627,11 +628,11 @@ switch ($action) {
     </form>';
 
         $allrows = $fluent->from('comments')
-            ->select('id AS comment_id')
-            ->where('request = ?', $id)
-            ->orderBy('id DESC')
-            ->limit(5)
-            ->fetchAll();
+                          ->select('id AS comment_id')
+                          ->where('request = ?', $id)
+                          ->orderBy('id DESC')
+                          ->limit(5)
+                          ->fetchAll();
 
         if ($allrows) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
@@ -646,10 +647,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments AS c')
-            ->select('r.request_name')
-            ->leftJoin('requests AS r ON c.request = r.id')
-            ->where('c.id = ?', $comment_id)
-            ->fetch();
+                      ->select('r.request_name')
+                      ->leftJoin('requests AS r ON c.request = r.id')
+                      ->where('c.id = ?', $comment_id)
+                      ->fetch();
 
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -668,9 +669,9 @@ switch ($action) {
                 'editedby' => $CURUSER['id'],
             ];
             $fluent->update('comments')
-                ->set($set)
-                ->where('id = ?', $comment_id)
-                ->execute();
+                   ->set($set)
+                   ->where('id = ?', $comment_id)
+                   ->execute();
             header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
@@ -680,20 +681,20 @@ switch ($action) {
             $arr_user = $user_stuffs->getUserFromId($arr['user']);
             $avatar = get_avatar($arr_user);
         }
-        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=edit">
+        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=edit" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $arr['request'] . '">
     <input type="hidden" name="cid" value="' . $comment_id . '">
-    <table class="table table-bordered table-striped">
+    <table class="table table - bordered table - striped">
      <tr>
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>
+    <td><b>Comment:</b></td><td class="is - paddingless">' . BBcode($body) . '</td>
     </tr>
      <tr>
         <td colspan="2">
-            <div class="has-text-centered margin20">
-                <input name="button" type="submit" class="button is-small" value="Edit">
+            <div class="has - text - centered margin20">
+                <input name="button" type="submit" class="button is - small" value="Edit">
             </div>
         </td>
     </tr>
@@ -706,12 +707,12 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('requests')
-            ->select(null)
-            ->select('user')
-            ->select('request')
-            ->select('text')
-            ->where('id =?', $comment_id)
-            ->fetch();
+                      ->select(null)
+                      ->select('user')
+                      ->select('request')
+                      ->select('text')
+                      ->where('id =?', $comment_id)
+                      ->fetch();
         if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -725,9 +726,9 @@ switch ($action) {
             'text' => $_POST['body'],
         ];
         $fluent->update('comments')
-            ->set($set)
-            ->where('id = ?', $comment_id)
-            ->execute();
+               ->set($set)
+               ->where('id = ?', $comment_id)
+               ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
         header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
@@ -739,10 +740,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments')
-            ->select('user')
-            ->select('request')
-            ->where('id = ?', $comment_id)
-            ->fetch();
+                      ->select('user')
+                      ->select('request')
+                      ->where('id = ?', $comment_id)
+                      ->fetch();
         if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -750,18 +751,18 @@ switch ($action) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
+            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['baseurl'] . ' / requests . php ? action = delete_comment & amp;id = ' . (int) $arr['request'] . ' & amp;comment_id = ' . $comment_id . ' & amp;do_it = 666" >HERE</a>.');
         } else {
             $fluent->deleteFrom('comments')
-                ->where('id = ?', $comment_id)
-                ->execute();
+                   ->where('id = ?', $comment_id)
+                   ->execute();
             $set = [
                 'comments' => new Envms\FluentPDO\Literal('comments - 1'),
             ];
             $fluent->update('requests')
-                ->set($set)
-                ->where('id = ?', $arr['request'])
-                ->execute();
+                   ->set($set)
+                   ->where('id = ?', $arr['request'])
+                   ->execute();
 
             header('Location: ' . $site_config['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
             die();
@@ -776,14 +777,13 @@ switch ($action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
         $arr = $fluent->from('comments')
-            ->where('id = ?', $comment_id)
-            ->fetch();
+                      ->where('id = ?', $comment_id)
+                      ->fetch();
 
         if (!$arr) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
+            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid . ");
         }
-        $HTMLOUT = "
-            <h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
+        $HTMLOUT = " < h1 class='has-text-centered' >{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
         $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
         if ($returnto) {

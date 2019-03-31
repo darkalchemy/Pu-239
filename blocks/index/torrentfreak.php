@@ -1,6 +1,6 @@
 <?php
 
-require_once ROOT_DIR . 'tfreak.php';
+require_once INCL_DIR . 'function_tfreak.php';
 global $lang;
 
 $feed = rsstfreakinfo();

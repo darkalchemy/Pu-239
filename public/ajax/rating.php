@@ -47,18 +47,18 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         }
         $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
         $qy1 = $fluent->from('rating')
-            ->select(null)
-            ->select('SUM(rating) AS sum')
-            ->select('COUNT(*) AS count')
-            ->where("$what = ?", $id)
-            ->fetchAll();
+                      ->select(null)
+                      ->select('SUM(rating) AS sum')
+                      ->select('COUNT(*) AS count')
+                      ->where("$what = ?", $id)
+                      ->fetchAll();
         $qy2 = $fluent->from('rating')
-            ->select(null)
-            ->select('id AS rated')
-            ->select('rating')
-            ->where("$what = ?", $id)
-            ->where('user = ?', $CURUSER['id'])
-            ->fetchAll();
+                      ->select(null)
+                      ->select('id AS rated')
+                      ->select('rating')
+                      ->where("$what = ?", $id)
+                      ->where('user = ?', $CURUSER['id'])
+                      ->fetchAll();
 
         $rating_cache = array_merge($qy1[0], $qy2[0]);
         $ratings = $cache->get('ratings_' . $id);

@@ -276,19 +276,19 @@ $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
 $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['bonusmanager_pm_masspm'];
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '
-            <form name="compose" method="post" action="mass_bonus_for_members.php">
+            <form name="compose" method="post" action="mass_bonus_for_members.php" accept-charset="utf-8">
             <input type="hidden" name="pm" value="pm">
-                <table border="0" style="max-width: 800px;">
+                <table border="0" style="max - width: 800px;">
                     <tr>
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
                     <tr>
-                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                        <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
+                        <td><span style="font - weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
+                        <td><input name="subject" type="text" class="w - 100" value="' . $subject . '"></td>
                     </tr>
                     <tr>
-                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                        <td class="is-paddingless">' . BBcode($body) . '</td>
+                        <td><span style="font - weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
+                        <td class="is - paddingless">' . BBcode($body) . '</td>
                     </tr>
                 </table>
             </form>';
@@ -308,9 +308,9 @@ $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['
 $h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
-$HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
+$HTMLOUT .= '<h1 class="has - text - centered">' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '
-    <form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">';
+    <form name="inputform" method="post" action="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = mass_bonus_for_members & amp;action = mass_bonus_for_members" enctype="multipart / form - data" accept-charset="utf-8">';
 $body = '
         <tr>
             <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>

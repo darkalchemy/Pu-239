@@ -31,7 +31,7 @@ $HTMLOUT .= "
         <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
         <div class='has-text-centered margin20'>
             <h2>{$lang['log_search']}</h2>
-            <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>
+            <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog' accept-charset='utf-8'>
                 <input type='text' name='search' class='w-50' value=''>
                 <input type='submit' class='button is-small' value='{$lang['log_search_btn']}'>
             </form>

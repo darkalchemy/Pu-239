@@ -157,10 +157,10 @@ function staff_panel()
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
         if ($staff_panel === false || is_null($staff_panel)) {
             $staff_panel = $fluent->from('staffpanel')
-                ->where('navbar = 1')
-                ->where('av_class <= ?', $CURUSER['class'])
-                ->orderBy('page_name')
-                ->fetchAll();
+                                  ->where('navbar = 1')
+                                  ->where('av_class <= ?', $CURUSER['class'])
+                                  ->orderBy('page_name')
+                                  ->fetchAll();
 
             $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }

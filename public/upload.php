@@ -67,12 +67,12 @@ foreach ($vars as $var) {
     }
 }
 $res_request = $fluent->from('requests')
-    ->select(null)
-    ->select('id')
-    ->select('request_name')
-    ->where('filled_by_user_id = 0')
-    ->orderBy('request_name')
-    ->fetchAll();
+                      ->select(null)
+                      ->select('id')
+                      ->select('request_name')
+                      ->where('filled_by_user_id = 0')
+                      ->orderBy('request_name')
+                      ->fetchAll();
 
 if ($res_request) {
     $has_request = "
@@ -92,13 +92,13 @@ if ($res_request) {
 }
 
 $res_offers = $fluent->from('offers')
-    ->select(null)
-    ->select('id')
-    ->select('offer_name')
-    ->where('offered_by_user_id = ?', $CURUSER['id'])
-    ->where('status = "approved"')
-    ->orderBy('offer_name')
-    ->fetchAll();
+                     ->select(null)
+                     ->select('id')
+                     ->select('offer_name')
+                     ->where('offered_by_user_id = ?', $CURUSER['id'])
+                     ->where('status = "approved"')
+                     ->orderBy('offer_name')
+                     ->fetchAll();
 
 if ($res_offers) {
     $offers = "
@@ -121,7 +121,7 @@ if (get_scheme() === 'https') {
     $announce_url = $site_config['announce_urls'][1];
 }
 $HTMLOUT .= "
-    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['baseurl']}/takeupload.php' method='post'>
+    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}'>
         <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "' data-ebooks=" . json_encode($site_config['ebook_cats']) . ' data-movies=' . json_encode(array_merge($site_config['movie_cats'], $site_config['tv_cats'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>

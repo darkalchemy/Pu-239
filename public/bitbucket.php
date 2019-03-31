@@ -57,9 +57,9 @@ if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
     $type = isset($_GET['type']) && $_GET['type'] == 1 ? 1 : 2;
     $set = ['avatar' => trim($_GET['avatar'])];
     $fluent->update('users')
-        ->set($set)
-        ->where('id = ?', $CURUSER['id'])
-        ->execute();
+           ->set($set)
+           ->where('id = ?', $CURUSER['id'])
+           ->execute();
 
     $cache->update_row('user_' . $CURUSER['id'], [
         'avatar' => $_GET['avatar'],

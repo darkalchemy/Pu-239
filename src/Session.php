@@ -53,7 +53,7 @@ class Session
             }
             ini_set('session.use_strict_mode', 1);
             ini_set('session.use_trans_sid', 0);
-            ini_set('default_charset', $this->site_config['char_set']);
+            ini_set('default_charset', 'utf-8');
             ini_set('session.lazy_write', 0);
             ini_set('max_execution_time', 300);
             if (ini_get('session.save_handler') != 'files') {

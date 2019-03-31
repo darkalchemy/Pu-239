@@ -294,8 +294,8 @@ function write_class_files($template)
     $t = 'define(';
     $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
-        ->orderBy('value ASC')
-        ->where('template = ?', $template);
+                  ->orderBy('value ASC')
+                  ->where('template = ?', $template);
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
@@ -384,7 +384,7 @@ function doc_head()
     return "<!doctype html>
 <html>
 <head>
-    <meta charset='{$site_config['char_set']}'>
+    <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta property='og:url' content='{$site_config['baseurl']}'>

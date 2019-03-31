@@ -160,7 +160,7 @@ function poll_header($pid = '', $poll_q = '')
     <div id='poll' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
-                <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>";
+                <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post' accept-charset='utf-8'>";
 
     return $HTMLOUT;
 }

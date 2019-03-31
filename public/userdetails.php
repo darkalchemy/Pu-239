@@ -30,8 +30,7 @@ if ($user['status'] === 'pending') {
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
-    stderr($lang['userdetails_error'],
-        '<span><img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
+    stderr($lang['userdetails_error'], '<span><img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
        ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '"></span>');
     die();
 }
@@ -132,7 +131,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <form method='get' action='{$site_config['baseurl']}/messages.php?action=send_message'>
+                    <form method='get' action='{$site_config['baseurl']}/messages.php?action=send_message' accept-charset='utf-8'>
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                         <input type='submit' value='{$lang['userdetails_sendmess']}'>
                     </form>";
@@ -331,11 +330,10 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                         <tr>
                             <td class='rowhead'>{$lang['userdetails_watched']}</td>
                             <td class='has-text-left'>" . ($user['watched_user'] > 0 ? "
-                                {$lang['userdetails_watched_since']} " . get_date($user['watched_user'],
-                '') : $lang['userdetails_not_watched']) . "
+                                {$lang['userdetails_watched_since']} " . get_date($user['watched_user'], '') : $lang['userdetails_not_watched']) . "
                                 $the_flip_box
                                 <div class='has-text-left' id='box_3'>
-                                    <form method='post' action='ajax/member_input.php' name='notes_for_staff'>
+                                    <form method='post' action='ajax/member_input.php' name='notes_for_staff' accept-charset='utf-8'>
                                         <input name='id' type='hidden' value='{$id}'>
                                         <input type='hidden' value='watched_user' name='action'>
                                         {$lang['userdetails_add_watch']}
@@ -358,11 +356,11 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
                             <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
                             <div class="has-text-left" id="box_6">
-                            <form method="post" action="ajax/member_input.php" name="notes_for_staff">
+                            <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
                             <input name="id" type="hidden" value="' . (int) $user['id'] . '">
                             <input type="hidden" value="staff_notes" name="action" id="action">
-                            <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
-                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
+                            <textarea id="new_staff_note" class="w - 100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
+                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is - small" name="staff_notes_button"/>
                             </form>
                             </div> </td></tr>';
 
@@ -460,7 +458,7 @@ $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
 if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
-    $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask'>";
+    $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask' accept-charset='utf-8'>";
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
     $postkey = PostKey([
@@ -534,8 +532,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($donoruntil == '0') {
                 $HTMLOUT .= $lang['userdetails_arbitrary'];
             } else {
-                $HTMLOUT .= $lang['userdetails_donor2'] . ' ' . get_date($user['donoruntil'],
-                        'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}";
+                $HTMLOUT .= $lang['userdetails_donor2'] . ' ' . get_date($user['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}";
             }
         } else {
             $HTMLOUT .= "
@@ -553,8 +550,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         $HTMLOUT .= "
                     <div>{$lang['userdetails_cdonation']}</div>
                     <input class='w-100' type='text' name='donated' value='" . htmlsafechars($user['donated']) . "'>
-                    <div class='top10 size_5 has-text-centered'>{$lang['userdetails_tdonations']} " . number_format(htmlsafechars($user['total_donated']),
-                2) . '</div>';
+                    <div class='top10 size_5 has-text-centered'>{$lang['userdetails_tdonations']} " . number_format(htmlsafechars($user['total_donated']), 2) . '</div>';
         if ($donor) {
             $HTMLOUT .= "
                     <div>{$lang['userdetails_adonor']}</div>
@@ -624,8 +620,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['free_switch'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['free_switch'],
-                        'DATE') . ' (' . mkprettytime($user['free_switch'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['free_switch'], 'DATE') . ' (' . mkprettytime($user['free_switch'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_freeleech_for'] . ' <select name="free_switch" class="w-100">
@@ -648,8 +643,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['downloadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['downloadpos'],
-                        'DATE') . ' (' . mkprettytime($user['downloadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['downloadpos'], 'DATE') . ' (' . mkprettytime($user['downloadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="downloadpos" class="w-100">
@@ -672,8 +666,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['uploadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['uploadpos'],
-                        'DATE') . ' (' . mkprettytime($user['uploadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['uploadpos'], 'DATE') . ' (' . mkprettytime($user['uploadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="uploadpos" class="w-100">
@@ -696,8 +689,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['sendpmpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['sendpmpos'],
-                        'DATE') . ' (' . mkprettytime($user['sendpmpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['sendpmpos'], 'DATE') . ' (' . mkprettytime($user['sendpmpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="sendpmpos" class="w-100">
@@ -720,8 +712,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['chatpost'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['chatpost'],
-                        'DATE') . ' (' . mkprettytime($user['chatpost'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['chatpost'], 'DATE') . ' (' . mkprettytime($user['chatpost'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="chatpost" class="w-100">
@@ -744,8 +735,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['avatarpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['avatarpos'],
-                        'DATE') . ' (' . mkprettytime($user['avatarpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['avatarpos'], 'DATE') . ' (' . mkprettytime($user['avatarpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="avatarpos" class="w-100">
@@ -768,8 +758,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['immunity'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['immunity'],
-                        'DATE') . ' (' . mkprettytime($user['immunity'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['immunity'], 'DATE') . ' (' . mkprettytime($user['immunity'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_immunity_for'] . ' <select name="immunity" class="w-100">
@@ -792,8 +781,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['leechwarn'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['leechwarn'],
-                        'DATE') . ' (' . mkprettytime($user['leechwarn'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['leechwarn'], 'DATE') . ' (' . mkprettytime($user['leechwarn'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_leechwarn_for'] . ' <select name="leechwarn" class="w-100">
@@ -816,8 +804,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['warned'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['warned'],
-                        'DATE') . ' (' . mkprettytime($user['warned'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['warned'], 'DATE') . ' (' . mkprettytime($user['warned'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_warn_for'] . '<select name="warned" class="w-100">
@@ -840,8 +827,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             if ($user['game_access'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
-                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['game_access'],
-                        'DATE') . ' (' . mkprettytime($user['game_access'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
+                $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['game_access'], 'DATE') . ' (' . mkprettytime($user['game_access'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
             }
         } else {
             $HTMLOUT .= '<td>' . $lang['userdetails_disable_for'] . ' <select name="game_access" class="w-100">

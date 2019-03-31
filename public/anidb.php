@@ -44,13 +44,13 @@ foreach ($contents as $line) {
 if (!empty($anidb)) {
     $count = floor($site_config['query_limit'] / 2 / max(array_map('count', $anidb)));
     $update = [
-       'title' => new Envms\FluentPDO\Literal('VALUES(title)'),
+        'title' => new Envms\FluentPDO\Literal('VALUES(title)'),
     ];
 
     foreach (array_chunk($anidb, $count) as $t) {
         $fluent->insertInto('anidb_titles', $t)
-            ->onDuplicateKeyUpdate($update)
-            ->execute();
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
     }
 }
 

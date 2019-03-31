@@ -53,11 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if (!empty($lottery_config)) {
     if ($lottery_config['enable']) {
         $classes = implode(', ', array_map('get_user_class_name', explode('|', $lottery_config['class_allowed'])));
-        $html .= stdmsg('Lottery configuration closed',
-            'Classes playing in this lottery are : <b>' . $classes . '</b>');
+        $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>' . $classes . '</b>');
     } else {
         $html .= "
-        <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post'>
+        <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post' accept-charset='utf-8'>
             <div class='portlet'>";
         $table = "
                     <tr>

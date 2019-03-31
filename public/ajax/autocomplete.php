@@ -21,14 +21,14 @@ $hash = 'suggest_torrents_' . hash('sha256', $keyword);
 $results = $cache->get($hash);
 if ($results === false || is_null($results)) {
     $results = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('name')
-        ->select('seeders')
-        ->select('leechers')
-        ->select('visible')
-        ->where('name LIKE ?', "%$keyword%")
-        ->fetchAll();
+                      ->select(null)
+                      ->select('id')
+                      ->select('name')
+                      ->select('seeders')
+                      ->select('leechers')
+                      ->select('visible')
+                      ->where('name LIKE ?', "%$keyword%")
+                      ->fetchAll();
     $cache->set($hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
     if (empty($hashes)) {

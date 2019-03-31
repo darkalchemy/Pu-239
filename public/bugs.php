@@ -114,7 +114,7 @@ if ($action === 'viewbug') {
                 $by = format_username($a['staff']) . ' <i>(' . get_user_class_name($a['stclass']) . ')</i>';
                 break;
         }
-        $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug'>
+        $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
       <input type='hidden' name='id' value='" . (int) $a['id'] . "'/>
       <table class='table table-bordered table-striped'>
       <tr><td class='rowhead'>{$lang['title']}:</td><td>{$title}</td></tr>
@@ -215,7 +215,7 @@ if ($action === 'viewbug') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_something_is_wrong']}");
         }
     }
-    $HTMLOUT .= "<form method='post' action='bugs.php?action=add'>
+    $HTMLOUT .= "<form method='post' action='bugs.php?action=add' accept-charset='utf-8'>
                   <table class='table table-bordered table-striped'>
                   <tr><td class='rowhead'>{$lang['title']}:</td><td><input type='text' name='title' size='60'/><br>{$lang['proper_title']}</td></tr>
                   <tr><td class='rowhead'>{$lang['problem_bug']}:</td><td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td></tr>

@@ -30,8 +30,8 @@ class Post
     public function insert(array $values)
     {
         $id = $this->fluent->insertInto('posts')
-            ->values($values)
-            ->execute();
+                           ->values($values)
+                           ->execute();
 
         return $id;
     }
@@ -45,8 +45,8 @@ class Post
     public function delete(int $id, int $topic_id)
     {
         $this->fluent->delete('posts')
-            ->where('id = ?', $id)
-            ->where('topic_id = ?', $topic_id)
-            ->execute();
+                     ->where('id = ?', $id)
+                     ->where('topic_id = ?', $topic_id)
+                     ->execute();
     }
 }

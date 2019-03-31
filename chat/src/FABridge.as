@@ -144,8 +144,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
             if (refMap[objId] != null && newRefVal <= 0) {
                 delete refMap[objId];
                 delete localInstanceMap[objId];
-            }
-            else {
+            } else {
                 refMap[objId] = newRefVal;
             }
         }
@@ -203,8 +202,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
 
         try {
             var params: Object = baseObject.root.loaderInfo.parameters;
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             bCanGetParams = false;
         }
 
@@ -215,8 +213,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                     try {
                         bCanGetParams = true;
                         var params: Object = baseObject.root.loaderInfo.parameters;
-                    }
-                    catch (err: Error) {
+                    } catch (err: Error) {
                         bCanGetParams = false;
                     }
                     if (bCanGetParams) {
@@ -228,8 +225,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
             };
             t.addEventListener(TimerEvent.TIMER, timerFunc);
             t.start();
-        }
-        else {
+        } else {
             dispatchInit();
         }
     }
@@ -275,23 +271,19 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
 
         if (value is Number || value is Boolean || value is String || value == null || value == undefined || value is int || value is uint) {
             result = value;
-        }
-        else if (value is Array) {
+        } else if (value is Array) {
             result = [];
             for (var i: int = 0; i < value.length; i++) {
                 result[i] = serialize(value[i], keep_refs);
             }
-        }
-        else if (value is Function) {
+        } else if (value is Function) {
             // serialize a class
             result.type = TYPE_ASFUNCTION;
             result.value = getFunctionID(value, true);
-        }
-        else if (getQualifiedClassName(value) == 'Object') {
+        } else if (getQualifiedClassName(value) == 'Object') {
             result.type = TYPE_ANONYMOUS;
             result.value = value;
-        }
-        else {
+        } else {
             // serialize a class
             result.type = TYPE_ASINSTANCE;
             // make sure the type info is available
@@ -312,13 +304,11 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
 
             if (serializer != null) {
                 return serializer.apply(null, [value, keep_refs]);
-            }
-            else {
+            } else {
                 if (retrieveCachedTypeDescription(className, false) == null) {
                     try {
                         result.newTypes.push(retrieveCachedTypeDescription(className, true));
-                    }
-                    catch (err: Error) {
+                    } catch (err: Error) {
                         var interfaceInfo: XMLList = describeType(value).implementsInterface;
                         for each (var interf: XML in interfaceInfo) {
                             className = interf.@type.toString();
@@ -364,23 +354,18 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
         var result: *;
         if (valuePackage is Number || valuePackage is Boolean || valuePackage is String || valuePackage === null || valuePackage === undefined || valuePackage is int || valuePackage is uint) {
             result = valuePackage;
-        }
-        else if (valuePackage is Array) {
+        } else if (valuePackage is Array) {
             result = [];
             for (var i: int = 0; i < valuePackage.length; i++) {
                 result[i] = deserialize(valuePackage[i]);
             }
-        }
-        else if (valuePackage.type == FABridge.TYPE_JSFUNCTION) {
+        } else if (valuePackage.type == FABridge.TYPE_JSFUNCTION) {
             result = getRemoteFunctionProxy(valuePackage.value, true);
-        }
-        else if (valuePackage.type == FABridge.TYPE_ASFUNCTION) {
+        } else if (valuePackage.type == FABridge.TYPE_ASFUNCTION) {
             throw new Error('as functions can\'t be passed back to as yet');
-        }
-        else if (valuePackage.type == FABridge.TYPE_ASINSTANCE) {
+        } else if (valuePackage.type == FABridge.TYPE_ASINSTANCE) {
             result = resolveRef(valuePackage.value);
-        }
-        else if (valuePackage.type == FABridge.TYPE_ANONYMOUS) {
+        } else if (valuePackage.type == FABridge.TYPE_ANONYMOUS) {
             result = valuePackage.value;
         }
         return result;
@@ -453,8 +438,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
     private function resolveRef(objRef: Number): Object {
         try {
             return (objRef == -1) ? baseObject : localInstanceMap[objRef];
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
 
@@ -472,8 +456,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                 var newRef: Number = nextID++;
                 localInstanceMap[newRef] = obj;
                 ref = newRef;
-            }
-            else {
+            } else {
                 for (var key: * in localInstanceMap) {
                     if (localInstanceMap[key] === obj) {
                         ref = key;
@@ -481,8 +464,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                     }
                 }
             }
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
 
@@ -509,8 +491,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
             var newID: Number = nextID++;
             localFunctionMap[newID] = f;
             ref = newID;
-        }
-        else {
+        } else {
             for (var key: * in localFunctionMap) {
                 if (localFunctionMap[key] === f) {
                     ref = key;
@@ -539,21 +520,19 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                             try {
                                 var retVal: * = ExternalInterface.call('FABridge__invokeJSFunction', serializedArgs);
                                 for (var i: int = 0; i < serializedArgs.length; i++) {
-                                    if (typeof(serializedArgs[i]) == 'object' && serializedArgs[i] != null) {
+                                    if (typeof (serializedArgs[i]) == 'object' && serializedArgs[i] != null) {
                                         releaseRef(serializedArgs[i].value);
                                     }
                                 }
                                 return retVal;
-                            }
-                            catch (e: Error) {
+                            } catch (e: Error) {
                                 return serialize('__FLASHERROR__' + '||' + e.message);
                             }
                         }, 1);
-                    }
-                    else {
+                    } else {
                         var retVal: * = ExternalInterface.call('FABridge__invokeJSFunction', serializedArgs);
                         for (var i: int = 0; i < serializedArgs.length; i++) {
-                            if (typeof(serializedArgs[i]) == 'object' && serializedArgs[i] != null) {
+                            if (typeof (serializedArgs[i]) == 'object' && serializedArgs[i] != null) {
                                 releaseRef(serializedArgs[i].value);
                             }
                         }
@@ -561,8 +540,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                     }
                 };
             }
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
 
@@ -617,13 +595,11 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
             var ret: * = serialize(obj[propName], true);
             releaseRef(objID);
             return ret;
-        }
-        catch (e: ItemPendingError) {
+        } catch (e: ItemPendingError) {
             releaseRef(objID);
             //ItemPendingError
             //return serialize("an error occcured with" + obj[propName]);
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             releaseRef(objID);
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
@@ -638,8 +614,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
             var obj: Object = resolveRef(objID);
             obj[propRef] = deserialize(value);
             releaseRef(objID);
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             releaseRef(objID);
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
@@ -658,8 +633,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                 incRef(objRef);
             }
             return serialize(baseObject);
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
     }
@@ -675,8 +649,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                 result = func.apply(null, deserialize(args));
 
             return serialize(result, true);
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
     }
@@ -705,12 +678,10 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                 releaseRef(objID);
                 return ret;
             }
-        }
-        catch (e: ItemPendingError) {
+        } catch (e: ItemPendingError) {
             releaseRef(objID);
             // ignore ItemPendingError
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             releaseRef(objID);
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
@@ -794,8 +765,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
         try {
             var c: Class = Class(ApplicationDomain.currentDomain.getDefinition(className));
             var instance: Object = new c();
-        }
-        catch (e: Error) {
+        } catch (e: Error) {
             return serialize('__FLASHERROR__' + '||' + e.message);
         }
 

@@ -54,7 +54,7 @@ if ($action === 'add') {
     }
     $HTMLOUT .= "
     <h1 class='has-text-centered'>Add a comment for " . format_username($userid) . "</h1>
-    <form method='post' action='usercomment.php?action=add'>
+    <form method='post' action='usercomment.php?action=add' accept-charset='utf-8'>
         <input type='hidden' name='userid' value='$userid'>
         <div>" . BBcode() . "</div>
         <div class='has-text-centered margin20'>
@@ -63,10 +63,10 @@ if ($action === 'add') {
     </form>";
 
     $allrows = $fluent->from('usercomments')
-        ->where('user = ?', $userid)
-        ->orderBy('id DESC')
-        ->limit(5)
-        ->fetchAll();
+                      ->where('user = ?', $userid)
+                      ->orderBy('id DESC')
+                      ->limit(5)
+                      ->fetchAll();
 
     if ($allrows) {
         $HTMLOUT .= '
@@ -109,7 +109,7 @@ if ($action === 'add') {
     }
     $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
     $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username($arr['userid']) . "</h1>
-    <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}'>
+    <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}' accept-charset='utf-8'>
     <input type='hidden' name='returnto' value='{$referer}'>
     <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "'>
     <textarea name='body' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . "</textarea>
@@ -129,8 +129,8 @@ if ($action === 'add') {
         stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-success'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
-        ->where('id = ?', $commentid)
-        ->fetch();
+                  ->where('id = ?', $commentid)
+                  ->fetch();
 
     if ($arr) {
         $userid = (int) $arr['userid'];
@@ -158,8 +158,8 @@ if ($action === 'add') {
         stderr('Error', 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments')
-        ->where('id = ?', $commentid)
-        ->fetch();
+                  ->where('id = ?', $commentid)
+                  ->fetch();
 
     if (!$arr) {
         stderr('Error', 'Invalid ID');

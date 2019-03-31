@@ -30,11 +30,11 @@ class IP
     public function get(int $userid)
     {
         $ips = $this->fluent->from('ips')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->where('userid = ?', $userid)
-            ->groupBy('ip')
-            ->groupBy('id')
-            ->fetchAll();
+                            ->select('INET6_NTOA(ip) AS ip')
+                            ->where('userid = ?', $userid)
+                            ->groupBy('ip')
+                            ->groupBy('id')
+                            ->fetchAll();
 
         return $ips;
     }
@@ -50,9 +50,9 @@ class IP
     public function set(array $set, int $id)
     {
         $result = $this->fluent->update('ips')
-            ->set($set)
-            ->where('id = ?', $id)
-            ->execute();
+                               ->set($set)
+                               ->where('id = ?', $id)
+                               ->execute();
 
         return $result;
     }
@@ -72,12 +72,12 @@ class IP
         $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . md5(inet_pton($ip)));
         if ($cached_ip === false || is_null($cached_ip)) {
             $id = $this->fluent->from('ips')
-                ->select(null)
-                ->select('id')
-                ->where('INET6_NTOA(ip) = ?', $ip)
-                ->where('userid = ?', $userid)
-                ->where('type = ?', $type)
-                ->fetch('id');
+                               ->select(null)
+                               ->select('id')
+                               ->where('INET6_NTOA(ip) = ?', $ip)
+                               ->where('userid = ?', $userid)
+                               ->where('type = ?', $type)
+                               ->fetch('id');
 
             if (empty($id)) {
                 $values['ip'] = inet_pton($ip);
@@ -98,9 +98,9 @@ class IP
     public function insert(array $values, int $userid)
     {
         $this->fluent->insertInto('ips')
-            ->values($values)
-            ->ignore()
-            ->execute();
+                     ->values($values)
+                     ->ignore()
+                     ->execute();
 
         $this->cache->delete('ip_history_' . $userid);
     }
@@ -113,7 +113,7 @@ class IP
     public function delete(int $id)
     {
         $this->fluent->delete('ips')
-            ->where('id = ?', $id)
-            ->execute();
+                     ->where('id = ?', $id)
+                     ->execute();
     }
 }

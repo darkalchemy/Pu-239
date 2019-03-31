@@ -99,7 +99,7 @@ $HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
         <td>New ratio:</td>
         <td>$newratio</td>
     </tr>", '', 'top20 bottom20') . main_div("
-    <form name='tenpercent' method='post' action='tenpercent.php'>
+    <form name='tenpercent' method='post' action='tenpercent.php' accept-charset='utf-8'>
         <div class='has-text-centered padding10'>
             <label for='sure'><b>Yes please </b></label>
             <input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();'>

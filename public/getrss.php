@@ -24,10 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         50,
         100,
     ];
-    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts,
-        $_POST['count']) ? $_POST['count'] : 15;
-    $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',',
-            $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
+    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
+    $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
     $HTMLOUT = "
         <div class='portlet has-text-centered w-100'>
             <h1>{$lang['getrss_result']}</h1>
@@ -38,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT = "
-        <form action='{$_SERVER['PHP_SELF']}' method='post'>";
+        <form action='{$_SERVER['PHP_SELF']}' method='post' accept-charset='utf-8'>";
 require_once PARTIALS_DIR . 'categories.php';
 $HTMLOUT .= main_div("
         <div class='padding20'>

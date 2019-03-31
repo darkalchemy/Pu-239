@@ -16,7 +16,8 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
     }
     $sql = "OPTIMIZE TABLE $Table";
     if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
-        $query = $fluent->getPdo()->prepare($sql);
+        $query = $fluent->getPdo()
+                        ->prepare($sql);
         $query->execute();
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
         exit;
@@ -44,7 +45,8 @@ $heading = "
         </tr>";
 
 $count = 0;
-$tables = $fluent->getPdo()->prepare('SHOW TABLE STATUS');
+$tables = $fluent->getPdo()
+                 ->prepare('SHOW TABLE STATUS');
 $tables->execute();
 $query = $tables->fetchAll();
 

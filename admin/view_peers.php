@@ -12,9 +12,9 @@ $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 
 $count = $fluent->from('peers')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->fetch('count');
 
 $peersperpage = 25;
 $HTMLOUT .= "

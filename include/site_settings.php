@@ -5,11 +5,11 @@ global $site_config, $cache, $fluent, $CURUSER, $session;
 $staff_settings = $cache->get('is_staff_');
 if ($staff_settings === false || is_null($staff_settings)) {
     $sql = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('class >= ?', UC_STAFF)
-        ->where('class <= ?', UC_MAX)
-        ->orderBy('id ASC');
+                  ->select(null)
+                  ->select('id')
+                  ->where('class >= ?', UC_STAFF)
+                  ->where('class <= ?', UC_MAX)
+                  ->orderBy('id ASC');
     foreach ($sql as $res) {
         $staff_settings['is_staff'][] = $res['id'];
     }
@@ -24,11 +24,11 @@ if ($staff_settings === false || is_null($staff_settings)) {
 $staff_forums = $cache->get('staff_forums_');
 if ($staff_forums === false || is_null($staff_forums)) {
     $sql = $fluent->from('forums')
-        ->select(null)
-        ->select('id')
-        ->where('min_class_read >= ?', UC_STAFF)
-        ->orderBy('id')
-        ->fetchAll();
+                  ->select(null)
+                  ->select('id')
+                  ->where('min_class_read >= ?', UC_STAFF)
+                  ->orderBy('id')
+                  ->fetchAll();
 
     foreach ($sql as $res) {
         $staff_forums['staff_forums'][] = $res['id'];

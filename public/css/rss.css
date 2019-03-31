@@ -1,40 +1,40 @@
 * {
-	display: block;
+    display: block;
 }
 
 :root {
-	margin: 50px;
+    margin: 50px;
     background-color: #000;
     color: #fff;
 }
 
 channel > description {
     font-size: 250%;
-	text-align: center;
-	background-color: rgba(255, 255, 255, .5);
-	padding-top: 7px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, .5);
+    padding-top: 7px;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
 }
 
 channel > lastBuildDate {
-	text-align: center;
+    text-align: center;
     background-color: rgba(255, 255, 255, .5);
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
 }
 
 channel > lastBuildDate:after {
-	display: block;
-	padding: 7px;
-	content: "This is an RSS feed, designed to be read in an RSS application.";
-	color: #fff;
+    display: block;
+    padding: 7px;
+    content: "This is an RSS feed, designed to be read in an RSS application.";
+    color: #fff;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
 }
 
 item {
-	margin: 25px 0 20px 0;
+    margin: 25px 0 20px 0;
 }
 
 item > title {
@@ -49,31 +49,31 @@ item > title {
 }
 
 item > link {
-	font-size: small;
-	margin-top: 6px;
-	margin-bottom: 6px;
+    font-size: small;
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 
 item > description {
-	font-size: small;
+    font-size: small;
 }
 
 item > pubDate {
-	font-size: small;
+    font-size: small;
 }
 
 channel > link,
-channel > copyright, 
-channel > generator, 
-channel > docs, 
-channel > language, 
-channel > ttl, 
-channel > guid, 
+channel > copyright,
+channel > generator,
+channel > docs,
+channel > language,
+channel > ttl,
+channel > guid,
 channel > category,
 channel > title,
 channel > image,
 channel > webMaster,
 channel > item > guid,
 channel > item > comments {
-	display: none;
+    display: none;
 }

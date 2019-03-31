@@ -102,7 +102,7 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['leechwarn_hey'], $lang['leechwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "
-    <form action='staffpanel.php?tool=leechwarn&amp;action=leechwarn' method='post'>";
+    <form action='staffpanel.php?tool=leechwarn&amp;action=leechwarn' method='post' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['leechwarn_user2']}</th>

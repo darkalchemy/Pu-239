@@ -139,7 +139,7 @@ if (!empty($files)) {
         </tr>';
     }
     $HTMLOUT .= "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer' method='post' name='checkme'>" . main_table($body, $heading) . "
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer' method='post' name='checkme' accept-charset='utf-8'>" . main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' class='button is-small' name='delete' value='Delete'>
             </div>

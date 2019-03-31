@@ -251,7 +251,7 @@ function userlogin()
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         if ($ban_stuffs->check_bans($ip)) {
             require_once INCL_DIR . 'function_html.php';
-            header('Content-Type: text/html; charset=' . $site_config['char_set']);
+            header('Content-Type: text/html; charset=utf-8');
             echo doc_head() . '
 <title>Forbidden</title>
 </head>
@@ -402,9 +402,9 @@ function get_stylesheet()
     $class_config = $cache->get('class_config_' . $style);
     if ($class_config === false || is_null($class_config)) {
         $class_config = $fluent->from('class_config')
-            ->orderBy('value ASC')
-            ->where('template = ?', $style)
-            ->fetchAll();
+                               ->orderBy('value ASC')
+                               ->where('template = ?', $style)
+                               ->fetchAll();
 
         $cache->set('class_config_' . $style, $class_config, 86400);
     }
@@ -507,13 +507,13 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
-                ->where('parent_id = 0')
-                ->orderBy('ordered');
+                              ->where('parent_id = 0')
+                              ->orderBy('ordered');
             foreach ($parents as $parent) {
                 $children = $fluent->from('categories')
-                    ->where('parent_id = ?', $parent['id'])
-                    ->orderBy('ordered')
-                    ->fetchAll();
+                                   ->where('parent_id = ?', $parent['id'])
+                                   ->orderBy('ordered')
+                                   ->fetchAll();
 
                 $parent['children'] = $children;
                 $ret[] = $parent;
@@ -525,9 +525,9 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
-                ->select('p.name AS parent_name')
-                ->leftJoin('categories AS p ON c.parent_id = p.id')
-                ->orderBy('ordered');
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS p ON c.parent_id = p.id')
+                           ->orderBy('ordered');
 
             foreach ($cats as $cat) {
                 if (!empty($cat['parent_name'])) {
@@ -588,7 +588,27 @@ function mksize($size)
     for ($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {
     }
 
-    return round($size, [0, 0, 1, 2, 2, 3, 3, 4, 4][$i]) . ' ' . ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][$i];
+    return round($size, [
+            0,
+            0,
+            1,
+            2,
+            2,
+            3,
+            3,
+            4,
+            4,
+        ][$i]) . ' ' . [
+            'B',
+            'kB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+            'EB',
+            'ZB',
+            'YB',
+        ][$i];
 }
 
 /**
@@ -1393,12 +1413,12 @@ function countries()
     $countries = $cache->get('countries_arr_');
     if ($countries === false || is_null($countries)) {
         $countries = $fluent->from('countries')
-            ->select(null)
-            ->select('id')
-            ->select('name')
-            ->select('flagpic')
-            ->orderBy('name')
-            ->fetchAll();
+                            ->select(null)
+                            ->select('id')
+                            ->select('name')
+                            ->select('flagpic')
+                            ->orderBy('name')
+                            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1727,8 +1747,7 @@ function GetDirectorySize($path, $human, $count)
  */
 function formatQuery($query)
 {
-    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/',
-        "\n$0", $query);
+    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/', "\n$0", $query);
     $query = preg_replace('/\b(INNER|OUTER|LEFT|RIGHT|FULL|CASE|WHEN|END|ELSE|AND)\b/', "\n\t$0", $query);
     $query = preg_replace("/\s+\n/", "\n", $query); // remove trailing spaces
     return $query;

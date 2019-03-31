@@ -226,7 +226,7 @@ if ($game) {
                 stderr($lang['bj_sorry'], $lang['bj_you_will_have_to_wait_til_complete']);
             } elseif ($arr['status'] === 'playing') {
                 stderr($lang['bj_sorry'], "{$lang['bj_you_most_finish_current']}
-                    <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                    <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                         <input type='hidden' name='game' value='hit' readonly='readonly'>
                         <input type='hidden' name='continue' value='yes' readonly='readonly'>
                         <div class='has-text-centered top20'>
@@ -323,7 +323,7 @@ if ($game) {
                     $HTMLOUT .= "
                         <tr class='no_hover'>
                             <td colspan='2'>
-                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                     <input type='hidden' name='game' value='hit' readonly='readonly'>
                                     <div class='has-text-centered'>
                                         <input class='button is-small' type='submit' value='{$lang['bj_hitme']}'>
@@ -336,7 +336,7 @@ if ($game) {
                     $HTMLOUT .= "
                         <tr class='no_hover'>
                             <td colspan='2'>
-                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                     <input type='hidden' name='game' value='stop' readonly='readonly'>
                                     <div class='has-text-centered'>
                                         <input class='button is-small' type='submit' value='{$lang['bj_stay']}'>
@@ -349,7 +349,7 @@ if ($game) {
                     $HTMLOUT .= "
                         <tr class='no_hover'>
                             <td colspan='2'>
-                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                                <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                     <input type='hidden' name='ddown' value='ddown' readonly='readonly'>
                                     <input type='hidden' name='game' value='hit' readonly='readonly'>
                                     <div class='has-text-centered'>
@@ -668,7 +668,7 @@ if ($game) {
                 $HTMLOUT .= "
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly'>
                                 <div class='has-text-centered'>
                                     <input class='button is-small' type='submit' value='{$lang['bj_hitme']}'>
@@ -681,7 +681,7 @@ if ($game) {
                 $HTMLOUT .= "
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                 <input type='hidden' name='game' value='stop' readonly='readonly'>
                                 <div class='has-text-centered'>
                                     <input class='button is-small' type='submit' value='{$lang['bj_stay']}'>
@@ -694,7 +694,7 @@ if ($game) {
                 $HTMLOUT .= "
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                 <input type='hidden' name='ddown' value='ddown' readonly='readonly'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly'>
                                 <div class='has-text-centered'>
@@ -925,7 +925,7 @@ if ($game) {
                     </tr>
                     <tr class='no_hover'>
                         <td>
-                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
+                            <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id' accept-charset='utf-8'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly'>
                                 <input type='hidden' name='start_' value='yes' readonly='readonly'>
                                 <div class='has-text-centered'>

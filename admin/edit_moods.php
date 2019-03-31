@@ -38,7 +38,7 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
     if (mysqli_num_rows($edit_mood['res'])) {
         $edit_mood['arr'] = mysqli_fetch_assoc($edit_mood['res']);
         $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['moods_edit']}</h1>
-            <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=edited'>
+            <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=edited' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>
             <tr><td class='colhead'>{$lang['moods_name']}</td>
             <td><input type='text' name='name' size='40' value ='" . htmlsafechars($edit_mood['arr']['name']) . "'></td></tr>
@@ -54,7 +54,7 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
     }
 } else {
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['moods_add_new']}</h1>
-         <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=added'>
+         <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=added' accept-charset='utf-8'>
          <table class='table table-bordered table-striped'>
          <tr><td class='colhead'>{$lang['moods_name']}</td>
          <td><input type='text' name='name' size='40' value ='is example mood'></td></tr>

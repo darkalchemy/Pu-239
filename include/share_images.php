@@ -14,11 +14,11 @@ function find_images(string $imdb_id, $type = 'poster')
     $images = $cache->get($type . '_' . $imdb_id);
     if ($images === false || is_null($images)) {
         $images = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->where('type = ?', $type)
-            ->where('imdb_id = ?', $imdb_id)
-            ->fetchAll();
+                         ->select(null)
+                         ->select('url')
+                         ->where('type = ?', $type)
+                         ->where('imdb_id = ?', $imdb_id)
+                         ->fetchAll();
 
         $cache->set($type . '_' . $imdb_id, $images, 0);
     }

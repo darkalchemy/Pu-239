@@ -85,7 +85,7 @@ if (isset($_GET['edited'])) {
 $avatar = get_avatar($CURUSER);
 $HTMLOUT .= "
             <div class='w-100'>
-                <form method='post' action='takeeditcp.php'>
+                <form method='post' action='takeeditcp.php' accept-charset='utf-8'>
                     <div class='bottom20'>
                         <ul class='level-center bg-06'>
                             <li class='altlink margin10'><a href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>

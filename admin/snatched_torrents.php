@@ -89,10 +89,10 @@ function get_snatched_color($st)
 
 $What_Value = 'WHERE complete_date != "0"';
 $count = $fluent->from('snatched')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('complete_date > 0')
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('complete_date > 0')
+                ->fetch('count');
 
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_snatched_torrents_allsnatched']}</h1>

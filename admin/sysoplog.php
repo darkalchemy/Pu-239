@@ -30,7 +30,7 @@ $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pa
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['sysoplog_staff']}</h1>
     <div class='has-text-centered bottom20'>
-        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=sysoplog&amp;action=sysoplog'>
+        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=sysoplog&amp;action=sysoplog' accept-charset='utf-8'>
             <input type='text' name='search' size='40' value='' placeholder='{$lang['sysoplog_search']}'>
             <input type='submit' value='{$lang['sysoplog_search']}' class='button is-small'>
         </form>

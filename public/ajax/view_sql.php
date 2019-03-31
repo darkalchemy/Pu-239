@@ -91,4 +91,4 @@ function adminer_object()
     return new AdminerCustomization($plugins);
 }
 
-include ROOT_DIR . 'adminer.php';
+include ADMIN_DIR . 'adminer.php';

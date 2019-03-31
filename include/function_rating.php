@@ -23,19 +23,19 @@ function getRate($id, $what)
     $rating_cache = $cache->get($keys['rating']);
     if ($rating_cache === false || is_null($rating_cache)) {
         $qy1 = $fluent->from('rating')
-            ->select(null)
-            ->select('IFNULL(SUM(rating), 0) AS sum')
-            ->select('IFNULL(COUNT(*), 0) AS count')
-            ->where("$what = ?", $id)
-            ->fetch();
+                      ->select(null)
+                      ->select('IFNULL(SUM(rating), 0) AS sum')
+                      ->select('IFNULL(COUNT(*), 0) AS count')
+                      ->where("$what = ?", $id)
+                      ->fetch();
 
         $qy2 = $fluent->from('rating')
-            ->select(null)
-            ->select('id AS rated')
-            ->select('rating')
-            ->where("$what = ?", $id)
-            ->where('user = ?', $CURUSER['id'])
-            ->fetch();
+                      ->select(null)
+                      ->select('id AS rated')
+                      ->select('rating')
+                      ->where("$what = ?", $id)
+                      ->where('user = ?', $CURUSER['id'])
+                      ->fetch();
 
         if (!empty($qy2)) {
             $rating_cache = array_merge($qy1, $qy2);

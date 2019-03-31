@@ -50,23 +50,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     exit;
 }
 $disabled = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('enabled = "no"')
-        ->fetch('count');
+                   ->select(null)
+                   ->select('COUNT(*) AS count')
+                   ->where('enabled = "no"')
+                   ->fetch('count');
 $pending = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('status = "pending"')
-        ->fetch('count');
+                  ->select(null)
+                  ->select('COUNT(*) AS count')
+                  ->where('status = "pending"')
+                  ->fetch('count');
 $count = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->whereOr([
-            'enabled' => 'no',
-            'status' => 'pending',
-        ])
-        ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->whereOr([
+                    'enabled' => 'no',
+                    'status' => 'pending',
+                ])
+                ->fetch('count');
 $disabled = number_format($disabled);
 $pending = number_format($pending);
 $count = number_format($count);
@@ -77,7 +77,7 @@ if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
+    $HTMLOUT .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post' accept-charset='utf-8'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
       <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\"></td>

@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_banemail_add']}</h1>
-    <form method='post' action='staffpanel.php?tool=bannedemails'>";
+    <form method='post' action='staffpanel.php?tool=bannedemails' accept-charset='utf-8'>";
 $body = "
         <tr>
             <td class='rowhead'>{$lang['ad_banemail_email']}</td>
@@ -47,9 +47,9 @@ $body = "
 $HTMLOUT .= main_table($body) . '
     </form>';
 $count1 = $fluent->from('bannedemails')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->fetch('count');
+                 ->select(null)
+                 ->select('COUNT(*) AS count')
+                 ->fetch('count');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);

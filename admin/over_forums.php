@@ -83,29 +83,29 @@ switch ($action) {
         $res = sql_query('SELECT * FROM over_forums WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
-            $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
+            $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
             <input type="hidden" name="action2" value="edit_forum">
             <input type="hidden" name="id" value="' . $id . '">
-        <table class="table table-bordered table-striped">
+        <table class="table table - bordered table - striped">
         <tr>
             <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
           </tr>
-            <td><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
+            <td><span style="font - weight: bold;">' . $lang['ad_over_name'] . '</span></td>
+            <td><input name="name" type="text" class="w - 100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
           </tr>
           <tr>
-            <td ><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
+            <td ><span style="font - weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
+            <td><input name="desc" type="text" class="w - 100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
           </tr>
             <tr>
-            <td><span style="font-weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
+            <td><span style="font - weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
-            <td><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
+            <td><span style="font - weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
             <td>
             <select name="sort">';
             $res = mysqli_query($mysqli, 'SELECT sort FROM over_forums');
@@ -116,8 +116,8 @@ switch ($action) {
             }
             $HTMLOUT .= $sorted . '</select></td></tr>
             <tr>
-                <td colspan="2" class="has-text-centered">
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_editbut'] . '">
+                <td colspan="2" class="has - text - centered">
+                <input type="submit" name="button" class="button is - small margin20" value="' . $lang['ad_over_editbut'] . '">
                 </td>
           </tr>
         </table></form>';
@@ -129,10 +129,10 @@ switch ($action) {
         $HTMLOUT .= $main_links;
         $heading = '
             <tr>
-                <th class="has-text-centered">' . $lang['ad_over_sort1'] . '</th>
+                <th class="has - text - centered">' . $lang['ad_over_sort1'] . '</th>
                 <th>' . $lang['ad_over_name1'] . '</th>
-                <th class="has-text-centered">' . $lang['ad_over_minview1'] . '</th>
-                <th class="has-text-centered">' . $lang['ad_over_modify'] . '</th>
+                <th class="has - text - centered">' . $lang['ad_over_minview1'] . '</th>
+                <th class="has - text - centered">' . $lang['ad_over_modify'] . '</th>
             </tr>';
         $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
@@ -140,17 +140,17 @@ switch ($action) {
             while ($row = mysqli_fetch_array($res)) {
                 $body .= '
             <tr>
-                <td class="has-text-centered">' . (int) $row['sort'] . '</td>
+                <td class="has - text - centered">' . (int) $row['sort'] . '</td>
             <td>
-                <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
+                <a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = forum_view & amp;fourm_id = ' . (int) $row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
                 ' . htmlsafechars($row['description'], ENT_QUOTES) . '
             </td>
-            <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
-            <td class="has-text-centered">
-                <span class="level-center">
+            <td class="has - text - centered">' . get_user_class_name($row['min_class_view']) . '</td>
+            <td class="has - text - centered">
+                <span class="level - center">
                     <span class="left10">
-                        <a href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . $row['id'] . '" >
-                            <i class="icon-edit icon"></i>
+                        <a href="staffpanel . php ? tool = over_forums & amp;action = over_forums & amp;action2 = edit_forum_page & amp;id = ' . $row['id'] . '" >
+                            <i class="icon - edit icon"></i>
                         </a>
                     </span>
                     <span>
@@ -165,7 +165,7 @@ switch ($action) {
         }
         $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= '
-            <form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
+            <form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
                 <input type="hidden" name="action2" value="add_forum">';
         $body = '
                 <tr>
@@ -173,11 +173,11 @@ switch ($action) {
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60"></td>
+                    <td><input name="name" type="text" class="w - 100" maxlength="60"></td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_description'] . '</span>  </td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
+                    <td><input name="desc" type="text" class="w - 100" maxlength="200"></td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_minview'] . '</span></td>
@@ -207,8 +207,8 @@ switch ($action) {
                     </td>
                 </tr>';
         $HTMLOUT .= main_table($body, '', 'top20') . '
-                <div class="has-text-centered margin20">
-                    <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_makebutton'] . '">
+                <div class="has - text - centered margin20">
+                    <input type="submit" name="button" class="button is - small margin20" value="' . $lang['ad_over_makebutton'] . '">
                 </div>
            </form>';
         break;

@@ -30,12 +30,12 @@ $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST[
 
 if (empty($mode)) {
     $backups = $fluent->from('dbbackup')
-        ->orderBy('added DESC')
-        ->fetchAll();
+                      ->orderBy('added DESC')
+                      ->fetchAll();
 
     if ($backups) {
         $HTMLOUT .= "
-            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete'>
+            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='delete'>
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
@@ -158,8 +158,8 @@ if (empty($mode)) {
         'userid' => $CURUSER['id'],
     ];
     $fluent->insertInto('dbbackup')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     if ($site_config['db_backup_write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
@@ -177,10 +177,10 @@ if (empty($mode)) {
             }
         }
         $files = $fluent->from('dbbackup')
-            ->select(null)
-            ->select('name')
-            ->where('id', $ids)
-            ->fetchAll();
+                        ->select(null)
+                        ->select('name')
+                        ->where('id', $ids)
+                        ->fetchAll();
 
         if ($files) {
             $count = count($files);
@@ -191,8 +191,8 @@ if (empty($mode)) {
                 }
             }
             $fluent->deleteFrom('dbbackup')
-                ->where('id', $ids)
-                ->execute();
+                   ->where('id', $ids)
+                   ->execute();
 
             if ($site_config['db_backup_write_to_log']) {
                 write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');

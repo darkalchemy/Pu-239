@@ -67,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail = new Message();
             $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-                ->addTo($arr['email'])
-                ->setReturnPath($site_config['site_email'])
-                ->setSubject("{$lang['inactive_youracc']}{$site_config['site_name']}!")
-                ->setHtmlBody($body);
+                 ->addTo($arr['email'])
+                 ->setReturnPath($site_config['site_email'])
+                 ->setSubject("{$lang['inactive_youracc']}{$site_config['site_name']}!")
+                 ->setHtmlBody($body);
 
             $mailer = new SendmailMailer();
             $mailer->commandArgs = "-f{$site_config['site_email']}";
@@ -123,7 +123,7 @@ if ($count_inactive > 0) {
     </script>";
     $HTMLOUT .= "<div class='row'><div class='col-md-12'>";
     $HTMLOUT .= '<h1 class="has-text-centered">' . htmlsafechars($count) . "{$lang['inactive_accounts']} " . htmlsafechars($days) . " {$lang['inactive_days']}</h2>
-    <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive'>
+    <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
     <td class='colhead'>{$lang['inactive_username']}</td>

@@ -54,30 +54,30 @@ $checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' 
 $HTMLOUT = '
             <div class="bg-02 top20">
                 <h1 class="has-text-centered">User Unlock Settings</h1>
-                <form action="" method="post">
-                    <div class="level-center">
-                        <div class="w-20">
-                            <span class="bordered level-center bg-02">
-                                <div class="w-100">Enable Bonus Moods?</div>
+                <form action="" method="post" accept-charset="utf-8">
+                    <div class="level - center">
+                        <div class="w - 20">
+                            <span class="bordered level - center bg - 02">
+                                <div class="w - 100">Enable Bonus Moods?</div>
                                 <div class="slideThree">
                                     <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . '>
                                     <label for="unlock_user_moods"></label>
                                 </div>
-                                <div class="w-100">Check this option to unlock bonus mood smilies.</div>
+                                <div class="w - 100">Check this option to unlock bonus mood smilies.</div>
                             </span>
                         </div>
-                        <div class="w-20">
-                            <span class="bordered level-center bg-02">
-                                <div class="w-100">User Stealth Mode?</div>
+                        <div class="w - 20">
+                            <span class="bordered level - center bg - 02">
+                                <div class="w - 100">User Stealth Mode?</div>
                                 <div class="slideThree">
                                     <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . '>
                                     <label for="perms_stealth"></label>
                                 </div>
-                                <div class="w-100">Check this option to unlock Stealth Mode.</div>
+                                <div class="w - 100">Check this option to unlock Stealth Mode.</div>
                             </span>
                         </div>
                     </div>
-                    <div class="has-text-centered margin20">
+                    <div class="has - text - centered margin20">
                         <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s">
                     </div>
                 </form>

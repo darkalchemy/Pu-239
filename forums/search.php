@@ -33,87 +33,83 @@ if ($author) {
 }
 if ($search || $author_id) {
     $count = $fluent->from('posts AS p')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('f.min_class_read <= ?', $CURUSER['class'])
-        ->leftJoin('topics AS t ON p.topic_id = t.id')
-        ->leftJoin('forums AS f ON t.forum_id = f.id');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('f.min_class_read <= ?', $CURUSER['class'])
+                    ->leftJoin('topics AS t ON p.topic_id = t.id')
+                    ->leftJoin('forums AS f ON t.forum_id = f.id');
 
     $results = $fluent->from('posts AS p')
-        ->select(null)
-        ->select('p.user_id AS userid')
-        ->select('p.id AS post_id')
-        ->select('p.body')
-        ->select('p.post_title')
-        ->select('p.added')
-        ->select('p.icon')
-        ->select('p.edited_by')
-        ->select('p.edit_reason')
-        ->select('p.edit_date')
-        ->select('p.bbcode')
-        ->select('p.anonymous AS pan')
-        ->select('t.anonymous AS anonymous')
-        ->select('t.id AS topic_id')
-        ->select('t.topic_name AS topic_title')
-        ->select('t.topic_desc')
-        ->select('t.post_count')
-        ->select('t.views')
-        ->select('t.locked')
-        ->select('t.sticky')
-        ->select('t.poll_id')
-        ->select('t.num_ratings')
-        ->select('t.rating_sum')
-        ->select('f.id AS forum_id')
-        ->select('f.name AS forum_name')
-        ->select('f.description AS forum_desc')
-        ->where('f.min_class_read <= ?', $CURUSER['class'])
-        ->leftJoin('topics AS t ON p.topic_id = t.id')
-        ->leftJoin('forums AS f ON t.forum_id = f.id');
+                      ->select(null)
+                      ->select('p.user_id AS userid')
+                      ->select('p.id AS post_id')
+                      ->select('p.body')
+                      ->select('p.post_title')
+                      ->select('p.added')
+                      ->select('p.icon')
+                      ->select('p.edited_by')
+                      ->select('p.edit_reason')
+                      ->select('p.edit_date')
+                      ->select('p.bbcode')
+                      ->select('p.anonymous AS pan')
+                      ->select('t.anonymous AS anonymous')
+                      ->select('t.id AS topic_id')
+                      ->select('t.topic_name AS topic_title')
+                      ->select('t.topic_desc')
+                      ->select('t.post_count')
+                      ->select('t.views')
+                      ->select('t.locked')
+                      ->select('t.sticky')
+                      ->select('t.poll_id')
+                      ->select('t.num_ratings')
+                      ->select('t.rating_sum')
+                      ->select('f.id AS forum_id')
+                      ->select('f.name AS forum_name')
+                      ->select('f.description AS forum_desc')
+                      ->where('f.min_class_read <= ?', $CURUSER['class'])
+                      ->leftJoin('topics AS t ON p.topic_id = t.id')
+                      ->leftJoin('forums AS f ON t.forum_id = f.id');
     if ($CURUSER['class'] < UC_STAFF) {
         $count = $count->where('p.status = "ok"')
-            ->where('t.status = "ok"');
+                       ->where('t.status = "ok"');
         $results = $results->where('p.status = "ok"')
-            ->where('t.status = "ok"');
+                           ->where('t.status = "ok"');
     } elseif ($CURUSER['class'] < $min_delete_view_class) {
         $count = $count->where('p.status != "deleted"')
-            ->where('t.status != "deleted"');
+                       ->where('t.status != "deleted"');
         $results = $results->where('p.status != "deleted"')
-            ->where('t.status != "deleted"');
+                           ->where('t.status != "deleted"');
     }
     if (!empty($search)) {
         if ($search_what === 'all') {
-            /*
-                        $count = $count->whereOr([
-                            'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                            'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                            'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
-                        ]);
-                        $results = $results->whereOr([
-                            'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                            'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                            'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
-                        ]);
-            */
-            $count = $count->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search, $search]);
-            $results = $results->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search, $search]);
+            $count = $count->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [
+                $search,
+                $search,
+                $search,
+            ]);
+            $results = $results->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [
+                $search,
+                $search,
+                $search,
+            ]);
         } elseif ($search_what === 'body') {
             $count = $count->where('MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
             $results = $results->where('MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
         } elseif ($search_what === 'title') {
-            /*
-                        $count = $count->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                            ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
-                        $results = $results->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                            ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
-            */
-            $count = $count->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search]);
-            $results = $results->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search]);
+            $count = $count->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [
+                $search,
+                $search,
+            ]);
+            $results = $results->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [
+                $search,
+                $search,
+            ]);
         }
     }
 
     $query = $fluent->from('forums')
-        ->select(null)
-        ->select('id');
+                    ->select(null)
+                    ->select('id');
 
     foreach ($query as $arr_forum_ids) {
         if (isset($_GET['f' . $arr_forum_ids['id']])) {
@@ -271,8 +267,7 @@ if ($search || $author_id) {
             </td>
             <td>
                 <span style="white-space:nowrap;">' . $post_icon . '
-                    <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' .
-                    $post_title . '
+                    <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
                     </a>
                     <span class="left20">' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>
                 </span>
@@ -301,18 +296,18 @@ if ($search || $author_id) {
 $search_in_forums = '<table class="table-striped">';
 $row_count = 0;
 $forums = $fluent->from('over_forums AS o_f')
-    ->select(null)
-    ->select('o_f.name AS over_forum_name')
-    ->select('o_f.id AS over_forum_id')
-    ->select('f.id AS real_forum_id')
-    ->select('f.name')
-    ->select('f.description')
-    ->select('f.forum_id')
-    ->leftJoin('forums AS f ON o_f.id = f.forum_id')
-    ->where('o_f.min_class_view <= ?', $CURUSER['class'])
-    ->where('f.min_class_read <= ?', $CURUSER['class'])
-    ->orderBy('o_f.sort')
-    ->orderBy('f.sort ASC');
+                 ->select(null)
+                 ->select('o_f.name AS over_forum_name')
+                 ->select('o_f.id AS over_forum_id')
+                 ->select('f.id AS real_forum_id')
+                 ->select('f.name')
+                 ->select('f.description')
+                 ->select('f.forum_id')
+                 ->leftJoin('forums AS f ON o_f.id = f.forum_id')
+                 ->where('o_f.min_class_view <= ?', $CURUSER['class'])
+                 ->where('f.min_class_read <= ?', $CURUSER['class'])
+                 ->orderBy('o_f.sort')
+                 ->orderBy('f.sort ASC');
 
 foreach ($forums as $arr_forums) {
     $search_in_forums .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr>
@@ -323,8 +318,7 @@ foreach ($forums as $arr_forums) {
                     <td class="has-no-border">
                         <div class="is-flex level-left">
                             <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox"' . ($selected_forums ? ' checked' : '') . ' value="1">
-                            <a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' .
-                                htmlsafechars($arr_forums['name'], ENT_QUOTES) . '
+                            <a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '
                             </a>
                         </div>
                     </td>
@@ -366,14 +360,14 @@ $sort_by_drop_down = '
         </select>';
 $HTMLOUT .= $mini_menu . '
         <h1 class="has-text-centered">' . $lang['sea_forums'] . '</h1>
-            <form method="get" action="forums.php?"><input type="hidden" name="action" value="search">';
+            <form method="get" action="forums.php?"><input type="hidden" name="action" value="search" accept-charset="utf-8">';
 $table_body = '
                 <tr>
                     <td>
                         <span>' . $lang['sea_search_in'] . ':</span>
                     </td>
                     <td>
-                        <div class="level-left is-flex">
+                        <div class="level - left is - flex">
                             <input type="radio" id="search_title" name="search_what" value="title"' . ($search_what === 'title' ? ' checked' : '') . '>
                             <label for="search_title" class="left5">Title(s)</label>
                             <input type="radio" id="search_body" name="search_what" value="body"' . ($search_what === 'body' ? ' checked' : '') . ' class="left10">
@@ -411,9 +405,8 @@ $table_body = '
                     <td>
                         <span>' . $lang['sea_sort_by'] . ':</span>
                     </td>
-                    <td>' .
-                        $sort_by_drop_down . '
-                        <div class="level-left is-flex top10">
+                    <td>' . $sort_by_drop_down . '
+                        <div class="level - left is - flex top10">
                             <input type="radio" id="asc_asc" name="asc_desc" value="ASC"' . ($asc_desc === 'ASC' ? ' checked' : '') . '>
                             <label for="asc_asc" class="left5">' . $lang['sea_ascending'] . '</label>
                             <input type="radio" id="asc_desc" name="asc_desc" value="DESC"' . ($asc_desc === 'DESC' ? ' checked' : '') . ' class="left10">
@@ -425,19 +418,18 @@ $table_body = '
                     <td>
                         <span>' . $lang['sea_forums'] . ':</span>
                     </td>
-                    <td>' .
-                        $search_in_forums . '
+                    <td>' . $search_in_forums . '
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="has-text-centered">
-                        <div class="level-center-center is-flex">
+                    <td colspan="2" class="has - text - centered">
+                        <div class="level - center - center is - flex">
                             <input type="radio" id="show_list" name="show_as" value="list"' . ($show_as === 'list' ? ' checked' : '') . '>
                             <label for="show_list" class="left5">' . $lang['sea_results_as_list'] . '</label>
                             <input type="radio" id="show_GETs" name="show_as" value="posts"' . ($show_as === 'posts' ? ' checked' : '') . ' class="left10">
                             <label for="show_GETs" class="left5">' . $lang['sea_results_as_posts'] . '</label>
                         </div>
-                        <input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '">
+                        <input type="submit" name="button" class="button is - small" value="' . $lang['gl_search'] . '">
                     </td>
                 </tr>';
 

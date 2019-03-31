@@ -142,12 +142,12 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('offers AS o')
-            ->select('o.id AS offer_id')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->leftJoin('categories AS c ON o.category = c.id')
-            ->where('o.id = ?', $id)
-            ->fetch();
+                      ->select('o.id AS offer_id')
+                      ->select('c.name AS cat_name')
+                      ->select('c.image AS cat_image')
+                      ->leftJoin('categories AS c ON o.category = c.id')
+                      ->where('o.id = ?', $id)
+                      ->fetch();
 
         if (!empty($arr['link'])) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
@@ -156,20 +156,20 @@ switch ($action) {
         $movie_info = get_imdb_info($imdb, false, false, null, null);
 
         $row_did_they_vote = $fluent->from('offer_votes')
-            ->select(null)
-            ->select('vote')
-            ->where('user_id = ?', $CURUSER['id'])
-            ->where('offer_id = ?', $id)
-            ->fetch();
+                                    ->select(null)
+                                    ->select('vote')
+                                    ->where('user_id = ?', $CURUSER['id'])
+                                    ->where('offer_id = ?', $id)
+                                    ->fetch();
 
         if (!$row_did_they_vote) {
-            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/offers.php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="1">
-                    <input type="submit" class="button is-small" value="vote yes!">
+                    <input type="submit" class="button is - small" value="vote yes!">
                     </form> ~ you will be notified when this offer is filled.';
-            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . ' / offers . php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="2">
@@ -181,7 +181,7 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
         }
-        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="' . $site_config['baseurl'] . '/offers.php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="alter_status">
                     <input type="hidden" name="id" value="' . $id . '">
                     <select name="set_status">
@@ -189,14 +189,14 @@ switch ($action) {
                     <option value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
                     <option value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
-                    <input type="submit" class="button is-small" value="change status!">
+                    <input type="submit" class="button is - small" value="change status!">
                     </form> ');
         $usersdata = $user_stuffs->getUserFromId($arr['offered_by_user_id']);
-        $HTMLOUT .= '<div class="has-text-centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
-    <table class="table table-bordered table-striped">
+        $HTMLOUT .= '<div class="has - text - centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
+    <table class="table table - bordered table - striped">
     <tr>
-    <td colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
-    [ <a href="offers.php?action=delete_offer&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
+    <td colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers . php ? action = edit_offer & amp;id = ' . $id . '">edit</a> ]
+    [ <a href="offers . php ? action = delete_offer & amp;id = ' . $id . '">delete</a> ]') . '</h1></td>
     </tr>
     <tr>
     <td>image:</td>
@@ -208,7 +208,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '"></td>
+    <td><img src="' . $site_config['pic_baseurl'] . 'caticons / ' . get_category_icons() . ' / ' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '"></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -231,7 +231,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>Report Offer</td>
-    <td><form action="' . $site_config['baseurl'] . '/report.php?type=Offer&amp;id=' . $id . '" method="post">
+    <td><form action="' . $site_config['baseurl'] . ' / report . php ? type = Offer & amp;id = ' . $id . '" method="post" accept-charset="utf-8">
     <input type="submit" class="button is-small" value="Report This Offer">
     For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
     </tr>
@@ -254,11 +254,11 @@ switch ($action) {
             $menu_bottom = $pager['pagerbottom'];
 
             $allrows = $fluent->from('comments')
-                ->select('id AS comment_id')
-                ->where('offer = ?', $id)
-                ->orderBy('id DESC')
-                ->limit("{$pager['pdo']}")
-                ->fetchAll();
+                              ->select('id AS comment_id')
+                              ->where('offer = ?', $id)
+                              ->orderBy('id DESC')
+                              ->limit($pager['pdo'])
+                              ->fetchAll();
             $HTMLOUT .= '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
             $HTMLOUT .= commenttable($allrows, 'offer');
@@ -302,24 +302,24 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Offer</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_new_offer">
-    <table class="table table-bordered table-striped">
+    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_new_offer" accept-charset="utf-8">
+    <table class="table table - bordered table - striped">
     <tbody>
     <tr>
-    <td colspan="2">Before you make an offer, <a class="altlink" href="browse.php">Search</a>
+    <td colspan="2">Before you make an offer, <a class="altlink" href="browse . php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
     Be sure to fill in all fields!
-    <div class="has-text-centered error size_6 margin20"><span></span></div>
+    <div class="has - text - centered error size_6 margin20"><span></span></div>
     </td>
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="w-100" required></td>
+    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="w - 100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
+        <input type="url" id="url" name="link" class="w - 100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
         <div class="imdb_outer">
             <div class="imdb_inner">
             </div>
@@ -329,21 +329,21 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
-        <input type="url" id="poster" maxlength="255" name="poster" class="w-100 is-hidden">
-        <div class="poster_container has-text-centered"></div>
+        <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w - 100" onchange=\'return grab_url(event)\'>
+        <input type="url" id="poster" maxlength="255" name="poster" class="w - 100 is - hidden">
+        <div class="poster_container has - text - centered"></div>
     </td>
     </tr>
     <tr>
     <td class="rowhead"><b>' . $lang['upload_bitbucket'] . '</b></td>
-    <td class="has-text-centered">
-        <div id="droppable" class="droppable bg-03">
+    <td class="has - text - centered">
+        <div id="droppable" class="droppable bg - 03">
             <span id="comment">' . $lang['bitbucket_dragndrop'] . '</span>
-            <div id="loader" class="is-hidden">
-                <img src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading...">
+            <div id="loader" class="is - hidden">
+                <img src="' . $site_config['pic_baseurl'] . 'forums / updating . svg" alt="Loading...">
             </div>
         </div>
-        <div class="output-wrapper output"></div>
+        <div class="output - wrapper output"></div>
     </td>
     </tr>
     <tr>
@@ -352,11 +352,11 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td class="is-paddingless">' . BBcode($body) . '</td>
+    <td class="is - paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
-    <td colspan="2" class="has-text-centered">
-    <input type="submit" name="button" class="button is-small" value="Submit"></td>
+    <td colspan="2" class="has - text - centered">
+    <input type="submit" name="button" class="button is - small" value="Submit"></td>
     </tr>
     </tbody>
     </table></form>
@@ -378,7 +378,7 @@ switch ($action) {
         }
         if (!isset($_GET['do_it'])) {
             stderr('Sanity check...', 'are you sure you would like to delete the offer <b>"' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</b>? If so click
-        <a class="altlink" href="offers.php?action=delete_offer&id=' . $id . '&amp;do_it=666" >HERE</a>.');
+        <a class="altlink" href="offers . php ? action = delete_offer & id = ' . $id . ' & amp;do_it = 666" >HERE</a>.');
         } else {
             sql_query('DELETE FROM offers WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM offer_votes WHERE offer_id = ' . $id) or sqlerr(__FILE__, __LINE__);
@@ -409,8 +409,7 @@ switch ($action) {
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
-                $category_drop_down .= "
-                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+                $category_drop_down .= " < option value = '{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -424,11 +423,11 @@ switch ($action) {
             header('Location: offers.php?action=offer_details&edited=1&id=' . $id);
             die();
         }
-        $HTMLOUT .= '<table class="table table-bordered table-striped">
+        $HTMLOUT .= '<table class="table table - bordered table - striped">
     <tr>
     <td class="embedded">
-    <h1 class="has-text-centered">Edit Offer</h1>' . $top_menu . '
-    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=edit_offer" name="offer_form" id="offer_form">
+    <h1 class="has - text - centered">Edit Offer</h1>' . $top_menu . '
+    <form method="post" action="' . $site_config['baseurl'] . ' / offers . php ? action = edit_offer" name="offer_form" id="offer_form" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $id . '">
     <table class="table table-bordered table-striped">
     <tr>
@@ -468,10 +467,10 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('offers')
-            ->select(null)
-            ->select('offer_name')
-            ->where('id = ?', $id)
-            ->fetch();
+                      ->select(null)
+                      ->select('offer_name')
+                      ->where('id = ?', $id)
+                      ->fetch();
 
         if (!$arr) {
             stderr('Error', 'No offer with that ID.');
@@ -489,20 +488,20 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '
-    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_comment">
+    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_comment" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $id . '">
-        <table class="table table-bordered table-striped">
+        <table class="table table - bordered table - striped">
             <tr>
                 <td colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
-                <td class="is-paddingless">' . BBcode($body) . '   </td>
+                <td class="is - paddingless">' . BBcode($body) . '   </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <div class="has-text-centered margin20">
-                        <input name="button" type="submit" class="button is-small" value="Save">
+                    <div class="has - text - centered margin20">
+                        <input name="button" type="submit" class="button is - small" value="Save">
                     </div>
                 </td>
             </tr>
@@ -510,11 +509,11 @@ switch ($action) {
     </form>';
 
         $allrows = $fluent->from('comments')
-            ->select('id AS comment_id')
-            ->where('offer = ?', $id)
-            ->orderBy('id DESC')
-            ->limit(5)
-            ->fetchAll();
+                          ->select('id AS comment_id')
+                          ->where('offer = ?', $id)
+                          ->orderBy('id DESC')
+                          ->limit(5)
+                          ->fetchAll();
 
         if ($allrows) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
@@ -552,7 +551,7 @@ switch ($action) {
             $avatar = get_avatar($arr_user);
         }
 
-        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=edit_comment">
+        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . ' / offers . php ? action = edit_comment" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $arr['offer'] . '">
     <input type="hidden" name="comment_id" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
@@ -655,8 +654,8 @@ switch ($action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
         $arr = $fluent->from('comments')
-            ->where('id = ?', $comment_id)
-            ->fetch();
+                      ->where('id = ?', $comment_id)
+                      ->fetch();
 
         if (!$arr) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");

@@ -15,10 +15,10 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         $plot = $cache->get('imdb_plot_' . $imdb_id);
         if ($plot === false || is_null($plot)) {
             $plot = $fluent->from('imdb_info')
-                ->select(null)
-                ->select('plot')
-                ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
-                ->fetch('plot');
+                           ->select(null)
+                           ->select('plot')
+                           ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
+                           ->fetch('plot');
 
             $cache->set('imdb_plot_' . $imdb_id, $plot, 86400);
         }

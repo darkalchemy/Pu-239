@@ -191,8 +191,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $curuser_cache['enabled'] = $enabled;
         $user_cache['enabled'] = $enabled;
         $fluent->deleteFrom('ajax_chat_online')
-            ->where('userID = ?', $userid)
-            ->execute();
+               ->where('userID = ?', $userid)
+               ->execute();
         $cache->set('forced_logout_' . $userid, $dt, 2591999);
     }
     if (isset($_POST['downloadpos']) && ($downloadpos = (int) $_POST['downloadpos'])) {

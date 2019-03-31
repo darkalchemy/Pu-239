@@ -31,9 +31,9 @@ if (isset($_POST['action2'])) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
             $boxnumber = $fluent->from('pmboxes')
-                ->select(null)
-                ->select('MAX(boxnumber) AS boxnumber')
-                ->fetch('boxnumber');
+                                ->select(null)
+                                ->select('MAX(boxnumber) AS boxnumber')
+                                ->fetch('boxnumber');
             $box = $boxnumber < 2 ? 2 : $boxnumber++;
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
@@ -45,8 +45,8 @@ if (isset($_POST['action2'])) {
                         'boxnumber' => $box,
                     ];
                     $fluent->insertInto('pmboxes')
-                        ->values($values)
-                        ->execute();
+                           ->values($values)
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                 }
@@ -59,8 +59,8 @@ if (isset($_POST['action2'])) {
 
         case 'edit_boxes':
             $boxes = $fluent->from('pmboxes')
-                ->where('userid = ?', $CURUSER['id'])
-                ->fetchAll();
+                            ->where('userid = ?', $CURUSER['id'])
+                            ->fetchAll();
 
             if (empty($boxes)) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
@@ -72,9 +72,9 @@ if (isset($_POST['action2'])) {
                         'name' => $name,
                     ];
                     $fluent->update('pmboxes')
-                        ->set($set)
-                        ->where('id = ?', $row['id'])
-                        ->execute();
+                           ->set($set)
+                           ->where('id = ?', $row['id'])
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $worked = '&name=1';
@@ -85,8 +85,8 @@ if (isset($_POST['action2'])) {
                     ];
                     $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
-                        ->where('id = ?', $row['id'])
-                        ->execute();
+                           ->where('id = ?', $row['id'])
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
@@ -113,9 +113,9 @@ if (isset($_POST['action2'])) {
             $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
             $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
             $category_ids = $fluent->from('categories')
-                ->select(null)
-                ->select('id')
-                ->fetchAll();
+                                   ->select(null)
+                                   ->select('id')
+                                   ->fetchAll();
 
             $rows = count($category_ids);
             for ($i = 0; $i < $rows; ++$i) {
@@ -148,9 +148,9 @@ if (isset($_POST['action2'])) {
 }
 
 $boxes = $fluent->from('pmboxes')
-    ->where('userid = ?', $CURUSER['id'])
-    ->orderBy('name ASC')
-    ->fetchAll();
+                ->where('userid = ?', $CURUSER['id'])
+                ->orderBy('name ASC')
+                ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {
@@ -225,13 +225,13 @@ if (!empty($category_set)) {
     }
 }
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
-        <form action="messages.php" method="post">
+        <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="add">
-        <h2 class="has-text-centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
+        <h2 class="has - text - centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
 $body = '
             <tr>
-                <td colspan="2" class="has-text-centered">
+                <td colspan="2" class="has - text - centered">
                     ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
                     <p class="top10">
                         <span>' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
@@ -243,24 +243,24 @@ for ($i = 1; $i < 6; ++$i) {
     $body .= '
             <tr>
                 <td><span>box ' . $i . ':</span></td>
-                <td><input type="text" name="new[]" class="w-100" maxlength="100"></td>
+                <td><input type="text" name="new[]" class="w - 100" maxlength="100"></td>
             </tr>';
 }
 
 $body .= '
             <tr>
-                <td colspan="2" class="has-text-centered">
+                <td colspan="2" class="has - text - centered">
                     ' . $lang['pm_edmail_only_fill'] . '<br>
                     ' . $lang['pm_edmail_blank'] . '<br>
-                    <input type="submit" class="button is-small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
+                    <input type="submit" class="button is - small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
                 </td>
             </tr>
         </form>';
 
 $HTMLOUT .= main_table($body);
-$HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has - text - centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
 $HTMLOUT .= '
-        <form action="messages.php" method="post">
+        <form action="messages . php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="edit_boxes">';
 $HTMLOUT .= main_table($all_my_boxes);
@@ -273,7 +273,7 @@ $HTMLOUT .= main_table('
     <tr>
         <td class="w-25"><span>' . $lang['pm_edmail_pm_page'] . '</span></td>
         <td>
-        <form action="messages.php" method="post">
+        <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="message_settings">
         ' . $per_page_drop_down . '' . $lang['pm_edmail_s_how_many'] . '</td>
@@ -315,7 +315,7 @@ $HTMLOUT .= main_table('
         <div id="defcat" class="is_hidden">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
     </tr>
     <tr>
-        <td colspan="2" class="has-text-centered">
-        <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
+        <td colspan="2" class="has - text - centered">
+        <input type="submit" class="button is - small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
     </tr>
     </table></form>');

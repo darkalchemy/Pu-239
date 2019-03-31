@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/include/bittorrent.php';
+require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
@@ -18,32 +18,18 @@ $stdfoot = [
     ],
 ];
 $lang = load_language('global');
-if ($CURUSER['class'] < UC_ADMINISTRATOR) {
-    stderr('Error', 'Your not authorised');
+if ($CURUSER['class'] < UC_MAX) {
+    stderr('Error', "You're not authorised");
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== The expiry days.
     $days = [
-        [
-            7,
-            '7 Days',
-        ],
-        [
-            14,
-            '14 Days',
-        ],
-        [
-            21,
-            '21 Days',
-        ],
-        [
-            28,
-            '28 Days',
-        ],
-        [
-            56,
-            '2 Months',
-        ],
+        7 => '7 Days',
+        14 => '14 Days',
+        21 => '21 Days',
+        28 => '28 Days',
+        56 => '2 Months',
     ];
     //== Usersearch POST data...
     $n_pms = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
@@ -89,12 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         stderr('Error', 'Contact an administrator');
     }
+
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' >
      <tr>
      <td class='embedded'><div class='has-text-centered'>
      <h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
-    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php'>
+    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php' accept-charset='utf-8'>
      <table >
      <tr>
      <td colspan='2'><b>Subject: </b>
@@ -135,4 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo $HTMLOUT;
     die();
 }
+
+$HTMLOUT = '';
 echo stdhead('New Announcement', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

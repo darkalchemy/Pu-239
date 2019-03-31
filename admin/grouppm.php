@@ -183,7 +183,7 @@ if (count($err) > 0) {
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['grouppm_head']}</h1>
-    <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
+    <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post' accept-charset='utf-8'>
       <table class='table table-bordered table-striped'>
         <tr>
           <td colspan='2'>{$lang['grouppm_sub']}

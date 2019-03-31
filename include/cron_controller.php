@@ -27,11 +27,11 @@ function autoclean()
     $cache->set('cleanup_check_', 'running', 600);
     $now = TIME_NOW;
     $query = $fluent->from('cleanup')
-        ->where('clean_on = 1')
-        ->where('clean_time < ?', $now)
-        ->orderBy('clean_time ASC')
-        ->orderBy('clean_increment ASC')
-        ->fetchAll();
+                    ->where('clean_on = 1')
+                    ->where('clean_time < ?', $now)
+                    ->orderBy('clean_time ASC')
+                    ->orderBy('clean_increment ASC')
+                    ->fetchAll();
 
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
@@ -43,9 +43,9 @@ function autoclean()
                     'clean_time' => $next_clean,
                 ];
                 $fluent->update('cleanup')
-                    ->set($set)
-                    ->where('clean_id = ?', $row['clean_id'])
-                    ->execute();
+                       ->set($set)
+                       ->where('clean_id = ?', $row['clean_id'])
+                       ->execute();
 
                 if (file_exists(CLEAN_DIR . $row['clean_file'])) {
                     require_once CLEAN_DIR . $row['clean_file'];
@@ -64,8 +64,8 @@ function autoclean()
         $tfreak_cron = $cache->get('tfreak_cron_');
         if ($tfreak_cron === false || is_null($tfreak_cron)) {
             $query = $fluent->from('newsrss')
-                ->select(null)
-                ->select('link');
+                            ->select(null)
+                            ->select('link');
 
             foreach ($query as $tfreak_new) {
                 $tfreak_news[] = $tfreak_new['link'];

@@ -75,7 +75,7 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <div class='has-text-centered flex flex-justify-center'>
-                        <form action='./messages.php' method='post'>
+                        <form action='./messages.php' method='post' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$pm_id}'>
                             <input type='hidden' name='action' value='move'>
                             " . get_all_boxes($message['location']) . "

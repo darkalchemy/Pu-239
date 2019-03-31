@@ -9,22 +9,22 @@ if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 $fluent->deleteFrom('now_viewing')
-    ->where('user_id = ?', $CURUSER['id'])
-    ->execute();
+       ->where('user_id = ?', $CURUSER['id'])
+       ->execute();
 $values = [
     'user_id' => $CURUSER['id'],
     'forum_id' => $forum_id,
     'added' => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
-    ->values($values)
-    ->execute();
+       ->values($values)
+       ->execute();
 
 $arr = $fluent->from('forums')
-    ->where('min_class_read <= ?', $CURUSER['class'])
-    ->where('id = ?', $forum_id)
-    ->limit(1)
-    ->fetch();
+              ->where('min_class_read <= ?', $CURUSER['class'])
+              ->where('id = ?', $forum_id)
+              ->limit(1)
+              ->fetch();
 
 $forum_name = htmlsafechars($arr['name'], ENT_QUOTES);
 
@@ -35,17 +35,17 @@ if ($CURUSER['class'] < $arr['min_class_read']) {
 $may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['class'] >= $arr['min_class_create'] && $CURUSER['forum_post'] == 'yes' && $CURUSER['suspended'] == 'no';
 
 $query = $fluent->from('forums')
-    ->select(null)
-    ->select('id AS sub_forum_id')
-    ->select('name AS sub_form_name')
-    ->select('description AS sub_form_description')
-    ->select('min_class_read')
-    ->select('post_count AS sub_form_post_count')
-    ->select('topic_count AS sub_form_topic_count')
-    ->where('min_class_read <= ?', $CURUSER['class'])
-    ->where('parent_forum = ?', $forum_id)
-    ->orderBy('sort')
-    ->fetchAll();
+                ->select(null)
+                ->select('id AS sub_forum_id')
+                ->select('name AS sub_form_name')
+                ->select('description AS sub_form_description')
+                ->select('min_class_read')
+                ->select('post_count AS sub_form_post_count')
+                ->select('topic_count AS sub_form_topic_count')
+                ->where('min_class_read <= ?', $CURUSER['class'])
+                ->where('parent_forum = ?', $forum_id)
+                ->orderBy('sort')
+                ->fetchAll();
 
 $sub_forums_stuff = '';
 
@@ -56,25 +56,25 @@ foreach ($query as $sub_forums_arr) {
 
     $where = $CURUSER['class'] < UC_STAFF ? 'posts.status = "ok" AND topics.status = "ok"' : $CURUSER['class'] < $min_delete_view_class ? 'posts.status != "deleted"  AND topics.status != "deleted"' : '';
     $post_arr = $fluent->from('topics')
-        ->select(null)
-        ->select('topics.id AS topic_id')
-        ->select('topics.topic_name')
-        ->select('topics.status AS topic_status')
-        ->select('topics.anonymous AS tan')
-        ->select('posts.id AS last_post_id')
-        ->select('posts.topic_id')
-        ->select('posts.added')
-        ->select('posts.anonymous AS pan')
-        ->select('posts.id as post_id')
-        ->select('users.id AS user_id')
-        ->select('users.class')
-        ->innerJoin('posts ON topics.id = posts.topic_id')
-        ->leftJoin('users ON posts.user_id = users.id')
-        ->where($where)
-        ->where('topics.forum_id = ?', $sub_forums_arr['sub_forum_id'])
-        ->orderBy('posts.id DESC')
-        ->limit(1)
-        ->fetch();
+                       ->select(null)
+                       ->select('topics.id AS topic_id')
+                       ->select('topics.topic_name')
+                       ->select('topics.status AS topic_status')
+                       ->select('topics.anonymous AS tan')
+                       ->select('posts.id AS last_post_id')
+                       ->select('posts.topic_id')
+                       ->select('posts.added')
+                       ->select('posts.anonymous AS pan')
+                       ->select('posts.id as post_id')
+                       ->select('users.id AS user_id')
+                       ->select('users.class')
+                       ->innerJoin('posts ON topics.id = posts.topic_id')
+                       ->leftJoin('users ON posts.user_id = users.id')
+                       ->where($where)
+                       ->where('topics.forum_id = ?', $sub_forums_arr['sub_forum_id'])
+                       ->orderBy('posts.id DESC')
+                       ->limit(1)
+                       ->fetch();
 
     if ($post_arr['last_post_id'] > 0) {
         $last_topic_id = (int) $post_arr['topic_id'];
@@ -193,29 +193,29 @@ $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
 $query = $fluent->from('topics AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.user_id')
-    ->select('t.topic_name')
-    ->select('t.locked')
-    ->select('t.forum_id')
-    ->select('t.last_post')
-    ->select('t.sticky')
-    ->select('t.views')
-    ->select('t.poll_id')
-    ->select('t.num_ratings')
-    ->select('t.rating_sum')
-    ->select('t.topic_desc')
-    ->select('t.post_count')
-    ->select('t.first_post')
-    ->select('t.status')
-    ->select('t.main_forum_id')
-    ->select('t.anonymous')
-    ->select('p.id AS post_id')
-    ->select('p.added AS post_added')
-    ->select('p.topic_id AS post_topic_id')
-    ->leftJoin('posts AS p ON t.id = p.topic_id')
-    ->where('forum_id = ?', $forum_id);
+                ->select(null)
+                ->select('t.id')
+                ->select('t.user_id')
+                ->select('t.topic_name')
+                ->select('t.locked')
+                ->select('t.forum_id')
+                ->select('t.last_post')
+                ->select('t.sticky')
+                ->select('t.views')
+                ->select('t.poll_id')
+                ->select('t.num_ratings')
+                ->select('t.rating_sum')
+                ->select('t.topic_desc')
+                ->select('t.post_count')
+                ->select('t.first_post')
+                ->select('t.status')
+                ->select('t.main_forum_id')
+                ->select('t.anonymous')
+                ->select('p.id AS post_id')
+                ->select('p.added AS post_added')
+                ->select('p.topic_id AS post_topic_id')
+                ->leftJoin('posts AS p ON t.id = p.topic_id')
+                ->where('forum_id = ?', $forum_id);
 if ($CURUSER['class'] < UC_STAFF) {
     $query = $query->where('p.status = "ok"');
 }
@@ -223,8 +223,8 @@ if ($CURUSER['class'] < $min_delete_view_class) {
     $query = $query->where('p.status != "deleted"');
 }
 $query = $query->orderBy('sticky, post_added DESC')
-    ->limit($pager['pdo'])
-    ->fetchAll();
+               ->limit($pager['pdo'])
+               ->fetchAll();
 
 $topic_arrs = $topic_ids = [];
 foreach ($query as $topic) {
@@ -352,7 +352,8 @@ if (!empty($topic_arrs)) {
         }
         $new = ($arr_post_stuff['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
         $topic_pic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-        $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon"> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon"> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon"> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon">' : '') . $multi_pages;
+        $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon"> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon"> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'],
+                ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon"> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon">' : '') . $multi_pages;
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
 
@@ -423,9 +424,9 @@ if (!empty($content)) {
 $table = main_table($content, $heading);
 $HTMLOUT .= $table . ($may_post ? '
                     <div class="has-text-centered margin20">
-                        <form action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" method="post" name="new">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" method="post" name="new" accept-charset="utf-8">
 		                    <input type="hidden" name="action" value="new_topic">
 		                    <input type="hidden" name="forum_id" value="' . $forum_id . '">
-		                    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '" >
+		                    <input type="submit" name="button" class="button is - small" value="' . $lang['fe_new_topic'] . '" >
 		                </form>
 		            </div>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>') . $the_top_and_bottom . ($count > $perpage ? $menu_bottom : '');

@@ -87,18 +87,18 @@ switch ($action) {
         $res = sql_query('SELECT * FROM forums WHERE id = ' . sqlesc($id));
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
-            $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage">
-                    <table class="table table-bordered table-striped">
+            $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
+                    <table class="table table - bordered table - striped">
                     <tr>
                     <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
+                    <td><input name="name" type="text" class="w - 100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
+                    <td><input name="desc" type="text" class="w - 100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -157,17 +157,17 @@ switch ($action) {
                         </td>
                     </tr>
                 </table>
-            <div class="has-text-centered margin20">
+            <div class="has - text - centered margin20">
                 <input type="hidden" name="action2" value="edit_forum">
                 <input type="hidden" name="id" value="' . htmlsafechars($id) . '">
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '">
+                <input type="submit" name="button" class="button is - small margin20" value="' . $lang['fm_efp_btn'] . '">
             </div>
         </form>';
         }
         break;
 } //=== end switch
 //=== basic page
-$HTMLOUT .= $main_links . '<table class="table table-bordered table-striped">
+$HTMLOUT .= $main_links . '<table class="table table - bordered table - striped">
         <tr><td>' . $lang['fm_mp_name'] . '</td>
         <td>' . $lang['fm_mp_sub'] . '</td>
         <td>' . $lang['fm_mp_over'] . '</td>
@@ -190,7 +190,7 @@ if (mysqli_num_rows($res) > 0) {
         } else {
             $subforum_name = '';
         }
-        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
+        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = view_forum & amp;forum_id = ' . (int) $row['id'] . '">
             <span>' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br>
             ' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
             <td><span>' . $subforum_name . '</span></td>
@@ -198,11 +198,11 @@ if (mysqli_num_rows($res) > 0) {
             <td>' . get_user_class_name($row['min_class_read']) . '</td>
             <td>' . get_user_class_name($row['min_class_write']) . '</td>
             <td>' . get_user_class_name($row['min_class_create']) . '</td>
-            <td class="has-text-centered">
-                <span class="level-center">
+            <td class="has - text - centered">
+                <span class="level - center">
                     <span class="left10 tooltipper" title="Edit">
-                        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int) $row['id'] . '">
-                            <i class="icon-edit icon"></i>
+                        <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = forum_manage & amp;action = forum_manage & amp;action2 = edit_forum_page & amp;id = ' . (int) $row['id'] . '">
+                            <i class="icon - edit icon"></i>
                         </a>
                     </span>
                     <span class="tooltipper" title="Delete">
@@ -216,18 +216,18 @@ if (mysqli_num_rows($res) > 0) {
     }
 }
 $HTMLOUT .= '</table><br><br>
-            <form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage">
-            <table class="table table-bordered table-striped">
+            <form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
+            <table class="table table - bordered table - striped">
             <tr>
             <td colspan="2">' . $lang['fm_mp_make'] . '</td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_fname'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60"></td>
+            <td><input name="name" type="text" class="w - 100" maxlength="60"></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
+            <td><input name="desc" type="text" class="w - 100" maxlength="200"></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_over2'] . '</span></td>
@@ -290,9 +290,9 @@ $HTMLOUT .= $option_12 . '
             </td>
         </tr>
     </table>
-    <div class="has-text-centered margin20">
+    <div class="has - text - centered margin20">
         <input type="hidden" name="action2" value="add_forum">
-        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '">
+        <input type="submit" name="button" class="button is - small margin20" value="' . $lang['fm_mp_btn'] . '">
     </div>
     </form>
           <script>

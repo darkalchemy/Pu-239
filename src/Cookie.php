@@ -86,9 +86,9 @@ class Cookie
                 'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
             ];
             $this->fluent->update('auth_tokens')
-                ->set($set)
-                ->where('selector = ?', $selector)
-                ->execute();
+                         ->set($set)
+                         ->where('selector = ?', $selector)
+                         ->execute();
         }
     }
 }

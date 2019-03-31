@@ -12,10 +12,10 @@ function searchcloud($limit = 100)
     $searchcloud = $cache->get('searchcloud_');
     if ($searchcloud === false || is_null($searchcloud)) {
         $search = $fluent->from('searchcloud')
-            ->select('searchedfor')
-            ->select('howmuch')
-            ->select('search_column')
-            ->orderBy('howmuch DESC');
+                         ->select('searchedfor')
+                         ->select('howmuch')
+                         ->select('search_column')
+                         ->orderBy('howmuch DESC');
         if ($limit > 0) {
             $search = $search->limit($limit);
         }
@@ -125,7 +125,17 @@ function cloud()
             $count = $values['howmuch'];
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
             $color = random_color(100, 200);
-            $column = str_replace(['name', 'descr', 'imdb', 'isbn'], ['sn', 'sd', 'si', 'ss'], $values['column']);
+            $column = str_replace([
+                'name',
+                'descr',
+                'imdb',
+                'isbn',
+            ], [
+                'sn',
+                'sd',
+                'si',
+                'ss',
+            ], $values['column']);
             $cloud_tags[] = "
                             <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?{$column}=" . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>

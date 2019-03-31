@@ -33,11 +33,11 @@ if (!empty($free) && $free['modifier'] != 0) {
 $freeleech = $cache->get('freeleech_alerts_');
 if ($freeleech === false || is_null($freeleech)) {
     $freeleech = $fluent->from('bonus')
-        ->select(null)
-        ->select('pointspool / points * 100 AS percent')
-        ->select('enabled')
-        ->where('id = 11')
-        ->fetch();
+                        ->select(null)
+                        ->select('pointspool / points * 100 AS percent')
+                        ->select('enabled')
+                        ->where('id = 11')
+                        ->fetch();
 
     $cache->set('freeleech_alerts_', $freeleech, 0);
 }
@@ -75,11 +75,11 @@ if ($freeleech['enabled'] === 'yes') {
 $doubleupload = $cache->get('doubleupload_alerts_');
 if ($doubleupload === false || is_null($doubleupload)) {
     $doubleupload = $fluent->from('bonus')
-        ->select(null)
-        ->select('pointspool / points * 100 AS percent')
-        ->select('enabled')
-        ->where('id = 12')
-        ->fetch();
+                           ->select(null)
+                           ->select('pointspool / points * 100 AS percent')
+                           ->select('enabled')
+                           ->where('id = 12')
+                           ->fetch();
 
     $cache->set('doubleupload_alerts_', $doubleupload, 0);
 }
@@ -117,11 +117,11 @@ if ($doubleupload['enabled'] === 'yes') {
 $halfdownload = $cache->get('halfdownload_alerts_');
 if ($halfdownload === false || is_null($halfdownload)) {
     $halfdownload = $fluent->from('bonus')
-        ->select(null)
-        ->select('pointspool / points * 100 AS percent')
-        ->select('enabled')
-        ->where('id = 13')
-        ->fetch();
+                           ->select(null)
+                           ->select('pointspool / points * 100 AS percent')
+                           ->select('enabled')
+                           ->where('id = 13')
+                           ->fetch();
 
     $cache->set('halfdownload_alerts_', $halfdownload, 0);
 }

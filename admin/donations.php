@@ -24,10 +24,10 @@ if (isset($_GET['total_donors'])) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('total_donated >= 0')
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('total_donated >= 0')
+                    ->fetch('count');
     $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 } else {
@@ -40,10 +40,10 @@ if (isset($_GET['total_donors'])) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('donor = "yes"')
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('donor = "yes"')
+                    ->fetch('count');
     $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, total_donated, donoruntil FROM users WHERE donor='yes' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 }

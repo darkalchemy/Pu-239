@@ -18,11 +18,11 @@ function karma_update($data)
     if ($site_config['seedbonus_on']) {
         $users_buffer = [];
         $bmt = $site_config['bonus_max_torrents'];
-//        $sql = $fluent->from('peers')
-//            ->select(null)
-//            ->select('COUNT(torrent) AS tcount)
-//            ->select('seedbonus')
-//            ->select('users.username')
+        //        $sql = $fluent->from('peers')
+        //            ->select(null)
+        //            ->select('COUNT(torrent) AS tcount)
+        //            ->select('seedbonus')
+        //            ->select('users.username')
 
         $sql = "SELECT COUNT(torrent) As tcount, userid, seedbonus, users.username
                 FROM peers

@@ -12,8 +12,7 @@ $style = get_stylesheet();
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
-$pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__,
-    __LINE__);
+$pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['value'] = $ac['value'];
     $class_config[$ac['name']]['classname'] = $ac['classname'];
@@ -225,8 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->delete('is_staff_');
         }
     } elseif ($mode === 'remove') {
-        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'],
-            $lang['classcfg_error_required']);
+        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
         $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {
             $value = $arr['value'];
@@ -289,7 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $HTMLOUT .= "
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
-        <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
+        <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
@@ -339,7 +337,7 @@ if (!empty($primary_classes)) {
                                 <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "'>
                             </td>
                             <td class='has-text-centered'>
-                                <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
+                                <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post' accept-charset='utf-8'>
                                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
                                     <input type='submit' class='button is-small' value='{$lang['classcfg_class_remove']}'>
                                 </form>
@@ -387,7 +385,7 @@ $HTMLOUT .= "
 
 $HTMLOUT .= "
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h2>
-        <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post'>
+        <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>

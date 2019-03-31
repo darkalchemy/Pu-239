@@ -107,10 +107,10 @@ if (isset($_GET['show_pm_avatar'])) {
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
     $opt2 = $fluent->from('users')
-        ->select(null)
-        ->select('opt2')
-        ->where('id = ?', $CURUSER['id'])
-        ->fetch('opt2');
+                   ->select(null)
+                   ->select('opt2')
+                   ->where('id = ?', $CURUSER['id'])
+                   ->fetch('opt2');
 
     $cache->update_row('user_' . $CURUSER['id'], [
         'opt2' => $opt2,
@@ -206,12 +206,12 @@ function get_all_boxes($box = 1)
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $get_all_boxes = $fluent->from('pmboxes')
-            ->select(null)
-            ->select('boxnumber')
-            ->select('name')
-            ->where('userid = ?', $CURUSER['id'])
-            ->orderBy('boxnumber')
-            ->fetchAll();
+                                ->select(null)
+                                ->select('boxnumber')
+                                ->select('name')
+                                ->where('userid = ?', $CURUSER['id'])
+                                ->orderBy('boxnumber')
+                                ->fetchAll();
 
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
@@ -249,17 +249,17 @@ function insertJumpTo($mailbox)
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '
-            <form action="messages.php" method="get">
+            <form action="messages.php" method="get" accept-charset="utf-8">
                 <input type="hidden" name="action" value="view_mailbox">
                 <label for="box">' . $lang['pm_jump_to'] . '
-                    <select name="box" onchange="location = this.options[this.selectedIndex].value;">
-                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
-                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted'] . '</option>';
+                    <select name="box" onchange="location = this . options[this . selectedIndex] . value;">
+                        <option value="' . $site_config['baseurl'] . ' / messages . php ? action = view_mailbox & amp;box = 1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
+                        <option value="' . $site_config['baseurl'] . ' / messages . php ? action = view_mailbox & amp;box = -1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
+                        <option value="' . $site_config['baseurl'] . ' / messages . php ? action = view_mailbox & amp;box = -2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
+                        <option value="' . $site_config['baseurl'] . ' / messages . php ? action = view_mailbox & amp;box = 0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
-                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+                        <option value="' . $site_config['baseurl'] . ' / messages . php ? action = view_mailbox & amp;box = ' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
         $insertJumpTo .= '
                     </select>

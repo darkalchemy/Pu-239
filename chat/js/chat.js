@@ -2934,14 +2934,14 @@ var ajaxChat = {
 
     replaceBBCodeQuote: function (content, attribute) {
         if (attribute)
-            return '<span class="quote"><cite>'
+            return '<div class="quote"><cite>'
                 + this.lang['cite'].replace(/%s/, attribute)
                 + '</cite><q>'
                 + this.replaceBBCode(content)
-                + '</q></span>';
-        return '<span class="quote"><q>'
+                + '</q></div>';
+        return '<div class="quote"><q>'
             + this.replaceBBCode(content)
-            + '</q></span>';
+            + '</q></div>';
     },
 
     replaceBBCodeCode: function (content) {

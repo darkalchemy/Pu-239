@@ -179,11 +179,11 @@ function get_movie_id($imdbid, $type)
     }
 
     $id = $fluent->from('images')
-        ->select(null)
-        ->select($type)
-        ->where('imdb_id = ?', $imdbid)
-        ->limit(1)
-        ->fetch($type);
+                 ->select(null)
+                 ->select($type)
+                 ->where('imdb_id = ?', $imdbid)
+                 ->limit(1)
+                 ->fetch($type);
 
     if ($id) {
         if ($type === 'tmdb_id') {
@@ -285,10 +285,10 @@ function getStartAndEndDate($year, $week)
     return [
         // Sunday
         (new DateTime())->setISODate($year, $week, 0)
-            ->format('Y-m-d'),
+                        ->format('Y-m-d'),
         // Saturday
         (new DateTime())->setISODate($year, $week, 6)
-            ->format('Y-m-d'),
+                        ->format('Y-m-d'),
     ];
 }
 
@@ -323,10 +323,10 @@ function update_tmdb_id($tmdb_id, $imdb_id)
     global $fluent;
 
     $set = [
-       'tmdb_id' => $tmdb_id,
+        'tmdb_id' => $tmdb_id,
     ];
     $fluent->update('images')
-        ->set($set)
-        ->where('imdb_id = ?', $imdb_id)
-        ->execute();
+           ->set($set)
+           ->where('imdb_id = ?', $imdb_id)
+           ->execute();
 }

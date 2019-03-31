@@ -6,18 +6,18 @@ $active24 = $cache->get('last24_users_');
 if ($active24 === false || is_null($active24)) {
     $list = [];
     $record = $fluent->from('avps')
-        ->where('arg = ?', 'last24')
-        ->fetch();
+                     ->where('arg = ?', 'last24')
+                     ->fetch();
 
     $dt = TIME_NOW - 86400;
     $query = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('last_access > ?', $dt)
-        ->where('perms < ?', bt_options::PERMS_STEALTH)
-        ->where('id != 2')
-        ->orderBy('username ASC')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('id')
+                    ->where('last_access > ?', $dt)
+                    ->where('perms < ?', bt_options::PERMS_STEALTH)
+                    ->where('id != 2')
+                    ->orderBy('username ASC')
+                    ->fetchAll();
 
     $count = count($query);
     $i = 0;
@@ -46,9 +46,9 @@ if ($active24 === false || is_null($active24)) {
             'value_u' => TIME_NOW,
         ];
         $fluent->update('avps')
-            ->set($set)
-            ->where('arg = ?', 'last24')
-            ->execute();
+               ->set($set)
+               ->where('arg = ?', 'last24')
+               ->execute();
     }
 
     $cache->set('last24_users_', $active24, $site_config['expires']['last24']);

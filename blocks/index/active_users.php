@@ -7,13 +7,13 @@ if ($active === false || is_null($active)) {
     $list = [];
     $dt = TIME_NOW - 900;
     $query = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('last_access > ?', $dt)
-        ->where('perms < ?', bt_options::PERMS_STEALTH)
-        ->where('id != 2')
-        ->orderBy('username ASC')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('id')
+                    ->where('last_access > ?', $dt)
+                    ->where('perms < ?', bt_options::PERMS_STEALTH)
+                    ->where('id != 2')
+                    ->orderBy('username ASC')
+                    ->fetchAll();
 
     $count = count($query);
     $i = 0;

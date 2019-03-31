@@ -49,11 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $code = $e->getCode();
                 $msg = $e->getMessage();
                 if ($code === '42S21') {
-                    $session->set('is-danger',
-                        "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                    $session->set('is-danger', "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
                 } else {
-                    $session->set('is-danger',
-                        "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                    $session->set('is-danger', "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
                 }
             }
         } elseif (isset($qid) && $submit === 'Ignore Query') {
@@ -104,7 +102,7 @@ if (file_exists(DATABASE_DIR)) {
         }
 
         $button = "
-                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post'>
+                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post' accept-charset='utf-8'>
                     <div class='level-center'>
                         <span class='margin10'>
                             <input type='hidden' name='id' value={$update['id']}>

@@ -2,8 +2,8 @@
 
 namespace Pu239;
 
-use Spatie\Image\Image;
 use Intervention\Image\ImageManager;
+use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
@@ -109,11 +109,11 @@ class ImageProxy
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($path)
-                    ->format(Manipulations::FORMAT_JPG)
-                    ->save($new_path, $quality);
+                     ->format(Manipulations::FORMAT_JPG)
+                     ->save($new_path, $quality);
             } else {
                 Image::load($path)
-                    ->save($new_path, $quality);
+                     ->save($new_path, $quality);
             }
             $this->optimize($new_path, false, false);
         }
@@ -135,7 +135,8 @@ class ImageProxy
                 if ($debug) {
                     $before = filesize($path);
                 }
-                $optimizerChain->setTimeout(5)->optimize($path, $temp);
+                $optimizerChain->setTimeout(5)
+                               ->optimize($path, $temp);
                 rename($temp, $path);
                 if ($debug) {
                     $after = filesize($path);
@@ -183,10 +184,10 @@ class ImageProxy
         }
         try {
             $image = $manager->make($path)
-                ->resize($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+                             ->resize($width, $height, function ($constraint) {
+                                 $constraint->aspectRatio();
+                                 $constraint->upsize();
+                             });
         } catch (\Exception $e) {
             echo 'Message: ' . $e->getMessage() . "\n";
 
@@ -215,10 +216,10 @@ class ImageProxy
 
         if ($width || $height) {
             $image = $manager->make($path)
-                ->resize($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+                             ->resize($width, $height, function ($constraint) {
+                                 $constraint->aspectRatio();
+                                 $constraint->upsize();
+                             });
             $image->save($path);
         }
         $this->optimize($path, false, $debug);
@@ -237,7 +238,7 @@ class ImageProxy
     {
         $manager = new ImageManager();
         $img = $manager->canvas($width, $height, $color)
-            ->encode('jpg', 50);
+                       ->encode('jpg', 50);
 
         return $img;
     }

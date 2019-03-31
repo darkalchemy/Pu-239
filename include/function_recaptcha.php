@@ -15,9 +15,9 @@ function verify_recaptcha($response, $timeout = 30)
     $ip = getip(true);
     $recaptcha = new \ReCaptcha\ReCaptcha($_ENV['RECAPTCHA_SECRET_KEY'], new \ReCaptcha\RequestMethod\CurlPost());
     $resp = $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-        ->setChallengeTimeout($timeout)
-        ->setExpectedAction('login')
-        ->verify($response, $ip);
+                      ->setChallengeTimeout($timeout)
+                      ->setExpectedAction('login')
+                      ->verify($response, $ip);
 
     $results = $resp->toArray();
 

@@ -378,11 +378,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
         $opt = $fluent->from('users')
-            ->select(null)
-            ->select('opt1')
-            ->select('opt2')
-            ->where('id = ?', $CURUSER['id'])
-            ->fetch();
+                      ->select(null)
+                      ->select('opt1')
+                      ->select('opt2')
+                      ->where('id = ?', $CURUSER['id'])
+                      ->fetch();
 
         $cache->update_row('user_' . $CURUSER['id'], [
             'opt1' => $opt['opt1'],
@@ -468,7 +468,7 @@ $checkbox_userdetails_showfriends = (($CURUSER['blocks']['userdetails_page'] & b
 $form = $level1 = $level2 = '';
 $contents = [];
 $form .= "
-    <form action='' method='post'>
+    <form action='' method='post' accept-charset='utf-8'>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
             <legend class='flipper has-text-primary'><i class='icon-up-open size_2' aria-is_hidden='true'></i>Home Page Settings</legend>

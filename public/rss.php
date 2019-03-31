@@ -43,17 +43,17 @@ $cache->delete('rss_query_' . $hash);
 $data = $cache->get('rss_query_' . $hash);
 if ($data === false || is_null($data)) {
     $data = $fluent->from('torrents AS t')
-        ->select(null)
-        ->select('t.id')
-        ->select('t.name')
-        ->select('t.descr')
-        ->select('t.size')
-        ->select('t.category')
-        ->select('t.seeders')
-        ->select('t.leechers')
-        ->select('t.added')
-        ->select('c.name AS catname')
-        ->where('t.visible = "yes"');
+                   ->select(null)
+                   ->select('t.id')
+                   ->select('t.name')
+                   ->select('t.descr')
+                   ->select('t.size')
+                   ->select('t.category')
+                   ->select('t.seeders')
+                   ->select('t.leechers')
+                   ->select('t.added')
+                   ->select('c.name AS catname')
+                   ->where('t.visible = "yes"');
 
     if (!empty($cats)) {
         $data = $data->where('t.category', $cats);
@@ -63,13 +63,13 @@ if ($data === false || is_null($data)) {
     }
     if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
         $data = $data->where('b.userid = ?', $user['id'])
-            ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
+                     ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
     }
 
     $data = $data->leftJoin('categories AS c ON t.category = c.id')
-        ->orderBy('t.added')
-        ->limit($limit)
-        ->fetchAll();
+                 ->orderBy('t.added')
+                 ->limit($limit)
+                 ->fetchAll();
 
     if (!empty($data)) {
         $cache->set('rss_query_' . $hash, $data, 300);

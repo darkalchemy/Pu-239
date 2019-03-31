@@ -117,8 +117,8 @@ function lotteryclean($data)
                 'value' => new Envms\FluentPDO\Literal('VALUES(value)'),
             ];
             $fluent->insertInto('lottery_config', $values)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                   ->onDuplicateKeyUpdate($update)
+                   ->execute();
             if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                 $fund = number_format($site_config['auto_lotto']['prize_fund']);
                 $cost = number_format($site_config['auto_lotto']['ticket_amount']);
