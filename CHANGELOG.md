@@ -5,6 +5,7 @@ add: missing files clear_announcement.php credits.php formats.php new_announceme
 fix: BBcode quote  
 remove: site_cofig['char_set']  
 update: all code set to use UTF-8  
+add: accept-charset='utf-8' to all html forms  
 
 ### 30 Mar, 2019
 fix: convert text to UTF-8 in torrent description before passing to js  
