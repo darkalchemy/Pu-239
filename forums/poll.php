@@ -300,7 +300,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a >.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== delete the poll
             sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -312,10 +312,10 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'deleted') . '!. <a href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a >.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'deleted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums . php ? action = view_topic & topic_id = ' . $topic_id);
+        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
         break; //=== end delete poll
     //=== reseting a poll ============================================================================================//
@@ -329,7 +329,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a >.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== delete the votes
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -337,10 +337,10 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'reset') . '!. <a href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a >.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'reset') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums . php ? action = view_topic & topic_id = ' . $topic_id);
+        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
         break; //=== end reset poll
     //=== closing a poll ============================================================================================//
@@ -354,7 +354,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink" > ' . $lang['fe_back_to_topic'] . ' </a >.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink"> ' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== close the poll
             sql_query('UPDATE forum_poll SET `poll_closed` = \'yes\', poll_ends = ' . TIME_NOW . ' WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -462,7 +462,7 @@ switch ($action) {
 	<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
-		<h1>' . $lang['poll_edit_poll_in'] . ' " < a class="altlink" href = "forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" > ' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . ' </a > "</h1>
+		<h1>' . $lang['poll_edit_poll_in'] . ' " < a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" > ' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . ' </a> "</h1>
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_edit">
 		<input type="hidden" name="do_poll_edit" value="1">

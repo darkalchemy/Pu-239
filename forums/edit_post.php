@@ -167,8 +167,8 @@ $HTMLOUT .= '
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
-	<div class="has - text - centered">
-	<input type="submit" name="button" class="button is - small margin20" value="Edit">
+	<div class="has-text-centered">
+	<input type="submit" name="button" class="button is-small margin20" value="Edit">
     </div>
     </form>';
 

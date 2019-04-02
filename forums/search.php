@@ -422,14 +422,14 @@ $table_body = '
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="has - text - centered">
+                    <td colspan="2" class="has-text-centered">
                         <div class="level - center - center is - flex">
                             <input type="radio" id="show_list" name="show_as" value="list"' . ($show_as === 'list' ? ' checked' : '') . '>
                             <label for="show_list" class="left5">' . $lang['sea_results_as_list'] . '</label>
                             <input type="radio" id="show_GETs" name="show_as" value="posts"' . ($show_as === 'posts' ? ' checked' : '') . ' class="left10">
                             <label for="show_GETs" class="left5">' . $lang['sea_results_as_posts'] . '</label>
                         </div>
-                        <input type="submit" name="button" class="button is - small" value="' . $lang['gl_search'] . '">
+                        <input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '">
                     </td>
                 </tr>';
 

@@ -167,7 +167,7 @@ switch ($action) {
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="1">
-                    <input type="submit" class="button is - small" value="vote yes!">
+                    <input type="submit" class="button is-small" value="vote yes!">
                     </form> ~ you will be notified when this offer is filled.';
             $vote_no = '<form method="post" action="' . $site_config['baseurl'] . ' / offers . php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
@@ -189,10 +189,10 @@ switch ($action) {
                     <option value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
                     <option value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
-                    <input type="submit" class="button is - small" value="change status!">
+                    <input type="submit" class="button is-small" value="change status!">
                     </form> ');
         $usersdata = $user_stuffs->getUserFromId($arr['offered_by_user_id']);
-        $HTMLOUT .= '<div class="has - text - centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
+        $HTMLOUT .= '<div class="has-text-centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
     <table class="table table - bordered table - striped">
     <tr>
     <td colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers . php ? action = edit_offer & amp;id = ' . $id . '">edit</a> ]
@@ -309,7 +309,7 @@ switch ($action) {
     <td colspan="2">Before you make an offer, <a class="altlink" href="browse . php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
     Be sure to fill in all fields!
-    <div class="has - text - centered error size_6 margin20"><span></span></div>
+    <div class="has-text-centered error size_6 margin20"><span></span></div>
     </td>
     </tr>
     <tr>
@@ -331,12 +331,12 @@ switch ($action) {
     <td>
         <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w - 100" onchange=\'return grab_url(event)\'>
         <input type="url" id="poster" maxlength="255" name="poster" class="w - 100 is - hidden">
-        <div class="poster_container has - text - centered"></div>
+        <div class="poster_container has-text-centered"></div>
     </td>
     </tr>
     <tr>
     <td class="rowhead"><b>' . $lang['upload_bitbucket'] . '</b></td>
-    <td class="has - text - centered">
+    <td class="has-text-centered">
         <div id="droppable" class="droppable bg - 03">
             <span id="comment">' . $lang['bitbucket_dragndrop'] . '</span>
             <div id="loader" class="is - hidden">
@@ -355,8 +355,8 @@ switch ($action) {
     <td class="is - paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
-    <td colspan="2" class="has - text - centered">
-    <input type="submit" name="button" class="button is - small" value="Submit"></td>
+    <td colspan="2" class="has-text-centered">
+    <input type="submit" name="button" class="button is-small" value="Submit"></td>
     </tr>
     </tbody>
     </table></form>
@@ -426,7 +426,7 @@ switch ($action) {
         $HTMLOUT .= '<table class="table table - bordered table - striped">
     <tr>
     <td class="embedded">
-    <h1 class="has - text - centered">Edit Offer</h1>' . $top_menu . '
+    <h1 class="has-text-centered">Edit Offer</h1>' . $top_menu . '
     <form method="post" action="' . $site_config['baseurl'] . ' / offers . php ? action = edit_offer" name="offer_form" id="offer_form" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $id . '">
     <table class="table table-bordered table-striped">
@@ -500,8 +500,8 @@ switch ($action) {
             </tr>
             <tr>
                 <td colspan="2">
-                    <div class="has - text - centered margin20">
-                        <input name="button" type="submit" class="button is - small" value="Save">
+                    <div class="has-text-centered margin20">
+                        <input name="button" type="submit" class="button is-small" value="Save">
                     </div>
                 </td>
             </tr>

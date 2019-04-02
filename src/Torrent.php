@@ -122,12 +122,15 @@ class Torrent
                                     ->select("IF(num_ratings < {$this->site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
                                     ->where('id = ?', $tid)
                                     ->fetch();
+            if (empty($torrent)) {
+                return $torrent;
+            }
 
             $torrent['previous'] = $this->fluent->from('torrents')
                                                 ->select(null)
                                                 ->select('id')
                                                 ->select('name')
-                                                ->where('id < ?', $torrent['id'])
+                                                ->where('id < ?', $tid)
                                                 ->orderBy('id DESC')
                                                 ->limit(1)
                                                 ->fetch();
@@ -136,7 +139,7 @@ class Torrent
                                             ->select(null)
                                             ->select('id')
                                             ->select('name')
-                                            ->where('id > ?', $torrent['id'])
+                                            ->where('id > ?', $tid)
                                             ->orderBy('id')
                                             ->limit(1)
                                             ->fetch();

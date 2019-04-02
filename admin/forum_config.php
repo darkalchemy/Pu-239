@@ -110,8 +110,8 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
             ' . $lang['forum_config_folder_desc'] . '<br>
          </tr>
         <tr>
-            <td colspan="2" class="has - text - centered">
-            <input type="submit" name="button" class="button is - small margin20" value="' . $lang['forum_config_save'] . '"></td>
+            <td colspan="2" class="has-text-centered">
+            <input type="submit" name="button" class="button is-small margin20" value="' . $lang['forum_config_save'] . '"></td>
         </tr>
         </table></form>';
 /**

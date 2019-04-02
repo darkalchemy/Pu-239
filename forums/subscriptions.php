@@ -111,7 +111,7 @@ $heading = '
 		</tr>';
 
 $HTMLOUT .= main_table($body, $heading) . '
-		<div class="has - text - centered margin20">
-		    <input type="submit" name="button" class="button is - small" value="' . $lang['fe_remove'] . ' Selected" >
+		<div class="has-text-centered margin20">
+		    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected" >
         </div>
         </form>' . ($count > $perpage ? $menu_bottom : '');

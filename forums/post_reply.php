@@ -150,8 +150,8 @@ $HTMLOUT .= '
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
-        <div class="has - text - centered margin20">
-            <input type="submit" name="button" class="button is - small" value="' . $lang['fe_post'] . '">
+        <div class="has-text-centered margin20">
+            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '">
         </div>
     </form>';
 

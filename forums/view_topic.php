@@ -137,22 +137,22 @@ if ($arr['poll_id'] > 0) {
                         </span>')))) . '
 	                </td>
 	                <td colspan="3">' . ($CURUSER['class'] < UC_STAFF ? '' : '
-	                    <a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = poll_edit & amp;topic_id = ' . $topic_id . '" class="altlink">
-	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / modify . gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_edit'] . '
+	                    <a href="' . $site_config['baseurl'] . ' /forums.php?action=poll&amp;action_2=poll_edit&amp;topic_id=' . $topic_id . '" class="altlink">
+	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_edit'] . '
 	                    </a>
-                    	<a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = poll_reset & amp;topic_id = ' . $topic_id . '" class="altlink">
-                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / stop_watch . png" alt=" " class="tooltipper emoticon lazy"> ' . $lang['fe_reset'] . '
+                    	<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_reset&amp;topic_id=' . $topic_id . '" class="altlink">
+                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop_watch.png" alt=" " class="tooltipper emoticon lazy"> ' . $lang['fe_reset'] . '
                     	</a>' . (($arr_poll['poll_ends'] > TIME_NOW || $arr_poll['poll_closed'] === 'no') ? '
-                    	<a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = poll_close & amp;topic_id = ' . $topic_id . '" class="altlink">
-                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / clock . png" alt="" class="emoticon lazy"> close</a>' : '<a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = poll_open & amp;topic_id = ' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / clock . png" alt="" class="emoticon lazy"> ' . $lang['fe_start'] . '
+                    	<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_close&amp;topic_id=' . $topic_id . '" class="altlink">
+                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy"> close</a>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_open&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy"> ' . $lang['fe_start'] . '
                         </a>') . '
-	                    <a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = poll_delete & amp;topic_id = ' . $topic_id . '" class="altlink">
-	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / delete . gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_delete'] . '
+	                    <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_delete&amp;topic_id=' . $topic_id . '" class="altlink">
+	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_delete'] . '
 	                    </a>') . '
 	                </td>
 	            </tr>
 	            <tr>
-                    <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / poll_question . png" alt="" class="tooltipper emoticon lazy"></td>
+                    <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/poll_question.png" alt="" class="tooltipper emoticon lazy"></td>
                     <td colspan="5">' . format_comment($arr_poll['question']) . '</td>
             	</tr>
 	            <tr>
@@ -175,7 +175,7 @@ if ($arr['poll_id'] > 0) {
             $math_image = '
             <table border="0" width="200px">
 		        <tr>
-		            <td style="padding: 0px; background - image: url(' . $site_config['pic_baseurl'] . 'forums / vote_img_bg . gif); background - repeat: repeat - x">
+		            <td style="padding: 0px; background-image: url(' . $site_config['pic_baseurl'] . 'forums/vote_img_bg. gif); background-repeat: repeat-x">
                         <span class="tooltipper" title="' . $math_text . '">
                             <i class="icon - search icon" aria-hidden="true"></i>
                         </span>
@@ -194,7 +194,7 @@ if ($arr['poll_id'] > 0) {
 		        <td>' . $math_image . '</td>
 		        <td><span>' . $math_text . '</span></td>
 		        <td>' . (in_array($i, $members_votes) ? '
-		            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / check . gif" alt=" " class="tooltipper emoticon lazy">
+		            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/check.gif" alt="" class="tooltipper emoticon lazy">
 		            <span>' . $lang['fe_your_vote'] . '!</span>' : '') . '
 		        </td>
 		    </tr>';
@@ -202,7 +202,7 @@ if ($arr['poll_id'] > 0) {
     $topic_poll .= (($change_vote === 1 && $voted) ? '
             <tr>
                 <td colspan="5">
-			        <a href="' . $site_config['baseurl'] . ' / forums . php ? action = poll & amp;action_2 = reset_vote & amp;topic_id = ' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / stop_watch . png" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_reset_your_vote'] . '!</a>
+			        <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop_watch . png" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_reset_your_vote'] . '!</a>
 			</td>
 			</tr>' : '') . ($voted ? '
 	        <tr>
@@ -224,7 +224,7 @@ if ($arr['poll_id'] > 0) {
         </table><br>' : '
             <tr>
                 <td colspan="5">
-			        <input type="submit" name="button" class="button is - small w - 100" value="' . $lang['fe_vote'] . '!" >
+			        <input type="submit" name="button" class="button is-small w - 100" value="' . $lang['fe_vote'] . '!" >
 			    </td>
 		    </tr>
 		</table>
@@ -327,9 +327,7 @@ if (isset($_GET['s'])) {
     }
 }
 
-$link = $site_config['baseurl'] . " / forums . php ? action = view_topic & amp;topic_id ={
-        $topic_id}&amp;" . (isset($_GET['perpage']) ? "perpage ={
-        $perpage}&amp;" : '');
+$link = $site_config['baseurl'] . "/forums.php?action=view_topic&amp;topic_id ={$topic_id}&amp;" . (isset($_GET['perpage']) ? "perpage ={$perpage}&amp;" : '');
 $pager = pager($perpage, $posts_count, $link);
 $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];
@@ -423,7 +421,7 @@ $the_top = '
 
 $HTMLOUT .= $mini_menu . "
         <div class='margin20'>
-            <h1 class='has - text - centered'>{$lang['fe_topic']}: $topic_name
+            <h1 class='has-text-centered'>{$lang['fe_topic']}: $topic_name
                 <sub class='left10 size_1'>[{$lang['fe_read']} $views {$lang['fe_times']}]</sub>
             </h1>
             <div class='top20'>
@@ -451,30 +449,6 @@ $HTMLOUT .= $mini_menu . "
             </ul>
         </div>';
 
-/*
-$HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
-        <div>One file was not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>' : '
-        <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? (1 === $upload_errors_type ? '<div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $topic_poll . '
-        ' . ($CURUSER['class'] < UC_STAFF ? '' : '
-        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" name="checkme" enctype="multipart / form - data" accept-charset="utf-8">') . (isset($_GET['count']) ? '
-            <div>' . intval($_GET['count']) . ' PMs Sent</div>' : '') . '
-            <table class="table table-bordered table-striped">
-                ' . ($posts_count > $perpage ? "<div class='bottom20'>$menu_top</div>" : '') . $the_top . '
-                <tr>
-                    <td class="w-25">
-                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon lazy">' . $lang['fe_author'] . '
-                    </td>
-                    <td class="w-25">' . $lang['fe_topic'] . ': ' . $topic_name . '  [ ' . $lang['fe_read'] . ' ' . $views . ' ' . $lang['fe_times'] . ' ]</td>
-                    <td>' . $like_button . '</td>
-                </tr>
-                <tr>
-                    <td colspan="3">' . $lang['fe_topic_rating'] . ': ' . (getRate($topic_id, 'topic')) . '</td>
-                </tr>
-                <tr>
-                    <td colspan="3">' . $topic_users . '</td>
-                </tr>
-            </table>';
-*/
 foreach ($posts as $arr) {
     $usersdata = $user_stuffs->getUserFromId($arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
@@ -780,8 +754,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             <input type="radio" name="pinned" value="yes" ' . ($sticky === 'yes' ? 'checked' : '') . '> Yes
                             <input type="radio" name="pinned" value="no" ' . ($sticky === 'no' ? 'checked' : '') . '> No
                     </td>
-                    <td class="has - text - centered">
-                            <input type="submit" name="button" class="button is - small w - 100" value="Set ' . $lang['fe_pinned'] . '" >
+                    <td class="has-text-centered">
+                            <input type="submit" name="button" class="button is-small w - 100" value="Set ' . $lang['fe_pinned'] . '" >
                         </form>
                     </td>
                 </tr>
@@ -793,7 +767,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         <span>' . $lang['fe_lock'] . ' ' . $lang['fe_topic'] . ':</span>
                     </td>
                     <td>
-                        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" accept-charset="utf-8">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="set_locked">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="radio" name="locked" value="yes" ' . ($locked === 'yes' ? 'checked' : '') . '> Yes
@@ -820,20 +794,20 @@ if ($CURUSER['class'] >= UC_STAFF) {
                                 ' . insert_quick_jump_menu($forum_id, true) . '
                             </select>
                     </td>
-                    <td class="has - text - centered">
-                            <input type="submit" name="button" class="button is - small w - 100" value="' . $lang['vt_move_topic'] . '" >
+                    <td class="has-text-centered">
+                            <input type="submit" name="button" class="button is-small w - 100" value="' . $lang['vt_move_topic'] . '" >
                         </form>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / modify . gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy">
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify . gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy">
                     </td>
                     <td>
                         <span>' . $lang['vt_rename'] . ' ' . $lang['fe_topic'] . ':</span>
                     </td>
                     <td>
-                        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" accept-charset="utf-8">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="rename_topic">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="text" size="40" maxlength="120" name="new_topic_name" value="' . (!empty($topic_name) ? $topic_name : '') . '">
@@ -855,20 +829,20 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             <input type="hidden" name="action_2" value="change_topic_desc">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="text" size="40" maxlength="120" name="new_topic_desc" value="' . (!empty($topic_desc1) ? $topic_desc1 : '') . '"></td>
-                    <td class="has - text - centered">
-                            <input type="submit" name="button" class="button is - small w - 100" value="' . $lang['vt_change_desc'] . '" >
+                    <td class="has-text-centered">
+                            <input type="submit" name="button" class="button is-small w - 100" value="' . $lang['vt_change_desc'] . '" >
                         </form>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / merge . gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge_topic'] . '" class="tooltipper emoticon lazy">
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge_topic'] . '" class="tooltipper emoticon lazy">
                     </td>
                     <td>
                         <span >' . $lang['vt_merge'] . ' ' . $lang['fe_topic'] . ':</span>
                     </td>
                     <td>' . $lang['vt_with_topic_num'] . '
-                        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" accept-charset="utf-8">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="merge_topic">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="text" size="4" name="topic_to_merge_with" value="' . $topic_id . '">
@@ -897,19 +871,19 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             ' . $lang['vt_topic_id_can_be_found_in_the_address_bar_above'] . ' ' . $topic_id . '</p>
                             <p>' . $lang['vt_this_option_will_append_this_topic_to_the_end_of_the_new_topic'] . '</p>
                      </td>
-                     <td class="has - text - centered">
-                            <input type="submit" name="button" class="button is - small w - 100" value="' . $lang['vt_append_topic'] . '" >
+                     <td class="has-text-centered">
+                            <input type="submit" name="button" class="button is-small w - 100" value="' . $lang['vt_append_topic'] . '" >
                         </form>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / recycle_bin . gif" alt="' . $lang['vt_recycle'] . '" title="' . $lang['vt_recycle'] . '" class="tooltipper emoticon lazy"></td>
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin . gif" alt="' . $lang['vt_recycle'] . '" title="' . $lang['vt_recycle'] . '" class="tooltipper emoticon lazy"></td>
                     <td>
                         <span>' . $lang['vt_move_to_recycle_bin'] . ':</span>
                     </td>
                     <td>
-                        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" accept-charset="utf-8">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="move_to_recycle_bin">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="hidden" name="forum_id" value="' . $forum_id . '">
@@ -934,13 +908,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="delete_topic">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
-                            <input type="submit" name="button" class="button is - small w - 100" value="' . $lang['fe_del_topic'] . '" >
+                            <input type="submit" name="button" class="button is-small w - 100" value="' . $lang['fe_del_topic'] . '" >
                         </form>
                     </td>
                 </tr>' . ($CURUSER['class'] < $min_delete_view_class ? '' : '
                 <tr>
                     <td>
-                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums / delete_icon . gif" alt="' . $lang['fe_undel_topic'] . '" title="' . $lang['fe_undel_topic'] . '" class="tooltipper emoticon lazy">
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_undel_topic'] . '" title="' . $lang['fe_undel_topic'] . '" class="tooltipper emoticon lazy">
                     </td>
                     <td>
                         <span>
@@ -948,8 +922,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         </span>
                     </td>
                     <td></td>
-                    <td class="has - text - centered">
-                        <form action="' . $site_config['baseurl'] . ' / forums . php ? action = staff_actions" method="post" accept-charset="utf-8">
+                    <td class="has-text-centered">
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" accept-charset="utf-8">
                             <input type="hidden" name="action_2" value="un_delete_topic">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="submit" name="button" class="button is-small w-100" value="' . $lang['fe_undel_topic'] . '" >

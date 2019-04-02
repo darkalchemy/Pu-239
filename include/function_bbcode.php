@@ -89,14 +89,12 @@ function format_quotes($s)
     $closequotecount = count($closequote = $result[0]);
     if ($openquotecount != $closequotecount) {
         return $s;
-    } // quote mismatch. Return raw string...
-    // Get position of opening quotes
+    }
     $openval = [];
     $pos = -1;
     foreach ($openquote as $val) {
         $openval[] = $pos = strpos($s, $val, $pos + 1);
     }
-    // Get position of closing quotes
     $closeval = [];
     $pos = -1;
     foreach ($closequote as $val) {
@@ -106,7 +104,7 @@ function format_quotes($s)
         if ($openval[$i] > $closeval[$i]) {
             return $s;
         }
-    } // Cannot close before opening. Return raw string...
+    }
     $s = str_replace('[quote]', "<div><div class='quote'>", $s);
     $s = preg_replace('/\\[quote=(.+?)\\]/', "<div><b>\\1 wrote:</b><br><div class='quote'>", $s);
     $s = str_replace('[/quote]', '</div></div>', $s);
@@ -453,6 +451,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '&lt;br&gt;',
     ], '<br>', $s);
 
+    $s = str_replace('http:', 'https:', $s);
     return $s;
 }
 
@@ -461,6 +460,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
  *
  * @return mixed
  */
+
+
+
 function format_code($s)
 {
     if (preg_match('/\[code\]/', $s)) {
@@ -470,14 +472,12 @@ function format_code($s)
         $closequotecount = count($closequote = $result[0]);
         if ($openquotecount != $closequotecount) {
             return $s;
-        } // quote mismatch. Return raw string...
-        // Get position of opening quotes
+        }
         $openval = [];
         $pos = -1;
         foreach ($openquote as $val) {
             $openval[] = $pos = strpos($s, $val, $pos + 1);
         }
-        // Get position of closing quotes
         $closeval = [];
         $pos = -1;
         foreach ($closequote as $val) {
@@ -488,15 +488,14 @@ function format_code($s)
                 return $s;
             }
         }
-        $s = str_replace('[code]', "<div><div class='size_3 has-text-weight-bold bottom10'>code:</div><div class='code'>", htmlspecialchars($s));
-        $s = str_replace('[/code]', '</div></div>', $s);
+        $s = str_replace('[code]', "<div><fieldset class='code'><legend>code</legend>", $s);
+        $s = str_replace('[/code]', '</fieldset></div>', $s);
         $s = html_entity_decode($s);
     }
 
     return $s;
 }
 
-//=== no bb code in post
 /**
  * @param      $text
  * @param bool $strip_html
@@ -510,8 +509,6 @@ function format_comment_no_bbcode($text, $strip_html = true)
     if ($strip_html) {
         $s = htmlsafechars($s, ENT_QUOTES, get_charset());
     }
-    // BBCode to find...
-    //=== basically will change this into a sort of strip tags but of bbcode shor of the code tag
     $bb_code_in = [
         '/\[b\]\s*((\s|.)+?)\s*\[\/b\]/i',
         '/\[i\]\s*((\s|.)+?)\s*\[\/i\]/i',

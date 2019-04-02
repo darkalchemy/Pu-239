@@ -228,10 +228,10 @@ $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thing
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="add">
-        <h2 class="has - text - centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
+        <h2 class="has-text-centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
 $body = '
             <tr>
-                <td colspan="2" class="has - text - centered">
+                <td colspan="2" class="has-text-centered">
                     ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
                     <p class="top10">
                         <span>' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
@@ -249,16 +249,16 @@ for ($i = 1; $i < 6; ++$i) {
 
 $body .= '
             <tr>
-                <td colspan="2" class="has - text - centered">
+                <td colspan="2" class="has-text-centered">
                     ' . $lang['pm_edmail_only_fill'] . '<br>
                     ' . $lang['pm_edmail_blank'] . '<br>
-                    <input type="submit" class="button is - small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
+                    <input type="submit" class="button is-small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
                 </td>
             </tr>
         </form>';
 
 $HTMLOUT .= main_table($body);
-$HTMLOUT .= '<h2 class="top20 has - text - centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
 $HTMLOUT .= '
         <form action="messages . php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
@@ -315,7 +315,7 @@ $HTMLOUT .= main_table('
         <div id="defcat" class="is_hidden">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
     </tr>
     <tr>
-        <td colspan="2" class="has - text - centered">
-        <input type="submit" class="button is - small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
+        <td colspan="2" class="has-text-centered">
+        <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
     </tr>
     </table></form>');

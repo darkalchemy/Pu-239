@@ -163,11 +163,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($as_list_post === 1) {
         $table_header = "
             <tr>
-                <th class='w - 10 has - text - centered'>Mailbox</th>
+                <th class='w - 10 has-text-centered'>Mailbox</th>
                 <th class='w - 50'>{$lang['pm_search_subject']}</th>
-                <th class='w - 10 has - text - centered'>Sender</th>
-                <th class='w - 10 has - text - centered'>{$lang['pm_search_date']}</th>
-                <th class='w - 1 has - text - centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
+                <th class='w - 10 has-text-centered'>Sender</th>
+                <th class='w - 10 has-text-centered'>{$lang['pm_search_date']}</th>
+                <th class='w - 1 has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
             </tr>";
 
         while ($row = mysqli_fetch_assoc($res_search)) {

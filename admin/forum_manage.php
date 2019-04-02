@@ -157,10 +157,10 @@ switch ($action) {
                         </td>
                     </tr>
                 </table>
-            <div class="has - text - centered margin20">
+            <div class="has-text-centered margin20">
                 <input type="hidden" name="action2" value="edit_forum">
                 <input type="hidden" name="id" value="' . htmlsafechars($id) . '">
-                <input type="submit" name="button" class="button is - small margin20" value="' . $lang['fm_efp_btn'] . '">
+                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '">
             </div>
         </form>';
         }
@@ -198,7 +198,7 @@ if (mysqli_num_rows($res) > 0) {
             <td>' . get_user_class_name($row['min_class_read']) . '</td>
             <td>' . get_user_class_name($row['min_class_write']) . '</td>
             <td>' . get_user_class_name($row['min_class_create']) . '</td>
-            <td class="has - text - centered">
+            <td class="has-text-centered">
                 <span class="level - center">
                     <span class="left10 tooltipper" title="Edit">
                         <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = forum_manage & amp;action = forum_manage & amp;action2 = edit_forum_page & amp;id = ' . (int) $row['id'] . '">
@@ -290,9 +290,9 @@ $HTMLOUT .= $option_12 . '
             </td>
         </tr>
     </table>
-    <div class="has - text - centered margin20">
+    <div class="has-text-centered margin20">
         <input type="hidden" name="action2" value="add_forum">
-        <input type="submit" name="button" class="button is - small margin20" value="' . $lang['fm_mp_btn'] . '">
+        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '">
     </div>
     </form>
           <script>

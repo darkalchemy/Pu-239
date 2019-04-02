@@ -90,8 +90,8 @@ $HTMLOUT .= main_table('
             <td>' . $lang['text_email'] . '</td><td><input type="text" name="email" class="w - 100" required></td>
         </tr>');
 $HTMLOUT .= '
-        <div class="has - text - centered margin20">
-            <input type="submit" value="' . $lang['btn_okay'] . '" class="button is - small">
+        <div class="has-text-centered margin20">
+            <input type="submit" value="' . $lang['btn_okay'] . '" class="button is-small">
         </div>
   </form>';
 

@@ -116,8 +116,8 @@ switch ($action) {
             }
             $HTMLOUT .= $sorted . '</select></td></tr>
             <tr>
-                <td colspan="2" class="has - text - centered">
-                <input type="submit" name="button" class="button is - small margin20" value="' . $lang['ad_over_editbut'] . '">
+                <td colspan="2" class="has-text-centered">
+                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_editbut'] . '">
                 </td>
           </tr>
         </table></form>';
@@ -129,10 +129,10 @@ switch ($action) {
         $HTMLOUT .= $main_links;
         $heading = '
             <tr>
-                <th class="has - text - centered">' . $lang['ad_over_sort1'] . '</th>
+                <th class="has-text-centered">' . $lang['ad_over_sort1'] . '</th>
                 <th>' . $lang['ad_over_name1'] . '</th>
-                <th class="has - text - centered">' . $lang['ad_over_minview1'] . '</th>
-                <th class="has - text - centered">' . $lang['ad_over_modify'] . '</th>
+                <th class="has-text-centered">' . $lang['ad_over_minview1'] . '</th>
+                <th class="has-text-centered">' . $lang['ad_over_modify'] . '</th>
             </tr>';
         $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
@@ -140,13 +140,13 @@ switch ($action) {
             while ($row = mysqli_fetch_array($res)) {
                 $body .= '
             <tr>
-                <td class="has - text - centered">' . (int) $row['sort'] . '</td>
+                <td class="has-text-centered">' . (int) $row['sort'] . '</td>
             <td>
                 <a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = forum_view & amp;fourm_id = ' . (int) $row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
                 ' . htmlsafechars($row['description'], ENT_QUOTES) . '
             </td>
-            <td class="has - text - centered">' . get_user_class_name($row['min_class_view']) . '</td>
-            <td class="has - text - centered">
+            <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
+            <td class="has-text-centered">
                 <span class="level - center">
                     <span class="left10">
                         <a href="staffpanel . php ? tool = over_forums & amp;action = over_forums & amp;action2 = edit_forum_page & amp;id = ' . $row['id'] . '" >
@@ -207,8 +207,8 @@ switch ($action) {
                     </td>
                 </tr>';
         $HTMLOUT .= main_table($body, '', 'top20') . '
-                <div class="has - text - centered margin20">
-                    <input type="submit" name="button" class="button is - small margin20" value="' . $lang['ad_over_makebutton'] . '">
+                <div class="has-text-centered margin20">
+                    <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_makebutton'] . '">
                 </div>
            </form>';
         break;

@@ -62,8 +62,8 @@ $HTMLOUT .= '
             <td class="is - paddingless">' . BBcode($draft) . '</td>
         </tr>
         <tr>
-            <td colspan="2" class="has - text - centered">
-                <input type="submit" class="button is - small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '">
+            <td colspan="2" class="has-text-centered">
+                <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '">
             </td>
         </tr>
     </table>

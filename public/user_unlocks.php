@@ -77,7 +77,7 @@ $HTMLOUT = '
                             </span>
                         </div>
                     </div>
-                    <div class="has - text - centered margin20">
+                    <div class="has-text-centered margin20">
                         <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s">
                     </div>
                 </form>

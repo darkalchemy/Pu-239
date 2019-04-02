@@ -141,23 +141,6 @@ iframe {
     height: 600px;
 }
 
-fieldset {
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-legend {
-    font-size: 1.25em;
-    line-height: 1.25em;
-    display: block;
-    color: #fff;
-    padding: 10px 0;
-    border: 0;
-    width: calc(100% - 10px);
-    margin-left: 5px;
-}
-
 select:invalid,
 input:invalid {
     box-shadow: 0 0 5px 1px #00f;
@@ -1235,10 +1218,11 @@ body.background-16 {
     font-family: "Lucida Console", Monaco, monospace;
     font-size: .9em !important;
     line-height: 1.1em;
-    border: 1px solid #808080;
-    background: #000 linear-gradient(to bottom, #222, #000);
+    border: 1px solid #fff;
+    background-color: rgba(0, 0, 0, .1);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
     border-radius: .625em;
-    padding: 10px;
+    padding: 1.25em;
 }
 
 .show_in_navbar,

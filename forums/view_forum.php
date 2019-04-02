@@ -427,6 +427,6 @@ $HTMLOUT .= $table . ($may_post ? '
                         <form action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" method="post" name="new" accept-charset="utf-8">
 		                    <input type="hidden" name="action" value="new_topic">
 		                    <input type="hidden" name="forum_id" value="' . $forum_id . '">
-		                    <input type="submit" name="button" class="button is - small" value="' . $lang['fe_new_topic'] . '" >
+		                    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '" >
 		                </form>
 		            </div>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>') . $the_top_and_bottom . ($count > $perpage ? $menu_bottom : '');

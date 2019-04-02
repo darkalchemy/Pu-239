@@ -360,7 +360,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             <input name="id" type="hidden" value="' . (int) $user['id'] . '">
                             <input type="hidden" value="staff_notes" name="action" id="action">
                             <textarea id="new_staff_note" class="w - 100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
-                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is - small" name="staff_notes_button"/>
+                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
                             </form>
                             </div> </td></tr>';
 

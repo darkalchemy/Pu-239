@@ -25,8 +25,8 @@ $HTMLOUT .= main_div('
             <form method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w - 100">' . $msg_to_analyze . '</textarea>
-                <div class="has - text - centered top20">
-                    <input type="submit" class="button is - small" value="' . $lang['mega_search_btn'] . '">
+                <div class="has-text-centered top20">
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>', 'bottom20');
@@ -45,8 +45,8 @@ $HTMLOUT .= main_div('
             <form method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
                 <textarea name="user_names" rows="4" class="w - 100">' . $user_names . '</textarea>
-                <div class="has - text - centered top20">
-                    <input type="submit" class="button is - small" value="' . $lang['mega_search_btn'] . '">
+                <div class="has-text-centered top20">
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>');
@@ -283,7 +283,7 @@ if (isset($_POST['msg_to_analyze'])) {
             $failed[] = $tested_ip;
         } else {
             $heading = '
-                <div class="has - text - centered"> 
+                <div class="has-text-centered"> 
                     <h1>' . $lang['mega_used_ip'] . ' ' . $tested_ip . '</h1>
                 </div>
                 <tr>

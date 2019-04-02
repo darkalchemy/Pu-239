@@ -45,7 +45,7 @@ function navmenu()
         </div>';
     $div = '
         <form action="wiki.php" method="post" accept-charset="utf-8">
-            <div class="tabs is - centered is - small padtop10">
+            <div class="tabs is - centered is-small padtop10">
                 <ul>
                     <li><a href="' . $site_config['baseurl'] . ' / wiki . php ? action = sort & amp;letter = a">A</a></li>';
     for ($i = 0; $i < 25; ++$i) {
@@ -153,15 +153,15 @@ if ($action === 'article') {
                 $edit = '<div class="left10 top20">Last Updated by: ' . format_username($wiki['lastedituser']) . ' - ' . get_date($wiki['lastedit'], 'LONG') . '</div>';
             }
             $div = '
-                    <h1 class="has - text - centered">
+                    <h1 class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . ' / wiki . php ? action = article & amp;name = ' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b>
                     </h1>
                     <div id="bg - 02 padding10 round10">' . ($wiki['userid'] > 0 ? " < div class='left10 bottom20' >{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
                         <div class="w - 100 padding20 round10 bg - 02">' . format_comment($wiki['body']) . '</div>
                     </div>' . $edit;
             $div .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
-                    <div class="has - text - centered">
-                        <a href="' . $site_config['baseurl'] . ' / wiki . php ? action = edit & amp;id = ' . (int) $wiki['id'] . '" class="button is - small margin20">' . $lang['wiki_edit'] . '</a>
+                    <div class="has-text-centered">
+                        <a href="' . $site_config['baseurl'] . ' / wiki . php ? action = edit & amp;id = ' . (int) $wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
                     </div>' : '');
             $HTMLOUT .= main_div($div, 'bottom20');
         }

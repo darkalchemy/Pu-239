@@ -241,7 +241,7 @@ switch ($action) {
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="1">
-                    <input type="submit" class="button is - small" value="vote yes!">
+                    <input type="submit" class="button is-small" value="vote yes!">
                     </form> ~ you will be notified when this request is filled.';
             $vote_no = '<form method="post" action="' . $site_config['baseurl'] . ' / requests . php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
@@ -300,8 +300,8 @@ switch ($action) {
   <td>Report Request</td>
   <td>
     <form action="' . $site_config['baseurl'] . '/report.php?type=Request&amp;id=' . $id . '" method="post" accept-charset="utf-8">
-        <div class="has - text - centered margin20">
-            <input type="submit" class="button is - small" value="Report This Request">
+        <div class="has-text-centered margin20">
+            <input type="submit" class="button is-small" value="Report This Request">
         </div>
         For breaking the <a class="altlink" href="rules . php">rules</a>
     </form>
@@ -309,10 +309,10 @@ switch ($action) {
   </tr>
   </table>';
         $HTMLOUT .= '
-            <h1 class="has - text - centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
+            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
             <a id="startcomments"></a>
-            <div class="has - text - centered margin20">
-                <a class="button is - small" href="' . $site_config['baseurl'] . ' / requests . php ? action = add_comment & amp;id = ' . $id . '">Add a comment</a>
+            <div class="has-text-centered margin20">
+                <a class="button is-small" href="' . $site_config['baseurl'] . ' / requests . php ? action = add_comment & amp;id = ' . $id . '">Add a comment</a>
             </div>';
         $count = (int) $arr['comments'];
         if (!$count) {
@@ -382,8 +382,8 @@ switch ($action) {
             get_file_name('dragndrop_js'),
         ]);
         $HTMLOUT .= $top_menu . '
-    <h1 class="has - text - centered">New Request</h1>
-    <div class="banner_container has - text - centered w - 100"></div>
+    <h1 class="has-text-centered">New Request</h1>
+    <div class="banner_container has-text-centered w - 100"></div>
     <form method="post" action="' . $site_config['baseurl'] . ' / requests . php ? action = add_new_request" accept-charset="utf-8">
     <table class="table table-bordered table-striped">
     <tbody>
@@ -558,8 +558,8 @@ switch ($action) {
    </tr>') . '
    <tr>
    <td colspan="2">
-    <div class="has - text - centered margin20">
-        <input type="submit" name="button" class="button is - small" value="Edit">
+    <div class="has-text-centered margin20">
+        <input type="submit" name="button" class="button is-small" value="Edit">
     </div>
     </td>
    </tr>
@@ -693,8 +693,8 @@ switch ($action) {
     </tr>
      <tr>
         <td colspan="2">
-            <div class="has - text - centered margin20">
-                <input name="button" type="submit" class="button is - small" value="Edit">
+            <div class="has-text-centered margin20">
+                <input name="button" type="submit" class="button is-small" value="Edit">
             </div>
         </td>
     </tr>

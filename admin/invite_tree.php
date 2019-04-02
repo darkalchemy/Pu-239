@@ -165,7 +165,7 @@ if ($id !== 0) {
     $HTMLOUT .= '
         <h1 class="has-text-centered">' . $lang['invite_search'] . '</h1>
         <form method="get" action="staffpanel.php?tool=invite_tree&amp;search=1&amp;" accept-charset="utf-8">
-            <div class="has - text - centered margin20">
+            <div class="has-text-centered margin20">
                 <input type="hidden" name="action" value="invite_tree"/>
                 <input type="text" size="30" name="search" value="' . $search . '"/>
                 <select name="class">
@@ -180,7 +180,7 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '
                 </select>
-                <input type="submit" value="' . $lang['invite_btn'] . '" class="button is - small">
+                <input type="submit" value="' . $lang['invite_btn'] . '" class="button is-small">
             </div>
         </form>';
     $aa = range('0', '9');
@@ -188,7 +188,7 @@ if ($id !== 0) {
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $HTMLOUT .= '
-            <nav class="pagination is - centered is - marginless is - small" role="navigation" aria-label="pagination">
+            <nav class="pagination is - centered is - marginless is-small" role="navigation" aria-label="pagination">
                 <ul class="pagination - list bottom20">
                     <li>';
     $count = 0;
@@ -244,7 +244,7 @@ if ($id !== 0) {
                 <td>' . get_user_class_name($row['class']) . '</td>' . $country . '
                 <td>
                     <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = invite_tree & amp;id = ' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
-                        <span class="button is - small">' . $lang['invite_search_view'] . '</span>
+                        <span class="button is-small">' . $lang['invite_search_view'] . '</span>
                     </a>
                 </td>
             </tr>';

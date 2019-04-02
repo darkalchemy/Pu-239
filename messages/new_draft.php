@@ -49,8 +49,8 @@ $HTMLOUT .= $top_links . '
     </tr>
     <tr>
         <td colspan="2">
-            <div class="has - text - centered">
-                <input type="submit" class="button is - small" name="buttonval" value="' . $lang['pm_draft_save'] . '">
+            <div class="has-text-centered">
+                <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save'] . '">
             </div>
         </td>
     </tr>

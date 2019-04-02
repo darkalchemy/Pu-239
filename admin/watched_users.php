@@ -122,17 +122,17 @@ $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $HTMLOUT .= '
         <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" accept-charset="utf-8">
-        <h1 class="has - text - centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
+        <h1 class="has-text-centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
     <table class="table table - bordered table - striped">';
     $HTMLOUT .= '
     <tr>
         <td><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = watched_user & amp;ASC = ' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
         <td><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = username & amp;ASC = ' . $ASC . '">' . $lang['watched_username'] . '</a></td>
         <td class="has - text - left" width="400">' . $lang['watched_suspicion'] . '</td>
-        <td class="has - text - centered">' . $lang['watched_stats'] . '</td>
-        <td class="has - text - centered"><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = invited_by & amp;ASC = ' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
+        <td class="has-text-centered">' . $lang['watched_stats'] . '</td>
+        <td class="has-text-centered"><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = invited_by & amp;ASC = ' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
-        <td class="has - text - centered">
+        <td class="has-text-centered">
             <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All">
         </td>' : '') . '
     </tr>';
@@ -146,20 +146,20 @@ if ($how_many > 0) {
         <p>' . format_comment($arr['watched_user_reason']) . '</p>';
         $HTMLOUT .= '
     <tr>
-        <td class="has - text - centered">' . get_date($arr['watched_user'], '') . '</td>
+        <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>
         <td class="has - text - left">' . format_username($arr['id']) . '</td>
         <td class="has - text - left">' . $the_flip_box . '</td>
-        <td class="has - text - centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="has - text - centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($arr['invitedby'])) . '</td>
+        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($arr['invitedby'])) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
-        <td class="has - text - centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '
+        <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '
     </tr>';
     }
 
     $HTMLOUT .= '
         <tr>
-            <td class="has - text - centered" colspan="6">
-                <input type="submit" class="button is - small" value="remove selected ' . $lang['watched_removedfrom'] . '">
+            <td class="has-text-centered" colspan="6">
+                <input type="submit" class="button is-small" value="remove selected ' . $lang['watched_removedfrom'] . '">
             </td>
         </tr>
     </table>
