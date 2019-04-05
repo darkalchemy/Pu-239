@@ -11,7 +11,7 @@ if (empty($BLOCKS)) {
 }
 
 foreach ($argv as $arg) {
-    if (!$site_config['in_production'] && ($arg === 'update' || $arg === 'all')) {
+    if (!$site_config['site']['production'] && ($arg === 'update' || $arg === 'all')) {
         passthru('composer self-update');
         passthru('sudo npm install -g npm');
         passthru('composer update');
@@ -42,7 +42,7 @@ $js_ext = '.js';
 $jstmp = BIN_DIR . 'temp.js';
 $csstmp = BIN_DIR . 'temp.css';
 
-if ($site_config['in_production']) {
+if ($site_config['site']['production']) {
     $purpose = '--compress --mangle';
     $short = 'Minified';
     $spurpose = '--skip-rebase -O2';
@@ -191,6 +191,10 @@ foreach ($styles as $folder) {
     $js_list['vendor_js'] = [
         SCRIPTS_DIR . 'yall.js',
         SCRIPTS_DIR . 'popup.js',
+    ];
+
+    $js_list['site_config_js'] = [
+        SCRIPTS_DIR . 'site_config.js',
     ];
 
     $js_list['main_js'] = [
@@ -355,7 +359,7 @@ foreach ($styles as $folder) {
 
 echo "All CSS and Javascript files processed\n";
 foreach ($argv as $arg) {
-    if (!$site_config['in_production'] && ($arg === 'fix' || $arg === 'all')) {
+    if (!$site_config['site']['production'] && ($arg === 'fix' || $arg === 'all')) {
         passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
     }
 }
@@ -487,7 +491,7 @@ function get_file_name($file)
     foreach ($pages as $page) {
         $output .= "
         case '{$page[0]}':
-            return \"{\$site_config['baseurl']}/{$page[1]}\";";
+            return \"{\$site_config['paths']['baseurl']}/{$page[1]}\";";
     }
     $output .= '
         default:

@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user_' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Leech Warn Page');
             }
@@ -80,13 +80,13 @@ switch ($do) {
     case 'disabled':
         $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
         $title = $lang['leechwarn_disabled_title'];
-        $link = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;?do=warned'>{$lang['leechwarn_warned_link']}</a>";
+        $link = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;?do=warned'>{$lang['leechwarn_warned_link']}</a>";
         break;
 
     case 'leechwarn':
         $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, leechwarn, added, last_access FROM users WHERE leechwarn>='1' ORDER BY last_access DESC, leechwarn DESC ";
         $title = $lang['leechwarn_leechwarn_title'];
-        $link = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;do=disabled'>{$lang['leechwarn_disabled_link']}</a>";
+        $link = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;do=disabled'>{$lang['leechwarn_disabled_link']}</a>";
         break;
 }
 $g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);

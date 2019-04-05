@@ -23,8 +23,8 @@ $HTMLOUT = '';
 
 if ($action === 'viewposts') {
     $select_is = 'COUNT(DISTINCT p.id)';
-    $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id';
-    $where_is = 'p.user_id = ' . sqlesc($userid) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class']);
+    $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id';
+    $where_is = 'p.user_id=' . sqlesc($userid) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class']);
     $order_is = 'p.id DESC';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
@@ -37,7 +37,7 @@ if ($action === 'viewposts') {
     } else {
         $subject = $lang['posts_unknown'] . '[' . $userid . ']';
     }
-    $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN read_posts as r ON p.topic_id = r.topic_id AND p.user_id = r.user_id';
+    $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id LEFT JOIN read_posts as r ON p.topic_id=r.topic_id AND p.user_id=r.user_id';
     $select_is = 'f.id AS f_id, f.name, t.id AS t_id, t.topic_name, t.last_post, r.last_post_read, p.*';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is ORDER BY $order_is {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
@@ -55,7 +55,7 @@ if ($action === 'viewposts') {
         $topicname = htmlsafechars($arr['topic_name']);
         $forumid = (int) $arr['f_id'];
         $forumname = htmlsafechars($arr['name']);
-        $dt = (TIME_NOW - $site_config['readpost_expiry']);
+        $dt = TIME_NOW - $site_config['forums']['readpost_expiry'];
         $newposts = 0;
         if ($arr['added'] > $dt) {
             $newposts = ($arr['last_post_read'] < $arr['last_post']) && $CURUSER['id'] == $userid;
@@ -63,11 +63,11 @@ if ($action === 'viewposts') {
         $added = get_date($arr['added'], '');
         $title = "
         $added -- <b>{$lang['posts_forum']}: </b>
-        <a href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
+        <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
         -- <b>{$lang['posts_topic']}: </b>
-        <a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid'>$topicname</a>
+        <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid'>$topicname</a>
         -- <b>{$lang['posts_post']}: </b>
-        <a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>#{$postid}</a>" . ($newposts ? "
+        <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>#{$postid}</a>" . ($newposts ? "
         <b>(<span class='has-text-danger'>{$lang['posts_new']}</span>)</b>" : '');
         $body = format_comment($arr['body']);
 
@@ -138,7 +138,7 @@ if ($action === 'viewposts') {
         $HTMLOUT .= "
         <div class='portlet'>
             <h2 class='has-text-centered'>
-                $added --- <b>{$lang['posts_torrent']}: </b>" . ($torrent ? ("<a href='{$site_config['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . " --- <b>{$lang['posts_comment']}: </b>#<a href='{$site_config['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
+                $added --- <b>{$lang['posts_torrent']}: </b>" . ($torrent ? ("<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . " --- <b>{$lang['posts_comment']}: </b>#<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
             </h2>" . main_div($body) . '
         </div>';
     }

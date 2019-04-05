@@ -109,7 +109,7 @@ $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['index_serverload']}</h1>";
 $body = "
     <div id='load'>
-        <div style='width: 100%; height: 15px; background: url({$site_config['pic_baseurl']}loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
+        <div style='width: 100%; height: 15px; background: url({$site_config['paths']['images_baseurl']}loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';
@@ -119,7 +119,7 @@ if ($percent <= 70) {
     $pic = 'loadbarred.gif';
 }
 $body .= "
-            <img id='load_image' style='height: 15px; width: 1px;' src='{$site_config['pic_baseurl']}{$pic}' alt='$percent&#37;' class='round5'>
+            <img id='load_image' style='height: 15px; width: 1px;' src='{$site_config['paths']['images_baseurl']}{$pic}' alt='$percent&#37;' class='round5'>
         </div>
         <div class='padding20'>
             <span class='columns'>

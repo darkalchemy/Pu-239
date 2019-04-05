@@ -16,16 +16,16 @@ function prime_caches($data)
     ignore_user_abort(true);
 
     $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('id')
-                       ->select('info_hash')
-                       ->select('owner');
+        ->select(null)
+        ->select('id')
+        ->select('info_hash')
+        ->select('owner');
 
     $users = $fluent->from('users')
-                    ->select(null)
-                    ->select('users.id')
-                    ->innerJoin('snatched ON users.id = snatched.userid')
-                    ->groupBy('users.id');
+        ->select(null)
+        ->select('users.id')
+        ->innerJoin('snatched ON users.id=snatched.userid')
+        ->groupBy('users.id');
 
     foreach ($torrents as $torrent) {
         $torrent_stuffs->get($torrent['id']);

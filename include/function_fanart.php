@@ -31,7 +31,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
         $type = 'tv' . $type;
     }
 
-    $key = $_ENV['FANART_API_KEY'];
+    $key = $site_config['api']['fanart'];
     if (empty($key) || empty($thetvdb_id) || !in_array($type, $types)) {
         return false;
     }
@@ -45,7 +45,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
     if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (!empty($site_config['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['image_lang']))) {
+            if (!empty($site_config['fanart']['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['fanart']['image_lang']))) {
                 if ($season != 0) {
                     if ($image['season'] == $season) {
                         $images[] = $image['url'];
@@ -53,7 +53,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                 } else {
                     $images[] = $image['url'];
                 }
-            } elseif (empty($site_config['image_lang'])) {
+            } elseif (empty($site_config['fanart']['image_lang'])) {
                 $images[] = $image['url'];
             }
         }
@@ -72,9 +72,9 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                     'type' => $type,
                 ];
                 $fluent->insertInto('images')
-                       ->values($values)
-                       ->ignore()
-                       ->execute();
+                    ->values($values)
+                    ->ignore()
+                    ->execute();
             }
 
             shuffle($images);
@@ -107,7 +107,7 @@ function getMovieImagesByID($id, $type = 'moviebackground')
         'movieposter',
         'moviebanner',
     ];
-    $key = $_ENV['FANART_API_KEY'];
+    $key = $site_config['api']['fanart'];
     if (empty($key) || empty($id) || !in_array($type, $types)) {
         return false;
     }
@@ -129,9 +129,9 @@ function getMovieImagesByID($id, $type = 'moviebackground')
                 'url' => $image['url'],
                 'type' => str_replace('movie', '', $type),
             ];
-            if (!empty($site_config['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['image_lang']))) {
+            if (!empty($site_config['fanart']['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['fanart']['image_lang']))) {
                 $images[] = $image;
-            } elseif (empty($site_config['image_lang'])) {
+            } elseif (empty($site_config['fanart']['image_lang'])) {
                 $images[] = $image;
             }
         }

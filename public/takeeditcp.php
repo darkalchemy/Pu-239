@@ -30,13 +30,13 @@ if ($action == 'avatar') {
     }
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
-        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_image_error']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid=' . sqlesc($CURUSER['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
@@ -63,13 +63,13 @@ if ($action == 'avatar') {
     $signature = validate_url($_POST['signature']);
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
-        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_unsupported']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
-        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid=' . sqlesc($CURUSER['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
         $curuser_cache['signature'] = ('[img]' . $signature . "[/img]\n");
         $user_cache['signature'] = ('[img]' . $signature . "[/img]\n");
@@ -98,10 +98,10 @@ if ($action == 'avatar') {
         }
 
         $cur_passhash = $fluent->from('users')
-                               ->select(null)
-                               ->select('passhash')
-                               ->where('id = ?', $CURUSER['id'])
-                               ->fetch('passhash');
+            ->select(null)
+            ->select('passhash')
+            ->where('id=?', $CURUSER['id'])
+            ->fetch('passhash');
 
         if (!password_verify($current_pass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
@@ -130,10 +130,10 @@ if ($action == 'avatar') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_address_taken']);
         }
         $cur_passhash = $fluent->from('users')
-                               ->select(null)
-                               ->select('passhash')
-                               ->where('id = ?', $CURUSER['id'])
-                               ->fetch('passhash');
+            ->select(null)
+            ->select('passhash')
+            ->where('id=?', $CURUSER['id'])
+            ->fetch('passhash');
 
         if (!password_verify($chmailpass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
@@ -194,8 +194,8 @@ if ($action == 'avatar') {
             'id' => $alt_id,
         ];
         $fluent->insertInto('tokens')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
 
         $body = str_replace([
             '<#USERNAME#>',
@@ -205,28 +205,28 @@ if ($action == 'avatar') {
             '<#CHANGE_LINK#>',
         ], [
             $CURUSER['username'],
-            $site_config['site_name'],
+            $site_config['site']['name'],
             $email,
             getip(),
-            "{$site_config['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
+            "{$site_config['paths']['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
         ], $lang['takeeditcp_email_body']);
 
         $mail = new Message();
-        $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-             ->addTo($email)
-             ->setReturnPath($site_config['site_email'])
-             ->setSubject("{$site_config['site_name']} {$lang['takeeditcp_confirm']}")
-             ->setHtmlBody($body);
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+            ->addTo($email)
+            ->setReturnPath($site_config['site']['email'])
+            ->setSubject("{$site_config['site']['name']} {$lang['takeeditcp_confirm']}")
+            ->setHtmlBody($body);
 
         $mailer = new SendmailMailer();
-        $mailer->commandArgs = "-f{$site_config['site_email']}";
+        $mailer->commandArgs = "-f{$site_config['site']['email']}";
         $mailer->send($mail);
 
-        $emailquery = sql_query('SELECT id, username, email FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $emailquery = sql_query('SELECT id, username, email FROM users WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $spm = mysqli_fetch_assoc($emailquery);
         $dt = TIME_NOW;
         $subject = sqlesc($lang['takeeditcp_email_alert']);
-        $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$site_config['baseurl']}/userdetails.php?id=" . (int) $spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
+        $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
         $pmstaff = sql_query('SELECT id FROM users WHERE class = ' . UC_ADMINISTRATOR) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($pmstaff)) {
             $msgs_buffer[] = [
@@ -490,29 +490,29 @@ if ($user_cache) {
 }
 
 if (!empty($updateset)) {
-    sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($force_logout) {
         $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW, 2591999);
     }
 }
 if ($setbits || $clrbits) {
-    $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id']);
+    $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($CURUSER['id']);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 if ($setbits2 || $clrbits2) {
-    $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id = ' . sqlesc($CURUSER['id']);
+    $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id=' . sqlesc($CURUSER['id']);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 
 $opt = $fluent->from('users')
-              ->select(null)
-              ->select('opt1')
-              ->select('opt2')
-              ->where('id = ?', $CURUSER['id'])
-              ->fetch();
+    ->select(null)
+    ->select('opt1')
+    ->select('opt2')
+    ->where('id=?', $CURUSER['id'])
+    ->fetch();
 
 $cache->update_row('user_' . $CURUSER['id'], [
     'opt1' => $opt['opt1'],
     'opt2' => $opt['opt2'],
 ], $site_config['expires']['user_cache']);
-header("Location: {$site_config['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);
+header("Location: {$site_config['paths']['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);

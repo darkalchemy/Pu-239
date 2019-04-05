@@ -43,13 +43,13 @@ $sections = [
 
 if (!isset($_GET['id'])) {
     $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_missing_id']}");
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
 if (!is_valid_id($_GET['id'])) {
     $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
@@ -59,14 +59,14 @@ $dt = TIME_NOW;
 $torrent = $torrent_stuffs->get($id);
 $next = $previous = '';
 if (!empty($torrent['previous']['id'])) {
-    $previous = "<a href='{$site_config['baseurl']}/details.php?id={$torrent['previous']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars($torrent['previous']['name']) . "'><i class='icon-left-open size_2' aria-hidden='true'></i></a>";
+    $previous = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['previous']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars($torrent['previous']['name']) . "'><i class='icon-left-open size_2' aria-hidden='true'></i></a>";
 }
 if (!empty($torrent['next']['id'])) {
-    $next = "<a href='{$site_config['baseurl']}/details.php?id={$torrent['next']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars($torrent['next']['name']) . "'><i class='icon-right-open size_2' aria-hidden='true'></i></a>";
+    $next = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['next']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars($torrent['next']['name']) . "'><i class='icon-right-open size_2' aria-hidden='true'></i></a>";
 }
 if (empty($torrent)) {
     $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 if (isset($_GET['hit'])) {
@@ -92,10 +92,10 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
-        write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was checked by {$CURUSER['username']}");
+        write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was checked by {$CURUSER['username']}");
         if (!empty($_GET['returnto'])) {
             $returnto = str_replace('&amp;', '&', $_GET['returnto']);
-            header("Location: {$site_config['baseurl']}" . urldecode($returnto));
+            header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
             die();
         }
         $session->set('is-success', "Torrents has been 'Checked'");
@@ -107,7 +107,7 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
-        write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was re-checked by {$CURUSER['username']}");
+        write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was re-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Re-Checked'");
     } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] == $id) {
         $set = [
@@ -117,7 +117,7 @@ if ($moderator) {
         $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = 0;
         $torrent['checked_when'] = 0;
-        write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was un-checked by {$CURUSER['username']}");
+        write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was un-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Un-Checked'");
     } elseif (isset($_POST['clear_cache']) && $_POST['clear_cache'] == $id) {
         $cache->deleteMulti([
@@ -158,7 +158,7 @@ if ($moderator) {
         }
 
         $session->set('is-success', 'Torrent Cache Cleared');
-        header("Location: {$site_config['baseurl']}/details.php?id=$id");
+        header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id");
         die();
     }
 }
@@ -197,7 +197,7 @@ if (empty($torrent['imdb_id']) && !empty($torrent['url'])) {
         $torrent['imdb_id'] = $imdb_id;
     }
 }
-if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_config['ebook_cats'])) {
+if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_config['categories']['ebook'])) {
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {
         $search = $torrent['isbn'];
@@ -213,7 +213,7 @@ if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_confi
             </div>";
     }
 }
-if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['tv_cats'])) {
+if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['categories']['tv'])) {
     if (!empty($torrent['imdb_id'])) {
         $ids = get_show_id_by_imdb($torrent['imdb_id']);
     } else {
@@ -232,7 +232,7 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['tv_
         }
     }
 }
-if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['movie_cats']) && !empty($torrent['imdb_id'])) {
+if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['categories']['movie']) && !empty($torrent['imdb_id'])) {
     $imdb_data = $cache->get('imdb_fullset_title_' . $torrent['imdb_id']);
     if ($imdb_data === false || is_null($imdb_data)) {
         $imdb_data = "
@@ -252,7 +252,7 @@ if (!empty($torrent['youtube'])) {
         $youtube = "
             <a id='youtube-hash'></a>
             <div class='responsive-container'>
-                <iframe width='1920' height='1080' src='https://www.youtube.com/embed/{$youtube_id}?enablejsapi=1autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
+                <iframe width='1920' height='1080' src='https://www.youtube.com/embed/{$youtube_id}?enablejsapi=1autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
             </div>";
     }
 }
@@ -291,7 +291,7 @@ $torrent['silver_color'] = 'silver';
 require_once PARTIALS_DIR . 'free_details.php';
 $info_block = '';
 if ($CURUSER['class'] >= (UC_MIN + 1) && $torrent['nfosz'] > 0) {
-    $info_block .= tr($lang['details_nfo'], "<div class='left10'><a href='{$site_config['baseurl']}/viewnfo.php?id={$torrent['id']}'>{$lang['details_view_nfo']}</a> (" . mksize($torrent['nfosz']) . ')</div>', 1);
+    $info_block .= tr($lang['details_nfo'], "<div class='left10'><a href='{$site_config['paths']['baseurl']}/viewnfo.php?id={$torrent['id']}'>{$lang['details_view_nfo']}</a> (" . mksize($torrent['nfosz']) . ')</div>', 1);
 }
 if (!empty($torrent['subs'])) {
     $info_block .= tr($lang['details_subs'], $subtitle, 1);
@@ -304,7 +304,7 @@ if ($moderator) {
 }
 if ($torrent['nuked'] === 'yes') {
     $reason = !empty($torrent['nukereason']) ? $torrent['nukereason'] : '';
-    $info_block .= tr('Nuked', "<div class='level-left left10'><img src='{$site_config['pic_baseurl']}nuked.gif' alt='Nuked' class='tooltipper icon right5' title='Nuked'>$reason</div>", 1);
+    $info_block .= tr('Nuked', "<div class='level-left left10'><img src='{$site_config['paths']['images_baseurl']}nuked.gif' alt='Nuked' class='tooltipper icon right5' title='Nuked'>$reason</div>", 1);
 }
 $torrent['cat_name'] = htmlsafechars($change[$torrent['category']]['name']);
 if (isset($torrent['cat_name'])) {
@@ -316,15 +316,15 @@ $lastseed = $torrent_stuffs->get_item('last_action', $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
 $info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date($lastseed, '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
-    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
+    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
 }
 $info_block .= tr($lang['details_size'], '<div class="left10">' . mksize($torrent['size']) . ' (' . number_format($torrent['size']) . " {$lang['details_bytes']})</div>", 1);
 $info_block .= tr($lang['details_added'], '<div class="left10">' . get_date($torrent['added'], 'LONG') . '</div>', 1);
 $info_block .= tr($lang['details_views'], "<div class='left10'>{$torrent['views']}</div>", 1);
 $info_block .= tr($lang['details_hits'], "<div class='left10'>{$torrent['hits']}</div>", 1);
-$info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['baseurl']}snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
+$info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
 $info_block .= tr($lang['details_peers'], '<div class="left10">' . $torrent['seeders'] . ' seeder' . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}<br>
-    <a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='top10 button is-small'>{$lang['details_list']}</a></div>", 1);
+    <a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='top10 button is-small'>{$lang['details_list']}</a></div>", 1);
 
 if (!empty($torrent['descr'])) {
     $descr = $cache->get('torrent_descr_' . $id);
@@ -340,8 +340,8 @@ if (!empty($torrent['descr'])) {
 $torrent['addup'] = !empty($torrent['addedup']) ? get_date($torrent['addedup'], 'DATE') : '';
 $torrent['addfree'] = !empty($torrent['addedfree']) ? get_date($torrent['addedfree'], 'DATE') : '';
 $torrent['idk'] = $dt + 14 * 86400;
-$torrent['freeimg'] = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="">';
-$torrent['doubleimg'] = '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" alt="">';
+$torrent['freeimg'] = '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" alt="">';
+$torrent['doubleimg'] = '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" alt="">';
 $slot = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
@@ -370,7 +370,7 @@ $keywords = '';
 foreach ($tags as $tag) {
     if (strlen($tag) >= 3) {
         $keywords .= "
-        <a href='{$site_config['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars($tag) . '</a>';
+        <a href='{$site_config['paths']['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars($tag) . '</a>';
     }
 }
 $points = tr($lang['details_tags'], "<div class='left10'>$keywords</div>", 1);
@@ -380,26 +380,26 @@ $points .= tr('Karma Points', '
                     <div class="left10">
                         <p>In total ' . (int) $torrent['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
                         <p>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10">
-                                <img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=20">
-                                <img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=20">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=50">
-                                <img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=50">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=100">
-                                <img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=100">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=200">
-                                <img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=200">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=500">
-                                <img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=500">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points">
                             </a>
-                            <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000">
-                                <img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points">
+                            <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000">
+                                <img src="' . $site_config['paths']['images_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points">
                             </a>
                         </p>
                         <p>By clicking on the coins you can give Karma Points to the uploader of this torrent.</p>
@@ -437,7 +437,7 @@ switch (true) {
 }
 $sr = floor(($sr * 1000) / 1000);
 $sr = "
-        <img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
+        <img src='{$site_config['paths']['images_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
         <span class='right10' style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
 if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || $CURUSER['free_switch'] != 0) {
     $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} {$lang['details_new_ratio']}</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
@@ -447,7 +447,7 @@ if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $isfree['yep'] || $
 $info_hash = $torrent['info_hash'];
 $points .= tr($lang['details_info_hash'], "<div title='$info_hash' class='tooltipper left10'>" . substr($info_hash, 0, 40) . '<br>' . substr($info_hash, 40, 80) . '</div>', 1);
 
-$url = $site_config['baseurl'] . '/edit.php?id=' . $torrent['id'];
+$url = $site_config['paths']['baseurl'] . '/edit.php?id=' . $torrent['id'];
 if (isset($_GET['returnto'])) {
     $url .= '&amp;returnto=' . urlencode($_GET['returnto']);
 }
@@ -464,12 +464,12 @@ if ($torrent_cache['rep']) {
         <div>", 1);
 }
 $audit .= tr('Report Torrent', "
-    <form action='{$site_config['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post' accept-charset='utf-8'>
+    <form action='{$site_config['paths']['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post' accept-charset='utf-8'>
         <div class='level-left'>
             <input class='button is-small left10' type='submit' name='submit' value='Report This Torrent'>
             <div class='left10'>
                 For breaking the
-                <a href='{$site_config['baseurl']}/rules.php'>
+                <a href='{$site_config['paths']['baseurl']}/rules.php'>
                     <span class='has-text-success'>&nbsp;rules</span>
                 </a>
             </div>
@@ -481,7 +481,7 @@ if ($owned) {
 }
 if ($moderator) {
     $audit .= tr('Clear Cache', "
-                    <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
+                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
                         <input type='hidden' name='clear_cache' value={$torrent['id']}>
                         <input type='submit' class='button is-small left10' value='Clear Cache'>
                     </form>", 1);
@@ -495,18 +495,18 @@ if ($moderator) {
         $audit .= tr('Checked by', "
                     <div class='bottom10 left10'>" . format_username($torrent['checked_by']) . (isset($torrent['checked_when']) && $torrent['checked_when'] > 0 ? ' checked: ' . get_date($torrent['checked_when'], 'DATE', 0, 1) : '') . "</div>
                     <div class='bottom10 left10'>
-                        <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
+                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
                             <input type='hidden' name='rechecked' value={$torrent['id']}>
                             <input type='submit' class='button is-small bottom10' value='Re-Check this torrent'>
                         </form>
-                        <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
+                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
                             <input type='hidden' name='clearchecked' value={$torrent['id']}>
                             <input type='submit' class='button is-small' value='Un-Check this torrent'>
                         </form>
                     </div>", 1);
     } else {
         $audit .= tr('Checked by', "
-                    <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
+                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
                         <input type='hidden' name='checked' value={$torrent['id']}>
                         <input type='submit' class='button is-small left10' value='Check this torrent'>
                     </form>", 1);
@@ -515,7 +515,7 @@ if ($moderator) {
 
 $audit .= tr($lang['details_thanks'], "
         <noscript>
-            <iframe id='thanked' src ='{$site_config['baseurl']}/ajax/thanks.php?torrentid={$id}'>
+            <iframe id='thanked' src ='{$site_config['paths']['baseurl']}/ajax/thanks.php?torrentid={$id}'>
                 <p>Your browser does not support iframes. And it has Javascript disabled!</p>
             </iframe>
         </noscript>
@@ -525,7 +525,7 @@ if ($torrent['last_reseed'] > 0) {
     $next_reseed = $torrent['last_reseed'] + 172800;
 }
 $audit .= tr('Request Reseed', "
-        <form method='post' action='{$site_config['baseurl']}/takereseed.php' accept-charset='utf-8'>
+        <form method='post' action='{$site_config['paths']['baseurl']}/takereseed.php' accept-charset='utf-8'>
             <div class='level-left is-flex'>
                 <span class='left10'>
                     <select name='pm_what'>
@@ -548,10 +548,10 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
     <a name='startcomments'></a>
     <div class='has-text-centered'>
         <h2>Leave a Comment</h2>
-        <a href='{$site_config['baseurl']}/takethankyou.php?id={$torrent['id']}'>
-            <img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"'>
+        <a href='{$site_config['paths']['baseurl']}/takethankyou.php?id={$torrent['id']}'>
+            <img src='{$site_config['paths']['images_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"'>
         </a>
-    <form name='comment' method='post' action='{$site_config['baseurl']}/comment.php' accept-charset='utf-8'>
+    <form name='comment' method='post' action='{$site_config['paths']['baseurl']}/comment.php' accept-charset='utf-8'>
         <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
         <input type='hidden' name='action' value='add'>
         <input type='hidden' name='tid' value='{$torrent['id']}'>
@@ -598,27 +598,27 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
         </div>
         <div class='tooltip_templates'>
             <div id='balloon3' class='text-justify'>
-                Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt=''>
+                Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['paths']['images_baseurl']}smilies/smile1.gif' alt=''>
             </div>
         </div>";
 
     if ($free_slot && !$double_slot) {
         $slots .= '<div class="has-text-centered bottom10">' . $torrent['freeimg'] . ' <span class="has-text-success">Freeleech Slot In Use!</span> (only upload stats are recorded) - Expires: 12:01AM ' . $torrent['addfree'] . '</div>';
-        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
-        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
-        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
     } elseif (!$free_slot && $double_slot) {
         $slots .= '<div class="has-text-centered bottom10">' . $torrent['doubleimg'] . ' <span class="has-text-success">Doubleseed Slot In Use!</span> (upload stats x2) - Expires: 12:01AM ' . $torrent['addup'] . '</div>';
-        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
-        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
-        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
     } elseif ($free_slot && $double_slot) {
         $slots .= '<div class="has-text-centered bottom10">' . $torrent['freeimg'] . ' ' . $torrent['doubleimg'] . ' <span class="has-text-success">Freeleech and Doubleseed Slots In Use!</span> (upload stats x2 and no download stats are recorded)<p>Freeleech Expires: 12:01AM ' . $torrent['addfree'] . ' and Doubleseed Expires: 12:01AM ' . $torrent['addup'] . '</p></div>';
         $freeslot = $freeslot_zip = $freeslot_text = '';
     } else {
-        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '';
-        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
-        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '';
+        $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
+        $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
     }
     $Free_Slot = $freeslot;
     $Free_Slot_Zip = $freeslot_zip;
@@ -627,19 +627,19 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'>" . htmlsafechars($torrent['filename']) . "</a><br>{$Free_Slot}
+                            <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'>" . htmlsafechars($torrent['filename']) . "</a><br>{$Free_Slot}
                         </td>
                     </tr>
                     <tr>
                         <td>{$lang['details_zip']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'&amp;zip=1'>" . htmlsafechars($torrent['filename']) . ".zip</a><br>{$Free_Slot_Zip}
+                            <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'&amp;zip=1'>" . htmlsafechars($torrent['filename']) . ".zip</a><br>{$Free_Slot_Zip}
                         </td>
                     </tr>
                     <tr>
                         <td>{$lang['details_text']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'&amp;text=1'>" . htmlsafechars($torrent['filename']) . ".txt</a><br>{$Free_Slot_Text}
+                            <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'&amp;text=1'>" . htmlsafechars($torrent['filename']) . ".txt</a><br>{$Free_Slot_Text}
                         </td>
                     </tr>", null, null, 'bottom20');
 }

@@ -10,6 +10,7 @@ $lang = [
     'takesignup_form_data' => 'Invalid form data!',
     'takesignup_username_length' => 'Username too long or too short',
     'takesignup_allowed_chars' => 'Invalid characters users.',
+    'takesignup_badwords' => 'Username not allowed.',
     'takesignup_blank' => "Don't leave any fields blank.",
     'takesignup_nomatch' => "The passwords didn't match! Must've typoed. Try again.",
     'takesignup_pass_short' => 'Sorry, password is too short (min is 6 chars)',
@@ -28,7 +29,7 @@ $lang = [
     'takesignup_bannedmail' => 'This email address is banned!<br><br><strong>Reason</strong>:',
     'takesignup_from' => 'From:',
     'takesignup_email_body' => doc_head() . "
-    <title>{$site_config['site_name']} Registration</title>
+    <title>{$site_config['site']['name']} Registration</title>
 </head>
 <body>
 <p>You have requested a new user account on <#SITENAME#> and you have specified this address (<#USEREMAIL#>) as user contact.</p>

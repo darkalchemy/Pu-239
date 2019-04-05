@@ -16,17 +16,17 @@ if (!is_valid_id($id)) {
 }
 $dt = TIME_NOW;
 $row = $fluent->from('torrents AS t')
-              ->select(null)
-              ->select('t.id')
-              ->select('t.info_hash')
-              ->select('t.owner')
-              ->select('t.name')
-              ->select('t.seeders')
-              ->select('t.added')
-              ->select('u.seedbonus')
-              ->leftJoin('users AS u ON u.id = t.owner')
-              ->where('t.id = ?', $id)
-              ->fetch();
+    ->select(null)
+    ->select('t.id')
+    ->select('t.info_hash')
+    ->select('t.owner')
+    ->select('t.name')
+    ->select('t.seeders')
+    ->select('t.added')
+    ->select('u.seedbonus')
+    ->leftJoin('users AS u ON u.id=t.owner')
+    ->where('t.id=?', $id)
+    ->fetch();
 
 if (!$row) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");
@@ -49,7 +49,7 @@ if ($rt == 1) {
     if (!$reason[2]) {
         stderr("{$lang['delete_failed']}", "{$lang['delete_violated']}");
     }
-    $reasonstr = $site_config['site_name'] . "{$lang['delete_rules']}" . trim($reason[2]);
+    $reasonstr = $site_config['site']['name'] . "{$lang['delete_rules']}" . trim($reason[2]);
 } else {
     if (!$reason[3]) {
         stderr("{$lang['delete_failed']}", "{$lang['delete_reason']}");
@@ -61,11 +61,11 @@ $torrent_stuffs->delete_by_id($row['id']);
 $torrent_stuffs->remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
-if ($site_config['seedbonus_on']) {
+if ($site_config['bonus']['on']) {
     $dt = sqlesc($dt - (14 * 86400));
     if ($row['added'] > $dt) {
-        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
-        $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus_per_delete']);
+        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_delete']) . ' WHERE id=' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
+        $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus']['per_delete']);
         $cache->update_row('user_' . $row['owner'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
@@ -88,5 +88,5 @@ $session->set('is-success', $msg);
 if (!empty($_POST['returnto'])) {
     header('Location: ' . htmlsafechars($_POST['returnto']));
 } else {
-    header("Location: {$site_config['baseurl']}/browse.php");
+    header("Location: {$site_config['paths']['baseurl']}/browse.php");
 }

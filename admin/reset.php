@@ -17,19 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uid = (int) $_POST['uid'];
     $newpassword = make_password();
     $passhash = make_passhash($newpassword);
-    $postkey = PostKey([
-        $uid,
-        $CURUSER['id'],
-    ]);
-    $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id = ' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id=' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($mysqli) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
-    }
-    if (CheckPostKey([
-            $uid,
-            $CURUSER['id'],
-        ], $postkey) == false) {
-        stderr($lang['reset_stderr2'], $lang['reset_stderr3']);
     }
     write_log($lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
     stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars($username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');

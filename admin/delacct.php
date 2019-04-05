@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr($lang['text_error'], $lang['text_please']);
     }
     $id = $fluent->from('users')
-                 ->select(null)
-                 ->select('id')
-                 ->where('username = ?', $username)
-                 ->where('id = ?', $userid)
-                 ->fetch('id');
+        ->select(null)
+        ->select('id')
+        ->where('username = ?', $username)
+        ->where('id=?', $userid)
+        ->fetch('id');
 
     if (!$id) {
         stderr($lang['text_error'], $lang['text_invalid']);

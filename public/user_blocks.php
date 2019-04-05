@@ -13,7 +13,7 @@ if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
 }
 if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] === 'no') {
     $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
-    header('Location: ' . $site_config['baseurl'] . '/index.php');
+    header('Location: ' . $site_config['paths']['baseurl'] . '/index.php');
     die();
 }
 
@@ -375,14 +375,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateset[] = 'userdetails_page = (userdetails_page & ~' . $clrbits_userdetails_page . ')';
     }
     if (!empty($updateset)) {
-        sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
         $opt = $fluent->from('users')
-                      ->select(null)
-                      ->select('opt1')
-                      ->select('opt2')
-                      ->where('id = ?', $CURUSER['id'])
-                      ->fetch();
+            ->select(null)
+            ->select('opt1')
+            ->select('opt2')
+            ->where('id=?', $CURUSER['id'])
+            ->fetch();
 
         $cache->update_row('user_' . $CURUSER['id'], [
             'opt1' => $opt['opt1'],
@@ -391,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
-        header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
+        header('Location: ' . $site_config['paths']['baseurl'] . '/user_blocks.php');
         die();
     }
 }

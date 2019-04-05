@@ -24,7 +24,7 @@ function lotteryclean($data)
         $tickets = [];
         $q = sql_query('SELECT t.user AS uid, u.seedbonus, u.modcomment
                             FROM tickets AS t
-                            LEFT JOIN users AS u ON u.id = t.user
+                            LEFT JOIN users AS u ON u.id=t.user
                             ORDER BY RAND()') or sqlerr(__FILE__, __LINE__);
         while ($a = mysqli_fetch_assoc($q)) {
             $tickets[] = $a;
@@ -75,7 +75,7 @@ function lotteryclean($data)
         ];
         if (!empty($_userq) && count($_userq)) {
             foreach ($_userq as $update) {
-                sql_query("UPDATE users SET seedbonus = {$update['seedbonus']}, modcomment = {$update['modcomment']} WHERE id = {$update['id']}") or sqlerr(__FILE__, __LINE__);
+                sql_query("UPDATE users SET seedbonus = {$update['seedbonus']}, modcomment = {$update['modcomment']} WHERE id={$update['id']}") or sqlerr(__FILE__, __LINE__);
             }
         }
         if (!empty($_pms) && count($_pms)) {
@@ -117,13 +117,13 @@ function lotteryclean($data)
                 'value' => new Envms\FluentPDO\Literal('VALUES(value)'),
             ];
             $fluent->insertInto('lottery_config', $values)
-                   ->onDuplicateKeyUpdate($update)
-                   ->execute();
-            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
+            if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $fund = number_format($site_config['auto_lotto']['prize_fund']);
                 $cost = number_format($site_config['auto_lotto']['ticket_amount']);
                 $type = ucfirst($site_config['auto_lotto']['ticket_amount_type']);
-                $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+                $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
                 $msg = "The $link has begun!! Get your tickets now. The pot is $fund and each ticket is only $cost $type.";
                 autoshout($msg);
             }

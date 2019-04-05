@@ -22,7 +22,7 @@ function autoinvite_update($data)
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Auto Invites';
-        $msg = "Congratulations, your user group met a set out criteria therefore you have been awarded 2 invites  :)\n Please use them carefully. Cheers " . $site_config['site_name'] . " staff.\n";
+        $msg = "Congratulations, your user group met a set out criteria therefore you have been awarded 2 invites  :)\n Please use them carefully. Cheers " . $site_config['site']['name'] . " staff.\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
             $modcomment = $arr['modcomment'];

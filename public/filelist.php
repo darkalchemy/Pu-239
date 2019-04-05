@@ -17,7 +17,7 @@ $res = sql_query('SELECT COUNT(id) FROM files  WHERE torrent = ' . sqlesc($id)) 
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $perpage = 50;
-$pager = pager($perpage, $count, "{$site_config['baseurl']}/filelist.php?id=$id&amp;");
+$pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/filelist.php?id=$id&amp;");
 $HTMLOUT = '';
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -41,7 +41,7 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
     $body .= "
             <tr>
                 <td class='has-text-centered'>
-                    <img src='{$site_config['pic_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file'></td>
+                    <img src='{$site_config['paths']['images_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file'></td>
                 <td>" . htmlsafechars($subrow['filename']) . "</td>
                 <td class='has-text-right'>" . mksize($subrow['size']) . '</td>
             </tr>';

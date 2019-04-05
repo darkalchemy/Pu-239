@@ -22,19 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 $query = $fluent->getPdo()
-                                ->prepare($sql);
+                    ->prepare($sql);
                 $query->execute();
                 $values = [
                     'id' => (int) $id,
                     'query' => $sql,
                 ];
                 $fluent->insertInto('database_updates')
-                       ->values($values)
-                       ->execute();
+                    ->values($values)
+                    ->execute();
 
                 if ($flush) {
                     $cache->flushDB();
-                    $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+                    $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
                 } elseif (!$flush) {
                     // do nothing
                 } else {
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                   ->values($values)
-                   ->execute();
+                ->values($values)
+                ->execute();
             $session->set('is-success', "Query #$id has been ignored");
         }
     }
@@ -88,10 +88,10 @@ $heading = "
 
 if (file_exists(DATABASE_DIR)) {
     $results = $fluent->from('database_updates')
-                      ->select(null)
-                      ->select('id')
-                      ->select('added')
-                      ->fetchPairs('id', 'added');
+        ->select(null)
+        ->select('id')
+        ->select('added')
+        ->fetchPairs('id', 'added');
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 
@@ -102,7 +102,7 @@ if (file_exists(DATABASE_DIR)) {
         }
 
         $button = "
-                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post' accept-charset='utf-8'>
+                <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=upgrade_database' method='post' accept-charset='utf-8'>
                     <div class='level-center'>
                         <span class='margin10'>
                             <input type='hidden' name='id' value={$update['id']}>

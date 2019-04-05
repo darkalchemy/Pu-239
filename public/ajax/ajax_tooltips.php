@@ -10,7 +10,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
@@ -25,11 +25,11 @@ if (!empty($CURUSER)) {
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
             case 1:
-                $connectable = "<img src='{$site_config['pic_baseurl']}notcon.png' alt='{$lang['gl_not_connectable']}' class='tooltipper' title='{$lang['gl_not_connectable']}'>";
+                $connectable = "<img src='{$site_config['paths']['images_baseurl']}notcon.png' alt='{$lang['gl_not_connectable']}' class='tooltipper' title='{$lang['gl_not_connectable']}'>";
                 break;
 
             case 2:
-                $connectable = "<img src='{$site_config['pic_baseurl']}yescon.png' alt='{$lang['gl_connectable']}' class='tooltipper' title='{$lang['gl_connectable']}'>";
+                $connectable = "<img src='{$site_config['paths']['images_baseurl']}yescon.png' alt='{$lang['gl_connectable']}' class='tooltipper' title='{$lang['gl_connectable']}'>";
                 break;
 
             default:
@@ -43,8 +43,8 @@ if (!empty($CURUSER)) {
     if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
-                            LEFT JOIN usersachiev AS a ON u.id = a.userid
-                            WHERE u.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                            LEFT JOIN usersachiev AS a ON u.id=a.userid
+                            WHERE u.id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $Achievement_Points = mysqli_fetch_assoc($Sql);
         $Achievement_Points['id'] = (int) $Achievement_Points['id'];
         $Achievement_Points['achpoints'] = (int) $Achievement_Points['achpoints'];
@@ -52,9 +52,9 @@ if (!empty($CURUSER)) {
         $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
     if ($CURUSER['override_class'] != 255) {
-        $usrclass = " <a href='{$site_config['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
     } else {
         $usrclass = get_user_class_name($CURUSER['class']);
     }
@@ -73,24 +73,24 @@ if (!empty($CURUSER)) {
 
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_invites']}</div>
-        <div><a href='{$site_config['baseurl']}/invite.php'>{$CURUSER['invites']}</a></div>
+        <div><a href='{$site_config['paths']['baseurl']}/invite.php'>{$CURUSER['invites']}</a></div>
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_karma']}</div>
-        <div><a href='{$site_config['baseurl']}/mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></div>
+        <div><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></div>
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_achpoints']}</div>
-        <div><a href='{$site_config['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></div>
+        <div><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></div>
     </div>
     <br>
     <div class='navbar-start'>{$lang['gl_tstats']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_shareratio']}</div>
-        <div>" . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>
+        <div>" . member_ratio($CURUSER['uploaded'], $site_config['site']['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>
     </div>';
 
-    if ($site_config['ratio_free']) {
+    if ($site_config['site']['ratio_free']) {
         $StatusBar .= "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_uploaded']}</div>
@@ -127,12 +127,12 @@ if (!empty($CURUSER)) {
     <div class='navbar-start'>{$lang['gl_userblocks']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myblocks']}</div>
-        <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
+        <div><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
     ' . ($CURUSER['class'] >= UC_STAFF || $got_moods ? "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
-        <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
+        <div><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>';
 
     echo json_encode($StatusBar);

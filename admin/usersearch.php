@@ -14,11 +14,11 @@ $lang = array_merge($lang, load_language('ad_usersearch'));
 $oldest = $cache->get('oldest_');
 if ($oldest === false || is_null($oldest)) {
     $oldest = $fluent->from('users')
-                     ->select(null)
-                     ->select('added')
-                     ->orderBy('added')
-                     ->limit(1)
-                     ->fetch('added');
+        ->select(null)
+        ->select('added')
+        ->orderBy('added')
+        ->limit(1)
+        ->fetch('added');
     $cache->set('oldest_', $oldest, 0);
 }
 $oldest = get_date($oldest, 'FORM', 1, 0);
@@ -28,17 +28,17 @@ $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is 
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
             <li class='altlink margin10'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>
             </li>
             <li class='altlink margin10'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>
             </li>
         </ul>
         <h1 class='has-text-centered'>{$lang['usersearch_window_title']}</h1>";
 
 $HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
 $HTMLOUT .= "
-    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=usersearch' accept-charset='utf-8'>";
+    <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch' accept-charset='utf-8'>";
 $body = "
         <tr>
             <td class='w-1'>{$lang['usersearch_name']}</td>
@@ -417,7 +417,7 @@ if (!empty($search)) {
         } elseif (strtolower(substr($ratio, 0, 3)) === 'inf') {
             $ratio2 = '';
             $where_is .= !empty($where_is) ? ' AND ' : '';
-            $where_is .= ' u.uploaded > 0 and u.downloaded = 0';
+            $where_is .= ' u.uploaded>0 and u.downloaded = 0';
         } else {
             if (!is_numeric($ratio) || $ratio < 0) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badratio']);
@@ -445,7 +445,7 @@ if (!empty($search)) {
             } elseif ($ratiotype === 2) {
                 $where_is .= " < $ratio";
             } elseif ($ratiotype === 1) {
-                $where_is .= " > $ratio";
+                $where_is .= ">$ratio";
             } else {
                 $where_is .= " BETWEEN ($ratio - 0.004) and ($ratio + 0.004)";
             }
@@ -537,7 +537,7 @@ if (!empty($search)) {
         } elseif ($ultype === 2) {
             $where_is .= ' < ' . $ul * $unit;
         } elseif ($ultype === 1) {
-            $where_is .= ' >' . $ul * $unit;
+            $where_is .= '>' . $ul * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($ul - 0.004) * $unit . ' and ' . ($ul + 0.004) * $unit;
         }
@@ -572,7 +572,7 @@ if (!empty($search)) {
         } elseif ($dltype === 2) {
             $where_is .= ' < ' . $dl * $unit;
         } elseif ($dltype === 1) {
-            $where_is .= ' > ' . $dl * $unit;
+            $where_is .= '>' . $dl * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($dl - 0.004) * $unit . ' and ' . ($dl + 0.004) * $unit;
         }
@@ -660,7 +660,7 @@ if (!empty($search)) {
         $warned = (int) $search['w'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
         if ($warned === 1) {
-            $where_is .= " u.warned >= '1'";
+            $where_is .= " u.warned>= '1'";
         } else {
             $where_is .= " u.warned = '0'";
         }
@@ -678,7 +678,7 @@ if (!empty($search)) {
     $active = isset($search['ac']) ? $search['ac'] : '';
     if ($active === 1) {
         $distinct = 'DISTINCT ';
-        $join_is .= ' LEFT JOIN peers AS p ON u.id = p.userid';
+        $join_is .= ' LEFT JOIN peers AS p ON u.id=p.userid';
         $q1 .= ($q1 ? '&amp;' : '') . "ac=$active";
     }
     $from_is = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
@@ -695,7 +695,7 @@ if (!empty($search)) {
     $count = $arr[0];
     $q1 = isset($q1) ? ($q1 . '&amp;') : '';
     $perpage = 30;
-    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;" . $q1);
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;" . $q1);
     $query1 .= $pager['limit'];
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
@@ -723,20 +723,20 @@ if (!empty($search)) {
         while ($user = mysqli_fetch_array($res)) {
             if ($user['ip']) {
                 $count = $fluent->from('bans')
-                                ->select(null)
-                                ->select('COUNT(*) AS count')
-                                ->where('INET6_NTOA(first) <= ?', $user['ip'])
-                                ->where('INET6_NTOA(last) >= ?', $user['ip'])
-                                ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('INET6_NTOA(first) <= ?', $user['ip'])
+                    ->where('INET6_NTOA(last)>= ?', $user['ip'])
+                    ->fetch('count');
                 if ($count === 0) {
                     $ipstr = $user['ip'];
                 } else {
-                    $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
+                    $ipstr = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
                 }
             } else {
                 $ipstr = '---';
             }
-            $auxres = sql_query('SELECT SUM(uploaded) AS pul, SUM(downloaded) AS pdl FROM peers WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+            $auxres = sql_query('SELECT SUM(uploaded) AS pul, SUM(downloaded) AS pdl FROM peers WHERE userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
             $array = mysqli_fetch_array($auxres);
             $pul = $array['pul'];
             $pdl = $array['pdl'];
@@ -748,9 +748,9 @@ if (!empty($search)) {
                 $partial = '---';
             }
             $auxres = sql_query('SELECT COUNT(DISTINCT p.id)
-      FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id
-      LEFT JOIN forums AS f ON t.forum_id = f.id
-      WHERE p.user_id = ' . sqlesc($user['id']) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class'])) or sqlerr(__FILE__, __LINE__);
+      FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id
+      LEFT JOIN forums AS f ON t.forum_id=f.id
+      WHERE p.user_id=' . sqlesc($user['id']) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class'])) or sqlerr(__FILE__, __LINE__);
             $n = mysqli_fetch_row($auxres);
             $n_posts = $n[0];
             $auxres = sql_query('SELECT COUNT(id) FROM comments WHERE user = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
@@ -770,7 +770,7 @@ if (!empty($search)) {
             <td>' . ratios($pul, $pdl) . '</td>
             <td>' . number_format($pul / 1048576) . '</td>
             <td>' . number_format($pdl / 1048576) . '</td>
-            <td>' . ($n_posts ? "<a href='{$site_config['baseurl']}/userhistory.php?action=viewposts&amp;id=" . (int) $user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='{$site_config['baseurl']}/userhistory.php?action=viewcomments&amp;id=" . (int) $user['id'] . "'>$n_comments</a>" : $n_comments) . '</td>
+            <td>' . ($n_posts ? "<a href='{$site_config['paths']['baseurl']}/userhistory.php?action=viewposts&amp;id=" . (int) $user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='{$site_config['paths']['baseurl']}/userhistory.php?action=viewcomments&amp;id=" . (int) $user['id'] . "'>$n_comments</a>" : $n_comments) . '</td>
         </tr>';
         }
         $HTMLOUT .= main_table($body, $heading, 'top20');
@@ -779,7 +779,7 @@ if (!empty($search)) {
         }
         $HTMLOUT .= "
 <br>
-<form method='post' action='{$site_config['baseurl']}/new_announcement.php' accept-charset='utf-8'>
+<form method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' accept-charset='utf-8'>
     <div class='has-text-centered margin20'>
         <input name='n_pms' type='hidden' value='" . $count . "'>
         <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>

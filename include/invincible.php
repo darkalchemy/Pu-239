@@ -32,15 +32,15 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     // update perms
     if ($setbits || $clrbits) {
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 
-                 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     // grab current data
     $res = sql_query('SELECT username, torrent_pass, INET6_NTOA(ip), perms, modcomment FROM users 
-                     WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                     WHERE id=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
     // delete from iplog current ip
-    sql_query('DELETE FROM `ips` WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM `ips` WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     // delete any iplog caches
     $cache->delete('ip_history_' . $id);
     $cache->delete('u_passkey_' . $row['torrent_pass']);

@@ -20,7 +20,7 @@ $i = 0;
 $directories = [ROOT_DIR];
 global $site_config;
 
-$included_extentions = $site_config['coders_log_allowed_ext'];
+$included_extentions = $site_config['coders']['log_allowed_ext'];
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
@@ -73,10 +73,10 @@ $current += $last;
 unset($last, $data, $fetch_set);
 
 $HTMLOUT .= "
-        <h2 class='has-text-centered top20'>Coder's Log</h2>
+        <h1 class='has-text-centered top20'>Coder's Log</h1>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>
-                <div class='has-text-centered'>Tracking " . str_replace(' ', ', ', $site_config['coders_log_allowed_ext']) . " files only!</div>
+                <div class='has-text-centered'>Tracking " . implode(', ', $site_config['coders']['log_allowed_ext']) . " files only!</div>
                 <div class='has-text-centered'>" . number_format(count($current)) . ' files have been added, modifed or deleted since your last update of the ' . number_format($i) . " files being tracked.</div>
             </div>
         </div>

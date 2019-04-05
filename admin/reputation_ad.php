@@ -96,13 +96,13 @@ function show_level()
         <h1 class='has-text-centered'>{$lang['rep_ad_show_head']}</h1>
         <p class='margin20'>{$lang['rep_ad_show_html1']}<br>{$lang['rep_ad_show_html2']}</p>
         <div class='has-text-centered bottom20'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list'>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list'>
                 <span class='button is-small has-text-black'>
                     {$lang['rep_ad_show_comments']}
                 </span>
             </a>
         </div>";
-    $html .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
                 <input name='mode' value='doupdate' type='hidden'>";
     $heading = "
         <tr>
@@ -119,10 +119,10 @@ function show_level()
             <td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>
             <td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "'></td>
             <td>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
                     <i class='icon-edit icon'></i>
                 </a>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
                     <i class='icon-trash-empty icon has-text-danger'></i>
                 </a>
             </td>
@@ -133,7 +133,7 @@ function show_level()
             <td colspan='4' class='has-text-centered'>
                 <input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='button is-small'>
                 <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='button is-small'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=add'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=add'>
                     <span class='button is-small has-text-black'>
                         {$lang['rep_ad_show_add']}
                     </span>
@@ -158,7 +158,7 @@ function show_form($type = 'edit')
     $html = $lang['rep_ad_form_html'];
     $res = [];
     if ($type === 'edit') {
-        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid = ' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
+        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
             stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
         }
@@ -224,16 +224,16 @@ function do_update($type = '')
             stderr('', $lang['rep_ad_update_err3']);
         }
         // check it's a valid rep id
-        $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
+        $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
             stderr('', $lang['rep_ad_update_err4']);
         }
-        sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
     } else {
         $ids = $input['reputation'];
         if (is_array($ids) && count($ids)) {
             foreach ($ids as $k => $v) {
-                sql_query('UPDATE reputationlevel SET minimumreputation = ' . intval($v) . ' WHERE reputationlevelid = ' . intval($k)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE reputationlevel SET minimumreputation = ' . intval($v) . ' WHERE reputationlevelid=' . intval($k)) or sqlerr(__FILE__, __LINE__);
             }
         } else {
             stderr('', $lang['rep_ad_update_err4']);
@@ -256,12 +256,12 @@ function do_delete()
     }
     $levelid = intval($input['reputationlevelid']);
     // check the id is valid within db
-    $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
+    $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
         stderr('', $lang['rep_ad_delete_no']);
     }
     // if we here, we delete it!
-    sql_query("DELETE FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
+    sql_query("DELETE FROM reputationlevel WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
     rep_cache();
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', $lang['rep_ad_delete_success'], 5);
 }
@@ -280,11 +280,11 @@ function show_form_rep()
     $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
                     leftby.username AS leftby_name
                     FROM reputation r
-                    LEFT JOIN posts p ON p.id = r.postid
-                    LEFT JOIN topics t ON p.topic_id = t.id
-                    LEFT JOIN users leftfor ON leftfor.id = r.userid
-                    LEFT JOIN users leftby ON leftby.id = r.whoadded
-                    WHERE reputationid = ' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+                    LEFT JOIN posts p ON p.id=r.postid
+                    LEFT JOIN topics t ON p.topic_id=t.id
+                    LEFT JOIN users leftfor ON leftfor.id=r.userid
+                    LEFT JOIN users leftby ON leftby.id=r.whoadded
+                    WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
     }
@@ -294,7 +294,7 @@ function show_form_rep()
                 <input name='mode' value='doeditrep' type='hidden'>";
     $html .= "<h2>{$lang['rep_ad_rep_form_head']}</h2>";
     $html .= '<table>';
-    $html .= "<tr><td width='37%'>{$lang['rep_ad_rep_form_topic']}</td><td width='63%'><a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
+    $html .= "<tr><td width='37%'>{$lang['rep_ad_rep_form_topic']}</td><td width='63%'><a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
     $html .= "<tr><td>{$lang['rep_ad_rep_form_left_by']}</td><td>{$res['leftby_name']}</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_rep_form_left_for']}</td><td width='63%'>{$res['leftfor_name']}</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_rep_form_comment']}</td><td width='63%'><input type='text' name='reason' value='" . htmlsafechars($res['reason']) . "' maxlength='250'></td></tr>";
@@ -376,7 +376,7 @@ function view_list()
             $cond .= ($cond ? ' AND' : '') . ' r.userid=' . $user;
         }
         if ($start) {
-            $cond .= ($cond ? ' AND' : '') . " r.dateadd >= $start";
+            $cond .= ($cond ? ' AND' : '') . " r.dateadd>= $start";
         }
         if ($end) {
             $cond .= ($cond ? ' AND' : '') . " r.dateadd <= $end";
@@ -399,9 +399,9 @@ function view_list()
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
         $table_header = "<table width='80%' border='1'><tr>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
-        $table_header .= "<td width='20%'><a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
-        $table_header .= "<td width='20%'><a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
-        $table_header .= "<td width='17%'><a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_date']}</a></td>";
+        $table_header .= "<td width='20%'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
+        $table_header .= "<td width='20%'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
+        $table_header .= "<td width='17%'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_date']}</a></td>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_point']}</td>";
         $table_header .= "<td width='23%'>{$lang['rep_ad_view_reason']}</td>";
         $table_header .= "<td width='10%'>{$lang['rep_ad_view_controls']}</td></tr>";
@@ -430,9 +430,9 @@ function view_list()
                                     leftfor.username AS leftfor_name, leftby.id AS leftby_id, 
                                     leftby.username AS leftby_name 
                                     FROM reputation r 
-                                    left join posts p ON p.id = r.postid 
-                                    left join users leftfor ON leftfor.id = r.userid 
-                                    left join users leftby ON leftby.id = r.whoadded 
+                                    left join posts p ON p.id=r.postid 
+                                    left join users leftfor ON leftfor.id=r.userid 
+                                    left join users leftby ON leftby.id=r.whoadded 
                                     WHERE $cond ORDER BY $order LIMIT $first, $deflimit") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
             stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err5']);
@@ -447,13 +447,13 @@ function view_list()
                 <td>{$r['dateadd']}</td>
                 <td>{$r['reputation']}</td>
                 <td>
-                    <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid={$r['topic_id']}&amp;page=p{$r['postid']}#{$r['postid']}' target='_blank'>" . htmlsafechars($r['reason']) . "</a>
+                    <a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$r['topic_id']}&amp;page=p{$r['postid']}#{$r['postid']}' target='_blank'>" . htmlsafechars($r['reason']) . "</a>
                 </td>
                 <td>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'>
                         <i class='icon-edit icon'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}/reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'>
+                    <a href='{$site_config['paths']['baseurl']}/reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'>
                         <i class='icon-trash-empty icon has-text-danger'></i>
                     </a>
                 </td>
@@ -476,11 +476,11 @@ function do_delete_rep()
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
     // check it's a valid ID.
-    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid = ' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (($r = mysqli_fetch_assoc($query)) === false) {
         stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
     }
-    $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
     // do the delete
     sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
@@ -518,9 +518,9 @@ function do_edit_rep()
     }
     if ($oldrep != $newrep) {
         if ($r['reason'] != $reason) {
-            sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid = ' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
         }
-        $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
         $User = mysqli_fetch_assoc($sql);
         $diff = $oldrep - $newrep;
         sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
@@ -560,7 +560,7 @@ function redirect($url, $text, $time = 2)
     global $site_config, $lang;
 
     $html = doc_head() . "
-<meta http-equiv='refresh' content='{$time}; url={$site_config['baseurl']}/{$url}'>
+<meta http-equiv='refresh' content='{$time}; url={$site_config['paths']['baseurl']}/{$url}'>
 <meta property='og:title' content='{$lang['rep_ad_redirect_title']}'>
 <title>{$lang['rep_ad_redirect_title']}</title>
 <link rel='stylesheet' href='" . get_file_name('css') . "'>
@@ -572,7 +572,7 @@ function redirect($url, $text, $time = 2)
                 <div>$text
                 <br>
                 <br>
-                <a href='{$site_config['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a>
+                <a href='{$site_config['paths']['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a>
             </div>
         </div>
     </div>

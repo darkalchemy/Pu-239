@@ -100,19 +100,19 @@ foreach ($resip as $iphistory) {
     $lastlogin = (int) $iphistory['lastlogin'];
     $lastannounce = (int) $iphistory['lastannounce'];
     $iptype = htmlsafechars($iphistory['type']);
-    $queryc = 'SELECT COUNT(id) FROM(SELECT u.id FROM users AS u WHERE INET6_NTOA(u.ip) = ' . sqlesc($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE INET6_NTOA(ips.ip) = ' . sqlesc($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
+    $queryc = 'SELECT COUNT(id) FROM(SELECT u.id FROM users AS u WHERE INET6_NTOA(u.ip) = ' . sqlesc($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id=ips.userid WHERE INET6_NTOA(ips.ip) = ' . sqlesc($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
     $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arrip2 = mysqli_fetch_row($resip2);
     $ipcount = $arrip2[0];
     $count = $ban_stuffs->get_count($iphistory['ip']);
     if ($count === 0) {
         if ($ipcount > 1) {
-            $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span ></a ></b > ';
+            $ipshow = "<b><a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span></a></b>';
         } else {
-            $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='has-text-blue'>" . htmlsafechars($iphistory['ip']) . ' </span ></b ></a > ';
+            $ipshow = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='has-text-blue'>" . htmlsafechars($iphistory['ip']) . ' </span></b></a>';
         }
     } else {
-        $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-danger'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></span ></a > ';
+        $ipshow = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-danger'><b>" . htmlsafechars($iphistory['ip']) . ' </b></span></a>';
     }
     // User IP listed for GeoIP tracing
     $gi = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);
@@ -131,7 +131,7 @@ foreach ($resip as $iphistory) {
     $seedbox = htmlsafechars($iphistory['seedbox']);
 
     if ($seedbox == '0') {
-        $seedbox = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
+        $seedbox = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
         $body .= "
         <tr>
             <td>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
@@ -140,11 +140,11 @@ foreach ($resip as $iphistory) {
             <td>$listcity, $listregion<br>$listcountry</td>
             <td>$iptype</td>
             <td>$seedbox</td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
         </tr>";
     } else {
-        $seedbox = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='has-text-green'><b>{$lang['iphistory_yes']}</b></span></a>";
+        $seedbox = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='has-text-green'><b>{$lang['iphistory_yes']}</b></span></a>";
         $body .= "
         <tr>
             <td>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
@@ -153,8 +153,8 @@ foreach ($resip as $iphistory) {
             <td>$listcity, $listregion<br>$listcountry</td>
             <td>$iptype</td>
             <td>$seedbox</td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
         </tr>";
     }
 }

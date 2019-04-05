@@ -5,7 +5,7 @@ global $CURUSER, $lang;
 if ($CURUSER && $CURUSER['override_class'] != 255) {
     $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/restoreclass.php'>
+        <a href='{$site_config['paths']['baseurl']}/restoreclass.php'>
             <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#demotion_tooltip'>
                 {$lang['gl_temp_demotion']}
             </span>

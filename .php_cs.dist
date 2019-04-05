@@ -15,7 +15,7 @@ $config = PhpCsFixer\Config::create()
         'standardize_not_equals'             => true,
         'ternary_operator_spaces'            => true,
         'whitespace_after_comma_in_array'    => true,
-        'concat_space'                       => ["spacing" => "one"],
+        'concat_space'                       => ['spacing' => 'one'],
         'align_multiline_comment'            => ['comment_type' => 'phpdocs_like'],
         'array_syntax'                       => ['syntax' => 'short'],
         'cast_spaces'                        => ['space' => 'single'],

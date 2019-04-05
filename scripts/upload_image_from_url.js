@@ -1,7 +1,7 @@
 function grab_url(event) {
     var el = document.getElementById('image_url');
     var url = el.value;
-    var csrf = el.dataset.csrf
+    var csrf = el.dataset.csrf;
     var output = document.querySelector('.output');
     var comment = document.querySelector('#comment');
     var loader = document.querySelector('#loader');
@@ -22,7 +22,7 @@ function grab_url(event) {
         context: this,
         data: {
             csrf: csrf,
-            url: url,
+            url: url
         },
         success: function (response) {
             if (response.url) {

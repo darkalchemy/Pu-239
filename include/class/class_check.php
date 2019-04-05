@@ -14,7 +14,7 @@ function class_check($class = 0, $staff = true)
     global $CURUSER, $site_config, $cache, $topicid, $postid;
 
     if (!$CURUSER) {
-        header("Location: {$site_config['baseurl']}/404.html");
+        header("Location: {$site_config['paths']['baseurl']}/404.html");
         die();
     }
 
@@ -22,18 +22,18 @@ function class_check($class = 0, $staff = true)
         if ($staff) {
             if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']))) {
                 $ip = getip();
-                $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
+                $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
                 $subject = 'Warning Class Check System!';
                 $added = TIME_NOW;
-                if (user_exists($site_config['chatBotID'])) {
+                if (user_exists($site_config['chatbot']['id'])) {
                     auto_post($subject, $body);
-                    sql_query('UPDATE users SET class = ' . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+                    sql_query('UPDATE users SET class = ' . UC_MIN . " WHERE id={$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
                     $cache->update_row('user_' . $CURUSER['id'], [
                         'class' => 0,
                         'enabled' => 'no',
                     ], $site_config['expires']['user_cache']);
 
-                    write_log('Class Check System Initialized [url=' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');
+                    write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');
                     $HTMLOUT = doc_head() . "
     <meta property='og:title' content='Error!'>
     <title>Error!</title>
@@ -52,7 +52,7 @@ function class_check($class = 0, $staff = true)
             write_info("{$CURUSER['username']} attempted to access a staff page");
             stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name($class) . 's and above. Read FAQ.');
         } else {
-            header("Location: {$site_config['baseurl']}/404.html");
+            header("Location: {$site_config['paths']['baseurl']}/404.html");
             die();
         }
     }

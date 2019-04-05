@@ -1,3 +1,12 @@
+### 05 Apr, 2019
+cleanup: classes 
+replace: PostKey/CheckPostKey with csrf  
+
+### 04 Apr, 2019
+update: dependencies
+refactor: site config to database  
+add: trivia config to add/edit/delete questions  
+
 ### 01 Apr, 2019
 update: remove some erroneous spacing  
 fix: display [code] correctly  
@@ -117,7 +126,7 @@ update: imdbphp
 
 ### 12 Mar, 2019
 fix: typo  
-update: restrict check user upload credit is >= torrent size to user class  
+update: restrict check user upload credit is>= torrent size to user class  
 
 ### 11 Mar, 2019
 update: compare uploaded-downloaded to torrent size  
@@ -126,7 +135,7 @@ fix: delete staff cache when changing user class
 update: add check if seeder when checking if $user['uploaded'] < $torrent['size']  
 
 ### 10 Mar, 2019
-update: check user upload credit is >= torrent size before allow torrent download, download.php, announce.php    
+update: check user upload credit is>= torrent size before allow torrent download, download.php, announce.php    
 update: restrict user class to 3 active downloads at one time  
 
 ### 09 Mar, 2019
@@ -559,7 +568,7 @@ remove: radio
 add: subtitles  
 fix: parallax scrolling  
 fix: gift.php  
-update: optimize tables only if free data > 10 MB  
+update: optimize tables only if free data>10 MB  
 add: admin/mysql_overview.php  
 merge: human_filesize() and mksize() both provided same functionality  
 replace: deprecated ereg() with preg_match()  
@@ -1177,7 +1186,7 @@ fix: typo in dragndrop.js
 ### 22 Jul, 2018  
 fix: view_mailbox.php breaking template  
 fix: log_viewer.php not displaying all files correctly  
-fix: incorrect use of $cache-  >add  
+fix: incorrect use of $cache- >add  
 update: only show block in user_blocks if block is enabled by site  
 remove: redundant columns from users table  
 fix: bitwise for opt2  
@@ -1224,7 +1233,7 @@ add: upcoming movies from imdb
 merged: all lists into 1 file  
 update: check file/folder exists before processing  
 fix: images cleanup  
-update: composer require PHP   >= 7.2.0  
+update: composer require PHP  >= 7.2.0  
 update: increase font size slightly  
 cleanup: general code cleanup, phpstorm  
 update: database files  
@@ -1456,7 +1465,7 @@ update: README.md
 ### 5 Jun, 2018  
 replace: jquery.simpleCaptcha-0.2.js with reCAPTCHA V2  
 fix: userdetails.php tabs not working  
-fix:   > UC_UPLOADER should not be demoted to UC_VIP when donating  
+fix: >UC_UPLOADER should not be demoted to UC_VIP when donating  
 fix: remove Cache class instantiation  
 
 ### 4 Jun, 2018  
@@ -1966,7 +1975,7 @@ add: pdo class, just beginning to move from mysqli to pdo
 fix: tooltipster position  
 update: browse.php search function  
 update: details.php comments  
-update: cache-  >get  
+update: cache- >get  
 update: details.php  
 remove: new up redis  
 
@@ -2142,7 +2151,7 @@ remove: LogViewer
 add: option to log all queries to the database  
 update: admin/site_config  
 remove: many inline style  
-update: index blocks -  > torrents to uniform style  
+update: index blocks ->torrents to uniform style  
 remove: excess borders on table-bordered  
 
 ### 14 Sept, 2017  

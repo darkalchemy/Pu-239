@@ -7,7 +7,7 @@ $lang = [
     'hnr_settings_denied' => 'Acces Denied!',
     'hnr_settings_this' => "?php\n/**\nThis file created on ",
     'hnr_settings_success' => 'Success',
-    'hnr_settings_here' => "Hit And Run configuration was saved! Click <a href='{$site_config['baseurl']}/staffpanel.php?tool=hit_and_run_settings'>here to get back</a>",
+    'hnr_settings_here' => "Hit And Run configuration was saved! Click <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run_settings'>here to get back</a>",
     'hnr_settings_err_query' => 'There was an error while executing the update query or nothing was updated.',
     'hnr_settings_title' => 'Hit And Run Settings',
     'hnr_settings_online' => 'Hit And Run Online:',

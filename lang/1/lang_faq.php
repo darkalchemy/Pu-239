@@ -4,10 +4,10 @@ global $site_config;
 
 $lang = [
     'faq_welcome' => "
-    <h1 class='has-text-centered'>Welcome to {$site_config['site_name']}!</h1>
-    <p>Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to <a href='{$site_config['baseurl']}/staff.php'>contact</a> us!</p>
-    <p>This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at {$site_config['site_name']} we suggest you read the <a href='{$site_config['baseurl']}/rules.php'>rules</a>! There are only a few rules to abide by, but we do enforce them!</p>
-    <p>Before you go any further you should read the {$site_config['site_name']} <a href='{$site_config['baseurl']}/useragreement.php'>user agreement</a>.</p>",
+    <h1 class='has-text-centered'>Welcome to {$site_config['site']['name']}!</h1>
+    <p>Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to <a href='{$site_config['paths']['baseurl']}/staff.php'>contact</a> us!</p>
+    <p>This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at {$site_config['site']['name']} we suggest you read the <a href='{$site_config['paths']['baseurl']}/rules.php'>rules</a>! There are only a few rules to abide by, but we do enforce them!</p>
+    <p>Before you go any further you should read the {$site_config['site']['name']} <a href='{$site_config['paths']['baseurl']}/useragreement.php'>user agreement</a>.</p>",
     'faq_contents_header' => 'Contents',
     'faq_siteinfo_header' => 'Site information',
     'faq_siteinfo' => "
@@ -114,7 +114,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='site2'>
         <p>Where does the donated money go?</p>
-        <p>{$site_config['site_name']} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &#36;125.00.</p>
+        <p>{$site_config['site']['name']} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &#36;125.00.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='site4'></a>
@@ -131,7 +131,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='user2'>
         <p>I've lost my user name or password! Can you send it to me?</p>
-        <p>Please use <a href='{$site_config['baseurl']}/recover.php'>this form</a> to have the login details emailed to you.</p>
+        <p>Please use <a href='{$site_config['paths']['baseurl']}/recover.php'>this form</a> to have the login details emailed to you.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='user3'></a>
@@ -146,7 +146,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
     <a id='userb'></a>
         <p>So, what's MY ratio?</p>
-        <p>Click on your <a href='{$site_config['baseurl']}/usercp.php?action=default'>profile</a>, then on your user name (at the top).</p>
+        <p>Click on your <a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>profile</a>, then on your user name (at the top).</p>
         <p>It's important to distinguish between your overall ratio and the individual ratio on each torrent you may be seeding or leeching. The overall ratio takes into account the total uploaded and downloaded from your account since you joined the site. The individual ratio takes into account those values for each torrent.</p>
         <p>You may see two symbols instead of a number: 'Inf.', which is just an abbreviation for Infinity, and means that you have downloaded 0 bytes while uploading a non-zero amount (ul/dl becomes infinity); '---', which should be read as 'non-available', and shows up when you have both downloaded and uploaded 0 bytes (ul/dl = 0/0 which is an indeterminate amount).</p>
     </div>
@@ -184,12 +184,12 @@ $lang = [
               <td class='rowhead'><p>Can download DOX over 1MB and view NFO files.</p></td>
             </tr>
             <tr>
-              <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.png' alt='Star'></td>
-              <td class='rowhead'><p>Has donated money to {$site_config['site_name']}.</p></td>
+              <td class='rowhead'><img src='{$site_config['paths']['images_baseurl']}star.png' alt='Star'></td>
+              <td class='rowhead'><p>Has donated money to {$site_config['site']['name']}.</p></td>
             </tr>
             <tr>
                 <td class='rowhead'><span class='vip'>VIP</span></td>
-                <td class='rowhead'><p>Same privileges as Power User and is considered an Elite Member of {$site_config['site_name']}. Immune to automatic demotion.</p></td>
+                <td class='rowhead'><p>Same privileges as Power User and is considered an Elite Member of {$site_config['site']['name']}. Immune to automatic demotion.</p></td>
             </tr>
             <tr>
                 <td class='rowhead'>Other</td>
@@ -225,8 +225,8 @@ $lang = [
                 </td>
             </tr>
             <tr>
-                <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.png' alt='Star'></td>
-                <td class='rowhead'><p>Just donate, and send the <a href='{$site_config['baseurl']}/contactstaff.php'>Staff</a> the details.</p></td>
+                <td class='rowhead'><img src='{$site_config['paths']['images_baseurl']}star.png' alt='Star'></td>
+                <td class='rowhead'><p>Just donate, and send the <a href='{$site_config['paths']['baseurl']}/contactstaff.php'>Staff</a> the details.</p></td>
             </tr>
             <tr>
                 <td class='rowhead'><span class='vip'>VIP</span></td>
@@ -256,12 +256,12 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='userc'></a>
         <p>Why can't my friend become a member?</p>
-        <p>There is a {$site_config['maxusers']} users limit. When that number is reached we stop accepting new members. Accounts inactive for more than 42 days are automatically deleted, so keep trying. (There is no reservation or queuing system, don't ask for that.)</p>
+        <p>There is a {$site_config['site']['maxusers']} users limit. When that number is reached we stop accepting new members. Accounts inactive for more than 42 days are automatically deleted, so keep trying. (There is no reservation or queuing system, don't ask for that.)</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='userd'></a>
         <p>How do I add an avatar to my profile?</p>
-        <p>First, find an image that you like, and that is within the <a href='{$site_config['baseurl']}/rules.php'>Rules</a>. Then you will have to find a place to host it, such as our own <a href='{$site_config['baseurl']}/bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='" . url_proxy('https://photobucket.com/') . "'>Photobucket</a>, <a href='" . url_proxy('https://uploadit.org/') . "'>Upload-It!</a> or <a href='" . url_proxy('https://www.imageshack.us/') . "'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='{$site_config['baseurl']}/usercp.php?action=default'>profile</a>.</p>
+        <p>First, find an image that you like, and that is within the <a href='{$site_config['paths']['baseurl']}/rules.php'>Rules</a>. Then you will have to find a place to host it, such as our own <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='" . url_proxy('https://photobucket.com/') . "'>Photobucket</a>, <a href='" . url_proxy('https://uploadit.org/') . "'>Upload-It!</a> or <a href='" . url_proxy('https://www.imageshack.us/') . "'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>profile</a>.</p>
         <p>Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile
     ",
     'faq_details_page' => 'details page',
@@ -329,13 +329,13 @@ $lang = [
         <p>This is a very particular case in that all computers in the LAN will appear to the outside world as having the same IP. We must distinguish between two cases:</p>
         <ol class='decimal left20'>
             <li class='padding10'>
-                <p><i>You are the single {$site_config['site_name']} user in the LAN</i></p>
-                <p>You should use the same {$site_config['site_name']} account in all the computers.</p>
+                <p><i>You are the single {$site_config['site']['name']} user in the LAN</i></p>
+                <p>You should use the same {$site_config['site']['name']} account in all the computers.</p>
                 <p>Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a href='" . url_proxy('https://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en') . "'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)</p>
             </li>
             <li class='padding10'>
-                <p><i>There are multiple {$site_config['site_name']} users in the LAN</i></p>
-                <p>At present there is no way of making this setup always work properly with {$site_config['site_name']}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)</p>
+                <p><i>There are multiple {$site_config['site']['name']} users in the LAN</i></p>
+                <p>At present there is no way of making this setup always work properly with {$site_config['site']['name']}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)</p>
                 <p>It is your LAN, the responsibility is yours. Do not ask us to ban other users with the same IP, we will not do that. (Why should we ban <i>them</i> instead of <i>you</i>?)</p>
             </li>
         </ol>
@@ -343,7 +343,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='stats9'></a>
         <p>For those of you who are interested...</p>
-        <p>Some <a href='{$site_config['baseurl']}/anatomy.php'>info</a> about the 'Anatomy of a torrent session'.</p>
+        <p>Some <a href='{$site_config['paths']['baseurl']}/anatomy.php'>info</a> about the 'Anatomy of a torrent session'.</p>
     </div>",
     'faq_uploading_body' => "
     <div class='top20 bg-02 padding20 round10'>
@@ -373,14 +373,14 @@ $lang = [
             </li>
         </ul>
         <p>Also, you should have at least 2MBit upload bandwith.</p>
-        <p>If you think you can match these criteria do not hesitate to <a href='{$site_config['baseurl']}/staff.php'>contact</a> one of the administrators.</p>
+        <p>If you think you can match these criteria do not hesitate to <a href='{$site_config['paths']['baseurl']}/staff.php'>contact</a> one of the administrators.</p>
         <p>Remember! Write your application carefully! Be sure to include your UL speed and what kind of stuff you're planning to upload.</p>
         <p>Only well written letters with serious intent will be considered.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='up3'></a>
         <p>Can I upload your torrents to other trackers?</p>
-        <p>No, not the torrent file. We are a closed, limited-membership community. Only registered users can use the TB tracker. Posting our torrents on other trackers is useless, since most people who attempt to download them will be unable to connect with us. This generates a lot of frustration and bad-will against us at {$site_config['site_name']}, and will therefore not be tolerated.</p>
+        <p>No, not the torrent file. We are a closed, limited-membership community. Only registered users can use the TB tracker. Posting our torrents on other trackers is useless, since most people who attempt to download them will be unable to connect with us. This generates a lot of frustration and bad-will against us at {$site_config['site']['name']}, and will therefore not be tolerated.</p>
         <p>Complaints from other sites' administrative staff about our torrents being posted on their sites will result in the banning of the users responsible.</p>
         <p>(However, the files you download from us are yours to do as you please. You can always create another torrent, pointing to some other tracker, and upload it to the site of your choice.)</p>
     </div>",
@@ -389,19 +389,19 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='dl1'></a>
         <p>How do I use the files I've downloaded?</p>
-        <p>Check out <a href='{$site_config['baseurl']}/formats.php'>this guide</a>.</p>
+        <p>Check out <a href='{$site_config['paths']['baseurl']}/formats.php'>this guide</a>.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='dl2'></a>
         <p>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</p>
-        <p>Check out <a href='{$site_config['baseurl']}/videoformats.php'>this guide</a>.</p>
+        <p>Check out <a href='{$site_config['paths']['baseurl']}/videoformats.php'>this guide</a>.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='dl3'></a>
         <p>Why did an active torrent suddenly disappear?</p>
         <p>There may be three reasons for this:</p>
         <ol class='decimal left20'>
-            <li class='padding10'>The torrent may have been out-of-sync with the site <a href='{$site_config['baseurl']}/rules.php'>rules</a>.</li>
+            <li class='padding10'>The torrent may have been out-of-sync with the site <a href='{$site_config['paths']['baseurl']}/rules.php'>rules</a>.</li>
             <li class='padding10'>The uploader may have deleted it because it was a bad release. A replacement will probably be uploaded to take its place.</li>
             <li class='padding10'>Torrents are automatically deleted after 28 days.</li>
         </ol>
@@ -468,7 +468,7 @@ $lang = [
     <a id='dl9'></a>
         <p>Why do I get a 'rejected by tracker - Port xxxx is blacklisted' error?</p>
         <p>Your client is reporting to the tracker that it uses one of the default bittorrent ports (6881-6889) or any other common p2p port for incoming connections.</p>
-        <p>{$site_config['site_name']} does not allow clients to use ports commonly associated with p2p protocols. The reason for this is that it is a common practice for ISPs to throttle those ports (that is, limit the bandwidth, hence the speed).</p>
+        <p>{$site_config['site']['name']} does not allow clients to use ports commonly associated with p2p protocols. The reason for this is that it is a common practice for ISPs to throttle those ports (that is, limit the bandwidth, hence the speed).</p>
         <p>The blocked ports list include, but is not neccessarily limited to, the following:</p>" . main_table("
             <tr>
                 <td class='rowhead'>Direct Connect</td>
@@ -603,13 +603,13 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox3'></a>
         <p>Why am I listed as not connectable even though I'm not NAT/Firewalled?</p>
-        <p>The {$site_config['site_name']} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled.</p>
+        <p>The {$site_config['site']['name']} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox4'></a>
         <p>Can I bypass my ISP's proxy?</p>
         <p>If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like <a href='" . url_proxy('https://www.socks.permeo.com') . "'>socks</a> and that is outside the scope of this FAQ.</p>
-        <p>The site accepts connections on port 81 besides the usual 80, and using them may be enough to fool some proxies. So the first thing to try should be connecting to {$site_config['baseurl']}:81. Note that even if this works your bt client will still try to connect to port 80 unless you edit the announce url in the .torrent file.</p>
+        <p>The site accepts connections on port 81 besides the usual 80, and using them may be enough to fool some proxies. So the first thing to try should be connecting to {$site_config['paths']['baseurl']}:81. Note that even if this works your bt client will still try to connect to port 80 unless you edit the announce url in the .torrent file.</p>
         <p>Otherwise you may try the following:</p>
         <ul class='disc left20'>
             <li class='padding10'>
@@ -622,7 +622,7 @@ $lang = [
                 (Facultative) Visit <a href='" . url_proxy('https://proxyjudge.org') . "'>ProxyJudge</a>. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again.
             </li>
             <li class='padding10'>
-                Visit {$site_config['site_name']}. Hopefully the tracker will now pickup your real IP (check your profile to make sure).
+                Visit {$site_config['site']['name']}. Hopefully the tracker will now pickup your real IP (check your profile to make sure).
             </li>
         </ul>
         <p>Notice that now you will be doing all your browsing through a public proxy, which are typically quite slow. Communications between peers do not use port 80 so their speed will not be affected by this, and should be better than when you were 'unconnectable'.</p>
@@ -640,7 +640,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox7'></a>
         <p>Does this apply to other torrent sites?</p>
-        <p>This section was written for {$site_config['site_name']}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. The above does not necessarily apply to other trackers.</p>
+        <p>This section was written for {$site_config['site']['name']}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. The above does not necessarily apply to other trackers.</p>
     </div>",
     'faq_blocked_title' => "Why can't I connect? Is the site blocking me?",
     'faq_blocked_body' => "
@@ -665,14 +665,14 @@ $lang = [
     'faq_alt_port_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn4'></a>
-        <p>Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='" . url_proxy('https://sourceforge.net/projects/burst/') . "'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.</p>
-        <p>Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site_name']}:80, not {$site_config['site_name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)</p>
+        <p>Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='" . url_proxy('https://sourceforge.net/projects/burst/') . "'>MakeTorrent</a>, and replacing the announce url {$site_config['paths']['baseurl']}:81 with {$site_config['site']['name']}:80 or just {$site_config['site']['name']}.</p>
+        <p>Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site']['name']}:80, not {$site_config['site']['name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)</p>
     </div>",
     'faq_problem_title' => "What if I can't find the answer to my problem here?",
     'faq_problem_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='answer_9'></a>
-        <p>Post in the <a href='{$site_config['baseurl']}/forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:</p>
+        <p>Post in the <a href='{$site_config['paths']['baseurl']}/forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:</p>
         <ul class='disc left20'>
             <li class='padding10'>
                 Make sure your problem is not really in this FAQ. There's no point in posting just to be sent back here.

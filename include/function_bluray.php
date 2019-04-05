@@ -38,20 +38,20 @@ function get_bluray_info()
         foreach ($items as $item) {
             ++$i;
             $movie = empty($item->getElementsByTagName('title')
-                                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                                                                  ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                ->item(0)->nodeValue;
             $movie = trim(replace_unicode_strings(str_replace('(Blu-rdelete', '', $movie)));
             $movie = trim(replace_unicode_strings(str_replace('(Blu-ray)', '', $movie)));
             $pubDate = empty($item->getElementsByTagName('pubDate')
-                                  ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')
-                                                                    ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')
+                ->item(0)->nodeValue;
             $description = empty($item->getElementsByTagName('description')
-                                      ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')
-                                                                        ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')
+                ->item(0)->nodeValue;
             $description = explode(' | ', strip_tags(str_replace('<br><br>', ' | ', $description)));
             $link = empty($item->getElementsByTagName('link')
-                               ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                                                                 ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                ->item(0)->nodeValue;
             $poster_link = '';
             if ($link) {
                 preg_match('#https?://www.blu-ray.com/movies/(.*)/(.*)/#', $link, $match);
@@ -60,7 +60,7 @@ function get_bluray_info()
                 }
             }
 
-            $poster = $placeholder = $site_config['pic_baseurl'] . 'noposter.png';
+            $poster = $placeholder = $site_config['paths']['images_baseurl'] . 'noposter.png';
 
             if (!empty($poster_link)) {
                 $image = url_proxy($poster_link, true, 250);

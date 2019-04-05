@@ -47,7 +47,7 @@ $lang = [
     'uploadapps_comm' => 'Comment: ',
     'uploadapps_return' => 'Return to uploader applications page',
     'uploadapps_subject' => 'Uploader Promotion',
-    'uploadapps_msg' => "Congratulations, your uploader application has been accepted! You have been promoted to Uploader and you are now able to upload torrents. Please make sure you have read the [url={$site_config['baseurl']}/rules.php]guidelines on uploading[/url] before you do.",
+    'uploadapps_msg' => "Congratulations, your uploader application has been accepted! You have been promoted to Uploader and you are now able to upload torrents. Please make sure you have read the [url={$site_config['paths']['baseurl']}/rules.php]guidelines on uploading[/url] before you do.",
     'uploadapps_msg_note' => 'Note: ',
     'uploadapps_msg_user' => 'User',
     'uploadapps_msg_been' => 'has been promoted to Uploader by',

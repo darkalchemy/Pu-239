@@ -15,11 +15,11 @@ function freeuser_update($data)
     ignore_user_abort(true);
 
     $query = $fluent->from('users')
-                    ->select(null)
-                    ->select('id')
-                    ->select('modcomment')
-                    ->where('free_switch > 1')
-                    ->where('free_switch < ?', TIME_NOW);
+        ->select(null)
+        ->select('id')
+        ->select('modcomment')
+        ->where('free_switch>1')
+        ->where('free_switch < ?', TIME_NOW);
 
     $dt = TIME_NOW;
     $subject = 'Freeleech expired.';

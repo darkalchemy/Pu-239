@@ -24,10 +24,10 @@ if (isset($_GET['total_donors'])) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = $fluent->from('users')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('total_donated >= 0')
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('total_donated>= 0')
+        ->fetch('count');
     $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 } else {
@@ -40,10 +40,10 @@ if (isset($_GET['total_donors'])) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = $fluent->from('users')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('donor = "yes"')
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('donor = "yes"')
+        ->fetch('count');
     $users = number_format($users);
     $res = sql_query("SELECT id, username, email, added, donated, total_donated, donoruntil FROM users WHERE donor='yes' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 }
@@ -54,10 +54,10 @@ if ($count > $perpage) {
 $HTMLOUT .= "
     <ul class='level-center bg-06'>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a>
         </li>
     </ul>
     <h1 class='has-text-centered'>Site Donations</h1>";
@@ -92,7 +92,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td><b>&#36;' . htmlsafechars($arr['donated']) . '</td>
         <td><b>&#36;' . htmlsafechars($arr['total_donated']) . "</td>
         <td>
-            <a class='altlink' href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
+            <a class='altlink' href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
         </td>
     </tr>";
 }

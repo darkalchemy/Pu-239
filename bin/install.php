@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'function_password.php';
+require_once INCL_DIR . 'function_common.php';
 
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
@@ -9,74 +9,105 @@ if (empty($argv[1])) {
 
 if (count($argv) === 13) {
     $vars = [
-        'site_name' => $argv[2],
-        'announce_http' => $argv[3],
-        'announce_ssl' => $argv[4],
-        'mysql_db' => $argv[5],
-        'mysql_user' => $argv[6],
-        'mysql_pass' => $argv[7],
-        'bot_username' => $argv[8],
-        'site_email' => $argv[9],
-        'admin_username' => $argv[10],
-        'admin_pass' => $argv[11],
-        'admin_email' => $argv[12],
+        'site' => [
+            'name' => $argv[2],
+            'email' => $argv[9],
+            'salt' => bin2hex(random_bytes(16)),
+            'salty' => bin2hex(random_bytes(16)),
+            'skey' => bin2hex(random_bytes(16)),
+        ],
+        'announce_urls' => [
+            'http' => $argv[3],
+            'https' => $argv[4],
+        ],
+        'chatbot' => [
+            'name' => $argv[8],
+        ],
+        'admin' => [
+            'username' => $argv[10],
+            'pass' => $argv[11],
+            'email' => $argv[12],
+        ],
+        'mysql' => [
+            'db' => $argv[5],
+            'user' => $argv[6],
+            'pass' => $argv[7],
+        ],
     ];
 } else {
     $vars = [
-        'site_name' => readline('Site Name: '),
-        'announce_http' => readline('Site HTTP URL: '),
-        'announce_ssl' => readline('Site HTTPS URL: '),
-        'mysql_db' => readline('Database Name: '),
-        'mysql_user' => readline('Database Username: '),
-        'mysql_pass' => readline('Database Password: '),
-        'bot_username' => readline('BOT Username: '),
-        'site_email' => readline('Site Email: '),
-        'admin_username' => readline('Admin Username: '),
-        'admin_pass' => readline('Admin Password: '),
-        'admin_email' => readline('Admin Email: '),
+        'site' => [
+            'name' => readline('Site Name: '),
+            'email' => readline('Site Email: '),
+            'salt' => bin2hex(random_bytes(16)),
+            'salty' => bin2hex(random_bytes(16)),
+            'skey' => bin2hex(random_bytes(16)),
+        ],
+        'announce_urls' => [
+            'http' => readline('Site HTTP URL: '),
+            'https' => readline('Site HTTPS URL: '),
+        ],
+        'chatbot' => [
+            'name' => readline('BOT Username: '),
+        ],
+        'admin' => [
+            'username' => readline('Admin Username: '),
+            'pass' => readline('Admin Password: '),
+            'email' => readline('Admin Email: '),
+        ],
+        'mysql' => [
+            'db' => readline('Database Name: '),
+            'user' => readline('Database Username: '),
+            'pass' => readline('Database Password: '),
+        ],
     ];
 }
 
-$vars['mysql_pass'] = quotemeta($vars['mysql_pass']);
-$vars['admin_pass'] = quotemeta($vars['admin_pass']);
-$vars['sessionName'] = str_replace(' ', '_', $vars['site_name']);
-$vars['cookie_prefix'] = $vars['sessionName'];
-$vars['cookie_domain'] = $vars['announce_http'];
-$vars['domain'] = $vars['announce_http'];
+$vars['mysql']['pass'] = quotemeta($vars['mysql']['pass']);
+$vars['admin']['pass'] = quotemeta($vars['admin']['pass']);
+$vars['baseurl'] = str_replace('http://', '', $vars['announce_urls']['http']);
+$vars['session']['name'] = str_replace(' ', '_', $vars['site']['name']);
+$vars['session']['domain'] = $vars['baseurl'];
+$vars['session']['prefix'] = $vars['session']['name'] . '_';
+$vars['cookies']['prefix'] = $vars['session']['prefix'];
+$vars['cookies']['domain'] = $vars['baseurl'];
 
-$file = CONFIG_DIR . 'site.php.example';
+$file = CONFIG_DIR . 'config.php.example';
 $config = file_get_contents($file);
-$keys = array_map('regex', array_keys($vars));
-$values = array_values($vars);
-$config = preg_replace($keys, $values, $config);
-for ($i = 1; $i <= 4; ++$i) {
-    $config = preg_replace("/#pass{$i}/", bin2hex(random_bytes(16)), $config);
-}
+$config = str_replace([
+    '#mysql_db',
+    '#mysql_user',
+    '#mysql_pass',
+    '#cookie_prefix',
+    '#baseurl',
+], [
+    $vars['mysql']['db'],
+    $vars['mysql']['user'],
+    $vars['mysql']['pass'],
+    $vars['cookies']['prefix'],
+    $vars['baseurl'],
+], $config);
 
-if (!file_put_contents(CONFIG_DIR . 'site.php', $config)) {
-    die(CONFIG_DIR . 'site.php file could not be saved');
-}
-$file = ROOT_DIR . '.env.example';
-$config = file_get_contents($file);
-$config = preg_replace($keys, $values, $config);
-if (!file_put_contents(ROOT_DIR . '.env', $config)) {
-    die(ROOT_DIR . '.env file could not be saved');
+if (!file_put_contents(CONFIG_DIR . 'config.php', $config)) {
+    die(CONFIG_DIR . 'config.php file could not be saved');
 }
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once CONFIG_DIR . 'site.php';
-require_once INCL_DIR . 'function_common.php';
-require_once CONFIG_DIR . 'main.php';
+require_once CONFIG_DIR . 'config.php';
+require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
 require_once INCL_DIR . 'function_password.php';
 
-$dotenv = new Dotenv\Dotenv(ROOT_DIR);
-$dotenv->load();
+use Noodlehaus\Config;
 
-$host = $_ENV['DB_HOST'];
-$user = $_ENV['DB_USERNAME'];
-$pass = quotemeta($_ENV['DB_PASSWORD']);
-$db = $_ENV['DB_DATABASE'];
+$conf = new Config([
+    CONFIG_DIR . DIRECTORY_SEPARATOR . 'config.php',
+]);
+$site_config = $conf->all();
+$host = $site_config['database']['host'];
+$user = $site_config['database']['username'];
+$pass = quotemeta($site_config['database']['password']);
+$db = $site_config['database']['database'];
 
 $mysql_test = new mysqli($host, $user, $pass, $db);
 if ($mysql_test->connect_error) {
@@ -116,9 +147,9 @@ if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
     die("Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.\n");
 }
 $admin = [
-    'username' => $vars['admin_username'],
-    'email' => $vars['admin_email'],
-    'passhash' => make_passhash(trim($vars['admin_pass'])),
+    'username' => $vars['admin']['username'],
+    'email' => $vars['admin']['email'],
+    'passhash' => make_passhash(trim($vars['admin']['pass'])),
     'status' => 'confirmed',
     'added' => TIME_NOW,
     'last_access' => TIME_NOW,
@@ -129,7 +160,7 @@ $admin = [
     'class' => UC_MAX,
 ];
 $bot = [
-    'username' => $vars['bot_username'],
+    'username' => $vars['chatbot']['name'],
     'email' => '',
     'passhash' => make_passhash(make_password()),
     'status' => 'confirmed',
@@ -178,7 +209,35 @@ foreach ($sources as $name => $source) {
     }
 }
 
-echo "Installation Completed!!\n\nGo to http://{$vars['announce_http']}/login.php and sign in.\n\n";
+foreach ($vars['site'] as $key => $value) {
+    $set = [
+        'value' => $value,
+    ];
+    update_config($set, 'site', $key);
+}
+
+foreach ($vars['session'] as $key => $value) {
+    $set = [
+        'value' => $value,
+    ];
+    update_config($set, 'session', $key);
+}
+
+foreach ($vars['cookies'] as $key => $value) {
+    $set = [
+        'value' => $value,
+    ];
+    update_config($set, 'cookies', $key);
+}
+
+foreach ($vars['chatbot'] as $key => $value) {
+    $set = [
+        'value' => $value,
+    ];
+    update_config($set, 'chatbot', $key);
+}
+
+echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
 
 function regex($x)
 {
@@ -188,24 +247,34 @@ function regex($x)
         ], '', trim($x)) . '/';
 }
 
-function add_user($values)
+function add_user(array $values)
 {
     global $site_config;
 
     $fluent = new Pu239\Database();
     $user_id = $fluent->insertInto('users')
-                      ->values($values)
-                      ->execute();
+        ->values($values)
+        ->execute();
 
     if ($user_id) {
         $values = [
             'userid' => $user_id,
         ];
         $fluent->insertInto('usersachiev')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
         $fluent->insertInto('user_blocks')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
     }
+}
+
+function update_config(array $set, string $parent, string $name)
+{
+    $fluent = new Pu239\Database();
+    $fluent->update('site_config')
+        ->set($set)
+        ->where('parent = ?', $parent)
+        ->where('name = ?', $name)
+        ->execute();
 }

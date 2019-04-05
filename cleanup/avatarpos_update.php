@@ -16,11 +16,11 @@ function avatarpos_update($data)
     $dt = TIME_NOW;
 
     $res = $fluent->from('users')
-                  ->select(null)
-                  ->select('id')
-                  ->select('modcomment')
-                  ->where('avatarpos < ?', $dt)
-                  ->where('avatarpos > 1');
+        ->select(null)
+        ->select('id')
+        ->select('modcomment')
+        ->where('avatarpos < ?', $dt)
+        ->where('avatarpos>1');
 
     $subject = 'Avatar ban expired.';
     $msg = "Your Avatar ban has timed out and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points again. Cheers!\n";
@@ -42,9 +42,9 @@ function avatarpos_update($data)
         ];
         ++$i;
         $fluent->update('users')
-               ->set($set)
-               ->where('id = ?', $arr['id'])
-               ->execute();
+            ->set($set)
+            ->where('id=?', $arr['id'])
+            ->execute();
 
         $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }

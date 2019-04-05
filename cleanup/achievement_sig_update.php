@@ -18,7 +18,7 @@ function achievement_sig_update($data)
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'New Achievement Earned!';
-        $msg = 'Congratulations, you have just earned the [b]Signature Setter[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/signature.png[/img]';
+        $msg = 'Congratulations, you have just earned the [b]Signature Setter[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/signature.png[/img]';
         $dt = TIME_NOW;
         while ($arr = mysqli_fetch_assoc($res)) {
             $points = random_int(1, 3);

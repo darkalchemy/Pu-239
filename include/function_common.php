@@ -34,10 +34,18 @@ function return_bytes($val)
  */
 function get_scheme()
 {
-    if (isset($_SERVER['REQUEST_SCHEME'])) {
+    global $site_config;
+
+    if ($site_config['site']['https_only']) {
+        return 'https';
+    } elseif (isset($_SERVER['REQUEST_SCHEME'])) {
         return $_SERVER['REQUEST_SCHEME'];
     } elseif (isset($_SERVER['HTTPS'])) {
         return 'https';
+    } elseif (isset($_SERVER['REQUEST_URI'])) {
+        $url = parse_url($_SERVER['REQUEST_URI']);
+
+        return $url[0];
     }
 
     return 'http';

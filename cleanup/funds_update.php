@@ -24,7 +24,7 @@ function funds_update($data)
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Donor status removed by system.';
-        $msg = "Your Donor status has timed out and has been auto-removed by the system, and your Vip status has been removed. We would like to thank you once again for your support to {$site_config['site_name']}. If you wish to re-new your donation, Visit the site donate link. Cheers!\n";
+        $msg = "Your Donor status has timed out and has been auto-removed by the system, and your Vip status has been removed. We would like to thank you once again for your support to {$site_config['site']['name']}. If you wish to re-new your donation, Visit the site donate link. Cheers!\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = $arr['modcomment'];
             $modcomment = get_date($dt, 'DATE', 1) . " - Donation status Automatically Removed By System.\n" . $modcomment;

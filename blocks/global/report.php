@@ -2,21 +2,21 @@
 
 global $site_config, $CURUSER, $lang, $fluent, $cache;
 
-if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['report'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
         $delt_with = $fluent->from('reports')
-                            ->select(null)
-                            ->select('COUNT(id) AS count')
-                            ->where('delt_with = 0')
-                            ->fetch('count');
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('delt_with = 0')
+            ->fetch('count');
 
         $cache->set('new_report_', $delt_with, $site_config['expires']['alerts']);
     }
     if ($delt_with > 0) {
         $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
+        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
             <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
                 " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
             </span>

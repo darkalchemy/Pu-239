@@ -8,7 +8,7 @@ $sanity_check = (isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
 $can_delete = ($arr_post['user_id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF);
 if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
@@ -30,31 +30,31 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_cant_del_1st_post_staff']);
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
+    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
 }
 if ($sanity_check > 0) {
     if ($delete_for_real) {
-        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE p.topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (empty($arr['id'])) {
-            sql_query('DELETE FROM topics WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM topics WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         } else {
-            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = (SELECT COUNT(*) FROM posts WHERE topic_id = topics.id)') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = (SELECT COUNT(*) FROM posts WHERE topic_id=topics.id)') or sqlerr(__FILE__, __LINE__);
         }
-        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id=' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM posts WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid=' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
         for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
             $cache->delete('forum_last_post_' . $arr['forum_id'] . '_' . $i);
         }
     } else {
-        sql_query('UPDATE posts SET status = \'deleted\'  WHERE id = ' . sqlesc($post_id) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE posts SET status = \'deleted\'  WHERE id=' . sqlesc($post_id) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
-    header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
+    header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
     stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
+	<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
 }

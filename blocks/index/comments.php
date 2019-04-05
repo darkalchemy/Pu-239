@@ -7,41 +7,41 @@ $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
     $comments = [];
     $torrents = $fluent->from('comments AS c')
-                       ->select(null)
-                       ->select('c.id AS comment_id')
-                       ->select('c.user')
-                       ->select('c.torrent AS id')
-                       ->select('c.added')
-                       ->select('c.text')
-                       ->select('c.anonymous')
-                       ->select('c.user_likes')
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('s.name AS cat')
-                       ->select('s.image')
-                       ->innerJoin('torrents AS t ON t.id = c.torrent')
-                       ->leftJoin('users AS u ON u.id = c.user')
-                       ->leftJoin('categories AS s ON t.category = s.id')
-                       ->leftJoin('categories AS p ON s.parent_id = p.id')
-                       ->where('c.torrent > 0')
-                       ->orderBy('c.id DESC')
-                       ->limit(5);
+        ->select(null)
+        ->select('c.id AS comment_id')
+        ->select('c.user')
+        ->select('c.torrent AS id')
+        ->select('c.added')
+        ->select('c.text')
+        ->select('c.anonymous')
+        ->select('c.user_likes')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('s.name AS cat')
+        ->select('s.image')
+        ->innerJoin('torrents AS t ON t.id=c.torrent')
+        ->leftJoin('users AS u ON u.id=c.user')
+        ->leftJoin('categories AS s ON t.category = s.id')
+        ->leftJoin('categories AS p ON s.parent_id=p.id')
+        ->where('c.torrent>0')
+        ->orderBy('c.id DESC')
+        ->limit(5);
 
     foreach ($torrents as $torrent) {
         if (!empty($torrent['parent_name'])) {
@@ -78,7 +78,7 @@ foreach ($comments as $comment) {
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
+    $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
@@ -88,7 +88,7 @@ foreach ($comments as $comment) {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 
-    $caticon = !empty($image) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
+    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
 
     $posted_comments .= "
                         <tr>

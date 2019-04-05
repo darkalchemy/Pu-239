@@ -8,7 +8,7 @@ class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_nameblacklist'));
-$blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
+$blacklist = file_exists($site_config['path']['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['path']['nameblacklist']))) ? unserialize(file_get_contents($site_config['path']['nameblacklist'])) : [];
 //dd($blacklist);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $badnames = isset($_POST['badnames']) && !empty($_POST['badnames']) ? trim($_POST['badnames']) : '';
@@ -22,17 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $blacklist[$badnames] = (int) 1;
     }
-    if (file_put_contents($site_config['nameblacklist'], serialize($blacklist))) {
+    if (file_put_contents($site_config['path']['nameblacklist'], serialize($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
         stderr($lang['name_success'], $lang['name_file']);
     } else {
-        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['nameblacklist'] . '</b>' . $lang['name_is'] . '');
+        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['path']['nameblacklist'] . '</b>' . $lang['name_is'] . '');
     }
 } else {
     $out = stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);
     $out .= main_div("
     <h2 class='has-text-centered'>{$lang['name_add']}</h2>
-    <form action='{$site_config['baseurl']}/staffpanel.php?tool=nameblacklist&amp;action=nameblacklist' method='post' accept-charset='utf-8'>
+    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=nameblacklist&amp;action=nameblacklist' method='post' accept-charset='utf-8'>
         <textarea rows='3' name='badnames' class='w-100'></textarea>
         <div class='has-text-centered'>
             <p>{$lang['name_note']}</p>

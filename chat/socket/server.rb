@@ -176,7 +176,7 @@ class SocketServer
         # Get the position of the first "=":
         i = line.index('=')
         # Check if line is not a comment and a valid property:
-        if (!line.empty? && line[0] != ?# && i > 0)
+        if (!line.empty? && line[0] != ?# && i>0)
           # Add the configuration option to the config hash:
           key = line[0..i - 1].strip
           value = line[i + 1..-1].strip
@@ -240,7 +240,7 @@ class SocketServer
         end
         # Add the client to the clients list:       
         @clients[socket] = client
-        if @config[:log_level].to_i > 0
+        if @config[:log_level].to_i>0
           # Log client connection and the number of connected clients:
           puts "#{Time.now}\t#{client[:id]} Connects\t(#{@clients.size} connected)"; STDOUT.flush
         end
@@ -268,7 +268,7 @@ class SocketServer
     end
     # Remove the client ID from the clients list:
     @clients.delete(client_socket)
-    if @config[:log_level].to_i > 0
+    if @config[:log_level].to_i>0
       # Log client disconnection and the number of connected clients:
       puts "#{Time.now}\t#{client_id} Disconnects\t(#{@clients.size} connected)"; STDOUT.flush
     end
@@ -328,10 +328,10 @@ class SocketServer
           end
         end
       end
-      if @config[:log_level].to_i > 2
+      if @config[:log_level].to_i>2
         # Log the message sent by the broadcast client:
         puts "#{Time.now}\t#{@clients[client_socket][:id]} Chat:#{chat_id.to_s.dump} Channel:#{channel_id.to_s.dump} Message:#{str.to_s.dump}"; STDOUT.flush
-      elsif @config[:log_level].to_i > 1
+      elsif @config[:log_level].to_i>1
         # Log the message sent by the broadcast client:
         puts "#{Time.now}\t#{@clients[client_socket][:id]} Chat:#{chat_id.to_s.dump} Channel:#{channel_id.to_s.dump} Message"; STDOUT.flush
       end
@@ -343,7 +343,7 @@ class SocketServer
     @clients[client_socket][:chat_id] = chat_id
     @clients[client_socket][:user_id] = user_id
     @clients[client_socket][:reg_id] = reg_id
-    if @config[:log_level].to_i > 1
+    if @config[:log_level].to_i>1
       # Log the client registration:
       puts "#{Time.now}\t#{@clients[client_socket][:id]} Chat:#{chat_id.to_s.dump} User:#{user_id.to_s.dump} Reg:#{reg_id.to_s.dump}"; STDOUT.flush
     end
@@ -374,7 +374,7 @@ class SocketServer
         # Add a user item of the given user_id with the given reg_id to the current channel:
         @chats[chat_id][channel_id][user_id] = reg_id
       end
-      if @config[:log_level].to_i > 1
+      if @config[:log_level].to_i>1
         # Log the client authentication:
         puts "#{Time.now}\t#{@clients[client_socket][:id]} Chat:#{chat_id.to_s.dump} User:#{user_id.to_s.dump} Auth:#{reg_id.to_s.dump} Channels:#{channel_ids.join(',').dump}"; STDOUT.flush
       end
@@ -388,7 +388,7 @@ class SocketServer
     rescue
       # Rescue if writing to the socket fails
     end
-    if @config[:log_level].to_i > 1
+    if @config[:log_level].to_i>1
       # Log the policy-file-request:
       puts "#{Time.now}\t#{@clients[client_socket][:id]} Policy-File-Request"; STDOUT.flush
     end

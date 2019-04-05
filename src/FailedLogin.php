@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class FailedLogin.
  */
@@ -25,15 +27,15 @@ class FailedLogin
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get(string $ip)
     {
         $fails = $this->fluent->from('failedlogins')
-                              ->select(null)
-                              ->select('SUM(attempts) AS attempts')
-                              ->where('INET6_NTOA(ip) = ?', $ip)
-                              ->fetch('attempts');
+            ->select(null)
+            ->select('SUM(attempts) AS attempts')
+            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->fetch('attempts');
 
         return $fails;
     }
@@ -47,33 +49,33 @@ class FailedLogin
     public function set(array $set, string $ip)
     {
         $this->fluent->update('failedlogins')
-                     ->set($set)
-                     ->where('INET6_NTOA(ip) = ?', $ip)
-                     ->execute();
+            ->set($set)
+            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->execute();
     }
 
     /**
      * @param array $values
      * @param array $update
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values, array $update)
     {
         $this->fluent->insertInto('failedlogins', $values)
-                     ->onDuplicateKeyUpdate($update)
-                     ->execute();
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
     }
 
     /**
      * @param string $ip
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete(string $ip)
     {
         $this->fluent->deleteFrom('failedlogins')
-                     ->where('INET6_NTOA(ip) = ?', $ip)
-                     ->execute();
+            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->execute();
     }
 }

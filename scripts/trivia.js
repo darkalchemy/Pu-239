@@ -7,7 +7,7 @@ function get_trivia_question() {
     var csrf = el.dataset.csrf;
     var qid = el.dataset.qid;
     var gamenum = el.dataset.gamenum;
-    content.innerHTML = "<div class='padding20'>Looking up Trivia Questions, please be patient.</div>";
+    content.innerHTML = '<div class=\'padding20\'>Looking up Trivia Questions, please be patient.</div>';
 
     $.ajax({
         url: './ajax/trivia_lookup.php',
@@ -16,13 +16,13 @@ function get_trivia_question() {
         data: {
             csrf: csrf,
             qid: qid,
-            gamenum: gamenum,
+            gamenum: gamenum
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
-                content.innerHTML = "<div class='padding20'>CSRF Failure, try refreshing the page</div>";
+                content.innerHTML = '<div class=\'padding20\'>CSRF Failure, try refreshing the page</div>';
             } else if (data['fail'] === 'invalid') {
-                content.innerHTML = "<div class='padding20'>Trivia Lookup Failed.</div>";
+                content.innerHTML = '<div class=\'padding20\'>Trivia Lookup Failed.</div>';
             } else {
                 content.innerHTML = data['content'];
                 initializeClock('clock_round', data['round']);
@@ -100,7 +100,7 @@ function process_trivia(elem) {
             answer: answer,
             csrf: csrf,
             qid: qid,
-            gamenum: gamenum,
+            gamenum: gamenum
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {

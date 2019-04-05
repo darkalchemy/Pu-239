@@ -16,7 +16,7 @@ function stdhead($title = '', $stdhead = null)
     require_once 'navbar.php';
     global $CURUSER, $site_config, $BLOCKS, $session, $fluent;
 
-    if (!$site_config['site_online']) {
+    if (!$site_config['site']['online']) {
         if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
             die('Site is down for maintenance, please check back again later... thanks<br>');
         } elseif (!empty($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
@@ -27,9 +27,9 @@ function stdhead($title = '', $stdhead = null)
         $session->destroy();
     }
     if (empty($title)) {
-        $title = $site_config['site_name'];
+        $title = $site_config['site']['name'];
     } else {
-        $title = $site_config['site_name'] . ' :: ' . htmlsafechars($title);
+        $title = $site_config['site']['name'] . ' :: ' . htmlsafechars($title);
     }
     $css_incl = '';
     if (!empty($stdhead['css'])) {
@@ -40,19 +40,19 @@ function stdhead($title = '', $stdhead = null)
 
     if (!empty($CURUSER) && $_SERVER['PHP_SELF'] != '/index.php') {
         $fluent->deleteFrom('ajax_chat_online')
-               ->where('userID = ?', $CURUSER['id'])
-               ->execute();
+            ->where('userID = ?', $CURUSER['id'])
+            ->execute();
     }
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
-    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}'>
-    <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['baseurl']}/apple-touch-icon.png'>
-    <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['baseurl']}/favicon-32x32.png'>
-    <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png'>
-    <link rel='manifest' href='{$site_config['baseurl']}/manifest.json'>
-    <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5'>
+    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['paths']['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}'>
+    <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['paths']['baseurl']}/apple-touch-icon.png'>
+    <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['paths']['baseurl']}/favicon-32x32.png'>
+    <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['paths']['baseurl']}/favicon-16x16.png'>
+    <link rel='manifest' href='{$site_config['paths']['baseurl']}/manifest.json'>
+    <link rel='mask-icon' href='{$site_config['paths']['baseurl']}/safari-pinned-tab.svg' color='#5bbad5'>
     <meta name='theme-color' content='#fff'>
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
@@ -70,12 +70,12 @@ function stdhead($title = '', $stdhead = null)
         'recover.php',
     ];
     $action = in_array(basename($_SERVER['PHP_SELF']), $captcha) ? 'login' : 'homepage';
-    if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($site_config['recaptcha']['site'])) {
         $htmlout .= "
         <script>
-            var key = '{$_ENV['RECAPTCHA_SITE_KEY']}';
+            var key = '{$site_config['recaptcha']['site']}';
         </script>
-        <script src='https://www.google.com/recaptcha/api.js?render={$_ENV['RECAPTCHA_SITE_KEY']}'></script>";
+        <script src='https://www.google.com/recaptcha/api.js?render={$site_config['recaptcha']['site']}'></script>";
     }
     $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
     $htmlout .= "
@@ -93,8 +93,8 @@ function stdhead($title = '', $stdhead = null)
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();
-        if (empty($site_config['video_banners'])) {
-            if (empty($site_config['banners'])) {
+        if (empty($site_config['banners']['video'])) {
+            if (empty($site_config['banners']['image'])) {
                 $banner = "
                     <div class='left50'>
                         <h1>{$site_config['tagline']['banner']}</h1>
@@ -102,7 +102,7 @@ function stdhead($title = '', $stdhead = null)
                     </div>";
             } else {
                 $banner = "
-                    <img src='" . $site_config['pic_baseurl'] . $site_config['banners'][array_rand($site_config['banners'])] . "' class='w-100'>";
+                    <img src='" . $site_config['paths']['images_baseurl'] . $site_config['banners']['image'][array_rand($site_config['banners']['image'])] . "' class='w-100'>";
             }
             $htmlout .= "
             <div id='logo' class='logo columns level is-marginless bg-04'>
@@ -111,14 +111,14 @@ function stdhead($title = '', $stdhead = null)
                 </div>
             </div>";
         } else {
-            $banner = $site_config['video_banners'][array_rand($site_config['video_banners'])];
+            $banner = $site_config['banners']['video'][array_rand($site_config['banners']['video'])];
             $htmlout .= "
             <div id='base_contents_video'>
                 <div class='base_header_video'>
-                    <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['pic_baseurl']}banner.png'>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.mp4' type='video/mp4'>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.webm' type='video/webm'>
-                        <img src='{$site_config['pic_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo'>
+                    <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['paths']['images_baseurl']}banner.png'>
+                        <source src='{$site_config['paths']['images_baseurl']}{$banner}.mp4' type='video/mp4'>
+                        <source src='{$site_config['paths']['images_baseurl']}{$banner}.webm' type='video/webm'>
+                        <img src='{$site_config['paths']['images_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo'>
                     </video>
                 </div>
             </div>";
@@ -177,7 +177,8 @@ function stdhead($title = '', $stdhead = null)
     }
 
     if ($BLOCKS['global_flash_messages_on']) {
-        foreach ($site_config['notifications'] as $notif) {
+        foreach ($site_config['site']['notifications'] as $notif) {
+            $messages = $session->get($notif);
             if (($messages = $session->get($notif)) != false) {
                 foreach ($messages as $message) {
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
@@ -204,9 +205,9 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'function_bbcode.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session, $pdo;
 
-    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
-    $debug = $site_config['sql_debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
+    $debug = $site_config['database']['debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
@@ -214,49 +215,49 @@ function stdfoot($stdfoot = false)
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
         $querytime = $querytime === null ? 0 : $querytime;
 
-        if ($_ENV['CACHE_DRIVER'] === 'apcu' && extension_loaded('apcu')) {
+        if ($site_config['cache']['driver'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
                 $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['mem_size']);
             }
-        } elseif ($_ENV['CACHE_DRIVER'] === 'redis' && extension_loaded('redis')) {
+        } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = new \Redis();
-            if (!$site_config['socket']) {
-                $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            if (!$site_config['redis']['use_socket']) {
+                $client->connect($site_config['redis']['host'], $site_config['redis']['port']);
             } else {
-                $client->connect($_ENV['REDIS_SOCKET']);
+                $client->connect($site_config['redis']['port']);
             }
-            $client->select($_ENV['REDIS_DATABASE']);
+            $client->select($site_config['redis']['database']);
             $stats = $client->info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
-                preg_match('/keys=(\d+)/', $stats['db' . $_ENV['REDIS_DATABASE']], $keys);
+                preg_match('/keys=(\d+)/', $stats['db' . $site_config['redis']['database']], $keys);
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
-        } elseif ($_ENV['CACHE_DRIVER'] === 'memcached' && extension_loaded('memcached')) {
+        } elseif ($site_config['cache']['driver'] === 'memcached' && extension_loaded('memcached')) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
-                if (!$site_config['socket']) {
-                    $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                if (!$site_config['memcached']['use_socket']) {
+                    $client->addServer($site_config['memcached']['host'], $site_config['memcached']['port']);
                 } else {
-                    $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
+                    $client->addServer($site_config['memcached']['socket'], 0);
                 }
             }
             $stats = $client->getStats();
-            if (!$site_config['socket']) {
-                $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            if (!$site_config['memcached']['socket']) {
+                $stats = !empty($stats["{$site_config['memcached']['host']}:{$site_config['memcached']['port']}"]) ? $stats["{$site_config['memcached']['host']}:{$site_config['memcached']['port']}"] : null;
             } else {
-                $stats = !empty($stats["{$_ENV['MEMCACHED_SOCKET']}:0"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:0"] : (!empty($stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"] : null);
+                $stats = !empty($stats["{$site_config['memcached']['socket']}:0"]) ? $stats["{$site_config['memcached']['socket']}:0"] : (!empty($stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"]) ? $stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"] : null);
             }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['bytes']);
             }
-        } elseif ($_ENV['CACHE_DRIVER'] === 'file') {
-            $files_info = GetDirectorySize($_ENV['FILES_PATH'], true, true);
-            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
-        } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
+        } elseif ($site_config['cache']['driver'] === 'file') {
+            $files_info = GetDirectorySize($site_config['files']['path'], true, true);
+            $header = "{$lang['gl_stdfoot_querys_fly1']}{$site_config['files']['path']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
+        } elseif ($site_config['cache']['driver'] === 'couchbase') {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }
 
@@ -328,7 +329,7 @@ function stdfoot($stdfoot = false)
                         ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>$uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['sourcecode']['name']}</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} {$php_version}</p>
                     </div>
                 </div>
@@ -340,7 +341,7 @@ function stdfoot($stdfoot = false)
     }
     $details = basename($_SERVER['PHP_SELF']) === 'details.php';
     $bg_image = '';
-    if ($CURUSER && ($site_config['backgrounds_on_all_pages'] || $details)) {
+    if ($CURUSER && ($site_config['site']['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
         if (!empty($background)) {
             $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
@@ -440,9 +441,9 @@ function platform_menu()
     $templates = $cache->get('templates_' . $CURUSER['class']);
     if ($templates === false || is_null($templates)) {
         $templates = $fluent->from('stylesheets')
-                            ->orderBy('id')
-                            ->where('min_class_to_view <= ?', $CURUSER['class'])
-                            ->fetchAll();
+            ->orderBy('id')
+            ->where('min_class_to_view <= ?', $CURUSER['class'])
+            ->fetchAll();
 
         $cache->set('templates_' . $CURUSER['class'], $templates, 0);
     }
@@ -467,7 +468,7 @@ function platform_menu()
             } else {
                 $styles .= "
                         <li class='margin10'>
-                            <a href='{$site_config['baseurl']}/take_theme.php?id={$ar['id']}'>{$ar['name']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/take_theme.php?id={$ar['id']}'>{$ar['name']}</a>
                         </li>";
             }
         }
@@ -482,14 +483,14 @@ function platform_menu()
             <div class='platform-wrapper'>
                 <div class='columns is-marginless'>
                     <div class='column is-paddingless middle'>
-                        <ul class='level-left size_3'>" . (!$site_config['in_production'] ? "
-                            <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['version']}</li>" : '') . "
+                        <ul class='level-left size_3'>" . (!$site_config['site']['production'] ? "
+                            <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
                         </ul>
                     </div>
                     <div class='column is-paddingless middle searchbar'>
                         <ul class='level-center'>
                             <li>
-                                <form action='{$site_config['baseurl']}/browse.php'>
+                                <form action='{$site_config['paths']['baseurl']}/browse.php'>
                                     <div class='search round5 middle bg-light'>
                                         <i class='icon-search has-text-black' aria-hidden='true'></i>
                                         <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black'>

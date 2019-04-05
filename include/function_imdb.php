@@ -21,7 +21,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
         $config = new Config();
-        $config->language = $site_config['imdb_language'];
+        $config->language = $site_config['language']['imdb'];
         $config->cachedir = IMDB_CACHE_DIR;
         $config->throwHttpExceptions = 0;
         $config->default_agent = get_random_useragent();
@@ -104,23 +104,23 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 
         if (!empty($persons)) {
             $fluent->insertInto('person')
-                   ->values($persons)
-                   ->ignore()
-                   ->execute();
+                ->values($persons)
+                ->ignore()
+                ->execute();
         }
 
         if (!empty($cast)) {
             $fluent->insertInto('imdb_person')
-                   ->values($cast)
-                   ->ignore()
-                   ->execute();
+                ->values($cast)
+                ->ignore()
+                ->execute();
         }
 
         if (!empty($roles)) {
             $fluent->insertInto('imdb_role')
-                   ->values($roles)
-                   ->ignore()
-                   ->execute();
+                ->values($roles)
+                ->ignore()
+                ->execute();
         }
 
         unset($cast, $persons, $roles);
@@ -138,8 +138,8 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 'rating' => $imdb_data['rating'],
             ];
             $fluent->insertInto('imdb_info', $values)
-                   ->onDuplicateKeyUpdate($update)
-                   ->execute();
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
         }
 
         $cache->delete('cast_' . $imdb_id);
@@ -308,7 +308,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
     foreach ($imdb as $foo => $boo) {
         if (!empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
-                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['baseurl']}/browse.php?si={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
@@ -321,7 +321,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                         </span>";
                 } elseif ($boo === 'Year') {
                     $year = 'Search by year: ' . $imdb_data['year'];
-                    $imdb_data[$foo] = "<a href='{$site_config['baseurl']}/browse.php?sys={$imdb_data['year']}&amp;sye={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
+                    $imdb_data[$foo] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sys={$imdb_data['year']}&amp;sye={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
                 } elseif ($boo === 'MPAA') {
                     if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
                         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
@@ -357,7 +357,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             } elseif ($foo === 'genres') {
                 foreach ($imdb_data[$foo] as $genre) {
                     $genre_title = 'Search by genre: ' . ucwords($genre);
-                    $imdb_tmp[] = "<a href='{$site_config['baseurl']}/browse.php?sg=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
+                    $imdb_tmp[] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sg=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
                 }
             }
             if (!empty($imdb_tmp)) {
@@ -474,7 +474,7 @@ function get_imdb_info_short($imdb_id)
         $image_stuffs->insert($values);
     }
     if (empty($imdb_data['poster'])) {
-        $poster = $site_config['pic_baseurl'] . 'noposter.png';
+        $poster = $site_config['paths']['images_baseurl'] . 'noposter.png';
         $imdb_data['poster'] = $poster;
         $imdb_data['placeholder'] = $poster;
     }
@@ -623,9 +623,9 @@ function get_random_useragent()
     $browser = $cache->get('browser_user_agents_');
     if ($browser === false || is_null($browser)) {
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('DISTINCT browser')
-                          ->limit(100);
+            ->select(null)
+            ->select('DISTINCT browser')
+            ->limit(100);
         $browser = [];
         foreach ($results as $result) {
             preg_match('/Agent : (.*)/', $result['browser'], $match);
@@ -666,16 +666,16 @@ function update_torrent_data(string $imdb_id)
         'rating' => $imdb_data['rating'],
     ]);
     $result = $fluent->update('torrents')
-                     ->set($set)
-                     ->where('imdb_id = ?', 'tt' . $imdb_id)
-                     ->execute();
+        ->set($set)
+        ->where('imdb_id=?', 'tt' . $imdb_id)
+        ->execute();
 
     if ($result) {
         $torrents = $fluent->from('torrents')
-                           ->select(null)
-                           ->select('id')
-                           ->where('imdb_id = ?', 'tt' . $imdb_id)
-                           ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->where('imdb_id=?', 'tt' . $imdb_id)
+            ->fetchAll();
 
         foreach ($torrents as $torrent) {
             $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
@@ -694,9 +694,9 @@ function get_imdb_person($person_id)
     $imdb_person = $cache->get('imdb_person_' . $person_id);
     if ($imdb_person === false || is_null($imdb_person)) {
         $imdb_person = $fluent->from('person')
-                              ->where('imdb_id = ?', $person_id)
-                              ->where('updated + 2592000 > ?', TIME_NOW)
-                              ->fetch();
+            ->where('imdb_id=?', $person_id)
+            ->where('updated + 2592000>?', TIME_NOW)
+            ->fetch();
 
         if (!empty($imdb_person)) {
             $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
@@ -705,7 +705,7 @@ function get_imdb_person($person_id)
         }
 
         $config = new Config();
-        $config->language = $site_config['imdb_language'];
+        $config->language = $site_config['language']['imdb'];
         $config->cachedir = IMDB_CACHE_DIR;
         $config->throwHttpExceptions = 0;
         $config->default_agent = get_random_useragent();
@@ -738,7 +738,7 @@ function get_imdb_person($person_id)
                 'href="',
             ], [
                 '<br>',
-                'href="' . $site_config['anonymizer_url'],
+                'href="' . $site_config['site']['anonymizer_url'],
             ], $data[0]['desc']);
         }
 
@@ -759,8 +759,8 @@ function get_imdb_person($person_id)
         $update = $imdb_person;
         unset($update['name']);
         $fluent->insertInto('person', $imdb_person)
-               ->onDuplicateKeyUpdate($update)
-               ->execute();
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
 
         $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
     }

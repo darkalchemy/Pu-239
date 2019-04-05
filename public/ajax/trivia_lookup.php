@@ -29,10 +29,10 @@ if (empty($data)) {
     die();
 }
 $user = $fluent->from('triviausers')
-               ->where('user_id = ?', $current_user)
-               ->where('qid = ?', $qid)
-               ->where('gamenum = ?', $gamenum)
-               ->fetch();
+    ->where('user_id=?', $current_user)
+    ->where('qid=?', $qid)
+    ->where('gamenum = ?', $gamenum)
+    ->fetch();
 
 $cleanup = trivia_time();
 if (!empty($user)) {

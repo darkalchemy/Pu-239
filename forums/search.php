@@ -33,52 +33,52 @@ if ($author) {
 }
 if ($search || $author_id) {
     $count = $fluent->from('posts AS p')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('f.min_class_read <= ?', $CURUSER['class'])
-                    ->leftJoin('topics AS t ON p.topic_id = t.id')
-                    ->leftJoin('forums AS f ON t.forum_id = f.id');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('f.min_class_read <= ?', $CURUSER['class'])
+        ->leftJoin('topics AS t ON p.topic_id=t.id')
+        ->leftJoin('forums AS f ON t.forum_id=f.id');
 
     $results = $fluent->from('posts AS p')
-                      ->select(null)
-                      ->select('p.user_id AS userid')
-                      ->select('p.id AS post_id')
-                      ->select('p.body')
-                      ->select('p.post_title')
-                      ->select('p.added')
-                      ->select('p.icon')
-                      ->select('p.edited_by')
-                      ->select('p.edit_reason')
-                      ->select('p.edit_date')
-                      ->select('p.bbcode')
-                      ->select('p.anonymous AS pan')
-                      ->select('t.anonymous AS anonymous')
-                      ->select('t.id AS topic_id')
-                      ->select('t.topic_name AS topic_title')
-                      ->select('t.topic_desc')
-                      ->select('t.post_count')
-                      ->select('t.views')
-                      ->select('t.locked')
-                      ->select('t.sticky')
-                      ->select('t.poll_id')
-                      ->select('t.num_ratings')
-                      ->select('t.rating_sum')
-                      ->select('f.id AS forum_id')
-                      ->select('f.name AS forum_name')
-                      ->select('f.description AS forum_desc')
-                      ->where('f.min_class_read <= ?', $CURUSER['class'])
-                      ->leftJoin('topics AS t ON p.topic_id = t.id')
-                      ->leftJoin('forums AS f ON t.forum_id = f.id');
+        ->select(null)
+        ->select('p.user_id AS userid')
+        ->select('p.id AS post_id')
+        ->select('p.body')
+        ->select('p.post_title')
+        ->select('p.added')
+        ->select('p.icon')
+        ->select('p.edited_by')
+        ->select('p.edit_reason')
+        ->select('p.edit_date')
+        ->select('p.bbcode')
+        ->select('p.anonymous AS pan')
+        ->select('t.anonymous AS anonymous')
+        ->select('t.id AS topic_id')
+        ->select('t.topic_name AS topic_title')
+        ->select('t.topic_desc')
+        ->select('t.post_count')
+        ->select('t.views')
+        ->select('t.locked')
+        ->select('t.sticky')
+        ->select('t.poll_id')
+        ->select('t.num_ratings')
+        ->select('t.rating_sum')
+        ->select('f.id AS forum_id')
+        ->select('f.name AS forum_name')
+        ->select('f.description AS forum_desc')
+        ->where('f.min_class_read <= ?', $CURUSER['class'])
+        ->leftJoin('topics AS t ON p.topic_id=t.id')
+        ->leftJoin('forums AS f ON t.forum_id=f.id');
     if ($CURUSER['class'] < UC_STAFF) {
         $count = $count->where('p.status = "ok"')
-                       ->where('t.status = "ok"');
+            ->where('t.status = "ok"');
         $results = $results->where('p.status = "ok"')
-                           ->where('t.status = "ok"');
+            ->where('t.status = "ok"');
     } elseif ($CURUSER['class'] < $min_delete_view_class) {
         $count = $count->where('p.status != "deleted"')
-                       ->where('t.status != "deleted"');
+            ->where('t.status != "deleted"');
         $results = $results->where('p.status != "deleted"')
-                           ->where('t.status != "deleted"');
+            ->where('t.status != "deleted"');
     }
     if (!empty($search)) {
         if ($search_what === 'all') {
@@ -108,8 +108,8 @@ if ($search || $author_id) {
     }
 
     $query = $fluent->from('forums')
-                    ->select(null)
-                    ->select('id');
+        ->select(null)
+        ->select('id');
 
     foreach ($query as $arr_forum_ids) {
         if (isset($_GET['f' . $arr_forum_ids['id']])) {
@@ -122,17 +122,17 @@ if ($search || $author_id) {
         $results = $results->where('t.forum_id', implode(', ', $selected_forums));
     }
     if ($author_id) {
-        $count = $count->where('p.user_id = ?', $author_id);
-        $results = $results->where('p.user_id = ?', $author_id);
+        $count = $count->where('p.user_id=?', $author_id);
+        $results = $results->where('p.user_id=?', $author_id);
     }
     if ($search_when) {
-        $count = $count->where('p.added >= ?' . (TIME_NOW - $search_when));
-        $results = $results->where('p.added >= ?' . (TIME_NOW - $search_when));
+        $count = $count->where('p.added>= ?' . (TIME_NOW - $search_when));
+        $results = $results->where('p.added>= ?' . (TIME_NOW - $search_when));
     }
     $count = $count->fetch('count');
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = 15;
-    $link = $site_config['baseurl'] . '/forums.php?action=search' . $pager_links . (isset($_GET['perpage']) ? "&amp;perpage={$perpage}&amp;" : '');
+    $link = $site_config['paths']['baseurl'] . '/forums.php?action=search' . $pager_links . (isset($_GET['perpage']) ? "&amp;perpage={$perpage}&amp;" : '');
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
     $menu_bottom = $pager['pagerbottom'];
@@ -150,8 +150,8 @@ if ($search || $author_id) {
         <a id="results"></a>';
                 $heading = '
         <tr>
-            <th class="w-1"><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></th>
-            <th class="w-1"><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="emoticon tooltipper"></th>
+            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></th>
+            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="emoticon tooltipper"></th>
             <th class="w-40">' . $lang['sea_topic_post'] . '</th>
             <th class="w-40">' . $lang['sea_in_forum'] . '</th>
             <th class="w-1">' . $lang['fe_replies'] . '</th>
@@ -176,8 +176,8 @@ if ($search || $author_id) {
                     $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                     $table_body .= '
         <tr>
-            <td><img src="' . $site_config['pic_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></td>
-            <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon">' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" class="emoticon tooltipper">') . '</td>
+            <td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></td>
+            <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" class="emoticon tooltipper">') . '</td>
             <td>
                 <div class="padding20">
                     <div class="columns">
@@ -185,7 +185,7 @@ if ($search || $author_id) {
                             <span class="has-text-weight-bold">' . $lang['fe_post'] . ': </span>
                         </div>
                         <div class="column">
-                            <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . (empty($post_title) ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a>
+                            <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . (empty($post_title) ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a>
                         </div>
                     </div>
                     <div class="columns">
@@ -201,8 +201,8 @@ if ($search || $author_id) {
                             <span style="font-style: italic;">' . $lang['ep_in_topic'] . ': </span>
                         </div>
                         <div class="column">
-                            ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
-                                <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '
+                            ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
+                                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '
                         </div>' . (!empty($rpic) ? '
                         <div class="column is-1">
                             ' . $rpic . '
@@ -217,7 +217,7 @@ if ($search || $author_id) {
                 </div>
             </td>
             <td>
-                <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
+                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
                 ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr['forum_desc'], ENT_QUOTES) . '</span>' : '') . '
             </td>
             <td>' . number_format($posts - 1) . '</td>
@@ -243,20 +243,20 @@ if ($search || $author_id) {
                     }
                     $post_id = $arr['post_id'];
                     $posts = $arr['post_count'];
-                    $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
+                    $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
                     $edited_by = '';
                     if ($arr['edit_date'] > 0) {
                         $edited_username = $user_stuffs->get_item('username', $arr['edited_by']);
-                        $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="' . $site_config['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' != $arr['edit_reason'] ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
+                        $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' != $arr['edit_reason'] ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
                     }
                     $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
                     $table_body = '
         <tr>
-            <td colspan="3" >in:
-                <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
+            <td colspan="3">in:
+                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
                     <span>' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span>
                 </a> in:
-                <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
+                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
                     <span>' . $topic_title . '</span>
                 </a>
             </td>
@@ -267,15 +267,15 @@ if ($search || $author_id) {
             </td>
             <td>
                 <span style="white-space:nowrap;">' . $post_icon . '
-                    <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
+                    <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
                     </a>
                     <span class="left20">' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>
                 </span>
             </td>
             <td>
                 <span>
-                    <a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['pic_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="emoticon tooltipper"></a>
-                    <a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="emoticon tooltipper"></a>
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="emoticon tooltipper"></a>
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="emoticon tooltipper"></a>
                 </span>
             </td>
         </tr>
@@ -296,18 +296,18 @@ if ($search || $author_id) {
 $search_in_forums = '<table class="table-striped">';
 $row_count = 0;
 $forums = $fluent->from('over_forums AS o_f')
-                 ->select(null)
-                 ->select('o_f.name AS over_forum_name')
-                 ->select('o_f.id AS over_forum_id')
-                 ->select('f.id AS real_forum_id')
-                 ->select('f.name')
-                 ->select('f.description')
-                 ->select('f.forum_id')
-                 ->leftJoin('forums AS f ON o_f.id = f.forum_id')
-                 ->where('o_f.min_class_view <= ?', $CURUSER['class'])
-                 ->where('f.min_class_read <= ?', $CURUSER['class'])
-                 ->orderBy('o_f.sort')
-                 ->orderBy('f.sort ASC');
+    ->select(null)
+    ->select('o_f.name AS over_forum_name')
+    ->select('o_f.id AS over_forum_id')
+    ->select('f.id AS real_forum_id')
+    ->select('f.name')
+    ->select('f.description')
+    ->select('f.forum_id')
+    ->leftJoin('forums AS f ON o_f.id=f.forum_id')
+    ->where('o_f.min_class_view <= ?', $CURUSER['class'])
+    ->where('f.min_class_read <= ?', $CURUSER['class'])
+    ->orderBy('o_f.sort')
+    ->orderBy('f.sort ASC');
 
 foreach ($forums as $arr_forums) {
     $search_in_forums .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr>
@@ -318,7 +318,7 @@ foreach ($forums as $arr_forums) {
                     <td class="has-no-border">
                         <div class="is-flex level-left">
                             <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox"' . ($selected_forums ? ' checked' : '') . ' value="1">
-                            <a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '
+                            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '
                             </a>
                         </div>
                     </td>
@@ -367,7 +367,7 @@ $table_body = '
                         <span>' . $lang['sea_search_in'] . ':</span>
                     </td>
                     <td>
-                        <div class="level - left is - flex">
+                        <div class="level - left is-flex">
                             <input type="radio" id="search_title" name="search_what" value="title"' . ($search_what === 'title' ? ' checked' : '') . '>
                             <label for="search_title" class="left5">Title(s)</label>
                             <input type="radio" id="search_body" name="search_what" value="body"' . ($search_what === 'body' ? ' checked' : '') . ' class="left10">
@@ -406,7 +406,7 @@ $table_body = '
                         <span>' . $lang['sea_sort_by'] . ':</span>
                     </td>
                     <td>' . $sort_by_drop_down . '
-                        <div class="level - left is - flex top10">
+                        <div class="level - left is-flex top10">
                             <input type="radio" id="asc_asc" name="asc_desc" value="ASC"' . ($asc_desc === 'ASC' ? ' checked' : '') . '>
                             <label for="asc_asc" class="left5">' . $lang['sea_ascending'] . '</label>
                             <input type="radio" id="asc_desc" name="asc_desc" value="DESC"' . ($asc_desc === 'DESC' ? ' checked' : '') . ' class="left10">
@@ -423,7 +423,7 @@ $table_body = '
                 </tr>
                 <tr>
                     <td colspan="2" class="has-text-centered">
-                        <div class="level - center - center is - flex">
+                        <div class="level-center-center is-flex">
                             <input type="radio" id="show_list" name="show_as" value="list"' . ($show_as === 'list' ? ' checked' : '') . '>
                             <label for="show_list" class="left5">' . $lang['sea_results_as_list'] . '</label>
                             <input type="radio" id="show_GETs" name="show_as" value="posts"' . ($show_as === 'posts' ? ' checked' : '') . ' class="left10">

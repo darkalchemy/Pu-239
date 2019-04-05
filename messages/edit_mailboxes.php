@@ -31,9 +31,9 @@ if (isset($_POST['action2'])) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
             $boxnumber = $fluent->from('pmboxes')
-                                ->select(null)
-                                ->select('MAX(boxnumber) AS boxnumber')
-                                ->fetch('boxnumber');
+                ->select(null)
+                ->select('MAX(boxnumber) AS boxnumber')
+                ->fetch('boxnumber');
             $box = $boxnumber < 2 ? 2 : $boxnumber++;
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
@@ -45,8 +45,8 @@ if (isset($_POST['action2'])) {
                         'boxnumber' => $box,
                     ];
                     $fluent->insertInto('pmboxes')
-                           ->values($values)
-                           ->execute();
+                        ->values($values)
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                 }
@@ -59,8 +59,8 @@ if (isset($_POST['action2'])) {
 
         case 'edit_boxes':
             $boxes = $fluent->from('pmboxes')
-                            ->where('userid = ?', $CURUSER['id'])
-                            ->fetchAll();
+                ->where('userid=?', $CURUSER['id'])
+                ->fetchAll();
 
             if (empty($boxes)) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
@@ -72,9 +72,9 @@ if (isset($_POST['action2'])) {
                         'name' => $name,
                     ];
                     $fluent->update('pmboxes')
-                           ->set($set)
-                           ->where('id = ?', $row['id'])
-                           ->execute();
+                        ->set($set)
+                        ->where('id=?', $row['id'])
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $worked = '&name=1';
@@ -85,8 +85,8 @@ if (isset($_POST['action2'])) {
                     ];
                     $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
-                           ->where('id = ?', $row['id'])
-                           ->execute();
+                        ->where('id=?', $row['id'])
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
@@ -113,9 +113,9 @@ if (isset($_POST['action2'])) {
             $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
             $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
             $category_ids = $fluent->from('categories')
-                                   ->select(null)
-                                   ->select('id')
-                                   ->fetchAll();
+                ->select(null)
+                ->select('id')
+                ->fetchAll();
 
             $rows = count($category_ids);
             for ($i = 0; $i < $rows; ++$i) {
@@ -148,9 +148,9 @@ if (isset($_POST['action2'])) {
 }
 
 $boxes = $fluent->from('pmboxes')
-                ->where('userid = ?', $CURUSER['id'])
-                ->orderBy('name ASC')
-                ->fetchAll();
+    ->where('userid=?', $CURUSER['id'])
+    ->orderBy('name ASC')
+    ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {
@@ -166,7 +166,7 @@ if (!empty($boxes)) {
     }
     $all_my_boxes .= '
                     <tr>
-                        <td colspan="2" >' . $lang['pm_edmail_names'] . '<br>
+                        <td colspan="2">' . $lang['pm_edmail_names'] . '<br>
                         ' . $lang['pm_edmail_if'] . '</td>
                     </tr>
                     <tr>
@@ -204,8 +204,8 @@ if (!empty($category_set)) {
         if ($a['parent_id'] != 0) {
             $image = !empty($a['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
                     <span class='left10'>
-                        <a href='{$site_config['baseurl']}/browse.php?c{$a['id']}'>
-                            <img class='caticon' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
+                        <a href='{$site_config['paths']['baseurl']}/browse.php?c{$a['id']}'>
+                            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
                         </a>
                     </span>" : "
                     <span class='left10'>" . htmlsafechars($a['name']) . '</span>';
@@ -243,7 +243,7 @@ for ($i = 1; $i < 6; ++$i) {
     $body .= '
             <tr>
                 <td><span>box ' . $i . ':</span></td>
-                <td><input type="text" name="new[]" class="w - 100" maxlength="100"></td>
+                <td><input type="text" name="new[]" class="w-100" maxlength="100"></td>
             </tr>';
 }
 
@@ -260,7 +260,7 @@ $body .= '
 $HTMLOUT .= main_table($body);
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
 $HTMLOUT .= '
-        <form action="messages . php" method="post" accept-charset="utf-8">
+        <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="edit_boxes">';
 $HTMLOUT .= main_table($all_my_boxes);

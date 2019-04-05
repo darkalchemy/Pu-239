@@ -8,7 +8,7 @@ $page = (isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ?
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id=a.post_id LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
 $colour = $attachments = $extension_error = $size_error = '';
 if (!empty($arr_post['file'])) {
@@ -18,14 +18,14 @@ if (!empty($arr_post['file'])) {
 	<tr>
 	<td colspan="2"><span style="font-weight: bold">' . $lang['fe_delete'] . '</span></td>
 	</tr>';
-    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id = ' . sqlesc($arr_post['id'])) or sqlerr(__FILE__, __LINE__);
+    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id=' . sqlesc($arr_post['id'])) or sqlerr(__FILE__, __LINE__);
     while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
         $attachments .= '
 	<tr>
 	<td>
 	<input type="checkbox" name="attachment_to_delete[]" value="' . (int) $attachments_arr['id'] . '"></td><td>
-	<span style="white-space:nowrap;">' . ('zip' === $attachments_arr['extension'] ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="emoticon tooltipper"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="emoticon tooltipper">') . '
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span></td>
+	<span style="white-space:nowrap;">' . ('zip' === $attachments_arr['extension'] ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="emoticon tooltipper">') . '
+	<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span></td>
 	</tr>';
     }
     $attachments .= '</table></td></tr>';
@@ -58,7 +58,7 @@ $icon = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($
 $show_bbcode = isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode'];
 $bb_code = $show_bbcode;
 $edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
-$show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] >= $site_config['staff_allowed']['show_edited_by'] && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
+$show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] >= $site_config['allowed']['show_edited_by'] && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
 if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
@@ -68,7 +68,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     $post_history = '<table>
 	<tr>
 	<td>#' . $post_id . '  ' . format_username($arr_post['user_id']) . '</td>
-	<td>' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . format_username($CURUSER['id']) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon tooltipper">' : '') . '</td>
+	<td>' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . format_username($CURUSER['id']) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon tooltipper">' : '') . '</td>
 	<tr>
 	<td>' . (empty($arr_post['post_history']) ? ($can_edit ? '
         <span style="white-space:nowrap;">Desc: ' . (!empty($arr_post['topic_desc']) ? 'yes' : 'none') . '</span><br>' : '') . '
@@ -92,11 +92,11 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
         $edit_date = (int) $arr_post['edit_date'];
         $post_history = htmlsafechars($arr_post['post_history']);
     }
-    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     if ($can_edit) {
-        sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
     if ($CURUSER['class'] >= $min_upload_class) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
@@ -146,24 +146,24 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);
             //=== get attachment info
-            $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
+            $attachments_res = sql_query('SELECT file FROM attachments WHERE id=' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
             $attachments_arr = mysqli_fetch_array($attachments_res);
             //=== delete the file
             unlink($upload_folder . $attachments_arr['file']);
             //=== delete them from the DB
-            sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM attachments WHERE id=' . sqlesc($attachment_to_delete) . ' AND post_id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         }
     }
     if ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] !== $arr_post['user_id']) {
-        write_log('' . $CURUSER['username'] . ' ' . $lang['ep_edited_a_post_by'] . ' ' . htmlsafechars($arr_post['username']) . '. ' . $lang['ep_here_is_the'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . $post_id . '&amp;forum_id=' . (int) $arr_post['forum_id'] . '&amp;topic_id=' . $topic_id . '">' . $lang['ep_link'] . '</a> ' . $lang['ep_to_the_post_history'] . '', $CURUSER['id']);
+        write_log('' . $CURUSER['username'] . ' ' . $lang['ep_edited_a_post_by'] . ' ' . htmlsafechars($arr_post['username']) . '. ' . $lang['ep_here_is_the'] . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . $post_id . '&amp;forum_id=' . (int) $arr_post['forum_id'] . '&amp;topic_id=' . $topic_id . '">' . $lang['ep_link'] . '</a> ' . $lang['ep_to_the_post_history'] . '', $CURUSER['id']);
     }
-    header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . (0 !== $extension_error ? '&ee=' . $extension_error : '') . (0 !== $size_error ? '&se=' . $size_error : ''));
+    header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . (0 !== $extension_error ? '&ee=' . $extension_error : '') . (0 !== $size_error ? '&se=' . $size_error : ''));
     die();
 }
 $HTMLOUT .= '
 	<h1 class="has-text-centered">' . $lang['ep_edit_post_by'] . ': ' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
-	"<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
-	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data" accept-charset="utf-8">';
+	"<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
+	<form method="post" action="' . $site_config['paths']['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data" accept-charset="utf-8">';
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
 global $site_config, $cache, $ip_stuffs, $peer_stuffs, $snatched_stuffs, $torrent_stuffs, $user_stuffs;
 
@@ -11,7 +11,7 @@ if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ||
 $dt = TIME_NOW;
 $info_hash = $peer_id = $compact = $no_peer_id = '';
 $torrent_updateset = $snatch_updateset = $user_updateset = [];
-$ratio_free = $site_config['ratio_free'];
+$ratio_free = $site_config['site']['ratio_free'];
 extract($_GET);
 unset($_GET);
 if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
@@ -80,7 +80,7 @@ if (!$torrent) {
 }
 $user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
 if (!$user) {
-    err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['baseurl']);
+    err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
 } elseif ($user['enabled'] === 'no') {
     err("Permission denied, you're account is disabled");
 } elseif ($left > 0 && $torrent['vip'] === 1 && $user['class'] < UC_VIP) {
@@ -103,7 +103,7 @@ $connectable = 'yes';
 $conn_ttl = 300;
 if (portblacklisted($port)) {
     err("Port $port is blacklisted.");
-} elseif ($site_config['connectable_check']) {
+} elseif ($site_config['tracker']['connectable_check']) {
     $connkey = 'connectable_' . $realip . '_' . $port;
     $connectable = $cache->get($connkey);
     if ($connectable === false || is_null($connectable)) {
@@ -118,10 +118,10 @@ if (portblacklisted($port)) {
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
-if ($connectable === 'no' && $site_config['require_connectable']) {
+if ($connectable === 'no' && $site_config['tracker']['require_connectable']) {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
-if ($site_config['ip_logging']) {
+if ($site_config['site']['ip_logging']) {
     $no_log_ip = ($user['perms'] & bt_options::PERMS_NO_IP);
     if ($no_log_ip) {
         $connectable = 'no';
@@ -145,12 +145,12 @@ if ($site_config['ip_logging']) {
 $torrent_modifier = get_slots($torrent['id'], $userid);
 $torrent['freeslot'] = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
-$happy_multiplier = $site_config['happy_hour'] ? get_happy($torrent['id'], $userid) : 0;
+$happy_multiplier = $site_config['bonus']['happy_hour'] ? get_happy($torrent['id'], $userid) : 0;
 
 if ($compact != 1) {
-    $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
+    $resp = 'd' . benc_str('interval') . 'i' . $site_config['tracker']['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
 } else {
-    $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('min interval') . 'i' . 300 . 'e5:' . 'peers';
+    $resp = 'd' . benc_str('interval') . 'i' . $site_config['tracker']['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('min interval') . 'i' . 300 . 'e5:' . 'peers';
 }
 $peers = $peer_stuffs->get_torrent_peers_by_tid($torrent['id']);
 $res = $this_user_torrent = [];
@@ -248,7 +248,7 @@ foreach ($agentarray as $bannedclient) {
         err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1+ or any other modern torrent client.');
     }
 }
-$announce_wait = 300; //$site_config['min_interval'];
+$announce_wait = $site_config['tracker']['min_interval'];
 
 if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");
@@ -286,7 +286,7 @@ if (!isset($self)) {
             $downthis = $downthis / 2;
         }
 
-        $crazyhour_on = ($site_config['crazy_hour'] ? crazyhour_announce() : false);
+        $crazyhour_on = ($site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false);
         if ($downthis > 0) {
             if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
                 $user_updateset['downloaded'] = $user['downloaded'] + ($ratio_free ? 0 : $downthis);

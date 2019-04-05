@@ -2,21 +2,21 @@
 
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
         $newapp = $fluent->from('uploadapp')
-                         ->select(null)
-                         ->select('COUNT(id) AS count')
-                         ->where('status = ?', 'pending')
-                         ->fetch('count');
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('status = ?', 'pending')
+            ->fetch('count');
 
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);
     }
     if ($newapp > 0) {
         $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>
+        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>
             <span class='button tag is-info dt-tooltipper-small' data-tooltip-content='#uploadapp_tooltip'>
                 {$lang['gl_uploadapp_new']}
             </span>

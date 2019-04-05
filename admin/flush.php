@@ -19,7 +19,6 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $username = htmlsafechars($arr['username']);
     sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id));
     $effected = mysqli_affected_rows($mysqli);
-    //=== write to log
     write_log($lang['flush_log1'] . $username . $lang['flush_log2'] . get_date($dt, 'LONG', 0, 1) . $lang['flush_log3'] . (int) $effected . $lang['flush_log4']);
     header('Refresh: 3; url=index.php');
     stderr($lang['flush_success'], "$effected {$lang['flush_success2']}" . ($effected ? 's' : '') . $lang['flush_success3']);

@@ -1,6 +1,7 @@
 <?php
 
 /** Dump to Bzip2 format
+ *
  * @link    https://www.adminer.org/plugins/#use
  * @uses    bzopen(), tempnam("")
  * @author  Jakub Vrana, https://www.vrana.cz/

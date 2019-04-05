@@ -13,13 +13,13 @@ $topics = $cache->get('last_posts_' . $CURUSER['class']);
 if ($topics === false || is_null($topics)) {
     $topicres = sql_query('SELECT t.id, t.user_id AS tuser_id, t.topic_name, t.locked, t.forum_id, t.last_post, t.sticky, t.views, t.anonymous AS tan,
                             f.min_class_read, f.name,
-                            (SELECT COUNT(id) FROM posts WHERE topic_id = t.id) AS p_count, p.user_id AS puser_id, p.added, p.anonymous AS pan
+                            (SELECT COUNT(id) FROM posts WHERE topic_id=t.id) AS p_count, p.user_id AS puser_id, p.added, p.anonymous AS pan
                             FROM topics AS t
-                            INNER JOIN forums AS f ON f.id = t.forum_id
-                            INNER JOIN posts AS p ON p.id = (SELECT MAX(id) FROM posts WHERE topic_id = t.id)
+                            INNER JOIN forums AS f ON f.id=t.forum_id
+                            INNER JOIN posts AS p ON p.id=(SELECT MAX(id) FROM posts WHERE topic_id=t.id)
                             WHERE f.min_class_read <= ' . $CURUSER['class'] . "
                             ORDER BY t.last_post DESC
-                            LIMIT {$site_config['latest_posts_limit']}") or sqlerr(__FILE__, __LINE__);
+                            LIMIT {$site_config['latest']['posts_limit']}") or sqlerr(__FILE__, __LINE__);
     while ($topic = mysqli_fetch_assoc($topicres)) {
         $topics[] = $topic;
     }
@@ -58,7 +58,7 @@ if (!empty($topics) && count($topics) > 0) {
                 $menu .= '[ ';
             }
             if ($pages > 1) {
-                $menu .= "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
+                $menu .= "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
             }
             if ($i < $pages) {
                 $menu .= "|\n";
@@ -86,10 +86,10 @@ if (!empty($topics) && count($topics) > 0) {
         } else {
             $author = (!empty($topicarr['tuser_id']) ? format_username($topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
         }
-        $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum'>" : '');
-        $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}'>&#160;&#160;" : '');
-        $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}'>&#160;" : '');
-        $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
+        $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['paths']['images_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum'>" : '');
+        $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}'>&#160;&#160;" : '');
+        $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}'>&#160;" : '');
+        $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
         $forum_posts .= "
                     <tr>
                         <td>{$topic_name}</td>

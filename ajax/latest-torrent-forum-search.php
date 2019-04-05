@@ -29,7 +29,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 ++$i;
             }
         } elseif ($_POST['qsearch'] === 'forum') {
-            $query = sql_query("SELECT forum.*,topic.*,topic.id as tid FROM topics as topic INNER JOIN forums as forum ON topic.forum_id = forum.id AND forum.min_class_read >= 0 AND topic.topic_name LIKE '%$cleansearchstr%' ORDER BY tid DESC LIMIT 5");
+            $query = sql_query("SELECT forum.*,topic.*,topic.id as tid FROM topics as topic INNER JOIN forums as forum ON topic.forum_id=forum.id AND forum.min_class_read>= 0 AND topic.topic_name LIKE '%$cleansearchstr%' ORDER BY tid DESC LIMIT 5");
             $count = $query->num_rows;
             if (!$count) {
                 die('No topic found by that search!');

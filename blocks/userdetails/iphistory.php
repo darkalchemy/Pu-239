@@ -7,12 +7,12 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     if ($iphistory === false || is_null($iphistory)) {
         $ipuse['yes'] = $ipuse['no'] = 0;
         $ipsinuse = $fluent->from('users')
-                           ->select(null)
-                           ->select('COUNT(*) AS count')
-                           ->select('enabled')
-                           ->where('INET6_NTOA(ip) = ?', $user['ip'])
-                           ->groupBy('enabled')
-                           ->fetchAll();
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->select('enabled')
+            ->where('INET6_NTOA(ip) = ?', $user['ip'])
+            ->groupBy('enabled')
+            ->fetchAll();
         if (!empty($ipsinuse[0])) {
             $ipuse[$ipsinuse[0]['enabled']] = $ipsinuse[0]['count'];
         }
@@ -29,11 +29,11 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             $mid = $enbl && $dbl ? ' and ' : '';
             $iphistory['use'] = "
         <span class='has-text-danger'>{$lang['userdetails_ip_warn']}</span>
-        <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
+        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
             {$lang['userdetails_ip_used']}{$enbl}{$mid}{$dbl}{$lang['userdetails_ip_users']}
         </a>";
         }
-        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid=' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
         $iphistory['ips'] = mysqli_num_rows($resip);
         $cache->set('ip_history_' . $id, $iphistory, $site_config['expires']['iphistory']);
     }
@@ -45,8 +45,8 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
                 <td>
                     $addr<br>
                     {$iphistory['use']}<br>
-                    <a class='button is-small top10' href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$lang['userdetails_ip_hist']}</a>
-                    <a class='button is-small top10' href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iplist&amp;id={$user['id']}'>{$lang['userdetails_ip_list']}</a>
+                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$lang['userdetails_ip_hist']}</a>
+                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iplist&amp;id={$user['id']}'>{$lang['userdetails_ip_list']}</a>
                 </td>
             </tr>";
         }
@@ -56,7 +56,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             <tr>
                 <td class='rowhead'>{$lang['userdetails_ip_history']}</td>
                 <td>
-                    {$lang['userdetails_ip_earlier']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a>
+                    {$lang['userdetails_ip_earlier']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a>
                 </td>
             </tr>";
     }

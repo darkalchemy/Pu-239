@@ -6,7 +6,7 @@ $image_proxy = new Pu239\ImageProxy();
 $path = IMAGES_DIR . 'proxy/';
 
 $urls = $fluent->from('images')
-               ->select('url');
+    ->select('url');
 
 foreach ($urls as $url) {
     $hash = hash('sha512', $url['url']);
@@ -28,9 +28,9 @@ $set = [
     'checked' => 0,
 ];
 $fluent->update('images')
-       ->set($set)
-       ->where('id > 0')
-       ->execute();
+    ->set($set)
+    ->where('id>0')
+    ->execute();
 
 echo "$i altered images removed
 Images size: " . mksize($filesize) . "\n";

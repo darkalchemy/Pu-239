@@ -54,7 +54,7 @@ if ($ip) {
     $queryc = "SELECT COUNT(id) FROM
            (
              SELECT u.id FROM users AS u WHERE $where1
-             UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE $where2
+             UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id=ips.userid WHERE $where2
              GROUP BY u.id
            ) AS ipsearch";
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
@@ -89,7 +89,7 @@ if ($ip) {
           WHERE $where1
           UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
-          RIGHT JOIN ips ON u.id = ips.userid
+          RIGHT JOIN ips ON u.id=ips.userid
           WHERE $where2
           GROUP BY u.id ) as ipsearch
           GROUP BY id
@@ -100,9 +100,9 @@ if ($ip) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<table >\n";
+    $HTMLOUT .= "<table>\n";
     $HTMLOUT .= "<tr>
-      <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
+      <td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
         if ($user['added'] == '0') {
             $user['added'] = '---';
@@ -112,24 +112,24 @@ if ($ip) {
         }
         if ($user['last_ip']) {
             $count = $fluent->from('bans')
-                            ->select(null)
-                            ->select('COUNT(*) AS count')
-                            ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
-                            ->where('INET6_NTOA(last) >= ?', $user['last_ip'])
-                            ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
+                ->where('INET6_NTOA(last)>= ?', $user['last_ip'])
+                ->fetch('count');
 
             if ($count == 0) {
                 $ipstr = $user['last_ip'];
             } else {
-                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
+                $ipstr = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
             }
         } else {
             $ipstr = '---';
         }
-        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
         $iphistory = mysqli_num_rows($resip);
         if ($user['invitedby'] > 0) {
-            $res2 = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($user['invitedby']) . '');
+            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
             $array = mysqli_fetch_assoc($res2);
             $invitedby = $array['id'];
             if ($invitedby == '') {
@@ -144,7 +144,7 @@ if ($ip) {
            <td>' . format_username($user['id']) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $user['email'] . '</td><td>' . $ipstr . '</td>
           <td><div>' . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
-          <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int) $user['id'] . "'>" . htmlsafechars($iphistory) . '</a></b></div></td>
+          <td><div><b><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int) $user['id'] . "'>" . htmlsafechars($iphistory) . '</a></b></div></td>
           <td><div>' . get_date($user['access'], 'DATE', 1, 0) . '</div></td>
           <td><div>' . get_date($user['added'], 'DATE', 1, 0) . '</div></td>
           <td><div>' . $invitedby . "</div></td>

@@ -33,11 +33,11 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
 }
 
 $ratio_fix = $fluent->from('bonus')
-                    ->select(null)
-                    ->select('points')
-                    ->where('bonusname = "Ratio Fix"')
-                    ->where('enabled = "yes"')
-                    ->fetch('points');
+    ->select(null)
+    ->select('points')
+    ->where('bonusname = "Ratio Fix"')
+    ->where('enabled = "yes"')
+    ->fetch('points');
 
 $cost = (!$ratio_fix) ? 0 : (int) $ratio_fix;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,19 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $torrent = $torrent_stuffs->get($_POST['tid']);
         if (!$torrent) {
             $session->set('is-danger', 'No torrent with that ID!');
-            header("Location: {$site_config['baseurl']}/hnrs.php");
+            header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
             die();
         }
         $snatched = $snatched_stuffs->get_snatched($_POST['userid'], $_POST['tid']);
         if (!$snatched || $snatched['id'] != $_POST['sid']) {
             $session->set('is-danger', 'No snatched torrent with that ID!');
-            header("Location: {$site_config['baseurl']}/hnrs.php");
+            header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
             die();
         }
         if (!empty($_POST['seed'])) {
             if ($cost > $bp) {
                 $session->set('is-danger', 'You do not have enough bonus points!');
-                header("Location: {$site_config['baseurl']}/hnrs.php");
+                header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
                 die();
             }
             $set = [
@@ -77,11 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->delete('userhnrs_' . $userid);
             $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
         } elseif (!empty($_POST['bytes'])) {
-            $downloaded = $site_config['ratio_free'] ? $torrent['size'] : $snatched['downloaded'];
+            $downloaded = $site_config['site']['ratio_free'] ? $torrent['size'] : $snatched['downloaded'];
             $bytes = $downloaded - $snatched['uploaded'];
             if ($diff < $bytes) {
                 $session->set('is-danger', 'You do not have enough upload credit!');
-                header("Location: {$site_config['baseurl']}/hnrs.php");
+                header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
                 die();
             }
             $set = [
@@ -105,41 +105,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $completed = $count2 = $dlc = '';
 $hnrs = $fluent->from('snatched AS s')
-               ->select(null)
-               ->select('t.name')
-               ->select('t.added AS torrent_added')
-               ->select('s.complete_date AS c')
-               ->select('s.downspeed')
-               ->select('s.seedtime')
-               ->select('s.seeder')
-               ->select('s.torrentid AS tid')
-               ->select('s.id AS sid')
-               ->select('c.id AS category')
-               ->select('c.image')
-               ->select('c.name AS catname')
-               ->select('p.name AS parent_name')
-               ->select('s.uploaded')
-               ->select('s.downloaded')
-               ->select('s.hit_and_run')
-               ->select('s.mark_of_cain')
-               ->select('s.complete_date')
-               ->select('s.last_action')
-               ->select('t.seeders')
-               ->select('t.leechers')
-               ->select('t.owner')
-               ->select('t.size')
-               ->select('s.start_date AS st')
-               ->select('s.start_date')
-               ->leftJoin('torrents AS t ON t.id = s.torrentid')
-               ->leftJoin('categories AS c ON c.id = t.category')
-               ->leftJoin('categories AS p ON c.parent_id = p.id')
-               ->where('(s.hit_and_run != 0 OR s.mark_of_cain = "yes")')
-               ->where('s.seeder = "no"')
-               ->where('s.finished = "yes"')
-               ->where('s.userid = ?', $userid)
-               ->where('t.owner != ?', $userid)
-               ->orderBy('s.id DESC')
-               ->fetchAll();
+    ->select(null)
+    ->select('t.name')
+    ->select('t.added AS torrent_added')
+    ->select('s.complete_date AS c')
+    ->select('s.downspeed')
+    ->select('s.seedtime')
+    ->select('s.seeder')
+    ->select('s.torrentid AS tid')
+    ->select('s.id AS sid')
+    ->select('c.id AS category')
+    ->select('c.image')
+    ->select('c.name AS catname')
+    ->select('p.name AS parent_name')
+    ->select('s.uploaded')
+    ->select('s.downloaded')
+    ->select('s.hit_and_run')
+    ->select('s.mark_of_cain')
+    ->select('s.complete_date')
+    ->select('s.last_action')
+    ->select('t.seeders')
+    ->select('t.leechers')
+    ->select('t.owner')
+    ->select('t.size')
+    ->select('s.start_date AS st')
+    ->select('s.start_date')
+    ->leftJoin('torrents AS t ON t.id=s.torrentid')
+    ->leftJoin('categories AS c ON c.id=t.category')
+    ->leftJoin('categories AS p ON c.parent_id=p.id')
+    ->where('(s.hit_and_run != 0 OR s.mark_of_cain = "yes")')
+    ->where('s.seeder = "no"')
+    ->where('s.finished = "yes"')
+    ->where('s.userid=?', $userid)
+    ->where('t.owner != ?', $userid)
+    ->orderBy('s.id DESC')
+    ->fetchAll();
 
 $completed .= '
 <h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
@@ -151,7 +151,7 @@ if (count($hnrs) > 0) {
             <th class='has-text-centered'>{$lang['userdetails_s']}</th>
             <th class='has-text-centered'>{$lang['userdetails_l']}</th>
             <th class='has-text-centered'>{$lang['userdetails_ul']}</th>
-            " . ($site_config['ratio_free'] ? "
+            " . ($site_config['site']['ratio_free'] ? "
             <th class='has-text-centered'>{$lang['userdetails_size']}</th>" : "
             <th class='has-text-centered'>{$lang['userdetails_dl']}</th>") . "
             <th class='has-text-centered'>{$lang['userdetails_ratio']}</th>
@@ -229,14 +229,14 @@ if (count($hnrs) > 0) {
         }
 
         $dl_speed = mksize($dl_speed);
-        $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] != $userid ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' class='tooltipper' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
-        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' class='tooltipper' title='{$lang['userdetails_c_hitrun1']}'>" : '');
+        $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] != $userid ? " [<a href='" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
+        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' class='tooltipper' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
+        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['paths']['images_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' class='tooltipper' title='{$lang['userdetails_c_hitrun1']}'>" : '');
         $needs_seed = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
         if ($bp >= $cost && $cost != 0) {
             $buyout = "
-            <form method='post' action='{$site_config['baseurl']}/hnrs.php' accept-charset='utf-8'>
+            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' accept-charset='utf-8'>
                 <input type='hidden' name='seed' value='{$minus_ratio}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
@@ -249,11 +249,11 @@ if (count($hnrs) > 0) {
             $buyout = '';
         }
 
-        $a_downloaded = $site_config['ratio_free'] ? $a['size'] : $a['downloaded'];
+        $a_downloaded = $site_config['site']['ratio_free'] ? $a['size'] : $a['downloaded'];
         $bytes = $a_downloaded - $a['uploaded'];
         if ($diff >= $bytes) {
             $buybytes = "
-            <form method='post' action='{$site_config['baseurl']}/hnrs.php' accept-charset='utf-8'>
+            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' accept-charset='utf-8'>
                 <input type='hidden' name='bytes' value='{$bytes}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
@@ -269,7 +269,7 @@ if (count($hnrs) > 0) {
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
         $sucks = $buyout == '' ? "Seed for $need_to_seed" : "or<br>Seed for $need_to_seed";
         $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
-        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
+        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
         $body .= "
         <tr>
             <td style='padding: 5px'>$caticon</td>
@@ -279,7 +279,7 @@ if (count($hnrs) > 0) {
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
             <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
-            ' . ($site_config['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
+            ' . ($site_config['site']['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
             <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date($a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date($a['last_action'], 'DATE') . "</td>

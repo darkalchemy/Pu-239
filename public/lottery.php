@@ -20,7 +20,7 @@ $valid = [
         'file' => $lottery_root . 'viewtickets.php',
     ],
     'tickets' => [
-        'minclass' => $site_config['min_to_play'],
+        'minclass' => $site_config['allowed']['play'],
         'file' => $lottery_root . 'tickets.php',
     ],
 ];
@@ -44,7 +44,7 @@ switch (true) {
 
     default:
         $html = "
-                    <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
+                    <h1 class='has-text-centered'>{$site_config['site']['name']} Lottery</h1>";
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
@@ -54,26 +54,26 @@ switch (true) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment', 'bottom20');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', '<div>Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b> remaining <span>' . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span></div>
-       <div class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
+       <div class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
             $html .= stdmsg('Last lottery', get_date($lottery_config['lottery_winners_time'], 'LONG'), 'top20');
             $uids = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
             $last_winners = [];
-            $qus = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . implode(', ', $uids) . ')' : 'id = ' . $uids)) or sqlerr(__FILE__, __LINE__);
+            $qus = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . implode(', ', $uids) . ')' : 'id=' . $uids)) or sqlerr(__FILE__, __LINE__);
             while ($aus = mysqli_fetch_assoc($qus)) {
                 $last_winners[] = format_username($aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', '<ul><li>Last winners: ' . implode(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
-        <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
+        <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
         } else {
             $html .= main_div("
                         <div class='padding20 has-text-centered'>
                             <div class='bottom20'>
                                 Nobody has won, because nobody has played yet :)
                             </div>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : '
+                            <a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : '
                             <span>Nothing Configured ATM Sorry.</span>') . '
                         </div>');
         }

@@ -2,13 +2,13 @@
 
 global $CURUSER, $site_config, $lang;
 
-if ($site_config['happy_hour']) {
+if ($site_config['bonus']['happy_hour']) {
     if ($CURUSER) {
         require_once INCL_DIR . 'function_happyhour.php';
         if (happyHour('check')) {
             $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/browse.php?cat=" . happyCheck('check') . "'>
+        <a href='{$site_config['paths']['baseurl']}/browse.php?cat=" . happyCheck('check') . "'>
             <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#happyhour_tooltip'>{$lang['gl_happyhour']}</span>
             <div class='tooltip_templates'>
                 <div id='happyhour_tooltip' class='margin20'>

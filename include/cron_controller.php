@@ -14,7 +14,7 @@ echo "===================================================\n";
 echo get_date(TIME_NOW, 'LONG', 1, 1) . "\n";
 
 $cleanup_check = $cache->get('cleanup_check_');
-if (user_exists($site_config['chatBotID']) && ($cleanup_check === false || is_null($cleanup_check))) {
+if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
     autoclean();
 } else {
     echo "Already running.\n";
@@ -27,11 +27,11 @@ function autoclean()
     $cache->set('cleanup_check_', 'running', 600);
     $now = TIME_NOW;
     $query = $fluent->from('cleanup')
-                    ->where('clean_on = 1')
-                    ->where('clean_time < ?', $now)
-                    ->orderBy('clean_time ASC')
-                    ->orderBy('clean_increment ASC')
-                    ->fetchAll();
+        ->where('clean_on = 1')
+        ->where('clean_time < ?', $now)
+        ->orderBy('clean_time ASC')
+        ->orderBy('clean_increment ASC')
+        ->fetchAll();
 
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
@@ -43,9 +43,9 @@ function autoclean()
                     'clean_time' => $next_clean,
                 ];
                 $fluent->update('cleanup')
-                       ->set($set)
-                       ->where('clean_id = ?', $row['clean_id'])
-                       ->execute();
+                    ->set($set)
+                    ->where('clean_id=?', $row['clean_id'])
+                    ->execute();
 
                 if (file_exists(CLEAN_DIR . $row['clean_file'])) {
                     require_once CLEAN_DIR . $row['clean_file'];
@@ -59,13 +59,13 @@ function autoclean()
     }
     $cache->delete('cleanup_check_');
 
-    if ($site_config['newsrss_on']) {
+    if ($site_config['newsrss']['tfreak'] || $site_config['newsrss']['github'] || $site_config['newsrss']['foxnews']) {
         echo "Newsrss Starting\n";
         $tfreak_cron = $cache->get('tfreak_cron_');
         if ($tfreak_cron === false || is_null($tfreak_cron)) {
             $query = $fluent->from('newsrss')
-                            ->select(null)
-                            ->select('link');
+                ->select(null)
+                ->select('link');
 
             foreach ($query as $tfreak_new) {
                 $tfreak_news[] = $tfreak_new['link'];

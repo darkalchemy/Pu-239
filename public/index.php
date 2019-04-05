@@ -32,7 +32,7 @@ $unread = $message_stuffs->get_count($CURUSER['id']);
 if ($unread >= 1) {
     $session->set('is-link', [
         'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',
-        'link' => "{$site_config['baseurl']}/messages.php",
+        'link' => "{$site_config['paths']['baseurl']}/messages.php",
     ]);
 }
 
@@ -179,7 +179,7 @@ if (in_array('torrents_mow', $available_columns) && $CURUSER['blocks']['index_pa
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'mow.php';
 }
 
-if (in_array('tfreak_feed', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss_on']) {
+if (in_array('tfreak_feed', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss']['tfreak']) {
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'torrentfreak.php';
 }
 

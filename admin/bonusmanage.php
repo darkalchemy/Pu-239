@@ -27,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cache->delete('freeleech_alerts_');
         $cache->delete('doubleupload_alerts_');
         $cache->delete('halfdownload_alerts_');
-        $sql = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool = ' . sqlesc($pointspool) . ', minpoints = ' . sqlesc($minpoints) . ', minclass = ' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query('UPDATE bonus SET orderid=' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool = ' . sqlesc($pointspool) . ', minpoints = ' . sqlesc($minpoints) . ', minclass = ' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE bonus SET orderid=orderid + 1 WHERE orderid>= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
 
         $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
         $iter = 0;
         while ($arr = mysqli_fetch_assoc($query)) {
-            sql_query('UPDATE bonus SET orderid = ' . ++$iter . ' WHERE id = ' . $arr['id']) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bonus SET orderid=' . ++$iter . ' WHERE id=' . $arr['id']) or sqlerr(__FILE__, __LINE__);
         }
 
         if ($sql) {
-            header("Location: {$site_config['baseurl']}/staffpanel.php?tool=bonusmanage");
+            header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=bonusmanage");
             die();
         } else {
             stderr($lang['bonusmanager_oops'], "{$lang['bonusmanager_sql']}");
@@ -68,7 +68,7 @@ $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
         <tr>
-            <form name='bonusmanage' method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=bonusmanage&amp;action=bonusmanage' accept-charset='utf-8'>
+            <form name='bonusmanage' method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=bonusmanage&amp;action=bonusmanage' accept-charset='utf-8'>
                 <td><input name='id' type='hidden' value='" . (int) $arr['id'] . "'>" . (int) $arr['id'] . "</td>
                 <td><input type='number' name='orderid' value='" . (int) $arr['orderid'] . "' class='w-100'></td>
                 <td><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . '></td>

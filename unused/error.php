@@ -57,7 +57,7 @@ $htmlout = doc_head() . "
     <td width='300' height='50'><!--Error 404 EmptyCell-->&#160;</td>
     </tr>
     <tr>
-    <td height='520'><img src='{$site_config['pic_baseurl']}error404.png' alt='Error Not Found' width='300' height='520' usemap='#Map'></td>
+    <td height='520'><img src='{$site_config['paths']['images_baseurl']}error404.png' alt='Error Not Found' width='300' height='520' usemap='#Map'></td>
     </tr>
     <tr>
     <td height='14'><div><span class='style1'></span></div></td>

@@ -16,7 +16,7 @@ if (!is_valid_id($id)) {
 if (!isset($CURUSER)) {
     stderr('Error', 'Your not logged in');
 }
-$res = sql_query('SELECT 1, thanks, comments FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT 1, thanks, comments FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr('Error', 'Torrent not found');
@@ -30,7 +30,7 @@ $text = ':thankyou:';
 $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
 sql_query('INSERT INTO thankyou (uid, torid, thank_date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
 sql_query('INSERT INTO comments (user, torrent, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "', " . sqlesc($text) . ',' . sqlesc($text) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $update['thanks'] = ($arr['thanks'] + 1);
 $update['comments'] = ($arr['comments'] + 1);
 $cache->update_row('torrent_details_' . $id, [
@@ -38,9 +38,9 @@ $cache->update_row('torrent_details_' . $id, [
     'comments' => $update['comments'],
 ], $site_config['expires']['torrent_details']);
 $cache->delete('latest_comments_');
-if ($site_config['seedbonus_on']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
+if ($site_config['bonus']['on']) {
+    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus']['per_comment']);
     $cache->update_row('user_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);

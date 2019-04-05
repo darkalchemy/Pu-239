@@ -32,5 +32,5 @@ $lang = [
     'iphistory_login' => 'Login: ',
     'iphistory_wipe' => 'History Wipe:',
     'iphistory_justwipe' => ' has just wiped IP: ',
-    'iphistory_from' => " from (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History",
+    'iphistory_from' => " from (<a href='{$site_config['paths']['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History",
 ];

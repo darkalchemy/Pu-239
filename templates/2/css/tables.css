@@ -119,3 +119,8 @@ table {
 .table > tbody > tr > td {
     min-width: calc(1.5em + 25px);
 }
+
+.table > thead > tr,
+.table > tbody > tr {
+    height: 25px;
+}

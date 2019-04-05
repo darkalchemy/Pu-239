@@ -15,14 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($limits[$class]);
         }
     }
-    if (file_put_contents($site_config['flood_file'], serialize($limits))) {
+    if (file_put_contents($site_config['paths']['flood_file'], serialize($limits))) {
         header('Refresh: 2; url=/staffpanel.php?tool=floodlimit');
         stderr($lang['floodlimit_success'], $lang['floodlimit_saved']);
     } else {
-        stderr($lang['floodlimit_stderr'], $lang['floodlimit_wentwrong'] . $site_config['flood_file'] . $lang['floodlimit_exist']);
+        stderr($lang['floodlimit_stderr'], $lang['floodlimit_wentwrong'] . $site_config['paths']['flood_file'] . $lang['floodlimit_exist']);
     }
 } else {
-    if (!file_exists($site_config['flood_file']) || !is_array($limit = unserialize(file_get_contents($site_config['flood_file'])))) {
+    if (!file_exists($site_config['paths']['flood_file']) || !is_array($limit = unserialize(file_get_contents($site_config['paths']['flood_file'])))) {
         $limit = [];
     }
     $out = "

@@ -17,13 +17,13 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($_GET['owner'])) {
         $torrents = $torrent_stuffs->get_all_by_owner($userid);
-        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site_name'] . "]-{$user['username']}_uploaded_torrents.zip";
+        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_uploaded_torrents.zip";
     } elseif (!empty($_GET['getall']) && in_array($_GET['getall'], $yes_no)) {
         $torrents = $torrent_stuffs->get_all($_GET['getall']);
-        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site_name'] . "]-{$user['username']}_all_torrents.zip";
+        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_all_torrents.zip";
     } else {
         $torrents = $torrent_stuffs->get_all_snatched($userid);
-        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site_name'] . "]-{$user['username']}_snatched_torrents.zip";
+        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_snatched_torrents.zip";
     }
     if (file_exists($zipfile)) {
         unlink($zipfile);
@@ -38,12 +38,12 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
 
     foreach ($torrents as $t_file) {
         $fn = TORRENTS_DIR . $t_file['id'] . '.torrent';
-        $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
+        $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
         $dict['announce'] = "{$announce_url}?torrent_pass={$user['torrent_pass']}";
         $dict['uid'] = $userid;
         $tor = bencdec::encode($dict);
         if ($tor) {
-            $filename = "[{$site_config['site_name']}]{$t_file['filename']}";
+            $filename = "[{$site_config['site']['name']}]{$t_file['filename']}";
             $zip->addFromString($filename, $tor);
         }
     }

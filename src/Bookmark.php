@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Bookmark.
  */
@@ -18,13 +20,20 @@ class Bookmark
         $this->cache = $cache;
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return array|bool|mixed
+     *
+     * @throws Exception
+     */
     public function get(int $userid)
     {
         $bookmarks = $this->cache->get('bookmarks_' . $userid);
         if ($bookmarks === false || is_null($bookmarks)) {
             $books = $this->fluent->from('bookmarks')
-                                  ->where('userid = ?', $userid)
-                                  ->fetchAll();
+                ->where('userid=?', $userid)
+                ->fetchAll();
 
             $bookmarks = [];
             foreach ($books as $rowbook) {

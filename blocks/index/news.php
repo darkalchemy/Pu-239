@@ -6,11 +6,11 @@ $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {
     $dt = TIME_NOW - (86400 * 45);
     $news = $fluent->from('news')
-                   ->where('added > ?', $dt)
-                   ->orderBy('sticky')
-                   ->orderBy('added DESC')
-                   ->limit(10)
-                   ->fetchAll();
+        ->where('added>?', $dt)
+        ->orderBy('sticky')
+        ->orderBy('added DESC')
+        ->limit(10)
+        ->fetchAll();
 
     $cache->set('latest_news_', $news, $site_config['expires']['latest_news']);
 }
@@ -18,7 +18,7 @@ if ($news === false || is_null($news)) {
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='is-pulled-right size_2' href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='is-pulled-right size_2' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
 $site_news .= "
     <a id='news-hash'></a>
@@ -31,13 +31,13 @@ if ($news) {
         $padding = ++$i >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
-            $hash = hash('sha256', $site_config['site']['salt'] . $array['id'] . 'add');
+            $hash = hash('sha256', $site_config['salt']['one'] . $array['id'] . 'add');
             $button = "
                 <div class='is-pulled-right'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
                         <i class='icon-edit icon size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
                         <i class='icon-trash-empty icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";

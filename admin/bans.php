@@ -12,11 +12,11 @@ $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if ($remove > 0) {
     $res = $fluent->from('bans')
-                  ->select(null)
-                  ->select('INET6_NTOA(first) AS first')
-                  ->select('INET6_NTOA(last) AS last')
-                  ->where('id = ?', $remove)
-                  ->fetch();
+        ->select(null)
+        ->select('INET6_NTOA(first) AS first')
+        ->select('INET6_NTOA(last) AS last')
+        ->where('id=?', $remove)
+        ->fetch();
 
     if (!$res) {
         stderr($lang['stderr_error'], $lang['stderr_error1']);
@@ -26,8 +26,8 @@ if ($remove > 0) {
     }
     if (is_valid_id($remove)) {
         $fluent->deleteFrom('bans')
-               ->where('id = ?', $remove)
-               ->execute();
+            ->where('id=?', $remove)
+            ->execute();
         $removed = sprintf($lang['text_banremoved'], $remove);
         write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
         $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
@@ -58,17 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     ];
 
     $fluent->insertInto('bans')
-           ->values('values')
-           ->execute();
+        ->values('values')
+        ->execute();
 
     $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }
 
 $res = $fluent->from('bans')
-              ->select('INET6_NTOA(first) AS first')
-              ->select('INET6_NTOA(last) AS last')
-              ->orderBy('added DESC');
+    ->select('INET6_NTOA(first) AS first')
+    ->select('INET6_NTOA(last) AS last')
+    ->orderBy('added DESC');
 
 foreach ($res as $arr) {
     $bans[] = $arr;
@@ -107,7 +107,7 @@ if ($count == 0) {
                     <td>' . htmlsafechars($banned['last']) . '</td>
                     <td>' . format_username($banned['addedby']) . '</td>
                     <td>' . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
-                    <td><a href='" . $site_config['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='{$lang['text_remove']}'></i></a></td>
+                    <td><a href='" . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='{$lang['text_remove']}'></i></a></td>
                </tr>";
     }
     $HTMLOUT .= main_table($body, $header);

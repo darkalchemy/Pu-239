@@ -27,14 +27,12 @@ $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 define('DATE_FORMAT', 'Y/m/d H:i:s');
 define('GRAPH_SIZE', 200);
 define('MAX_ITEM_DUMP', 50);
-//$MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"; // add more as an array
-//$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
 
 if (extension_loaded('memcached')) {
-    if (!$site_config['socket']) {
-        $MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}";
+    if (!$site_config['memcached']['use_socket']) {
+        $MEMCACHE_SERVERS[] = "{$site_config['memcached']['host']}:{$site_config['memcached']['port']}";
     } else {
-        $MEMCACHE_SERVERS[] = "unix://{$_ENV['MEMCACHED_SOCKET']}";
+        $MEMCACHE_SERVERS[] = "unix://{$site_config['memcached']['socket']}";
     }
 } else {
     die('<h1>Error</h1><p>php-memcached is not available</p>');
@@ -377,13 +375,13 @@ function menu_entry($ob, $title)
     if ($ob == $_GET['op']) {
         return "
             <li class='altlink margin10'>
-                <a class='active' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
+                <a class='active' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
     }
 
     return "
             <li class='altlink margin10'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
 }
 
@@ -399,12 +397,12 @@ function getMenu()
     if ($_GET['op'] != 4) {
         $menu .= "
             <li class='altlink margin10'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}'>Refresh Data</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}'>Refresh Data</a>
             </li>";
     } else {
         $menu .= "
             <li class='altlink margin10'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=2'>Back</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=2'>Back</a>
             </li>";
     }
     $menu .= menu_entry(1, 'View Host Stats');
@@ -603,13 +601,13 @@ switch ($_GET['op']) {
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
                 ++$i;
-                $body .= "$i : <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;singleout={$i}'>{$server}</a><br>";
+                $body .= "$i : <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;singleout={$i}'>{$server}</a><br>";
             }
         } else {
             $body .= "1: {$MEMCACHE_SERVERS[0]}";
         }
         if (isset($_GET['singleout'])) {
-            $body .= "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>(all servers)</a><br>";
+            $body .= "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache'>(all servers)</a><br>";
         }
         $body .= '
                 </td>
@@ -629,7 +627,7 @@ switch ($_GET['op']) {
             <tr>
                 <td>$server</td>
                 <td>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;server=" . array_search($server, $MEMCACHE_SERVERS) . "&amp;op=6'>Flush this server</a>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;server=" . array_search($server, $MEMCACHE_SERVERS) . "&amp;op=6'>Flush this server</a>
                 </td>
             </tr>
             <tr>
@@ -666,10 +664,10 @@ switch ($_GET['op']) {
         $body .= "
             <tr>
                 <td>
-                    <img alt='' $size src='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                    <img alt='' $size src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
                 </td>
                 <td>
-                    <img alt='' $size src='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                    <img alt='' $size src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
                 </td>
             </tr>
             <tr>
@@ -745,7 +743,7 @@ switch ($_GET['op']) {
             </tr>";
             $body = '';
             foreach ($entries as $slabId => $slab) {
-                $dumpUrl = $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;op=2&amp;server=' . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;dumpslab=' . $slabId;
+                $dumpUrl = $site_config['paths']['baseurl'] . '/staffpanel.php?tool=memcache&amp;op=2&amp;server=' . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;dumpslab=' . $slabId;
                 $body .= "
             <tr>
                 <td>
@@ -762,7 +760,7 @@ switch ($_GET['op']) {
                     $i = 1;
                     foreach ($items['ITEM'] as $itemKey => $itemInfo) {
                         $itemInfo = trim($itemInfo, '[ ]');
-                        $body .= "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=4&amp;server=" . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;key=' . base64_encode($itemKey) . "'>$itemKey</a>";
+                        $body .= "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=4&amp;server=" . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;key=' . base64_encode($itemKey) . "'>$itemKey</a>";
                         if ($i++ % 10 == 0) {
                             $body .= '<br>';
                         } elseif ($i != $slab['number'] + 1) {
@@ -808,7 +806,7 @@ switch ($_GET['op']) {
                 </td>
                 <td>' . chunk_split($r['VALUE'][$theKey]['value'], 40) . "</td>
                 <td>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&op=5&server={$_GET['server']}&amp;key=" . base64_encode($theKey) . "'>Delete</a>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&op=5&server={$_GET['server']}&amp;key=" . base64_encode($theKey) . "'>Delete</a>
                 </td>
             </tr>";
         $HTMLOUT .= main_table($body, $heading) . '
@@ -825,14 +823,14 @@ switch ($_GET['op']) {
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
         $session->set('is-success', "Deleting $theKey: $r");
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=memcache");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache");
         break;
 
     case 6:
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         $r = flushServer($theserver);
         $session->set('is-success', "Flushing $theserver: $r");
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=memcache");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache");
         break;
 }
 

@@ -48,7 +48,7 @@ function comment_like_unlike($fields)
         $type = 'comment';
     }
 
-    $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id = ' . sqlesc($CURUSER['id']) . " AND {$type}_id = " . sqlesc($id);
+    $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id=' . sqlesc($CURUSER['id']) . " AND {$type}_id=" . sqlesc($id);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_assoc($res);
     $table = 'comments';
@@ -58,16 +58,16 @@ function comment_like_unlike($fields)
     if ($data['count'] == 0 && $current === 'Like') {
         $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id = " . sqlesc($id);
+        $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id=" . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');
         $data['label'] = 'Unlike';
         $data['list'] = 'you like this';
     } elseif ($data['count'] == 1 && $current === 'Unlike') {
-        $sql = "DELETE FROM likes WHERE {$type}_id = " . sqlesc($id) . ' AND user_id = ' . sqlesc($CURUSER['id']);
+        $sql = "DELETE FROM likes WHERE {$type}_id=" . sqlesc($id) . ' AND user_id=' . sqlesc($CURUSER['id']);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id = " . sqlesc($id);
+        $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id=" . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');
@@ -80,10 +80,10 @@ function comment_like_unlike($fields)
         $data['label'] = 'you lost me';
     }
     $sql = $fluent->from('likes')
-                  ->select(null)
-                  ->select('user_id')
-                  ->where("{$type}_id = ?", $id)
-                  ->where('user_id != ?', $CURUSER['id']);
+        ->select(null)
+        ->select('user_id')
+        ->where("{$type}_id=?", $id)
+        ->where('user_id != ?', $CURUSER['id']);
     foreach ($sql as $row) {
         $rows[] = format_username($row['user_id']);
     }

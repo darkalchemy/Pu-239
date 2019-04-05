@@ -11,14 +11,14 @@ $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
     $session->set('is-warning', 'Invalid Information');
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr('Error', 'It appears that you have entered an invalid id.');
 }
-$res = sql_query('SELECT id, name FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, name FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr('Error', 'It appears that there is no torrent with that id.');
@@ -29,9 +29,9 @@ $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {
-    stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
+    stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
-$HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
+$HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
 $HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h3>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -41,8 +41,8 @@ $header = "
             <th class='has-text-left'>{$lang['snatches_username']}</th>
             <th class='has-text-right'>{$lang['snatches_uploaded']}</th>
             <th class='has-text-right'>{$lang['snatches_upspeed']}</th>
-            " . ($site_config['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
-            ' . ($site_config['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downspeed']}</th>") . "
+            " . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
+            ' . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downspeed']}</th>") . "
             <th class='has-text-right'>{$lang['snatches_ratio']}</th>
             <th class='has-text-right'>{$lang['snatches_completed']}</th>
             <th class='has-text-right'>{$lang['snatches_seedtime']}</th>
@@ -54,9 +54,9 @@ $header = "
 $res = sql_query('
             SELECT s.*, u.paranoia, t.anonymous AS anonymous1, u.anonymous AS anonymous2, size, timesann, owner
             FROM snatched AS s
-            INNER JOIN users AS u ON s.userid = u.id
-            INNER JOIN torrents AS t ON s.torrentid = t.id
-            WHERE s.complete_date !=0 AND s.torrentid = ' . sqlesc($id) . '
+            INNER JOIN users AS u ON s.userid=u.id
+            INNER JOIN torrents AS t ON s.torrentid=t.id
+            WHERE s.complete_date !=0 AND s.torrentid=' . sqlesc($id) . '
             ORDER BY complete_date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -71,8 +71,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
             <td class='has-text-left'>{$username}</td>
             <td class='has-text-right'>" . mksize($arr['uploaded']) . "</td>
             <td class='has-text-right'>" . htmlsafechars($upspeed) . '/s</td>
-            ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '
-            ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
+            ' . ($site_config['site']['ratio_free'] ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '
+            ' . ($site_config['site']['ratio_free'] ? '' : "<td class='has-text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
             <td class='has-text-right'>" . htmlsafechars($ratio) . "</td>
             <td class='has-text-right'>" . htmlsafechars($completed) . "</td>
             <td class='has-text-right'>" . mkprettytime($arr['seedtime']) . "</td>

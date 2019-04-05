@@ -20,13 +20,13 @@ if (isset($mode) && $mode == 'change') {
         stderr($lang['namechanger_err'], "<b>'{$_POST['uname']}'</b> {$lang['namechanger_invalid']}");
     }
 
-    $nc_sql = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+    $nc_sql = sql_query('SELECT class FROM users WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($nc_sql)) {
         $classuser = mysqli_fetch_assoc($nc_sql);
         if ($classuser['class'] >= UC_STAFF) {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
-        $change = sql_query('UPDATE users SET username =' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+        $change = sql_query('UPDATE users SET username =' . sqlesc($uname) . ' WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
@@ -39,13 +39,13 @@ if (isset($mode) && $mode == 'change') {
             }
         }
         sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
-        header("Refresh: 2; url={$site_config['baseurl']}/staffpanel.php?tool=namechanger");
+        header("Refresh: 2; url={$site_config['paths']['baseurl']}/staffpanel.php?tool=namechanger");
         stderr($lang['namechanger_success'], $lang['namechanger_u_changed'] . htmlsafechars($uname) . $lang['namechanger_please']);
     }
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['namechanger_change_u']}</h1>
-    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=namechanger&amp;mode=change' accept-charset='utf-8'>";
+    <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=namechanger&amp;mode=change' accept-charset='utf-8'>";
 $body = "
     <tr>
         <td>{$lang['namechanger_id']}</td>

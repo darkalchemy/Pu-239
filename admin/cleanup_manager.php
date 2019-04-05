@@ -76,11 +76,11 @@ function manualclean()
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr2']);
     }
     $params['cid'] = sqlesc($params['cid']);
-    $sql = sql_query('SELECT * FROM cleanup WHERE clean_id = ' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query('SELECT * FROM cleanup WHERE clean_id=' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($sql);
     if ($row['clean_id']) {
         $next_clean = ceil($row['clean_time'] / $row['clean_increment']) * $row['clean_increment'] + $row['clean_increment'];
-        sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id=' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
         if (file_exists(CLEAN_DIR . $row['clean_file'])) {
             require_once CLEAN_DIR . $row['clean_file'];
             if (function_exists($row['function_name'])) {
@@ -98,16 +98,16 @@ function cleanup_show_main()
     global $site_config, $lang, $fluent;
 
     $count1 = $fluent->from('cleanup')
-                     ->select(null)
-                     ->select('COUNT(*) AS count')
-                     ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->fetch('count');
 
     $perpage = 15;
-    $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
+    $pager = pager($perpage, $count1, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
         <ul class='level-center bg-06'>
-            <li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
-            <li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
+            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
+            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
         </ul>
         <h1 class='has-text-centered top20'>{$lang['cleanup_head']}</h1>" . ($count1 > $perpage ? $pager['pagertop'] : '') . "
         <table class='table table-bordered table-striped bottom20'>
@@ -140,21 +140,21 @@ function cleanup_show_main()
             <td class='has-text-centered'>" . mkprettytime($row['clean_increment']) . "</td>
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_edit']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_edit']}'>
                     <i class='icon-edit icon'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
                     <i class='icon-trash-empty icon has-text-danger'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}' class='tooltipper' title='{$lang['cleanup_off_on']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}' class='tooltipper' title='{$lang['cleanup_off_on']}'>
                 $on_off
             </td>
             <td class='has-text-centered'>
-                <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
+                <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
             </td>
          </tr>";
     }
@@ -171,7 +171,7 @@ function cleanup_show_edit()
         exit;
     }
     $cid = intval($params['cid']);
-    $sql = sql_query("SELECT * FROM cleanup WHERE clean_id = $cid");
+    $sql = sql_query("SELECT * FROM cleanup WHERE clean_id=$cid");
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr3']);
     }
@@ -289,7 +289,7 @@ function cleanup_take_edit()
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
     }
-    sql_query("UPDATE cleanup SET function_name = {$params['function_name']}, clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
+    sql_query("UPDATE cleanup SET function_name = {$params['function_name']}, clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id={$params['cid']}");
     cleanup_show_main();
     die();
 }
@@ -427,7 +427,7 @@ function cleanup_take_delete()
         stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error1']}");
     }
     $params['cid'] = sqlesc($params['cid']);
-    sql_query("DELETE FROM cleanup WHERE clean_id = {$params['cid']}");
+    sql_query("DELETE FROM cleanup WHERE clean_id={$params['cid']}");
     if (mysqli_affected_rows($mysqli) === 1) {
         stderr($lang['cleanup_del_info'], "{$lang['cleanup_del_success']}");
     } else {
@@ -467,7 +467,7 @@ function cleanup_take_unlock()
     unset($opts);
     $params['cid'] = sqlesc($params['cid']);
     $params['clean_on'] = ($params['clean_on'] === 1 ? sqlesc($params['clean_on'] - 1) : sqlesc($params['clean_on'] + 1));
-    sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
+    sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id={$params['cid']}");
     if (mysqli_affected_rows($mysqli) === 1) {
         cleanup_show_main(); // this go bye bye later
     } else {

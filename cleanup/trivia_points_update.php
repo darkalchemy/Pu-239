@@ -19,28 +19,28 @@ function trivia_points_update($data)
     $i = 1;
 
     $gamenum = $fluent->from('triviasettings')
-                      ->select(null)
-                      ->select('gamenum')
-                      ->where('gameon = 1')
-                      ->fetch('gamenum');
+        ->select(null)
+        ->select('gamenum')
+        ->where('gameon = 1')
+        ->fetch('gamenum');
 
     $results = $fluent->from('triviausers AS t')
-                      ->select(null)
-                      ->select('t.user_id')
-                      ->select('COUNT(t.correct) AS correct')
-                      ->select('u.seedbonus')
-                      ->select('u.username')
-                      ->select('u.modcomment')
-                      ->innerJoin('users AS  u ON t.user_id = u.id')
-                      ->where('t.correct = 1')
-                      ->where('gamenum = ?', $gamenum)
-                      ->groupBy('t.user_id')
-                      ->groupBy('u.seedbonus')
-                      ->groupBy('u.username')
-                      ->groupBy('u.modcomment')
-                      ->orderBy('correct DESC')
-                      ->limit(10)
-                      ->fetchAll();
+        ->select(null)
+        ->select('t.user_id')
+        ->select('COUNT(t.correct) AS correct')
+        ->select('u.seedbonus')
+        ->select('u.username')
+        ->select('u.modcomment')
+        ->innerJoin('users AS  u ON t.user_id=u.id')
+        ->where('t.correct = 1')
+        ->where('gamenum = ?', $gamenum)
+        ->groupBy('t.user_id')
+        ->groupBy('u.seedbonus')
+        ->groupBy('u.username')
+        ->groupBy('u.modcomment')
+        ->orderBy('correct DESC')
+        ->limit(10)
+        ->fetchAll();
 
     if ($results) {
         $subject = 'Trivia Bonus Points Award.';
@@ -105,9 +105,9 @@ function trivia_points_update($data)
                 'seedbonus' => $points,
             ];
             $fluent->update('users')
-                   ->set($set)
-                   ->where('id = ?', $user_id)
-                   ->execute();
+                ->set($set)
+                ->where('id=?', $user_id)
+                ->execute();
             $count = $i++;
         }
     }
@@ -121,17 +121,17 @@ function trivia_points_update($data)
         'finished' => date('Y-m-d H:i:s', $dt),
     ];
     $fluent->update('triviasettings')
-           ->set($set)
-           ->where('gameon = 1')
-           ->execute();
+        ->set($set)
+        ->where('gameon = 1')
+        ->execute();
 
     $values = [
         'gameon' => 1,
         'started' => date('Y-m-d H:i:s', $dt),
     ];
     $fluent->insertInto('triviasettings')
-           ->values($values)
-           ->execute();
+        ->values($values)
+        ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

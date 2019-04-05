@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Post.
  */
@@ -25,13 +27,13 @@ class Post
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values)
     {
         $id = $this->fluent->insertInto('posts')
-                           ->values($values)
-                           ->execute();
+            ->values($values)
+            ->execute();
 
         return $id;
     }
@@ -40,13 +42,13 @@ class Post
      * @param int $id
      * @param int $topic_id
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete(int $id, int $topic_id)
     {
         $this->fluent->delete('posts')
-                     ->where('id = ?', $id)
-                     ->where('topic_id = ?', $topic_id)
-                     ->execute();
+            ->where('id=?', $id)
+            ->where('topic_id=?', $topic_id)
+            ->execute();
     }
 }

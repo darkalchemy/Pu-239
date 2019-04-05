@@ -15,7 +15,7 @@ if ($remove) {
     if (empty($remove)) {
         die($lang['freeusers_wtf']);
     }
-    $res = sql_query('SELECT id, username, class FROM users WHERE free_switch != 0 AND id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, username, class FROM users WHERE free_switch != 0 AND id=' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = $usernames = $msgs_ids = [];
     if (mysqli_num_rows($res) > 0) {
         $msg = sqlesc($lang['freeusers_msg'] . $CURUSER['username'] . $lang['freeusers_period']);
@@ -49,7 +49,7 @@ if ($remove) {
 $res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res2);
 $perpage = 25;
-$pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=freeusers&amp;");
+$pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=freeusers&amp;");
 $res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['freeusers_head']} ($count)</h1>";
@@ -77,7 +77,7 @@ if ($count == 0) {
         } else {
             $body .= "</td>
             <td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . '(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int) $arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int) $arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td>
         </tr>";
         }
     }

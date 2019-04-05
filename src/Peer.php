@@ -2,6 +2,9 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+use PDOStatement;
+
 /**
  * Class Peer.
  */
@@ -19,7 +22,7 @@ class Peer
         $this->cache = $cache;
         $this->fluent = $fluent;
         $this->site_config = $site_config;
-        $this->limit = $this->site_config['query_limit'];
+        $this->limit = $this->site_config['database']['query_limit'];
     }
 
     /**
@@ -27,7 +30,7 @@ class Peer
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function getPeersFromUserId(int $userid)
     {
@@ -37,10 +40,10 @@ class Peer
             $peers['conn'] = 3;
             $peers['percentage'] = 0;
             $query = $this->fluent->from('peers')
-                                  ->select(null)
-                                  ->select('seeder')
-                                  ->select('connectable')
-                                  ->where('userid = ?', $userid);
+                ->select(null)
+                ->select('seeder')
+                ->select('connectable')
+                ->where('userid=?', $userid);
 
             foreach ($query as $a) {
                 $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
@@ -70,30 +73,30 @@ class Peer
     /**
      * @param int $tid
      *
-     * @return array|bool|mixed|\PDOStatement
+     * @return array|bool|mixed|PDOStatement
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_torrent_peers_by_tid(int $tid)
     {
         $peers = $this->cache->get('torrent_peers_' . $tid);
         if ($peers === false || is_null($peers)) {
             $peers = $this->fluent->from('peers')
-                                  ->select(null)
-                                  ->select('id')
-                                  ->select('seeder')
-                                  ->select('peer_id')
-                                  ->select('INET6_NTOA(ip) AS ip')
-                                  ->select('port')
-                                  ->select('uploaded')
-                                  ->select('downloaded')
-                                  ->select('userid')
-                                  ->select('(UNIX_TIMESTAMP(NOW()) - last_action) AS announcetime')
-                                  ->select('last_action AS ts')
-                                  ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
-                                  ->select('prev_action AS prevts')
-                                  ->where('torrent = ?', $tid)
-                                  ->fetchAll();
+                ->select(null)
+                ->select('id')
+                ->select('seeder')
+                ->select('peer_id')
+                ->select('INET6_NTOA(ip) AS ip')
+                ->select('port')
+                ->select('uploaded')
+                ->select('downloaded')
+                ->select('userid')
+                ->select('(UNIX_TIMESTAMP(NOW()) - last_action) AS announcetime')
+                ->select('last_action AS ts')
+                ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
+                ->select('prev_action AS prevts')
+                ->where('torrent = ?', $tid)
+                ->fetchAll();
 
             $this->cache->set('torrent_peers_' . $tid, $peers, 60);
         }
@@ -108,18 +111,18 @@ class Peer
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_torrent_count(int $tid, string $torrent_pass, bool $by_class)
     {
         $count = $this->fluent->from('peers')
-                              ->select(null)
-                              ->select('COUNT(*) AS count')
-                              ->where('torrent = ?', $tid)
-                              ->where('torrent_pass = ?', $torrent_pass);
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('torrent = ?', $tid)
+            ->where('torrent_pass = ?', $torrent_pass);
 
         if ($by_class) {
-            $count = $count->where('to_go > 0');
+            $count = $count->where('to_go>0');
         }
 
         $count = $count->fetch('count');
@@ -134,13 +137,13 @@ class Peer
      *
      * @return bool
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete_by_peerid(string $peerid, int $tid, string $info_hash)
     {
         $result = $this->fluent->deleteFrom('peers')
-                               ->where('HEX(peer_id) = ?', bin2hex($peerid))
-                               ->execute();
+            ->where('HEX(peer_id) = ?', bin2hex($peerid))
+            ->execute();
 
         if ($result) {
             $key = 'torrent_hash_' . bin2hex($info_hash);
@@ -161,12 +164,12 @@ class Peer
      *
      * @return bool
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete_by_id(int $pid, int $tid, string $info_hash)
     {
         $result = $this->fluent->deleteFrom('peers', $pid)
-                               ->execute();
+            ->execute();
 
         if ($result) {
             $key = 'torrent_hash_' . bin2hex($info_hash);
@@ -186,22 +189,22 @@ class Peer
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert_update(array $values, array $update)
     {
         $id = $this->fluent->from('peers')
-                           ->select(null)
-                           ->select('id')
-                           ->where('torrent = ?', $values['torrent'])
-                           ->where('peer_id = ?', $values['peer_id'])
-                           ->where('port = ?', $values['port'])
-                           ->where('INET6_NTOA(ip) = ?', $values['ip'])
-                           ->fetch('id');
+            ->select(null)
+            ->select('id')
+            ->where('torrent = ?', $values['torrent'])
+            ->where('peer_id=?', $values['peer_id'])
+            ->where('port = ?', $values['port'])
+            ->where('INET6_NTOA(ip) = ?', $values['ip'])
+            ->fetch('id');
 
         if (empty($id)) {
             $values['ip'] = inet_pton($values['ip']);
-            $this->insert($values, $values['userid']);
+            $this->insert($values);
         } else {
             $this->update($update, $id);
 
@@ -213,31 +216,30 @@ class Peer
 
     /**
      * @param array $values
-     * @param int   $userid
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
-    public function insert(array $values, int $userid)
+    public function insert(array $values)
     {
         $this->fluent->insertInto('peers')
-                     ->values($values)
-                     ->execute();
+            ->values($values)
+            ->execute();
     }
 
     /**
      * @param array $set
      * @param int   $id
      *
-     * @return bool|int|\PDOStatement
+     * @return bool|int|PDOStatement
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function update(array $set, int $id)
     {
         $result = $this->fluent->update('peers')
-                               ->set($set)
-                               ->where('id = ?', $id)
-                               ->execute();
+            ->set($set)
+            ->where('id = ?', $id)
+            ->execute();
 
         return $result;
     }

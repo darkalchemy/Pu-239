@@ -15,10 +15,10 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         $plot = $cache->get('imdb_plot_' . $imdb_id);
         if ($plot === false || is_null($plot)) {
             $plot = $fluent->from('imdb_info')
-                           ->select(null)
-                           ->select('plot')
-                           ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
-                           ->fetch('plot');
+                ->select(null)
+                ->select('plot')
+                ->where('imdb_id=?', str_replace('tt', '', $imdb_id))
+                ->fetch('plot');
 
             $cache->set('imdb_plot_' . $imdb_id, $plot, 86400);
         }
@@ -101,7 +101,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     }
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
-                            <a class='altlink' href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
+                            <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>
@@ -168,7 +168,7 @@ function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploade
 {
     global $site_config, $image, $cat, $times_completed;
 
-    $caticon = !empty($image) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
+    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
     $content = "
                     <tr>
                         <td class='has-text-centered'>$caticon</td>

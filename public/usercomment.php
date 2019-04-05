@@ -63,10 +63,10 @@ if ($action === 'add') {
     </form>";
 
     $allrows = $fluent->from('usercomments')
-                      ->where('user = ?', $userid)
-                      ->orderBy('id DESC')
-                      ->limit(5)
-                      ->fetchAll();
+        ->where('user = ?', $userid)
+        ->orderBy('id DESC')
+        ->limit(5)
+        ->fetchAll();
 
     if ($allrows) {
         $HTMLOUT .= '
@@ -85,7 +85,7 @@ if ($action === 'add') {
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }
-    $res = sql_query('SELECT c.*, u.username, u.id FROM usercomments AS c LEFT JOIN users AS u ON c.userid = u.id WHERE c.id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT c.*, u.username, u.id FROM usercomments AS c LEFT JOIN users AS u ON c.userid=u.id WHERE c.id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
         stderr('Error', 'Invalid ID.');
@@ -99,11 +99,11 @@ if ($action === 'add') {
         if ($body == '') {
             stderr('Error', 'Comment body cannot be empty!');
         }
-        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = ' . sqlesc(TIME_NOW) . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = ' . sqlesc(TIME_NOW) . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         if ($returnto) {
             header("Location: $returnto");
         } else {
-            header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}#comments");
+            header("Location: {$site_config['paths']['baseurl']}/userdetails.php?id={$userid}#comments");
         }
         die();
     }
@@ -129,8 +129,8 @@ if ($action === 'add') {
         stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-success'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
-                  ->where('id = ?', $commentid)
-                  ->fetch();
+        ->where('id=?', $commentid)
+        ->fetch();
 
     if ($arr) {
         $userid = (int) $arr['userid'];
@@ -138,15 +138,15 @@ if ($action === 'add') {
     if ($arr['id'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
-    sql_query('DELETE FROM usercomments WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM usercomments WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     if ($userid && mysqli_affected_rows($mysqli) > 0) {
-        sql_query('UPDATE users SET comments = comments - 1 WHERE id = ' . sqlesc($userid));
+        sql_query('UPDATE users SET comments = comments - 1 WHERE id=' . sqlesc($userid));
     }
     $session->set('is-success', 'User Comment has been deleted.');
     if ($_GET['returnto']) {
         header('Location: ' . htmlsafechars($_GET['returnto']));
     } else {
-        header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}#comments");
+        header("Location: {$site_config['paths']['baseurl']}/userdetails.php?id={$userid}#comments");
     }
     die();
 } elseif ($action === 'vieworiginal') {
@@ -158,8 +158,8 @@ if ($action === 'add') {
         stderr('Error', 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments')
-                  ->where('id = ?', $commentid)
-                  ->fetch();
+        ->where('id=?', $commentid)
+        ->fetch();
 
     if (!$arr) {
         stderr('Error', 'Invalid ID');

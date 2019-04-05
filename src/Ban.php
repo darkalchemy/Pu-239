@@ -2,6 +2,9 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+use PDOStatement;
+
 /**
  * Class Ban.
  */
@@ -23,18 +26,18 @@ class Ban
     /**
      * @param string $ip
      *
-     * @return array|\PDOStatement
+     * @return array|PDOStatement
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_range(string $ip)
     {
         $bans = $this->fluent->from('bans')
-                             ->select('INET6_NTOA(first) AS first')
-                             ->select('INET6_NTOA(last) AS last')
-                             ->where('? >= first', inet_pton($ip))
-                             ->where('? <= last', inet_pton($ip))
-                             ->fetchAll();
+            ->select('INET6_NTOA(first) AS first')
+            ->select('INET6_NTOA(last) AS last')
+            ->where('?>= first', inet_pton($ip))
+            ->where('? <= last', inet_pton($ip))
+            ->fetchAll();
 
         return $bans;
     }
@@ -44,45 +47,50 @@ class Ban
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_count(string $ip)
     {
         $count = $this->fluent->from('bans')
-                              ->select(null)
-                              ->select('COUNT(*) AS count')
-                              ->where('? >= first', inet_pton($ip))
-                              ->where('? <= last', inet_pton($ip))
-                              ->fetch('count');
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('?>= first', inet_pton($ip))
+            ->where('? <= last', inet_pton($ip))
+            ->fetch('count');
 
         return $count;
     }
 
+    /**
+     * @param string $ip
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
     public function check_bans(string $ip)
     {
-        global $cache, $fluent;
-
         if (empty($ip)) {
             return false;
         }
         $key = 'bans_' . $ip;
-        $cache->delete($key);
-        $ban = $cache->get($key);
+        $this->cache->delete($key);
+        $ban = $this->cache->get($key);
         if (($ban === false || is_null($ban)) && $ban != 0) {
             $ban = $this->fluent->from('bans')
-                                ->select(null)
-                                ->select('comment')
-                                ->where('? >= first', inet_pton($ip))
-                                ->where('? <= last', inet_pton($ip))
-                                ->limit(1)
-                                ->fetch('comment');
+                ->select(null)
+                ->select('comment')
+                ->where('?>= first', inet_pton($ip))
+                ->where('? <= last', inet_pton($ip))
+                ->limit(1)
+                ->fetch('comment');
 
             if (!empty($ban)) {
-                $cache->set($key, $ban, 86400);
+                $this->cache->set($key, $ban, 86400);
 
                 return true;
             } else {
-                $cache->set($key, 0, 86400);
+                $this->cache->set($key, 0, 86400);
             }
         }
 

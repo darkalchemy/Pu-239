@@ -50,9 +50,9 @@ function commenttable($rows, $variant = 'torrent')
             $user_likes = $cache->get("{$type}_user_likes_" . $cid);
             if ($user_likes === false || is_null($user_likes)) {
                 $likes = $fluent->from('likes')
-                                ->select(null)
-                                ->select('user_id')
-                                ->where("{$variantc}_id = ?", $cid);
+                    ->select(null)
+                    ->select('user_id')
+                    ->where("{$variantc}_id=?", $cid);
                 foreach ($likes as $like) {
                     $user_likes[] = $like['user_id'];
                 }
@@ -91,7 +91,7 @@ function commenttable($rows, $variant = 'torrent')
                 $this_text .= "<span class='left5'>" . format_username($row['user']) . '</span>';
                 $this_text .= '
                     <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);" class="left5">
-                        <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ($row['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!">
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ($row['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!">
                     </a>';
             }
         } else {
@@ -102,10 +102,10 @@ function commenttable($rows, $variant = 'torrent')
         $tid = !empty($row[$variant]) ? "&amp;tid={$row[$variant]}" : '';
 
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/{$type}.php?action=edit&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
-                    <a href='{$site_config['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/{$type}.php?{$delete}&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/{$type}.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_view_original']}</a>" : '') . "
+                    <a href='{$site_config['paths']['baseurl']}/{$type}.php?action=edit&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
+                    <a href='{$site_config['paths']['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
+                    <a href='{$site_config['paths']['baseurl']}/{$type}.php?{$delete}&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
+                    <a href='{$site_config['paths']['baseurl']}/{$type}.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_view_original']}</a>" : '') . "
                     <span data-id='{$cid}' data-type='{$variant}' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$cid} left10'>{$att_str}</span>
                 </span>

@@ -16,7 +16,7 @@ $buttons = "
             <button id='button' onclick=\"get_trivia_question()\" class='button is-small'>Get Trivia Question</button>
         </li>
         <li  class='margin20'>
-            <a href='{$site_config['baseurl']}/trivia_results.php' target='_top' class='button is-small'>Get Trivia Results</a>
+            <a href='{$site_config['paths']['baseurl']}/trivia_results.php' target='_top' class='button is-small'>Get Trivia Results</a>
         </li>
     </ul>";
 $content = "

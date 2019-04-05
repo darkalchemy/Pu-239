@@ -13,15 +13,15 @@ function visible_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $deadtime_tor = TIME_NOW - $site_config['max_dead_torrent_time'];
+    $deadtime_tor = TIME_NOW - $site_config['site']['max_dead_torrent_time'];
     $set = [
         'visible' => 'no',
     ];
     $fluent->update('torrents')
-           ->set($set)
-           ->where('visible = "yes"')
-           ->where('last_action < ?', $deadtime_tor)
-           ->execute();
+        ->set($set)
+        ->where('visible = "yes"')
+        ->where('last_action < ?', $deadtime_tor)
+        ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

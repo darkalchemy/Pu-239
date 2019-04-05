@@ -20,7 +20,7 @@ function smilies_frame($smilies_set)
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy w-100'>
+                        <img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy w-100'>
                     </a>
                 </span>
             </span>";
@@ -43,6 +43,15 @@ function smilies_frame($smilies_set)
  */
 function BBcode($body = null, $class = null, $height = 600)
 {
+    global $site_config;
+
+    if (!$site_config['site']['BBcode']) {
+        $textarea = "
+            <textarea name='text' rows='10' class='w-100'></textarea>";
+
+        return $textarea;
+    }
+
     $bbcode = "
             <textarea name='body' id='bbcode-editor' class='w-100 $class' style='height: {$height}px;'>$body</textarea>";
 
@@ -175,20 +184,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $image = placeholder_image();
     $s = $text;
     unset($text);
-    $site_config['url'] = str_replace([
-        'http://',
-        'www',
-        'http://www',
-        'https://',
-        'https://www',
-    ], '', $site_config['baseurl']);
-    if (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] === true) {
-        $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
-    } else {
-        $s = preg_replace('/https:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'http://$1', $s);
-    }
+
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
-    // char before a closing bracket - like >), "), ... - this would be encoded
+    // char before a closing bracket - like>), "), ... - this would be encoded
     // to &xxx;), hence all the extra smilies. I created a new :wink: label, removed
     // the ;) one, and replace all genuine ;) by :wink: before escaping the body.
     // (What took us so long? :blush:)- wyz
@@ -196,7 +194,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     // fix messed up links
     $s = str_replace('&amp;', '&', $s);
     if ($strip_html) {
-        $s = htmlsafechars($s, ENT_QUOTES, get_charset());
+        $s = htmlsafechars($s, ENT_QUOTES, 'UTF-8');
     }
 
     // BBCode to find...
@@ -302,9 +300,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span class="text-\1">\2</span>',
         "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm"><source src="//i.imgur.com/\1.mp4" type="video/mp4">Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls preload="none"><source src="\1"><source src="\1" type="video/mp4">Your browser does not support the video tag.</video></span>',
@@ -401,10 +399,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         }
 
         // [img] proxied local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy"></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['paths']['images_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy"></a>', $s);
 
         // [img] local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x"></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['paths']['images_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x"></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {
@@ -427,17 +425,17 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace('  ', '&#160;&#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
 
@@ -452,6 +450,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     ], '<br>', $s);
 
     $s = str_replace('http:', 'https:', $s);
+
     return $s;
 }
 
@@ -460,9 +459,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
  *
  * @return mixed
  */
-
-
-
 function format_code($s)
 {
     if (preg_match('/\[code\]/', $s)) {
@@ -507,7 +503,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
     global $site_config;
     $s = htmlspecialchars($text);
     if ($strip_html) {
-        $s = htmlsafechars($s, ENT_QUOTES, get_charset());
+        $s = htmlsafechars($s, ENT_QUOTES, 'UTF-8');
     }
     $bb_code_in = [
         '/\[b\]\s*((\s|.)+?)\s*\[\/b\]/i',
@@ -629,9 +625,7 @@ function _MediaTag($content, $type)
             break;
 
         case 'imdb':
-            $return = preg_replace("#^https?://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i",
-                "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='https://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>",
-                $content);
+            $return = preg_replace("#^https?://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\"><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='https://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
             break;
 
         case 'vimeo':

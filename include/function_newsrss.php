@@ -9,6 +9,9 @@ function foxnews_shout($links = [])
 {
     global $site_config, $cache, $fluent;
 
+    if (!$site_config['newsrss']['foxnews']) {
+        return;
+    }
     $empty = empty($links);
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
@@ -17,7 +20,7 @@ function foxnews_shout($links = [])
         //'Sports' => 'http://feeds.foxnews.com/foxnews/sports',
     ];
 
-    if ($site_config['autoshout_on']) {
+    if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
@@ -32,11 +35,11 @@ function foxnews_shout($links = [])
             $pubs = [];
             foreach ($items as $item) {
                 $title = empty($item->getElementsByTagName('title')
-                                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                                                                      ->item(0)->nodeValue;
+                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                    ->item(0)->nodeValue;
                 $link = empty($item->getElementsByTagName('link')
-                                   ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                                                                     ->item(0)->nodeValue;
+                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                    ->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
                     'link' => replace_unicode_strings($link),
@@ -58,7 +61,7 @@ function foxnews_shout($links = [])
                     'link' => $link,
                 ];
                 $query = $fluent->insertInto('newsrss')
-                                ->values($values);
+                    ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {
@@ -82,8 +85,11 @@ function tfreak_shout($links = [])
 {
     global $site_config, $cache, $fluent;
 
+    if (!$site_config['newsrss']['tfreak']) {
+        return;
+    }
     $empty = empty($links);
-    if ($site_config['autoshout_on']) {
+    if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
         $xml = $cache->get('tfreaknewsrss_');
         if ($xml === false || is_null($xml)) {
@@ -96,11 +102,11 @@ function tfreak_shout($links = [])
         $pubs = [];
         foreach ($items as $item) {
             $title = empty($item->getElementsByTagName('title')
-                                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                                                                  ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                ->item(0)->nodeValue;
             $link = empty($item->getElementsByTagName('link')
-                               ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                                                                 ->item(0)->nodeValue;
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                ->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
                 'link' => replace_unicode_strings($link),
@@ -122,7 +128,7 @@ function tfreak_shout($links = [])
                 'link' => $link,
             ];
             $query = $fluent->insertInto('newsrss')
-                            ->values($values);
+                ->values($values);
             $newid = $query->execute();
             if ($newid) {
                 if (!$empty || $count === $i++) {
@@ -145,12 +151,15 @@ function github_shout($links = [])
 {
     global $site_config, $cache, $fluent;
 
+    if (!$site_config['newsrss']['github']) {
+        return;
+    }
     $empty = empty($links);
     $feeds = [
         //'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
     ];
-    if ($site_config['autoshout_on']) {
+    if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
@@ -195,7 +204,7 @@ function github_shout($links = [])
                     'link' => $link,
                 ];
                 $query = $fluent->insertInto('newsrss')
-                                ->values($values);
+                    ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {

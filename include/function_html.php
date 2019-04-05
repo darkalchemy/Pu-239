@@ -121,7 +121,7 @@ function insert_smilies_frame()
     $htmlout .= begin_table(false);
     $htmlout .= "<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n";
     foreach ($smilies as $code => $url) {
-        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_baseurl']}smilies/{$url}\" alt=''></td></tr>\n";
+        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['paths']['images_baseurl']}smilies/{$url}\" alt=''></td></tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();
@@ -170,7 +170,7 @@ function main_div($text, $outer_class = null, $inner_class = null)
         return;
     } else {
         return "
-                <div class='bordered $outer_class'>
+                <div class='bordered bg-02 $outer_class'>
                     <div class='alt_bordered bg-00 $inner_class'>$text
                     </div>
                 </div>";
@@ -294,8 +294,8 @@ function write_class_files($template)
     $t = 'define(';
     $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
-                  ->orderBy('value ASC')
-                  ->where('template = ?', $template);
+        ->orderBy('value ASC')
+        ->where('template = ?', $template);
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
@@ -312,7 +312,7 @@ function write_class_files($template)
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes, $config_classes);
     write_css($data, $template);
-    file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+    file_put_contents(CONFIG_DIR . 'classes.php', $configfile);
 }
 
 function clear_image_cache()
@@ -387,7 +387,7 @@ function doc_head()
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta property='og:url' content='{$site_config['baseurl']}'>
+    <meta property='og:url' content='{$site_config['paths']['baseurl']}'>
     <meta property='og:type' content='website'>
-    <meta property='og:description' content='{$site_config['domain']} - {$site_config['site_name']}'>";
+    <meta property='og:description' content='{$site_config['session']['domain']} - {$site_config['site']['name']}'>";
 }

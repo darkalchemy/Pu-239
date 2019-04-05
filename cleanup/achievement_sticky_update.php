@@ -14,7 +14,7 @@ function achievement_sticky_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $res = sql_query('SELECT userid, stickyup, stickyachiev FROM usersachiev WHERE stickyup >= 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT userid, stickyup, stickyachiev FROM usersachiev WHERE stickyup>= 1') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
@@ -26,23 +26,23 @@ function achievement_sticky_update($data)
             $lvl = (int) $arr['stickyachiev'];
             $msg = '';
             if ($stickyup >= 1 && $lvl === 0) {
-                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky1.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL1[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sticky1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL1\', \'sticky1.png\' , \'Uploading at least 1 sticky torrent to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
             } elseif ($stickyup >= 5 && $lvl === 1) {
-                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky2.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL2[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sticky2.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL2\', \'sticky2.png\' , \'Uploading at least 5 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
             } elseif ($stickyup >= 10 && $lvl === 2) {
-                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky3.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL3[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sticky3.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL3\', \'sticky3.png\' , \'Uploading at least 10 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
             } elseif ($stickyup >= 25 && $lvl === 3) {
-                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky4.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL4[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sticky4.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL4\', \'sticky4.png\' , \'Uploading at least 25 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
             } elseif ($stickyup >= 50 && $lvl === 4) {
-                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/sticky5.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Stick Em Up LVL5[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sticky5.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Stick Em Up LVL5\', \'sticky5.png\' , \'Uploading at least 50 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
             }

@@ -38,7 +38,7 @@ foreach ($staff_smilies as $code => $url) {
     $htmlout .= "
             <td class='has-text-centered'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
-                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt=''>
+                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt=''>
                 </a>
             </td>";
     ++$count;

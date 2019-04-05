@@ -20,14 +20,14 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $pm_id . '">
         <input type="hidden" name="action" value="forward_pm">
-    <table class="table table - bordered">
+    <table class="table table-bordered">
     <tr>
         <td colspan="2" class="colhead"><h1>' . $lang['pm_forward_fwd_msg'] . '
-        <img src="' . $site_config['pic_baseurl'] . 'arrow_next . gif" alt=":">' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
+        <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=":">' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_forward_to'] . '</span></td>
-        <td><input type="text" name="to" value="' . $lang['pm_forward_user'] . '" class="member" onfocus="this . value = \'\';"></td>
+        <td><input type="text" name="to" value="' . $lang['pm_forward_user'] . '" class="member" onfocus="this.value=\'\';"></td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_forward_original'] . '</span></td>

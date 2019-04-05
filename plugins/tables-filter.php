@@ -1,6 +1,7 @@
 <?php
 
 /** Use filter in tables list
+ *
  * @link    https://www.adminer.org/plugins/#use
  * @author  Jakub Vrana, https://www.vrana.cz/
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -65,7 +66,9 @@ class AdminerTablesFilter
                 sessionStorage.setItem('adminer_tables_filter_db', db);
             });
         </script>
-        <p class="jsonly"><input id="filter-field" autocomplete="off"><?php echo script("qs('#filter-field').oninput = tablesFilterInput;"); ?>
+        <p class="jsonly"><input id="filter-field"
+                                 autocomplete="off"><?php echo script("qs('#filter-field').oninput = tablesFilterInput;"); ?>
         <?php
+
     }
 }

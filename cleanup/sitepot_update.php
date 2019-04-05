@@ -18,11 +18,11 @@ function sitepot_update($data)
         'value_s' => '0',
     ];
     $fluent->update('avps')
-           ->set($set)
-           ->where('arg = ?', 'sitepot')
-           ->where('value_u < ?', TIME_NOW)
-           ->where('value_s = ?', '1')
-           ->execute();
+        ->set($set)
+        ->where('arg = ?', 'sitepot')
+        ->where('value_u < ?', TIME_NOW)
+        ->where('value_s = ?', '1')
+        ->execute();
 
     $cache->delete('Sitepot_');
     $time_end = microtime(true);

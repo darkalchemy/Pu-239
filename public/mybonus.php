@@ -12,16 +12,16 @@ global $User, $site_config, $fluent, $cache, $session, $smilies, $message_stuffs
 $bonuslog_stuffs = new Pu239\Bonuslog();
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
-if (!$site_config['seedbonus_on']) {
+if (!$site_config['bonus']['on']) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
 }
 
 $max_donation = 100000;
 $ids = $fluent->from('torrents')
-              ->select(null)
-              ->select('MIN(id) AS min')
-              ->select('MAX(id) AS max')
-              ->fetch();
+    ->select(null)
+    ->select('MIN(id) AS min')
+    ->select('MAX(id) AS max')
+    ->fetch();
 
 $free = get_event(false);
 $HTMLOUT = '';
@@ -100,11 +100,11 @@ switch (true) {
     case isset($_GET['up_success']):
         I_smell_a_rat($_GET['up_success']);
         $amounts = $fluent->from('bonus')
-                          ->select(null)
-                          ->select('points')
-                          ->select('bonusname')
-                          ->where('bonusname LIKE ?', '%Uploaded%')
-                          ->orderBy('points');
+            ->select(null)
+            ->select('points')
+            ->select('bonusname')
+            ->where('bonusname LIKE ?', '%Uploaded%')
+            ->orderBy('points');
         $check_amt = $_GET['amt'];
         foreach ($amounts as $amount) {
             if ($amount['points'] === $check_amt) {
@@ -228,7 +228,7 @@ switch (true) {
         break;
 
     case isset($_GET['bump_success']) && $_GET['bump_success'] == 1:
-        $session->set('is-success', "[b]Congratulations![/b] {$User['username']}, you have Re-Animated the [url={$site_config['baseurl']}/details.php?id={$_GET['t_name']}][color=black]torrent![/color][/url] :woot:");
+        $session->set('is-success', "[b]Congratulations![/b] {$User['username']}, you have Re-Animated the [url={$site_config['paths']['baseurl']}/details.php?id={$_GET['t_name']}][color=black]torrent![/color][/url] :woot:");
         break;
 
     case isset($_GET['gift_fail_points']):
@@ -285,8 +285,8 @@ if (isset($_GET['exchange'])) {
     $res_points = $cache->get('bonus_points_' . $option);
     if ($res_points === false || is_null($res_points)) {
         $res_points = $fluent->from('bonus')
-                             ->where('id = ?', $option)
-                             ->fetch();
+            ->where('id=?', $option)
+            ->fetch();
         $cache->set('bonus_points_' . $option, $res_points, 0);
     }
 
@@ -325,13 +325,13 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?up_success=1&amt=$points");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?up_success=1&amt=$points");
             die();
             break;
 
         case 'reputation':
             if ($User['class'] === UC_MIN || $User['reputation'] >= 5000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $rep = $reputation + $res_points['menge'];
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 100 rep points.\n " . $bonuscomment;
@@ -341,13 +341,13 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?reputation_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?reputation_success=1");
             die();
             break;
 
         case 'immunity':
             if ($User['class'] === UC_MIN || $User['reputation'] < 3000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 years immunity status.\n " . $bonuscomment;
             $immunity = (86400 * 30 + TIME_NOW);
@@ -357,14 +357,14 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?immunity_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?immunity_success=1");
             die();
             break;
 
         case 'userblocks':
             $reputation = $User['reputation'];
             if ($User['class'] === UC_MIN || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user blocks access.\n " . $bonuscomment;
             $set = [
@@ -373,25 +373,25 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?userblocks_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?userblocks_success=1");
             die();
             break;
 
         case 'userunlock':
             $reputation = $User['reputation'];
             if ($User['class'] === UC_MIN || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user unlocks access.\n " . $bonuscomment;
             $setbits = $clrbits = 0;
             $setbits |= user_options_2::GOT_MOODS;
-            $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($User['id']);
+            $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($User['id']);
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $opt2 = $fluent->from('users')
-                           ->select(null)
-                           ->select('opt2')
-                           ->where('id = ?', $User['id'])
-                           ->fetch('opt2');
+                ->select(null)
+                ->select('opt2')
+                ->where('id=?', $User['id'])
+                ->fetch('opt2');
 
             $cache->update_row('user_' . $User['id'], [
                 'opt2' => $opt2,
@@ -403,7 +403,7 @@ if (isset($_GET['exchange'])) {
             ];
             $user_stuffs->update($set, $userid);
 
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?user_unlocks_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?user_unlocks_success=1");
             die();
             break;
 
@@ -419,7 +419,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?anonymous_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?anonymous_success=1");
             die();
             break;
 
@@ -435,7 +435,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?parked_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?parked_success=1");
             die();
             break;
 
@@ -451,7 +451,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?dload_success=1&amt=$points");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?dload_success=1&amt=$points");
             die();
             break;
 
@@ -467,7 +467,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeyear_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?freeyear_success=1");
             die();
             break;
 
@@ -480,7 +480,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeslots_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?freeslots_success=1");
             die();
             break;
 
@@ -497,7 +497,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?itrade_success=1");
             die();
             break;
 
@@ -514,13 +514,13 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade2_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?itrade2_success=1");
             die();
             break;
 
         case 'pirate':
             if ($User['pirate'] != 0 or $User['king'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 2 weeks Pirate + freeleech Status.\n " . $bonuscomment;
             $pirate = (86400 * 14 + TIME_NOW);
@@ -531,7 +531,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?pirate_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?pirate_success=1");
             die();
             break;
 
@@ -545,7 +545,7 @@ if (isset($_GET['exchange'])) {
             $pm = [];
             $pm['subject'] = 'You just got robbed by %s';
             $pm['subject_thief'] = 'Theft summary';
-            $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
+            $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['paths']['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
             $pm['message_thief'] = "Hey %s:\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ";
             $foo = [
                 50 => 3,
@@ -559,26 +559,26 @@ if (isset($_GET['exchange'])) {
             $user_limit = isset($foo[$rep_to_steal]) ? $foo[$rep_to_steal] : 3;
 
             $query = $fluent->from('users')
-                            ->select(null)
-                            ->select('id')
-                            ->select('username')
-                            ->select('reputation')
-                            ->where('id != ?', $User['id'])
-                            ->where('reputation > ?', $rep_to_steal)
-                            ->orderBy('RAND()')
-                            ->limit($user_limit)
-                            ->fetchAll();
+                ->select(null)
+                ->select('id')
+                ->select('username')
+                ->select('reputation')
+                ->where('id != ?', $User['id'])
+                ->where('reputation>?', $rep_to_steal)
+                ->orderBy('RAND()')
+                ->limit($user_limit)
+                ->fetchAll();
             $update_users = $pms = $robbed_user = [];
 
             foreach ($query as $ar) {
                 $new_rep = $ar['reputation'] - $rep_to_steal;
-                $robbed_users[] = sprintf('[url=' . $site_config['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
+                $robbed_users[] = sprintf('[url=' . $site_config['paths']['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
                 $set = [
                     'reputation' => $new_rep,
                 ];
                 $user_stuffs->update($set, $ar['id']);
                 $msgs_buffer[] = [
-                    'sender' => $site_config['chatBotID'],
+                    'sender' => $site_config['chatbot']['id'],
                     'receiver' => $ar['id'],
                     'added' => TIME_NOW,
                     'subject' => sprintf($pm['subject'], $thief_name),
@@ -589,7 +589,7 @@ if (isset($_GET['exchange'])) {
                 $new_bonus = $thief_bonus - $points;
                 $new_rep = $thief_rep + ($user_limit * $rep_to_steal);
                 $msgs_buffer[] = [
-                    'sender' => $site_config['chatBotID'],
+                    'sender' => $site_config['chatbot']['id'],
                     'receiver' => $thief_id,
                     'added' => TIME_NOW,
                     'subject' => $pm['subject_thief'],
@@ -604,13 +604,13 @@ if (isset($_GET['exchange'])) {
             if (!empty($msgs_buffer)) {
                 $message_stuffs->insert($msgs_buffer);
             }
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bounty_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?bounty_success=1");
             die();
             break;
 
         case 'king':
             if ($User['king'] != 0 or $User['pirate'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month King + freeleech Status.\n " . $bonuscomment;
             $king = (86400 * 30 + TIME_NOW);
@@ -621,7 +621,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ];
             $user_stuffs->update($set, $userid);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?king_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?king_success=1");
             die();
             break;
 
@@ -631,7 +631,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -642,10 +642,10 @@ if (isset($_GET['exchange'])) {
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $donation . " Points contributed for freeleech.\n " . $bonuscomment;
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ',  bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
-                            WHERE id = '11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -662,16 +662,16 @@ if (isset($_GET['exchange'])) {
                 $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot and has activated freeleech for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?freeleech_success=1&norefund=$norefund");
                 die();
             } else {
                 sql_query('UPDATE bonus
                             SET pointspool = pointspool + ' . sqlesc($donation) . "
-                            WHERE id = '11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $donation . " Points contributed for freeleech.\n " . $bonuscomment;
                 sql_query('UPDATE users SET
                             seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -687,9 +687,9 @@ if (isset($_GET['exchange'])) {
                 ];
                 $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
-                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['paths']['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=2");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?freeleech_success=2");
                 die();
             }
             break;
@@ -700,7 +700,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -711,10 +711,10 @@ if (isset($_GET['exchange'])) {
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $donation . " Points contributed for doubleupload.\n " . $bonuscomment;
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ',  bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
-                            WHERE id = '12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -731,16 +731,16 @@ if (isset($_GET['exchange'])) {
                 $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot and has activated Double Upload for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
                 die();
             } else {
                 sql_query('UPDATE bonus
                             SET pointspool = pointspool + ' . sqlesc($donation) . "
-                            WHERE id = '12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $donation . " Points contributed for doubleupload.\n " . $bonuscomment;
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -756,9 +756,9 @@ if (isset($_GET['exchange'])) {
                 ];
                 $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
-                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['paths']['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=2");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?doubleup_success=2");
                 die();
             }
             break;
@@ -769,7 +769,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -780,10 +780,10 @@ if (isset($_GET['exchange'])) {
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $donation . " Points contributed for Halfdownload.\n " . $bonuscomment;
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ',  bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
-                            WHERE id = '13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -799,16 +799,16 @@ if (isset($_GET['exchange'])) {
                 $bonuslog_stuffs->insert($values);
                 $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot and has activated half download for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
                 die();
             } else {
                 sql_query('UPDATE bonus
                             SET pointspool = pointspool + ' . sqlesc($donation) . "
-                            WHERE id = '13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                            WHERE id='13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points contributed for halfdownload.\n " . $bonuscomment;
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -823,9 +823,9 @@ if (isset($_GET['exchange'])) {
                 ];
                 $bonuslog_stuffs->insert($values);
                 $Remaining = ($res_points['points'] - $res_points['pointspool'] - $donation);
-                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $User['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['paths']['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=2");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?halfdown_success=2");
                 die();
             }
             break;
@@ -834,33 +834,33 @@ if (isset($_GET['exchange'])) {
             $torrent_number = $_POST['torrent_id'];
             $res_snatched = sql_query('SELECT s.uploaded, s.downloaded, t.name
                                         FROM snatched AS s
-                                        LEFT JOIN torrents AS t ON t.id = s.torrentid
-                                        WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . '
+                                        LEFT JOIN torrents AS t ON t.id=s.torrentid
+                                        WHERE s.userid=' . sqlesc($userid) . ' AND torrentid=' . sqlesc($torrent_number) . '
                                         LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $arr_snatched = mysqli_fetch_assoc($res_snatched);
             if ($arr_snatched['size'] > 6442450944) {
-                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['name'] == '') {
-                stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['uploaded'] >= $arr_snatched['downloaded']) {
-                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             sql_query('UPDATE snatched
                         SET uploaded = ' . sqlesc($arr_snatched['downloaded']) . '
-                        WHERE userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
+                        WHERE userid=' . sqlesc($userid) . ' AND torrentid=' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
             $difference = $arr_snatched['downloaded'] - $arr_snatched['uploaded'];
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ', ' . $difference . " added .\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET uploaded = ' . sqlesc($upload + $difference) . ', bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'uploaded' => $upload + $difference,
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?ratio_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?ratio_success=1");
             die();
             break;
 
@@ -868,7 +868,7 @@ if (isset($_GET['exchange'])) {
             $torrent_number = isset($_POST['torrent_id']) ? intval($_POST['torrent_id']) : 0;
             $res_free = sql_query('SELECT name
                                     FROM torrents
-                                    WHERE id = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
+                                    WHERE id=' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
             $arr_free = mysqli_fetch_assoc($res_free);
             if ($arr_free['name'] == '') {
                 stderr('Error', 'No torrent with that ID!<br><br>Back to your <a class="altlink" href="karma_bonus.php">Karma Points</a> page.');
@@ -877,10 +877,10 @@ if (isset($_GET['exchange'])) {
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . ' Points to Reanimate torrent: ' . $arr_free['name'] . ".\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE torrents
                         SET bump = "yes", free = ' . sqlesc($free_time) . ', added = ' . TIME_NOW . '
-                        WHERE id = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
@@ -890,19 +890,19 @@ if (isset($_GET['exchange'])) {
                 'bump' => 'yes',
                 'free' => $free_time,
             ], 0);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bump_success=1&t_name={$torrent_number}");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?bump_success=1&t_name={$torrent_number}");
             die();
             break;
 
         case 'class':
             if ($User['class'] > UC_VIP) {
-                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $vip_until = (86400 * 28 + TIME_NOW);
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month VIP Status.\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET class = ' . sqlesc(UC_VIP) . ", vip_added = 'yes', vip_until = " . sqlesc($vip_until) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'class' => 2,
                 'vip_added' => 'yes',
@@ -910,25 +910,25 @@ if (isset($_GET['exchange'])) {
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?class_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?class_success=1");
             die();
             break;
 
         case 'warning':
             if ($User['warned'] == 0) {
-                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for removing warning.\n " . $bonuscomment;
             $res_warning = sql_query('SELECT modcomment
                                         FROM users
-                                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $arr = mysqli_fetch_assoc($res_warning);
             $modcomment = htmlsafechars($arr['modcomment']);
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Warning removed by - Bribe with Karma.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             sql_query('UPDATE users
                         SET warned = 0, seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . ', modcomment = ' . sqlesc($modcom) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $dt = TIME_NOW;
             $subject = 'Warning removed by Karma.';
             $msg = "Your warning has been removed by the big Karma payoff... Please keep on your best behaviour from now on.\n";
@@ -946,7 +946,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?warning_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?warning_success=1");
             die();
             break;
 
@@ -955,13 +955,13 @@ if (isset($_GET['exchange'])) {
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month of custom smilies.\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET smile_until = ' . sqlesc($smile_until) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'smile_until' => $smile_until,
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?smile_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?smile_success=1");
             die();
             break;
 
@@ -971,13 +971,13 @@ if (isset($_GET['exchange'])) {
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for invites.\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET invites = ' . sqlesc($inv) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'invites' => $inv,
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?invite_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?invite_success=1");
             die();
             break;
 
@@ -987,17 +987,17 @@ if (isset($_GET['exchange'])) {
              * the user class is just for show, but what the hell :p Add more or edit to your liking.
              *note if they try to use a restricted word, they will recieve the special title "I just wasted my karma" *****/
             $title = strip_tags(htmlsafechars($_POST['title']));
-            $title = str_replace($site_config['bad_words'], 'I just wasted my karma', $title);
+            $title = str_replace($site_config['site']['bad_words'], 'I just wasted my karma', $title);
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for custom title. Old title was {$User['title']} new title is " . $title . ".\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET title = ' . sqlesc($title) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                        WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                        WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $userid, [
                 'title' => $title,
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
-            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?title_success=1");
+            header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?title_success=1");
             die();
             break;
 
@@ -1019,22 +1019,22 @@ if (isset($_GET['exchange'])) {
                 $seedbonus = $bonus - $points;
                 $giftbonus1 = $userseedbonus + $points;
                 if ($userid == $useridgift) {
-                    header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail=1");
+                    header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?gift_fail=1");
                     die();
                 }
                 if (!$useridgift) {
-                    header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_user=1");
+                    header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?gift_fail_user=1");
                     die();
                 }
                 sql_query('SELECT bonuscomment, id
                             FROM users
-                            WHERE id = ' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
-                            WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($giftbonus1) . ', bonuscomment = ' . sqlesc($bonuscomment_gift) . '
-                            WHERE id = ' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
+                            WHERE id=' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $userid, [
                     'seedbonus' => $seedbonus,
                     'bonuscomment' => $bonuscomment,
@@ -1045,7 +1045,7 @@ if (isset($_GET['exchange'])) {
                 ], $site_config['expires']['user_cache']);
                 $subject = 'Someone Loves you';
                 $dt = TIME_NOW;
-                $msg = "You have been given a gift of $points Karma points by " . $User['username'];
+                $msg = "You have been given.gift of $points Karma points by " . $User['username'];
                 $msgs_buffer[] = [
                     'sender' => 0,
                     'receiver' => $useridgift,
@@ -1054,10 +1054,10 @@ if (isset($_GET['exchange'])) {
                     'subject' => $subject,
                 ];
                 $message_stuffs->insert($msgs_buffer);
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
                 die();
             } else {
-                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_points=1");
+                header("Refresh: 0; url={$site_config['paths']['baseurl']}/mybonus.php?gift_fail_points=1");
                 die();
             }
             break;
@@ -1095,12 +1095,12 @@ if (!empty($free) && $free['modifier'] != 0) {
 }
 
 $total_fl = $fluent->from('bonus')
-                   ->select(null)
-                   ->select('SUM(pointspool) AS pointspool')
-                   ->select('points')
-                   ->select('enabled')
-                   ->where('id = 11')
-                   ->fetch();
+    ->select(null)
+    ->select('SUM(pointspool) AS pointspool')
+    ->select('points')
+    ->select('enabled')
+    ->where('id=11')
+    ->fetch();
 $font_color_fl = $font_color_du = $font_color_hd = '';
 $percent_fl = number_format($total_fl['pointspool'] / $total_fl['points'] * 100, 2);
 if ($total_fl['enabled'] === 'yes') {
@@ -1132,12 +1132,12 @@ if ($total_fl['enabled'] === 'yes') {
     }
 }
 $total_du = $fluent->from('bonus')
-                   ->select(null)
-                   ->select('SUM(pointspool) AS pointspool')
-                   ->select('points')
-                   ->select('enabled')
-                   ->where('id = 12')
-                   ->fetch();
+    ->select(null)
+    ->select('SUM(pointspool) AS pointspool')
+    ->select('points')
+    ->select('enabled')
+    ->where('id=12')
+    ->fetch();
 $percent_du = number_format($total_du['pointspool'] / $total_du['points'] * 100, 2);
 if ($total_du['enabled'] === 'yes') {
     switch ($percent_du) {
@@ -1169,12 +1169,12 @@ if ($total_du['enabled'] === 'yes') {
 }
 
 $total_hd = $fluent->from('bonus')
-                   ->select(null)
-                   ->select('SUM(pointspool) AS pointspool')
-                   ->select('points')
-                   ->select('enabled')
-                   ->where('id = 13')
-                   ->fetch();
+    ->select(null)
+    ->select('SUM(pointspool) AS pointspool')
+    ->select('points')
+    ->select('enabled')
+    ->where('id=13')
+    ->fetch();
 $percent_hd = number_format($total_hd['pointspool'] / $total_hd['points'] * 100, 2);
 if ($total_hd['enabled'] === 'yes') {
     switch ($percent_hd) {
@@ -1337,8 +1337,8 @@ $HTMLOUT .= "
                 </thead>";
 
 $options = $fluent->from('bonus')
-                  ->where('enabled = "yes"')
-                  ->orderBy('orderid ASC');
+    ->where('enabled = "yes"')
+    ->orderBy('orderid ASC');
 
 foreach ($options as $gets) {
     $gets['points'] = floor($gets['points']);
@@ -1366,7 +1366,7 @@ foreach ($options as $gets) {
             $HTMLOUT .= "
             <tr>
                 <td>
-                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
+                    <form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
                         <input type='hidden' name='option' value='" . $gets['id'] . "'>
                         <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                         <h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>
@@ -1378,7 +1378,7 @@ foreach ($options as $gets) {
             $HTMLOUT .= "
             <tr>
                 <td>
-                    <form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
+                    <form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'>
                         <input type='hidden' name='option' value='" . $gets['id'] . "'>
                         <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                         <h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br><br>
@@ -1387,25 +1387,25 @@ foreach ($options as $gets) {
                 <td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '<br>max.<br>100,000</td>';
             break;
         case $gets['id'] == 9:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">min.<br>' . $gets['points_formatted'] . '</td>';
             break;
         case $gets['id'] == 10:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' class='left10' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to buy a 1 to 1 ratio on.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' class='left10' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to buy a 1 to 1 ratio on.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
             break;
         case $gets['id'] == 11:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 12:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 13:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='number' name='donate' class='left10' size='10' min='100' max='$max_donation'></td><td class='has-text-centered'>" . $gets['minpoints'] . '</td>';
             break;
         case $gets['id'] == 34:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to bump.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='number' name='torrent_id' size='4' min='{$ids['min']}' max='{$ids['max']}'> you would like to bump.</td><td class='has-text-centered'>min.<br>" . $gets['points_formatted'] . '</td>';
             break;
         default:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">' . $gets['points_formatted'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['paths']['baseurl']}/mybonus.php?exchange=1' method='post' accept-charset='utf-8'><input type='hidden' name='option' value='" . $gets['id'] . "'><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td class="has-text-centered">' . $gets['points_formatted'] . '</td>';
     }
 
     if ($bonus >= $gets['points'] || $bonus >= $gets['minpoints']) {
@@ -1430,20 +1430,20 @@ foreach ($options as $gets) {
     }
 }
 
-$bpt = $site_config['bonus_per_duration'];
-$bmt = $site_config['bonus_max_torrents'];
-$bonus_per_comment = $site_config['bonus_per_comment'];
-$bonus_per_rating = $site_config['bonus_per_rating'];
-$bonus_per_post = $site_config['bonus_per_post'];
-$bonus_per_topic = $site_config['bonus_per_topic'];
+$bpt = $site_config['bonus']['per_duration'];
+$bmt = $site_config['bonus']['max_torrents'];
+$bonus_per_comment = $site_config['bonus']['per_comment'];
+$bonus_per_rating = $site_config['bonus']['per_rating'];
+$bonus_per_post = $site_config['bonus']['per_post'];
+$bonus_per_topic = $site_config['bonus']['per_topic'];
 
 $at = $fluent->from('peers')
-             ->select(null)
-             ->select('COUNT(*) AS count')
-             ->where('seeder = ?', 'yes')
-             ->where('connectable = ?', 'yes')
-             ->where('userid = ?', $User['id'])
-             ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('seeder = ?', 'yes')
+    ->where('connectable = ?', 'yes')
+    ->where('userid=?', $User['id'])
+    ->fetch('count');
 
 $at = $at >= $bmt ? $bmt : $at;
 
@@ -1498,7 +1498,7 @@ $HTMLOUT .= "</tr></table></div>
                     One month custom smilies for the forums and comments<br>
                     Getting extra invites<br>
                     Getting extra freeslots<br>
-                    Giving a gift of karma points to another user<br>
+                    Giving.gift of karma points to another user<br>
                     Asking for a re-seed<br>
                     Making a request<br>
                     Freeleech, Doubleupload, Halfdownload contribution<br>

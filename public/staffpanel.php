@@ -25,7 +25,7 @@ $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' GROUP BY value ORDER BY value ASC");
+    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value>= '$staff' GROUP BY value ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
@@ -35,7 +35,7 @@ if ($staff_classes === false || is_null($staff_classes)) {
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
-if ($site_config['staffpanel_online'] == 0) {
+if (!$site_config['site']['staffpanel_online']) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }
 require_once CLASS_DIR . 'class_check.php';
@@ -69,7 +69,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 } else {
     if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
-        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if ($CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
@@ -78,7 +78,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
         }
         $cache->delete('staff_classes_');
-        sql_query('DELETE FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('av_class_');
         $cache->delete('staff_panels_6');
         $cache->delete('staff_panels_5');
@@ -86,7 +86,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         if (mysqli_affected_rows($mysqli)) {
             if ($CURUSER['class'] <= UC_MAX) {
                 $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$arr['page_name']}[/color]'";
-                $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
+                $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
             header('Location: ' . $_SERVER['PHP_SELF']);
@@ -96,13 +96,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         }
     } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
         $cache->flushDB();
-        $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+        $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {
         $fluent->deleteFrom('ajax_chat_messages')
-               ->where('id > 0')
-               ->execute();
+            ->where('id>0')
+            ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
@@ -116,7 +116,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             'navbar',
         ];
         if ($action === 'edit') {
-            $res = sql_query('SELECT ' . implode(', ', $names) . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT ' . implode(', ', $names) . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $arr = mysqli_fetch_assoc($res);
         }
         foreach ($names as $name) {
@@ -173,9 +173,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                                      ->select(null)
-                                      ->select('DISTINCT value AS value')
-                                      ->where('value >= ?', UC_STAFF);
+                        ->select(null)
+                        ->select('DISTINCT value AS value')
+                        ->where('value>= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class);
                     }
@@ -196,14 +196,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         'av_class' => (int) $_POST['av_class'],
                     ];
                     $fluent->update('staffpanel')
-                           ->set($set)
-                           ->where('id = ?', $id)
-                           ->execute();
+                        ->set($set)
+                        ->where('id=?', $id)
+                        ->execute();
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                                      ->select(null)
-                                      ->select('DISTINCT value AS value')
-                                      ->where('value >= ?', UC_STAFF);
+                        ->select(null)
+                        ->select('DISTINCT value AS value')
+                        ->where('value>= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class['value']);
                     }
@@ -215,7 +215,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     if ($CURUSER['class'] <= UC_MAX) {
                         $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = $action === 'add' ? 'added' : 'edited';
-                        $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
+                        $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
@@ -328,19 +328,19 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $add_button = "
                 <ul class='level-center bg-06'>
                     <li class='margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
                     </li>
                 </ul>";
         }
         $res = sql_query('SELECT s.*, u.username
                                 FROM staffpanel AS s
-                                LEFT JOIN users AS u ON u.id = s.added_by
+                                LEFT JOIN users AS u ON u.id=s.added_by
                                 WHERE s.av_class <= ' . sqlesc($CURUSER['class']) . '
                                 ORDER BY s.av_class DESC, s.page_name ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
@@ -406,10 +406,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $body .= "
                         <td>
                             <div class='level-center'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
+                                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
                                     <i class='icon-edit icon'></i>
                                 </a>
-                                <a href='{$site_config['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
+                                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
                                     <i class='icon-trash-empty icon has-text-danger'></i>
                                 </a>
                             </div>

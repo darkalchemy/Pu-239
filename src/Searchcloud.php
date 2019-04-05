@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Searchcloud.
  */
@@ -25,15 +27,15 @@ class Searchcloud
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get(array $limit)
     {
         $search = $this->fluent->from('searchcloud')
-                               ->select('INET6_NTOA(ip) AS ip')
-                               ->orderBy('howmuch DESC')
-                               ->limit("{$limit}")
-                               ->fetchAll();
+            ->select('INET6_NTOA(ip) AS ip')
+            ->orderBy('howmuch DESC')
+            ->limit("{$limit}")
+            ->fetchAll();
 
         return $search;
     }
@@ -41,13 +43,13 @@ class Searchcloud
     /**
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_count()
     {
         $search = $this->fluent->from('searchcloud')
-                               ->select('COUNT(*) AS count')
-                               ->fetch('count');
+            ->select('COUNT(*) AS count')
+            ->fetch('count');
 
         return $search;
     }
@@ -55,14 +57,14 @@ class Searchcloud
     /**
      * @param array $terms
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete(array $terms)
     {
         foreach ($terms as $term) {
             $this->fluent->deleteFrom('searchcloud')
-                         ->where('id = ?', $term)
-                         ->execute();
+                ->where('id=?', $term)
+                ->execute();
         }
         $this->cache->delete('searchcloud_');
     }
@@ -71,12 +73,12 @@ class Searchcloud
      * @param array $values
      * @param array $update
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values, array $update)
     {
         $this->fluent->insertInto('searchcloud', $values)
-                     ->onDuplicateKeyUpdate($update)
-                     ->execute();
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
     }
 }

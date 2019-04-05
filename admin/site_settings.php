@@ -3,74 +3,267 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $site_config, $cache, $session, $site_config;
+global $lang;
 
 $lang = array_merge($lang, load_language('ad_sitesettings'));
-$HTMLOUT .= "
-            <h1 class='has-text-centered top20'>{$lang['sitesettings_sitehead']}</h1>";
 
-$heading = '
-            <tr>
-                <th class="w-10">Key</th>
-                <th class="w-10">Type</th>
-                <th>Value</th>
-            </tr>';
+$stdfoot = [
+    'js' => [
+        get_file_name('site_config_js'),
+    ],
+];
 
-$body = '';
-ksort($site_config);
-foreach ($site_config as $key => $value) {
-    if (is_array($value)) {
-        if (array_key_exists(0, $value)) {
-            $value = implode(', ', $value);
-            $body .= "
-                <tr>
-                    <td><span class='has-text-lime'>$key</span></td>
-                    <td>Array</td>
-                    <td>$value</td>
-                </tr>";
-        } else {
-            foreach ($value as $item => $data) {
-                if (is_array($data)) {
-                    $data = implode(', ', $data);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    global $site_config, $session, $cache, $fluent;
+
+    $keys = [];
+    $_post = $_POST;
+    unset($_POST);
+    $post = array_keys($_post);
+    foreach ($post as $key) {
+        preg_match('/([\d|Add]+)_id/', $key, $match);
+        if (!empty($match[1])) {
+            $keys[] = $match[1];
+        }
+    }
+
+    foreach ($keys as $key) {
+        $id = $key;
+        $parent = $_post["{$id}_parent"];
+        $name = $_post["{$id}_name"];
+        $type = $_post["{$id}_type"];
+        $value = $_post["{$id}_value"];
+        $description = $_post["{$id}_description"];
+
+        $set = [
+            'parent' => $parent,
+            'name' => $name,
+            'type' => $type,
+            'value' => $value,
+            'description' => $description,
+        ];
+        if (empty($description)) {
+            unset($set['description']);
+        }
+        $item = !empty($site_config[$parent][$name]) ? $site_config[$parent][$name] : '';
+        $parentname = (!empty($parent) ? $parent : '') . '::' . $name;
+        if (empty($set['name'])) {
+            $fluent->deleteFrom('site_config')
+                ->where('id = ?', $id)
+                ->execute();
+            $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
+        } elseif ($id === 'Add') {
+            if (!empty($item)) {
+                $set['value'] = implode('|', $item) . '|' . $value;
+                $fluent->update('site_config')
+                    ->set($set)
+                    ->where('parent = ?', $parent)
+                    ->where('name = ?', $name)
+                    ->execute();
+                $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
+            } else {
+                if (empty($item)) {
+                    $fluent->insertInto('site_config')
+                        ->values($set)
+                        ->execute();
+                    $session->set('is-success', "$parentname {$lang['sitesettings_added']}");
                 }
-                $type = 'string';
-                if (is_bool($data)) {
-                    $type = 'boolean';
-                    $data = $data ? 'true' : 'false';
-                } elseif (is_float($data)) {
-                    $type = 'float';
-                } elseif (is_int($data)) {
-                    $type = 'integer';
-                }
-
-                $body .= "
-                <tr>
-                    <td><span class='has-text-lime'>$key</span><span class='has-text-danger'>::</span><span class='has-text-yellow'>$item</span></td>
-                    <td>$type</td>
-                    <td>$data</td>
-                </tr>";
             }
+        } else {
+            if ($type === 'array') {
+                unset($set['value']);
+            }
+            $fluent->update('site_config')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
         }
-    } else {
-        $type = 'string';
-        if (is_bool($value)) {
-            $type = 'boolean';
-            $value = $value ? 'true' : 'false';
-        } elseif (is_float($value)) {
-            $type = 'float';
-        } elseif (is_int($value)) {
-            $type = 'integer';
-        } elseif (empty($value)) {
-            $value = "<span class='has-text-danger'>empty</span>";
-        }
-        $body .= "
-            <tr>
-                <td><span class='has-text-lime'>$key</span></td>
-                <td>$type</td>
-                <td>$value</td>
-            </tr>";
+        $cache->delete('site_settings_');
     }
 }
 
-$HTMLOUT .= main_table($body, $heading);
-echo stdhead($lang['sitesettings_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$HTMLOUT .= "
+    <h1 class='has-text-centered top20'>{$lang['sitesettings_sitehead']}</h1>
+    <div class='padding20 margin20 bg-01 round10'>
+        <p class='has-text-centered'>{$lang['sitesettings_add']}</p>
+        <p class='has-text-centered'>{$lang['sitesettings_update']}</p>
+        <p class='has-text-centered'>{$lang['sitesettings_delete']}</p>
+    </div>";
+
+$heading = "
+            <tr>
+                <th class='w-1'>ID</th>
+                <th class='w-10'>Key</th>
+                <th class='w-10'>Name</th>
+                <th class='w-10'>Type</th>
+                <th class='w-20'>Value</th>
+                <th class='w-25'>Description</th>
+            </tr>";
+
+$body = '';
+
+$sql = $fluent->from('site_config')
+    ->orderBy('parent')
+    ->orderBy('name');
+
+$keys = $settings = [];
+foreach ($sql as $row) {
+    switch ($row['type']) {
+        case 'int':
+            $row['value'] = (int) $row['value'];
+            break;
+        case 'float':
+            $row['value'] = (float) $row['value'];
+            break;
+        case 'bool':
+            $row['value'] = (bool) $row['value'];
+            break;
+        case 'array':
+            if ($row['name'] === 'recaptcha') {
+                if (empty($row['value'])) {
+                    $temp = explode('|', $row['value']);
+                    $row['value'] = [
+                        'site' => !empty($temp[0]) ? $temp[0] : '',
+                        'secret' => !empty($temp[1]) ? $temp[1] : '',
+                    ];
+                }
+            } elseif (empty($row['value'])) {
+                $row['value'] = [];
+            } else {
+                $value = explode('|', $row['value']);
+                foreach ($value as $key => $item) {
+                    if (is_numeric($item)) {
+                        $row['value'][$key] = (int) $item;
+                    }
+                }
+                $row['value'] = $value;
+            }
+            break;
+    }
+    $settings[] = $row;
+    if (!in_array($row['parent'], $keys)) {
+        $keys[] = $row['parent'];
+    }
+}
+
+$settings[] = [
+    'id' => 'Add',
+    'parent' => 'New',
+    'name' => '',
+    'type' => '',
+    'value' => '',
+    'description' => '',
+];
+$keys[] = 'New';
+
+$select = "
+        <div class='has-text-centered bottom20 w-25'>
+            <select id='select_key' name='select_key' class='w-100' onchange='show_key()'>";
+foreach ($keys as $key) {
+    $key = empty($key) ? 'null' : $key;
+    $select .= "
+                <option value='{$key}'" . ($key === 'site' ? ' selected' : '') . ">{$key}</option>";
+}
+$select .= '
+            </select>
+        </div>';
+$HTMLOUT .= $select;
+
+foreach ($keys as $key) {
+    $key = empty($key) ? 'null' : $key;
+    $body = "
+                <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=site_settings' method='post' accept-charset='utf-8'>";
+
+    foreach ($settings as $row) {
+        if ($row['parent'] === $key) {
+            if ($key === 'New') {
+                $row['parent'] = '';
+            }
+            $body .= "
+            <tr>
+                <input type='hidden' name='{$row['id']}_id' value='{$row['id']}'>
+                <td>{$row['id']}</td>
+                <td>
+                    <div class='top5 bottom5'>
+                        <input type='text' name='{$row['id']}_parent' value='{$row['parent']}' placeholder='Key Value' class='w-100 margin5'>
+                    </div>
+                </td>
+                <td>
+                    <div class='top5 bottom5'>
+                        <input type='text' name='{$row['id']}_name' value='{$row['name']}' placeholder='Name' class='w-100 margin5'>
+                    </div>
+                </td>
+                <td>
+                    <div class='top5 bottom5'>
+                        <select name='{$row['id']}_type' class='w-100'>
+                            <option value='bool'" . ($row['type'] === 'bool' ? ' selected' : '') . ">Boolean</option>
+                            <option value='int'" . ($row['type'] === 'int' ? ' selected' : '') . ">Integer</option>
+                            <option value='float'" . ($row['type'] === 'float' ? ' selected' : '') . ">Float</option>
+                            <option value='string'" . ($row['type'] === 'string' ? ' selected' : '') . ">String</option>
+                            <option value='array'" . ($row['type'] === 'array' ? ' selected' : '') . '>Array</option>
+                        </select>
+                    </div>
+                </td>
+                <td>';
+            if ($row['type'] === 'bool') {
+                $body .= "
+                    <div class='top5 bottom5'>
+                        <select name='{$row['id']}_value' class='w-100'>
+                            <option value='0'" . (!$row['value'] ? ' selected' : '') . ">False</option>
+                            <option value='1'" . ($row['value'] ? ' selected' : '') . '>True</option>
+                        </select>
+                    </div>';
+            } elseif ($row['type'] === 'int') {
+                $body .= "
+                    <div class='top5 bottom5'>
+                        <input type='number' name='{$row['id']}_value' value='{$row['value']}' placeholder='value' class='w-100 margin5'>
+                    </div>";
+            } elseif ($row['type'] === 'array' && is_array($row['value']) && !empty($row['value'])) {
+                foreach ($row['value'] as $value) {
+                    $body .= "
+                    <div class='top5 bottom5'>
+                        <input type='text' name='{$row['id']}_value' value='{$value}' placeholder='value' class='w-100 margin5'>
+                    </div>";
+                }
+            } elseif ($row['type'] === 'array' && is_array($row['value']) && empty($row['value'])) {
+                $body .= "
+                    <div class='top5 bottom5'>
+                        <input type='text' name='{$row['id']}_value' value='' placeholder='value' class='w-100 margin5'>
+                    </div>";
+            } else {
+                $body .= "
+                    <div class='top5 bottom5'>
+                        <input type='text' name='{$row['id']}_value' value='{$row['value']}' placeholder='value' class='w-100'>
+                    </div>";
+            }
+            $body .= "
+                </td>
+                <td>
+                    <div class='top5 bottom5'>
+                        <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='{$lang['sitesettings_info']}'>{$row['description']}</textarea>
+                    </div>
+                </td>
+            </tr>" . (!empty($row['parent']) ? "
+            <tr><td colspan='6' class='has-text-yellow has-text-weight-bold has-text-centered'>Usage: \$site_config['{$row['parent']}']['{$row['name']}']</td></tr>
+            <tr><td colspan='6'></td></tr>" : '');
+        }
+    }
+
+    $body .= "
+            <tr>
+                <td colspan='6'>
+                    <div class='margin20 has-text-centered'>
+                        <input type='submit' class='button is-small' value='{$lang['sitesettings_apply']}'>
+                    </div>
+                </td>
+            </tr>
+        </form>";
+
+    $HTMLOUT .= "
+    <div id='$key'" . ($key != 'site' ? " class='is_hidden'" : '') . ">
+        <h2 class='has-text-centered top20'> Key: " . strtoupper($key) . '</h1>' . main_table($body, $heading, 'top20') . '
+    </div>';
+}
+
+echo stdhead($lang['sitesettings_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

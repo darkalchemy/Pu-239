@@ -25,7 +25,7 @@ $open = (isset($_GET['open']) ? intval($_GET['open']) : 0);
 if ($open != 1) {
     stderr('Error', 'Invalid url', 'bottom20');
 }
-$sql = sql_query('SELECT seedbonus, invites, freeslots, uploaded FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$sql = sql_query('SELECT seedbonus, invites, freeslots, uploaded FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $User = mysqli_fetch_assoc($sql);
 if (isset($open) && $open == 1) {
     if ($today >= $Christmasday && $today <= $dayafter) {
@@ -41,8 +41,8 @@ if (isset($open) && $open == 1) {
                     'gotgift' => 'yes',
                     'uploaded' => $update['uploaded'],
                 ], $site_config['expires']['user_cache']);
-                header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
-                stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got  1 invite 10 GB upload and bonus 1 freeslot !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
+                header('Refresh: 5; url=' . $site_config['paths']['baseurl'] . '/index.php');
+                stderr('Congratulations!', "<img src=\"{$site_config['paths']['images_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got  1 invite 10 GB upload and bonus 1 freeslot !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site']['name']}  Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
             }
             if ($gift === 'bonus') {
                 sql_query("UPDATE users SET invites=invites+3,  seedbonus = seedbonus + 1750, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -53,8 +53,8 @@ if (isset($open) && $open == 1) {
                     'gotgift' => 'yes',
                     'seedbonus' => $update['seedbonus'],
                 ], $site_config['expires']['user_cache']);
-                header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
-                stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 3 invites 1750 karma bonus points !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
+                header('Refresh: 5; url=' . $site_config['paths']['baseurl'] . '/index.php');
+                stderr('Congratulations!', "<img src=\"{$site_config['paths']['images_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 3 invites 1750 karma bonus points !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site']['name']}  Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
             }
             if ($gift === 'invites') {
                 sql_query("UPDATE users SET invites=invites+2, seedbonus = seedbonus + 2000, freeslots=freeslots+3, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -67,8 +67,8 @@ if (isset($open) && $open == 1) {
                     'gotgift' => 'yes',
                     'seedbonus' => $update['seedbonus'],
                 ], $site_config['expires']['user_cache']);
-                header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
-                stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 2 invites and 2000 bonus points and a bonus 3 freeslots !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']} Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
+                header('Refresh: 5; url=' . $site_config['paths']['baseurl'] . '/index.php');
+                stderr('Congratulations!', "<img src=\"{$site_config['paths']['images_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 2 invites and 2000 bonus points and a bonus 3 freeslots !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site']['name']} Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
             }
             if ($gift === 'bonus2') {
                 sql_query("UPDATE users SET invites=invites+3, uploaded=uploaded+1024*1024*1024*20, seedbonus = seedbonus + 2500, freeslots=freeslots+5, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -83,8 +83,8 @@ if (isset($open) && $open == 1) {
                     'seedbonus' => $update['seedbonus'],
                     'uploaded' => $update['uploaded'],
                 ], $site_config['expires']['user_cache']);
-                header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
-                stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 3 invites 1750 karma bonus points !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']} Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
+                header('Refresh: 5; url=' . $site_config['paths']['baseurl'] . '/index.php');
+                stderr('Congratulations!', "<img src=\"{$site_config['paths']['images_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\"> <h2> You just got 3 invites 1750 karma bonus points !</h2>Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site']['name']} Crew ! Redirecting in 5..4..3..2..1", 'bottom20');
             }
         } else {
             stderr('Sorry...', 'You already got your gift !', 'bottom20');

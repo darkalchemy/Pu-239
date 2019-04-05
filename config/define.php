@@ -2,7 +2,7 @@
 
 define('TIME_NOW', time());
 
-define('ROOT_DIR', __DIR__ . '/../');
+define('ROOT_DIR', realpath(__DIR__ . '/../') . '/');
 define('INCL_DIR', ROOT_DIR . 'include/');
 define('ADMIN_DIR', ROOT_DIR . 'admin/');
 define('BIN_DIR', ROOT_DIR . 'bin/');
@@ -32,3 +32,4 @@ define('USER_TORRENTS_DIR', TORRENTS_DIR . 'users/');
 define('BACKUPS_DIR', ROOT_DIR . 'backups/');
 define('AJAX_CHAT_PATH', ROOT_DIR . 'chat/');
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb/');
+define('UPLOADSUB_DIR', ROOT_DIR . 'uploadsub/');

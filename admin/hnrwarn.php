@@ -97,7 +97,7 @@ if ($count == 0) {
     $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post' accept-charset='utf-8'>
         <table id='checkbox_container' width='600' style='border-collapse:separate;'>
         <tr>
-            <td class='colhead' width='100%' >{$lang['hnrwarn_form_user']}</td>
+            <td class='colhead' width='100%'>{$lang['hnrwarn_form_user']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>

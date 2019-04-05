@@ -47,7 +47,7 @@ switch ($action) {
                 $GB_new = $arr_GB['uploaded'] + $GB;
                 $modcomment = $arr_GB['modcomment'];
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
-                $msg = "{$lang['bonusmanager_up_addedmsg']}{$bonus_added}{$lang['bonusmanager_up_addedmsg1']}{$site_config['site_name']}{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}{$GB} {$GB_new}";
+                $msg = "{$lang['bonusmanager_up_addedmsg']}{$bonus_added}{$lang['bonusmanager_up_addedmsg1']}{$site_config['site']['name']}{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}{$GB} {$GB_new}";
                 $pm_values[] = [
                     'sender' => 0,
                     'receiver' => $arr_GB['id'],
@@ -80,7 +80,7 @@ switch ($action) {
         $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_karma) > 0) {
-            $msg = $lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2'];
+            $msg = $lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_karma_addedmsg2'];
             while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
                 $karma_new = $arr_karma['seedbonus'] + $karma;
                 $modcomment = $arr_karma['modcomment'];
@@ -117,7 +117,7 @@ switch ($action) {
         $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_freeslots) > 0) {
-            $msg = $lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2'];
+            $msg = $lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_freeslots_addedmsg2'];
             while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
                 $freeslots_new = $arr_freeslots['freeslots'] + $freeslots;
                 $modcomment = $arr_freeslots['modcomment'];
@@ -154,7 +154,7 @@ switch ($action) {
         $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND invite_on = "yes" AND class IN ' . $free_for);
         $pm_buffer = $users_buffer = [];
         if (mysqli_num_rows($res_invites) > 0) {
-            $msg = $lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2'];
+            $msg = $lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_invite_addedmsg2'];
             while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
                 $invites_new = $arr_invites['invites'] + $invites;
                 $modcomment = $arr_invites['modcomment'];
@@ -283,12 +283,12 @@ $pm_drop_down = '
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
                     <tr>
-                        <td><span style="font - weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                        <td><input name="subject" type="text" class="w - 100" value="' . $subject . '"></td>
+                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
+                        <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
                     </tr>
                     <tr>
-                        <td><span style="font - weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                        <td class="is - paddingless">' . BBcode($body) . '</td>
+                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
+                        <td class="is-paddingless">' . BBcode($body) . '</td>
                     </tr>
                 </table>
             </form>';
@@ -308,9 +308,9 @@ $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['
 $h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
-$HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
+$HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site']['name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '
-    <form name="inputform" method="post" action="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = mass_bonus_for_members & amp;action = mass_bonus_for_members" enctype="multipart / form - data" accept-charset="utf-8">';
+    <form name="inputform" method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data" accept-charset="utf-8">';
 $body = '
         <tr>
             <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
@@ -337,7 +337,7 @@ $body = '
         </tr>
         <tr>
             <td colspan="2" class="has-text-centered">
-            <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '" ></td>
+            <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"></td>
         </tr>';
 $HTMLOUT .= main_table($body) . '
     </form>';

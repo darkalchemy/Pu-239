@@ -59,13 +59,13 @@ function move_cat()
     }
 
     $count = $fluent->from('categories')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('id', [
-                        $params['id'],
-                        $params['new_cat_id'],
-                    ])
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('id', [
+            $params['id'],
+            $params['new_cat_id'],
+        ])
+        ->fetch('count');
 
     if ($count != 2) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
@@ -75,9 +75,9 @@ function move_cat()
     ];
 
     $results = $fluent->update('torrents')
-                      ->set($set)
-                      ->where('category = ?', $params['id'])
-                      ->execute();
+        ->set($set)
+        ->where('category = ?', $params['id'])
+        ->execute();
 
     flush_torrents($params['id']);
     flush_torrents($params['new_cat_id']);
@@ -85,7 +85,7 @@ function move_cat()
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     } else {
         stderr($lang['categories_error'], $lang['categories_move_error4']);
@@ -119,7 +119,7 @@ function move_cat_form()
     $select .= '
             </select>';
     $htmlout = "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
             <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name'], ENT_QUOTES) . "</h2>
@@ -163,8 +163,8 @@ function add_cat()
         'parent_id' => $params['parent_id'],
     ];
     $insert = $fluent->insertInto('categories')
-                     ->values($values)
-                     ->execute();
+        ->values($values)
+        ->execute();
 
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
@@ -172,7 +172,7 @@ function add_cat()
     if (!$insert) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     }
 }
@@ -185,31 +185,31 @@ function delete_cat()
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $cat = $fluent->from('categories')
-                  ->where('id = ?', $params['id'])
-                  ->fetch();
+        ->where('id=?', $params['id'])
+        ->fetch();
 
     if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
     $count = $fluent->from('torrents')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('category = ?', $params['id'])
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('category = ?', $params['id'])
+        ->fetch('count');
 
     if ($count) {
         stderr($lang['categories_error'], $lang['categories_not_empty']);
     }
 
     $results = $fluent->deleteFrom('categories')
-                      ->where('id =?', $params['id'])
-                      ->execute();
+        ->where('id =?', $params['id'])
+        ->execute();
 
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     } else {
         stderr($lang['categories_error'], $lang['categories_del_error1']);
@@ -230,17 +230,17 @@ function delete_cat_form()
     }
 
     $count = $fluent->from('torrents')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('category = ?', $params['id'])
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('category = ?', $params['id'])
+        ->fetch('count');
 
     if ($count) {
         stderr($lang['categories_error'], $lang['categories_not_empty']);
     }
 
     $htmlout = "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takedel_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -288,9 +288,9 @@ function edit_cat()
         'parent_id' => $params['parent_id'],
     ];
     $update = $fluent->update('categories')
-                     ->set($set)
-                     ->where('id = ?', $params['id'])
-                     ->execute();
+        ->set($set)
+        ->where('id=?', $params['id'])
+        ->execute();
 
     if ($update) {
         set_ordered($params);
@@ -299,10 +299,10 @@ function edit_cat()
         $cache->delete('genrelist_grouped_');
         $cache->delete('genrelist_ordered_');
         $cache->delete('categories');
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     } else {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     }
 }
@@ -324,7 +324,7 @@ function edit_cat_form()
     $parents = get_parents($cat);
     $select = get_images($cat);
     $htmlout = "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takeedit_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -350,7 +350,7 @@ function show_categories()
     $parents = get_parents([]);
     $select = get_images([]);
     $htmlout = "
-        <form action='" . $site_config['baseurl'] . "/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>";
+        <form action='" . $site_config['paths']['baseurl'] . "/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>";
     $htmlout .= main_div("
             <input type='hidden' name='mode' value='takeadd_cat'>
             <div class='has-text-centered padding20'>
@@ -403,7 +403,7 @@ function build_table(array $data, string $parent_name)
     global $site_config, $lang;
 
     $cat_image = !empty($data['image']) && file_exists(IMAGES_DIR . 'caticons/1/' . $data['image']) ? "
-            <img src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($data['image']) . "' alt='{$data['id']}'>" : $lang['categories_show_no_image'];
+            <img src='{$site_config['paths']['images_baseurl']}caticons/1/" . htmlsafechars($data['image']) . "' alt='{$data['id']}'>" : $lang['categories_show_no_image'];
 
     $row = "
         <tr>
@@ -415,13 +415,13 @@ function build_table(array $data, string $parent_name)
             <td class='has-text-centered'>{$cat_image}</td>
             <td>
                 <div class='level-center'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=edit_cat&amp;id={$data['id']}'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=edit_cat&amp;id={$data['id']}'>
                         <i class='icon-edit icon tooltipper' title='{$lang['categories_show_edit']}'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=del_cat&amp;id={$data['id']}'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=del_cat&amp;id={$data['id']}'>
                         <i class='icon-trash-empty icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=move_cat&amp;id={$data['id']}'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=move_cat&amp;id={$data['id']}'>
                         <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
                     </a>
                 </div>
@@ -436,9 +436,9 @@ function get_parents(array $cat)
     global $fluent, $lang;
 
     $parents = $fluent->from('categories')
-                      ->where('parent_id = 0')
-                      ->orderBy('ordered')
-                      ->fetchAll();
+        ->where('parent_id=0')
+        ->orderBy('ordered')
+        ->fetchAll();
 
     foreach ($parents as $parent) {
         $parent['name'] = htmlsafechars($parent['name'], ENT_QUOTES);
@@ -468,7 +468,7 @@ function reorder_cats(bool $redirect = true)
 
     $i = 0;
     $cats = $fluent->from('categories')
-                   ->orderBy('ordered');
+        ->orderBy('ordered');
 
     foreach ($cats as $cat) {
         $set = [
@@ -476,9 +476,9 @@ function reorder_cats(bool $redirect = true)
         ];
 
         $fluent->update('categories')
-               ->set($set)
-               ->where('id = ?', $cat['id'])
-               ->execute();
+            ->set($set)
+            ->where('id=?', $cat['id'])
+            ->execute();
     }
 
     flush_torrents(0);
@@ -487,7 +487,7 @@ function reorder_cats(bool $redirect = true)
     $cache->delete('categories');
 
     if ($redirect) {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
         die();
     }
 }
@@ -500,10 +500,10 @@ function set_ordered(array $params)
         'ordered' => new Envms\FluentPDO\Literal('ordered + 1'),
     ];
     $fluent->update('categories')
-           ->set($set)
-           ->where('ordered >= ?', $params['order_id'])
-           ->where('id != ?', $params['id'])
-           ->execute();
+        ->set($set)
+        ->where('ordered>= ?', $params['order_id'])
+        ->where('id != ?', $params['id'])
+        ->execute();
 }
 
 function get_images(array $cat)
@@ -546,14 +546,14 @@ function get_cat(int $id)
     global $fluent;
 
     $cat = $fluent->from('categories')
-                  ->where('id = ?', $id)
-                  ->fetch();
+        ->where('id=?', $id)
+        ->fetch();
 
     $current_cat['parent_name'] = $fluent->from('categories')
-                                         ->select(null)
-                                         ->select('name')
-                                         ->where('id = ?', $cat['parent_id'])
-                                         ->fetch('name');
+        ->select(null)
+        ->select('name')
+        ->where('id=?', $cat['parent_id'])
+        ->fetch('name');
 
     $cat['name'] = htmlsafechars($cat['name'], ENT_QUOTES);
     $cat['cat_desc'] = htmlsafechars($cat['cat_desc'], ENT_QUOTES);
@@ -568,8 +568,8 @@ function flush_torrents(int $id)
     global $fluent, $site_config, $cache;
 
     $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('id');
+        ->select(null)
+        ->select('id');
     if (!empty($id)) {
         $torrents->where('category = ?', $id);
     } else {

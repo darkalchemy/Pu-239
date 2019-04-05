@@ -27,7 +27,7 @@ function happyHour($action)
 
         return $happyHour;
     }
-    $file = $site_config['happyhour'];
+    $file = $site_config['paths']['happyhour'];
     $happy = unserialize(file_get_contents($file));
     $happyHour = strtotime($happy['time']);
     $happyDate = $happyHour;
@@ -51,9 +51,9 @@ function happyHour($action)
             $todo = 255;
         } else {
             $categories = $fluent->from('categories')
-                                 ->select(null)
-                                 ->select('id')
-                                 ->fetchAll();
+                ->select(null)
+                ->select('id')
+                ->fetchAll();
 
             shuffle($categories);
             $todo = $categories[0];
@@ -78,7 +78,7 @@ function happyCheck($action, $id = null)
 {
     global $site_config;
 
-    $file = $site_config['happyhour'];
+    $file = $site_config['paths']['happyhour'];
     $happy = unserialize(file_get_contents($file));
     $happycheck = $happy['catid'];
     if ($action === 'check') {
@@ -96,7 +96,7 @@ function happyFile($act)
 {
     global $site_config;
 
-    $file = $site_config['happyhour'];
+    $file = $site_config['paths']['happyhour'];
     $happy = unserialize(file_get_contents($file));
     if ($act === 'set') {
         $array_happy = [
@@ -113,7 +113,7 @@ function happyFile($act)
     }
     if (!empty($array_happy)) {
         $array_happy = serialize($array_happy);
-        $file = $site_config['happyhour'];
+        $file = $site_config['paths']['happyhour'];
         $file = fopen($file, 'w');
         ftruncate($file, 0);
         fwrite($file, $array_happy);

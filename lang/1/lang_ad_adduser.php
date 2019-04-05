@@ -15,7 +15,7 @@ $lang = [
     'err_mysql_err' => 'There was a mysql error : %s, report to staff',
     'err_already_exists' => 'User already exists...wait for redirect!',
     //Texts
-    'text_user_added' => 'User was added, visit users details <a href="' . $site_config['baseurl'] . '/userdetails.php?id=%d">here</a>',
+    'text_user_added' => 'User was added, visit users details <a href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=%d">here</a>',
     'text_username' => 'Username',
     'text_password' => 'Password',
     'text_password2' => 'Re-type password',

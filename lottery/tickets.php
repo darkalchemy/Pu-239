@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fail = true;
     }
     $user_tickets = $fluent->from('tickets')
-                           ->select(null)
-                           ->select('COUNT(*) AS count')
-                           ->where('user = ?', $CURUSER['id'])
-                           ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('user = ?', $CURUSER['id'])
+        ->fetch('count');
 
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
         $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
@@ -36,15 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (!$fail) {
         if (sql_query('INSERT INTO tickets(user) VALUES ' . implode(', ', $t))) {
-            sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
+            sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id=' . $CURUSER['id']);
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
             $session->set('is-success', 'You bought [b]' . number_format($tickets) . '[/b]. You now have [b]' . number_format($tickets + $user_tickets) . '[/b] tickets!');
-            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
+            if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($CURUSER['class']);
-                $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+                $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
                 $end = random_int(0, 5) == 1 ? 'Sucker!' : 'Excellent!';
                 $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just bought $tickets $link Ticket" . plural($tickets) . "!! $end";
                 autoshout($msg);
@@ -95,7 +95,7 @@ if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $
     $lottery['current_user']['can_buy'] = 0;
 }
 $html .= "
-        <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
+        <h1 class='has-text-centered'>{$site_config['site']['name']} Lottery</h1>";
 $body = "
                 <ul class='padding20'>
                     <li>Tickets are non-refundable</li>

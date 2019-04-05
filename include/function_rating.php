@@ -23,19 +23,19 @@ function getRate($id, $what)
     $rating_cache = $cache->get($keys['rating']);
     if ($rating_cache === false || is_null($rating_cache)) {
         $qy1 = $fluent->from('rating')
-                      ->select(null)
-                      ->select('IFNULL(SUM(rating), 0) AS sum')
-                      ->select('IFNULL(COUNT(*), 0) AS count')
-                      ->where("$what = ?", $id)
-                      ->fetch();
+            ->select(null)
+            ->select('IFNULL(SUM(rating), 0) AS sum')
+            ->select('IFNULL(COUNT(*), 0) AS count')
+            ->where("$what = ?", $id)
+            ->fetch();
 
         $qy2 = $fluent->from('rating')
-                      ->select(null)
-                      ->select('id AS rated')
-                      ->select('rating')
-                      ->where("$what = ?", $id)
-                      ->where('user = ?', $CURUSER['id'])
-                      ->fetch();
+            ->select(null)
+            ->select('id AS rated')
+            ->select('rating')
+            ->where("$what = ?", $id)
+            ->where('user = ?', $CURUSER['id'])
+            ->fetch();
 
         if (!empty($qy2)) {
             $rating_cache = array_merge($qy1, $qy2);
@@ -52,7 +52,7 @@ function getRate($id, $what)
         }
     }
 
-    $completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid = ' . $CURUSER['id'] . ' AND torrentid = ' . $id) or sqlerr(__FILE__, __LINE__);
+    $completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $CURUSER['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
     $completecount = mysqli_num_rows($completeres);
     if ($rating_cache['rated']) {
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
@@ -135,5 +135,5 @@ function getRate($id, $what)
  */
 function showRate($rate_sum, $rate_count)
 {
-    return '<ul class="star-rating"><li class="current-rating" >.</li></ul>';
+    return '<ul class="star-rating"><li class="current-rating">.</li></ul>';
 }

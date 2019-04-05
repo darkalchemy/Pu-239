@@ -7,12 +7,12 @@ function optimizedb($data)
 {
     $time_start = microtime(true);
     dbconn();
-    global $queries;
+    global $queries, $site_config;
 
     set_time_limit(1200);
     ignore_user_abort(true);
     $minwaste = 1024 * 1024 * 10; // 10 MB
-    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > " . sqlesc($minwaste)) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query("SHOW TABLE STATUS FROM {$site_config['database']['database']} WHERE Data_free>" . sqlesc($minwaste)) or sqlerr(__FILE__, __LINE__);
     $oht = '';
     $tables = [];
 

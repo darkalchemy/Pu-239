@@ -10,11 +10,11 @@ global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 } else {
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 $stdfoot = '';
-if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+if (!empty($site_config['recaptcha']['secret'])) {
     $stdfoot = [
         'js' => [
             get_file_name('recaptcha_js'),
@@ -31,7 +31,7 @@ function left()
 
     $ip = getip(true);
     $count = $failed_logins->get($ip);
-    $left = $site_config['failedlogins'] - $count;
+    $left = $site_config['login']['failed'] - $count;
 
     return $left;
 }
@@ -44,7 +44,7 @@ if (!empty($_GET['returnto'])) {
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 
 $left = left();
-if ($left !== $site_config['failedlogins']) {
+if ($left !== $site_config['login']['failed']) {
     if ($left <= 2) {
         $text = "
         <span class='has-text-danger'>{$left}</span>";
@@ -56,7 +56,7 @@ if ($left !== $site_config['failedlogins']) {
     $HTMLOUT .= main_div("
         <div class='padding10'>
             <h3>
-                {$site_config['failedlogins']} {$lang['login_failed']}
+                {$site_config['login']['failed']} {$lang['login_failed']}
             </h3>
             <h3>
                 {$lang['login_failed_1']} $text " . sprintf($lang['login_failed_2'], plural($left)) . '
@@ -64,7 +64,7 @@ if ($left !== $site_config['failedlogins']) {
         </div>', 'w-50 has-text-centered bottom20');
 }
 $HTMLOUT .= "
-            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php' accept-charset='utf-8'>
+            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/takelogin.php' accept-charset='utf-8'>
                 <div class='level-center'>";
 
 $body = "
@@ -85,7 +85,7 @@ $body .= "
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered margin5'>
-                                <input id='login_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Login') . "' class='button is-small'>
+                                <input id='login_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Login') . "' class='button is-small'>
                             </span>";
 
 if (isset($returnto)) {

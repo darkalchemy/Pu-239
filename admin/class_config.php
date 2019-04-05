@@ -42,48 +42,48 @@ function update_forum_classes(int $value, string $direction)
 
     if ($direction === 'increment') {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
-               ->where('min_class_read >= ?', $value)
-               ->execute();
+            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
+            ->where('min_class_read>= ?', $value)
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
-               ->where('min_class_write >= ?', $value)
-               ->execute();
+            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
+            ->where('min_class_write>= ?', $value)
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
-               ->where('min_class_create >= ?', $value)
-               ->execute();
+            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
+            ->where('min_class_create>= ?', $value)
+            ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
-               ->where('min_delete_view_class >= ?', $value)
-               ->execute();
+            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
+            ->where('min_delete_view_class>= ?', $value)
+            ->execute();
     } else {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
-               ->where('min_class_read >= ?', $value)
-               ->where('min_class_read > 0')
-               ->execute();
+            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
+            ->where('min_class_read>= ?', $value)
+            ->where('min_class_read>0')
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
-               ->where('min_class_write >= ?', $value)
-               ->where('min_class_write > 0')
-               ->execute();
+            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
+            ->where('min_class_write>= ?', $value)
+            ->where('min_class_write>0')
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
-               ->where('min_class_create >= ?', $value)
-               ->where('min_class_create > 0')
-               ->execute();
+            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
+            ->where('min_class_create>= ?', $value)
+            ->where('min_class_create>0')
+            ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
-               ->where('min_delete_view_class >= ?', $value)
-               ->where('min_delete_view_class > 0')
-               ->execute();
+            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
+            ->where('min_delete_view_class>= ?', $value)
+            ->where('min_delete_view_class>0')
+            ->execute();
     }
 
     $cache->delete('staff_forums_');
@@ -116,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'classpic' => is_array($classpic) ? implode('|', $classpic) : $classpic,
                     ];
                     $fluent->update('class_config')
-                           ->set($set)
-                           ->where('template = ?', $style)
-                           ->where('name = ?', $current_name)
-                           ->execute();
+                        ->set($set)
+                        ->where('template = ?', $style)
+                        ->where('name = ?', $current_name)
+                        ->execute();
 
                     write_class_files($style);
                     $edited = true;
@@ -131,7 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $session->set('is-warning', $lang['classcfg_error_query1']);
         }
-        $cache->delete('class_config_' . $style);
+        $cache->deleteMulti([
+            'class_config_' . $style,
+            'badwords_',
+        ]);
         unset($_POST);
     } elseif ($mode === 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
@@ -194,8 +197,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $stylesheets = $fluent->from('stylesheets')
-                                  ->select(null)
-                                  ->select('id');
+                ->select(null)
+                ->select('id');
 
             $class_id = false;
             foreach ($stylesheets as $stylesheet) {
@@ -208,8 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'template' => $stylesheet['id'],
                 ];
                 $class_id = $fluent->insertInto('class_config')
-                                   ->values($values)
-                                   ->execute();
+                    ->values($values)
+                    ->execute();
 
                 write_class_files($stylesheet['id']);
             }
@@ -219,7 +222,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $session->set('is-warning', $lang['classcfg_error_query2']);
             }
             unset($_POST);
-            $cache->delete('class_config_' . $style);
+            $cache->deleteMulti([
+                'class_config_' . $style,
+                'badwords_',
+            ]);
             update_forum_classes($value, 'increment');
             $cache->delete('is_staff_');
         }
@@ -264,12 +270,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         $deleted = $fluent->deleteFrom('class_config')
-                          ->where('name = ?', $name)
-                          ->execute();
+            ->where('name = ?', $name)
+            ->execute();
 
         $stylesheets = $fluent->from('stylesheets')
-                              ->select(null)
-                              ->select('id');
+            ->select(null)
+            ->select('id');
 
         foreach ($stylesheets as $stylesheet) {
             write_class_files($stylesheet['id']);
@@ -280,7 +286,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
-        $cache->delete('class_config_' . $style);
+        $cache->deleteMulti([
+            'class_config_' . $style,
+            'badwords_',
+        ]);
         update_forum_classes($value, 'decrement');
         unset($_POST);
     }
@@ -302,8 +311,8 @@ $HTMLOUT .= "
                 <tbody>";
 
 $classes = $fluent->from('class_config')
-                  ->where('template = ?', $style)
-                  ->orderBy('value');
+    ->where('template = ?', $style)
+    ->orderBy('value');
 
 $base = [
     'UC_MIN',

@@ -36,7 +36,7 @@ if ($asdd) {
     header("Location: $returnto");
     die();
 }
-$res = sql_query('SELECT owner,name,points FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT owner,name,points FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res) or stderr($lang['gl_error'], $lang['coins_torrent_was_not_found']);
 $userid = (int) $row['owner'];
 if ($userid == $CURUSER['id']) {
@@ -49,13 +49,13 @@ if ($CURUSER['seedbonus'] < $points) {
     header("Location: $returnto");
     die();
 }
-$sql = sql_query('SELECT seedbonus FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$sql = sql_query('SELECT seedbonus FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $User = mysqli_fetch_assoc($sql);
 sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($points) . ')') or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = "{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].';
+$msg = "{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].';
 $subject = $lang['coins_you_have_been_given_a_gift'];
 $msgs_buffer[] = [
     'sender' => 0,

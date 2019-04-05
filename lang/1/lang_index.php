@@ -32,7 +32,7 @@ $lang = [
     'staff_picks' => 'Staff Picks',
     'staff_picks_no_torrents' => 'No torrents Found',
     //latest torrents
-    'latesttorrents_title' => $site_config['latest_torrents_limit'] . ' latest torrents',
+    'latesttorrents_title' => $site_config['latest']['torrents_limit'] . ' latest torrents',
     'latesttorrents_type' => 'Type',
     'latesttorrents_name' => 'Name',
     'latesttorrents_seeders' => 'Seeders',
@@ -58,7 +58,7 @@ $lang = [
     'clog_edit' => 'Edit',
     'clog_delete' => 'Delete',
     //latest forum posts
-    'latestposts_title' => $site_config['latest_posts_limit'] . ' Latest Forum Posts',
+    'latestposts_title' => $site_config['latest']['posts_limit'] . ' Latest Forum Posts',
     'latestposts_topic_title' => 'Topic&#160;Title',
     'latestposts_replies' => 'Replies',
     'latestposts_views' => 'Views',

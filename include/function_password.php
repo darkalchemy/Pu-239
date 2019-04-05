@@ -35,9 +35,9 @@ function get_options()
     global $site_config;
 
     $options = [
-        'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-        'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-        'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+        'memory_cost' => $site_config['password']['memory_cost'],
+        'time_cost' => $site_config['password']['time_cost'],
+        'threads' => $site_config['password']['threads'],
     ];
 
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2ID)) {
@@ -47,7 +47,7 @@ function get_options()
     } else {
         $algo = PASSWORD_BCRYPT;
         $options = [
-            'cost' => !empty($site_config['password_cost']) ? $site_config['password_cost'] : 12,
+            'cost' => $site_config['password']['cost'],
         ];
     }
 

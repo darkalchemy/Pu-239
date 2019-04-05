@@ -2,6 +2,7 @@
 //! delete
 
 /** Edit fields ending with "_path" by <input type="file"> and link to the uploaded files from select
+ *
  * @link    https://www.adminer.org/plugins/#use
  * @author  Jakub Vrana, https://www.vrana.cz/
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -13,7 +14,8 @@ class AdminerFileUpload
     var $uploadPath, $displayPath, $extensions;
 
     /**
-     * @param string prefix for uploading data (create writable subdirectory for each table containing uploadable fields)
+     * @param string prefix for uploading data (create writable subdirectory for each table containing uploadable
+     *                      fields)
      * @param string prefix for displaying data, null stands for $uploadPath
      * @param string regular expression with allowed file extensions
      */

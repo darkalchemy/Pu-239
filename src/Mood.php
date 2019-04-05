@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Mood.
  */
@@ -18,12 +20,17 @@ class Mood
         $this->cache = $cache;
     }
 
+    /**
+     * @return bool|mixed
+     *
+     * @throws Exception
+     */
     public function get()
     {
         $moods = $this->cache->get('moods_');
         if ($moods === false || is_null($moods)) {
             $query = $this->fluent->from('moods')
-                                  ->fetchAll();
+                ->fetchAll();
             foreach ($query as $mood) {
                 $moods['image'][$mood['id']] = $mood['image'];
                 $moods['name'][$mood['id']] = $mood['name'];

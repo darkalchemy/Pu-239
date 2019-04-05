@@ -10,7 +10,7 @@ $lang = array_merge($lang, load_language('ad_comments'));
 $view = isset($_GET['view']) ? htmlsafechars($_GET['view']) : '';
 switch ($view) {
     case 'allComments':
-        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC';
+        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id=c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC';
         $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $rows = mysqli_num_rows($query);
 
@@ -35,8 +35,7 @@ switch ($view) {
             $Row_Class = $Row_Count % 2 ? 'regular' : 'alternate';
 
             //==== HTML Output
-            $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" . " (<a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . "<td>{$comment['ori_text']}</td>" . '<td>' . format_username($comment['user']) . " [<a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" . "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'],
-                    'DATE') . '</td>' . "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" . '</tr>';
+            $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td><a href='{$site_config['paths']['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" . " (<a href='{$site_config['paths']['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . "<td>{$comment['ori_text']}</td>" . '<td>' . format_username($comment['user']) . " [<a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" . "<td><a href='{$site_config['paths']['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'], 'DATE') . '</td>' . "<td><a href='{$site_config['paths']['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['paths']['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" . '</tr>';
 
             //==== Increase the count for every row generated
             ++$Row_Count;
@@ -65,7 +64,7 @@ switch ($view) {
 
     //==== Page: Search Results
     case 'results':
-        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON c.torrent = t.id WHERE c.text LIKE ' . sqlesc("%{$_POST['keywords']}%") . ' ORDER BY c.added DESC';
+        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id=c.user JOIN torrents AS t ON c.torrent = t.id WHERE c.text LIKE ' . sqlesc("%{$_POST['keywords']}%") . ' ORDER BY c.added DESC';
         $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $rows = mysqli_num_rows($query);
 
@@ -90,7 +89,7 @@ switch ($view) {
             $Row_Class = $Row_Count % 2 ? 'regular' : 'alternate';
 
             //==== HTML Output
-            $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td>{$comment['id']}</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . '<td>' . format_username($comment['user']) . "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'], 'DATE') . '</td>' . "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a>" . '</td></tr>';
+            $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td>{$comment['id']}</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . '<td>' . format_username($comment['user']) . "<td><a href='{$site_config['paths']['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'], 'DATE') . '</td>' . "<td><a href='{$site_config['paths']['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['paths']['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a>" . '</td></tr>';
             ++$Row_Count;
         }
 
@@ -102,7 +101,7 @@ switch ($view) {
         break;
 }
 
-$sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, c.checked_by, c.checked_when, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC LIMIT 10';
+$sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, c.checked_by, c.checked_when, t.name, u.username FROM comments AS c JOIN users AS u ON u.id=c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC LIMIT 10';
 $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $rows = mysqli_num_rows($query);
 $Row_Count = 0;
@@ -126,8 +125,7 @@ while ($comment = mysqli_fetch_assoc($query)) {
     $Row_Class = $Row_Count % 2 ? 'regular' : 'alternate';
 
     //==== HTML Output
-    $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" . " (<a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . "<td>{$comment['ori_text']}</td>" . '<td>' . format_username($comment['user']) . "[<a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" . "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'],
-            'DATE') . '</td>' . "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" . '</tr>';
+    $HTMLOUT .= "<tr class='{$Row_Class}'>" . "<td><a href='{$site_config['paths']['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" . " (<a href='{$site_config['paths']['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" . "<td>{$comment['user']}</td>" . "<td>{$comment['torrent']}</td>" . "<td>{$comment['text']}</td>" . "<td>{$comment['ori_text']}</td>" . '<td>' . format_username($comment['user']) . "[<a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" . "<td><a href='{$site_config['paths']['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" . '<td>' . get_date($comment['added'], 'DATE') . '</td>' . "<td><a href='{$site_config['paths']['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" . " - <a href='{$site_config['paths']['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" . '</tr>';
 
     //==== Increase the count for every row generated
     ++$Row_Count;

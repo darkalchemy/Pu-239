@@ -93,10 +93,10 @@ if (strlen($search) > 4) {
 }
 
 $count = $fluent->from('torrents')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('name LIKE :name', $params)
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('name LIKE :name', $params)
+    ->fetch('count');
 
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
@@ -104,21 +104,21 @@ $top = $bottom = '';
 $rows = $tids = [];
 
 $query = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('leechers')
-                ->select('seeders')
-                ->select('poster')
-                ->select('times_completed AS snatched')
-                ->select('owner')
-                ->select('size')
-                ->select('added')
-                ->select('descr')
-                ->select('imdb_id')
-                ->select('anonymous')
-                ->where('name LIKE :name', $params)
-                ->limit(str_replace('LIMIT ', '', $pager['limit']));
+    ->select(null)
+    ->select('id')
+    ->select('name')
+    ->select('leechers')
+    ->select('seeders')
+    ->select('poster')
+    ->select('times_completed AS snatched')
+    ->select('owner')
+    ->select('size')
+    ->select('added')
+    ->select('descr')
+    ->select('imdb_id')
+    ->select('anonymous')
+    ->where('name LIKE :name', $params)
+    ->limit(str_replace('LIMIT ', '', $pager['limit']));
 
 foreach ($query as $ta) {
     $rows[] = $ta;
@@ -127,24 +127,24 @@ foreach ($query as $ta) {
 
 if (!empty($tid)) {
     $query = $fluent->from('peers')
-                    ->select(null)
-                    ->select('id')
-                    ->select('torrent AS tid')
-                    ->select('seeder')
-                    ->select('finishedat')
-                    ->select('downloadoffset')
-                    ->select('uploadoffset')
-                    ->select('uploaded')
-                    ->select('downloaded')
-                    ->select('started')
-                    ->select('last_action')
-                    ->select('userid AS p_uid')
-                    ->select('INET6_NTOA(ip) AS ip')
-                    ->select('port')
-                    ->where('torrent', $tid)
-                    ->where('seeder = "yes"')
-                    ->where('to_go = 0')
-                    ->limit(5);
+        ->select(null)
+        ->select('id')
+        ->select('torrent AS tid')
+        ->select('seeder')
+        ->select('finishedat')
+        ->select('downloadoffset')
+        ->select('uploadoffset')
+        ->select('uploaded')
+        ->select('downloaded')
+        ->select('started')
+        ->select('last_action')
+        ->select('userid AS p_uid')
+        ->select('INET6_NTOA(ip) AS ip')
+        ->select('port')
+        ->where('torrent', $tid)
+        ->where('seeder = "yes"')
+        ->where('to_go = 0')
+        ->limit(5);
 
     foreach ($query as $pa) {
         $peers[$pa['tid']][] = $pa;
@@ -165,7 +165,7 @@ for ($i = 97; $i < 123; ++$i) {
     $active = !empty($letter) && $letter == chr($i) ? "class='active'" : '';
     $div .= "
             <li>
-                <a href='{$site_config['baseurl']}/catalog.php?letter=" . chr($i) . "' $active>" . chr($i - 32) . '</a>
+                <a href='{$site_config['paths']['baseurl']}/catalog.php?letter=" . chr($i) . "' $active>" . chr($i - 32) . '</a>
             </li>';
 }
 $div .= '
@@ -192,9 +192,9 @@ if (!empty($rows)) {
                 <div>" . ($row['poster'] ? "
                     <img src='" . url_proxy($row['poster'], true, 250) . "' alt='Poster' class='tooltip-poster'>
                 </div>" : "
-                    <img src='{$site_config['pic_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster'>
+                    <img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster'>
                 </div>") . "
-            </div   >
+            </div  >
             <div class='column'>";
         $heading = "
                     <tr>
@@ -207,7 +207,7 @@ if (!empty($rows)) {
                     </tr>";
         $body = "
                     <tr>
-                        <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
+                        <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
                         <td>' . get_date($row['added'], 'LONG', 0, 1) . "</td>
                         <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
                         <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>
@@ -221,7 +221,7 @@ if (!empty($rows)) {
                 </tr>";
         $body = '
                 <tr>
-                    <td>' . readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1') . '</td>
+                    <td>' . readMore($row['descr'], 500, $site_config['paths']['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1') . '</td>
                 </tr>';
         $div .= main_table($body, $heading, 'top20');
         $div .= "

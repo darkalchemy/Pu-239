@@ -16,8 +16,8 @@ function userhits_update($data)
     $days = 14;
     $dt = TIME_NOW - ($days * 86400);
     $fluent->deleteFrom('userhits')
-           ->where('added < ?', $dt)
-           ->execute();
+        ->where('added < ?', $dt)
+        ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

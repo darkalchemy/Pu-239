@@ -14,5 +14,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-$returnto = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $site_config['baseurl'];
+$returnto = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $site_config['paths']['baseurl'];
 header("Location: $returnto");

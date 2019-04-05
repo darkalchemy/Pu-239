@@ -6,33 +6,33 @@ $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {
     $motw = [];
     $torrents = $fluent->from('torrents AS t')
-                       ->select(null)
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('c.name AS cat')
-                       ->select('c.image')
-                       ->leftJoin('users AS u ON t.owner = u.id')
-                       ->leftJoin('categories AS c ON t.category = c.id')
-                       ->leftJoin('categories AS p ON c.parent_id = p.id')
-                       ->leftJoin('avps AS a ON t.id = a.value_u')
-                       ->orderBy('t.seeders + t.leechers DESC')
-                       ->where('a.arg', 'bestfilmofweek');
+        ->select(null)
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id=p.id')
+        ->leftJoin('avps AS a ON t.id=a.value_u')
+        ->orderBy('t.seeders + t.leechers DESC')
+        ->where('a.arg', 'bestfilmofweek');
 
     foreach ($torrents as $torrent) {
         if (!empty($torrent['parent_name'])) {
@@ -67,7 +67,7 @@ foreach ($motw as $m_w) {
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
+    $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';

@@ -34,7 +34,7 @@ $lang = [
     'takeeditcp_birth_day' => 'Please set your birth day.',
     'takeeditcp_birth_not' => 'The date entered is not a valid date, please try again',
     'takeeditcp_email_body' => doc_head() . "
-    <title>{$site_config['site_name']} Email Change</title>
+    <title>{$site_config['site']['name']} Email Change</title>
 </head>
 <body>
 <p>You have requested that your user profile (username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>

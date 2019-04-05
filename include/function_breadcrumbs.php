@@ -52,7 +52,7 @@ function breadcrumbs()
                 <div class='bottom20'>
                     <nav class='breadcrumb round5' aria-label='breadcrumbs'>
                         <ul>
-                            <li><a href='{$site_config['baseurl']}/index.php'>Home</a></li>";
+                            <li><a href='{$site_config['paths']['baseurl']}/index.php'>Home</a></li>";
     foreach ($links as $link) {
         if (!empty($link)) {
             $crumbs .= "
@@ -167,7 +167,7 @@ function get_secondarypage($lang, $queries, $path)
         $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
     }
 
-    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";
+    return "<a href='{$site_config['paths']['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";
 }
 
 /**
@@ -245,7 +245,7 @@ function get_infopage($lang, $queries, $path)
         $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
     }
 
-    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}'>{$title}</a>";
+    return "<a href='{$site_config['paths']['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}'>{$title}</a>";
 }
 
 /**
@@ -328,10 +328,10 @@ function get_actionpage($lang, $queries, $path)
     ];
 
     if ($list[0] === 'tool' && in_array($list[1], $pages)) {
-        $page[] = "<a href='{$site_config['baseurl']}{$path}?{$list[0]}=system_view'>{$lang['system_view']}</a>";
+        $page[] = "<a href='{$site_config['paths']['baseurl']}{$path}?{$list[0]}=system_view'>{$lang['system_view']}</a>";
     }
 
-    $page[] = "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}{$queries_1}'>{$title}</a>";
+    $page[] = "<a href='{$site_config['paths']['baseurl']}{$path}?{$queries[0]}{$queries_1}'>{$title}</a>";
 
     return $page;
 }
@@ -360,7 +360,7 @@ function get_basepage($lang, $path)
         dd('path = ' . $path);
     }
 
-    return "<a href='{$site_config['baseurl']}{$path}'>{$title}</a>";
+    return "<a href='{$site_config['paths']['baseurl']}{$path}'>{$title}</a>";
 }
 
 /**
@@ -385,11 +385,11 @@ function get_mailbox_name($mailbox)
             return 'Inbox';
         default:
             $name = $fluent->from('pmboxes')
-                           ->select(null)
-                           ->select('name')
-                           ->where('boxnumber = ?', $mailbox)
-                           ->where('userid = ?', $CURUSER['id'])
-                           ->fetch('name');
+                ->select(null)
+                ->select('name')
+                ->where('boxnumber = ?', $mailbox)
+                ->where('userid=?', $CURUSER['id'])
+                ->fetch('name');
 
             return htmlspecialchars(ucwords($name));
     }

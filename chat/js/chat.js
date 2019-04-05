@@ -1017,7 +1017,7 @@ var ajaxChat = {
                     } else {
                         window.parent.document.title = this.siteName + ' :(' + pmCount + '): Home';
                         document.title = this.siteName + ' :(' + pmCount + '): Chat';
-                        pm_count.textContent = "Unread PM's (" + pmCount + ")";
+                        pm_count.textContent = 'Unread PM\'s (' + pmCount + ')';
                     }
                     var span = document.getElementById('pmcount');
                     while (span.firstChild) {

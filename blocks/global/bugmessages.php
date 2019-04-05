@@ -2,21 +2,21 @@
 
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
         $bugs = $fluent->from('bugs')
-                       ->select(null)
-                       ->select('COUNT(id) AS count')
-                       ->where('status = ?', 'na')
-                       ->fetch('count');
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('status = ?', 'na')
+            ->fetch('count');
 
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
     }
     if ($bugs > 0) {
         $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/bugs.php?action=bugs'>
+        <a href='{$site_config['paths']['baseurl']}/bugs.php?action=bugs'>
             <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#bugmessage_tooltip'>
                 {$lang['gl_bug_alert']}
             </span>

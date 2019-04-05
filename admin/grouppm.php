@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
 
                     case 'all_friends':
-                        $fq = sql_query('SELECT friendid FROM friends WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                        $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                         if (mysqli_num_rows($fq)) {
                             while ($fa = mysqli_fetch_row($fq)) {
                                 $ids[] = $fa[0];

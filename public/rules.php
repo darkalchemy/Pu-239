@@ -16,7 +16,7 @@ $lang = array_merge(load_language('global'), load_language('rules'));
 $HTMLOUT = "
         <fieldset id='rules'>
             <legend>
-                <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
+                <img src='{$site_config['paths']['images_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
             </legend>";
 
 $main_div = "
@@ -59,7 +59,7 @@ $main_div = "
                                 <li>{$lang['rules_forum_body11']}</li>
                             </ul>
                         </div>
-                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < $site_config['upload_min_class'] ? ' round5-bottom' : '') . "'>
+                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < $site_config['allowed']['upload'] ? ' round5-bottom' : '') . "'>
                             {$lang['rules_avatar_header']}<span class='has-text-blue'>{$lang['rules_avatar_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
@@ -70,7 +70,7 @@ $main_div = "
                             </ul>
                         </div>";
 
-if (isset($CURUSER) && $CURUSER['class'] >= $site_config['upload_min_class']) {
+if (isset($CURUSER) && $CURUSER['class'] >= $site_config['allowed']['upload']) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='has-text-blue'>{$lang['rules_uploading_header_sub']}</span>
@@ -105,7 +105,7 @@ if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img src='{$site_config['pic_baseurl']}star.png' alt='Donor' class='tooltipper' title='Donor'>
+                                        <img src='{$site_config['paths']['images_baseurl']}star.png' alt='Donor' class='tooltipper' title='Donor'>
                                     </td>
                                     <td>{$lang['rules_moderating_body1']}</td>
                                 </tr>

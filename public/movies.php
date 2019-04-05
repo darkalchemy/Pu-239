@@ -93,9 +93,9 @@ switch ($list) {
                 $titles = $body = [];
                 foreach ($shows as $tv) {
                     if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
-                        $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['pic_baseurl'] . 'noposter.png';
+                        $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['paths']['images_baseurl'] . 'noposter.png';
                         $airtime = strtotime($tv['airstamp']);
-                        $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
+                        $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
                         $body[] = [
                             'poster' => url_proxy($poster, true, 250),
                             'placeholder' => url_proxy($poster, true, 250, null, 20),
@@ -171,10 +171,10 @@ switch ($list) {
         }
         $date = new DateTime($today);
         $yesterday = $date->modify('-1 day')
-                          ->format('Y-m-d');
+            ->format('Y-m-d');
         $date = new DateTime($today);
         $tomorrow = $date->modify('+1 day')
-                         ->format('Y-m-d');
+            ->format('Y-m-d');
         $date = new DateTime($today);
         $display = $date->format('l Y-m-d');
 
@@ -192,7 +192,7 @@ switch ($list) {
             $titles = $body = [];
             foreach ($tvs as $tv) {
                 if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
-                    $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/w185{$tv['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
+                    $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/w185{$tv['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
                     $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
 
                     $body[] = [
@@ -258,7 +258,7 @@ switch ($list) {
             $titles = $body = [];
             foreach ($movies as $movie) {
                 if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
-                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
+                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
                         'poster' => url_proxy($poster, true, 250),
@@ -326,7 +326,7 @@ switch ($list) {
             $titles = $body = [];
             foreach ($movies as $movie) {
                 if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
-                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
+                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
                         'poster' => url_proxy($poster, true, 250),

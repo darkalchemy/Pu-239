@@ -17,22 +17,22 @@ $valid_search = [
 ];
 
 $count = $fluent->from('torrents AS t')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('t.category', $site_config['movie_cats']);
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('t.category', $site_config['categories']['movie']);
 
 $select = $fluent->from('torrents AS t')
-                 ->select(null)
-                 ->select('t.id')
-                 ->select('t.name')
-                 ->select('t.poster')
-                 ->select('t.imdb_id')
-                 ->select('t.seeders')
-                 ->select('t.leechers')
-                 ->select('t.year')
-                 ->select('t.rating')
-                 ->where('t.category', $site_config['movie_cats'])
-                 ->groupBy('t.imdb_id, t.id');
+    ->select(null)
+    ->select('t.id')
+    ->select('t.name')
+    ->select('t.poster')
+    ->select('t.imdb_id')
+    ->select('t.seeders')
+    ->select('t.leechers')
+    ->select('t.year')
+    ->select('t.rating')
+    ->where('t.category', $site_config['categories']['movie'])
+    ->groupBy('t.imdb_id, t.id');
 
 $title = $addparam = '';
 foreach ($valid_search as $search) {
@@ -47,23 +47,23 @@ foreach ($valid_search as $search) {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
         } elseif ($search === 'sys') {
-            $count = $count->where('t.year >= ?', (int) $cleaned);
-            $select = $select->where('t.year >= ?', (int) $cleaned)
-                             ->orderBy('t.year DESC');
+            $count = $count->where('t.year>= ?', (int) $cleaned);
+            $select = $select->where('t.year>= ?', (int) $cleaned)
+                ->orderBy('t.year DESC');
         } elseif ($search === 'sye') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned)
-                             ->orderBy('t.year DESC');
+                ->orderBy('t.year DESC');
         } elseif ($search === 'srs') {
             $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
-            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
-            $select = $select->where('t.rating >= ?', (float) $_GET['srs'])
-                             ->orderBy('t.rating DESC');
+            $count = $count->where('t.rating>= ?', (float) $_GET['srs']);
+            $select = $select->where('t.rating>= ?', (float) $_GET['srs'])
+                ->orderBy('t.rating DESC');
         } elseif ($search === 'sre') {
             $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
             $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
             $select = $select->where('t.rating <= ?', (float) $_GET['sre'])
-                             ->orderBy('t.rating DESC');
+                ->orderBy('t.rating DESC');
         }
     }
 }
@@ -71,9 +71,9 @@ foreach ($valid_search as $search) {
 $count = $count->fetch('count');
 $perpage = 25;
 $addparam = empty($addparam) ? '?' : $addparam . '&amp;';
-$pager = pager($perpage, $count, "{$site_config['baseurl']}/tmovies.php{$addparam}");
+$pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/tmovies.php{$addparam}");
 $select = $select->limit($pager['pdo'])
-                 ->orderBy('t.added DESC');
+    ->orderBy('t.added DESC');
 $HTMLOUT = "
     <h1 class='has-text-centered top20'>Movies</h1>";
 
@@ -83,38 +83,38 @@ foreach ($select as $torrent) {
     $cast = $cache->get('cast_' . $torrent['imdb_id']);
     if ($cast === false || is_null($cast)) {
         $cast = $fluent->from('person AS p')
-                       ->select(null)
-                       ->select('p.id')
-                       ->select('p.name')
-                       ->innerJoin('imdb_person AS i ON p.imdb_id = i.person_id')
-                       ->where('i.imdb_id = ?', str_replace('tt', '', $torrent['imdb_id']))
-                       ->where('i.type = "cast"')
-                       ->orderBy('p.id')
-                       ->limit(7)
-                       ->fetchAll();
+            ->select(null)
+            ->select('p.id')
+            ->select('p.name')
+            ->innerJoin('imdb_person AS i ON p.imdb_id=i.person_id')
+            ->where('i.imdb_id=?', str_replace('tt', '', $torrent['imdb_id']))
+            ->where('i.type = "cast"')
+            ->orderBy('p.id')
+            ->limit(7)
+            ->fetchAll();
         $cache->set('cast_' . $torrent['imdb_id'], $cast, 604800);
     }
 
     $casts[] = $cast;
     $people = [];
     foreach ($cast as $person) {
-        $people[] = "<div><a href='{$site_config['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . htmlsafechars($person['name']) . '</a></div>';
+        $people[] = "<div><a href='{$site_config['paths']['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . htmlsafechars($person['name']) . '</a></div>';
     }
 
-    $name = "<a href='{$site_config['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
+    $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
         $image = find_images($torrent['imdb_id'], 'poster');
         if (!empty($image)) {
             $image = url_proxy($image, true);
         } else {
-            $image = $site_config['pic_baseurl'] . 'noposter.png';
+            $image = $site_config['paths']['images_baseurl'] . 'noposter.png';
         }
     } else {
         $image = url_proxy($torrent['poster'], true);
     }
     $percent = $torrent['rating'] * 10;
     $rating = "
-                <a href='{$site_config['baseurl']}/browse.php?srs={$torrent['rating']}&amp;sre={$torrent['rating']}'>
+                <a href='{$site_config['paths']['baseurl']}/browse.php?srs={$torrent['rating']}&amp;sre={$torrent['rating']}'>
                     <div>
                         <span class='level-left'>
                             <div class='right5'>{$percent}%</div>
@@ -126,9 +126,9 @@ foreach ($select as $torrent) {
                     </div>
                 </a>";
 
-    $seeders = "<a href='{$site_config['baseurl']}/peerlist.php?id={$torrent['seeders']}#seeders'>{$torrent['seeders']}</a>";
-    $leechers = "<a href='{$site_config['baseurl']}/peerlist.php?id={$torrent['leechers']}#leechers'>{$torrent['leechers']}</a>";
-    $year = "<a href='{$site_config['baseurl']}/browse.php?sys={$torrent['year']}&amp;sye={$torrent['year']}'>{$torrent['year']}</a>";
+    $seeders = "<a href='{$site_config['paths']['baseurl']}/peerlist.php?id={$torrent['seeders']}#seeders'>{$torrent['seeders']}</a>";
+    $leechers = "<a href='{$site_config['paths']['baseurl']}/peerlist.php?id={$torrent['leechers']}#leechers'>{$torrent['leechers']}</a>";
+    $year = "<a href='{$site_config['paths']['baseurl']}/browse.php?sys={$torrent['year']}&amp;sye={$torrent['year']}'>{$torrent['year']}</a>";
     $body .= "
                 <div class='masonry-item padding10 bg-04 round10'>
                     <div class='columns'>
@@ -147,7 +147,7 @@ $body .= '
         </div>';
 
 $HTMLOUT .= main_div("
-            <form id='test1' method='get' action='{$site_config['baseurl']}/tmovies.php' accept-charset='utf-8'>
+            <form id='test1' method='get' action='{$site_config['paths']['baseurl']}/tmovies.php' accept-charset='utf-8'>
                 <div class='padding20'>
                     <div class='padding10 w-100'>
                         <div class='columns'>

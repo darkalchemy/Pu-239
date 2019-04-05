@@ -14,7 +14,7 @@ function achievement_invite_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $res = sql_query('SELECT userid, invited, inviterach FROM usersachiev WHERE invited >= 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT userid, invited, inviterach FROM usersachiev WHERE invited>= 1') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
@@ -26,23 +26,23 @@ function achievement_invite_update($data)
             $lvl = (int) $arr['inviterach'];
             $msg = '';
             if ($invited >= 1 && $lvl === 0) {
-                $msg = 'Congratulations, you have just earned the [b]Inviter Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite1.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Inviter Level 1[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/invite1.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL1\', \'invite1.png\' , \'Invited at least 1 new user to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
             } elseif ($invited >= 2 && $lvl === 1) {
-                $msg = 'Congratulations, you have just earned the [b]Inviter Level 2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite2.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Inviter Level 2[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/invite2.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL2\', \'invite2.png\' , \'Invited at least 2 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
             } elseif ($invited >= 3 && $lvl === 2) {
-                $msg = 'Congratulations, you have just earned the [b]Inviter Level 3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite3.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Inviter Level 3[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/invite3.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL3\', \'invite3.png\' , \'Invited at least 3 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
             } elseif ($invited >= 5 && $lvl === 3) {
-                $msg = 'Congratulations, you have just earned the [b]Inviter Level 4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite4.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Inviter Level 4[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/invite4.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL4\', \'invite4.png\' , \'Invited at least 5 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
             } elseif ($invited >= 10 && $lvl === 4) {
-                $msg = 'Congratulations, you have just earned the [b]Inviter Level 5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/invite5.png[/img]';
+                $msg = 'Congratulations, you have just earned the [b]Inviter Level 5[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/invite5.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL5\', \'invite5.png\' , \'Invited at least 10 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
             }

@@ -19,7 +19,7 @@ if (empty($user)) {
 }
 $count = $happylog_stuffs->get_count($id);
 $perpage = 30;
-$pager = pager($perpage, $count, "{$site_config['baseurl']}/happylog.php?id=$id&amp;");
+$pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/happylog.php?id=$id&amp;");
 $res = $happylog_stuffs->get_by_userid($id, $pager['pdo']);
 $HTMLOUT .= "
     <h1 class='has-text-centered'>Happy hour log for " . format_username($id) . '</h1>';
@@ -35,7 +35,7 @@ if ($count > 0) {
     foreach ($res as $arr) {
         $body .= "
         <tr>
-            <td><a href='{$site_config['baseurl']}/details.php?id={$arr['torrentid']}'>" . htmlsafechars($arr['name']) . "</a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$arr['torrentid']}'>" . htmlsafechars($arr['name']) . "</a></td>
             <td>{$arr['multi']}</td>
             <td nowrap='nowrap'>" . get_date($arr['date'], 'LONG', 1, 0) . '</td>
         </tr>';

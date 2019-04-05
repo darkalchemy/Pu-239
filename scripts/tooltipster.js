@@ -18,7 +18,7 @@ $(function () {
         arrow: true,
         contentAsHTML: true,
         distance: distance,
-        maxWidth: maxWidth,
+        maxWidth: maxWidth
     });
     initAll();
 });

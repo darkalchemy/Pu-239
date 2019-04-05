@@ -26,7 +26,7 @@ class AJAXChatEncoding
     {
         switch ($contentCharset) {
             case 'UTF-8':
-                // Encode only special chars (&, <, >, ', ") as entities:
+                // Encode only special chars (&, <,>, ', ") as entities:
                 return self::encodeSpecialChars($str);
                 break;
             case 'ISO-8859-1':
@@ -47,7 +47,7 @@ class AJAXChatEncoding
                     0x3E,
                     0,
                     0xFFFF,
-                    // >
+                    //>
                     0x27,
                     0x27,
                     0,
@@ -82,7 +82,7 @@ class AJAXChatEncoding
                     0x3E,
                     0,
                     0xFFFF,
-                    // >
+                    //>
                     0x27,
                     0x27,
                     0,

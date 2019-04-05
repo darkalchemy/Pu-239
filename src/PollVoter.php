@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class PollVoter.
  */
@@ -27,13 +29,13 @@ class PollVoter
     /**
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_count()
     {
         $search = $this->fluent->from('poll_voters')
-                               ->select('COUNT(*) AS count')
-                               ->fetch('count');
+            ->select('COUNT(*) AS count')
+            ->fetch('count');
 
         return $search;
     }
@@ -41,26 +43,26 @@ class PollVoter
     /**
      * @param int $poll_id
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete(int $poll_id)
     {
         $this->fluent->deleteFrom('poll_voters')
-                     ->where('poll_id = ?', $poll_id)
-                     ->execute();
+            ->where('poll_id=?', $poll_id)
+            ->execute();
     }
 
     /**
      * @param array $values
      * @param array $update
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values, array $update)
     {
         $this->fluent->insertInto('poll_voters', $values)
-                     ->onDuplicateKeyUpdate($update)
-                     ->execute();
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
     }
 
     /**
@@ -68,19 +70,19 @@ class PollVoter
      *
      * @return int
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('poll_voters')
-                           ->values($values)
-                           ->execute();
+            ->values($values)
+            ->execute();
 
         return $id;
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete_users_cache()
     {
@@ -97,7 +99,7 @@ class PollVoter
      *
      * @return array|bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_user_poll(int $userid)
     {
@@ -106,14 +108,14 @@ class PollVoter
             $poll_data = $this->poll_stuffs->get_all(1);
             if (!empty($poll_data)) {
                 $vote_data = $this->fluent->from('poll_voters')
-                                          ->select(null)
-                                          ->select('INET6_NTOA(ip) AS ip')
-                                          ->select('user_id')
-                                          ->select('vote_date')
-                                          ->where('user_id = ?', $userid)
-                                          ->where('poll_id = ?', $poll_data['pid'])
-                                          ->limit('1')
-                                          ->fetch();
+                    ->select(null)
+                    ->select('INET6_NTOA(ip) AS ip')
+                    ->select('user_id')
+                    ->select('vote_date')
+                    ->where('user_id=?', $userid)
+                    ->where('poll_id=?', $poll_data['pid'])
+                    ->limit('1')
+                    ->fetch();
 
                 $poll_data['ip'] = $vote_data['ip'];
                 $poll_data['user_id'] = $vote_data['user_id'];

@@ -16,29 +16,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }
     $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('COUNT(*) AS count')
-                       ->where('id = ?', $tid)
-                       ->fetch('count');
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('id=?', $tid)
+        ->fetch('count');
 
     if (empty($torrents)) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr2']);
     }
     $row = $fluent->from('torrents AS t')
-                  ->select(null)
-                  ->select('t.id AS tid')
-                  ->select('t.info_hash')
-                  ->select('t.owner AS uid')
-                  ->select('t.name')
-                  ->select('t.size')
-                  ->select('t.seeders')
-                  ->select('u.seedbonus')
-                  ->select('u.username')
-                  ->select('s.downloaded AS sd')
-                  ->select('u.downloaded AS ud')
-                  ->leftJoin('users AS u ON u.id = s.userid')
-                  ->leftJoin('snatched as s ON s.torrentid = t.id')
-                  ->where('t.id = ?', $id);
+        ->select(null)
+        ->select('t.id AS tid')
+        ->select('t.info_hash')
+        ->select('t.owner AS uid')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.seeders')
+        ->select('u.seedbonus')
+        ->select('u.username')
+        ->select('s.downloaded AS sd')
+        ->select('u.downloaded AS ud')
+        ->leftJoin('users AS u ON u.id=s.userid')
+        ->leftJoin('snatched as s ON s.torrentid=t.id')
+        ->where('t.id=?', $id);
 
     $pms = $new_download = [];
     foreach ($row as $a) {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     stderr($lang['datareset_stderr'], $lang['datareset_pls']);
 } else {
     $form = "
-    <form action='{$site_config['baseurl']}/staffpanel.php?tool=datareset&amp;action=datareset' method='post' accept-charset='utf-8'>
+    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=datareset&amp;action=datareset' method='post' accept-charset='utf-8'>
     <div class='has-text-centered'>
         <h1>{$lang['datareset_reset']}</h1>
         <label for='tid'>{$lang['datareset_tid']}</label>

@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../include/bittorrent.php';
 
-$host = $_ENV['DB_HOST'];
-$user = $_ENV['DB_USERNAME'];
-$pass = quotemeta($_ENV['DB_PASSWORD']);
-$db = $_ENV['DB_DATABASE'];
+$host = $site_config['database']['host'];
+$user = $site_config['database']['username'];
+$pass = quotemeta($site_config['database']['password']);
+$db = $site_config['database']['database'];
 
 $tables = [
     DATABASE_DIR . 'trivia.sql.gz',

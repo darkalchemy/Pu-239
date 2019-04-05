@@ -30,12 +30,12 @@ $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST[
 
 if (empty($mode)) {
     $backups = $fluent->from('dbbackup')
-                      ->orderBy('added DESC')
-                      ->fetchAll();
+        ->orderBy('added DESC')
+        ->fetchAll();
 
     if ($backups) {
         $HTMLOUT .= "
-            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete' accept-charset='utf-8'>
+            <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='delete'>
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
@@ -51,7 +51,7 @@ if (empty($mode)) {
         foreach ($backups as $arr) {
             $HTMLOUT .= "
                         <tr>
-                            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=download&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a></td>
+                            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=download&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a></td>
                             <td>' . get_date($arr['added'], 'LONG', 1, 0) . '</td>
                             <td>';
             if (!empty($arr['userid'])) {
@@ -72,7 +72,7 @@ if (empty($mode)) {
                     </tbody>
                 </table>
                 <div class='has-text-centered top20 bottom20 level-center flex-center'>
-                    <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
                     <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm('{$lang['backup_confirm']}');\">
                 </div>
             </form>
@@ -87,12 +87,12 @@ if (empty($mode)) {
                             <tr>
                                 <td>{$lang['backup_gzip']}</td>
                                 <td>{$lang['backup_optional']}</td>
-                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td class='rowhead'>" . ($site_config['backup']['use_gzip'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_gzippath']}</td>
-                                <td>{$site_config['db_backup_gzip_path']}</td>
-                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>{$site_config['backup']['gzip_path']}</td>
+                                <td>" . (is_file($site_config['backup']['gzip_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
@@ -109,12 +109,12 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
-                                <td>{$site_config['db_backup_mysqldump_path']}</td>
-                                <td>" . (is_file($site_config['db_backup_mysqldump_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>{$site_config['backup']['mysqldump_path']}</td>
+                                <td>" . (is_file($site_config['backup']['mysqldump_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
-                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . '</td>
+                                <td>" . ($site_config['backup']['write_to_log'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . '</td>
                             </tr>
                         </tbody>
                     </table>
@@ -125,7 +125,7 @@ if (empty($mode)) {
                 <div class='padding20 has-text-centered'>
                     {$lang['backup_nofound']}
                     <div class='top20'>
-                        <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                        <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
                     </div>
                 </div>");
     }
@@ -141,27 +141,27 @@ if (empty($mode)) {
 } elseif ($mode === 'backup') {
     global $site_config;
 
-    $host = $_ENV['DB_HOST'];
-    $user = $_ENV['DB_USERNAME'];
-    $pass = quotemeta($_ENV['DB_PASSWORD']);
-    $db = $_ENV['DB_DATABASE'];
+    $host = $site_config['database']['host'];
+    $user = $site_config['database']['username'];
+    $pass = quotemeta($site_config['database']['password']);
+    $db = $site_config['database']['database'];
     $ext = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
     $filepath = BACKUPS_DIR . $ext;
-    if ($site_config['db_backup_use_gzip']) {
-        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db | gzip -q9 > {$filepath}.gz");
+    if ($site_config['backup']['use_gzip']) {
+        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db | gzip -q9>{$filepath}.gz");
     } else {
-        exec("{$site_config['db_backup_mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db > $filepath");
+        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db>$filepath");
     }
     $values = [
-        'name' => $ext . ($site_config['db_backup_use_gzip'] ? '.gz' : ''),
+        'name' => $ext . ($site_config['backup']['use_gzip'] ? '.gz' : ''),
         'added' => $dt,
         'userid' => $CURUSER['id'],
     ];
     $fluent->insertInto('dbbackup')
-           ->values($values)
-           ->execute();
+        ->values($values)
+        ->execute();
 
-    if ($site_config['db_backup_write_to_log']) {
+    if ($site_config['backup']['write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
     header('Location: staffpanel.php?tool=backup');
@@ -177,10 +177,10 @@ if (empty($mode)) {
             }
         }
         $files = $fluent->from('dbbackup')
-                        ->select(null)
-                        ->select('name')
-                        ->where('id', $ids)
-                        ->fetchAll();
+            ->select(null)
+            ->select('name')
+            ->where('id', $ids)
+            ->fetchAll();
 
         if ($files) {
             $count = count($files);
@@ -191,10 +191,10 @@ if (empty($mode)) {
                 }
             }
             $fluent->deleteFrom('dbbackup')
-                   ->where('id', $ids)
-                   ->execute();
+                ->where('id', $ids)
+                ->execute();
 
-            if ($site_config['db_backup_write_to_log']) {
+            if ($site_config['backup']['write_to_log']) {
                 write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');
             }
             $location = 'backup';

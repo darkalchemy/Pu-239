@@ -29,13 +29,13 @@ function validate($id)
 
 if ($mode === 'ban') {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-warning', $lang['failed_message_ban']);
     unset($_POST);
 }
 if ($mode === 'removeban') {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_unban']);
     unset($_POST);
 }
@@ -62,7 +62,7 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 $count = $row['count'];
 $perpage = 15;
-$pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
+$pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 if (!$where && $count === 0) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }
@@ -98,14 +98,14 @@ if (mysqli_num_rows($res) == 0) {
             <td class='has-text-centered'>" . (int) $arr['attempts'] . '</td>
             <td>' . ($arr['banned'] === 'yes' ? "
                 <span class='has-text-danger'>{$lang['failed_main_banned']}</span> 
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
                     <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>
                 </a>" : "
                 <span class='has-text-green'>{$lang['failed_main_noban']}</span> 
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int) $arr['id'] . "'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int) $arr['id'] . "'>
                     <span class='has-text-danger'>[{$lang['failed_main_ban']}]</span>
                 </a>") . "  
-                <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int) $arr['id'] . "'>
+                <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int) $arr['id'] . "'>
                     [{$lang['failed_main_delete']}]
                 </a>
             </td>

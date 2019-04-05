@@ -23,9 +23,9 @@ foreach ($items as $item) {
     $div = "
         <div class='has-text-left padding20'>
             <h2>" . $item->getElementsByTagName('title')
-                         ->item(0)->nodeValue . '</h2>
+            ->item(0)->nodeValue . '</h2>
             <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')
-                                                                                ->item(0)->nodeValue) . '
+            ->item(0)->nodeValue) . '
         </div>';
     $html .= main_div($div, $icount < $limit ? 'bottom20' : '');
     if ($use_limit && $icount++ >= $limit) {
@@ -43,7 +43,7 @@ $html = str_replace([
     '‘',
 ], "'", $html);
 $html = str_replace('–', '-', $html);
-$html = str_replace('href="', 'href="' . $site_config['anonymizer_url'], $html);
+$html = str_replace('href="', 'href="' . $site_config['site']['anonymizer_url'], $html);
 $html = str_replace('="/images/', '="https://torrentfreak.com/images/', $html);
 preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $html, $matches);
 $i = 0;

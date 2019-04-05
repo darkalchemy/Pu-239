@@ -66,11 +66,12 @@ if (mysqli_num_rows($res) == 0) {
         $key = array_search($txt, $log_events);
         $color = $colors[$key];
 
-        $date = explode(',', get_date($arr['added'], 'LONG'));
+        $date = get_date($arr['added'], 'LONG', 0, 1);
+
         $HTMLOUT .= "
                 <tr class='table'>
                     <td style='background-color: {$color};'>
-                        <span class='has-text-black'>{$date[0]}{$date[1]}</span>
+                        <span class='has-text-black'>{$date}</span>
                     </td>
                     <td style='background-color: {$color};'>
                         <span class='has-text-black'>" . format_comment($arr['txt']) . '</span>

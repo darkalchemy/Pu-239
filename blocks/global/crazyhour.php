@@ -2,7 +2,7 @@
 
 global $site_config;
 
-if ($site_config['crazy_hour']) {
+if ($site_config['bonus']['crazy_hour']) {
     /**
      * @return string
      *
@@ -27,7 +27,7 @@ if ($site_config['crazy_hour']) {
             }
             $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
         }
-        $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!">';
+        $cimg = '<img src="' . $site_config['paths']['images_baseurl'] . 'cat_free.gif" alt="FREE!">';
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
             $cz_lock = $cache->set('crazyhour_lock_', 1, 10);
             if ($cz_lock !== false) {

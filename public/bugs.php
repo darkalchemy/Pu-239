@@ -32,12 +32,12 @@ if ($action === 'viewbug') {
         if (!$id || !is_valid_id($id)) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
         }
-        $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
-                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n";
-                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
+                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n";
+                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id=' . sqlesc($q1['sender']);
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
                     $cache->update_row('user_' . $q1['sender'], [
                         'uploaded' => $update['uploaded'],
@@ -45,7 +45,7 @@ if ($action === 'viewbug') {
                     break;
 
                 case 'ignored':
-                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site_name']}'s coders.\n";
+                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n";
                     $uq = '';
                     break;
             }
@@ -58,7 +58,7 @@ if ($action === 'viewbug') {
                 'subject' => 'Bug Report',
             ];
             $message_stuffs->insert($msgs_buffer);
-            sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('bug_mess_');
         }
         header("location: bugs.php?action=viewbug&id={$id}");

@@ -9,7 +9,7 @@
 
 // List containing the custom channels:
 $channels = [
-    $this->_siteConfig['site_name'],
+    $this->_siteConfig['site']['name'],
     'Support',
     'Announce',
     'News',

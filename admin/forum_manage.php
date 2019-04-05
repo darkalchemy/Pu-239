@@ -24,10 +24,10 @@ $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
                     <li class='altlink margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['fm_overforum']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['fm_overforum']}</a>
                     </li>
                     <li class='altlink margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['fm_configure']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['fm_configure']}</a>
                     </li>
                 </ul>
             </div>
@@ -51,11 +51,11 @@ switch ($action) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
             die();
         }
-        $res = sql_query('SELECT * FROM topics WHERE forum_id = ' . sqlesc($id));
+        $res = sql_query('SELECT * FROM topics WHERE forum_id=' . sqlesc($id));
         $row = mysqli_fetch_array($res);
         sql_query('DELETE FROM posts WHERE topic_id =' . sqlesc($row['id']));
-        sql_query('DELETE FROM topics WHERE forum_id = ' . sqlesc($id));
-        sql_query('DELETE FROM forums WHERE id = ' . sqlesc($id));
+        sql_query('DELETE FROM topics WHERE forum_id=' . sqlesc($id));
+        sql_query('DELETE FROM forums WHERE id=' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
         die();
         break;
@@ -66,7 +66,7 @@ switch ($action) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
             die();
         }
-        sql_query('UPDATE forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', parent_forum = ' . sqlesc($parent_forum) . ', description = ' . sqlesc($desc) . ', forum_id = ' . sqlesc($over_forums) . ', min_class_read = ' . sqlesc($min_class_read) . ', min_class_write = ' . sqlesc($min_class_write) . ', min_class_create = ' . sqlesc($min_class_create) . ' WHERE id = ' . sqlesc($id));
+        sql_query('UPDATE forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', parent_forum = ' . sqlesc($parent_forum) . ', description = ' . sqlesc($desc) . ', forum_id=' . sqlesc($over_forums) . ', min_class_read = ' . sqlesc($min_class_read) . ', min_class_write = ' . sqlesc($min_class_write) . ', min_class_create = ' . sqlesc($min_class_create) . ' WHERE id=' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
         die();
         break;
@@ -84,25 +84,25 @@ switch ($action) {
     //=== edit forum stuff
 
     case 'edit_forum_page':
-        $res = sql_query('SELECT * FROM forums WHERE id = ' . sqlesc($id));
+        $res = sql_query('SELECT * FROM forums WHERE id=' . sqlesc($id));
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
-                    <table class="table table - bordered table - striped">
+                    <table class="table table-bordered table-striped">
                     <tr>
                     <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w - 100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w - 100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
-                    <td >
+                    <td>
                     <select name="over_forums">';
             $forum_id = (int) $row['forum_id'];
             $res = sql_query('SELECT * FROM over_forums');
@@ -125,7 +125,7 @@ switch ($action) {
             $HTMLOUT .= $options_2 . '</select></td></tr>
                 <tr>
                 <td><span>' . $lang['fm_efp_min_r'] . '</span></td>
-                <td >
+                <td>
                 <select name="min_class_read">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $options_3 .= '<option class="body" value="' . $i . '"' . ($row['min_class_read'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
@@ -167,7 +167,7 @@ switch ($action) {
         break;
 } //=== end switch
 //=== basic page
-$HTMLOUT .= $main_links . '<table class="table table - bordered table - striped">
+$HTMLOUT .= $main_links . '<table class="table table-bordered table-striped">
         <tr><td>' . $lang['fm_mp_name'] . '</td>
         <td>' . $lang['fm_mp_sub'] . '</td>
         <td>' . $lang['fm_mp_over'] . '</td>
@@ -190,7 +190,7 @@ if (mysqli_num_rows($res) > 0) {
         } else {
             $subforum_name = '';
         }
-        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['baseurl'] . ' / forums . php ? action = view_forum & amp;forum_id = ' . (int) $row['id'] . '">
+        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
             <span>' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br>
             ' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
             <td><span>' . $subforum_name . '</span></td>
@@ -199,10 +199,10 @@ if (mysqli_num_rows($res) > 0) {
             <td>' . get_user_class_name($row['min_class_write']) . '</td>
             <td>' . get_user_class_name($row['min_class_create']) . '</td>
             <td class="has-text-centered">
-                <span class="level - center">
+                <span class="level-center">
                     <span class="left10 tooltipper" title="Edit">
-                        <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = forum_manage & amp;action = forum_manage & amp;action2 = edit_forum_page & amp;id = ' . (int) $row['id'] . '">
-                            <i class="icon - edit icon"></i>
+                        <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int) $row['id'] . '">
+                            <i class="icon-edit icon"></i>
                         </a>
                     </span>
                     <span class="tooltipper" title="Delete">
@@ -217,17 +217,17 @@ if (mysqli_num_rows($res) > 0) {
 }
 $HTMLOUT .= '</table><br><br>
             <form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
-            <table class="table table - bordered table - striped">
+            <table class="table table-bordered table-striped">
             <tr>
             <td colspan="2">' . $lang['fm_mp_make'] . '</td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_fname'] . '</span></td>
-            <td><input name="name" type="text" class="w - 100" maxlength="60"></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60"></td>
             </tr>
             <tr>
-            <td><span>' . $lang['fm_mp_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w - 100" maxlength="200"></td>
+            <td><span>' . $lang['fm_mp_description'] . '</span></td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_over2'] . '</span></td>

@@ -7,13 +7,13 @@ global $site_config, $cache, $session, $mysqli;
 
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
 if (!isset($CURUSER)) {
     $session->set('is-warning', "You can't add a thank you on your own torrent");
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
@@ -37,7 +37,7 @@ function print_list()
     global $uid, $tid, $ajax, $site_config;
 
     $target = $ajax ? '_self' : '_parent';
-    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid = ' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
+    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid=' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
     $list = [];
     $hadTh = false;
     if (mysqli_num_rows($qt) > 0) {
@@ -54,7 +54,7 @@ function print_list()
             'status' => true,
         ]);
     } else {
-        $form = !$hadTh ? "<span class='left10'><form action='{$site_config['baseurl']}/ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks'><input type='hidden' name='torrentid' value='{$tid}'><input type='hidden' name='action' value='add'></form></span accept-charset='utf-8'>" : '';
+        $form = !$hadTh ? "<span class='left10'><form action='{$site_config['paths']['baseurl']}/ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks'><input type='hidden' name='torrentid' value='{$tid}'><input type='hidden' name='action' value='add'></form></span accept-charset='utf-8'>" : '';
         $out = (count($list) > 0 ? implode(', ', $list) : '');
 
         return <<<IFRAME
@@ -106,7 +106,7 @@ switch ($do) {
 
     case 'add':
         if ($uid > 0 && $tid > 0) {
-            $c = 'SELECT count(id) FROM thanks WHERE userid = ' . sqlesc($uid) . ' AND torrentid = ' . sqlesc($tid);
+            $c = 'SELECT count(id) FROM thanks WHERE userid=' . sqlesc($uid) . ' AND torrentid=' . sqlesc($tid);
             $result = sql_query($c);
             $arr = $result->fetch_row();
             if ($arr[0] == 0) {
@@ -121,11 +121,11 @@ switch ($do) {
                 }
             }
         }
-        if ($site_config['seedbonus_on']) {
-            sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_thanks']) . ' WHERE id =' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-            $sql = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+        if ($site_config['bonus']['on']) {
+            sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_thanks']) . ' WHERE id =' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+            $sql = sql_query('SELECT seedbonus FROM users WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);
-            $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus_per_thanks']);
+            $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus']['per_thanks']);
             $cache->update_row('user_' . $uid, [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);

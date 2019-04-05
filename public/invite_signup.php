@@ -10,10 +10,10 @@ $lang = array_merge(load_language('global'), load_language('signup'));
 if (!$CURUSER) {
     get_template();
 } else {
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
-if (!$site_config['openreg_invites']) {
+if (!$site_config['openreg']['invites_only']) {
     stderr('Sorry', 'Invite Signups are presently closed');
 }
 $code = empty($_GET['code']) ? '' : $_GET['code'];
@@ -26,7 +26,7 @@ $stdfoot = [
         get_file_name('pStrength_js'),
     ],
 ];
-if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+if (!empty($site_config['recaptcha']['secret'])) {
     $stdfoot = array_merge_recursive($stdfoot, [
         'js' => [
             get_file_name('recaptcha_js'),
@@ -40,12 +40,12 @@ if (!empty($signup_vars)) {
 }
 
 $count = $fluent->from('users')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->fetch('count');
 
-if ($count >= $site_config['maxusers']) {
-    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
+if ($count >= $site_config['site']['maxusers']) {
+    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['site']['maxusers']));
 }
 
 $time_select = "
@@ -70,7 +70,7 @@ foreach ($countries as $cntry) {
 }
 
 $HTMLOUT .= "
-    <form method='post' action='{$site_config['baseurl']}/take_invite_signup.php' accept-charset='utf-8'>
+    <form method='post' action='{$site_config['paths']['baseurl']}/take_invite_signup.php' accept-charset='utf-8'>
         <div class='level-center'>";
 $body = "
             <tr>
@@ -193,7 +193,7 @@ $body .= "
                      <span class='has-text-centered margin5'>
                         <input type='hidden' id='token' name='token' value=''>
                         <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "'>
-                        <input id='signup_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Signup') . "' class='button is-small' disabled>
+                        <input id='signup_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Signup') . "' class='button is-small' disabled>
                     </span>
                 </td>
             </tr>";

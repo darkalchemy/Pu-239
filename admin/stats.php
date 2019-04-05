@@ -30,31 +30,31 @@ if ($uporder === 'lastul') {
 }
 $query = '
     SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id = t.owner
-        LEFT JOIN peers as p ON t.id = p.torrent
+        LEFT JOIN torrents as t ON u.id=t.owner
+        LEFT JOIN peers as p ON t.id=p.torrent
         WHERE u.class = ' . UC_UPLOADER . '
         GROUP BY u.id
         UNION SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id = t.owner
-        LEFT JOIN peers as p ON t.id = p.torrent
-        WHERE u.class > ' . UC_UPLOADER . "
+        LEFT JOIN torrents as t ON u.id=t.owner
+        LEFT JOIN peers as p ON t.id=p.torrent
+        WHERE u.class>' . UC_UPLOADER . "
         GROUP BY u.id
         ORDER BY $orderby";
 $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 $perpage = 25;
 $count = mysqli_num_rows($res);
-$pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;");
+$pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;");
 if ($count > $perpage) {
     $query = '
     SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id = t.owner
-        LEFT JOIN peers as p ON t.id = p.torrent
+        LEFT JOIN torrents as t ON u.id=t.owner
+        LEFT JOIN peers as p ON t.id=p.torrent
         WHERE u.class = ' . UC_UPLOADER . '
         GROUP BY u.id
         UNION SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id = t.owner
-        LEFT JOIN peers as p ON t.id = p.torrent
-        WHERE u.class > ' . UC_UPLOADER . "
+        LEFT JOIN torrents as t ON u.id=t.owner
+        LEFT JOIN peers as p ON t.id=p.torrent
+        WHERE u.class>' . UC_UPLOADER . "
         GROUP BY u.id
         ORDER BY $orderby
         {$pager['limit']}";
@@ -68,11 +68,11 @@ if ($count === 0) {
     }
     $heading = "
     <tr>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=uploader&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_uploader']}</a></th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=lastul&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_last']}</a></th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=torrents&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_torrent']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=uploader&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_uploader']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=lastul&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_last']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=torrents&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_torrent']}</a></th>
         <th>Perc.</th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=peers&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_peers']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=peers&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_peers']}</a></th>
         <th>Perc.</th>
     </tr>";
     $body = '';
@@ -106,14 +106,14 @@ if ($n_tor == 0) {
     }
     $res = sql_query("SELECT c.name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) AS n_p
       FROM categories as c LEFT JOIN torrents as t ON t.category = c.id LEFT JOIN peers as p
-      ON t.id = p.torrent GROUP BY c.id ORDER BY $orderby") or sqlerr(__FILE__, __LINE__);
+      ON t.id=p.torrent GROUP BY c.id ORDER BY $orderby") or sqlerr(__FILE__, __LINE__);
     $heading = "
     <tr>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=category' class='colheadlink'>{$lang['stats_category']}</a></th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=lastul' class='colheadlink'>{$lang['stats_last']}</a></th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=torrents' class='colheadlink'>{$lang['stats_torrent']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=category' class='colheadlink'>{$lang['stats_category']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=lastul' class='colheadlink'>{$lang['stats_last']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=torrents' class='colheadlink'>{$lang['stats_torrent']}</a></th>
         <th>Perc.</th>
-        <th><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=peers' class='colheadlink'>{$lang['stats_peers']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=peers' class='colheadlink'>{$lang['stats_peers']}</a></th>
         <th>Perc.</th>
     </tr>";
     $body = '';

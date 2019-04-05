@@ -4,7 +4,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
+global $lang, $site_config;
 
 $stdfoot = [
     'js' => [
@@ -15,8 +15,6 @@ $stdfoot = [
 $lang = array_merge($lang, load_language('ad_poll_manager'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
-$site_config['max_poll_questions'] = 2;
-$site_config['max_poll_choices_per_question'] = 20;
 
 switch ($params['mode']) {
     case 'delete':
@@ -61,7 +59,7 @@ function delete_poll()
             <a href='javascript:history.back()' title='{$lang['poll_dp_cancel']}' class='button is-small right20'>
                 {$lang['poll_dp_back']}
             </a>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid={$pid}&amp;sure=1' class='button is-small'>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid={$pid}&amp;sure=1' class='button is-small'>
                 {$lang['poll_dp_delete2']}
             </a>
         </div>");
@@ -106,7 +104,7 @@ function update_poll()
         $msg = $lang['poll_up_worked'];
     }
     $session->set('is-info', $msg);
-    header("Location:  {$site_config['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
+    header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
 }
 
 function insert_new_poll()
@@ -138,14 +136,14 @@ function insert_new_poll()
         $msg = $lang['poll_inp_worked'];
     }
     $session->set('is-info', $msg);
-    header("Location:  {$site_config['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
+    header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
 }
 
 function show_poll_form()
 {
     global $site_config, $lang, $stdfoot;
 
-    $poll_box = poll_box($site_config['max_poll_questions'], $site_config['max_poll_choices_per_question'], 'poll_new');
+    $poll_box = poll_box($site_config['poll']['max_questions'], $site_config['poll']['max_choices_per_question'], 'poll_new');
     echo stdhead($lang['poll_spf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
 }
 
@@ -185,7 +183,7 @@ function edit_poll_form()
     $poll_votes = preg_replace("#,(\n)?$#", '\\1', $poll_votes);
     $poll_question = $poll_data['poll_question'];
     $show_open = $poll_data['choices'] ? 1 : 0;
-    $poll_box = poll_box($site_config['max_poll_questions'], $site_config['max_poll_choices_per_question'], 'poll_update', $poll_questions, $poll_choices, $poll_votes, $show_open, $poll_question, $poll_multi);
+    $poll_box = poll_box($site_config['poll']['max_questions'], $site_config['poll']['max_choices_per_question'], 'poll_update', $poll_questions, $poll_choices, $poll_votes, $show_open, $poll_question, $poll_multi);
 
     echo stdhead($lang['poll_epf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
 }
@@ -201,7 +199,7 @@ function show_poll_archive()
         $HTMLOUT = main_div("
         <h1 class='has-text-centered'>{$lang['poll_spa_no_polls']}</h1>
         <div class='has-text-centered'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new' class='button is-small margin20'>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new' class='button is-small margin20'>
                 {$lang['poll_spa_add']}
             </a>
         </div>");
@@ -209,7 +207,7 @@ function show_poll_archive()
         $HTMLOUT .= "
         <h1 class='has-text-centered'>{$lang['poll_spa_manage']}</h1>
         <div class='has-text-centered'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new' class='button is-small margin20'>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new' class='button is-small margin20'>
                 {$lang['poll_spa_add']}
             <a>
         </div>";
@@ -237,12 +235,12 @@ function show_poll_archive()
             <td>
                 <div class='level-center'>
                     <span>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=edit&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_edit']}' class='tooltipper'>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=edit&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_edit']}' class='tooltipper'>
                             <i class='icon-edit icon'></i>
                         </a>
                     </span>
                     <span>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_delete']}' class='tooltipper'>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_delete']}' class='tooltipper'>
                             <i class='icon-trash-empty icon has-text-danger'></i>
                         </a>
                     </span>
@@ -303,7 +301,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
         var poll_stat_lang = \"{$lang['poll_pb_allowed']} <%1> {$lang['poll_pb_more']} <%2>  {$lang['poll_pb_choices']}\";
     </script>
     <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
-    <form id='postingform' action='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
+    <form id='postingform' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='mode' value='$form_type'>
         <input type='hidden' name='pid' value='$pid'>
         <div>
@@ -323,7 +321,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
             </fieldset>
             <div class='has-text-centered'>
                 <input type='submit' name='submit' value='{$lang['poll_pb_post']}' class='button is-small right20'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>{$lang['poll_pb_cancel']}</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>{$lang['poll_pb_cancel']}</a>
             </div>
         </div>
     </form>";
@@ -380,10 +378,10 @@ function makepoll()
             $choices_count += intval(count($data['choice']));
         }
     }
-    if (count($questions) > $site_config['max_poll_questions']) {
+    if (count($questions) > $site_config['poll']['max_questions']) {
         die('poll_to_many');
     }
-    if ($choices_count > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
+    if ($choices_count > ($site_config['poll']['max_questions'] * $site_config['poll']['max_choices_per_question'])) {
         die('poll_to_many');
     }
     if (isset($_POST['mode']) && $_POST['mode'] == 'poll_update') {

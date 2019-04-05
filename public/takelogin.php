@@ -20,7 +20,7 @@ function failedloginscheck()
 
     $ip = getip(true);
     $total = $failed_logins->get($ip);
-    if ($total >= $site_config['failedlogins']) {
+    if ($total >= $site_config['login']['failed']) {
         $set = ['banned' => 'yes'];
         $failed_logins->set($set, $ip);
         stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.', null);
@@ -32,7 +32,7 @@ $response = !empty($_POST['token']) ? $_POST['token'] : '';
 extract($_POST);
 unset($_POST);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $user_id = $user_stuffs->get_bot_id($site_config['upload_min_class'], $bot, $torrent_pass, $auth);
+    $user_id = $user_stuffs->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
 }
 
 if (empty($user_id)) {
@@ -42,11 +42,11 @@ if (empty($user_id)) {
     if (empty($password)) {
         stderr('Error', "Password can't be blank", null);
     }
-    if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    if (!empty($site_config['recaptcha']['secret'])) {
         $result = verify_recaptcha($response);
         if ($result !== 'valid') {
             $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
-            header("Location: {$site_config['baseurl']}/login.php");
+            header("Location: {$site_config['paths']['baseurl']}/login.php");
             die();
         }
     }
@@ -104,12 +104,12 @@ if (!password_verify($password, $row['passhash'])) {
     $values[] = [
         'sender' => 0,
         'receiver' => $userid,
-        'msg' => "[size=7][color=red]Security Alert[/color][/size][br]Account ID: {$userid}[br][b]Ip Address[/b]: " . htmlsafechars($ip) . '[br]Somebody (' . htmlsafechars($username) . ") tried to login but failed![br]If this wasn't you please report this event to a {$site_config['site_name']} staff member.[br][br]Thank you.[br]",
+        'msg' => "[size=7][color=red]Security Alert[/color][/size][br]Account ID: {$userid}[br][b]Ip Address[/b]: " . htmlsafechars($ip) . '[br]Somebody (' . htmlsafechars($username) . ") tried to login but failed![br]If this wasn't you please report this event to a {$site_config['site']['name']} staff member.[br][br]Thank you.[br]",
         'subject' => 'Failed login',
         'added' => $dt,
     ];
     $message_stuffs->insert($values);
-    bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
+    bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['paths']['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 } else {
     rehash_password($row['passhash'], $password, $userid);
 }
@@ -118,7 +118,7 @@ if ($row['enabled'] === 'no') {
     bark($lang['tlogin_disabled']);
 }
 if ($row['status'] === 'pending') {
-    if ($site_config['email_confirm']) {
+    if ($site_config['signup']['email_confirm']) {
         bark('You have not confirmed your amail address. Please use the link in the email that you should have received.');
     }
     bark('Your account has not been confirmed.');
@@ -161,12 +161,12 @@ $session->set('userID', $userid);
 $session->set('username', $username);
 $session->set('remembered_by_cookie', false);
 
-$expires = !empty($remember) ? $site_config['expires']['remember_me'] * 86400 : $site_config['cookie_lifetime'] * 60;
+$expires = !empty($remember) ? $site_config['expires']['remember_me'] * 86400 : $site_config['cookies']['lifetime'] * 60;
 $expires = $expires >= 900 ? $expires : 900;
 $user_stuffs->set_remember($userid, $expires);
 
 if (isset($returnto)) {
-    header("Location: {$site_config['baseurl']}" . urldecode($returnto));
+    header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
 } else {
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
 }

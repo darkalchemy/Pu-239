@@ -20,7 +20,7 @@ $lang = [
     'email_subjdetails' => 'account details',
     'email_subjreset' => 'password reset confirmation',
     'email_request' => doc_head() . "
-    <title>{$site_config['site_name']} Reset Password Request</title>
+    <title>{$site_config['site']['name']} Reset Password Request</title>
 </head>
 <body>
 <p>Someone, hopefully you, requested that the password for the account associated with this email address (%s) be reset.</p>
@@ -36,7 +36,7 @@ $lang = [
 </html>",
     'email_newpass' => "<head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>{$site_config['site_name']} Reset Password</title>
+    <title>{$site_config['site']['name']} Reset Password</title>
 </head>
 <body>
 <p>As per your request we have generated a new password for your account.</p>

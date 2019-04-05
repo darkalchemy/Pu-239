@@ -11,7 +11,7 @@
 global $site_config, $CURUSER;
 
 // Define AJAX Chat user roles:
-define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
+define('AJAX_CHAT_CHATBOT', $site_config['chatbot']['role']);
 
 // AJAX Chat config parameters:
 $config = [];
@@ -24,13 +24,13 @@ $config['js_log'] = get_file_name('chat_log_js');
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:
-$config['dbConnection']['host'] = $_ENV['DB_HOST'];
+$config['dbConnection']['host'] = $site_config['database']['host'];
 // Database username:
-$config['dbConnection']['user'] = $_ENV['DB_USERNAME'];
+$config['dbConnection']['user'] = $site_config['database']['username'];
 // Database password:
-$config['dbConnection']['pass'] = $_ENV['DB_PASSWORD'];
+$config['dbConnection']['pass'] = $site_config['database']['password'];
 // Database name:
-$config['dbConnection']['name'] = $_ENV['DB_DATABASE'];
+$config['dbConnection']['name'] = $site_config['database']['database'];
 // Database type:
 $config['dbConnection']['type'] = null;
 // Database link:
@@ -126,21 +126,21 @@ $config['sourceEncoding'] = 'UTF-8';
 $config['contentType'] = null;
 
 // Site name:
-$config['siteName'] = $site_config['site_name'];
+$config['siteName'] = $site_config['site']['name'];
 
 // Session name used to identify the session cookie:
-$config['sessionName'] = $site_config['sessionName'];
+$config['sessionName'] = $site_config['session']['name'];
 // Prefix added to every session key:
-$config['sessionKeyPrefix'] = $site_config['sessionKeyPrefix'];
+$config['sessionKeyPrefix'] = $site_config['session']['prefix'];
 // The lifetime of the language, style and setting cookies in days:
-$config['sessionCookieLifeTime'] = $site_config['cookie_lifetime'];
+$config['sessionCookieLifeTime'] = $site_config['cookies']['lifetime'];
 // The path of the cookies, '/' allows to read the cookies from all directories:
-$config['sessionCookiePath'] = $site_config['cookie_path'];
+$config['sessionCookiePath'] = $site_config['cookies']['path'];
 // The domain of the cookies, defaults to the hostname of the server if set to null:
-$config['sessionCookieDomain'] = $site_config['cookie_domain'];
+$config['sessionCookieDomain'] = $site_config['cookies']['domain'];
 
 // Default channelName used together with the defaultChannelID if no channel with this ID exists:
-$config['defaultChannelName'] = $site_config['site_name'];
+$config['defaultChannelName'] = $site_config['site']['name'];
 // ChannelID used when no channel is given:
 $config['defaultChannelID'] = 0;
 // Defines an array of channelIDs (e.g. array(0, 1)) to limit the number of available channels, will be ignored if set to null:
@@ -210,11 +210,11 @@ $config['changedNickSuffix'] = '';
 $config['allowUserMessageDelete'] = true;
 
 // The userID used for ChatBot messages:
-$config['chatBotID'] = $site_config['chatBotID'];
+$config['chatBotID'] = $site_config['chatbot']['id'];
 // The userName used for ChatBot messages
-$config['chatBotName'] = $site_config['chatBotName'];
+$config['chatBotName'] = $site_config['chatbot']['name'];
 // The userRole used for ChatBot messages:
-$config['chatBotRole'] = $site_config['chatBotRole'];
+$config['chatBotRole'] = $site_config['chatbot']['role'];
 // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:
 $config['inactiveTimeout'] = 5;
 // Interval in minutes to check for inactive users:
@@ -279,7 +279,7 @@ $config['socketServerPort'] = 1935;
 $config['socketServerChatID'] = 0;
 
 // This is used to anonymize the external urls
-$config['anonymous_link'] = $site_config['anonymizer_url'];
+$config['anonymous_link'] = $site_config['site']['anonymizer_url'];
 
 // Font Scaling
 $config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] - 5 . '%' : '80%';

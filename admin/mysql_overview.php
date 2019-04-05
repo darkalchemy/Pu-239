@@ -17,9 +17,9 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
     $sql = "OPTIMIZE TABLE $Table";
     if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
         $query = $fluent->getPdo()
-                        ->prepare($sql);
+            ->prepare($sql);
         $query->execute();
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
         exit;
     }
 }
@@ -46,7 +46,7 @@ $heading = "
 
 $count = 0;
 $tables = $fluent->getPdo()
-                 ->prepare('SHOW TABLE STATUS');
+    ->prepare('SHOW TABLE STATUS');
 $tables->execute();
 $query = $tables->fetchAll();
 
@@ -65,11 +65,11 @@ if (!empty($query)) {
         $autoincrement = !empty($row['Auto_increment']) ? $row['Auto_increment'] : 'null';
         $thispage = '&amp;Do=optimize&amp;table=' . urlencode($row['Name']);
         $overhead = ($row['Data_free'] > 1024 * 1024 * 10) ? "
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'>
                     <span class='has-text-danger has-text-weight-bold'>$data_free</span>
                 </a>" : $data_free;
         $body .= '
-            <tr >
+            <tr>
                 <td>' . strtoupper($row['Name']) . "</td>
                 <td class='has-text-centered'>{$row['Rows']}</td>
                 <td class='has-text-centered'>{$avg_length}</td>

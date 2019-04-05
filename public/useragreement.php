@@ -16,7 +16,7 @@ $lang = array_merge(load_language('global'), load_language('useragreement'));
 
 $HTMLOUT = "
     <div class='portlet padbottom20 has-text-centered'>
-        <h1>{$site_config['site_name']} {$lang['frame_usragrmnt']}</h1>
+        <h1>{$site_config['site']['name']} {$lang['frame_usragrmnt']}</h1>
         <div class='text-justify'>
             {$lang['text_usragrmnt']}
         </div>

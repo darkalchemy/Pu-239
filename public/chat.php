@@ -13,7 +13,7 @@ $irc_channel = '#pu-239';
 $HTMLOUT = "
     <div class='padding20'>
     <p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
-    <div class='maintitle'>{$site_config['site_name']}</div>
+    <div class='maintitle'>{$site_config['site']['name']}</div>
     <div class='row1'>
     <applet code='IRCApplet.class' codebase='./javairc/' archive='irc.jar,pixx.jar' width='640' height='400'>
       <param name='CABINETS' value='irc.cab,securedirc.cab,pixx.cab'>
@@ -23,7 +23,7 @@ $HTMLOUT = "
       <param name='fullname' value='Java User'>
       <param name='host' value='{$irc_url}'>
       <param name='gui' value='pixx'>
-      <param name='quitmessage' value='{$site_config['site_name']} forever!'>
+      <param name='quitmessage' value='{$site_config['site']['name']} forever!'>
       <param name='asl' value='true'>
       <param name='command1' value='/join {$irc_channel}'>
       <param name='style:bitmapsmileys' value='true'>

@@ -19,7 +19,7 @@ if (!empty($search)) {
 }
 //== Delete items older than 1 month
 $secs = 30 * 86400;
-sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added > $secs") or sqlerr(__FILE__, __LINE__);
+sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added>$secs") or sqlerr(__FILE__, __LINE__);
 $res = sql_query("SELECT COUNT(id) FROM infolog $where");
 $row = mysqli_fetch_array($res);
 $count = $row[0];
@@ -30,7 +30,7 @@ $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pa
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['sysoplog_staff']}</h1>
     <div class='has-text-centered bottom20'>
-        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=sysoplog&amp;action=sysoplog' accept-charset='utf-8'>
+        <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=sysoplog&amp;action=sysoplog' accept-charset='utf-8'>
             <input type='text' name='search' size='40' value='' placeholder='{$lang['sysoplog_search']}'>
             <input type='submit' value='{$lang['sysoplog_search']}' class='button is-small'>
         </form>

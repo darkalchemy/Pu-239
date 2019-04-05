@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if (!$q) {
         stderr('Error', 'Something wrong happned, please retry');
     } else {
-        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();" ><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" class="button is-small" value="Back to Promos"></a>');
+        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['paths']['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" class="button is-small" value="Back to Promos"></a>');
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'signup') {
     $r_check = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
@@ -123,29 +123,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             //==Updating promo table
             $userid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
-            sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id = ' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id=' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)
-            $subject = $site_config['site_name'] . ' user registration confirmation';
+            $subject = $site_config['site']['name'] . ' user registration confirmation';
             $message = 'Hi!
-                        You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$site_config['site_name']}
+                        You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$site_config['site']['name']}
                             
                         To confirm your account click the link below
-                        {$site_config['baseurl']}/confirm.php?id=" . (int) $userid . "
+                        {$site_config['paths']['baseurl']}/confirm.php?id=" . (int) $userid . "
 
                         Welcome and enjoy your stay 
-                        Staff at {$site_config['site_name']}";
-            $headers = 'From: ' . $site_config['site_email'] . "\r\n" . 'Reply-To:' . $site_config['site_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+                        Staff at {$site_config['site']['name']}";
+            $headers = 'From: ' . $site_config['site']['email'] . "\r\n" . 'Reply-To:' . $site_config['site']['email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
             $mail = @mail($email, $subject, $message, $headers);
 
             //==New member pm
             $added = TIME_NOW;
             $subject = sqlesc('Welcome');
-            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n");
+            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site']['name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site']['name']} staff.\n");
             sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
             //==End new member pm
             write_log('User account ' . (int) $id . ' (' . htmlsafechars($username) . ') was created');
-            if ($site_config['autoshout_on']) {
-                $message = "Welcome New {$site_config['site_name']} Member : - " . htmlsafechars($username) . '';
+            if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+                $message = "Welcome New {$site_config['site']['name']} Member : - " . htmlsafechars($username) . '';
                 autoshout($message);
             }
 
@@ -179,9 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                         <td class='has-text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60'></td>
                       </tr>
                       <tr>
-                      <td nowrap='nowrap' class='has-text-right' >Days valid</td>
+                      <td nowrap='nowrap' class='has-text-right'>Days valid</td>
                         <td class='has-text-left' width='100%' colspan='1'><input type='text' name='days_valid' size='15'></td>
-                        <td nowrap='nowrap' class='has-text-right' >Max users</td>
+                        <td nowrap='nowrap' class='has-text-right'>Max users</td>
                         <td class='has-text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15'></td>
                       </tr>
                       <tr>
@@ -197,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                         <td class='has-text-centered'><input type='text' name='bonus_invites' size='15'></td>
                         <td class='has-text-centered'><input type='text' name='bonus_karma' size='15'></td>
                       </tr>
-                      <tr><td class='has-text-centered' colspan='4'><input type='hidden' value='addpromo' name='do' ><input type='submit' value='Add Promo!' class='button is-small'></td></tr>
+                      <tr><td class='has-text-centered' colspan='4'><input type='hidden' value='addpromo' name='do'><input type='submit' value='Add Promo!' class='button is-small'></td></tr>
                     </table>
                 </form>";
     $HTMLOUT .= end_frame();
@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if ($id == 0) {
         die("Can't find id");
     } else {
-        $q1 = sql_query('SELECT name, users FROM promo WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
+        $q1 = sql_query('SELECT name, users FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($q1) == 1) {
             $a1 = mysqli_fetch_assoc($q1);
             if (!empty($a1['users'])) {
@@ -311,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     <table width='200' class='has-text-centered' style='border-collapse: collapse;'>
     <tr><td class='rowhead' class='has-text-left' width='100'> User</td><td class='rowhead' class='has-text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
-                    $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='has-text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
+                    $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='has-text-left' nowrap='nowrap'>" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
                 }
                 $HTMLOUT .= "</table>
                         <br>
@@ -350,30 +350,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added</td>
                 <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Valid Till</td>
                 <td class='has-text-centered' nowrap='nowrap' colspan='2'>Users</td>
-                <td class='has-text-centered' nowrap='nowrap' colspan='3' >Bonuses</td>
+                <td class='has-text-centered' nowrap='nowrap' colspan='3'>Bonuses</td>
                 <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added by</td>       
                 <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Remove</td>       
             </tr>
             <tr>
                 <td class='has-text-centered' nowrap='nowrap'>max</td>
                 <td class='has-text-centered' nowrap='nowrap'>till now</td>
-                <td class='has-text-centered' nowrap='nowrap' >upload</td>
-                <td class='has-text-centered' nowrap='nowrap' >invites</td>
-                <td class='has-text-centered' nowrap='nowrap' >karma</td>       
+                <td class='has-text-centered' nowrap='nowrap'>upload</td>
+                <td class='has-text-centered' nowrap='nowrap'>invites</td>
+                <td class='has-text-centered' nowrap='nowrap'>karma</td>       
             </tr>";
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-                <td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();'></td>
+                <td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['paths']['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();'></td>
                 <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', $ar['added'])) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['max_users']) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int) $ar['id'] . ')" >' . (int) $ar['accounts_made'] . '</a>' : 0) . "</td>
+                <td nowrap='nowrap' class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int) $ar['id'] . ')">' . (int) $ar['accounts_made'] . '</a>' : 0) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_invites']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_karma']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
-                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' alt='Drop'></a></td>
+                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['paths']['images_baseurl']}del.png' alt='Drop'></a></td>
             </tr>";
         }
         $HTMLOUT .= '</table>';

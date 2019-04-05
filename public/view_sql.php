@@ -13,5 +13,5 @@ $stdfoot = [
 ];
 $lang = load_language('global');
 
-$html = "<iframe src='{$site_config['baseurl']}/ajax/view_sql.php?username={$CURUSER['username']}&db={$_ENV['DB_DATABASE']}' id='iframe_adminer' name='iframe_adminer' scrolling='no' onload='resizeIframe(this)' class='iframe'></iframe>";
+$html = "<iframe src='{$site_config['paths']['baseurl']}/ajax/view_sql.php?username={$CURUSER['username']}&db={$site_config['database']['database']}' id='iframe_adminer' name='iframe_adminer' scrolling='no' onload='resizeIframe(this)' class='iframe'></iframe>";
 echo stdhead('Adminer') . wrapper($html) . stdfoot($stdfoot);

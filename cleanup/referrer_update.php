@@ -16,8 +16,8 @@ function referrer_update($data)
     $days = 30 * 86400;
     $dt = TIME_NOW - $days;
     $fluent->deleteFrom('referrers')
-           ->where('date < ?', $dt)
-           ->execute();
+        ->where('date < ?', $dt)
+        ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

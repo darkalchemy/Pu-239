@@ -28,12 +28,12 @@ if (!filter_var($url, FILTER_VALIDATE_URL)) {
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
 $image_proxy = new Pu239\ImageProxy();
-$SaLt = $site_config['site']['salt'];
-$SaLty = $site_config['site']['salty'];
-$skey = $site_config['site']['skey'];
-$maxsize = $site_config['bucket_maxsize'];
+$SaLt = $site_config['salt']['one'];
+$SaLty = $site_config['salt']['two'];
+$skey = $site_config['salt']['three'];
+$maxsize = $site_config['bucket']['maxsize'];
 $folders = date('Y/m');
-$formats = $site_config['allowed_formats'];
+$formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
 $str = str_replace('.', '', $str);
 $bucketdir = BITBUCKET_DIR . $folders . '/';
@@ -56,7 +56,7 @@ if (!file_put_contents($temppath, $image)) {
 }
 
 $it1 = exif_imagetype($temppath);
-if (!in_array($it1, $site_config['allowed_exif_types'])) {
+if (!in_array($it1, $site_config['images']['exif'])) {
     echo json_encode(['msg' => $lang['bitbucket_invalid']]);
     die();
 }
@@ -87,7 +87,7 @@ if (!file_exists($path)) {
     die();
 }
 $image_proxy->optimize_image($path, null, null, false);
-$image = "{$site_config['baseurl']}/img.php?{$pathlink}";
+$image = "{$site_config['paths']['baseurl']}/img.php?{$pathlink}";
 
 if (!empty($image)) {
     echo json_encode([

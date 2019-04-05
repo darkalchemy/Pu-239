@@ -42,7 +42,7 @@ function valid_torrent_name($torrent_name)
 }
 
 $nfoaction = '';
-$select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < UC_STAFF) {
@@ -71,8 +71,8 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
-    if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > $site_config['nfo_size']) {
-        $session->set('is-warning', 'NFO is too big! Max ' . number_format($site_config['nfo_size']) . ' bytes!');
+    if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > $site_config['site']['nfo_size']) {
+        $session->set('is-warning', 'NFO is too big! Max ' . number_format($site_config['site']['nfo_size']) . ' bytes!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
@@ -104,7 +104,7 @@ foreach ([
     }
 }
 if (!empty($_POST['youtube'])) {
-    preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube);
+    preg_match('/' . $site_config['youtube']['pattern'] . '/i', $_POST['youtube'], $temp_youtube);
     if (isset($temp_youtube[0]) && $temp_youtube[0] != $fetch_assoc['youtube']) {
         $updateset[] = 'youtube = ' . sqlesc($temp_youtube[0]);
         $torrent_cache['youtube'] = $temp_youtube[0];
@@ -153,7 +153,7 @@ if ($CURUSER['class'] > UC_STAFF) {
     $torrent_cache['banned'] = 'no';
 }
 
-if (in_array($category, $site_config['movie_cats'])) {
+if (in_array($category, $site_config['categories']['movie'])) {
     $subs = isset($_POST['subs']) ? implode(',', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;
@@ -162,7 +162,7 @@ if (in_array($category, $site_config['movie_cats'])) {
 if (($sticky = (!empty($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {
     $updateset[] = 'sticky = ' . sqlesc($sticky);
     if ($sticky === 'yes') {
-        sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid = ' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid=' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
     }
 }
 
@@ -306,7 +306,7 @@ if ($genreaction != 'keep') {
     $torrent_cache['newgenre'] = $genre;
 }
 if (count($updateset) > 0) {
-    $sql = 'UPDATE torrents SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($id);
+    $sql = 'UPDATE torrents SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 if ($torrent_cache) {
@@ -328,5 +328,5 @@ write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fe
 $cache->delete('editedby_' . $id);
 
 $session->set('is-success', $lang['details_success_edit']);
-header("Location: {$site_config['baseurl']}/details.php?id=$id");
+header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id");
 die();

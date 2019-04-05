@@ -2,19 +2,24 @@
 
 require_once INCL_DIR . 'function_html.php';
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Scriptotek\GoogleBooks\GoogleBooks;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @param $isbn
- * @param $name
- * @param $tid
- * @param $poster
+ * @param string $isbn
+ * @param string $name
+ * @param int    $tid
+ * @param string $poster
  *
- * @return array
+ * @return array|bool
  *
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ * @throws InvalidManipulation
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  */
-function get_book_info($isbn, $name, $tid, $poster)
+function get_book_info(string $isbn, string $name, int $tid, string $poster)
 {
     global $site_config, $CURUSER, $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
 
@@ -22,13 +27,12 @@ function get_book_info($isbn, $name, $tid, $poster)
         return false;
     }
 
-    $search = !empty($isbn) && $isbn != '000000' ? $isbn : $name;
     $api_hits = $cache->get('google_api_hits_');
     $cache->delete('book_info_' . $tid);
     $ebook = $cache->get('book_info_' . $tid);
     if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
-        if (!empty($_ENV['GOOGLE_API_KEY'])) {
+        if (!empty($site_config['api']['google'])) {
             $api_limit = 1000;
         }
         if ($api_hits >= $api_limit) {
@@ -52,8 +56,8 @@ function get_book_info($isbn, $name, $tid, $poster)
             $cache->increment('google_api_hits_', 1, 0, $secs);
         }
 
-        if (!empty($_ENV['GOOGLE_API_KEY'])) {
-            $books = new GoogleBooks(['key' => $_ENV['GOOGLE_API_KEY']]);
+        if (!empty($site_config['api']['google'])) {
+            $books = new GoogleBooks(['key' => $site_config['api']['google']]);
         } else {
             $books = new GoogleBooks();
         }
@@ -63,18 +67,20 @@ function get_book_info($isbn, $name, $tid, $poster)
             $book = $books->volumes->firstOrNull($name);
         }
 
-        $keys = $ebook['authors'] = $categories = [];
+        $ebook['authors'] = $categories = [];
         if (empty($book->title)) {
             $cache->set('book_info_' . $tid, 'failed', 86400);
 
             return false;
         }
+
         $ebook['title'] = $book->title;
         if (!empty($book->authors)) {
             foreach ($book->authors as $author) {
                 $ebook['authors'][] = $author;
             }
         }
+
         $ebook['rating'] = get_or_null($book->averageRating);
         $ebook['publisher'] = get_or_null($book->publisher);
         $ebook['publishedDate'] = get_or_null($book->publishedDate);
@@ -90,6 +96,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                 }
             }
         }
+
         if (!empty($book->categories)) {
             foreach ($book->categories as $category) {
                 $ebook['categories'][] = $category;
@@ -111,6 +118,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                 'newgenre' => $ebook['newgenre'],
                 'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
             ];
+
             if (!empty($ebook['rating'])) {
                 $set['rating'] = $ebook['rating'];
             }
@@ -138,6 +146,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                         <span class='has-text-danger column is-2 size_5 padding5'>Published: </span>
                         <span class='column padding5'>{$ebook['publisher']}" . (!empty($ebook['publisher']) ? '<br>' : '') . "{$ebook['publishedDate']}</span>
                     </div>";
+
     if (!empty($ebook['description'])) {
         $ebook_info .= "
                     <div class='columns'>
@@ -145,6 +154,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                         <span class='column padding5'>{$ebook['description']}</span>
                     </div>";
     }
+
     if (!empty($ebook['isbn10'])) {
         $ebook_info .= "
                     <div class='columns'>
@@ -154,6 +164,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                         </span>
                     </div>";
     }
+
     if (!empty($ebook['isbn13'])) {
         $ebook_info .= "
                     <div class='columns'>
@@ -213,7 +224,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         <div class='padding10'>
             <div class='columns'>
                 <div class='column is-3'>
-                    <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
+                    <img alt='' src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $ebook_info

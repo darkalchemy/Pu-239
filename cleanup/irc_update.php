@@ -18,9 +18,9 @@ function irc_update($data)
     $res = sql_query("SELECT id, seedbonus, irctotal FROM users WHERE onirc = 'yes'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         while ($arr = mysqli_fetch_assoc($res)) {
-            $users_buffer[] = '(' . $arr['id'] . ', ' . $site_config['bonus_irc_per_duration'] . ', ' . $site_config['autoclean_interval'] . ')';
-            $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_irc_per_duration']);
-            $update['irctotal'] = ($arr['irctotal'] + $site_config['autoclean_interval']);
+            $users_buffer[] = '(' . $arr['id'] . ', ' . $site_config['bonus']['irc_per_duration'] . ', ' . $site_config['irc']['autoclean_interval'] . ')';
+            $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus']['irc_per_duration']);
+            $update['irctotal'] = ($arr['irctotal'] + $site_config['irc']['autoclean_interval']);
             $cache->update_row('user_' . $arr['id'], [
                 'irctotal' => $update['irctotal'],
                 'seedbonus' => $update['seedbonus'],

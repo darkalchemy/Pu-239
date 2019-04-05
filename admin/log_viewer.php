@@ -58,7 +58,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     if (!empty($contents)) {
         $contents = array_reverse($contents);
         $count = count($contents);
-        $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
+        $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
     }
     $i = 0;
     $content = [];
@@ -139,7 +139,7 @@ if (!empty($files)) {
         </tr>';
     }
     $HTMLOUT .= "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer' method='post' name='checkme' accept-charset='utf-8'>" . main_table($body, $heading) . "
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=log_viewer' method='post' name='checkme' accept-charset='utf-8'>" . main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' class='button is-small' name='delete' value='Delete'>
             </div>

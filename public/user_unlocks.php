@@ -35,17 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($setbits || $clrbits) {
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 
-                 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     // grab current data
     $res = sql_query('SELECT perms FROM users
-                     WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                     WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
     $cache->update_row('user_' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
-    header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');
+    header('Location: ' . $site_config['paths']['baseurl'] . '/user_unlocks.php');
     die();
 }
 $checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
@@ -55,25 +55,25 @@ $HTMLOUT = '
             <div class="bg-02 top20">
                 <h1 class="has-text-centered">User Unlock Settings</h1>
                 <form action="" method="post" accept-charset="utf-8">
-                    <div class="level - center">
-                        <div class="w - 20">
-                            <span class="bordered level - center bg - 02">
-                                <div class="w - 100">Enable Bonus Moods?</div>
+                    <div class="level-center">
+                        <div class="w-20">
+                            <span class="bordered level-center bg-02">
+                                <div class="w-100">Enable Bonus Moods?</div>
                                 <div class="slideThree">
                                     <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . '>
                                     <label for="unlock_user_moods"></label>
                                 </div>
-                                <div class="w - 100">Check this option to unlock bonus mood smilies.</div>
+                                <div class="w-100">Check this option to unlock bonus mood smilies.</div>
                             </span>
                         </div>
-                        <div class="w - 20">
-                            <span class="bordered level - center bg - 02">
-                                <div class="w - 100">User Stealth Mode?</div>
+                        <div class="w-20">
+                            <span class="bordered level-center bg-02">
+                                <div class="w-100">User Stealth Mode?</div>
                                 <div class="slideThree">
                                     <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . '>
                                     <label for="perms_stealth"></label>
                                 </div>
-                                <div class="w - 100">Check this option to unlock Stealth Mode.</div>
+                                <div class="w-100">Check this option to unlock Stealth Mode.</div>
                             </span>
                         </div>
                     </div>

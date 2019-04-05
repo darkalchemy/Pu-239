@@ -38,8 +38,8 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
 }
 $lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
 $row = $fluent->from('torrents')
-              ->where('id = ?', $id)
-              ->fetch();
+    ->where('id=?', $id)
+    ->fetch();
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }
@@ -117,8 +117,8 @@ $HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . 
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
 }
-$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
-if ($CURUSER['class'] >= $site_config['upload_min_class']) {
+$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
+if ($CURUSER['class'] >= $site_config['allowed']['upload']) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5'>No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' class='w-100'>", 1);
 }
@@ -153,7 +153,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
 }
 
-if ($CURUSER['class'] >= $site_config['staff_allowed']['torrents_disable_comments']) {
+if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     if ($row['allow_comments'] === 'yes') {
         $messc = '&#160;Comments are allowed for everyone on this torrent!';
     } else {

@@ -12,7 +12,7 @@ if ($usercomments === false || is_null($usercomments)) {
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
     if ($usercomments && (($user['class'] >= (UC_MIN + 1) && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {
-        $HTMLOUT .= "<td><a href='{$site_config['baseurl']}/userhistory.php?action=viewcomments&amp;id={$user['id']}'>" . (int) $usercomments . "</a></td></tr>\n";
+        $HTMLOUT .= "<td><a href='{$site_config['paths']['baseurl']}/userhistory.php?action=viewcomments&amp;id={$user['id']}'>" . (int) $usercomments . "</a></td></tr>\n";
     } else {
         $HTMLOUT .= '<td>' . (int) $usercomments . "</td></tr>\n";
     }

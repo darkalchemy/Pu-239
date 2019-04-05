@@ -55,14 +55,14 @@ if ($_hash === $hash) {
             if ($a['warned'] === 'yes') {
                 $txt .= 'This user is warned. Reason ' . $a['warn_reason'] . "\n";
             }
-            $txt .= $site_config['baseurl'] . '/userdetails.php?id=' . $a['id'];
+            $txt .= $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $a['id'];
             echo $txt;
         } else {
             die('User "' . $_user . '" not found!');
         }
         unset($txt, $a, $q);
     } elseif ($_do === 'torrents') {
-        $q = sql_query('SELECT count(p.id) AS count, p.seeder,p.agent,p.port,p.connectable, u.username FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid WHERE u.username=' . sqlesc($_user) . ' GROUP BY p.seeder') or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $q = sql_query('SELECT count(p.id) AS count, p.seeder,p.agent,p.port,p.connectable, u.username FROM peers AS p LEFT JOIN users AS u ON u.id=p.userid WHERE u.username=' . sqlesc($_user) . ' GROUP BY p.seeder') or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         if (mysqli_num_rows($q) == 0) {
             die('User "' . $_user . '"  has no torrent active');
         }
@@ -115,7 +115,7 @@ if ($_hash === $hash) {
                 break;
 
             case 'posters':
-                $_q = "SELECT count(p.id) AS c, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
+                $_q = "SELECT count(p.id) AS c, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
                 $txt = "Best posters (selected after number of posts)\n";
                 break;
         }

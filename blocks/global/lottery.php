@@ -6,7 +6,7 @@ if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');
     if ($lottery_info === false || is_null($lottery_info)) {
         $lottery_info = $fluent->from('lottery_config')
-                               ->fetchPairs('name', 'value');
+            ->fetchPairs('name', 'value');
 
         $cache->set('lottery_info_', $lottery_info, 86400);
     }
@@ -14,7 +14,7 @@ if ($CURUSER) {
     if ($lottery_info['enable']) {
         $htmlout .= "
     <li>
-        <a href='{$site_config['baseurl']}/lottery.php'>
+        <a href='{$site_config['paths']['baseurl']}/lottery.php'>
             <b class='button tag is-success is-small dt-tooltipper-large' data-tooltip-content='#lottery_tooltip'>
                 Lottery in Progress
             </b>

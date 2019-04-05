@@ -19,7 +19,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     $cast = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
     $tvmaze_display['show'] = [
         'name' => line_by_line('Title', '%s'),
-        'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
+        'url' => line_by_line('Link', "<a href='{$site_config['site']['anonymizer_url']}%s'>TVMaze Lookup</a>"),
         'premiered' => line_by_line('Started', '%s'),
         'airtime' => line_by_line('Airs', '%s'),
         'origin' => line_by_line('Origin: Language', '%s'),
@@ -92,7 +92,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
     }
     $tvmaze_display['episode'] = [
         'name' => line_by_line('Episode Title', '%s'),
-        'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
+        'url' => line_by_line('Link', "<a href='{$site_config['site']['anonymizer_url']}%s'>TVMaze Lookup</a>"),
         'timestamp' => line_by_line('Aired', '%s'),
         'runtime' => line_by_line('Runtime', '%s min'),
         'summary' => line_by_line('Summary', '%s'),
@@ -204,7 +204,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
     }
 
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);
-    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
     $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
     $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
     if (count($tvmaze_show_data['genres']) > 0) {

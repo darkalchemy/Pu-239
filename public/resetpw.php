@@ -29,12 +29,12 @@ if ($step == '1') {
         if (!mkglobal('email')) {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
-        if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+        if (!empty($site_config['recaptcha']['secret'])) {
             $response = !empty($_POST['token']) ? $_POST['token'] : '';
             $result = verify_recaptcha($response);
             if ($result !== 'valid') {
                 $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
-                header("Location: {$site_config['baseurl']}/resetpw.php");
+                header("Location: {$site_config['paths']['baseurl']}/resetpw.php");
                 die();
             }
         }
@@ -94,7 +94,7 @@ if ($step == '1') {
     if (!mkglobal('id:answer')) {
         die();
     }
-    $select = sql_query('SELECT id, username, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT id, username, hintanswer FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($select);
     if (!$fetch) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error5']}");
@@ -154,7 +154,7 @@ if ($step == '1') {
     if (!mkglobal('id:wantpassword:passagain:hash')) {
         die();
     }
-    $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT id, hintanswer FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($select) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
     if (empty($wantpassword)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error9']}");
@@ -175,7 +175,7 @@ if ($step == '1') {
         'passhash' => make_passhash($wantpassword),
     ];
     if ($user_stuffs->update($set, $id, false)) {
-        stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
+        stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['paths']['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
     } else {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     }
@@ -199,7 +199,7 @@ if ($step == '1') {
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input id='recover_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? ' disabled' : '') . '/>
+                            <input id='recover_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($site_config['recaptcha']['site']) ? ' disabled' : '') . '/>
                         </div>
                     </td>
                 </tr>', '', '', 'w-50', '') . '

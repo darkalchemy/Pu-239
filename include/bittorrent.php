@@ -2,20 +2,10 @@
 
 $starttime = microtime(true);
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once CONFIG_DIR . 'site.php';
-require_once INCL_DIR . 'function_common.php';
-require_once CONFIG_DIR . 'main.php';
-require_once VENDOR_DIR . 'autoload.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'app.php';
 
-$dotenv = new Dotenv\Dotenv(ROOT_DIR);
-$dotenv->load();
-
-require_once INCL_DIR . 'function_password.php';
-$cache = new Pu239\Cache();
-$fluent = new Pu239\Database();
+require_once INCL_DIR . 'function_users.php';
 $session = new Pu239\Session();
-require_once INCL_DIR . 'site_settings.php';
 $user_stuffs = new Pu239\User();
 $torrent_stuffs = new Pu239\Torrent();
 $image_stuffs = new Pu239\Image();
@@ -34,13 +24,12 @@ $happylog_stuffs = new Pu239\HappyLog();
 $snatched_stuffs = new Pu239\Snatched();
 $userblock_stuffs = new Pu239\Userblock();
 
-if ($site_config['socket']) {
-    $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
+if ($site_config['database']['use_socket']) {
+    $mysqli = new mysqli($site_config['database']['host'], $site_config['database']['username'], $site_config['database']['password'], $site_config['database']['database'], null, $site_config['database']['socket']);
 } else {
-    $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
+    $mysqli = new mysqli($site_config['database']['host'], $site_config['database']['username'], $site_config['database']['password'], $site_config['database']['database'], $site_config['database']['port']);
 }
 
-require_once CACHE_DIR . 'class_config.php';
 $session->start();
 
 require_once CLASS_DIR . 'class_blocks_index.php';
@@ -51,9 +40,9 @@ require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'database.php';
 
-if (!$site_config['in_production']) {
+if (!$site_config['site']['production']) {
     $pu239_version = new SebastianBergmann\Version('0.5', ROOT_DIR);
-    $site_config['version'] = $pu239_version->getVersion();
+    $site_config['sourcecode']['version'] = $pu239_version->getVersion();
 }
 
 $load = sys_getloadavg();
@@ -103,38 +92,6 @@ function htmlsafechars($txt = '')
 }
 
 /**
- * @param array $ids
- *
- * @return bool|string
- */
-function PostKey($ids = [])
-{
-    global $site_config;
-
-    if (!is_array($ids)) {
-        return false;
-    }
-
-    return hash('sha256', $site_config['tracker_post_key'] . implode('', $ids) . $site_config['tracker_post_key']);
-}
-
-/**
- * @param $ids
- * @param $key
- *
- * @return bool
- */
-function CheckPostKey($ids, $key)
-{
-    global $site_config;
-    if (!is_array($ids) || !$key) {
-        return false;
-    }
-
-    return $key == hash('sha256', $site_config['tracker_post_key'] . implode('', $ids) . $site_config['tracker_post_key']);
-}
-
-/**
  * @param $ip
  *
  * @return bool
@@ -161,7 +118,7 @@ function getip($login = false)
         $ip = '127.0.0.1';
     }
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
-    if ($login || ($site_config['ip_logging'] && !$no_log_ip)) {
+    if ($login || ($site_config['site']['ip_logging'] && !$no_log_ip)) {
         return $ip;
     }
 
@@ -190,10 +147,10 @@ function status_change(int $id)
         'status' => 0,
     ];
     $fluent->update('announcement_process')
-           ->set($set)
-           ->where('user_id = ?', $id)
-           ->where('status = 1')
-           ->execute();
+        ->set($set)
+        ->where('user_id=?', $id)
+        ->where('status = 1')
+        ->execute();
 }
 
 /**
@@ -244,7 +201,7 @@ function userlogin()
         $session->destroy();
     }
 
-    if (!$site_config['site_online'] && $users_data['class'] < UC_STAFF) {
+    if (!$site_config['site']['online'] && $users_data['class'] < UC_STAFF) {
         $session->destroy();
     }
 
@@ -274,11 +231,11 @@ function userlogin()
             ];
             $user_stuffs->update($set, $users_data['id']);
             write_log($msg);
-            $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
+            $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
             $subject = 'Fake Account Detected!';
             auto_post($subject, $body);
             $session->set('is-danger', 'This account has been banned');
-            header("Location: {$site_config['baseurl']}/logout.php");
+            header("Location: {$site_config['paths']['baseurl']}/logout.php");
             die();
         }
     }
@@ -363,26 +320,6 @@ function userlogin()
 }
 
 /**
- * @return string
- */
-function get_charset()
-{
-    global $CURUSER;
-
-    $lang_charset = isset($CURUSER['language']) ? $CURUSER['language'] : 0;
-    switch ($lang_charset) {
-        case $lang_charset == 2:
-            return 'ISO-8859-1';
-        case $lang_charset == 3:
-            return 'ISO-8859-17';
-        case $lang_charset == 4:
-            return 'ISO-8859-15';
-        default:
-            return 'UTF-8';
-    }
-}
-
-/**
  * @return int
  *
  * @throws \Envms\FluentPDO\Exception
@@ -397,14 +334,14 @@ function get_stylesheet()
         $user = $user_stuffs->getUserFromId($userid);
     }
 
-    $style = isset($user['stylesheet']) ? (int) $user['stylesheet'] : (int) $site_config['stylesheet'];
+    $style = isset($user['stylesheet']) ? $user['stylesheet'] : $site_config['site']['stylesheet'];
 
     $class_config = $cache->get('class_config_' . $style);
     if ($class_config === false || is_null($class_config)) {
         $class_config = $fluent->from('class_config')
-                               ->orderBy('value ASC')
-                               ->where('template = ?', $style)
-                               ->fetchAll();
+            ->orderBy('value ASC')
+            ->where('template = ?', $style)
+            ->fetchAll();
 
         $cache->set('class_config_' . $style, $class_config, 86400);
     }
@@ -412,7 +349,7 @@ function get_stylesheet()
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
             $site_config['class_names'][$arr['value']] = $arr['classname'];
             $site_config['class_colors'][$arr['value']] = $arr['classcolor'];
-            $site_config['class_images'][$arr['value']] = $site_config['pic_baseurl'] . "class/{$arr['classpic']}";
+            $site_config['class_images'][$arr['value']] = $site_config['paths']['images_baseurl'] . "class/{$arr['classpic']}";
         }
     }
 
@@ -426,7 +363,7 @@ function get_category_icons()
 {
     global $site_config, $CURUSER;
 
-    return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['categorie_icon'];
+    return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['site']['cat_icons'];
 }
 
 /**
@@ -436,7 +373,7 @@ function get_language()
 {
     global $site_config, $CURUSER;
 
-    return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language'];
+    return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language']['site'];
 }
 
 function get_template()
@@ -448,8 +385,8 @@ function get_template()
             require_once TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php";
         } else {
             if (isset($site_config)) {
-                if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
-                    require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
+                if (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
+                    require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
                 } else {
                     echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
                 }
@@ -462,8 +399,8 @@ function get_template()
             }
         }
     } else {
-        if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
-            require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
+        if (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
+            require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
         } else {
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
         }
@@ -485,8 +422,8 @@ function make_freeslots($userid, $key)
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
-                       ->where('userid = ?', $userid)
-                       ->fetchAll();
+            ->where('userid=?', $userid)
+            ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -507,13 +444,13 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
-                              ->where('parent_id = 0')
-                              ->orderBy('ordered');
+                ->where('parent_id=0')
+                ->orderBy('ordered');
             foreach ($parents as $parent) {
                 $children = $fluent->from('categories')
-                                   ->where('parent_id = ?', $parent['id'])
-                                   ->orderBy('ordered')
-                                   ->fetchAll();
+                    ->where('parent_id=?', $parent['id'])
+                    ->orderBy('ordered')
+                    ->fetchAll();
 
                 $parent['children'] = $children;
                 $ret[] = $parent;
@@ -525,9 +462,9 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
-                           ->select('p.name AS parent_name')
-                           ->leftJoin('categories AS p ON c.parent_id = p.id')
-                           ->orderBy('ordered');
+                ->select('p.name AS parent_name')
+                ->leftJoin('categories AS p ON c.parent_id=p.id')
+                ->orderBy('ordered');
 
             foreach ($cats as $cat) {
                 if (!empty($cat['parent_name'])) {
@@ -589,26 +526,26 @@ function mksize($size)
     }
 
     return round($size, [
-            0,
-            0,
-            1,
-            2,
-            2,
-            3,
-            3,
-            4,
-            4,
-        ][$i]) . ' ' . [
-            'B',
-            'kB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
-            'EB',
-            'ZB',
-            'YB',
-        ][$i];
+                            0,
+                            0,
+                            1,
+                            2,
+                            2,
+                            3,
+                            3,
+                            4,
+                            4,
+                        ][$i]) . ' ' . [
+                                           'B',
+                                           'kB',
+                                           'MB',
+                                           'GB',
+                                           'TB',
+                                           'PB',
+                                           'EB',
+                                           'ZB',
+                                           'YB',
+                                       ][$i];
 }
 
 /**
@@ -781,9 +718,9 @@ function sqlerr($file = '', $line = '')
 
     $the_error = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
-    if (!$site_config['sql_debug']) {
+    if (!$site_config['database']['debug']) {
         die();
-    } elseif ($site_config['sql_error_log'] && $site_config['sql_debug']) {
+    } elseif ($site_config['paths']['sql_error_log'] && $site_config['database']['debug']) {
         $_error_string = "\n===================================================";
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
@@ -792,7 +729,7 @@ function sqlerr($file = '', $line = '')
         $_error_string .= "\n in file " . $file . ' on line ' . $line;
         $_error_string .= "\n URL:" . !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Empty';
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
-        if ($FH = @fopen($site_config['sql_error_log'], 'a')) {
+        if ($FH = @fopen($site_config['paths']['sql_error_log'], 'a')) {
             @fwrite($FH, $_error_string);
             @fclose($FH);
         }
@@ -875,9 +812,9 @@ function get_time_offset()
 {
     global $CURUSER, $site_config;
 
-    $r = !empty($CURUSER['time_offset']) ? $CURUSER['time_offset'] * 3600 : $site_config['time_offset'] * 3600;
-    if ($site_config['time_adjust']) {
-        $r += $site_config['time_adjust'] * 60;
+    $r = !empty($CURUSER['time_offset']) ? $CURUSER['time_offset'] * 3600 : $site_config['time']['offset'] * 3600;
+    if ($site_config['time']['adjust']) {
+        $r += $site_config['time']['adjust'] * 60;
     }
     if (isset($CURUSER['dst_in_use']) && $CURUSER['dst_in_use']) {
         $r += 3600;
@@ -897,22 +834,27 @@ function get_time_offset()
  */
 function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
-    global $site_config;
+    global $site_config, $session;
 
     static $offset_set = 0;
     static $today_time = 0;
     static $yesterday_time = 0;
     static $tomorrow_time = 0;
+
+    $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') : $site_config['site']['use_12_hour'];
+    $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
+    $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
+
     $time_options = [
-        'JOINED' => $site_config['time_joined'],
-        'SHORT' => $site_config['time_short'],
-        'LONG' => $site_config['time_long'],
-        'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
-        'WITH_SEC' => $site_config['time_with_seconds'],
-        'WITHOUT_SEC' => $site_config['time_without_seconds'],
-        'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
-        'FORM' => $site_config['time_form'] ? $site_config['time_form'] : 'Y-m-d',
-        'TIME' => $site_config['time_time'],
+        'JOINED' => $site_config['time']['joined'],
+        'SHORT' => $site_config['time']['short'] . $time_string,
+        'LONG' => $site_config['time']['long'] . $time_string,
+        'TINY' => $site_config['time']['tiny'],
+        'DATE' => $site_config['time']['date'],
+        'FORM' => $site_config['time']['form'],
+        'TIME' => $time_string,
+        'WITH_SEC' => $time_string,
+        'WITHOUT_SEC' => $time_string_without_seconds,
     ];
     if (!$date) {
         return '--';
@@ -922,17 +864,17 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
     }
     if ($offset_set == 0) {
         $GLOBALS['offset'] = get_time_offset();
-        if ($site_config['time_use_relative']) {
+        if ($site_config['time']['use_relative']) {
             $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
             $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
             $tomorrow_time = gmdate('d,m,Y', ((TIME_NOW + 86400) + $GLOBALS['offset']));
         }
         $offset_set = 1;
     }
-    if ($site_config['time_use_relative'] == 3) {
+    if ($site_config['time']['use_relative'] === 3) {
         $full_relative = 1;
     }
-    if ($full_relative && $norelative != 1 && !$calc) {
+    if ($full_relative && $norelative != false && !$calc) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -955,9 +897,9 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
-    } elseif ($site_config['time_use_relative'] && $norelative != 1 && !$calc) {
+    } elseif ($site_config['time']['use_relative'] && $norelative != 1 && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
-        if ($site_config['time_use_relative'] == 2) {
+        if ($site_config['time']['use_relative'] === 2) {
             $diff = TIME_NOW - $date;
             if ($diff < 3600) {
                 if ($diff < 120) {
@@ -969,22 +911,22 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         }
         if ($this_time == $today_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Today', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
             }
 
-            return str_replace('{--}', 'Today', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
         } elseif ($this_time == $yesterday_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
             }
 
-            return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
         } elseif ($this_time == $tomorrow_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
             }
 
-            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
@@ -1035,7 +977,7 @@ function ratingpic($num)
         return null;
     }
 
-    return "<img src='{$site_config['pic_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Users have rated this: $num / 5' class='tooltipper'>";
+    return "<img src='{$site_config['paths']['images_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Users have rated this: $num / 5' class='tooltipper'>";
 }
 
 /**
@@ -1099,7 +1041,7 @@ function flood_limit($table)
 {
     global $CURUSER, $site_config, $lang, $session;
 
-    if (!file_exists($site_config['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['flood_file'])))) {
+    if (!file_exists($site_config['paths']['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['paths']['flood_file'])))) {
         return;
     }
     if (!isset($max[$CURUSER['class']])) {
@@ -1115,13 +1057,13 @@ function flood_limit($table)
         return;
     }
 
-    if ($last_post[1] > $max[$CURUSER['class']] && TIME_NOW - $last_post[0] < $site_config['flood_time']) {
-        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . mkprettytime($site_config['flood_time'] - (TIME_NOW - $last_post[0])));
+    if ($last_post[1] > $max[$CURUSER['class']] && TIME_NOW - $last_post[0] < $site_config['flood']['time']) {
+        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . mkprettytime($site_config['flood']['time'] - (TIME_NOW - $last_post[0])));
     }
 
     $count = $last_post[1] + 1;
     $floodtime = $last_post[0];
-    if ($last_post[0] - TIME_NOW > $site_config['flood_time']) {
+    if ($last_post[0] - TIME_NOW > $site_config['flood']['time']) {
         $count = 1;
         $floodtime = TIME_NOW;
     }
@@ -1141,9 +1083,9 @@ function sql_query($query)
     global $query_stat, $queries, $mysqli, $site_config;
 
     dbconn();
-    if ($site_config['sql_debug']) {
+    if ($site_config['database']['debug']) {
         $query_start_time = microtime(true);
-        mysqli_set_charset($mysqli, $_ENV['DB_CHARSET']);
+        mysqli_set_charset($mysqli, 'utf8mb4');
         $result = mysqli_query($mysqli, $query);
         $query_end_time = microtime(true);
         $query_stat[] = [
@@ -1152,7 +1094,7 @@ function sql_query($query)
         ];
         $queries = count($query_stat);
     } else {
-        mysqli_set_charset($mysqli, $_ENV['DB_CHARSET']);
+        mysqli_set_charset($mysqli, 'utf8mb4');
         $result = mysqli_query($mysqli, $query);
     }
 
@@ -1194,7 +1136,7 @@ function get_percent_completed_image($p)
             break;
     }
 
-    return "<img src='{$site_config['pic_baseurl']}{$img}.gif' alt='percent'>";
+    return "<img src='{$site_config['paths']['images_baseurl']}{$img}.gif' alt='percent'>";
 }
 
 /**
@@ -1413,12 +1355,12 @@ function countries()
     $countries = $cache->get('countries_arr_');
     if ($countries === false || is_null($countries)) {
         $countries = $fluent->from('countries')
-                            ->select(null)
-                            ->select('id')
-                            ->select('name')
-                            ->select('flagpic')
-                            ->orderBy('name')
-                            ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('flagpic')
+            ->orderBy('name')
+            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1516,6 +1458,15 @@ function valid_username($username, $ajax = false)
         return false;
     }
 
+    if (preg_match('/' . $site_config['site']['badwords'] . '/i', urldecode($username))) {
+        if ($ajax) {
+            echo "<span style='color: #cc0000;'>{$lang['takesignup_badwords']}</span>";
+            die();
+        }
+
+        return false;
+    }
+
     return true;
 }
 
@@ -1580,20 +1531,20 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
 {
     global $site_config;
 
-    if (empty($url) || preg_match('#' . preg_quote($site_config['domain']) . '#', $url) || preg_match('#' . preg_quote($site_config['pic_baseurl']) . '#', $url)) {
+    if (empty($url) || preg_match('#' . preg_quote($site_config['session']['domain']) . '#', $url) || preg_match('#' . preg_quote($site_config['paths']['images_baseurl']) . '#', $url)) {
         return $url;
     }
     if (!$image) {
-        return (!empty($site_config['anonymizer_url']) ? $site_config['anonymizer_url'] : '') . $url;
+        return (!empty($site_config['site']['anonymizer_url']) ? $site_config['site']['anonymizer_url'] : '') . $url;
     }
-    if ($site_config['image_proxy']) {
+    if ($site_config['site']['image_proxy']) {
         $image_proxy = new Pu239\ImageProxy();
         $image = $image_proxy->get_image($url, $width, $height, $quality);
 
         if (!$image) {
-            return $site_config['pic_baseurl'] . 'noposter.png';
+            return $site_config['paths']['images_baseurl'] . 'noposter.png';
         } else {
-            return $site_config['pic_baseurl'] . 'proxy/' . $image;
+            return $site_config['paths']['images_baseurl'] . 'proxy/' . $image;
         }
     }
 
@@ -1643,8 +1594,8 @@ function get_show_id(string $name)
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
         $items = $fluent->from('tvmaze')
-                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-                        ->fetchAll();
+            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+            ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1680,8 +1631,8 @@ function get_show_id_by_imdb(string $imdbid)
     $id_array = $cache->get('tvshow_ids_' . $imdbid);
     if ($id_array === false || is_null($id_array)) {
         $id_array = $fluent->from('tvmaze')
-                           ->where('imdb_id = ?', $imdbid)
-                           ->fetch();
+            ->where('imdb_id=?', $imdbid)
+            ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1803,7 +1754,7 @@ function fetch($url)
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
                 return $res->getBody()
-                           ->getContents();
+                    ->getContents();
             }
         } else {
             return false;
@@ -1832,11 +1783,11 @@ function get_body_image($details, $portrait = false)
         $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "background"')
-                             ->where('imdb_id = ?', $torrent['imdb_id'])
-                             ->fetchAll();
+                ->select(null)
+                ->select('url')
+                ->where('type = "background"')
+                ->where('imdb_id=?', $torrent['imdb_id'])
+                ->fetchAll();
 
             $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
         }
@@ -1852,9 +1803,9 @@ function get_body_image($details, $portrait = false)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-                          ->select(null)
-                          ->select('url')
-                          ->where('type = ?', 'background');
+            ->select(null)
+            ->select('url')
+            ->where('type = ?', 'background');
 
         $backgrounds = [];
         foreach ($results as $background) {

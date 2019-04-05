@@ -28,7 +28,7 @@ $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
     stderr($lang['download_user_error'], $lang['download_no_id']);
 }
-$res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
@@ -37,7 +37,7 @@ if (!$row || !is_file($fn) || !is_readable($fn)) {
 if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !($user['id'] == $row['owner'])) {
     stderr('Error', 'Your download rights have been disabled.');
 }
-if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus_per_download'])) {
+if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download'])) {
     stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]");
 }
 if ($user['class'] === 0 && ($user['uploaded'] - $user['downloaded']) < $row['size']) {
@@ -47,20 +47,20 @@ if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
 }
 
-if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['happy_hour']) {
+if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($user['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete($user['id'] . '_happy');
 }
-if ($site_config['seedbonus_on'] && $row['owner'] != $user['id']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus_per_download']);
+if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
+    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_download']);
     $cache->update_row('user_' . $user['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
-sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE torrents SET hits = hits + 1 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $torrents = $cache->get('torrent_details_' . $id);
 $update['hits'] = $torrents['hits'] + 1;
 $cache->update_row('torrent_details_' . $id, [
@@ -69,7 +69,7 @@ $cache->update_row('torrent_details_' . $id, [
 
 if (isset($_GET['slot'])) {
     $added = (TIME_NOW + 14 * 86400);
-    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $slot = mysqli_fetch_assoc($slots_sql);
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $user['id'];
     if ($_GET['slot'] === 'free') {
@@ -80,9 +80,9 @@ if (isset($_GET['slot'])) {
             stderr('Doh!', 'No Slots.');
         }
         $user['freeslots'] = ($user['freeslots'] - 1);
-        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            sql_query('UPDATE freeslots SET free = "yes", addedfree = ' . $added . ' WHERE torrentid = ' . $id . ' AND userid = ' . $user['id'] . ' AND doubleup = "yes"') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE freeslots SET free = "yes", addedfree = ' . $added . ' WHERE torrentid=' . $id . ' AND userid=' . $user['id'] . ' AND doubleup = "yes"') or sqlerr(__FILE__, __LINE__);
         } elseif ($used_slot && $slot['doubleup'] === 'no') {
             sql_query('INSERT INTO freeslots (torrentid, userid, free, addedfree) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
         } else {
@@ -96,9 +96,9 @@ if (isset($_GET['slot'])) {
             stderr('Doh!', 'No Slots.');
         }
         $user['freeslots'] = ($user['freeslots'] - 1);
-        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if ($used_slot && $slot['free'] === 'yes') {
-            sql_query('UPDATE freeslots SET doubleup = "yes", addedup = ' . $added . ' WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($user['id']) . ' AND free = "yes"') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE freeslots SET doubleup = "yes", addedup = ' . $added . ' WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($user['id']) . ' AND free = "yes"') or sqlerr(__FILE__, __LINE__);
         } elseif ($used_slot && $slot['free'] === 'no') {
             sql_query('INSERT INTO freeslots (torrentid, userid, doubleup, addedup) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
         } else {
@@ -123,7 +123,7 @@ $cache->deleteMulti([
     'motw_',
 ]);
 
-$dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
+$dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
 $dict['announce'] = $site_config['announce_urls'][$usessl] . '?torrent_pass=' . $user['torrent_pass'];
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);
@@ -150,11 +150,11 @@ if ($zipuse) {
     }
 } else {
     if ($text) {
-        header('Content-Disposition: attachment; filename="[' . $site_config['site_name'] . ']' . $row['name'] . '.txt"');
+        header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['name'] . '.txt"');
         header('Content-Type: text/plain');
         echo $tor;
     } else {
-        header('Content-Disposition: attachment; filename="[' . $site_config['site_name'] . ']' . $row['filename'] . '"');
+        header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['filename'] . '"');
         header('Content-Type: application/x-bittorrent');
         echo $tor;
     }

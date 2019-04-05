@@ -107,31 +107,31 @@ function show_views()
     $human_from_date = getdate($from_time);
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from('topics AS t')
-                    ->select(null)
-                    ->select('t.forum_id')
-                    ->where('t.added >= ?', $from_time)
-                    ->where('t.added <= ?', $to_time)
-                    ->groupBy('t.forum_id')
-                    ->fetchAll();
+        ->select(null)
+        ->select('t.forum_id')
+        ->where('t.added>= ?', $from_time)
+        ->where('t.added <= ?', $to_time)
+        ->groupBy('t.forum_id')
+        ->fetchAll();
 
     $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
     $perpage = 15;
-    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
     $pagertop = $count > $perpage ? $pager['pagertop'] : '';
     $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
     $query = $fluent->from('topics AS t')
-                    ->select(null)
-                    ->select('SUM(t.views) AS result_count')
-                    ->select('t.forum_id')
-                    ->select('f.name AS result_name')
-                    ->leftJoin('forums AS f ON t.forum_id = f.id')
-                    ->where('t.added >= ?', $from_time)
-                    ->where('t.added <= ?', $to_time)
-                    ->groupBy('t.forum_id')
-                    ->orderBy("result_count $sort_by, t.forum_id")
-                    ->limit($pager['pdo'])
-                    ->fetchAll();
+        ->select(null)
+        ->select('SUM(t.views) AS result_count')
+        ->select('t.forum_id')
+        ->select('f.name AS result_name')
+        ->leftJoin('forums AS f ON t.forum_id=f.id')
+        ->where('t.added>= ?', $from_time)
+        ->where('t.added <= ?', $to_time)
+        ->groupBy('t.forum_id')
+        ->orderBy("result_count $sort_by, t.forum_id")
+        ->limit($pager['pdo'])
+        ->fetchAll();
 
     $running_total = 0;
     $max_result = 0;
@@ -173,9 +173,9 @@ function show_views()
                 <td>{$data['result_name']}</td>
                 <td>
                     <div class='tooltipper' title='{$data['result_count']} of $running_total'>
-                        <img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
-                        <img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
-                        <img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
                     </div>
                 </td>
                 <td class='has-text-centered'>{$data['result_count']}</td>
@@ -264,31 +264,31 @@ function result_screen($mode = 'reg')
     }
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from($sql_table)
-                    ->select(null)
-                    ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
-                    ->where("$sql_field >= $from_time")
-                    ->where("$sql_field <= $to_time")
-                    ->groupBy('result_time')
-                    ->fetchAll();
+        ->select(null)
+        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
+        ->where("$sql_field>= $from_time")
+        ->where("$sql_field <= $to_time")
+        ->groupBy('result_time')
+        ->fetchAll();
 
     $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
     $perpage = 15;
-    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
     $pagertop = $count > $perpage ? $pager['pagertop'] : '';
     $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
 
     $query = $fluent->from($sql_table)
-                    ->select(null)
-                    ->select('COUNT(*) AS result_count')
-                    ->select("MAX($sql_field) AS result_maxdate")
-                    ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
-                    ->where("$sql_field >= $from_time")
-                    ->where("$sql_field <= $to_time")
-                    ->groupBy('result_time')
-                    ->orderBy("result_maxdate $sort_by")
-                    ->limit($pager['pdo'])
-                    ->fetchAll();
+        ->select(null)
+        ->select('COUNT(*) AS result_count')
+        ->select("MAX($sql_field) AS result_maxdate")
+        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
+        ->where("$sql_field>= $from_time")
+        ->where("$sql_field <= $to_time")
+        ->groupBy('result_time')
+        ->orderBy("result_maxdate $sort_by")
+        ->limit($pager['pdo'])
+        ->fetchAll();
 
     $running_total = 0;
     $max_result = 0;
@@ -337,9 +337,9 @@ function result_screen($mode = 'reg')
                 <td>$date</td>
                 <td>
                     <div class='tooltipper' title='{$data['result_count']} of $running_total'>
-                        <img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
-                        <img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
-                        <img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
+                        <img src='{$site_config['paths']['images_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
                     </div>
                 </td>
                 <td class='has-text-centered'>{$data['result_count']}</td>
@@ -398,11 +398,11 @@ function main_screen($mode = 'reg')
     $oldest = $cache->get('oldest_');
     if ($oldest === false || is_null($oldest)) {
         $oldest = $fluent->from('users')
-                         ->select(null)
-                         ->select('added')
-                         ->orderBy('added')
-                         ->limit(1)
-                         ->fetch('added');
+            ->select(null)
+            ->select('added')
+            ->orderBy('added')
+            ->limit(1)
+            ->fetch('added');
         $cache->set('oldest_', $oldest, 0);
     }
     $old_date = get_date($oldest, 'FORM', 1, 0);
@@ -410,7 +410,7 @@ function main_screen($mode = 'reg')
     $menu = make_side_menu();
     $htmlout = $menu . "
         <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
-        <form action='{$site_config['baseurl']}/staffpanel.php' method='get' name='StatsForm' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php' method='get' name='StatsForm' accept-charset='utf-8'>
             <div class='has-text-centered'>
                 <input name='tool' value='stats_extra' type='hidden'>
                 <input name='mode' value='{$form_code}' type='hidden'>
@@ -493,14 +493,14 @@ function make_side_menu()
 
     $htmlout = "
     <ul class='level-center bg-06'>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
     </ul>";
 
     return $htmlout;

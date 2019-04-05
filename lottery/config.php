@@ -38,13 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
-        if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
-            $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+        if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+            $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
             $msg = "The $link has begun!! Get your tickets now. The pot is $fund and each ticket is only $cost $type.";
             autoshout($msg);
         }
         $session->set('is-success', 'Lottery configuration was saved!');
-        header("Location: {$site_config['baseurl']}/lottery.php");
+        header("Location: {$site_config['paths']['baseurl']}/lottery.php");
         die();
     } else {
         $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
@@ -56,7 +56,7 @@ if (!empty($lottery_config)) {
         $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>' . $classes . '</b>');
     } else {
         $html .= "
-        <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/lottery.php?action=config' method='post' accept-charset='utf-8'>
             <div class='portlet'>";
         $table = "
                     <tr>
@@ -116,7 +116,7 @@ if (!empty($lottery_config)) {
                                 <option value='" . TIME_NOW . "'>Now</option>";
         for ($i = 2; $i <= 24; $i += 2) {
             $table .= "
-                                <option value='" . (TIME_NOW + (3600 * $i)) . "' >" . $i . ' hours</option>';
+                                <option value='" . (TIME_NOW + (3600 * $i)) . "'>" . $i . ' hours</option>';
         }
         $table .= "
                             </select>

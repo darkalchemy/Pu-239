@@ -50,7 +50,7 @@ if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $status = ($_POST['status']);
     $credit = ($_POST['credit']);
     sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
-    header("Location: {$site_config['baseurl']}/credits.php");
+    header("Location: {$site_config['paths']['baseurl']}/credits.php");
     die();
 }
 
@@ -58,8 +58,8 @@ if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     if (!$id) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error2']}");
     }
-    sql_query("DELETE FROM modscredits where id = '$id'") or sqlerr(__FILE__, __LINE__);
-    header("Location: {$site_config['baseurl']}/credits.php");
+    sql_query("DELETE FROM modscredits where id='$id'") or sqlerr(__FILE__, __LINE__);
+    header("Location: {$site_config['paths']['baseurl']}/credits.php");
     die();
 }
 
@@ -114,7 +114,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     if (!is_valid_id($id)) {
         stderr('Error', 'Invalid ID!');
     }
-    $res = sql_query('SELECT id FROM modscredits WHERE id = ' . sqlesc($id));
+    $res = sql_query('SELECT id FROM modscredits WHERE id=' . sqlesc($id));
     if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
@@ -142,7 +142,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error6']}");
     }
 
-    sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
     die();
 }

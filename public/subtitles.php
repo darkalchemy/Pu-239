@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($file)) {
                 stderr('Upload failed', "The file can't be empty!");
             }
-            if ($file['size'] > $site_config['sub_max_size']) {
+            if ($file['size'] > $site_config['subtitles']['max_size']) {
                 stderr('Upload failed', 'Your file is too big.');
             }
             $fname = $file['name'];
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $date,
                     $owner,
                 ])) . ')') or sqlerr(__FILE__, __LINE__);
-            move_uploaded_file($temp_name, "{$site_config['sub_up_dir']}/$filename");
+            move_uploaded_file($temp_name, UPLOADSUB_DIR . $filename);
             $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
         }
@@ -141,7 +141,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         $body .= "
         <tr>
             <td colspan='2'>
-                <span class='has-text-danger'><b>Only .srt, .sub , .vtt or .txt files are accepted<br>Max file size: " . mksize($site_config['sub_max_size']) . '</b></span>
+                <span class='has-text-danger'><b>Only .srt, .sub , .vtt or .txt files are accepted<br>Max file size: " . mksize($site_config['subtitles']['max_size']) . '</b></span>
             </td>
         </tr>';
     }
@@ -254,7 +254,7 @@ if ($mode === 'upload' || $mode === 'edit') {
             stderr('Sanity check...', 'Your are about to delete subtitile <b>' . htmlsafechars($arr['name']) . "</b> . Click <a href='subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>here</a> if you are sure.", false);
         } else {
             sql_query('DELETE FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
+            $file = UPLOADSUB_DIR . $arr['filename'];
             @unlink($file);
             header('Refresh: 0; url=subtitles.php');
         }
@@ -326,12 +326,12 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($id == 0) {
         stderr('Err', 'Not a valid id');
     } else {
-        $res = sql_query('SELECT id, name,filename FROM subtitles WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT id, name,filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (mysqli_num_rows($res) == 0) {
             stderr('Sorry', 'There is no subtitle with that id');
         }
-        $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
+        $file = UPLOADSUB_DIR . $arr['filename'];
         $fileContent = file_get_contents($file);
         $title = htmlsafechars($arr['name']);
         $HTMLOUT = "
@@ -347,8 +347,8 @@ if ($mode === 'upload' || $mode === 'edit') {
     $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
     $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
     $count = $fluent->from('subtitles')
-                    ->select(null)
-                    ->select('COUNT(*) AS count');
+        ->select(null)
+        ->select('COUNT(*) AS count');
     if ($s && $w === 'name') {
         $count = $count->where('name LIKE ?', "${$s}%");
     } elseif ($s && $w === 'imdb') {
@@ -424,10 +424,10 @@ if ($mode === 'upload' || $mode === 'edit') {
             $body .= "
     <tr>
         <td class='has-text-centered'>{$langs}</td>
-        <td><a href='{$site_config['baseurl']}/subtitles.php?mode=details&amp;id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+        <td><a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=details&amp;id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
         <td class='has-text-centered'>
             <a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'>
-                <img src='{$site_config['pic_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
+                <img src='{$site_config['paths']['images_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
             </a>
         </td>
         <td class='has-text-centered'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>

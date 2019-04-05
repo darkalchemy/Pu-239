@@ -21,14 +21,14 @@ $hash = 'suggest_torrents_' . hash('sha256', $keyword);
 $results = $cache->get($hash);
 if ($results === false || is_null($results)) {
     $results = $fluent->from('torrents')
-                      ->select(null)
-                      ->select('id')
-                      ->select('name')
-                      ->select('seeders')
-                      ->select('leechers')
-                      ->select('visible')
-                      ->where('name LIKE ?', "%$keyword%")
-                      ->fetchAll();
+        ->select(null)
+        ->select('id')
+        ->select('name')
+        ->select('seeders')
+        ->select('leechers')
+        ->select('visible')
+        ->where('name LIKE ?', "%$keyword%")
+        ->fetchAll();
     $cache->set($hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
     if (empty($hashes)) {
@@ -65,7 +65,7 @@ if (!empty($results)) {
         $temp .= "
         <ul class='columns $background round10'>
             <li class='column is-three-fifth'>
-                <a href='{$site_config['baseurl']}/details.php?id={$result['id']}&amp;hit=1'>
+                <a href='{$site_config['paths']['baseurl']}/details.php?id={$result['id']}&amp;hit=1'>
                     <span class='$color'>{$result['name']}</span>
                 </a>
             </li>

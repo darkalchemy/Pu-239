@@ -18,16 +18,16 @@ if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
 $id = (int) $_GET['id'];
 
 $tid = $fluent->from('torrents AS t')
-              ->select(null)
-              ->select('t.id')
-              ->select('t.info_hash')
-              ->select('t.owner')
-              ->select('t.name')
-              ->select('t.added')
-              ->select('u.seedbonus')
-              ->leftJoin('users AS u ON u.id = t.owner')
-              ->where('t.id = ?', $id)
-              ->fetch();
+    ->select(null)
+    ->select('t.id')
+    ->select('t.info_hash')
+    ->select('t.owner')
+    ->select('t.name')
+    ->select('t.added')
+    ->select('u.seedbonus')
+    ->leftJoin('users AS u ON u.id=t.owner')
+    ->where('t.id=?', $id)
+    ->fetch();
 
 if (!$tid) {
     stderr('Oops', 'Something went wrong - Contact admin!!');
@@ -46,17 +46,17 @@ if ($CURUSER['id'] != $tid['owner']) {
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
 write_log("{$lang['fastdelete_log_first']} {$tid['name']} {$lang['fastdelete_log_last']} {$CURUSER['username']}");
-if ($site_config['seedbonus_on']) {
+if ($site_config['bonus']['on']) {
     $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
     if ($tid['added'] > $dt) {
-        $sb = $tid['seedbonus'] - $site_config['bonus_per_delete'];
+        $sb = $tid['seedbonus'] - $site_config['bonus']['per_delete'];
         $set = [
             'seedbonus' => $sb,
         ];
         $fluent->update('users')
-               ->set($set)
-               ->where('id = ?', $tid['owner'])
-               ->execute();
+            ->set($set)
+            ->where('id=?', $tid['owner'])
+            ->execute();
 
         $cache->update_row('user_' . $tid['owner'], [
             'seedbonus' => $sb,
@@ -66,8 +66,8 @@ if ($site_config['seedbonus_on']) {
 
 $session->set('is-success', '[h2]Torrent deleted[/h2][p]' . htmlsafechars($tid['name']) . '[/p]');
 if (isset($_GET['returnto'])) {
-    header("Location: {$site_config['baseurl']}{$_GET['returnto']}");
+    header("Location: {$site_config['paths']['baseurl']}{$_GET['returnto']}");
 } else {
-    header("Location: {$site_config['baseurl']}");
+    header("Location: {$site_config['paths']['baseurl']}");
 }
 die();

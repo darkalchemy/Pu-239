@@ -14,7 +14,7 @@ $free = get_event(true);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['remove'])) {
         update_event($_POST['expires'], TIME_NOW);
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech");
         die();
     }
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ++$i;
     }
     set_event($fl['modifier'], TIME_NOW, $fl['expires'], $fl['setby'], $fl['title']);
-    header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
+    header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech");
     die();
 }
 $HTMLOUT .= '<h1 class="has-text-centered">' . $lang['freeleech_current'] . '</h1>';
@@ -90,7 +90,7 @@ if (isset($free) && (count($free) < 1)) {
                 <td>{$username}</td>
                 <td>{$fl['title']}</td>
                 <td class='has-text-centered'>
-                    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=freeleech&amp;action=remove' accept-charset='utf-8'>
+                    <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech&amp;action=remove' accept-charset='utf-8'>
                         <input type='hidden' class='w-100' value ='" . $fl['expires'] . "' name='expires'>
                         <input type='" . ($fl['expires'] > TIME_NOW ? 'submit' : 'hidden') . "' name='remove' value='{$lang['freeleech_remove']}' class='button is-small'>
                     </form>
@@ -104,7 +104,7 @@ $checked = ' checked';
 
 $HTMLOUT .= "
     <h2 class='has-text-centered'>{$lang['freeleech_set_free']}</h2>
-    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=freeleech&amp;action=freeleech' accept-charset='utf-8'>
+    <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech&amp;action=freeleech' accept-charset='utf-8'>
     <table class='table table-bordered table-striped'>
     <tr><td class='rowhead'>{$lang['freeleech_mode']}</td>
     <td> <table>
@@ -117,10 +117,10 @@ $HTMLOUT .= "
  <td><input name='modifier' type='radio' $checked2 value='2'></td>
  </tr>
  <tr>
- <td >{$lang['freeleech_free_double']}</td>
+ <td>{$lang['freeleech_free_double']}</td>
  <td><input name='modifier' type='radio' $checked3 value='3'></td></tr>
  <tr>
- <td >{$lang['freeleech_torr_silver']}</td>
+ <td>{$lang['freeleech_torr_silver']}</td>
  <td><input name='modifier' type='radio' $checked4 value='4'></td></tr>
  </table>
     </td></tr>

@@ -197,19 +197,19 @@ foreach ($html as $key => $value) {
 $htmlout = "
     <ul class='level-center bg-06 bottom10'>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_overview'>MySQL Overview</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_overview'>MySQL Overview</a>
         </li>
     </ul>";
 $htmlout .= main_table($body);

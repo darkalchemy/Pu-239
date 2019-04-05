@@ -55,25 +55,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <p>{$lang['inactive_hey']} $username,</p>
-<p>{$lang['inactive_youracc']} {$site_config['site_name']} {$lang['inactive_marked']} {$site_config['site_name']}{$lang['inactive_plogin']}<br>
+<p>{$lang['inactive_youracc']} {$site_config['site']['name']} {$lang['inactive_marked']} {$site_config['site']['name']}{$lang['inactive_plogin']}<br>
 {$lang['inactive_yourusername']} $username<br>
 {$lang['inactive_created']} $added<br>
 {$lang['inactive_lastaccess']} $last_access<br>
-{$lang['inactive_loginat']} {$site_config['baseurl']}/login.php<br>
-{$lang['inactive_forgotten']} {$site_config['baseurl']}/resetpw.php<br>
-{$lang['inactive_welcomeback']} {$site_config['site_name']}</p>
+{$lang['inactive_loginat']} {$site_config['paths']['baseurl']}/login.php<br>
+{$lang['inactive_forgotten']} {$site_config['paths']['baseurl']}/resetpw.php<br>
+{$lang['inactive_welcomeback']} {$site_config['site']['name']}</p>
 </body>
 </html>";
 
             $mail = new Message();
-            $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-                 ->addTo($arr['email'])
-                 ->setReturnPath($site_config['site_email'])
-                 ->setSubject("{$lang['inactive_youracc']}{$site_config['site_name']}!")
-                 ->setHtmlBody($body);
+            $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+                ->addTo($arr['email'])
+                ->setReturnPath($site_config['site']['email'])
+                ->setSubject("{$lang['inactive_youracc']}{$site_config['site']['name']}!")
+                ->setHtmlBody($body);
 
             $mailer = new SendmailMailer();
-            $mailer->commandArgs = "-f{$site_config['site_email']}";
+            $mailer->commandArgs = "-f{$site_config['site']['email']}";
             $mailer->send($mail);
         }
 
@@ -133,7 +133,7 @@ if ($count_inactive > 0) {
     <td class='colhead'>{$lang['inactive_lastseen']}</td>
     <td class='colhead'>{$lang['inactive_x']}</td></tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $ratio = (member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']));
+        $ratio = (member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']));
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
         $class = get_user_class_name($arr['class']);
         $HTMLOUT .= '<tr>

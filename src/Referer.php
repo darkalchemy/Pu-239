@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Referer.
  */
@@ -25,13 +27,13 @@ class Referer
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values)
     {
         $id = $this->fluent->insertInto('referer')
-                           ->values($values)
-                           ->execute();
+            ->values($values)
+            ->execute();
 
         return $id;
     }

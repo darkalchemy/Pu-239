@@ -9,4 +9,4 @@ global $site_config, $cache, $session;
 
 $cache->delete('is_staff_');
 $session->set('is-success', 'Staff List Updated');
-header("Location: {$site_config['baseurl']}/staffpanel.php");
+header("Location: {$site_config['paths']['baseurl']}/staffpanel.php");

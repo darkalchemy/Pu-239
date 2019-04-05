@@ -9,6 +9,9 @@ global $site_config, $session, $CURUSER;
 $lang = array_merge(load_language('global'), load_language('report'));
 $HTMLOUT = $id_2 = $id_2b = '';
 
+if (!$site_config['staff']['reports']) {
+    stderr('Error', 'The report system is offline');
+}
 $id = ($_GET['id'] ? (int) $_GET['id'] : (int) $_POST['id']);
 if (!is_valid_id($id)) {
     stderr("{$lang['report_error']}", "{$lang['report_error1']}");
@@ -58,15 +61,15 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
     $session->set('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
-    header("Location: {$site_config['baseurl']}");
+    header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
 $HTMLOUT .= main_div("
-    <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1' accept-charset='utf-8'>
+    <form method='post' action='{$site_config['paths']['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1' accept-charset='utf-8'>
     <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
-        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
-        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
+        <img src='{$site_config['paths']['images_baseurl']}warned.png' alt='warned' title='Warned'> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
+        <img src='{$site_config['paths']['images_baseurl']}warned.png' alt='warned' title='Warned'><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
         <b>{$lang['report_reason']}</b>
         <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
         <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}'>

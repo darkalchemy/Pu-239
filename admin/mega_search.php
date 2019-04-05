@@ -22,17 +22,17 @@ $HTMLOUT .= '
 $HTMLOUT .= main_div('
         <div class="has-text-centered size_4 has-text-white top10 bottom10">' . $lang['mega_analyze'] . '</div>
         <div class="bg-00 round10 padding20">
-            <form method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
+            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
-                <textarea name="msg_to_analyze" rows="20" class="w - 100">' . $msg_to_analyze . '</textarea>
+                <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
                 <div class="has-text-centered top20">
                     <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
-        <div class="bg - 00 round10 padding20 ">
-            <form method="post" action="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = mega_search & action = mega_search" accept-charset="utf-8">
+        <div class="bg-00 round10 padding20 ">
+            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '">
                 <div class="has-text-centered top20">
@@ -42,9 +42,13 @@ $HTMLOUT .= main_div('
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20">
-            <form method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
+            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
-                <textarea name="user_names" rows="4" class="w - 100">' . $user_names . '</textarea>
+<<<<<<< HEAD
+                <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
+=======
+                <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
+>>>>>>> master
                 <div class="has-text-centered top20">
                     <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
@@ -58,16 +62,16 @@ if (!empty($user_names)) {
     foreach ($searched_users as $search_users) {
         $users = [];
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('id')
-                          ->select('INET6_NTOA(ip) AS ip')
-                          ->select('added')
-                          ->select('last_access')
-                          ->select('email')
-                          ->select('uploaded')
-                          ->select('downloaded')
-                          ->select('invitedby')
-                          ->where('username LIKE ?', " %{
+            ->select(null)
+            ->select('id')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('added')
+            ->select('last_access')
+            ->select('email')
+            ->select('uploaded')
+            ->select('downloaded')
+            ->select('invitedby')
+            ->where('username LIKE ?', " %{
     $search_users}%");
         foreach ($results as $result) {
             $users[] = $result;
@@ -86,22 +90,22 @@ if (!empty($user_names)) {
                 <td>' . format_username($arr['id']) . '</td>
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper has - text - blue" title="added">' . get_date($arr['added'], '') . '</span><br>
-                    <span class="tooltipper has - text - success" title="last access">' . get_date($arr['last_access'], '') . '</span>
+                    <span class="tooltipper has-text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
+                    <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>
-                    <span class="has - text - success tooltipper" title="' . $lang['mega_uploaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'up . png" alt="' . $lang['mega_up'] . '"> 
+                    <span class="has-text-success tooltipper" title="' . $lang['mega_uploaded'] . '">
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
-                    ' . ($site_config['ratio_free'] ? '
+                    ' . ($site_config['site']['ratio_free'] ? '
                 </td>' : '<br>
-                    <span class="has - text - danger tooltipper" title="' . $lang['mega_downloaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'dl . png" alt="' . $lang['mega_down'] . '">  
+                    <span class="has-text-danger tooltipper" title="' . $lang['mega_downloaded'] . '">
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
-                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                 <td>' . make_nice_address($arr['ip']) . '</td>
                 <td>' . $inviter . '</td>
             </tr>';
@@ -111,27 +115,27 @@ if (!empty($user_names)) {
         }
     }
     if (!empty($failed)) {
-        $body .= " < tr>
-                <td colspan = '8' ><span class='size_4 has-text-danger text-shadow' > Not Found: </span ><span class='has-text-blue' > " . implode(', ', $failed) . '</span></td>
+        $body .= "<tr>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . '</span></td>
             </tr>';
     }
     if (empty($body)) {
         $body = "
-            <tr >
-                <td colspan = '8' ><span class='size_4 has-text-danger text-shadow' > Not Found: </span ><span class='has-text-blue' > " . implode(', ', $searched_users) . '</span></td>
+            <tr>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . '</span></td>
             </tr>';
     }
     $heading = " 
-                <tr >
-                    <th >{$lang['mega_searched']}</th >
-                    <th >{$lang['mega_member']}</th >
-                    <th >{$lang['mega_email']}</th >
-                    <th >{$lang['mega_registered']}<br >{$lang['mega_last_acc']}</th >
-                    <th >{$lang['mega_stats']}</th >
-                    <th >{$lang['mega_ratio']}</th >
-                    <th >{$lang['mega_ip']}</th >
-                    <th >{$lang['mega_invited_by']}</th >
-                </tr > ";
+                <tr>
+                    <th>{$lang['mega_searched']}</th>
+                    <th>{$lang['mega_member']}</th>
+                    <th>{$lang['mega_email']}</th>
+                    <th>{$lang['mega_registered']}<br>{$lang['mega_last_acc']}</th>
+                    <th>{$lang['mega_stats']}</th>
+                    <th>{$lang['mega_ratio']}</th>
+                    <th>{$lang['mega_ip']}</th>
+                    <th>{$lang['mega_invited_by']}</th>
+                </tr>";
     $HTMLOUT .= main_table($body, $heading, 'top20');
 }
 
@@ -146,16 +150,16 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($email_to_test[0] as $tested_email) {
         $users = [];
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('id')
-                          ->select('email')
-                          ->select('INET6_NTOA(ip) AS ip')
-                          ->select('added')
-                          ->select('last_access')
-                          ->select('uploaded')
-                          ->select('downloaded')
-                          ->select('invitedby')
-                          ->where('email = ?', $tested_email);
+            ->select(null)
+            ->select('id')
+            ->select('email')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('added')
+            ->select('last_access')
+            ->select('uploaded')
+            ->select('downloaded')
+            ->select('invitedby')
+            ->where('email = ?', $tested_email);
         foreach ($results as $result) {
             $users[] = $result;
         }
@@ -173,25 +177,25 @@ if (isset($_POST['msg_to_analyze'])) {
                     }
                     $body .= '
             <tr>
-                <td><div class="level - left">' . format_username($arr['id']) . '</div></td>
+                <td><div class="level-left">' . format_username($arr['id']) . '</div></td>
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper has - text - blue" title="added">' . get_date($arr['added'], '') . '</span><br>
-                    <span class="tooltipper has - text - success" title="last access">' . get_date($arr['last_access'], '') . '</span>
+                    <span class="tooltipper has-text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
+                    <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>
-                    <span class="has - text - success tooltipper" title="' . $lang['mega_uploaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'up . png" alt="' . $lang['mega_up'] . '"> 
+                    <span class="has-text-success tooltipper" title="' . $lang['mega_uploaded'] . '">
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
-                    ' . ($site_config['ratio_free'] ? '
+                    ' . ($site_config['site']['ratio_free'] ? '
                 </td>' : '<br>
-                    <span class="tooltipper has - text - danger" title="' . $lang['mega_downloaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'dl . png" alt="' . $lang['mega_down'] . '">  
+                    <span class="tooltipper has-text-danger" title="' . $lang['mega_downloaded'] . '">
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
-                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                 <td>' . make_nice_address($arr['ip']) . '</td>
                 <td>' . $inviter . '</td>
             </tr>';
@@ -200,23 +204,23 @@ if (isset($_POST['msg_to_analyze'])) {
         }
     }
     if (!empty($failed)) {
-        $body .= " < tr>
-                <td colspan = '7' >
-                    <span class='size_4 has-text-danger text-shadow' > Email" . plural(count($failed)) . " Not Found: </span >
-                    <span class='has-text-blue' > " . implode(', ', $failed) . '</span>
+        $body .= "<tr>
+                <td colspan='7'>
+                    <span class='size_4 has-text-danger text-shadow'>Email" . plural(count($failed)) . " Not Found: </span>
+                    <span class='has-text-blue'>" . implode(', ', $failed) . '</span>
                 </td>
             </tr>';
     }
     $heading = "
-            <tr >
-                <th >{$lang['mega_member']}</th >
-                <th >{$lang['mega_matched_email']}</th >
-                <th >{$lang['mega_registered']}<br >{$lang['mega_last_acc']}</th >
-                <th >{$lang['mega_stats']}</th >
-                <th >{$lang['mega_ratio']}</th >
-                <th >{$lang['mega_ip']}</th >
-                <th >{$lang['mega_invited_by']}</th >
-           </tr > ";
+            <tr>
+                <th>{$lang['mega_member']}</th>
+                <th>{$lang['mega_matched_email']}</th>
+                <th>{$lang['mega_registered']}<br>{$lang['mega_last_acc']}</th>
+                <th>{$lang['mega_stats']}</th>
+                <th>{$lang['mega_ratio']}</th>
+                <th>{$lang['mega_ip']}</th>
+                <th>{$lang['mega_invited_by']}</th>
+           </tr>";
     $HTMLOUT .= main_table($body, $heading, 'top20');
 
     $regex = '/[\._a-zA-Z0-9-]+@/i';
@@ -227,20 +231,20 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($email_to_test_like[0] as $tested_email_like) {
         $users = [];
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('id')
-                          ->select('email')
-                          ->where('email LIKE ?', " % $tested_email_like % ");
+            ->select(null)
+            ->select('id')
+            ->select('email')
+            ->where('email LIKE ?', " % $tested_email_like % ");
         foreach ($results as $result) {
             $users[] = $result;
         }
         if (count($users) > 0) {
             //$email = preg_replace('/[^a-zA-Z0-9_-\s]/', '', $tested_email_like);
             $email = $tested_email_like;
-            $similar_emails .= "<tr ><td ><h1 >{$lang['mega_email_using']} $tested_email_like </h1 > ";
+            $similar_emails .= "<tr><td><h1>{$lang['mega_email_using']} $tested_email_like </h1>";
             $number = 1;
             foreach ($users as $arr) {
-                $similar_emails .= "<div class='level-left' > " . str_ireplace($email, '<span style="color: red; font - weight: bold;">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level - left">&nbsp;' . format_username($arr['id']) . '</span></div></td></tr>';
+                $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span style="color: red; font-weight: bold;">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level - left">&nbsp;' . format_username($arr['id']) . '</span></div></td></tr>';
             }
         }
     }
@@ -265,16 +269,16 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($ip_to_test[0] as $tested_ip) {
         $users = [];
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('id')
-                          ->select('email')
-                          ->select('INET6_NTOA(ip) AS ip')
-                          ->select('added')
-                          ->select('last_access')
-                          ->select('uploaded')
-                          ->select('downloaded')
-                          ->select('invitedby')
-                          ->where('INET6_NTOA(ip) = ?', $tested_ip);
+            ->select(null)
+            ->select('id')
+            ->select('email')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('added')
+            ->select('last_access')
+            ->select('uploaded')
+            ->select('downloaded')
+            ->select('invitedby')
+            ->where('INET6_NTOA(ip) = ?', $tested_ip);
         foreach ($results as $result) {
             $users[] = $result;
         }
@@ -299,7 +303,7 @@ if (isset($_POST['msg_to_analyze'])) {
             foreach ($users as $arr) {
                 if ($arr['username'] !== '') {
                     if ($arr['invitedby'] > 0) {
-                        $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
+                        $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
                         $arr_inviter = mysqli_fetch_array($res_inviter);
                         $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter['id']) : $lang['mega_open']);
                     } else {
@@ -308,19 +312,19 @@ if (isset($_POST['msg_to_analyze'])) {
                     $body .= '
                 <tr>
                     <td>' . format_username($arr['id']) . '</td>
-                    <td><span style="color: red; font - weight: bold;">' . $tested_ip . ' </span></td>
+                    <td><span style="color: red; font-weight: bold;">' . $tested_ip . ' </span></td>
                     <td>' . htmlsafechars($arr['email']) . '</td>
                     <td>
                         <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
                         <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span>
                     </td>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'up . png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> 
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> 
                         <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
-                        ' . ($site_config['ratio_free'] ? '' : '<br>
-                        <img src="' . $site_config['pic_baseurl'] . 'dl . png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
+                        ' . ($site_config['site']['ratio_free'] ? '' : '<br>
+                        <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                         <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+                    <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                     <td>' . make_nice_address($arr['ip']) . '<br>
                     </td>
                     <td>' . $inviter . '</td>
@@ -333,31 +337,31 @@ if (isset($_POST['msg_to_analyze'])) {
     if (!empty($body) && empty($no_matches_for_this_ip)) {
         $HTMLOUT .= main_table($body, $heading, 'top20');
     } else {
-        $HTMLOUT .= main_div(" < div class='has-text-centered' >
-                    <h1 >{$lang['mega_no_ips']}</h1 >
-                    <div class='bg-02 padding20 round20' > $no_matches_for_this_ip
-                    </div >
-                </div > ");
+        $HTMLOUT .= main_div(" < div class='has-text-centered'>
+                    <h1>{$lang['mega_no_ips']}</h1>
+                    <div class='bg-02 padding20 round20'>$no_matches_for_this_ip
+                    </div>
+                </div>");
     }
 }
 
 if (isset($_POST['invite_code'])) {
     $heading = $body = $user = '';
     $user = $fluent->from('users')
-                   ->select(null)
-                   ->select('users.id')
-                   ->select('users.email')
-                   ->select('INET6_NTOA(users.ip) AS ip')
-                   ->select('users.added')
-                   ->select('users.last_access')
-                   ->select('users.uploaded')
-                   ->select('users.downloaded')
-                   ->select('users.invitedby')
-                   ->select('invite_codes.id AS invite_id')
-                   ->select('invite_codes.added AS invite_added')
-                   ->leftJoin('invite_codes ON users.id = invite_codes.sender')
-                   ->where('invite_codes.code = ?', $invite_code)
-                   ->fetch();
+        ->select(null)
+        ->select('users.id')
+        ->select('users.email')
+        ->select('INET6_NTOA(users.ip) AS ip')
+        ->select('users.added')
+        ->select('users.last_access')
+        ->select('users.uploaded')
+        ->select('users.downloaded')
+        ->select('users.invitedby')
+        ->select('invite_codes.id AS invite_id')
+        ->select('invite_codes.added AS invite_added')
+        ->leftJoin('invite_codes ON users.id=invite_codes.sender')
+        ->where('invite_codes.code = ?', $invite_code)
+        ->fetch();
 
     if ($user['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_invite_gone'], 'top20');
@@ -381,11 +385,11 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user['ip']) . '</td>
                     <td>' . get_date($user['last_access'], '') . '</td>
                     <td>' . get_date($user['added'], '') . '</td>
-                    <td><img src="' . $site_config['pic_baseurl'] . 'up . png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
-                    ' . ($site_config['ratio_free'] ? '' : '<br>
-                    <img src="' . $site_config['pic_baseurl'] . 'dl . png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
+                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
+                    ' . ($site_config['site']['ratio_free'] ? '' : '<br>
+                    <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($user['uploaded'], $site_config['ratio_free'] ? '0' : $user['downloaded']) . '</td>
+                    <td>' . member_ratio($user['uploaded'], $site_config['site']['ratio_free'] ? '0' : $user['downloaded']) . '</td>
                     <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading), 'top20');
@@ -394,19 +398,19 @@ if (isset($_POST['invite_code'])) {
     $user_invited = [];
     $heading = $body = $users = '';
     $user_invited = $fluent->from('users')
-                           ->select(null)
-                           ->select('users.id')
-                           ->select('users.email')
-                           ->select('INET6_NTOA(users.ip) AS ip')
-                           ->select('users.added')
-                           ->select('users.last_access')
-                           ->select('users.uploaded')
-                           ->select('users.downloaded')
-                           ->select('users.invitedby')
-                           ->select('invite_codes.id AS invite_id')
-                           ->leftJoin('invite_codes ON users.id = invite_codes.receiver')
-                           ->where('invite_codes.code = ?', $invite_code)
-                           ->fetch();
+        ->select(null)
+        ->select('users.id')
+        ->select('users.email')
+        ->select('INET6_NTOA(users.ip) AS ip')
+        ->select('users.added')
+        ->select('users.last_access')
+        ->select('users.uploaded')
+        ->select('users.downloaded')
+        ->select('users.invitedby')
+        ->select('invite_codes.id AS invite_id')
+        ->leftJoin('invite_codes ON users.id=invite_codes.receiver')
+        ->where('invite_codes.code = ?', $invite_code)
+        ->fetch();
 
     if ($user_invited['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_not_used'], 'top20');
@@ -430,11 +434,11 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user_invited['ip']) . '</td>
                     <td>' . get_date($user_invited['last_access'], '') . '</td>
                     <td>' . get_date($user_invited['added'], '') . '</td>
-                    <td><img src="' . $site_config['pic_baseurl'] . 'up . png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
-                    ' . ($site_config['ratio_free'] ? '' : '<br>
-                    <img src="' . $site_config['pic_baseurl'] . 'dl . png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
+                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
+                    ' . ($site_config['site']['ratio_free'] ? '' : '<br>
+                    <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
-                    <td>' . member_ratio($user_invited['uploaded'], $site_config['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
+                    <td>' . member_ratio($user_invited['uploaded'], $site_config['site']['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
                     <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading));

@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Image.
  */
@@ -17,7 +19,7 @@ class Image
 
         $this->fluent = $fluent;
         $this->site_config = $site_config;
-        $this->limit = $this->site_config['query_limit'];
+        $this->limit = $this->site_config['database']['query_limit'];
     }
 
     /**
@@ -28,24 +30,24 @@ class Image
     public function insert(array $values)
     {
         $this->fluent->insertInto('images')
-                     ->values($values)
-                     ->ignore()
-                     ->execute();
+            ->values($values)
+            ->ignore()
+            ->execute();
     }
 
     /**
      * @param array $values
      * @param array $update
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function update(array $values, array $update)
     {
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('images', $t)
-                         ->onDuplicateKeyUpdate($update)
-                         ->execute();
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
         }
     }
 }

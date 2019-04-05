@@ -88,7 +88,7 @@ switch ($do) {
 
     case 'view':
         if ($id > 0) {
-            $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id  WHERE s.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id  WHERE s.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($q2) == 1) {
                 $a = mysqli_fetch_assoc($q2);
                 $HTMLOUT .= "
@@ -103,7 +103,7 @@ switch ($do) {
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>
                             {$lang['staffbox_pm_answer']} " . ($a['answeredby'] == 0 ? "
-                            <textarea rows='5' class='w-100' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
+                            <textarea rows='5' class='w-100' name='message'></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
                         </div>
                         <div class='has-text-centered top20'>
                             <select name='do'>
@@ -151,9 +151,9 @@ switch ($do) {
 
     default:
         $count_msgs = $fluent->from('staffmessages')
-                             ->select(null)
-                             ->select('COUNT(*) AS count')
-                             ->fetch('count');
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->fetch('count');
 
         $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');

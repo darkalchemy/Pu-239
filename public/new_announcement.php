@@ -77,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $HTMLOUT = '';
-    $HTMLOUT .= "<table class='main' width='750' >
+    $HTMLOUT .= "<table class='main' width='750'>
      <tr>
      <td class='embedded'><div class='has-text-centered'>
      <h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
-    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php' accept-charset='utf-8'>
-     <table >
+    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' accept-charset='utf-8'>
+     <table>
      <tr>
      <td colspan='2'><b>Subject: </b>
      <input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "'></td>
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      </div></td></tr></table>";
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
-        $HTMLOUT .= "<table width='700' class='main' >
+        $HTMLOUT .= "<table width='700' class='main'>
      <tr><td class='has-text-centered'><h2><font class='has-text-white'>Announcement: 
      " . htmlsafechars($subject) . "</font></h2></td></tr>
      <tr><td class='text'>
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('HTTP/1.0 404 Not Found');
     $HTMLOUT = '<h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
 <hr>
-<address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['baseurl']} Port 80</address></body></html>\n";
+<address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['paths']['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
     die();
 }

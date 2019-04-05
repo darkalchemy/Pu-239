@@ -37,10 +37,10 @@ if ($action === 'add') {
         stderr('Error', 'Unknown type.');
     }
     if ($type === 'friend') {
-        $r = sql_query("SELECT id, confirmed FROM $table_is WHERE userid = " . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
+        $r = sql_query("SELECT id, confirmed FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $q = mysqli_fetch_assoc($r);
         $subject = 'New Friend Request!';
-        $msg = "[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
+        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['paths']['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
             'sender' => 0,
             'receiver' => $targetid,
@@ -53,11 +53,11 @@ if ($action === 'add') {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
-        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='{$site_config['baseurl']}/friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
+        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
         die();
     }
     if ($type === 'block') {
-        $r = sql_query("SELECT id FROM $table_is WHERE userid = " . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
+        $r = sql_query("SELECT id FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($r) == 1) {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
@@ -68,7 +68,7 @@ if ($action === 'add') {
         $cache->delete('Friends_' . $targetid);
         $cache->delete('user_friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
-        header("Location: {$site_config['baseurl']}/friends.php?id=$userid#$frag");
+        header("Location: {$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag");
         die();
     }
 }
@@ -82,7 +82,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr('Confirm Friend', "Do you really want to confirm this person? Click\n<a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr('Confirm Friend', "Do you really want to confirm this person? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -97,7 +97,7 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
         $subject = 'You have a new friend!';
-        $msg = "[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['baseurl']}/friends.php][b]Here[/b][/url]\n ";
+        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['paths']['baseurl']}/friends.php][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
             'sender' => 0,
             'receiver' => $targetid,
@@ -119,7 +119,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr("Delete $type Request", "Do you really want to delete this friend request? Click\n<a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr("Delete $type Request", "Do you really want to delete this friend request? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -143,7 +143,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr("Delete $type", "Do you really want to delete a $type? Click\n<a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr("Delete $type", "Do you really want to delete a $type? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -176,27 +176,27 @@ $res = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__
 $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friends_no_user']);
 $HTMLOUT = '';
 $i = 0;
-$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid = ' . sqlesc($CURUSER['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid = f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid=u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt = $dt - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = htmlsafechars($friendp['title']);
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
         }
         $linktouser = format_username($friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
-        $confirm = "<br><span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
-        $block = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
+        $confirm = "<br><span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
+        $block = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
         $avatar = get_avatar($friendp);
-        $reject = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>{$lang['friends_reject']}</a></span>";
+        $reject = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>{$lang['friends_reject']}</a></span>";
         $friendsp .= "<div>{$avatar}<p>{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
-$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendreqs = '';
 if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';
@@ -216,35 +216,35 @@ if (mysqli_num_rows($res) == 0) {
     $friendreqs .= '</table>';
 }
 $i = 0;
-$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid = ' . sqlesc($userid) . " AND f.confirmed = 'yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed = 'yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friends = '';
 if (mysqli_num_rows($res) == 0) {
     $friends = '<em>Your friends list is empty.</em>';
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt = $dt - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = htmlsafechars($friend['title']);
         if (!$title) {
             $title = get_user_class_name($friend['class']);
         }
-        $ratio = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
+        $ratio = member_ratio($friend['uploaded'], $site_config['site']['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
-        $delete = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
-        $pm_link = " <span class='button is-small'><a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
+        $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
+        $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
         $avatar = get_avatar($friend);
         $friends .= "<div>{$avatar}<p>{$linktouser} {$online}<br><br>{$delete}{$pm_link}</p></div><br>";
     }
 }
 
-$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid=u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
     $blocks = "{$lang['friends_blocks_empty']}<em>.</em>";
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= '<div>';
-        $blocks .= "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>{$lang['friends_delete']}</a></span><br>";
+        $blocks .= "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>{$lang['friends_delete']}</a></span><br>";
         $blocks .= '<p>' . format_username($block['id']) . '</p></div><br>';
     }
 }
@@ -253,7 +253,7 @@ $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src='{$site_config['pic_baseurl']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "'>";
+        $country = "<img src='{$site_config['paths']['images_baseurl']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "'>";
         break;
     }
 }
@@ -292,7 +292,7 @@ $HTMLOUT .= "
             </tbody>
         </table>
         <div class='has-text-centered bottom20'>
-            <a href='{$site_config['baseurl']}/users.php' class='button is-small top20'>
+            <a href='{$site_config['paths']['baseurl']}/users.php' class='button is-small top20'>
                 {$lang['friends_user_list']}
             </a>
         </div>";

@@ -2,21 +2,21 @@
 
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['staffmsg'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
         $answeredby = $fluent->from('staffmessages')
-                             ->select(null)
-                             ->select('COUNT(id) AS count')
-                             ->where('answeredby = 0')
-                             ->fetch('count');
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('answeredby = 0')
+            ->fetch('count');
 
         $cache->set('staff_mess_', $answeredby, $site_config['expires']['alerts']);
     }
     if ($answeredby > 0) {
         $htmlout .= "
         <li>
-            <a href='{$site_config['baseurl']}/staffbox.php'>
+            <a href='{$site_config['paths']['baseurl']}/staffbox.php'>
                 <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#staffmessage_tooltip'>" . ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_newmess']}") . "
                 </span>
                 <div class='tooltip_templates'>

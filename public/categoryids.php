@@ -18,14 +18,14 @@ $body = '';
 foreach ($parents as $parent) {
     foreach ($parent['children'] as $child) {
         $count = $fluent->from('torrents')
-                        ->select(null)
-                        ->select('COUNT(*) AS count')
-                        ->where('category = ?', $child['id'])
-                        ->fetch('count');
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('category = ?', $child['id'])
+            ->fetch('count');
         $body .= "
         <tr>
             <td class='has-text-centered'>{$child['id']}</td>
-            <td><a href='{$site_config['baseurl']}/browse.php?cats[]={$child['id']}'>{$parent['name']}::{$child['name']}</a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/browse.php?cats[]={$child['id']}'>{$parent['name']}::{$child['name']}</a></td>
             <td class='has-text-centered'>$count</td>
         </tr>";
     }

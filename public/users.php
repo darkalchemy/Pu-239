@@ -92,7 +92,7 @@ $browsemenu = '';
 $pagemenu = '';
 $res = sql_query('SELECT COUNT(*) FROM users WHERE ' . $query1) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
-$pager = pager($perpage, $arr[0], "{$site_config['baseurl']}/users.php?$q1&amp;");
+$pager = pager($perpage, $arr[0], "{$site_config['paths']['baseurl']}/users.php?$q1&amp;");
 if ($arr[0] > 0) {
     if ($arr[0] > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -108,7 +108,7 @@ if ($arr[0] > 0) {
                 </tr>";
     $body = '';
     while ($row = mysqli_fetch_assoc($res)) {
-        $country = ($row['name'] != null) ? "<img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "'>" : '---';
+        $country = ($row['name'] != null) ? "<img src='{$site_config['paths']['images_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "'>" : '---';
         $body .= '
                 <tr>
                     <td>' . format_username($row['id']) . '</td>

@@ -8,7 +8,7 @@ if (textarea) {
                 pre: null
             },
             format: '[pre]{0}[/pre]',
-            html: '<pre class="pre">{0}</pre>',
+            html: '<pre class="pre">{0}</pre>'
         }
     );
     sceditor.formats.bbcode.set(
@@ -22,7 +22,7 @@ if (textarea) {
             format: function (element, content) {
                 return '[spoiler]' + element.children[1].outerText + '[/spoiler]';
             },
-            html: '<section style="margin-bottom: 5px;"><span class="flip button is-small">Show Spoiler!</span><span class="panel spoiler" style="display:none;">{0}</span></section>',
+            html: '<section style="margin-bottom: 5px;"><span class="flip button is-small">Show Spoiler!</span><span class="panel spoiler" style="display:none;">{0}</span></section>'
         }
     );
     sceditor.formats.bbcode.set(
@@ -35,7 +35,7 @@ if (textarea) {
             isHtmlInline: true,
             skipLastLineBreak: true,
             format: '[table]{0}[/table]',
-            html: '<table class="table table-bordered table-striped">{0}</table>',
+            html: '<table class="table table-bordered table-striped">{0}</table>'
         }
     );
 
@@ -85,7 +85,7 @@ if (textarea) {
                 ':rolleyes:': 'rolleyes.gif',
                 ':kiss:': 'kiss.gif',
                 ':blink:': 'blink.gif',
-                ':baby:': 'baby.gif',
+                ':baby:': 'baby.gif'
             },
             more: {
                 ':cry:': 'cry.gif',
@@ -442,7 +442,7 @@ if (textarea) {
                 ':wink_skull:': 'wink_skull.gif',
                 ':fart4:': 'fart4.gif',
                 ':bump:': 'halo.gif',
-                ':dabunnies:': 'bunnies3.gif',
+                ':dabunnies:': 'bunnies3.gif'
             },
             hidden: {
                 ':love:': 'wub.gif',
@@ -472,7 +472,7 @@ if (textarea) {
                 ':grrr:': 'angry.gif',
                 'O:-': 'innocent.gif',
                 ':sleeping:': 'sleeping.gif',
-                ':clown:': 'clown.gif',
+                ':clown:': 'clown.gif'
             }
         }
     });

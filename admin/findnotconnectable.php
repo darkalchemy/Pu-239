@@ -18,10 +18,10 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
     </ul>
     <h1 class='has-text-centered'>{$lang['non_con_peers']}</h1>";
@@ -48,7 +48,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
             $body .= '
             <tr>
                 <td>' . format_username($arr2['userid']) . "</td>
-                <td><a href='{$site_config['baseurl']}/details.php?id={$arr2['torrent']}&amp;dllist=1#seeders'>{$arr2['torrent']}</a>";
+                <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$arr2['torrent']}&amp;dllist=1#seeders'>{$arr2['torrent']}</a>";
             if ($arr2['seeder'] === 'yes') {
                 $body .= "<span class='has-text-danger'>*</span>";
             }
@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr('Error', 'Please Type In Some Text');
     }
     $users = $fluent->from('peers')
-                    ->select(null)
-                    ->select('DISTINCT userid AS userid')
-                    ->where('connectable = "no"');
+        ->select(null)
+        ->select('DISTINCT userid AS userid')
+        ->where('connectable = "no"');
 
     foreach ($users as $user) {
         $values[] = [
@@ -88,8 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'date' => $dt,
         ];
         $fluent->insertInto('notconnectablepmlog')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
         $session->set('is-success', 'PM Sent to all non connectable peers');
     } else {
         $session->set('is-warning', 'No non connectable peers');
@@ -99,15 +99,15 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>
     <div>
         <h1 class='has-text-centered'>{$lang['non_con_mass']}</h1>
-        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable' accept-charset='utf-8'>";
+        <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable' accept-charset='utf-8'>";
     if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
     }
@@ -125,10 +125,10 @@ if (isset($_GET['action1']) == '') {
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
         <li class='altlink margin10'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>
     <h1 class='has-text-centered'>{$lang['non_con_uncon']}</h1>";

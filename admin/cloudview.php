@@ -19,7 +19,7 @@ if (isset($_POST['delcloud'])) {
 }
 $count = $searchcloud_stuffs->get_count();
 $perpage = 15;
-$pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=cloudview&amp;action=cloudview&amp;');
+$pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cloudview&amp;action=cloudview&amp;');
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

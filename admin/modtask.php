@@ -15,10 +15,6 @@ $lang = array_merge($lang, load_language('modtask'));
 
 $dt = TIME_NOW;
 $curuser_cache = $user_cache = '';
-$postkey = PostKey([
-    $_POST['userid'],
-    $CURUSER['id'],
-]);
 
 /**
  * @param $torrent_pass
@@ -54,10 +50,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
     if (!validate($_POST['validator'], "ModTask_$userid")) {
         die($lang['modtask_invalid']);
     }
-    if (CheckPostKey([
-            $userid,
-            $CURUSER['id'],
-        ], $postkey) == false) {
+    if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
         stderr($lang['modtask_pmsl'], $lang['modtask_die_bit']);
     }
     $user = $user_stuffs->getUserFromId($userid);
@@ -191,8 +184,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $curuser_cache['enabled'] = $enabled;
         $user_cache['enabled'] = $enabled;
         $fluent->deleteFrom('ajax_chat_online')
-               ->where('userID = ?', $userid)
-               ->execute();
+            ->where('userID = ?', $userid)
+            ->execute();
         $cache->set('forced_logout_' . $userid, $dt, 2591999);
     }
     if (isset($_POST['downloadpos']) && ($downloadpos = (int) $_POST['downloadpos'])) {
@@ -508,7 +501,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $avatar = validate_url($avatar);
         if (!empty($avatar)) {
             $img_size = @getimagesize($avatar);
-            if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+            if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
             if ($img_size[0] < 100 || $img_size[1] < 100) {
@@ -525,7 +518,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $signature = validate_url($signature);
         if (!empty($signature)) {
             $img_size = @getimagesize($signature);
-            if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+            if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
             if ($img_size[0] < 100 || $img_size[1] < 15) {
@@ -769,9 +762,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             $user_cache['invite_on'] = 'no';
             $useredit['update'][] = $lang['modtask_suspended_yes'];
             $subject = sqlesc($lang['modtask_suspend_title']);
-            $msg = sqlesc($lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ".\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site_name'] . $lang['modtask_suspend_msg5']);
+            $msg = sqlesc($lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ".\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5']);
             //=== post to forum
-            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . sqlesc($suspended_reason);
+            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . sqlesc($suspended_reason);
             auto_post($lang['modtask_suspend_title'], $body);
         }
         if ($_POST['suspended'] === 'no') {
@@ -782,7 +775,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             $updateset[] = "invite_on = 'yes'";
             $useredit['update'][] = $lang['modtask_suspended_no'];
             $subject = sqlesc($lang['modtask_unsuspend_title']);
-            $msg = sqlesc($lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ". \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site_name'] . $lang['modtask_suspend_msg5']);
+            $msg = sqlesc($lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ". \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5']);
         }
         $updateset[] = 'suspended = ' . sqlesc($_POST['suspended']);
         $curuser_cache['suspended'] = $_POST['suspended'];
@@ -925,7 +918,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $cache->update_row('user_' . $userid, $user_cache, $site_config['expires']['user_cache']);
     }
     if (!empty($updateset)) {
-        sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
     if ($_POST['enabled'] !== 'yes') {
         $cache->delete('user_' . $userid);
@@ -936,10 +929,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $cache->delete('is_staff_');
     }
     if (!empty($setbits) || !empty($countbits)) {
-        sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
 
-    $res = sql_query('SELECT opt1, opt2 FROM users WHERE id = ' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT opt1, opt2 FROM users WHERE id=' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $cache->update_row('user_' . $userid, [
         'opt1' => $row['opt1'],
@@ -954,7 +947,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
 
     write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username($userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit['update']) . "{$lang['modtask_gl_by']}" . format_username($CURUSER['id']));
     $returnto = htmlsafechars($_POST['returnto']);
-    header("Location: {$site_config['baseurl']}/$returnto");
+    header("Location: {$site_config['paths']['baseurl']}/$returnto");
     stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
 }
 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_no_idea']}");

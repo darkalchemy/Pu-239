@@ -30,8 +30,8 @@ if ($user['status'] === 'pending') {
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
-    stderr($lang['userdetails_error'], '<span><img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
-       ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '"></span>');
+    stderr($lang['userdetails_error'], '<span><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
+       ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '"></span>');
     die();
 }
 
@@ -40,7 +40,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
-    sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id=' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     if (@mysqli_affected_rows($mysqli) === 0) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
@@ -63,7 +63,7 @@ if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $lastseen = get_date($user['last_access'], '', 0, 1);
 }
 
-if ((($user['class'] >= $site_config['staff_allowed']['enable_invincible'] || $user['id'] == $CURUSER['id']) || ($user['class'] < $site_config['staff_allowed']['enable_invincible']) && $CURUSER['class'] >= $site_config['staff_allowed']['enable_invincible']) && isset($_GET['invincible'])) {
+if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['id'] == $CURUSER['id']) || ($user['class'] < $site_config['allowed']['enable_invincible']) && $CURUSER['class'] >= $site_config['allowed']['enable_invincible']) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] === 'yes') {
         $HTMLOUT .= invincible($id, true, true);
@@ -87,17 +87,17 @@ $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src='{$site_config['pic_baseurl']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "'>";
+        $country = "<img src='{$site_config['paths']['images_baseurl']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "'>";
         break;
     }
 }
 
 if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
-    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($user['id']) . ' AND hitid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($user['id']) . ' AND hitid=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     if (!($row[0] > TIME_NOW - 3600)) {
         $hitnumber = $user['hits'] + 1;
-        sql_query('UPDATE users SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET hits = hits + 1 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         // do update hits userdetails cache
         $update['user_hits'] = ($user['hits'] + 1);
         $cache->update_row('user_' . $id, [
@@ -131,7 +131,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <form method='get' action='{$site_config['baseurl']}/messages.php?action=send_message' accept-charset='utf-8'>
+                    <form method='get' action='{$site_config['paths']['baseurl']}/messages.php?action=send_message' accept-charset='utf-8'>
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                         <input type='submit' value='{$lang['userdetails_sendmess']}'>
                     </form>";
@@ -146,13 +146,13 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $suspended .= ($user['suspended'] === 'yes' ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
+    $suspended .= ($user['suspended'] === 'yes' ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users">' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
 }
-$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
+$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
+$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
 $enabled = $user['enabled'] === 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
@@ -163,25 +163,25 @@ if (!$enabled) {
 } elseif ($CURUSER['id'] != $user['id']) {
     $friends = $cache->get('Friends_' . $id);
     if ($friends === false || is_null($friends)) {
-        $r3 = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r3 = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($user['id']) . ' AND friendid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     $blocks = $cache->get('Blocks_' . $id);
     if ($blocks === false || is_null($blocks)) {
-        $r4 = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r4 = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($user['id']) . ' AND blockid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
     if ($friends > 0) {
-        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a></li>";
+        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a></li>";
     } else {
-        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a></li>";
+        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a></li>";
     }
     if ($blocks > 0) {
-        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a></li>";
+        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a></li>";
     } else {
-        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a></li>";
+        $friend_links .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a></li>";
     }
 }
 
@@ -189,17 +189,17 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $shitty = '';
     $shit_list = $cache->get('shit_list_' . $id);
     if ($shit_list === false || is_null($shit_list)) {
-        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid = ' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list) = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);
     }
     if ($shit_list > 0) {
-        $shitty_link = "<li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
+        $shitty_link = "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
-                <img class='tooltipper right5' src='{$site_config['pic_baseurl']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit'>
+                <img class='tooltipper right5' src='{$site_config['paths']['images_baseurl']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit'>
             </a></li>";
     } elseif ($CURUSER['id'] != $user['id']) {
-        $shitty_link .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
+        $shitty_link .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
                 {$lang['userdetails_shit3']}
             </a></li>";
     }
@@ -210,15 +210,15 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_S
         $HTMLOUT .= '';
     } else {
         $h1 .= "<br><b>{$lang['userdetails_donatedtill']} - " . get_date($user['donoruntil'], 'DATE') . '';
-        $h1 .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><br><span class='size_4'> {$lang['userdetails_renew']} <a class='altlink' href='{$site_config['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</span><br><br>";
+        $h1 .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><br><span class='size_4'> {$lang['userdetails_renew']} <a class='altlink' href='{$site_config['paths']['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</span><br><br>";
     }
 }
 if ($CURUSER['id'] == $user['id']) {
-    $edit_profile = "<li class='altlink margin10'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></li>
-        <li class='altlink margin10'><a href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></li>";
+    $edit_profile = "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></li>
+        <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></li>";
 }
 if ($CURUSER['id'] != $user['id']) {
-    $sharemark_link .= "<li class='altlink margin10'><a href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a></li>";
+    $sharemark_link .= "<li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a></li>";
 }
 
 $HTMLOUT .= "
@@ -228,10 +228,10 @@ $HTMLOUT .= "
         $shitty_link
         $friend_links
         $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
-        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
-        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
-        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
+        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
+        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
+        <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
 
 $stealth = $cache->get('display_stealth_' . $user['id']);
 if ($stealth) {
@@ -239,9 +239,9 @@ if ($stealth) {
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-            <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
-            <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . "
-            <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$id}'>Reset Password</a></li>
+            <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
+            <li class='margin10'><a class='altlink tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . "
+            <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$id}'>Reset Password</a></li>
         </ul>
     </div>";
 
@@ -274,18 +274,18 @@ if ($CURUSER['id'] === $id || $CURUSER['class'] >= UC_ADMINISTRATOR) {
             <td>
                 <ul class='level-left'>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have previously snatched'>Snatched Torrents</a>
+                        <a href='{$site_config['paths']['baseurl']}/download_multi.php?userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have previously snatched'>Snatched Torrents</a>
                     </li>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?owner=true&amp;userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have uploaded'>Uploaded Torrents</a>
+                        <a href='{$site_config['paths']['baseurl']}/download_multi.php?owner=true&amp;userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have uploaded'>Uploaded Torrents</a>
                     </li>";
     if ($CURUSER['id'] === $id && $CURUSER['class'] >= UC_ADMINISTRATOR) {
         $table_data .= "
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?getall=yes' class='button is-small tooltipper' title='Download <i><b>all active</b></i> torrents'>Live Torrents</a>
+                        <a href='{$site_config['paths']['baseurl']}/download_multi.php?getall=yes' class='button is-small tooltipper' title='Download <i><b>all active</b></i> torrents'>Live Torrents</a>
                     </li>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?getall=no' class='button is-small tooltipper' title='Download <i><b>all dead</b></i> torrents'>Dead Torrents</a>
+                        <a href='{$site_config['paths']['baseurl']}/download_multi.php?getall=no' class='button is-small tooltipper' title='Download <i><b>all dead</b></i> torrents'>Dead Torrents</a>
                     </li>";
     }
     $table_data .= '
@@ -325,7 +325,7 @@ $HTMLOUT .= "
 if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
     $the_flip_box = "
         <a id='watched_user'></a>
-        <a class='altlink tooltipper' href='#watched_user' onclick=\"javascript:flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"javascript:flipBox('3')\" src='{$site_config['pic_baseurl']}panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
+        <a class='altlink tooltipper' href='#watched_user' onclick=\"javascript:flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"javascript:flipBox('3')\" src='{$site_config['paths']['images_baseurl']}panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
     $HTMLOUT .= "
                         <tr>
                             <td class='rowhead'>{$lang['userdetails_watched']}</td>
@@ -352,19 +352,19 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             </td>
                         </tr>";
 
-    $the_flip_box_4 = '[ <a id="staff_notes"></a><a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="' . $site_config['pic_baseurl'] . 's/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '"></a> ]';
+    $the_flip_box_4 = '[ <a id="staff_notes"></a><a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="' . $site_config['paths']['images_baseurl'] . 's/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '"></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
-                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
+                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
                             <div class="has-text-left" id="box_6">
                             <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
                             <input name="id" type="hidden" value="' . (int) $user['id'] . '">
                             <input type="hidden" value="staff_notes" name="action" id="action">
-                            <textarea id="new_staff_note" class="w - 100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
+                            <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
                             <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
                             </form>
                             </div> </td></tr>';
 
-    $the_flip_box_7 = '[ <a id="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '"></a> ]';
+    $the_flip_box_7 = '[ <a id="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '"></a> ]';
     if (!empty($user['modcomment'])) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
     }
@@ -423,7 +423,7 @@ $moodname = (isset($mood['name'][$user['mood']]) ? htmlsafechars($mood['name'][$
 $moodpic = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
-       <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0">
+       <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0">
        <span class="tip">' . htmlsafechars($user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
 if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
@@ -461,14 +461,10 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask' accept-charset='utf-8'>";
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
-    $postkey = PostKey([
-        $user['id'],
-        $CURUSER['id'],
-    ]);
     $HTMLOUT .= "
         <input type='hidden' name='action' value='edituser'>
         <input type='hidden' name='userid' value='$id'>
-        <input type='hidden' name='postkey' value='$postkey'>
+        <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
         <input type='hidden' name='returnto' value='userdetails.php?id=$id'>
         <table class='table table-bordered table-striped bottom20 seven'>
         <tr>
@@ -921,7 +917,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <td class='rowhead'>{$lang['userdetails_addupload']}</td>
          <td class='has-text-centered'>
         <div class='level'>
-            <img src='{$site_config['pic_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick='togglepic('{$site_config['baseurl']}', 'uppic','upchange')'>
+            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick='togglepic('{$site_config['paths']['baseurl']}', 'uppic','upchange')'>
             <input type='text' name='amountup' class='w-75'>
         </div>
          </td>
@@ -936,7 +932,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <td class='rowhead'>{$lang['userdetails_adddownload']}</td>
          <td class='has-text-centered'>
         <div class='level'>
-            <img src='{$site_config['pic_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick='togglepic('{$site_config['baseurl']}','downpic','downchange')'>
+            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick='togglepic('{$site_config['paths']['baseurl']}','downpic','downchange')'>
             <input type='text' name='amountdown' class='w-75'>
         </div>
          </td>

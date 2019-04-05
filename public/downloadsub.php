@@ -21,15 +21,15 @@ if ($action === 'download') {
                 '.',
                 '-',
             ], '_', $arr['name']) . '.' . $ext;
-        $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
+        $file = UPLOADSUB_DIR . $arr['filename'];
         $fileContent = file_get_contents($file);
-        $newFile = fopen("{$site_config['sub_up_dir']}/$fileName", 'w');
+        $newFile = fopen(UPLOADSUB_DIR . $fileName, 'w');
         @fwrite($newFile, $fileContent);
         @fclose($newFile);
         $file = [];
         $zip = new PHPZip();
-        $file[] = "{$site_config['sub_up_dir']}/$fileName";
-        $fName = "{$site_config['sub_up_dir']}/" . str_replace([
+        $file[] = UPLOADSUB_DIR . $fileName;
+        $fName = UPLOADSUB_DIR . str_replace([
                 ' ',
                 '.',
                 '-',
@@ -37,7 +37,7 @@ if ($action === 'download') {
         $zip->Zip($file, $fName);
         $zip->forceDownload($fName);
         @unlink($fName);
-        @unlink("{$site_config['sub_up_dir']}/$fileName");
+        @unlink(UPLOADSUB_DIR . $fileName);
         sql_query('UPDATE subtitles SET hits = hits + 1 WHERE id = ' . sqlesc($id));
     }
 } else {

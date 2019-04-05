@@ -62,7 +62,7 @@ function anime_titles_update($data)
             }
 
             if (!empty($values)) {
-                $count = floor($site_config['query_limit'] / 2 / max(array_map('count', $values)));
+                $count = floor($site_config['database']['query_limit'] / 2 / max(array_map('count', $values)));
                 $update = [
                     'image' => new Envms\FluentPDO\Literal('VALUES(image)'),
                     'type' => new Envms\FluentPDO\Literal('VALUES(type)'),
@@ -74,8 +74,8 @@ function anime_titles_update($data)
 
                 foreach (array_chunk($values, $count) as $t) {
                     $fluent->insertInto('anime_titles', $t)
-                           ->onDuplicateKeyUpdate($update)
-                           ->execute();
+                        ->onDuplicateKeyUpdate($update)
+                        ->execute();
                 }
             }
 

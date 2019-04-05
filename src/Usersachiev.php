@@ -2,6 +2,8 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+
 /**
  * Class Usersachiev.
  */
@@ -19,34 +21,34 @@ class Usersachiev
         $this->fluent = $fluent;
         $this->cache = $cache;
         $this->site_config = $site_config;
-        $this->limit = $this->site_config['query_limit'];
+        $this->limit = $this->site_config['database']['query_limit'];
     }
 
     /**
      * @param array $values
      * @param array $update
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function insert(array $values, array $update)
     {
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('usersachiev', $t)
-                         ->onDuplicateKeyUpdate($update)
-                         ->execute();
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
         }
     }
 
     /**
      * @param array $values
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function add(array $values)
     {
         $this->fluent->insertInto('usersachiev')
-                     ->values($values)
-                     ->execute();
+            ->values($values)
+            ->execute();
     }
 }

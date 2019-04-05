@@ -11,7 +11,7 @@ global $site_config, $CURUSER;
 $scores = '';
 $player = $CURUSER['id'];
 
-$all_our_games = $site_config['arcade_games'];
+$all_our_games = $site_config['arcade']['games'];
 
 //=== make sure that the gamename is what it is supposed to be... add or subtract games you have...
 if (isset($_GET['gamename'])) {
@@ -42,15 +42,15 @@ $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
                 <li class='altlink margin10'>
-                    <a href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
+                    <a href='{$site_config['paths']['baseurl']}/arcade.php'>Arcade</a>
                 </li>
                 <li class='altlink margin10'>
-                    <a href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
+                    <a href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </li>
             </ul>
         </div>
-        <h1>{$site_config['site_name']} Old School Arcade!</h1>
-        <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>";
+        <h1>{$site_config['site']['name']} Old School Arcade!</h1>
+        <span>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</span>";
 
 $HTMLOUT .= "
         <div class='bordered top20'>
@@ -58,7 +58,7 @@ $HTMLOUT .= "
                 <object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' width='{$game_width}' height='{$game_height}'>
                     <param name='movie' value='./media/flash_games/{$gameURI}'>
                     <param name='quality' value='high'>
-                    <embed src='{$site_config['baseurl']}/media/flash_games/{$gameURI}' quality='high' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash type=application/x-shockwave-flash' width='{$game_width}' height='{$game_height}'></embed>
+                    <embed src='{$site_config['paths']['baseurl']}/media/flash_games/{$gameURI}' quality='high' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash type=application/x-shockwave-flash' width='{$game_width}' height='{$game_height}'></embed>
                 </object>
             </div>
         </div>";
@@ -66,8 +66,8 @@ $HTMLOUT .= "
 $res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
 
 if (mysqli_num_rows($res) > 0) {
-    $id = array_search($gamename, $site_config['arcade_games']);
-    $fullgamename = $site_config['arcade_games_names'][$id];
+    $id = array_search($gamename, $site_config['arcade']['games']);
+    $fullgamename = $site_config['arcade']['game_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
@@ -89,7 +89,7 @@ if (mysqli_num_rows($res) > 0) {
     $at_score_res = sql_query('SELECT * FROM highscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username($at_score_arr['user_id']);
-        $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
+        $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score>' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
                 <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
@@ -102,7 +102,7 @@ if (mysqli_num_rows($res) > 0) {
 
     while ($row = mysqli_fetch_assoc($res)) {
         $username = format_username($row['user_id']);
-        $ranking = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
+        $ranking = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score>' . sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
         $rankrow = mysqli_fetch_row($ranking);
 
         $HTMLOUT .= '
@@ -113,11 +113,11 @@ if (mysqli_num_rows($res) > 0) {
                     <td>' . number_format($row['score']) . '</td>
                 </tr>';
     }
-    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND user_id=' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
 
     if (mysqli_num_rows($member_score_res) > 0) {
         $member_score_arr = mysqli_fetch_assoc($member_score_res);
-        $member_ranking_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($member_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
+        $member_ranking_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score>' . sqlesc($member_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $member_ranking_arr = mysqli_fetch_row($member_ranking_res);
 
         $member_rank = number_format($member_ranking_arr[0]);
@@ -138,8 +138,8 @@ if (mysqli_num_rows($res) > 0) {
         </table>';
 } //}
 else {
-    $id = array_search($gamename, $site_config['arcade_games']);
-    $fullgamename = $site_config['arcade_games_names'][$id];
+    $id = array_search($gamename, $site_config['arcade']['games']);
+    $fullgamename = $site_config['arcade']['game_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>

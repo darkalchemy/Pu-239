@@ -12,9 +12,9 @@ $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 
 $count = $fluent->from('peers')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->fetch('count');
 
 $peersperpage = 25;
 $HTMLOUT .= "
@@ -24,7 +24,7 @@ $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, LEFT(p.peer_id, 8) AS peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid LEFT JOIN torrents AS t ON t.id = p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
+$sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, LEFT(p.peer_id, 8) AS peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id=p.userid LEFT JOIN torrents AS t ON t.id=p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     $heading = "
@@ -35,13 +35,13 @@ if (mysqli_num_rows($result) != 0) {
         <th>{$lang['wpeers_port']}</th>
         <th>{$lang['wpeers_client']}</th>
         <th>{$lang['wpeers_peer_id']}</th>
-        <th>{$lang['wpeers_up']}</th>" . ($site_config['ratio_free'] ? '' : "
+        <th>{$lang['wpeers_up']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
         <th>{$lang['wpeers_dn']}</th>") . "
         <th>{$lang['wpeers_con']}</th>
         <th>{$lang['wpeers_seed']}</th>
         <th>{$lang['wpeers_start']}</th>
         <th>{$lang['wpeers_last']}</th>
-        <th>{$lang['wpeers_upoff']}</th>" . ($site_config['ratio_free'] ? '' : "
+        <th>{$lang['wpeers_upoff']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
         <th>{$lang['wpeers_dnoff']}</th>") . "
         <th>{$lang['wpeers_togo']}</th>
     </tr>";
@@ -54,18 +54,18 @@ if (mysqli_num_rows($result) != 0) {
         $body .= '
     <tr>
         <td>' . format_username($row['userid']) . '</td>
-        <td><a href="' . $site_config['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
+        <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . htmlsafechars($row['port']) . '</td>
         <td>' . htmlsafechars(str_replace('/', "\n", trim($row['agent']))) . '</td>
         <td>' . htmlsafechars(str_replace('-', '', $row['peer_id'])) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['ratio_free'] ? '' : '
+        <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>
         <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['ratio_free'] ? '' : '
+        <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
         <td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
     </tr>';

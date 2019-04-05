@@ -49,7 +49,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } elseif (isset($_GET['func']) && $_GET['func'] === 'check') {
                 echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format($arr['seedbonus'], 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'ircbonus') {
-                $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['autoclean_interval'] * 4), 1) : '0.0');
+                $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['irc']['autoclean_interval'] * 4), 1) : '0.0');
                 echo $arr['username'] . ' - IRC Bonus: (' . $ircbonus . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'irctotal') {
                 $irctotal = (!empty($arr['irctotal']) ? calctime($arr['irctotal']) : $arr['username'] . ' has never been on IRC!');
@@ -77,7 +77,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 }
                 echo $seen;
             } elseif (isset($_GET['func']) && $_GET['func'] === 'flushtorrents') {
-                sql_query('DELETE FROM peers WHERE userid = ' . $id) or sqlerr(__FILE__, __LINE__);
+                sql_query('DELETE FROM peers WHERE userid=' . $id) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('peers_' . $id);
                 echo $username . 's torrents have been flushed';
             }
@@ -111,7 +111,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
     } elseif (isset($_GET['topirc'])) {
         $res = sql_query("SELECT id, username, class, irctotal FROM users WHERE onirc = 'yes' GROUP BY class ORDER BY irctotal DESC") or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
-            $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['autoclean_interval'] * 4), 1) : '0.0');
+            $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['irc']['autoclean_interval'] * 4), 1) : '0.0');
             $ircusers = (isset($ircusers) ? ($ircusers) : '');
             if ($ircusers) {
                 $ircusers .= ",\n";

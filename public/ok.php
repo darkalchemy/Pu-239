@@ -14,14 +14,14 @@ $lang = array_merge(load_language('global'), load_language('ok'));
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
 if ($type === 'signup' && isset($_GET['email'])) {
-    stderr("{$lang['ok_success']}", sprintf((!$site_config['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
+    stderr("{$lang['ok_success']}", sprintf((!$site_config['signup']['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
 } elseif ($type === 'invite' && isset($_GET['email'])) {
     stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars($_GET['email'], ENT_QUOTES)));
 } elseif ($type === 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {
         $session->set('is-info', "[p]{$lang['ok_sysop_activated']}[/p][p]Create your System BOT, be sure to use the same username as used during the install[/p]");
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=adduser");
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=adduser");
         die();
     }
     $HTMLOUT = stdhead("{$lang['ok_sysop_account']}");
@@ -42,7 +42,7 @@ if ($type === 'signup' && isset($_GET['email'])) {
     check_user_status();
     if (isset($CURUSER)) {
         $session->set('is-info', $lang['ok_signup_confirm']);
-        header("Location: {$site_config['baseurl']}/index.php");
+        header("Location: {$site_config['paths']['baseurl']}/index.php");
         die();
     } else {
         $HTMLOUT .= stdhead("{$lang['ok_signup_confirm']}");

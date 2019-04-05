@@ -39,7 +39,7 @@ function sharetable($res, $userid, $variant = 'index')
         <tr>
             <th>Type</th>
             <th>Name</th>';
-    //$userid = (int) $_GET['id'];
+    //$userid=(int) $_GET['id'];
     if ($CURUSER['id'] === $userid) {
         $heading .= ($variant === 'index' ? '
             <th>Download</th>' : '') . '
@@ -87,7 +87,7 @@ function sharetable($res, $userid, $variant = 'index')
         if (isset($row['cat_name'])) {
             $body .= "<a href='browse.php?cat=" . (int) $row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $body .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}'>";
+                $body .= "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}'>";
             } else {
                 $body .= $row['cat_name'];
             }
@@ -110,14 +110,14 @@ function sharetable($res, $userid, $variant = 'index')
         $body .= "'><b>$dispname</b></a>&#160;</td>";
         $body .= ($variant === 'index' ? "
                         <td>
-                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
+                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
                                 <i class='icon-download icon'></i>
                             </a>
                         </td>" : '');
         $bms = $fluent->from('bookmarks')
-                      ->where('torrentid = ?', $id)
-                      ->where('userid = ?', $userid)
-                      ->fetch();
+            ->where('torrentid=?', $id)
+            ->where('userid=?', $userid)
+            ->fetch();
 
         $bookmarked = (empty($bms) ? "
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
@@ -205,16 +205,16 @@ $htmlout .= '
         <h1>Sharemarks for ' . format_username($userid) . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
             </ul>
         </div>
     </div>';
 $count = $fluent->from('bookmarks')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('private = "no"')
-                ->where('userid = ?', $userid)
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('private = "no"')
+    ->where('userid=?', $userid)
+    ->fetch('count');
 
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (empty($torrentsperpage)) {
@@ -223,32 +223,32 @@ if (empty($torrentsperpage)) {
 if ($count) {
     $pager = pager($torrentsperpage, $count, 'sharemarks.php?&amp;');
     $sharemarks = $fluent->from('bookmarks AS b')
-                         ->select(null)
-                         ->select('b.id as bookmarkid')
-                         ->select('t.owner')
-                         ->select('t.id')
-                         ->select('t.name')
-                         ->select('t.comments')
-                         ->select('t.leechers')
-                         ->select('t.seeders')
-                         ->select('t.save_as')
-                         ->select('t.numfiles')
-                         ->select('t.added')
-                         ->select('t.filename')
-                         ->select('t.size')
-                         ->select('t.views')
-                         ->select('t.visible')
-                         ->select('t.hits')
-                         ->select('t.times_completed')
-                         ->select('t.category')
-                         ->select('u.username')
-                         ->innerJoin('torrents AS t ON b.torrentid = t.id')
-                         ->leftJoin('users AS u on b.userid = u.id')
-                         ->where('private = "no"')
-                         ->where('b.userid = ?', $userid)
-                         ->orderBy('t.id DESC')
-                         ->limit($pager['pdo'])
-                         ->fetchAll();
+        ->select(null)
+        ->select('b.id as bookmarkid')
+        ->select('t.owner')
+        ->select('t.id')
+        ->select('t.name')
+        ->select('t.comments')
+        ->select('t.leechers')
+        ->select('t.seeders')
+        ->select('t.save_as')
+        ->select('t.numfiles')
+        ->select('t.added')
+        ->select('t.filename')
+        ->select('t.size')
+        ->select('t.views')
+        ->select('t.visible')
+        ->select('t.hits')
+        ->select('t.times_completed')
+        ->select('t.category')
+        ->select('u.username')
+        ->innerJoin('torrents AS t ON b.torrentid=t.id')
+        ->leftJoin('users AS u on b.userid=u.id')
+        ->where('private = "no"')
+        ->where('b.userid=?', $userid)
+        ->orderBy('t.id DESC')
+        ->limit($pager['pdo'])
+        ->fetchAll();
 
     $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
     $htmlout .= sharetable($sharemarks, $userid, 'index');

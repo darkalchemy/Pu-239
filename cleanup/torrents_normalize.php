@@ -15,11 +15,11 @@ function torrents_normalize($data)
     ignore_user_abort(true);
 
     $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('id')
-                       ->select('info_hash')
-                       ->select('owner')
-                       ->orderBy('id');
+        ->select(null)
+        ->select('id')
+        ->select('info_hash')
+        ->select('owner')
+        ->orderBy('id');
 
     $tids = $ids = $bad1 = $bad2 = [];
     foreach ($torrents as $torrent) {

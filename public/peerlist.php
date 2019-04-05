@@ -5,7 +5,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bt_client.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $lang;
+global $site_config, $lang, $torrent_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int) $_GET['id'];
@@ -32,8 +32,8 @@ function dltable($name, $arr, $torrent)
             <th>{$lang['peerslist_user_ip']}</th>
             <th>{$lang['peerslist_connectable']}</th>
             <th>{$lang['peerslist_uploaded']}</th>
-            <th>{$lang['peerslist_rate']}</th>" . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['peerslist_downloaded']}</th>") . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['peerslist_rate']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
+            <th>{$lang['peerslist_downloaded']}</th>") . ($site_config['site']['ratio_free'] ? '' : "
             <th>{$lang['peerslist_rate']}</th>") . "
             <th>{$lang['peerslist_ratio']}</th>
             <th>{$lang['peerslist_complete']}</th>
@@ -64,13 +64,13 @@ function dltable($name, $arr, $torrent)
         $body .= '<td>' . ($e['connectable'] === 'yes' ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
         $body .= '<td>' . mksize($e['uploaded']) . "</td>\n";
         $body .= '<td><span style="white-space: nowrap;">' . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
-        $body .= '' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
+        $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
         if ($e['seeder'] === 'no') {
-            $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
+            $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
         } else {
-            $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
+            $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
         }
-        $body .= '<td>' . member_ratio($e['uploaded'], $site_config['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $body .= '<td>' . member_ratio($e['uploaded'], $site_config['site']['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
         $body .= '<td>' . sprintf('%.2f%%', 100 * (1 - ($e['to_go'] / $torrent['size']))) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['st']) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['la']) . "</td>\n";
@@ -82,28 +82,44 @@ function dltable($name, $arr, $torrent)
     return $htmlout;
 }
 
-$res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($res) == 0) {
+$torrent = $torrent_stuffs->get($id);
+if (empty($torrent)) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
-$row = mysqli_fetch_assoc($res);
 $downloaders = [];
 $seeders = [];
-$subres = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, INET6_NTOA(p.ip), p.port, p.uploaded, p.downloaded, p.to_go, p.started AS st, p.connectable, p.agent, p.last_action AS la, p.userid, p.peer_id
-    FROM peers p
-    LEFT JOIN users u ON p.userid = u.id
-    LEFT JOIN torrents AS t ON t.id = p.torrent
-    WHERE p.torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($subres) == 0) {
+$peers = $fluent->from('peers AS p')
+    ->select('t.anonymous AS tanonymous')
+    ->select('p.seeder')
+    ->select('p.finishedat')
+    ->select('p.downloadoffset')
+    ->select('p.uploadoffset')
+    ->select('INET6_NTOA(p.ip)')
+    ->select('p.port')
+    ->select('p.uploaded')
+    ->select('p.downloaded')
+    ->select('p.to_go')
+    ->select('p.started AS st')
+    ->select('p.connectable')
+    ->select('p.agent')
+    ->select('p.last_action AS la')
+    ->select('p.userid')
+    ->select('p.peer_id')
+    ->innerJoin('torrents AS t ON t.id = p.torrent')
+    ->where('p.torrent = ?', $id)
+    ->fetchAll();
+
+if (empty($peers)) {
     stderr("<a id='seeders'></a>{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
 }
-while ($subrow = mysqli_fetch_assoc($subres)) {
+foreach ($peers as $subrow) {
     if ($subrow['seeder'] === 'yes') {
         $seeders[] = $subrow;
     } else {
         $downloaders[] = $subrow;
     }
 }
+
 /**
  * @param $a
  * @param $b
@@ -150,7 +166,7 @@ function seed_sort($a, $b)
 usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
+    <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
 $HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $row);
 $HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $row);
 echo stdhead($lang['peerslist_stdhead']) . wrapper($HTMLOUT) . stdfoot();

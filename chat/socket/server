@@ -23,9 +23,9 @@ function start
 	then
 		echo "PID file $SERVICE_PIDFILE found - $SERVICE_TITLE already running?"
 	else
-		$SERVICE_COMMAND $SERVICE_CONFIG >> $SERVICE_LOG & echo "Started $SERVICE_TITLE..."
+		$SERVICE_COMMAND $SERVICE_CONFIG>> $SERVICE_LOG & echo "Started $SERVICE_TITLE..."
 		PID=$!
-		echo $PID > $SERVICE_PIDFILE
+		echo $PID>$SERVICE_PIDFILE
 	fi
 	exit 0
 }

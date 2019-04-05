@@ -41,7 +41,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $should_i_send_this = ($arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : '')));
         switch ($should_i_send_this) {
             case 'yes':
-                $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($receiver) . ' AND blockid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $block = mysqli_fetch_row($r);
                 if ($block[0] > 0) {
                     stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_blocked']);
@@ -49,7 +49,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
                 break;
 
             case 'friends':
-                $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($receiver) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $friend = mysqli_fetch_row($r);
                 if ($friend[0] == 0) {
                     stderr('Refused', htmlsafechars($arr_receiver['username']) . ' only accepts PMs from members in their friends list.');
@@ -75,7 +75,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $message_stuffs->insert($msgs_buffer);
     if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
-        $title = $site_config['site_name'];
+        $title = $site_config['site']['name'];
         $msg = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title} PM received</title>
@@ -83,20 +83,20 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['baseurl']}/messages.php</p>
-<p>--{$site_config['site_name']}</p>
+<p>{$site_config['paths']['baseurl']}/messages.php</p>
+<p>--{$site_config['site']['name']}</p>
 </body>
 </html>";
 
         $mail = new Message();
-        $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-             ->addTo($arr_receiver['email'])
-             ->setReturnPath($site_config['site_email'])
-             ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
-             ->setHtmlBody($msg);
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+            ->addTo($arr_receiver['email'])
+            ->setReturnPath($site_config['site']['email'])
+            ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
+            ->setHtmlBody($msg);
 
         $mailer = new SendmailMailer();
-        $mailer->commandArgs = "-f{$site_config['site_email']}";
+        $mailer->commandArgs = "-f{$site_config['site']['email']}";
         @$mailer->send($mail);
     }
     if ($delete != 0) {

@@ -13,7 +13,7 @@ $lang = array_merge($lang, load_language('ad_banemail'));
 $HTMLOUT = '';
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if (is_valid_id($remove)) {
-    sql_query('DELETE FROM bannedemails WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM bannedemails WHERE id=' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
     write_log("{$lang['ad_banemail_log1']} $remove {$lang['ad_banemail_log2']} {$CURUSER['username']}");
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,9 +47,9 @@ $body = "
 $HTMLOUT .= main_table($body) . '
     </form>';
 $count1 = $fluent->from('bannedemails')
-                 ->select(null)
-                 ->select('COUNT(*) AS count')
-                 ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->fetch('count');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);

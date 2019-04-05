@@ -34,19 +34,19 @@ $lang = [
     'modtask_donor_dear' => 'Dear',
     'modtask_donor_msg' => "
        :wave:
-       Thanks for your support to {$site_config['site_name']}!
+       Thanks for your support to {$site_config['site']['name']}!
        Your donation helps us in the costs of running the site!
        As a donor, you are given some bonus gigs added to your uploaded amount, the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love :smile: so, thanks again, and enjoy!
        cheers,
-       {$site_config['site_name']} Staff
+       {$site_config['site']['name']} Staff
        PS. Your donator status will last for ",
     'modtask_donor_msg1' => 'and can be found on your user details page and can only be seen by you :smile: It was set by ',
     'modtask_donor_msg2' => "
        :wave:
-       Thanks for your continued support to {$site_config['site_name']}!
+       Thanks for your continued support to {$site_config['site']['name']}!
        Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!
        As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love :smile: so, thanks again, and enjoy! cheers,
-       {$site_config['site_name']} Staff
+       {$site_config['site']['name']} Staff
         PS. Your donator status will last for an extra ",
     'modtask_donor_msg3' => ' on top of your current donation status, and can be found on your user details page and can only be seen by you :smile: It was set by ',
     'modtask_donor_subject_again' => 'Thank You for Your Donation... Again!',

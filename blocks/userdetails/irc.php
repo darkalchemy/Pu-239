@@ -22,7 +22,7 @@ function calctime($val)
 
 //==Irc
 if ($user['onirc'] === 'yes') {
-    $ircbonus = (!empty($user['irctotal']) ? number_format($user['irctotal'] / $site_config['autoclean_interval'], 1) : '0.0');
+    $ircbonus = (!empty($user['irctotal']) ? number_format($user['irctotal'] / $site_config['irc']['autoclean_interval'], 1) : '0.0');
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_irc_bonus']}</td><td>{$ircbonus}</td></tr>";
     $irctotal = (!empty($user['irctotal']) ? calctime($user['irctotal']) : htmlsafechars($user['username']) . $lang['userdetails_irc_never']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_irc_idle']}</td><td>{$irctotal}</td></tr>";

@@ -18,10 +18,10 @@ class Database extends Query
         global $site_config;
 
         $this->site_config = $site_config;
-        if (!$this->site_config['socket']) {
-            $this->pdo = new PDO("{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};port={$_ENV['DB_PORT']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
+        if (!$this->site_config['database']['use_socket']) {
+            $this->pdo = new PDO("{$this->site_config['database']['type']}:host={$this->site_config['database']['host']};port={$this->site_config['database']['port']};dbname={$this->site_config['database']['database']};charset=utf8mb4", "{$this->site_config['database']['username']}", "{$this->site_config['database']['password']}");
         } else {
-            $this->pdo = new PDO("{$_ENV['DB_CONNECTION']}:unix_socket={$_ENV['DB_SOCKET']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
+            $this->pdo = new PDO("{$this->site_config['database']['type']}:unix_socket={$this->site_config['database']['socket']};dbname={$this->site_config['database']['database']};charset=utf8mb4", "{$this->site_config['database']['username']}", "{$this->site_config['database']['password']}");
         }
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

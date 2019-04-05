@@ -13,15 +13,15 @@ $dt = TIME_NOW;
 $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
         FROM users AS u
-        LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
-        WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
+        LEFT JOIN announcement_main AS ann_main ON ann_main.main_id=u.curr_ann_id
+        WHERE u.id=' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] = 0;
     $row['curr_ann_last_check'] = 0;
 }
-// If elapsed > 3 minutes, force a announcement refresh.
+// If elapsed>3 minutes, force a announcement refresh.
 if (($row['curr_ann_last_check'] != 0) && (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
     $row['curr_ann_last_check'] = 0;
 }
@@ -29,7 +29,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
     $query = sprintf('
                 SELECT m.*,p.process_id
                 FROM announcement_main AS m
-                LEFT JOIN announcement_process AS p ON m.main_id = p.main_id AND p.user_id = %s
+                LEFT JOIN announcement_process AS p ON m.main_id=p.main_id AND p.user_id=%s
                 WHERE p.process_id IS NULL OR p.status = 0
                 ORDER BY m.main_id ASC
                 LIMIT 1', sqlesc($row['id']));
@@ -43,7 +43,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
         }
         // The following line modifies the query to only return the current user
         // row if the existing query matches any attributes.
-        $query .= ' AND u.id = ' . sqlesc($row['id']) . ' LIMIT 1';
+        $query .= ' AND u.id=' . sqlesc($row['id']) . ' LIMIT 1';
         $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($result)) { // Announcement valid for member
             $row['curr_ann_id'] = (int) $ann_row['main_id'];
@@ -51,7 +51,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $row['curr_ann_subject'] = $ann_row['subject'];
             $row['curr_ann_body'] = $ann_row['body'];
             // Create additional set for main UPDATE query.
-            $add_set = 'curr_ann_id = ' . sqlesc($ann_row['main_id']);
+            $add_set = 'curr_ann_id=' . sqlesc($ann_row['main_id']);
             $cache->update_row('user_' . $CURUSER['id'], [
                 'curr_ann_id' => $ann_row['main_id'],
             ], $site_config['expires']['user_cache']);
@@ -70,7 +70,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $query = sprintf('INSERT INTO announcement_process (main_id, ' . 'user_id, status) VALUES (%s, %s, %s)', sqlesc($ann_row['main_id']), sqlesc($row['id']), sqlesc($status));
         } else {
             // Update Process result set status = 2 (Read)
-            $query = sprintf('UPDATE announcement_process SET status = %s ' . 'WHERE process_id = %s', sqlesc($status), sqlesc($ann_row['process_id']));
+            $query = sprintf('UPDATE announcement_process SET status = %s ' . 'WHERE process_id=%s', sqlesc($status), sqlesc($ann_row['process_id']));
         }
         sql_query($query) or sqlerr(__FILE__, __LINE__);
     } else {
@@ -100,7 +100,7 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
                 <div class='tabular-cell'><b><span class='has-text-danger'>{$lang['annouce_announcement']}: " . htmlsafechars($ann_subject) . "</span></b></div>
             </div>
             <span style='color: blue;'>" . format_comment($ann_body) . "</span>
-            {$lang['annouce_click']} <a href='{$site_config['baseurl']}/clear_announcement.php'>
+            {$lang['annouce_click']} <a href='{$site_config['paths']['baseurl']}/clear_announcement.php'>
             <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.
         </div>
     </div>";

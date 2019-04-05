@@ -5,17 +5,17 @@
  */
 function processkill_update($data)
 {
+    global $site_config, $queries;
+
     $time_start = microtime(true);
     dbconn();
-    global $queries;
-
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $sql = sql_query('SHOW PROCESSLIST') or sqlerr(__FILE__, __LINE__);
     $cnt = 0;
     while ($arr = mysqli_fetch_assoc($sql)) {
-        if ($arr['db'] == $_ENV['DB_DATABASE'] && $arr['Command'] === 'Sleep' && $arr['Time'] > 120) {
+        if ($arr['db'] == $site_config['database']['database'] && $arr['Command'] === 'Sleep' && $arr['Time'] > 120) {
             sql_query("KILL {$arr['Id']}") or sqlerr(__FILE__, __LINE__);
             ++$cnt;
         }

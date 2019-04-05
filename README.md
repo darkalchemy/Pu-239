@@ -85,7 +85,7 @@ innodb_autoinc_lock_mode = 0
 default_time_zone='+00:00'
 
 # to enable fulltext searches of 3 character words
-innodb_ft_min_token_size=3
+innodb_ft_min_token_size = 3
 
 # restart mysql for changes to take effect
 sudo service mysql restart
@@ -110,19 +110,19 @@ sudo crontab -e
 
 ### No logging
 # runs cron_controller.php every minute, if not already running, as user www-data
-* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php" >/dev/null 2>&1
+* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php">/dev/null 2>&1
 
 # this can take several minutes to run, especially the first time, so we run it separate
 # runs images_update.php every 30 minutes, if not already running, as user www-data
-*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php" >/dev/null 2>&1
+*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php">/dev/null 2>&1
 
 ### logging
 # runs cron_controller.php every minute, if not already running, as user www-data
-* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php" >> /var/log/nginx/cron_`date +\%Y\%m\%d`.log 2>&1
+* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php">> /var/log/nginx/cron_`date +\%Y\%m\%d`.log 2>&1
 
 # this can take several minutes to run, especially the first time, so we run it separate
 # runs images_update.php every 30 minutes, if not already running, as user www-data
-*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php" >> /var/log/nginx/images_`date +\%Y\%m\%d`.log 2>&1
+*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php">> /var/log/nginx/images_`date +\%Y\%m\%d`.log 2>&1
 
 # import additional tables
 php bin/import_tables.php
@@ -139,7 +139,7 @@ git pull
 # check to see if there are any database updates, from the staff panel
 
 # update dependancies:
-composer install -a (in_production add: --no-dev)
+composer install -a (production mode add: --no-dev)
 npm install
 sudo php bin/set_perms.php
 php bin/uglify.php
@@ -158,7 +158,7 @@ TMDb API allows upcoming movies and posters and needs an api key.
 Google API allows up to 1000 api hits instead of 100 per day, api key is optional.  
 IMDb API allow movies and tv lookup, no key needed.  
 TVMaze allows tv lookup and posters, no key needed.  
-API keys are set in .env.  
+API keys are set in the Staff Panel -> Site Settings.  
 
 ### Making Changes to css/js files  
 Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:
@@ -171,16 +171,16 @@ Make any changes, then run ```php bin/uglify.php``` to concatenate, minify and g
 
 ### Production
 Production creates minified javascript and css files when running uglify.php.  
-After changing the setting 'in_production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
-```$site_config['in_production'] = false;```
+After changing the setting 'production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
+```$site_config['site']['production'] = false;```
 
 
 ### Cache Engines  
-couchbase, apcu, memcached, redis or file. 'file' is set as the default and is set in the .env file. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
+couchbase, apcu, memcached, redis or file. 'file' is set as the default and is set in the config.php file. In order to use any cache engine besides 'file', you must first install the appropriate driver and php extensions.
 
 ### Image Proxy:  
 An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
-```$site_config['image_proxy'] = true;```
+```$site_config['site']['image_proxy'] = true;```
 
 ### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.

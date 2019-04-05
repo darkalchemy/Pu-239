@@ -22,7 +22,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $has_request = $descr = '';
-if ($CURUSER['class'] < $site_config['upload_min_class'] || $CURUSER['uploadpos'] != 1 || $CURUSER['suspended'] === 'yes') {
+if ($CURUSER['class'] < $site_config['allowed']['upload'] || $CURUSER['uploadpos'] != 1 || $CURUSER['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $upload_vars = $cache->get('user_upload_variables_' . $CURUSER['id']);
@@ -67,12 +67,12 @@ foreach ($vars as $var) {
     }
 }
 $res_request = $fluent->from('requests')
-                      ->select(null)
-                      ->select('id')
-                      ->select('request_name')
-                      ->where('filled_by_user_id = 0')
-                      ->orderBy('request_name')
-                      ->fetchAll();
+    ->select(null)
+    ->select('id')
+    ->select('request_name')
+    ->where('filled_by_user_id=0')
+    ->orderBy('request_name')
+    ->fetchAll();
 
 if ($res_request) {
     $has_request = "
@@ -92,13 +92,13 @@ if ($res_request) {
 }
 
 $res_offers = $fluent->from('offers')
-                     ->select(null)
-                     ->select('id')
-                     ->select('offer_name')
-                     ->where('offered_by_user_id = ?', $CURUSER['id'])
-                     ->where('status = "approved"')
-                     ->orderBy('offer_name')
-                     ->fetchAll();
+    ->select(null)
+    ->select('id')
+    ->select('offer_name')
+    ->where('offered_by_user_id=?', $CURUSER['id'])
+    ->where('status = "approved"')
+    ->orderBy('offer_name')
+    ->fetchAll();
 
 if ($res_offers) {
     $offers = "
@@ -116,14 +116,14 @@ if ($res_offers) {
                 </td>
             </tr>";
 }
-$announce_url = $site_config['announce_urls'][0];
+$announce_url = $site_config['announce_urls']['http'][0];
 if (get_scheme() === 'https') {
-    $announce_url = $site_config['announce_urls'][1];
+    $announce_url = $site_config['announce_urls']['https'][0];
 }
 $HTMLOUT .= "
-    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
-        <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}'>
-        <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "' data-ebooks=" . json_encode($site_config['ebook_cats']) . ' data-movies=' . json_encode(array_merge($site_config['movie_cats'], $site_config['tv_cats'])) . ">
+    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
+        <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
+        <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>
         <div class='has-text-centered margin10'>{$lang['upload_announce_url']}:<br>
             <input type='text' class='has-text-centered w-100' readonly='readonly' value='{$announce_url}' id='announce_url'>
@@ -188,7 +188,7 @@ $HTMLOUT .= "
                     <div id='droppable' class='droppable bg-03'>
                         <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
                         <div id='loader' class='is-hidden'>
-                            <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...'>
+                            <img src='{$site_config['paths']['images_baseurl']}forums/updating.svg' alt='Loading...'>
                         </div>
                     </div>
                     <div class='output-wrapper output'></div>
@@ -258,7 +258,7 @@ $rg = "
             </select>';
 $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
 $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
-if ($CURUSER['class'] >= $site_config['staff_allowed']['torrents_disable_comments']) {
+if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments === 'yes' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
 }
 if ($CURUSER['class'] >= UC_UPLOADER) {

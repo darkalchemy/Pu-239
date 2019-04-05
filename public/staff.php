@@ -11,24 +11,24 @@ $lang = array_merge(load_language('global'), load_language('staff'));
 $support = $mods = $admin = $sysop = [];
 $htmlout = $firstline = '';
 $query = $fluent->from('users')
-                ->select(null)
-                ->select('users.id')
-                ->select('users.class')
-                ->select('users.perms')
-                ->select('users.last_access')
-                ->select('users.support')
-                ->select('users.supportfor')
-                ->select('users.country')
-                ->select('countries.flagpic')
-                ->select('countries.name as flagname')
-                ->leftJoin('countries ON countries.id = users.country')
-                ->whereOr([
-                    'users.class >= ?' => UC_STAFF,
-                    'users.support = ?' => 'yes',
-                ])
-                ->where('users.status = ?', 'confirmed')
-                ->orderBy('class DESC')
-                ->orderBy('username');
+    ->select(null)
+    ->select('users.id')
+    ->select('users.class')
+    ->select('users.perms')
+    ->select('users.last_access')
+    ->select('users.support')
+    ->select('users.supportfor')
+    ->select('users.country')
+    ->select('countries.flagpic')
+    ->select('countries.name as flagname')
+    ->leftJoin('countries ON countries.id=users.country')
+    ->whereOr([
+        'users.class>= ?' => UC_STAFF,
+        'users.support = ?' => 'yes',
+    ])
+    ->where('users.status = ?', 'confirmed')
+    ->orderBy('class DESC')
+    ->orderBy('username');
 
 foreach ($query as $arr2) {
     if ($arr2['support'] === 'yes') {
@@ -60,12 +60,12 @@ function DoStaff($staff_array, $staffclass)
     foreach ($staff_array as $staff) {
         $body .= '
                     <tr>';
-        $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
+        $flagpic = !empty($staff['flagpic']) ? "{$site_config['paths']['images_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                         <td>' . format_username($staff['id']) . "</td>
-                        <td><img src='{$image}' data-src='{$site_config['pic_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>" . "
-                        <td><a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='Personal Message'></i></a></td>" . "
+                        <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>" . "
+                        <td><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='Personal Message'></i></a></td>" . "
                         <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'></td>
                     </tr>";
     }
@@ -83,13 +83,13 @@ $dt = TIME_NOW - 180;
 if (!empty($support)) {
     $body = '';
     foreach ($support as $a) {
-        $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
+        $flagpic = !empty($staff['flagpic']) ? "{$site_config['paths']['images_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                 <tr>
                     <td>' . format_username($a['id']) . "</td>
-                    <td><img src='{$image}' data-src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>
-                    <td><a href='{$site_config['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='{$lang['alt_pm']}'></i></a></td>
+                    <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>
+                    <td><a href='{$site_config['paths']['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='{$lang['alt_pm']}'></i></a></td>
                     <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'></td>
                     <td>" . htmlsafechars($a['supportfor']) . '</td>
                 </tr>';

@@ -13,7 +13,7 @@ if (!$CURUSER) {
     get_template();
 }
 $stdfoot = '';
-if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+if (!empty($site_config['recaptcha']['secret'])) {
     $stdfoot = [
         'js' => [
             get_file_name('recaptcha_js'),
@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!mkglobal('email')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
-    if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    if (!empty($site_config['recaptcha']['site'])) {
         $response = !empty($_POST['token']) ? $_POST['token'] : '';
         $result = verify_recaptcha($response);
         if ($result !== 'valid') {
             $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
-            header("Location: {$site_config['baseurl']}/recover.php");
+            header("Location: {$site_config['paths']['baseurl']}/recover.php");
             die();
         }
     }
@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
     }
     $user = $fluent->from('users')
-                   ->where('email = ?', $email)
-                   ->fetch();
+        ->where('email = ?', $email)
+        ->fetch();
 
     if (!$user || empty($user)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
@@ -59,19 +59,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id' => $alt_id,
     ];
     $fluent->insertInto('tokens')
-           ->values($values)
-           ->execute();
+        ->values($values)
+        ->execute();
 
-    $body = sprintf($lang['email_request'], $email, getip(), $site_config['baseurl'], $alt_id, $secret, $site_config['site_name']);
+    $body = sprintf($lang['email_request'], $email, getip(), $site_config['paths']['baseurl'], $alt_id, $secret, $site_config['site']['name']);
     $mail = new Message();
-    $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-         ->addTo($user['email'])
-         ->setReturnPath($site_config['site_email'])
-         ->setSubject("{$site_config['site_name']} {$lang['email_subjreset']}")
-         ->setHtmlBody($body);
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        ->addTo($user['email'])
+        ->setReturnPath($site_config['site']['email'])
+        ->setSubject("{$site_config['site']['name']} {$lang['email_subjreset']}")
+        ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->commandArgs = "-f{$site_config['site']['email']}";
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
@@ -86,13 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $row = $fluent->from('tokens')
-                  ->select('users.username')
-                  ->select('users.email')
-                  ->select('users.id AS user_id')
-                  ->innerJoin('users ON users.email = tokens.email')
-                  ->where('tokens.id = ?', $id)
-                  ->where('created_at > DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
-                  ->fetch();
+        ->select('users.username')
+        ->select('users.email')
+        ->select('users.id AS user_id')
+        ->innerJoin('users ON users.email = tokens.email')
+        ->where('tokens.id=?', $id)
+        ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+        ->fetch();
 
     if (!password_verify($token, $row['token'])) {
         stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -106,22 +106,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'passhash' => $newpasshash,
     ];
     $update = $fluent->update('users')
-                     ->set($set)
-                     ->where('id = ?', $row['user_id'])
-                     ->execute();
+        ->set($set)
+        ->where('id=?', $row['user_id'])
+        ->execute();
     if (!$update || empty($update)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
-    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['baseurl'], $site_config['site_name']);
+    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['paths']['baseurl'], $site_config['site']['name']);
     $mail = new Message();
-    $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-         ->addTo($email)
-         ->setReturnPath($site_config['site_email'])
-         ->setSubject("{$site_config['site_name']} {$lang['email_subjdetails']}")
-         ->setHtmlBody($body);
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        ->addTo($email)
+        ->setReturnPath($site_config['site']['email'])
+        ->setSubject("{$site_config['site']['name']} {$lang['email_subjdetails']}")
+        ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->commandArgs = "-f{$site_config['site']['email']}";
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input id='recover_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? ' disabled' : '') . '/>
+                            <input id='recover_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($site_config['recaptcha']['site']) ? ' disabled' : '') . '/>
                         </div>
                     </td>
                 </tr>', '', '', 'w-50', '') . '

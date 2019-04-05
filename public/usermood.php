@@ -13,15 +13,15 @@ if (!isset($CURUSER['id'])) {
 $more = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? 2 : 1);
 if (isset($_GET['id'])) {
     $moodid = (isset($_GET['id']) ? (int) $_GET['id'] : 1);
-    $res_moods = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' AND id = ' . sqlesc($moodid)) or sqlerr(__FILE__, __LINE__);
+    $res_moods = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' AND id=' . sqlesc($moodid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res_moods)) {
         $rmood = mysqli_fetch_assoc($res_moods);
-        sql_query('UPDATE users SET mood = ' . sqlesc($moodid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET mood = ' . sqlesc($moodid) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $CURUSER['id'], [
             'mood' => $moodid,
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');
-        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
+        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
         $HTMLOUT = doc_head() . '
         <meta property="og:title" content=' . $lang['user_mood_title'] . '>
         <title>' . $lang['user_mood_title'] . "</title>
@@ -65,7 +65,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $div .= '
         <span class="margin10 bordered has-text-centered bg-04">
             <a href="?id=' . (int) $arr['id'] . '">
-                <img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10">
+                <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10">
                 <br>' . htmlsafechars($arr['name']) . '
             </a>
         </span>';
@@ -80,7 +80,7 @@ $body .= main_div($div) . '
         </a>
     </div>
     <noscript>
-        <a href="' . $site_config['baseurl'] . '/index.php">' . $lang['user_mood_back'] . '</a>
+        <a href="' . $site_config['paths']['baseurl'] . '/index.php">' . $lang['user_mood_back'] . '</a>
     </noscript>
 </body>';
 $HTMLOUT .= wrapper($body) . '

@@ -36,21 +36,21 @@ if ($CURUSER['class'] < UC_STAFF) {
         stderr($lang['pm_error'], $lang['pm_forwardpm_dont_accept']);
     }
     $blocked = $fluent->from('blocks')
-                      ->select(null)
-                      ->select('id')
-                      ->where('userid = ?', $to_user['id'])
-                      ->where('blockid = ?', $CURUSER['id'])
-                      ->fetch();
+        ->select(null)
+        ->select('id')
+        ->where('userid=?', $to_user['id'])
+        ->where('blockid=?', $CURUSER['id'])
+        ->fetch();
     if (!$blocked) {
         stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_blocked']);
     }
     if ($to_user['acceptpms'] === 'friends') {
         $friend = $fluent->from('friends')
-                         ->select(null)
-                         ->select('id')
-                         ->where('userid = ?', $to_user['id'])
-                         ->where('friendid = ?', $CURUSER['id'])
-                         ->fetch();
+            ->select(null)
+            ->select('id')
+            ->where('userid=?', $to_user['id'])
+            ->where('friendid=?', $CURUSER['id'])
+            ->fetch();
         if (!$friend) {
             stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_accept']);
         }
@@ -78,7 +78,7 @@ if (!$result) {
 
 if (strpos($to_user['notifs'], '[pm]') !== false) {
     $username = htmlsafechars($CURUSER['username']);
-    $title = $site_config['site_name'];
+    $title = $site_config['site']['name'];
     $body = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title} PM received</title>
@@ -86,20 +86,20 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username{$lang['pm_forwardpm_exc']}</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['baseurl']}/messages.php</p>
-<p>--{$site_config['site_name']}</p>
+<p>{$site_config['paths']['baseurl']}/messages.php</p>
+<p>--{$site_config['site']['name']}</p>
 </body>
 </html>";
 
     $mail = new Message();
-    $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
-         ->addTo($to_user['email'])
-         ->setReturnPath($site_config['site_email'])
-         ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-         ->setHtmlBody($body);
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        ->addTo($to_user['email'])
+        ->setReturnPath($site_config['site']['email'])
+        ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
+        ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->commandArgs = "-f{$site_config['site']['email']}";
     $mailer->send($mail);
 }
 header('Location: messages.php?action=view_mailbox&forwarded=1');

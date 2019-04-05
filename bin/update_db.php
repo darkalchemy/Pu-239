@@ -1,8 +1,20 @@
 <?php
 
-require_once __DIR__ . '/../include/bittorrent.php';
-global $fluent, $site_config, $cache, $fluent;
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once CONFIG_DIR . 'classes.php';
+require_once VENDOR_DIR . 'autoload.php';
+require_once INCL_DIR . 'function_common.php';
 
+date_default_timezone_set('UTC');
+
+use Noodlehaus\Config;
+
+$conf = new Config([
+    CONFIG_DIR . 'config.php',
+]);
+$site_config = $conf->all();
+$cache = new Pu239\Cache();
+$fluent = new Pu239\Database();
 require_once DATABASE_DIR . 'sql_updates.php';
 
 if (!empty($argv[1]) && !empty($argv[2])) {
@@ -17,19 +29,19 @@ if (!empty($argv[1]) && !empty($argv[2])) {
         $comment = [];
         try {
             $query = $fluent->getPdo()
-                            ->prepare($sql);
+                ->prepare($sql);
             $query->execute();
             $values = [
                 'id' => $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                   ->values($values)
-                   ->execute();
+                ->values($values)
+                ->execute();
 
             if ($flush) {
                 $cache->flushDB();
-                $comment[] = 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache';
+                $comment[] = 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache';
             } elseif (!$flush) {
                 // do nothing
             } else {
@@ -57,15 +69,15 @@ if (!empty($argv[1]) && !empty($argv[2])) {
             'query' => $sql,
         ];
         $fluent->insertInto('database_updates')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
     }
 }
 $results = $fluent->from('database_updates')
-                  ->select(null)
-                  ->select('id')
-                  ->select('added')
-                  ->fetchPairs('id', 'added');
+    ->select(null)
+    ->select('id')
+    ->select('added')
+    ->fetchPairs('id', 'added');
 
 foreach ($sql_updates as $update) {
     if (array_key_exists($update['id'], $results)) {

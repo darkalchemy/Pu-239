@@ -23,7 +23,7 @@ $lang = [
     'takeupload_no_keys' => 'dictionary is missing key(s)',
     'takeupload_invalid_entry' => 'invalid entry in dictionary',
     'takeupload_dict_type' => 'invalid dictionary entry type',
-    'takeupload_unkown' => 'Unknown',
+    'takeupload_unknown' => 'Unknown',
     'takeupload_pieces' => 'invalid pieces',
     'takeupload_url' => 'invalid announce url! must be <b>%s</b>',
     'takeupload_both' => 'missing both length and files',
@@ -37,7 +37,7 @@ $lang = [
     'takeupload_img_exists' => 'An image already exists. Contact Admin for assistance.',
     'takeupload_img_copyerror' => 'An error occured copy the image to the image storage repository. Contact Admin for assistance.',
     'takeupload_bucket_format' => 'The image you are trying (%s) to upload is not allowed!',
-    'takeupload_bucket_size' => 'The image is to big (%s)! max size can be ' . mksize($site_config['bucket_maxsize']),
+    'takeupload_bucket_size' => 'The image is to big (%s)! max size can be ' . mksize($site_config['bucket']['maxsize']),
     'takeupload_no_youtube' => 'youtube link is not correct or is not present!',
     'takeupload_bucket_noimg' => 'You forgot about the images!',
 ];

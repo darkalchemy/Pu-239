@@ -2,7 +2,9 @@
 
 namespace Pu239;
 
+use Exception;
 use Intervention\Image\ImageManager;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
@@ -20,7 +22,7 @@ class ImageProxy
      *
      * @return bool|string
      *
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
@@ -91,7 +93,7 @@ class ImageProxy
      *
      * @return string
      *
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     protected function convert_image(string $url, string $path, ?int $quality)
     {
@@ -109,11 +111,13 @@ class ImageProxy
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($path)
-                     ->format(Manipulations::FORMAT_JPG)
-                     ->save($new_path, $quality);
+                    ->format(Manipulations::FORMAT_JPG)
+                    ->quality($quality)
+                    ->save($new_path);
             } else {
                 Image::load($path)
-                     ->save($new_path, $quality);
+                    ->quality($quality)
+                    ->save($new_path);
             }
             $this->optimize($new_path, false, false);
         }
@@ -123,6 +127,8 @@ class ImageProxy
 
     /**
      * @param string $path
+     * @param bool   $failed
+     * @param bool   $debug
      *
      * @return bool
      */
@@ -131,12 +137,13 @@ class ImageProxy
         if (mime_content_type($path) !== 'image/gif') {
             $temp = tempnam('/dev/shm', 'optimize');
             $optimizerChain = OptimizerChainFactory::create();
+            $before = $after = 0;
             try {
                 if ($debug) {
                     $before = filesize($path);
                 }
                 $optimizerChain->setTimeout(5)
-                               ->optimize($path, $temp);
+                    ->optimize($path, $temp);
                 rename($temp, $path);
                 if ($debug) {
                     $after = filesize($path);
@@ -144,7 +151,7 @@ class ImageProxy
                     $bytes = mksize($before - $after);
                     echo sprintf("Optimize Results: %.2f%% (%s)\n", $result * 100, $bytes);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 unlink($temp);
                 if (!$failed) {
                     if ($debug) {
@@ -175,7 +182,7 @@ class ImageProxy
      */
     protected function resize_image(string $url, string $path, int $width = null, int $height = null)
     {
-        $manager = new ImageManager();
+        $manager = new ImageManager(['driver' => 'imagick']);
         $hash = hash('sha512', $url . (!empty($width) ? "_$width" : "_$height"));
         $new_path = PROXY_IMAGES_DIR . $hash;
 
@@ -184,11 +191,11 @@ class ImageProxy
         }
         try {
             $image = $manager->make($path)
-                             ->resize($width, $height, function ($constraint) {
-                                 $constraint->aspectRatio();
-                                 $constraint->upsize();
-                             });
-        } catch (\Exception $e) {
+                ->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+        } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage() . "\n";
 
             return false;
@@ -203,23 +210,23 @@ class ImageProxy
      * @param string   $path
      * @param int|null $width
      * @param int|null $height
+     * @param bool     $debug
      *
      * @return bool
      */
     public function optimize_image(string $path, int $width = null, int $height = null, bool $debug = true)
     {
-        $manager = new ImageManager();
+        $manager = new ImageManager(['driver' => 'imagick']);
 
         if (!file_exists($path)) {
             return false;
         }
-
         if ($width || $height) {
             $image = $manager->make($path)
-                             ->resize($width, $height, function ($constraint) {
-                                 $constraint->aspectRatio();
-                                 $constraint->upsize();
-                             });
+                ->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
             $image->save($path);
         }
         $this->optimize($path, false, $debug);
@@ -236,9 +243,9 @@ class ImageProxy
      */
     public function create_image(int $width = 1000, int $height = 1000, string $color = null)
     {
-        $manager = new ImageManager();
+        $manager = new ImageManager(['driver' => 'imagick']);
         $img = $manager->canvas($width, $height, $color)
-                       ->encode('jpg', 50);
+            ->encode('jpg', 50);
 
         return $img;
     }

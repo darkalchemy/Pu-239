@@ -9,19 +9,19 @@ $lang = load_language('global');
 global $site_config, $CURUSER;
 
 $HTMLOUT = "
-        <h1 class='has-text-centered'>{$site_config['site_name']} Arcade Top Scores!</h1>
+        <h1 class='has-text-centered'>{$site_config['site']['name']} Arcade Top Scores!</h1>
         <div class='bottom10 has-text-centered'>
-            <div>Top Scores Earn {$site_config['top_score_points']} Karma Points</div>
+            <div>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</div>
             <div class='level-center top10'>
-                <a class='altlink' href='{$site_config['baseurl']}/arcade.php'>Back to the Arcade</a>
+                <a class='altlink' href='{$site_config['paths']['baseurl']}/arcade.php'>Back to the Arcade</a>
             </div>
         </div>";
 
-$list = $site_config['arcade_games_names'];
+$list = $site_config['arcade']['game_names'];
 sort($list);
 foreach ($list as $gname) {
-    $game_id = array_search($gname, $site_config['arcade_games_names']);
-    $game = $site_config['arcade_games'][$game_id];
+    $game_id = array_search($gname, $site_config['arcade']['game_names']);
+    $game = $site_config['arcade']['games'][$game_id];
     //=== get high score (5)
     $sql = 'SELECT * FROM flashscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 25';
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -29,8 +29,8 @@ foreach ($list as $gname) {
         $HTMLOUT .= "
         <div class='bg-02 has-text-centered padtop10 round5'>
             <a id='{$game}'></a>
-            <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
-                <img src='{$site_config['pic_baseurl']}games/{$game}.png' alt='{$gname}' class='round5'>
+            <a href='{$site_config['paths']['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
+                <img src='{$site_config['paths']['images_baseurl']}games/{$game}.png' alt='{$gname}' class='round5'>
             </a>";
         $HTMLOUT .= '
             <table class="table table-bordered table-striped top10 bottom20">
@@ -61,7 +61,7 @@ foreach ($list as $gname) {
 
         while ($score_arr = mysqli_fetch_assoc($score_res)) {
             $username = format_username($score_arr['user_id']);
-            $sql = 'SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr['score']);
+            $sql = 'SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score>' . sqlesc($score_arr['score']);
             $ranking = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $rankrow = mysqli_fetch_row($ranking);
 
@@ -74,12 +74,12 @@ foreach ($list as $gname) {
                     </tr>';
         }
         //=== get members high score if any
-        $sql = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
+        $sql = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id=' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
         $member_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
         if (mysqli_num_rows($member_score_res) != 0) {
             $score_arr = mysqli_fetch_row($member_score_res);
-            $member_rank_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr[0])) or sqlerr(__FILE__, __LINE__);
+            $member_rank_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score>' . sqlesc($score_arr[0])) or sqlerr(__FILE__, __LINE__);
             $member_rank_arr = mysqli_fetch_row($member_rank_res);
 
             $HTMLOUT .= '
@@ -96,7 +96,7 @@ foreach ($list as $gname) {
 }
 
 //=== total games played:
-$sql = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id = ' . $CURUSER['id'];
+$sql = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id=' . $CURUSER['id'];
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_totals = mysqli_fetch_assoc($result);
 

@@ -2,6 +2,11 @@
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
+use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use PDOStatement;
+
 /**
  * Class User.
  */
@@ -25,7 +30,7 @@ class User
         $this->cookies = new Cookie('remember');
         $this->site_config = $site_config;
         $this->pdo = $pdo;
-        $this->limit = $this->site_config['query_limit'];
+        $this->limit = $this->site_config['database']['query_limit'];
     }
 
     /**
@@ -34,19 +39,19 @@ class User
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function getUserFromId(int $userid, bool $fresh = false)
     {
         $user = $this->cache->get('user_' . $userid);
         if ($fresh || $user === false || is_null($user)) {
             $user = $this->fluent->from('users AS u')
-                                 ->select('INET6_NTOA(u.ip) AS ip')
-                                 ->select('u.bjwins - u.bjlosses AS bj')
-                                 ->select('c.win - c.lost AS casino')
-                                 ->leftJoin('casino AS c ON u.id = c.userid')
-                                 ->where('id = ?', $userid)
-                                 ->fetch();
+                ->select('INET6_NTOA(u.ip) AS ip')
+                ->select('u.bjwins - u.bjlosses AS bj')
+                ->select('c.win - c.lost AS casino')
+                ->leftJoin('casino AS c ON u.id=c.userid')
+                ->where('id=?', $userid)
+                ->fetch();
 
             if ($user) {
                 unset($user['hintanswer'], $user['passhash']);
@@ -75,7 +80,7 @@ class User
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function getUserIdFromName(string $username)
     {
@@ -83,10 +88,10 @@ class User
 
         if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
-                                 ->select(null)
-                                 ->select('id')
-                                 ->where('LOWER(username) = ?', strtolower($username))
-                                 ->fetch('id');
+                ->select(null)
+                ->select('id')
+                ->where('LOWER(username) = ?', strtolower($username))
+                ->fetch('id');
 
             $this->cache->set('userid_from_' . urldecode($username), $user, $this->site_config['expires']['user_cache']);
         }
@@ -99,22 +104,22 @@ class User
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function getUsersFromIP(string $ip)
     {
         $users = $this->fluent->from('users')
-                              ->select(null)
-                              ->select('id')
-                              ->select('last_access')
-                              ->select('added')
-                              ->select('email')
-                              ->select('downloaded')
-                              ->select('uploaded')
-                              ->select('INET6_NTOA(ip) AS ip')
-                              ->where('ip = ?', inet_pton($ip))
-                              ->orderBy('id')
-                              ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->select('last_access')
+            ->select('added')
+            ->select('email')
+            ->select('downloaded')
+            ->select('uploaded')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('ip = ?', inet_pton($ip))
+            ->orderBy('id')
+            ->fetchAll();
 
         foreach ($users as $user) {
             unset($user['hintanswer'], $user['passhash']);
@@ -134,9 +139,9 @@ class User
     /**
      * @return int
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws ServerUnhealthy
      * @throws \Exception
      */
     public function getUserId()
@@ -172,7 +177,7 @@ class User
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function search_by_username(string $username)
     {
@@ -180,18 +185,18 @@ class User
         $users = $this->cache->get('search_users_' . $username);
         if ($users === false || is_null($users)) {
             $users = $this->fluent->from('users AS u')
-                                  ->select(null)
-                                  ->select('u.id')
-                                  ->select('u.username')
-                                  ->select('u.class')
-                                  ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
-                                  ->innerJoin('class_config AS c ON u.class = c.id')
-                                  ->where("u.acceptpms != 'no'")
-                                  ->where('u.username != ?', $this->site_config['chatBotName'])
-                                  ->where('u.username LIKE ?', "$username%")
-                                  ->where('c.classname != ""')
-                                  ->orderBy('LOWER(u.username)')
-                                  ->fetchAll();
+                ->select(null)
+                ->select('u.id')
+                ->select('u.username')
+                ->select('u.class')
+                ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
+                ->innerJoin('class_config AS c ON u.class = c.id')
+                ->where("u.acceptpms != 'no'")
+                ->where('u.username != ?', $this->site_config['chatBotName'])
+                ->where('u.username LIKE ?', "$username%")
+                ->where('c.classname != ""')
+                ->orderBy('LOWER(u.username)')
+                ->fetchAll();
             $this->cache->set('search_users_' . $username, $users, 86400);
         }
 
@@ -203,17 +208,17 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @return bool|int|\PDOStatement
+     * @return bool|int|PDOStatement
      *
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws Exception
+     * @throws UnbegunTransaction
      */
     public function update(array $set, int $userid, bool $persist = true)
     {
         $result = $this->fluent->update('users')
-                               ->set($set)
-                               ->where('id = ?', $userid)
-                               ->execute();
+            ->set($set)
+            ->where('id=?', $userid)
+            ->execute();
 
         if ($result && $persist) {
             $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
@@ -227,14 +232,14 @@ class User
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_remember(string $selector)
     {
         $remember = $this->fluent->from('auth_tokens')
-                                 ->where('selector = ?', $selector)
-                                 ->where('expires >= ?', date('Y-m-d H:i:s', TIME_NOW))
-                                 ->fetch();
+            ->where('selector = ?', $selector)
+            ->where('expires>= ?', date('Y-m-d H:i:s', TIME_NOW))
+            ->fetch();
 
         return $remember;
     }
@@ -254,8 +259,8 @@ class User
         $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
 
         $this->fluent->deleteFrom('auth_tokens')
-                     ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
-                     ->execute();
+            ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
+            ->execute();
 
         $values = [
             'selector' => $selector,
@@ -265,8 +270,8 @@ class User
             'created_at' => date('Y-m-d H:i:s', TIME_NOW),
         ];
         $this->fluent->insertInto('auth_tokens')
-                     ->values($values)
-                     ->execute();
+            ->values($values)
+            ->execute();
     }
 
     /**
@@ -279,8 +284,8 @@ class User
     public function refresh_remember(string $selector, int $userid, int $expires)
     {
         $this->fluent->deleteFrom('auth_tokens')
-                     ->where('selector = ?', $selector)
-                     ->execute();
+            ->where('selector = ?', $selector)
+            ->execute();
 
         $this->set_remember($userid, $expires);
     }
@@ -288,19 +293,19 @@ class User
     /**
      * @param int $userid
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete_remember(int $userid)
     {
         $this->fluent->deleteFrom('auth_tokens')
-                     ->where('userid = ?', $userid)
-                     ->execute();
+            ->where('userid=?', $userid)
+            ->execute();
     }
 
     /**
      * @param array $users
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function delete_user_cache(array $users)
     {
@@ -337,7 +342,7 @@ class User
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_item(string $item, int $userid)
     {
@@ -351,20 +356,20 @@ class User
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_login(string $username)
     {
         $row = $this->fluent->from('users')
-                            ->select(null)
-                            ->select('id')
-                            ->select('INET6_NTOA(ip) AS ip')
-                            ->select('passhash')
-                            ->select('perms')
-                            ->select('enabled')
-                            ->select('status')
-                            ->where('username = ?', $username)
-                            ->fetch();
+            ->select(null)
+            ->select('id')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('passhash')
+            ->select('perms')
+            ->select('enabled')
+            ->select('status')
+            ->where('username = ?', $username)
+            ->fetch();
 
         return $row;
     }
@@ -377,19 +382,19 @@ class User
      *
      * @return mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
     {
         $userid = $this->fluent->from('users')
-                               ->select(null)
-                               ->select('id')
-                               ->where('class >= ?', $class)
-                               ->where('username = ?', $bot)
-                               ->where('auth = ?', $auth)
-                               ->where('torrent_pass = ?', $torrent_pass)
-                               ->where('uploadpos = 1 AND suspended = "no"')
-                               ->fetch('id');
+            ->select(null)
+            ->select('id')
+            ->where('class>= ?', $class)
+            ->where('username = ?', $bot)
+            ->where('auth = ?', $auth)
+            ->where('torrent_pass = ?', $torrent_pass)
+            ->where('uploadpos = 1 AND suspended = "no"')
+            ->fetch('id');
 
         return $userid;
     }
@@ -399,29 +404,29 @@ class User
      *
      * @return int
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('users')
-                           ->values($values)
-                           ->execute();
+            ->values($values)
+            ->execute();
 
         return $id;
     }
 
     /**
-     * @return array|\PDOStatement
+     * @return array|PDOStatement
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_all_ids()
     {
         $ids = $this->fluent->from('users')
-                            ->select(null)
-                            ->select('id')
-                            ->where('enabled = "yes"')
-                            ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->where('enabled = "yes"')
+            ->fetchAll();
 
         return $ids;
     }
@@ -431,7 +436,7 @@ class User
      *
      * @return bool|mixed
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_user_from_torrent_pass(string $torrent_pass)
     {
@@ -441,11 +446,11 @@ class User
         $userid = $this->cache->get('torrent_pass_' . $torrent_pass);
         if ($userid === false || is_null($userid)) {
             $userid = $this->fluent->from('users')
-                                   ->select(null)
-                                   ->select('id')
-                                   ->where('torrent_pass = ?', $torrent_pass)
-                                   ->where("enabled = 'yes'")
-                                   ->fetch();
+                ->select(null)
+                ->select('id')
+                ->where('torrent_pass = ?', $torrent_pass)
+                ->where("enabled = 'yes'")
+                ->fetch();
             $userid = $userid['id'];
             $this->cache->set('torrent_pass_' . $torrent_pass, $userid, 86400);
         }
@@ -465,15 +470,15 @@ class User
      *
      * @return array
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @throws Exception
      */
     public function get_users_for_notifications(int $category)
     {
         $users = $this->fluent->from('users')
-                              ->select(null)
-                              ->select('id')
-                              ->select('notifs')
-                              ->where('notifs IS NOT NULL');
+            ->select(null)
+            ->select('id')
+            ->select('notifs')
+            ->where('notifs IS NOT NULL');
 
         $notify = [];
         foreach ($users as $user) {

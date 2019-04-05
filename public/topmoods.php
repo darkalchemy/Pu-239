@@ -22,7 +22,7 @@ if ($topmoods === false || is_null($topmoods)) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $topmoods .= '<tr><td>' . (int) $arr['moodcount'] . '</td>
                  <td>' . htmlsafechars($arr['name']) . ' ' . ($arr['bonus'] == 1 ? '<a href="/mybonus.php">(bonus)</a>' : '') . '</td>
-                 <td><img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt=""></td>
+                 <td><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt=""></td>
                  </tr>';
     }
     $cache->set($key, $topmoods, 0);

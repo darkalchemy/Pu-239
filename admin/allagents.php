@@ -8,12 +8,12 @@ global $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_allagents'));
 $agents = $fluent->from('peers')
-                 ->select(null)
-                 ->select('agent')
-                 ->select('LEFT(peer_id, 8) AS peer_id')
-                 ->groupBy('agent')
-                 ->groupBy('peer_id')
-                 ->fetchAll();
+    ->select(null)
+    ->select('agent')
+    ->select('LEFT(peer_id, 8) AS peer_id')
+    ->groupBy('agent')
+    ->groupBy('peer_id')
+    ->fetchAll();
 
 if (!empty($agents)) {
     $heading = "

@@ -8,7 +8,7 @@ $('.bookmarks').on('click', function () {
             tid: this.dataset.tid,
             csrf: this.dataset.csrf,
             remove: this.dataset.remove,
-            private: this.dataset.private,
+            private: this.dataset.private
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {

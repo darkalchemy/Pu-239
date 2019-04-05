@@ -36,15 +36,15 @@ $imgstartbar = '<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chbh=a&
 $imgstartpie = '<img src="https://chart.googleapis.com/chart?cht=p3&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9&amp;chf=bg,s,000000';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php' title='Top 10 Users'>Users</a></li>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php?view=t' title='Top 10 Torrents'>Torrents</a></li>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php' title='Top 10 Users'>Users</a></li>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=t' title='Top 10 Torrents'>Torrents</a></li>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
         </ul>";
 if (isset($_GET['view']) && $_GET['view'] === 't') {
     $view = strip_tags(isset($_GET['t']));
     // Top Torrents
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Active Torrents</h2></div>";
-    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
+    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
@@ -73,7 +73,7 @@ if (isset($_GET['view']) && $_GET['view'] === 't') {
         $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Snatched Torrents</h2></div>";
-    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT 10");
+    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT 10");
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);

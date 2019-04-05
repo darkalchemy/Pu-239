@@ -89,10 +89,10 @@ function get_snatched_color($st)
 
 $What_Value = 'WHERE complete_date != "0"';
 $count = $fluent->from('snatched')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('complete_date > 0')
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('complete_date>0')
+    ->fetch('count');
 
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_snatched_torrents_allsnatched']}</h1>
@@ -115,7 +115,7 @@ if (mysqli_num_rows($result) != 0) {
         <th class='w-1'>{$lang['ad_snatched_torrents_hnr']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_marked']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_announced']}</th>
-        <th class='w-1'>{$lang['ad_snatched_torrents_upload']}</th>" . ($site_config['ratio_free'] ? '' : "
+        <th class='w-1'>{$lang['ad_snatched_torrents_upload']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
         <th class='w-1'>{$lang['ad_snatched_torrents_download']}</th>") . "
         <th class='w-1'>{$lang['ad_snatched_torrents_seedtime']}</th>
         <th class='w-1'>{$lang['ad_snatched_torrents_leechtime']}</th>
@@ -132,11 +132,11 @@ if (mysqli_num_rows($result) != 0) {
         $body .= '
     <tr>
         <td>' . format_username($row['userid']) . "</td>
-        <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
+        <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
         <td><b>' . get_date($row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
         <td><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
         <td><b>' . htmlsafechars($row['timesann']) . '</b></td>
-        <td><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['ratio_free'] ? '' : '
+        <td><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td><b>' . mksize($row['downloaded']) . '</b></td>') . '
         <td><b>' . get_snatched_color($row['seedtime']) . '</b></td>
         <td><b>' . mkprettytime($row['leechtime']) . '</b></td>

@@ -2,6 +2,9 @@
 
 namespace Pu239;
 
+use MatthiasMullie\Scrapbook\Exception\Exception;
+use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+
 /**
  * Class Session.
  */
@@ -27,24 +30,22 @@ class Session
     /**
      * @return bool
      *
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws Exception
+     * @throws ServerUnhealthy
+     * @throws \Exception
      */
     public function start()
     {
-        $expires = (int) $this->site_config['cookie_lifetime'] * 60;
+        $expires = (int) $this->site_config['cookies']['lifetime'] * 60;
 
         if (!session_id()) {
-            // Set the session name:
-            session_name($this->site_config['sessionName']);
+            session_name($this->site_config['session']['name']);
 
             $secure_session = get_scheme() === 'https' ? true : false;
-            $domain = $this->site_config['cookie_domain'] === $this->site_config['domain'] ? '' : $this->site_config['cookie_domain'];
+            $domain = $this->site_config['cookies']['domain'] === $this->site_config['session']['domain'] ? '' : $this->site_config['cookie_domain'];
 
-            // Set session cookie parameters:
-            session_set_cookie_params($expires, $this->site_config['cookie_path'], $domain, $secure_session, true);
+            session_set_cookie_params($expires, $this->site_config['cookies']['path'], $domain, $secure_session, true);
 
-            // enforce php settings before start session
             if (ini_get('memory_limit') != 0) {
                 $current = $this->convert_to_bytes(ini_get('memory_limit'));
                 if ($current < 1024 * 1024 * 512) {
@@ -62,7 +63,6 @@ class Session
                 ini_set('session.sid_length', 128);
             }
 
-            // Start the session:
             if (!@session_start()) {
                 $this->destroy();
 
@@ -86,8 +86,8 @@ class Session
             $this->set('auth', bin2hex(random_bytes(32)));
         }
 
-        if (!$this->get($this->site_config['session_csrf'])) {
-            $this->set($this->site_config['session_csrf'], bin2hex(random_bytes(32)));
+        if (!$this->get($this->site_config['session']['csrf'])) {
+            $this->set($this->site_config['session']['csrf'], bin2hex(random_bytes(32)));
         }
 
         if ($this->get('canary') <= TIME_NOW - 300) {
@@ -107,9 +107,9 @@ class Session
     public function set(string $key, $value, string $prefix = null)
     {
         if ($prefix === null) {
-            $prefix = $this->site_config['sessionKeyPrefix'];
+            $prefix = $this->site_config['session']['prefix'];
         }
-        if (in_array($key, $this->site_config['notifications'])) {
+        if (in_array($key, $this->site_config['site']['notifications'])) {
             $current = $this->get($key);
             if ($current) {
                 if (!in_array($value, $current)) {
@@ -128,7 +128,7 @@ class Session
      * @param string      $key
      * @param string|null $prefix
      *
-     * @return |null
+     * @return mixed|null |null
      */
     public function get(string $key, string $prefix = null)
     {
@@ -137,7 +137,7 @@ class Session
         }
 
         if ($prefix === null) {
-            $prefix = $this->site_config['sessionKeyPrefix'];
+            $prefix = $this->site_config['session']['prefix'];
         }
 
         if (isset($_SESSION[$prefix . $key])) {
@@ -154,7 +154,7 @@ class Session
     public function unset(string $key, string $prefix = null)
     {
         if ($prefix === null) {
-            $prefix = $this->site_config['sessionKeyPrefix'];
+            $prefix = $this->site_config['session']['prefix'];
         }
 
         unset($_SESSION[$prefix . $key]);
@@ -172,7 +172,7 @@ class Session
     public function validateToken(string $token, string $key = null, bool $regen = false)
     {
         if ($key === null) {
-            $key = $this->site_config['session_csrf'];
+            $key = $this->site_config['session']['csrf'];
         }
         if (empty($token)) {
             return false;
@@ -191,8 +191,9 @@ class Session
     }
 
     /**
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws Exception
+     * @throws ServerUnhealthy
+     * @throws \Envms\FluentPDO\Exception
      */
     public function destroy()
     {
@@ -211,7 +212,7 @@ class Session
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            setcookie($this->site_config['cookie_prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie($this->site_config['cookies']['prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
             setcookie(session_name(), '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
 
@@ -219,7 +220,7 @@ class Session
         session_destroy();
 
         $returnto = !empty($_SERVER['REQUEST_URI']) && !preg_match('/logout.php/', $_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
-        header("Location: {$this->site_config['baseurl']}/login.php" . $returnto);
+        header("Location: {$this->site_config['paths']['baseurl']}/login.php" . $returnto);
         die();
     }
 
@@ -248,10 +249,9 @@ class Session
                 case 'G':
                     return $matches[1] * 1024 * 1024 * 1024;
                     break;
-
-                default:
-                    return 0;
             }
         }
+
+        return 0;
     }
 }

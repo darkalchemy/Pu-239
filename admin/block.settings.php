@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_POST, $block_out, $block_set_cache);
     $cache->delete('site_blocks_');
     sleep(3);
-    header('Location: ' . $site_config['baseurl'] . '/staffpanel.php?tool=block.settings');
+    header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=block.settings');
     die();
 }
 

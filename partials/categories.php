@@ -1,6 +1,7 @@
 <?php
 
 $grouped = genrelist(true);
+$cats = [];
 $main_div = "
         <div class='padding20'>
             <div id='parents' class='level-center'>";
@@ -34,8 +35,8 @@ function format_row(array $cat, string $parent, string $cat_name)
 
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
         <span class='left10'>
-            <a href='{$site_config['baseurl']}/browse.php?c{$cat['id']}'>
-                <img class='caticon' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
+            <a href='{$site_config['paths']['baseurl']}/browse.php?c{$cat['id']}'>
+                <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
             </a>
         </span>" : "
         <span class='left10'>" . htmlsafechars($cat['name']) . '</span>';

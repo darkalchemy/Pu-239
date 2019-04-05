@@ -17,28 +17,28 @@ function delete_torrents_update($data)
     $dt = TIME_NOW - ($hours * 3600);
     $i = 1;
     $never_seeded = $fluent->from('torrents')
-                           ->select(null)
-                           ->select('id')
-                           ->select('owner')
-                           ->select('name')
-                           ->select('info_hash')
-                           ->where('last_action = added')
-                           ->where('last_action < ?', $dt)
-                           ->where('seeders = 0')
-                           ->where('leechers = 0');
+        ->select(null)
+        ->select('id')
+        ->select('owner')
+        ->select('name')
+        ->select('info_hash')
+        ->where('last_action = added')
+        ->where('last_action < ?', $dt)
+        ->where('seeders = 0')
+        ->where('leechers = 0');
 
     $days = 45;
     $dt = TIME_NOW - ($days * 86400);
     $i = 1;
     $dead = $fluent->from('torrents')
-                   ->select(null)
-                   ->select('id')
-                   ->select('owner')
-                   ->select('name')
-                   ->select('info_hash')
-                   ->where('last_action < ?', $dt)
-                   ->where('seeders = 0')
-                   ->where('leechers = 0');
+        ->select(null)
+        ->select('id')
+        ->select('owner')
+        ->select('name')
+        ->select('info_hash')
+        ->where('last_action < ?', $dt)
+        ->where('seeders = 0')
+        ->where('leechers = 0');
 
     $values = [];
     $dt = TIME_NOW;

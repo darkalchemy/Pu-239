@@ -6,7 +6,7 @@ global $CURUSER, $site_config, $session;
 
 if (empty($CURUSER) || $CURUSER['class'] < UC_MAX) {
     $session->set('is-warning', 'You do not have access to view that page');
-    header("Location: {$site_config['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
@@ -60,7 +60,7 @@ function adminer_object()
         {
             global $site_config;
 
-            return $site_config['site_name'];
+            return $site_config['site']['name'];
         }
 
         /**
@@ -68,7 +68,9 @@ function adminer_object()
          */
         public function database()
         {
-            return "{$_ENV['DB_DATABASE']}";
+            global $site_config;
+
+            return "{$site_config['database']['database']}";
         }
 
         /**
@@ -81,8 +83,8 @@ function adminer_object()
             if (in_array($CURUSER['id'], $site_config['adminer_allowed_ids'])) {
                 return [
                     'localhost',
-                    $_ENV['DB_USERNAME'],
-                    $_ENV['DB_PASSWORD'],
+                    $site_config['database']['username'],
+                    $site_config['database']['password'],
                 ];
             }
         }

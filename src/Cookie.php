@@ -3,6 +3,7 @@
 namespace Pu239;
 
 use Blocktrail\CryptoJSAES\CryptoJSAES;
+use Exception;
 
 /**
  * Class Cookie.
@@ -41,8 +42,10 @@ class Cookie
             return false;
         }
         $params = session_get_cookie_params();
-        $encrypted = CryptoJSAES::encrypt($value, $this->site_config['site']['salt']);
-        setcookie($this->site_config['cookie_prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        $encrypted = CryptoJSAES::encrypt($value, $this->site_config['salt']['one']);
+        setcookie($this->site_config['cookies']['prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+
+        return true;
     }
 
     /**
@@ -50,16 +53,16 @@ class Cookie
      */
     public function get()
     {
-        if (empty($this->key) || empty($_COOKIE[$this->site_config['cookie_prefix'] . $this->key])) {
+        if (empty($this->key) || empty($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key])) {
             return false;
         }
-        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->site_config['cookie_prefix'] . $this->key]), $this->site_config['site']['salt']);
+        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key]), $this->site_config['salt']['one']);
 
         return $decrypted;
     }
 
     /**
-     * @return array
+     * @return array|bool
      */
     public function getToken()
     {
@@ -67,10 +70,12 @@ class Cookie
         if ($cookies) {
             return explode(':', $cookies);
         }
+
+        return false;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function reset_expire()
     {
@@ -86,9 +91,9 @@ class Cookie
                 'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
             ];
             $this->fluent->update('auth_tokens')
-                         ->set($set)
-                         ->where('selector = ?', $selector)
-                         ->execute();
+                ->set($set)
+                ->where('selector = ?', $selector)
+                ->execute();
         }
     }
 }

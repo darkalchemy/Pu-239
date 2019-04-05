@@ -7,7 +7,7 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
     $Ident_Client = '';
     $port_data = $cache->get($What_Cache . $id);
     if ($port_data === false || is_null($port_data)) {
-        $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $port_data = mysqli_fetch_row($q1);
         $cache->set('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
     }

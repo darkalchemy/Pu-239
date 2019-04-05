@@ -16,7 +16,7 @@ $uid = $CURUSER['id'];
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 $what = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
 $ref = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
-$completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid = ' . $CURUSER['id'] . ' AND torrentid = ' . $id) or sqlerr(__FILE__, __LINE__);
+$completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $CURUSER['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what === 'torrent' && $completecount == 0) {
     return false;
@@ -25,10 +25,10 @@ if ($what === 'torrent' && $completecount == 0) {
 if ($id > 0 && $rate >= 1 && $rate <= 5) {
     if (sql_query('INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
         $table = ($what === 'torrent' ? 'torrents' : 'topics');
-        sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id = ' . sqlesc($id));
+        sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id=' . sqlesc($id));
         $cache->delete('rating_' . $what . '_' . $id . '_' . $CURUSER['id']);
         if ($what === 'torrent') {
-            $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $r_f = mysqli_fetch_assoc($f_r);
             $update['num_ratings'] = ($r_f['num_ratings'] + 1);
             $update['rating_sum'] = ($r_f['rating_sum'] + $rate);
@@ -37,9 +37,9 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
                 'rating_sum' => $update['rating_sum'],
             ], $site_config['expires']['torrent_details']);
         }
-        if ($site_config['seedbonus_on']) {
-            $amount = ($what === 'torrent' ? $site_config['bonus_per_rating'] : $site_config['bonus_per_topic']);
-            sql_query("UPDATE users SET seedbonus = seedbonus+$amount WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        if ($site_config['bonus']['on']) {
+            $amount = ($what === 'torrent' ? $site_config['bonus']['per_rating'] : $site_config['bonus']['per_topic']);
+            sql_query("UPDATE users SET seedbonus = seedbonus + $amount WHERE id=" . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
@@ -47,18 +47,18 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         }
         $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
         $qy1 = $fluent->from('rating')
-                      ->select(null)
-                      ->select('SUM(rating) AS sum')
-                      ->select('COUNT(*) AS count')
-                      ->where("$what = ?", $id)
-                      ->fetchAll();
+            ->select(null)
+            ->select('SUM(rating) AS sum')
+            ->select('COUNT(*) AS count')
+            ->where("$what = ?", $id)
+            ->fetchAll();
         $qy2 = $fluent->from('rating')
-                      ->select(null)
-                      ->select('id AS rated')
-                      ->select('rating')
-                      ->where("$what = ?", $id)
-                      ->where('user = ?', $CURUSER['id'])
-                      ->fetchAll();
+            ->select(null)
+            ->select('id AS rated')
+            ->select('rating')
+            ->where("$what = ?", $id)
+            ->where('user = ?', $CURUSER['id'])
+            ->fetchAll();
 
         $rating_cache = array_merge($qy1[0], $qy2[0]);
         $ratings = $cache->get('ratings_' . $id);

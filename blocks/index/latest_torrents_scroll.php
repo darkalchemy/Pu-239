@@ -5,35 +5,35 @@ global $site_config, $lang, $fluent, $CURUSER, $cache;
 $torrents = $cache->get('scroller_torrents_');
 if ($torrents === false || is_null($torrents)) {
     $torrents = $fluent->from('torrents AS t')
-                       ->select(null)
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('c.name AS cat')
-                       ->select('c.image')
-                       ->leftJoin('users AS u ON t.owner = u.id')
-                       ->leftJoin('categories AS c ON t.category = c.id')
-                       ->leftJoin('categories AS p ON c.parent_id = p.id')
-                       ->where('visible = "yes"')
-                       ->where('t.imdb_id IS NOT NULL')
-                       ->orderBy('t.added DESC')
-                       ->limit(100)
-                       ->fetchAll();
+        ->select(null)
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id=p.id')
+        ->where('visible = "yes"')
+        ->where('t.imdb_id IS NOT NULL')
+        ->orderBy('t.added DESC')
+        ->limit(100)
+        ->fetchAll();
 
     foreach ($torrents as $torrent) {
         if (!empty($torrent['parent_name'])) {
@@ -50,11 +50,11 @@ foreach ($torrents as $torrent) {
         $images = $cache->get('posters_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "poster"')
-                             ->where('imdb_id = ?', $torrent['imdb_id'])
-                             ->fetchAll();
+                ->select(null)
+                ->select('url')
+                ->where('type = "poster"')
+                ->where('imdb_id=?', $torrent['imdb_id'])
+                ->fetchAll();
 
             $cache->set('posters_' . $torrent['imdb_id'], $images, 86400);
         }
@@ -63,11 +63,11 @@ foreach ($torrents as $torrent) {
             shuffle($images);
             $torrent['poster'] = $images[0]['url'];
         } else {
-            $torrent['poster'] = $site_config['pic_baseurl'] . 'noposter.png';
+            $torrent['poster'] = $site_config['paths']['images_baseurl'] . 'noposter.png';
         }
     }
     $scroller_torrents[] = $torrent;
-    if (count($scroller_torrents) >= $site_config['latest_torrents_limit_scroll']) {
+    if (count($scroller_torrents) >= $site_config['latest']['scroller_limit']) {
         break;
     }
 }
@@ -83,7 +83,7 @@ if (!empty($scroller_torrents)) {
     foreach ($scroller_torrents as $scroll_torrent) {
         $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
         extract($scroll_torrent);
-        $i = $site_config['latest_torrents_limit_scroll'];
+        $i = $site_config['latest']['scroller_limit'];
 
         if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = '<span>' . get_anonymous_name() . '</span>';

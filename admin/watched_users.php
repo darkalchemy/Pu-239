@@ -21,10 +21,10 @@ if (isset($_GET['remove'])) {
     if (isset($_GET['wu'])) {
         if (is_valid_id($remove_me_Ive_been_good)) {
             //=== get mod comments for member
-            $res = sql_query('SELECT username, modcomment FROM users WHERE id = ' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
             $user = mysqli_fetch_assoc($res);
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
-            sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
                 'modcomment' => $modcomment,
@@ -39,7 +39,7 @@ if (isset($_GET['remove'])) {
                 $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $user = mysqli_fetch_assoc($res);
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
-                sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $id, [
                     'watched_user' => 0,
                     'modcomment' => $modcomment,
@@ -62,7 +62,7 @@ if (isset($_GET['add'])) {
     $member_whos_been_bad = (int) $_GET['id'];
     if (is_valid_id($member_whos_been_bad)) {
         //=== make sure they are not being watched...
-        $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $user = mysqli_fetch_assoc($res);
         if ($user['watched_user'] > 0) {
             stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . ' ' . $lang['watched_backto'] . ' ' . format_username($user['id']) . ' ' . $lang['watched_profile']);
@@ -85,7 +85,7 @@ if (isset($_GET['add'])) {
         //=== all is good, let's enter them \o/
         $watched_user_reason = htmlsafechars($_POST['reason']);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
-        sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment = ' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment = ' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $member_whos_been_bad, [
             'watched_user' => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
@@ -95,15 +95,15 @@ if (isset($_GET['add'])) {
     //=== Check if member was added
     if (mysqli_affected_rows($mysqli) > 0) {
         $H1_thingie = '<h1 class="has-text-centered">' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username($member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username($member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
     }
 }
 //=== get number of watched members
 $watched_users = $fluent->from('users')
-                        ->select(null)
-                        ->select('COUNT(*) AS count')
-                        ->where('watched_user != 0')
-                        ->fetch('count');
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->where('watched_user != 0')
+    ->fetch('count');
 $watched_users = number_format($watched_users);
 
 //=== get sort / asc desc, and be sure it's safe
@@ -121,16 +121,16 @@ $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user,
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $HTMLOUT .= '
-        <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" accept-charset="utf-8">
+        <form action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" accept-charset="utf-8">
         <h1 class="has-text-centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
-    <table class="table table - bordered table - striped">';
+    <table class="table table-bordered table-striped">';
     $HTMLOUT .= '
     <tr>
-        <td><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = watched_user & amp;ASC = ' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
-        <td><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = username & amp;ASC = ' . $ASC . '">' . $lang['watched_username'] . '</a></td>
-        <td class="has - text - left" width="400">' . $lang['watched_suspicion'] . '</td>
+        <td><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
+        <td><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=username&amp;ASC=' . $ASC . '">' . $lang['watched_username'] . '</a></td>
+        <td class="has-text-left" width="400">' . $lang['watched_suspicion'] . '</td>
         <td class="has-text-centered">' . $lang['watched_stats'] . '</td>
-        <td class="has-text-centered"><a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = watched_users & amp;action = watched_users & amp;sort = invited_by & amp;ASC = ' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
+        <td class="has-text-centered"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered">
             <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All">
@@ -139,7 +139,7 @@ if ($how_many > 0) {
     while ($arr = @mysqli_fetch_assoc($res)) {
         $invitor_arr = [];
         if ($arr['invitedby'] != 0) {
-            $invitor_res = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
+            $invitor_res = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
             $invitor_arr = mysqli_fetch_assoc($invitor_res);
         }
         $the_flip_box = '
@@ -147,9 +147,9 @@ if ($how_many > 0) {
         $HTMLOUT .= '
     <tr>
         <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="has - text - left">' . format_username($arr['id']) . '</td>
-        <td class="has - text - left">' . $the_flip_box . '</td>
-        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+        <td class="has-text-left">' . format_username($arr['id']) . '</td>
+        <td class="has-text-left">' . $the_flip_box . '</td>
+        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
         <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($arr['invitedby'])) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '

@@ -13,7 +13,7 @@ $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
 }
-$res = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id=a.userid WHERE u.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
@@ -33,16 +33,16 @@ if ($id === $CURUSER['id']) {
     <div class='w-100'>
         <ul class='level-center padding20 bg-06'>
             <li>
-                <a href='{$site_config['baseurl']}/achievementlist.php'>{$lang['achievement_history_al']}</a>
+                <a href='{$site_config['paths']['baseurl']}/achievementlist.php'>{$lang['achievement_history_al']}</a>
             </li>
             <li>
-                <a href='{$site_config['baseurl']}/postcounter.php'>{$lang['achievement_history_fpc']}</a>
+                <a href='{$site_config['paths']['baseurl']}/postcounter.php'>{$lang['achievement_history_fpc']}</a>
             </li>
             <li>
-                <a href='{$site_config['baseurl']}/topiccounter.php'>{$lang['achievement_history_ftc']}</a>
+                <a href='{$site_config['paths']['baseurl']}/topiccounter.php'>{$lang['achievement_history_ftc']}</a>
             </li>
             <li>
-                <a href='{$site_config['baseurl']}/invitecounter.php'>{$lang['achievement_history_ic']}</a>
+                <a href='{$site_config['paths']['baseurl']}/invitecounter.php'>{$lang['achievement_history_ic']}</a>
             </li>
         </ul>
     </div>";
@@ -52,7 +52,7 @@ $HTMLOUT .= "
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username($arr['id']) . "</h1>
         <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
 if ($id === $CURUSER['id']) {
-    $HTMLOUT .= " <a class='altlink' href='{$site_config['baseurl']}/achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>";
+    $HTMLOUT .= " <a class='altlink' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>";
 }
 $HTMLOUT .= '</h2>
     </div>';
@@ -70,7 +70,7 @@ $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
                     <tr>
-                        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'></td>
+                        <td class='has-text-centered'><img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'></td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
                         <td>' . get_date($arr['date'], '') . '</td>
                     </tr>';

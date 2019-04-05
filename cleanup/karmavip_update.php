@@ -20,7 +20,7 @@ function karmavip_update($data)
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'VIP status expired.';
-        $msg = "Your VIP status has timed out and has been auto-removed by the system. Become a VIP again by donating to {$site_config['site_name']} , or exchanging some Karma Bonus Points. Cheers !\n";
+        $msg = "Your VIP status has timed out and has been auto-removed by the system. Become a VIP again by donating to {$site_config['site']['name']} , or exchanging some Karma Bonus Points. Cheers !\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = $arr['modcomment'];
             $modcomment = get_date($dt, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;

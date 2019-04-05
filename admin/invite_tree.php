@@ -17,9 +17,9 @@ if ($id !== 0) {
     <div class="bottom20">
         <ul class="level-center bg-06">' . ($arr_user['invitedby'] == 0 ? '
             <li class="margin10"><a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '" class="altlink tooltipper">' . $lang['invite_up'] . '</a></li>' : '
-            <li class="margin10"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="altlink tooltipper">' . $lang['invite_up'] . '</a></li>') . '
-            <li class="margin10"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' " class="altlink tooltipper">' . $lang['invite_expand_tree'] . '</a></li>
-            <li class="margin10"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '" class="altlink tooltipper">' . $lang['invite_expand_more'] . '</a></li>
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="altlink tooltipper">' . $lang['invite_up'] . '</a></li>') . '
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' " class="altlink tooltipper">' . $lang['invite_expand_tree'] . '</a></li>
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '" class="altlink tooltipper">' . $lang['invite_expand_more'] . '</a></li>
         </ul>
     </div>
     <h1 class="has-text-centered">' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
@@ -188,18 +188,18 @@ if ($id !== 0) {
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $HTMLOUT .= '
-            <nav class="pagination is - centered is - marginless is-small" role="navigation" aria-label="pagination">
-                <ul class="pagination - list bottom20">
+            <nav class="pagination is-centered is-marginless is-small" role="navigation" aria-label="pagination">
+                <ul class="pagination-list bottom20">
                     <li>';
     $count = 0;
     foreach ($cc as $L) {
         $HTMLOUT .= ($count === 10) ? '<br><br>' : '';
         if (!strcmp($L, $letter)) {
             $HTMLOUT .= '
-                        <a class="pagination - link is - current" aria-label="' . strtoupper($L) . '">' . strtoupper($L) . '</a>';
+                        <a class="pagination-link is-current" aria-label="' . strtoupper($L) . '">' . strtoupper($L) . '</a>';
         } else {
             $HTMLOUT .= '
-                        <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = invite_tree & amp;letter = ' . $L . '" class="pagination - link button">' . strtoupper($L) . '</a>';
+                        <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;letter=' . $L . '" class="pagination-link button">' . strtoupper($L) . '</a>';
         }
         ++$count;
     }
@@ -212,7 +212,7 @@ if ($id !== 0) {
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query);
     $arr_count = mysqli_fetch_row($res_count);
     $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
-    $link = $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree';
+    $link = $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree';
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
     $menu_bottom = $pager['pagerbottom'];
@@ -234,7 +234,7 @@ if ($id !== 0) {
         while ($row = mysqli_fetch_assoc($res)) {
             $country = ($row['name'] != null) ? '
                 <td>
-                    <img src="' . $site_config['pic_baseurl'] . 'flag / ' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" title= "' . htmlsafechars($row['name']) . '" class="tooltipper">
+                    <img src="' . $site_config['paths']['images_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" title="' . htmlsafechars($row['name']) . '" class="tooltipper">
                 </td>' : '
                 <td>---</td>';
             $body .= '
@@ -243,7 +243,7 @@ if ($id !== 0) {
                 <td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
                 <td>' . get_user_class_name($row['class']) . '</td>' . $country . '
                 <td>
-                    <a href="' . $site_config['baseurl'] . ' / staffpanel . php ? tool = invite_tree & amp;id = ' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
+                    <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
                         <span class="button is-small">' . $lang['invite_search_view'] . '</span>
                     </a>
                 </td>
