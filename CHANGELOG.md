@@ -1,16 +1,15 @@
 ### 05 Apr, 2019
-cleanup: classes 
+fix: update arrays site_config.php  
+cleanup: classes  
 replace: PostKey/CheckPostKey with csrf  
-
-### 04 Apr, 2019
-update: dependencies
+update: dependencies  
 refactor: site config to database  
 add: trivia config to add/edit/delete questions  
 
 ### 01 Apr, 2019
 update: remove some erroneous spacing  
 fix: display [code] correctly  
-update: make similar [code] and [quote]    
+update: make similar [code] and [quote]  
 
 ### 31 Mar, 2019
 move: all used files out of root folder  

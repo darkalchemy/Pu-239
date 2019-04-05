@@ -6,7 +6,7 @@ class_check($class);
 global $lang;
 
 $lang = array_merge($lang, load_language('ad_sitesettings'));
-
+$home = 'site';
 $stdfoot = [
     'js' => [
         get_file_name('site_config_js'),
@@ -16,7 +16,7 @@ $stdfoot = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $site_config, $session, $cache, $fluent;
 
-    $keys = [];
+    $values = $keys = [];
     $_post = $_POST;
     unset($_POST);
     $post = array_keys($_post);
@@ -30,10 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($keys as $key) {
         $id = $key;
         $parent = $_post["{$id}_parent"];
+        $home = $parent;
         $name = $_post["{$id}_name"];
         $type = $_post["{$id}_type"];
-        $value = $_post["{$id}_value"];
         $description = $_post["{$id}_description"];
+        $values = [];
+        if ($type === 'array') {
+            for($i = 1; $i<=1000; $i++) {
+                if (!empty($_post["{$id}_value_{$i}"])) {
+                    $values[] = $_post["{$id}_value_{$i}"];
+                }
+            }
+            $value = implode('|', $values);
+        } else {
+            $value = $_post["{$id}_value"];
+        }
 
         $set = [
             'parent' => $parent,
@@ -70,9 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         } else {
-            if ($type === 'array') {
-                unset($set['value']);
-            }
             $fluent->update('site_config')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -81,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $cache->delete('site_settings_');
     }
+
+    $cache->delete('site_settings_');
 }
 
 $HTMLOUT .= "
@@ -160,10 +170,11 @@ $keys[] = 'New';
 $select = "
         <div class='has-text-centered bottom20 w-25'>
             <select id='select_key' name='select_key' class='w-100' onchange='show_key()'>";
+
 foreach ($keys as $key) {
     $key = empty($key) ? 'null' : $key;
     $select .= "
-                <option value='{$key}'" . ($key === 'site' ? ' selected' : '') . ">{$key}</option>";
+                <option value='{$key}'" . ($key === $home ? ' selected' : '') . ">{$key}</option>";
 }
 $select .= '
             </select>
@@ -171,6 +182,7 @@ $select .= '
 $HTMLOUT .= $select;
 
 foreach ($keys as $key) {
+    $i = 0;
     $key = empty($key) ? 'null' : $key;
     $body = "
                 <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=site_settings' method='post' accept-charset='utf-8'>";
@@ -221,9 +233,10 @@ foreach ($keys as $key) {
                     </div>";
             } elseif ($row['type'] === 'array' && is_array($row['value']) && !empty($row['value'])) {
                 foreach ($row['value'] as $value) {
+                    $i++;
                     $body .= "
                     <div class='top5 bottom5'>
-                        <input type='text' name='{$row['id']}_value' value='{$value}' placeholder='value' class='w-100 margin5'>
+                        <input type='text' name='{$row['id']}_value_{$i}' value='{$value}' placeholder='value' class='w-100 margin5'>
                     </div>";
                 }
             } elseif ($row['type'] === 'array' && is_array($row['value']) && empty($row['value'])) {
@@ -261,7 +274,7 @@ foreach ($keys as $key) {
         </form>";
 
     $HTMLOUT .= "
-    <div id='$key'" . ($key != 'site' ? " class='is_hidden'" : '') . ">
+    <div id='$key'" . ($key != $home ? " class='is_hidden'" : '') . ">
         <h2 class='has-text-centered top20'> Key: " . strtoupper($key) . '</h1>' . main_table($body, $heading, 'top20') . '
     </div>';
 }
