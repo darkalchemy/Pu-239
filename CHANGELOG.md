@@ -1,4 +1,5 @@
 ### 05 Apr, 2019
+fix: install.php  
 fix: update arrays when field starts empty site_config.php  
 fix: update arrays site_config.php  
 cleanup: classes  

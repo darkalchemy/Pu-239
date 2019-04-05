@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'function_common.php';
-
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
 }
@@ -72,6 +69,7 @@ $vars['session']['prefix'] = $vars['session']['name'] . '_';
 $vars['cookies']['prefix'] = $vars['session']['prefix'];
 $vars['cookies']['domain'] = $vars['baseurl'];
 
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 $file = CONFIG_DIR . 'config.php.example';
 $config = file_get_contents($file);
 $config = str_replace([
@@ -92,7 +90,7 @@ if (!file_put_contents(CONFIG_DIR . 'config.php', $config)) {
     die(CONFIG_DIR . 'config.php file could not be saved');
 }
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once INCL_DIR . 'function_common.php';
 require_once CONFIG_DIR . 'config.php';
 require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
@@ -104,6 +102,10 @@ $conf = new Config([
     CONFIG_DIR . DIRECTORY_SEPARATOR . 'config.php',
 ]);
 $site_config = $conf->all();
+
+$site_config['password']['memory_cost'] = 2048;
+$site_config['password']['time_cost'] = 12;
+$site_config['password']['threads'] = 4;
 $host = $site_config['database']['host'];
 $user = $site_config['database']['username'];
 $pass = quotemeta($site_config['database']['password']);
