@@ -42,7 +42,7 @@ class Session
             session_name($this->site_config['session']['name']);
 
             $secure_session = get_scheme() === 'https' ? true : false;
-            $domain = $this->site_config['cookies']['domain'] === $this->site_config['session']['domain'] ? '' : $this->site_config['cookie_domain'];
+            $domain = $this->site_config['cookies']['domain'] === $this->site_config['session']['domain'] ? '' : $this->site_config['cookies']['domain'];
 
             session_set_cookie_params($expires, $this->site_config['cookies']['path'], $domain, $secure_session, true);
 

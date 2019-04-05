@@ -1014,7 +1014,7 @@ class AJAXChat
                 return true;
             }
         }
-        if ($this->_siteConfig['ip_logging'] && $ip !== null) {
+        if ($this->_siteConfig['site']['ip_logging'] && $ip !== null) {
             $bannedUserDataArray = $this->getBannedUsersData('ip', $ip);
             if ($bannedUserDataArray && isset($bannedUserDataArray[0])) {
                 return true;

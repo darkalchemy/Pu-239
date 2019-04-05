@@ -35,6 +35,7 @@ if ($staff_classes === false || is_null($staff_classes)) {
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
+
 if (!$site_config['site']['staffpanel_online']) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }

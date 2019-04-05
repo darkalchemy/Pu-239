@@ -10,7 +10,7 @@ $torrent_stuffs = new Pu239\Torrent();
 $user_stuffs = new Pu239\User();
 
 require_once CLASS_DIR . 'class_bt_options.php';
-require_once CACHE_DIR . 'class_config.php';
+require_once CONFIG_DIR . 'class.php';
 require_once INCL_DIR . 'database.php';
 
 $agent = $_SERVER['HTTP_USER_AGENT'];

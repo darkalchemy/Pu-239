@@ -226,7 +226,7 @@ function stdfoot($stdfoot = false)
             if (!$site_config['redis']['use_socket']) {
                 $client->connect($site_config['redis']['host'], $site_config['redis']['port']);
             } else {
-                $client->connect($site_config['redis']['port']);
+                $client->connect($site_config['redis']['socket']);
             }
             $client->select($site_config['redis']['database']);
             $stats = $client->info();

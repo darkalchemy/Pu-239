@@ -1510,8 +1510,8 @@ function get_anonymous_name()
 {
     global $site_config;
 
-    $index = array_rand($site_config['anonymous_names']);
-    $anon = $site_config['anonymous_names'][$index];
+    $index = array_rand($site_config['anonymous']['names']);
+    $anon = $site_config['anonymous']['names'][$index];
 
     return $anon;
 }
