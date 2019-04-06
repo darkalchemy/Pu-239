@@ -226,7 +226,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
 </html>";
 
         $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
             ->addTo($email)
             ->setReturnPath($site_config['site']['email'])
             ->setSubject("You have been invited to {$site_config['site']['name']}")

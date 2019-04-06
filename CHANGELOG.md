@@ -1,4 +1,5 @@
 ### 06 Apr, 2019
+fix: unchanged site_config keys chatBotName  
 add: SlashTrace - Awesome error handler  
 add: Sentry.io for reporting SlashTrace recorded errors - production only, api key required  
 fix: key not exists on update site_settings.php  

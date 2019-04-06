@@ -212,7 +212,7 @@ if ($action == 'avatar') {
         ], $lang['takeeditcp_email_body']);
 
         $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
             ->addTo($email)
             ->setReturnPath($site_config['site']['email'])
             ->setSubject("{$site_config['site']['name']} {$lang['takeeditcp_confirm']}")

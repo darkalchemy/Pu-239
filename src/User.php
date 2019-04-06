@@ -192,7 +192,7 @@ class User
                 ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
                 ->innerJoin('class_config AS c ON u.class = c.id')
                 ->where("u.acceptpms != 'no'")
-                ->where('u.username != ?', $this->site_config['chatBotName'])
+                ->where('u.username != ?', $this->site_config['chatbot']['name'])
                 ->where('u.username LIKE ?', "$username%")
                 ->where('c.classname != ""')
                 ->orderBy('LOWER(u.username)')

@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $body = sprintf($lang['email_request'], $email, getip(), $site_config['paths']['baseurl'], $alt_id, $secret, $site_config['site']['name']);
     $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
         ->addTo($user['email'])
         ->setReturnPath($site_config['site']['email'])
         ->setSubject("{$site_config['site']['name']} {$lang['email_subjreset']}")
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['paths']['baseurl'], $site_config['site']['name']);
     $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
         ->addTo($email)
         ->setReturnPath($site_config['site']['email'])
         ->setSubject("{$site_config['site']['name']} {$lang['email_subjdetails']}")

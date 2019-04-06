@@ -275,7 +275,7 @@ if ($users_count > 0 && $site_config['signup']['email_confirm']) {
     ], $lang['takesignup_email_body']);
 
     $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
         ->addTo($email)
         ->setReturnPath($site_config['site']['email'])
         ->setSubject("{$site_config['site']['name']} {$lang['takesignup_confirm']}")

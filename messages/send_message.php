@@ -89,7 +89,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 </html>";
 
         $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
             ->addTo($arr_receiver['email'])
             ->setReturnPath($site_config['site']['email'])
             ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")

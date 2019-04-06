@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>";
 
             $mail = new Message();
-            $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatBotName']}")
+            $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
                 ->addTo($arr['email'])
                 ->setReturnPath($site_config['site']['email'])
                 ->setSubject("{$lang['inactive_youracc']}{$site_config['site']['name']}!")
