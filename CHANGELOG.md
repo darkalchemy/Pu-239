@@ -1,3 +1,8 @@
+### 06 Apr, 2019
+add: SlashTrace - Awesome error handler  
+add: Sentry.io for reporting SlashTrace recorded errors - production only, api key required  
+fix: key not exists on update site_settings.php  
+
 ### 05 Apr, 2019
 update: database files  
 update: move log viewer paths to site_config  

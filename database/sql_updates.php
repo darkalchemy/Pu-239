@@ -2297,4 +2297,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('paths','log_viewer','array','/var/log/apache2/|/var/log/nginx/|/var/log/mysql/','Paths to search for available logs.')",
         'flush' => true,
     ],
+    [
+        'id' => 1554550336,
+        'info' => 'Add SlashTrace Sentry API key to site_config',
+        'date' => '06 Apr, 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('api','sentry','string','https://566cc20981ad41bf9703af7b40eabe05@sentry.io/1432740','API dsn for SlashTrace Sentry Handler.')",
+        'flush' => true,
+    ],
 ];

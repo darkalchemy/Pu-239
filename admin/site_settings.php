@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = $_post["{$id}_description"];
         $values = [];
         if ($type === 'array') {
-            $values[] = $_post["{$id}_value"];
+            $values[] = isset($_post["{$id}_value"]) ? $_post["{$id}_value"] : '';
             for($i = 1; $i<=1000; $i++) {
                 if (!empty($_post["{$id}_value_{$i}"])) {
                     $values[] = $_post["{$id}_value_{$i}"];

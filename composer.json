@@ -33,6 +33,8 @@
         "php-curl-class/php-curl-class": "^8.5",
         "scriptotek/google-books": "^0.2.4",
         "sebastian/version": "^2.0",
+        "slashtrace/slashtrace": "^1.1",
+        "slashtrace/slashtrace-sentry": "^1.0",
         "spatie/image": "^1.7",
         "spatie/image-optimizer": "^1.1"
     },
