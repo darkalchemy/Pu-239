@@ -945,6 +945,8 @@ function CutName($txt, $len = 40)
  */
 function load_language($file = '')
 {
+    global $site_config;
+
     $site_lang = get_language();
     $lang = [];
     if (file_exists(LANG_DIR . "{$site_lang}/lang_{$file}.php")) {
