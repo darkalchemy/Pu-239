@@ -219,9 +219,9 @@ if (!empty($rows)) {
                 <tr>
                     <th>{$lang['catol_info']}.</th>
                 </tr>";
-        $body = '
+        $body = "
                 <tr>
-                    <td>' . readMore($row['descr'], 500, $site_config['paths']['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1') . '</td>
+                    <td><div class='readmore'>" . format_comment($row['descr'], true, true, false) . '</div></td>
                 </tr>';
         $div .= main_table($body, $heading, 'top20');
         $div .= "
@@ -240,7 +240,7 @@ if (!empty($rows)) {
         </div>";
 } else {
     $htmlout .= main_div("
-        <h2 class='has-text-centered'>{$lang['catol_nothing_found']}!</h2>", 'top20');
+        <p class='has-text-centered'>{$lang['catol_nothing_found']}!</p>", 'top20', 'padding20');
 }
 
 echo stdhead($lang['catol_std_head']) . wrapper($htmlout) . stdfoot();

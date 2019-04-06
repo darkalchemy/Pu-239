@@ -1402,3 +1402,10 @@ ul li ul li {
         display: none;
     }
 }
+
+.readmore {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+}
