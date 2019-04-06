@@ -2,7 +2,7 @@
 
 global $CURUSER, $site_config, $user, $fluent;
 
-if ($site_config['hnr_config']['online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= (UC_MIN + 1)) {
+if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= (UC_MIN + 1)) {
     $completed = $count2 = $dlc = '';
     $torrents = $fluent->from('snatched AS s')
         ->select('t.name')
