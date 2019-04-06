@@ -31,5 +31,6 @@ if (!$site_config['site']['production']) {
         $handler = new SentryHandler("{$site_config['api']['sentry']}");
         $slashtrace = new SlashTrace();
         $slashtrace->addHandler($handler);
+        $slashtrace->register();
     }
 }
