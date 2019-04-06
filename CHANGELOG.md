@@ -1,4 +1,5 @@
 ### 05 Apr, 2019
+remove: duplicate hnr config  
 fix: install.php  
 fix: update arrays when field starts empty site_config.php  
 fix: update arrays site_config.php  

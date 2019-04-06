@@ -106,6 +106,17 @@ if ($badwords === false || is_null($badwords)) {
     $badwords['badwords'] = array_unique($temp);
     $cache->set('badwords_', $badwords, 86400);
 }
-$site_config = array_merge_recursive($site_config, $staff_settings, $staff_forums, $site_config_db, $badwords);
+
+$hnr_config = $cache->get('hnr_config_');
+if ($hnr_config === false || is_null($hnr_config)) {
+    $query = $fluent->from('hit_and_run_settings')
+        ->orderBy('name');
+    foreach ($query as $row) {
+        $hnr_config['hnr_config_'][$row['name']] = $row['value'];
+    }
+    $cache->set('hnr_config_', $hnr_config, 86400);
+}
+
+$site_config = array_merge_recursive($site_config, $staff_settings, $staff_forums, $site_config_db, $badwords, $hnr_config);
 $site_config['site']['badwords'] = strtolower(implode('|', array_merge($site_config['badwords'], $site_config['site']['bad_words'])));
 ksort($site_config);

@@ -2283,4 +2283,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE triviaq ADD FULLTEXT INDEX `text`(`question`, `answer1`, `answer2`, `answer3`, `answer4`, `answer5`)',
         'flush' => true,
     ],
+    [
+        'id' => 1554518759,
+        'info' => 'Remove hnr_config from site_config',
+        'date' => '05 Apr, 2019',
+        'query' => "DELETE FROM `site_config` WHERE `parent` = 'hnr_config'",
+        'flush' => true,
+    ],
 ];
