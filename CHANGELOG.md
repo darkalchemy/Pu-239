@@ -1,8 +1,10 @@
 ### 05 Apr, 2019
+update: move log viewer paths to site_config  
+fix: adding empty array element site_settings.php  
 remove: duplicate hnr config  
 fix: install.php  
-fix: update arrays when field starts empty site_config.php  
-fix: update arrays site_config.php  
+fix: update arrays when field starts empty site_settings.php  
+fix: update arrays site_settings.php  
 cleanup: classes  
 replace: PostKey/CheckPostKey with csrf  
 update: dependencies  

@@ -2290,4 +2290,11 @@ KEY `expires` (`expires`)
         'query' => "DELETE FROM `site_config` WHERE `parent` = 'hnr_config'",
         'flush' => true,
     ],
+    [
+        'id' => 1554518760,
+        'info' => 'Add log viewer paths to site_config',
+        'date' => '05 Apr, 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('paths','log_viewer','array','/var/log/apache2/|/var/log/nginx/|/var/log/mysql/','Paths to search for available logs.')",
+        'flush' => true,
+    ],
 ];

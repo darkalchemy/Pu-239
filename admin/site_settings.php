@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $values[] = $_post["{$id}_value_{$i}"];
                 }
             }
-            $value = implode('|', $values);
+            $value = trim(implode('|', $values), '|');
         } else {
             $value = $_post["{$id}_value"];
         }

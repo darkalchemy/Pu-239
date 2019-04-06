@@ -84,13 +84,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         </div>", 'bottom20');
 }
 
-$paths = [
-    '/var/log/apache2',
-    '/var/log/nginx/',
-    '/var/log/mysql/',
-    SQLERROR_LOGS_DIR,
-];
-
+$paths = array_merge($site_config['paths']['log_viewer'], [SQLERROR_LOGS_DIR]);
 $files = [];
 foreach ($paths as $path) {
     if (file_exists($path) && is_readable($path)) {
@@ -145,7 +139,7 @@ if (!empty($files)) {
             </div>
         <form>";
 } else {
-    $HTMLOUT .= main_div('There are no log files to view');
+    $HTMLOUT .= main_div('There are no log files to view', '', 'padding20');
 }
 
 echo stdhead('Log Files') . wrapper($HTMLOUT, 'is-paddingless') . stdfoot();
