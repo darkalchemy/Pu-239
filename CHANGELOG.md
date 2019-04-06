@@ -1,4 +1,5 @@
 ### 06 Apr, 2019
+remove: unused functions  
 fix: Sentry.io config  
 fix: unchanged site_config keys chatBotName  
 add: SlashTrace - Awesome error handler  

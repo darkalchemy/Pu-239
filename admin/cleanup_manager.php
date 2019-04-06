@@ -53,7 +53,7 @@ function resettimer()
     global $session;
 
     $timestamp = strtotime('today midnight');
-    sql_query("UPDATE cleanup SET clean_time = $timestamp");
+    sql_query("UPDATE cleanup SET clean_time = $timestamp WHERE clean_time > 0");
     $session->set('is-success', 'Cleanup Time Set to ' . get_date($timestamp, 'LONG'));
     cleanup_show_main();
     die();

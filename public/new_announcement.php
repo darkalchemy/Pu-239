@@ -5,7 +5,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $mysqli;
+global $CURUSER, $site_config, $mysqli, $session;
 
 $stdhead = [
     'css' => [
@@ -34,10 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== Usersearch POST data...
     $n_pms = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
     $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
-    $ann_hash = (isset($_POST['ann_hash']) ? trim($_POST['ann_hash']) : '');
-    if (hashit($ann_query, $n_pms) != $ann_hash) {
-        die();
-    } // Validate POST...
+    if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
+        stderr('Error', 'Invalid CSRF Token');
+    }
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
         stderr('Error', 'Misformed Query');
     }
@@ -102,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      </td></tr></table>
      <input type='hidden' name='n_pms' value='" . $n_pms . "'>
     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "'>
-     <input type='hidden' name='ann_hash' value='" . $ann_hash . "'>
+     <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
      </form><br><br>
      </div></td></tr></table>";
     if ($body) {

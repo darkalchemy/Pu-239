@@ -5,7 +5,7 @@ global $CURUSER, $lang, $user;
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
     $table_data .= '
     <tr>
-        <td class="rowhead"><a id="flush"></a>' . $lang['userdetails_flush_title'] . '</td>
+        <td class="rowhead"><a id="flush_hash"></a>' . $lang['userdetails_flush_title'] . '</td>
         <td>
             <form method="post" id="form" action="" name="flush_thing" accept-charset="utf-8">
                 <input id="id" type="hidden" value="' . (int) $user['id'] . '" name="id">

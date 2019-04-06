@@ -6,6 +6,7 @@ require_once VENDOR_DIR . 'autoload.php';
 use SlashTrace\SlashTrace;
 use SlashTrace\Sentry\SentryHandler;
 use SlashTrace\EventHandler\DebugHandler;
+
 require_once INCL_DIR . 'function_common.php';
 
 date_default_timezone_set('UTC');

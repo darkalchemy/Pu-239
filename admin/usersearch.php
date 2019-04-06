@@ -783,7 +783,7 @@ if (!empty($search)) {
     <div class='has-text-centered margin20'>
         <input name='n_pms' type='hidden' value='" . $count . "'>
         <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>
-        <input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "'>
+        <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
         <button type='submit' class='button is-small' disabled>{$lang['usersearch_create_ann']}</button>
     </div>
 </form>";

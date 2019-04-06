@@ -180,7 +180,7 @@ $sources = [
     'data' => DATABASE_DIR . 'data.sql.gz',
     'trivia' => DATABASE_DIR . 'trivia.sql.gz',
     'tvmaze' => DATABASE_DIR . 'tvmaze.sql.gz',
-    'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
+    'timestamps' => "UPDATE cleanup SET clean_time = $timestamp WHERE clean_time > 0",
     'admin' => $admin,
     'bot' => $bot,
 ];

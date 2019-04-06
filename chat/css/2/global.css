@@ -379,7 +379,7 @@ body.ajax-chat {
     padding: 1.25em;
     background-color: rgba(0, 0, 0, .1);
     border-radius: .625em;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.75);
     margin: 1.25em;
 }
 

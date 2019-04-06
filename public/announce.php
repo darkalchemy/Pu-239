@@ -386,7 +386,7 @@ if (isset($self) && $event === 'stopped') {
             default:
                 $minus_ratio = 0;
         }
-        if ($site_config['hnr_config']['hnr_online'] == 1 && $minus_ratio > 0 && ($snatched['uploaded'] + $upthis) < ($snatched['downloaded'] + $downthis)) {
+        if ($site_config['hnr_config']['online'] == 1 && $minus_ratio > 0 && ($snatched['uploaded'] + $upthis) < ($snatched['downloaded'] + $downthis)) {
             $hit_and_run = $dt;
             $seeder = 'no';
         } else {

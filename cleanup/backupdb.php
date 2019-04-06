@@ -51,7 +51,7 @@ function backupdb($data)
     if ($site_config['backup']['use_gzip']) {
         exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ' | ' . $site_config['backup']['gzip_path'] . " -q9>{$bdir}{$filename}.gz");
     } else {
-        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ">$filepath");
+        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ">{$bdir}{$filename}");
     }
 
     // table backup

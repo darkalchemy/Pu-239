@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $values = [];
         if ($type === 'array') {
             $values[] = isset($_post["{$id}_value"]) ? $_post["{$id}_value"] : '';
-            for($i = 1; $i<=1000; $i++) {
+            for ($i = 1; $i <= 1000; ++$i) {
                 if (!empty($_post["{$id}_value_{$i}"])) {
                     $values[] = $_post["{$id}_value_{$i}"];
                 }
@@ -234,7 +234,7 @@ foreach ($keys as $key) {
                     </div>";
             } elseif ($row['type'] === 'array' && is_array($row['value']) && !empty($row['value'])) {
                 foreach ($row['value'] as $value) {
-                    $i++;
+                    ++$i;
                     $body .= "
                     <div class='top5 bottom5'>
                         <input type='text' name='{$row['id']}_value_{$i}' value='{$value}' placeholder='value' class='w-100 margin5'>

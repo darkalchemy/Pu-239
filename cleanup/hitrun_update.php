@@ -15,7 +15,7 @@ function hitrun_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    if ($site_config['hnr_config']['hnr_online'] == 1) {
+    if ($site_config['hnr_config']['online'] == 1) {
         $dt = TIME_NOW;
         $secs = $site_config['hnr_config']['caindays'] * 86400;
         $hnr = $dt - $secs;

@@ -127,7 +127,7 @@ function getip($login = false)
 
 function dbconn()
 {
-    global $site_config, $mysqli;
+    global $mysqli;
 
     if ($mysqli->connect_error) {
         die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
@@ -147,21 +147,10 @@ function status_change(int $id)
         'status' => 0,
     ];
     $fluent->update('announcement_process')
-        ->set($set)
-        ->where('user_id=?', $id)
-        ->where('status = 1')
-        ->execute();
-}
-
-/**
- * @param        $var
- * @param string $addtext
- *
- * @return string
- */
-function hashit($var, $addtext = '')
-{
-    return md5('Th15T3xt' . $addtext . $var . $addtext . 'is5add3dto66uddy6he@water...');
+           ->set($set)
+           ->where('user_id=?', $id)
+           ->where('status = 1')
+           ->execute();
 }
 
 /**
@@ -174,7 +163,7 @@ function hashit($var, $addtext = '')
  */
 function userlogin()
 {
-    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user_stuffs, $ban_stuffs, $userblock_stuffs;
+    global $site_config, $whereis, $CURUSER, $cache, $session, $user_stuffs, $ban_stuffs, $userblock_stuffs;
 
     unset($GLOBALS['CURUSER']);
 
@@ -317,6 +306,8 @@ function userlogin()
     get_template();
     $mood_stuffs = new Pu239\Mood();
     $moods = $mood_stuffs->get();
+
+    return true;
 }
 
 /**
@@ -339,9 +330,9 @@ function get_stylesheet()
     $class_config = $cache->get('class_config_' . $style);
     if ($class_config === false || is_null($class_config)) {
         $class_config = $fluent->from('class_config')
-            ->orderBy('value ASC')
-            ->where('template = ?', $style)
-            ->fetchAll();
+                               ->orderBy('value ASC')
+                               ->where('template = ?', $style)
+                               ->fetchAll();
 
         $cache->set('class_config_' . $style, $class_config, 86400);
     }
@@ -422,8 +413,8 @@ function make_freeslots($userid, $key)
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
-            ->where('userid=?', $userid)
-            ->fetchAll();
+                       ->where('userid=?', $userid)
+                       ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -432,6 +423,8 @@ function make_freeslots($userid, $key)
 }
 
 /**
+ * @param bool $grouped
+ *
  * @return array|bool|mixed
  *
  * @throws \Envms\FluentPDO\Exception
@@ -444,13 +437,13 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
-                ->where('parent_id=0')
-                ->orderBy('ordered');
+                              ->where('parent_id=0')
+                              ->orderBy('ordered');
             foreach ($parents as $parent) {
                 $children = $fluent->from('categories')
-                    ->where('parent_id=?', $parent['id'])
-                    ->orderBy('ordered')
-                    ->fetchAll();
+                                   ->where('parent_id=?', $parent['id'])
+                                   ->orderBy('ordered')
+                                   ->fetchAll();
 
                 $parent['children'] = $children;
                 $ret[] = $parent;
@@ -462,9 +455,9 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
-                ->select('p.name AS parent_name')
-                ->leftJoin('categories AS p ON c.parent_id=p.id')
-                ->orderBy('ordered');
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS p ON c.parent_id=p.id')
+                           ->orderBy('ordered');
 
             foreach ($cats as $cat) {
                 if (!empty($cat['parent_name'])) {
@@ -478,27 +471,6 @@ function genrelist(bool $grouped)
     }
 
     return $ret;
-}
-
-/**
- * @param      $keys
- * @param bool $keyname
- *
- * @return bool
- */
-function delete_id_keys($keys, $keyname = false)
-{
-    global $cache;
-
-    if (!(is_array($keys) || $keyname)) { // if no key given or not an array
-        return false;
-    } else {
-        foreach ($keys as $id) { // proceed
-            $cache->delete($keyname . $id);
-        }
-    }
-
-    return true;
 }
 
 /**
@@ -526,26 +498,26 @@ function mksize($size)
     }
 
     return round($size, [
-                            0,
-                            0,
-                            1,
-                            2,
-                            2,
-                            3,
-                            3,
-                            4,
-                            4,
-                        ][$i]) . ' ' . [
-                                           'B',
-                                           'kB',
-                                           'MB',
-                                           'GB',
-                                           'TB',
-                                           'PB',
-                                           'EB',
-                                           'ZB',
-                                           'YB',
-                                       ][$i];
+            0,
+            0,
+            1,
+            2,
+            2,
+            3,
+            3,
+            4,
+            4,
+        ][$i]) . ' ' . [
+            'B',
+            'kB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+            'EB',
+            'ZB',
+            'YB',
+        ][$i];
 }
 
 /**
@@ -665,17 +637,6 @@ function sqlesc_noquote($x)
 }
 
 /**
- * @param int $code
- */
-function httperr($code = 404)
-{
-    header('HTTP/1.0 404 Not found');
-    echo '<h1>$code - Not Found</h1>';
-    echo '<p>Sorry pal :(</p>';
-    die();
-}
-
-/**
  * @param $s
  *
  * @return mixed
@@ -696,9 +657,9 @@ function searchfield($s)
 }
 
 /**
- * @param      $heading
- * @param      $text
- * @param null $class
+ * @param        $heading
+ * @param        $text
+ * @param string $class
  *
  * @throws Exception
  */
@@ -754,15 +715,9 @@ function sqlerr($file = '', $line = '')
 }
 
 /**
- * @return false|string
- */
-function get_dt_num()
-{
-    return gmdate('YmdHis');
-}
-
-/**
  * @param $text
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function write_log($text)
 {
@@ -772,16 +727,6 @@ function write_log($text)
         'txt' => $text,
     ];
     $sitelog->insert($values);
-}
-
-/**
- * @param $s
- *
- * @return false|int
- */
-function sql_timestamp_to_unix_timestamp($s)
-{
-    return mktime(substr($s, 11, 2), substr($s, 14, 2), substr($s, 17, 2), substr($s, 5, 2), substr($s, 8, 2), substr($s, 0, 4));
 }
 
 /**
@@ -981,16 +926,6 @@ function ratingpic($num)
 }
 
 /**
- * @param $hash
- *
- * @return string
- */
-function hash_pad($hash)
-{
-    return str_pad($hash, 20);
-}
-
-/**
  * @param     $txt
  * @param int $len
  *
@@ -1002,25 +937,14 @@ function CutName($txt, $len = 40)
 }
 
 /**
- * @param     $txt
- * @param int $len
- *
- * @return string
- */
-function CutName_B($txt, $len = 20)
-{
-    return strlen($txt) > $len ? substr($txt, 0, $len - 1) . '...' : $txt;
-}
-
-/**
  * @param string $file
  *
  * @return array
+ *
+ * @throws Exception
  */
 function load_language($file = '')
 {
-    global $site_config, $CURUSER;
-
     $site_lang = get_language();
     $lang = [];
     if (file_exists(LANG_DIR . "{$site_lang}/lang_{$file}.php")) {
@@ -1036,6 +960,8 @@ function load_language($file = '')
 
 /**
  * @param $table
+ *
+ * @throws Exception
  */
 function flood_limit($table)
 {
@@ -1140,23 +1066,8 @@ function get_percent_completed_image($p)
 }
 
 /**
- * @param $ar
- *
- * @return array|string
+ * @throws \Envms\FluentPDO\Exception
  */
-function strip_tags_array($ar)
-{
-    if (is_array($ar)) {
-        foreach ($ar as $k => $v) {
-            $ar[strip_tags($k)] = strip_tags($v);
-        }
-    } else {
-        $ar = strip_tags($ar);
-    }
-
-    return $ar;
-}
-
 function referer()
 {
     global $referer_stuffs;
@@ -1213,6 +1124,9 @@ function replace_unicode_strings($text)
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
 }
 
+/**
+ * @throws Exception
+ */
 function parked()
 {
     global $CURUSER;
@@ -1222,6 +1136,9 @@ function parked()
     }
 }
 
+/**
+ * @throws Exception
+ */
 function suspended()
 {
     global $CURUSER;
@@ -1276,6 +1193,8 @@ function random_color($minVal = 0, $maxVal = 255)
  * @param $user_id
  *
  * @return bool
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function user_exists($user_id)
 {
@@ -1348,6 +1267,11 @@ function array_msort(array $array, array $cols)
     return $ret;
 }
 
+/**
+ * @return array|bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function countries()
 {
     global $site_config, $cache, $fluent;
@@ -1355,12 +1279,12 @@ function countries()
     $countries = $cache->get('countries_arr_');
     if ($countries === false || is_null($countries)) {
         $countries = $fluent->from('countries')
-            ->select(null)
-            ->select('id')
-            ->select('name')
-            ->select('flagpic')
-            ->orderBy('name')
-            ->fetchAll();
+                            ->select(null)
+                            ->select('id')
+                            ->select('name')
+                            ->select('flagpic')
+                            ->orderBy('name')
+                            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1432,10 +1356,12 @@ function plural(int $int)
  * @param bool $ajax
  *
  * @return bool
+ *
+ * @throws Exception
  */
 function valid_username($username, $ajax = false)
 {
-    global $lang;
+    global $lang, $site_config;
 
     if ($username === '') {
         return false;
@@ -1594,8 +1520,8 @@ function get_show_id(string $name)
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
         $items = $fluent->from('tvmaze')
-            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-            ->fetchAll();
+                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+                        ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1631,8 +1557,8 @@ function get_show_id_by_imdb(string $imdbid)
     $id_array = $cache->get('tvshow_ids_' . $imdbid);
     if ($id_array === false || is_null($id_array)) {
         $id_array = $fluent->from('tvmaze')
-            ->where('imdb_id=?', $imdbid)
-            ->fetch();
+                           ->where('imdb_id=?', $imdbid)
+                           ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1660,6 +1586,13 @@ function time24to12($timestamp, $sec = false)
     return get_date($timestamp, 'WITHOUT_SEC', 1, 1);
 }
 
+/**
+ * @param $path
+ * @param $human
+ * @param $count
+ *
+ * @return array|int|string
+ */
 function GetDirectorySize($path, $human, $count)
 {
     $bytestotal = $files = 0;
@@ -1711,7 +1644,7 @@ function formatQuery($query)
  */
 function insert_update_ip()
 {
-    global $CURUSER, $cache, $ip_stuffs;
+    global $CURUSER, $ip_stuffs;
 
     if (empty($CURUSER)) {
         return false;
@@ -1736,8 +1669,6 @@ function insert_update_ip()
  */
 function fetch($url)
 {
-    global $site_config;
-
     $client = new GuzzleHttp\Client([
         'curl' => [
             CURLOPT_SSL_VERIFYPEER => false,
@@ -1754,7 +1685,7 @@ function fetch($url)
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
                 return $res->getBody()
-                    ->getContents();
+                           ->getContents();
             }
         } else {
             return false;
@@ -1774,7 +1705,7 @@ function fetch($url)
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function get_body_image($details, $portrait = false)
+function get_body_image($details)
 {
     global $cache, $fluent, $torrent;
 
@@ -1783,11 +1714,11 @@ function get_body_image($details, $portrait = false)
         $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                ->select(null)
-                ->select('url')
-                ->where('type = "background"')
-                ->where('imdb_id=?', $torrent['imdb_id'])
-                ->fetchAll();
+                             ->select(null)
+                             ->select('url')
+                             ->where('type = "background"')
+                             ->where('imdb_id=?', $torrent['imdb_id'])
+                             ->fetchAll();
 
             $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
         }
@@ -1803,9 +1734,9 @@ function get_body_image($details, $portrait = false)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->where('type = ?', 'background');
+                          ->select(null)
+                          ->select('url')
+                          ->where('type = ?', 'background');
 
         $backgrounds = [];
         foreach ($results as $background) {

@@ -16,7 +16,7 @@
         "browserslist": "^4.5.4",
         "bulma": "^0.7.4",
         "clean-css": "^4.2.1",
-        "clean-css-cli": "^4.2.1",
+        "clean-css-cli": "^4.3.0",
         "flexslider": "^2.7.2",
         "jquery": "^3.3.1",
         "lightbox2": "^2.10.0",
