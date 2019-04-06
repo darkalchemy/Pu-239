@@ -1,4 +1,5 @@
 ### 06 Apr, 2019
+fix: incorrect site_config key  
 fix: missing global bittorrent.php  
 update: initial database missing site_config data  
 remove: unused functions  

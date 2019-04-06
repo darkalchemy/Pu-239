@@ -112,7 +112,7 @@ if ($hnr_config === false || is_null($hnr_config)) {
     $query = $fluent->from('hit_and_run_settings')
         ->orderBy('name');
     foreach ($query as $row) {
-        $hnr_config['hnr_config_'][$row['name']] = $row['value'];
+        $hnr_config['hnr_config'][$row['name']] = $row['value'];
     }
     $cache->set('hnr_config_', $hnr_config, 86400);
 }
