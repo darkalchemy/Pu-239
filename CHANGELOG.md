@@ -1,4 +1,5 @@
 ### 06 Apr, 2019
+update: initial database missing site_config data  
 remove: unused functions  
 fix: Sentry.io config  
 fix: unchanged site_config keys chatBotName  
