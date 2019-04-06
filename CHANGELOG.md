@@ -1,4 +1,5 @@
 ### 05 Apr, 2019
+update: database files  
 update: move log viewer paths to site_config  
 fix: adding empty array element site_settings.php  
 remove: duplicate hnr config  
