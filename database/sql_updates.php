@@ -2298,10 +2298,18 @@ KEY `expires` (`expires`)
         'flush' => true,
     ],
     [
-        'id' => 1554550336,
+        'id' => 1554550337,
+        'info' => 'Delete SlashTrace Sentry API key to site_config',
+        'date' => '06 Apr, 2019',
+        'query' => "DELETE FROM `site_config` WHERE `name` = 'sentry'",
+        'flush' => true,
+    ],
+
+    [
+        'id' => 1554550338,
         'info' => 'Add SlashTrace Sentry API key to site_config',
         'date' => '06 Apr, 2019',
-        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('api','sentry','string','https://566cc20981ad41bf9703af7b40eabe05@sentry.io/1432740','API dsn for SlashTrace Sentry Handler.')",
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('api','sentry','string','','API dsn for SlashTrace Sentry Handler.')",
         'flush' => true,
     ],
 ];
