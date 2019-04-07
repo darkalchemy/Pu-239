@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function sendpmpos_update($data)
 {
@@ -16,12 +18,12 @@ function sendpmpos_update($data)
     $dt = TIME_NOW;
 
     $users = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('modcomment')
-        ->where('sendpmpos>1')
-        ->where('sendpmpos < ?', $dt)
-        ->fetchAll();
+                    ->select(null)
+                    ->select('id')
+                    ->select('modcomment')
+                    ->where('sendpmpos>1')
+                    ->where('sendpmpos < ?', $dt)
+                    ->fetchAll();
 
     $msgs_buffer = $users_buffer = [];
     $count = count($users);
@@ -54,10 +56,10 @@ function sendpmpos_update($data)
                 'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
             ];
             $fluent->update('users')
-                ->set($set)
-                ->where('sendpmpos>1')
-                ->where('sendpmpos < ?', $dt)
-                ->execute();
+                   ->set($set)
+                   ->where('sendpmpos>1')
+                   ->where('sendpmpos < ?', $dt)
+                   ->execute();
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;

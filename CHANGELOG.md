@@ -1,4 +1,8 @@
 ### 07 Apr, 2019
+move: remaining unused files to unused  
+cleanup: code  
+update: release hover movies.php  
+update: chmod 0775 images on save ImageProxy.php  
 update: catalog.php  
 
 ### 06 Apr, 2019

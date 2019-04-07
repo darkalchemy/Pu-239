@@ -10,9 +10,9 @@ function get_styles()
     global $fluent;
 
     $query = $fluent->from('stylesheets')
-        ->select(null)
-        ->select('id')
-        ->select('uri');
+                    ->select(null)
+                    ->select('id')
+                    ->select('uri');
 
     $styles = [];
     foreach ($query as $style) {
@@ -37,15 +37,15 @@ function get_classes(array $styles, bool $create)
     $all_classes = [];
     foreach ($styles as $style) {
         $classes = $fluent->from('class_config')
-            ->select(null)
-            ->select('name')
-            ->select('value')
-            ->select('classname')
-            ->select('classcolor')
-            ->select('classpic')
-            ->orderBy('value')
-            ->where('template = ?', $style)
-            ->fetchAll();
+                          ->select(null)
+                          ->select('name')
+                          ->select('value')
+                          ->select('classname')
+                          ->select('classcolor')
+                          ->select('classpic')
+                          ->orderBy('value')
+                          ->where('template = ?', $style)
+                          ->fetchAll();
 
         if (empty($classes)) {
             if (!$create) {
@@ -54,8 +54,8 @@ function get_classes(array $styles, bool $create)
                 foreach ($all_classes[0] as $values) {
                     $values['template'] = $style;
                     $fluent->insertInto('class_config')
-                        ->values($values)
-                        ->execute();
+                           ->values($values)
+                           ->execute();
                 }
                 die("Classes added for template {$style}\n");
             }

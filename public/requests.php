@@ -79,10 +79,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('requests')
-            ->select(null)
-            ->select('requested_by_user_id')
-            ->where('id=?', $id)
-            ->fetch();
+                         ->select(null)
+                         ->select('requested_by_user_id')
+                         ->where('id=?', $id)
+                         ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -99,9 +99,9 @@ switch ($action) {
             'updated' => TIME_NOW,
         ];
         $fluent->update('requests')
-            ->set($set)
-            ->where('id=?', $id)
-            ->execute();
+               ->set($set)
+               ->where('id=?', $id)
+               ->execute();
 
         header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . sqlesc($id));
         die();
@@ -112,11 +112,11 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id / bad vote');
         }
         $voted = $fluent->from('request_votes')
-            ->select(null)
-            ->select('vote')
-            ->where('user_id=?', $CURUSER['id'])
-            ->where('request_id=?', $id)
-            ->fetch('vote');
+                        ->select(null)
+                        ->select('vote')
+                        ->where('user_id=?', $CURUSER['id'])
+                        ->where('request_id=?', $id)
+                        ->fetch('vote');
 
         if (!empty($voted)) {
             stderr('USER ERROR', 'You have voted on this request before.');
@@ -128,8 +128,8 @@ switch ($action) {
                 'vote' => $yes_or_no,
             ];
             $fluent->insertInto('request_votes')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
             if ($vote === 1) {
                 $set = [
                     'vote_yes_count' => new Envms\FluentPDO\Literal('vote_yes_count + 1'),
@@ -140,9 +140,9 @@ switch ($action) {
                 ];
             }
             $fluent->update('requests')
-                ->set($set)
-                ->where('id=?', $id)
-                ->execute();
+                   ->set($set)
+                   ->where('id=?', $id)
+                   ->execute();
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
         }
@@ -150,9 +150,9 @@ switch ($action) {
 
     case 'default':
         $count = $fluent->from('requests')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->fetch('count');
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
         $link = $site_config['paths']['baseurl'] . '/requests.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
@@ -161,14 +161,14 @@ switch ($action) {
         $menu_bottom = $pager['pagerbottom'];
 
         $requests = $fluent->from('requests AS r')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id=p.id')
-            ->orderBy('r.added DESC')
-            ->limit($pager['pdo'])
-            ->fetchAll();
+                           ->select('c.name AS cat_name')
+                           ->select('c.image AS cat_image')
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS c ON r.category = c.id')
+                           ->leftJoin('categories AS p ON c.parent_id=p.id')
+                           ->orderBy('r.added DESC')
+                           ->limit($pager['pdo'])
+                           ->fetchAll();
 
         if (empty($requests)) {
             stderr('Error!', 'Sorry, there are no current requests!');
@@ -211,14 +211,14 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('requests AS r')
-            ->select('r.id AS request_id')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id=p.id')
-            ->where('r.id=?', $id)
-            ->fetch();
+                      ->select('r.id AS request_id')
+                      ->select('c.name AS cat_name')
+                      ->select('c.image AS cat_image')
+                      ->select('p.name AS parent_name')
+                      ->leftJoin('categories AS c ON r.category = c.id')
+                      ->leftJoin('categories AS p ON c.parent_id=p.id')
+                      ->where('r.id=?', $id)
+                      ->fetch();
 
         $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
         $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
@@ -230,11 +230,11 @@ switch ($action) {
         $movie_info = get_imdb_info($imdb, false, false, null, null);
 
         $voted = $fluent->from('request_votes')
-            ->select(null)
-            ->select('vote')
-            ->where('user_id=?', $CURUSER['id'])
-            ->where('request_id=?', $id)
-            ->fetch('vote');
+                        ->select(null)
+                        ->select('vote')
+                        ->where('user_id=?', $CURUSER['id'])
+                        ->where('request_id=?', $id)
+                        ->fetch('vote');
 
         if (!$voted) {
             $vote_yes = '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php" accept-charset="utf-8">
@@ -326,11 +326,11 @@ switch ($action) {
             $menu_bottom = $pager['pagerbottom'];
 
             $allrows = $fluent->from('comments')
-                ->select('id AS comment_id')
-                ->where('request = ?', $id)
-                ->orderBy('id DESC')
-                ->limit($pager['pdo'])
-                ->fetchAll();
+                              ->select('id AS comment_id')
+                              ->where('request = ?', $id)
+                              ->orderBy('id DESC')
+                              ->limit($pager['pdo'])
+                              ->fetchAll();
 
             $HTMLOUT .= '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
@@ -367,8 +367,8 @@ switch ($action) {
                 'link' => $link,
             ];
             $new_request_id = $fluent->insertInto('requests')
-                ->values($values)
-                ->execute();
+                                     ->values($values)
+                                     ->execute();
 
             $color = get_user_class_name($CURUSER['class'], true);
             $msg = "[{
@@ -452,11 +452,11 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('requests')
-            ->select(null)
-            ->select('request_name')
-            ->select('requested_by_user_id')
-            ->where('id=?', $id)
-            ->fetch();
+                         ->select(null)
+                         ->select('request_name')
+                         ->select('requested_by_user_id')
+                         ->where('id=?', $id)
+                         ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -468,11 +468,11 @@ switch ($action) {
         <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('requests')
-                ->where('id=?', $id)
-                ->execute();
+                   ->where('id=?', $id)
+                   ->execute();
             $fluent->deleteFrom('comments')
-                ->where('request = ?', $id)
-                ->execute();
+                   ->where('request = ?', $id)
+                   ->execute();
 
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?request_deleted=1');
             die();
@@ -486,14 +486,14 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $edit_arr = $fluent->from('requests AS r')
-            ->select('r.id AS request_id')
-            ->select('c.name AS cat_name')
-            ->select('c.image AS cat_image')
-            ->select('p.name AS parent_name')
-            ->leftJoin('categories AS c ON r.category = c.id')
-            ->leftJoin('categories AS p ON c.parent_id=p.id')
-            ->where('r.id=?', $id)
-            ->fetch();
+                           ->select('r.id AS request_id')
+                           ->select('c.name AS cat_name')
+                           ->select('c.image AS cat_image')
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS c ON r.category = c.id')
+                           ->leftJoin('categories AS p ON c.parent_id=p.id')
+                           ->where('r.id=?', $id)
+                           ->fetch();
 
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
         $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
@@ -572,10 +572,10 @@ switch ($action) {
             stderr('USER ERROR', 'Bad id');
         }
         $arr = $fluent->from('requests')
-            ->select(null)
-            ->select('request_name')
-            ->where('id=?', $id)
-            ->fetch();
+                      ->select(null)
+                      ->select('request_name')
+                      ->where('id=?', $id)
+                      ->fetch();
 
         if (!$arr) {
             stderr('Error', 'No request with that ID.');
@@ -593,14 +593,14 @@ switch ($action) {
                 'ori_text' => $body,
             ];
             $newid = $fluent->insertInto('comments')
-                ->values($values)
-                ->execute();
+                            ->values($values)
+                            ->execute();
             $set = [
                 'comments' => new Envms\FluentPDO\Literal('comments + 1'),
             ];
             $fluent->update('requests')
-                ->set($set)
-                ->execute();
+                   ->set($set)
+                   ->execute();
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
@@ -627,11 +627,11 @@ switch ($action) {
     </form>';
 
         $allrows = $fluent->from('comments')
-            ->select('id AS comment_id')
-            ->where('request = ?', $id)
-            ->orderBy('id DESC')
-            ->limit(5)
-            ->fetchAll();
+                          ->select('id AS comment_id')
+                          ->where('request = ?', $id)
+                          ->orderBy('id DESC')
+                          ->limit(5)
+                          ->fetchAll();
 
         if ($allrows) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
@@ -646,10 +646,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments AS c')
-            ->select('r.request_name')
-            ->leftJoin('requests AS r ON c.request = r.id')
-            ->where('c.id=?', $comment_id)
-            ->fetch();
+                      ->select('r.request_name')
+                      ->leftJoin('requests AS r ON c.request = r.id')
+                      ->where('c.id=?', $comment_id)
+                      ->fetch();
 
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -668,9 +668,9 @@ switch ($action) {
                 'editedby' => $CURUSER['id'],
             ];
             $fluent->update('comments')
-                ->set($set)
-                ->where('id=?', $comment_id)
-                ->execute();
+                   ->set($set)
+                   ->where('id=?', $comment_id)
+                   ->execute();
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
@@ -706,12 +706,12 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('requests')
-            ->select(null)
-            ->select('user')
-            ->select('request')
-            ->select('text')
-            ->where('id =?', $comment_id)
-            ->fetch();
+                      ->select(null)
+                      ->select('user')
+                      ->select('request')
+                      ->select('text')
+                      ->where('id =?', $comment_id)
+                      ->fetch();
         if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -725,9 +725,9 @@ switch ($action) {
             'text' => $_POST['body'],
         ];
         $fluent->update('comments')
-            ->set($set)
-            ->where('id=?', $comment_id)
-            ->execute();
+               ->set($set)
+               ->where('id=?', $comment_id)
+               ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
         header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
@@ -739,10 +739,10 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments')
-            ->select('user')
-            ->select('request')
-            ->where('id=?', $comment_id)
-            ->fetch();
+                      ->select('user')
+                      ->select('request')
+                      ->where('id=?', $comment_id)
+                      ->fetch();
         if (emtpy($arr)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -753,15 +753,15 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('comments')
-                ->where('id=?', $comment_id)
-                ->execute();
+                   ->where('id=?', $comment_id)
+                   ->execute();
             $set = [
                 'comments' => new Envms\FluentPDO\Literal('comments - 1'),
             ];
             $fluent->update('requests')
-                ->set($set)
-                ->where('id=?', $arr['request'])
-                ->execute();
+                   ->set($set)
+                   ->where('id=?', $arr['request'])
+                   ->execute();
 
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
             die();
@@ -776,8 +776,8 @@ switch ($action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
         $arr = $fluent->from('comments')
-            ->where('id=?', $comment_id)
-            ->fetch();
+                      ->where('id=?', $comment_id)
+                      ->fetch();
 
         if (!$arr) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid . ");

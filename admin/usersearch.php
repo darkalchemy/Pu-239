@@ -14,11 +14,11 @@ $lang = array_merge($lang, load_language('ad_usersearch'));
 $oldest = $cache->get('oldest_');
 if ($oldest === false || is_null($oldest)) {
     $oldest = $fluent->from('users')
-        ->select(null)
-        ->select('added')
-        ->orderBy('added')
-        ->limit(1)
-        ->fetch('added');
+                     ->select(null)
+                     ->select('added')
+                     ->orderBy('added')
+                     ->limit(1)
+                     ->fetch('added');
     $cache->set('oldest_', $oldest, 0);
 }
 $oldest = get_date($oldest, 'FORM', 1, 0);
@@ -723,11 +723,11 @@ if (!empty($search)) {
         while ($user = mysqli_fetch_array($res)) {
             if ($user['ip']) {
                 $count = $fluent->from('bans')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('INET6_NTOA(first) <= ?', $user['ip'])
-                    ->where('INET6_NTOA(last)>= ?', $user['ip'])
-                    ->fetch('count');
+                                ->select(null)
+                                ->select('COUNT(*) AS count')
+                                ->where('INET6_NTOA(first) <= ?', $user['ip'])
+                                ->where('INET6_NTOA(last)>= ?', $user['ip'])
+                                ->fetch('count');
                 if ($count === 0) {
                     $ipstr = $user['ip'];
                 } else {

@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fail = true;
     }
     $user_tickets = $fluent->from('tickets')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('user = ?', $CURUSER['id'])
-        ->fetch('count');
+                           ->select(null)
+                           ->select('COUNT(*) AS count')
+                           ->where('user = ?', $CURUSER['id'])
+                           ->fetch('count');
 
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
         $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');

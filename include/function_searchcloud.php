@@ -1,5 +1,7 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param int $limit
  *
@@ -12,10 +14,10 @@ function searchcloud($limit = 100)
     $searchcloud = $cache->get('searchcloud_');
     if ($searchcloud === false || is_null($searchcloud)) {
         $search = $fluent->from('searchcloud')
-            ->select('searchedfor')
-            ->select('howmuch')
-            ->select('search_column')
-            ->orderBy('howmuch DESC');
+                         ->select('searchedfor')
+                         ->select('howmuch')
+                         ->select('search_column')
+                         ->orderBy('howmuch DESC');
         if ($limit > 0) {
             $search = $search->limit($limit);
         }
@@ -52,7 +54,7 @@ function searchcloud($limit = 100)
  * @param $word
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function searchcloud_insert($word, $column)
 {

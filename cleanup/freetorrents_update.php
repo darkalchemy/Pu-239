@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function freetorrents_update($data)
 {
@@ -16,11 +18,11 @@ function freetorrents_update($data)
     ignore_user_abort(true);
 
     $query = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('free')
-        ->where('free>1')
-        ->where('free < ?', TIME_NOW);
+                    ->select(null)
+                    ->select('id')
+                    ->select('free')
+                    ->where('free>1')
+                    ->where('free < ?', TIME_NOW);
 
     $count = 0;
     foreach ($query as $arr) {
@@ -29,9 +31,9 @@ function freetorrents_update($data)
         ];
 
         $fluent->update('torrents')
-            ->set($set)
-            ->where('id=?', $arr['id'])
-            ->execute();
+               ->set($set)
+               ->where('id=?', $arr['id'])
+               ->execute();
 
         $cache->update_row('torrent_details_' . $arr['id'], [
             'free' => 0,

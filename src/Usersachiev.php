@@ -35,8 +35,8 @@ class Usersachiev
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('usersachiev', $t)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                         ->onDuplicateKeyUpdate($update)
+                         ->execute();
         }
     }
 
@@ -48,7 +48,7 @@ class Usersachiev
     public function add(array $values)
     {
         $this->fluent->insertInto('usersachiev')
-            ->values($values)
-            ->execute();
+                     ->values($values)
+                     ->execute();
     }
 }

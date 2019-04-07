@@ -61,31 +61,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $parentname = (!empty($parent) ? $parent : '') . '::' . $name;
         if (empty($set['name'])) {
             $fluent->deleteFrom('site_config')
-                ->where('id = ?', $id)
-                ->execute();
+                   ->where('id = ?', $id)
+                   ->execute();
             $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
         } elseif ($id === 'Add') {
             if (!empty($item)) {
                 $set['value'] = implode('|', $item) . '|' . $value;
                 $fluent->update('site_config')
-                    ->set($set)
-                    ->where('parent = ?', $parent)
-                    ->where('name = ?', $name)
-                    ->execute();
+                       ->set($set)
+                       ->where('parent = ?', $parent)
+                       ->where('name = ?', $name)
+                       ->execute();
                 $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
             } else {
                 if (empty($item)) {
                     $fluent->insertInto('site_config')
-                        ->values($set)
-                        ->execute();
+                           ->values($set)
+                           ->execute();
                     $session->set('is-success', "$parentname {$lang['sitesettings_added']}");
                 }
             }
         } else {
             $fluent->update('site_config')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
+                   ->set($set)
+                   ->where('id = ?', $id)
+                   ->execute();
             $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
         }
         $cache->delete('site_settings_');
@@ -115,8 +115,8 @@ $heading = "
 $body = '';
 
 $sql = $fluent->from('site_config')
-    ->orderBy('parent')
-    ->orderBy('name');
+              ->orderBy('parent')
+              ->orderBy('name');
 
 $keys = $settings = [];
 foreach ($sql as $row) {

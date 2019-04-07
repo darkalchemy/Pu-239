@@ -36,42 +36,18 @@ switch ($list) {
         if (!empty($pubs)) {
             $div = "
         <div class='level-center'>";
-            foreach ($pubs as $movie) {
-                $div .= "
-            <div class='padding10 round10 bg-00 margin10'>
-                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['imdbid']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                    <div class='has-text-centered top10'>{$movie['title']} ({$movie['year']})</div>
-                    <div class='has-text-centered'>{$movie['release_date']}</div>
-                    <div class='tooltip_templates'>
-                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <span class='padding10'>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Genre: </span><span>" . htmlsafechars($movie['genre']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Rating: </span><span>" . htmlsafechars($movie['mpaa']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Runtime: </span>" . htmlsafechars($movie['runtime']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['description']) . '</span></div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+            foreach ($pubs as $data) {
+                $div .= generate_html($data);
             }
-
             $div .= '
         </div>';
+            $div = main_div($div);
         } else {
-            $div = "<h1 class='has-text-centered'>Blu-ray.com may be down, check back later</h1>";
+            $div = main_div("<p1 class='has-text-centered'>Blu-ray.com may be down, check back later</p1>", '', 'padding20');
         }
 
         $HTMLOUT = "
-        <h1 class='has-text-centered'>Blu-ray Releases</h1>" . main_div($div);
+        <h1 class='has-text-centered'>Blu-ray Releases</h1>" . $div;
 
         break;
 
@@ -123,42 +99,16 @@ switch ($list) {
                 $div = "
         <h1 class='has-text-centered'>TV Today</h1>
         <div class='level-center'>";
-                foreach ($body as $tv) {
-                    $div .= "
-            <div class='padding10 round10 bg-00 margin10'>
-                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                    <div class='has-text-centered top10'>{$tv['title']}</div>
-                    <div class='has-text-centered top10'>{$tv['airtime']}</div>
-                    <div class='tooltip_templates'>
-                        <div id='movie_{$tv['id']}_tooltip'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <span class='padding10'>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Episode Title: </span><span>" . htmlsafechars($tv['ep_title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Season: </span><span>" . htmlsafechars($tv['season']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Episode: </span><span>" . htmlsafechars($tv['episode']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Runtime: </span><span>" . htmlsafechars($tv['runtime']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Type: </span><span>" . htmlsafechars($tv['type']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+                foreach ($body as $data) {
+                    $div .= generate_html($data);
                 }
-
                 $div .= '
         </div>';
 
                 $HTMLOUT = main_div($div);
             }
         } else {
-            $HTMLOUT = main_div("<h1 class='has-text-centered'>TVMaze may be down, check back later</h1>");
+            $HTMLOUT = main_div("<p class='has-text-centered'>TVMaze may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -171,10 +121,10 @@ switch ($list) {
         }
         $date = new DateTime($today);
         $yesterday = $date->modify('-1 day')
-            ->format('Y-m-d');
+                          ->format('Y-m-d');
         $date = new DateTime($today);
         $tomorrow = $date->modify('+1 day')
-            ->format('Y-m-d');
+                         ->format('Y-m-d');
         $date = new DateTime($today);
         $display = $date->format('l Y-m-d');
 
@@ -212,37 +162,15 @@ switch ($list) {
 
             $div = "
         <div class='level-center'>";
-            foreach ($body as $tv) {
-                $div .= "
-            <div class='padding10 round10 bg-00 margin10'>
-                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                    <div class='has-text-centered top10'>{$tv['title']}</div>
-                    <div class='tooltip_templates'>
-                        <div id='movie_{$tv['id']}_tooltip' class='round10 tooltip-background' style='background-image: url({$tv['backdrop']});'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <span class='padding10'>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($tv['popularity']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($tv['vote_average']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+            foreach ($body as $data) {
+                $div .= generate_html($data);
             }
-
             $div .= '
         </div>';
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
+            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -278,39 +206,15 @@ switch ($list) {
 
             $div = "
         <div class='level-center'>";
-            foreach ($body as $movie) {
-                $div .= "
-            <div class='padding10 round10 bg-00 margin10'>
-                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['id']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                    <div class='has-text-centered top10'>{$movie['title']}</div>
-                    <div class='has-text-centered'>{$movie['release_date']}</div>
-                    <div class='tooltip_templates'>
-                        <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <span class='padding10'>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+            foreach ($body as $data) {
+                $div .= generate_html($data);
             }
-
             $div .= '
         </div>';
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
+            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -346,39 +250,15 @@ switch ($list) {
 
             $div = "
         <div class='level-center'>";
-            foreach ($body as $movie) {
-                $div .= "
-            <div class='padding10 round10 bg-00 margin10'>
-                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['id']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                    <div class='has-text-centered top10'>{$movie['title']}</div>
-                    <div class='has-text-centered'>{$movie['release_date']}</div>
-                    <div class='tooltip_templates'>
-                        <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <span class='padding10'>
-                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></div>
-                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+            foreach ($body as $data) {
+                $div .= generate_html($data);
             }
-
             $div .= '
         </div>';
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
+            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
         break;
 
@@ -410,3 +290,135 @@ switch ($list) {
         }
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
+
+function generate_html(array $data)
+{
+    $html = "
+     <div class='padding10 round10 bg-00 margin10'>
+        <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
+            <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+            <div class='has-text-centered top10'>{$data['title']}</div>";
+    if (!empty($data['airtime'])) {
+        $html .= "
+                    <div class='has-text-centered top10'>{$data['airtime']}</div>";
+    }
+    if (!empty($data['release_date'])) {
+        $html .= "
+            <div class='has-text-centered'>{$data['release_date']}</div>";
+    }
+    $html .= "
+            <div class='tooltip_templates'>
+                <div id='movie_{$data['id']}_tooltip' class='round10 tooltip-background'" . (!empty($data['backdrop']) ? " style='background-image: url({$data['backdrop']});'" : '') . ">
+                    <div class='columns is-marginless is-paddingless'>
+                        <div class='column padding10 is-4'>
+                            <span>
+                                <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                            </span>
+                        </div>
+                        <div class='column padding10 is-8'>
+                            <div class='padding20 is-8 bg-09 round10'>
+                                <div class='columns is-multiline'>";
+
+    if (!empty($data['title'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Title: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['title']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['ep_title'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Episode Title: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['ep_title']) . '</span>
+                                    </div>';
+
+    }
+    if (!empty($data['season'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Season: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['season']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['episode'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Episode: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['episode']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['runtime'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Runtime: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['runtime']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['type'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Type: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['type']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['release_date'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Release Date: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['release_date']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['popularity'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Popularity: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['popularity']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['vote_average'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Votes: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['vote_average']) . '</span>
+                                    </div>';
+    }
+    if (!empty($data['overview'])) {
+        $html .= "
+                                    <div class='column padding5 is-4'>
+                                        <span class='size_4 right10 has-text-primary has-text-wight-bold'>Overview: </span>
+                                    </div>
+                                    <div class='column padding5 is-8'>
+                                        <span class='size_4'>" . htmlsafechars($data['overview']) . '</span>
+                                    </div>';
+    }
+    $html .= '
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> ';
+
+    return $html;
+}

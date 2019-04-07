@@ -22,15 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 $query = $fluent->getPdo()
-                    ->prepare($sql);
+                                ->prepare($sql);
                 $query->execute();
                 $values = [
                     'id' => (int) $id,
                     'query' => $sql,
                 ];
                 $fluent->insertInto('database_updates')
-                    ->values($values)
-                    ->execute();
+                       ->values($values)
+                       ->execute();
 
                 if ($flush) {
                     $cache->flushDB();
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
             $session->set('is-success', "Query #$id has been ignored");
         }
     }
@@ -88,10 +88,10 @@ $heading = "
 
 if (file_exists(DATABASE_DIR)) {
     $results = $fluent->from('database_updates')
-        ->select(null)
-        ->select('id')
-        ->select('added')
-        ->fetchPairs('id', 'added');
+                      ->select(null)
+                      ->select('id')
+                      ->select('added')
+                      ->fetchPairs('id', 'added');
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 

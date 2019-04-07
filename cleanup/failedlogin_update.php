@@ -15,8 +15,8 @@ function failedlogin_update($data)
     $secs = 86400;
     $dt = TIME_NOW - $secs;
     $fluent->deleteFrom('failedlogins')
-        ->where('added < ?', $dt)
-        ->execute();
+           ->where('added < ?', $dt)
+           ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

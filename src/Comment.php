@@ -38,10 +38,10 @@ class Comment
             'lastpagedefault' => 1,
         ]);
         $comments = $this->fluent->from('comments')
-            ->where('torrent = ?', $tid)
-            ->orderBy('id DESC')
-            ->limit($pager['pdo'])
-            ->fetchAll();
+                                 ->where('torrent = ?', $tid)
+                                 ->orderBy('id DESC')
+                                 ->limit($pager['pdo'])
+                                 ->fetchAll();
 
         return [
             $comments,

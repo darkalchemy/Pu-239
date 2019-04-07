@@ -12,14 +12,14 @@ function mow_update($data)
     ignore_user_abort(true);
 
     $mow = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('name')
-        ->where('times_completed>10')
-        ->where('category', $site_config['categories']['movie'])
-        ->orderBy('RAND()')
-        ->limit(1)
-        ->fetch();
+                  ->select(null)
+                  ->select('id')
+                  ->select('name')
+                  ->where('times_completed>10')
+                  ->where('category', $site_config['categories']['movie'])
+                  ->orderBy('RAND()')
+                  ->limit(1)
+                  ->fetch();
 
     if (!empty($mow)) {
         $set = [
@@ -39,9 +39,9 @@ function mow_update($data)
         }
     }
     $fluent->update('avps')
-        ->set($set)
-        ->where("avps.arg = 'bestfilmofweek'")
-        ->execute();
+           ->set($set)
+           ->where("avps.arg = 'bestfilmofweek'")
+           ->execute();
 
     $cache->delete('motw_');
     $time_end = microtime(true);

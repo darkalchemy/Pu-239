@@ -32,8 +32,8 @@ class Block
         $blocks = $this->cache->get('blocks_' . $userid);
         if ($blocks === false || is_null($blocks)) {
             $blocks = $this->fluent->from('blocks')
-                ->where('userid=?', $userid)
-                ->fetch();
+                                   ->where('userid=?', $userid)
+                                   ->fetch();
 
             $this->cache->set('blocks_' . $userid, $blocks, $this->site_config['expires']['user_blocks']);
         }

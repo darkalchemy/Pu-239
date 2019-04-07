@@ -7,6 +7,10 @@
  * @link https://blueimp.net/ajax/
  */
 
+use Envms\FluentPDO\Literal;
+use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * Class AJAXChat.
  */
@@ -314,18 +318,18 @@ class AJAXChat
             $this->_onlineUsersData = [];
 
             $sql = $this->_fluent->from($this->getDataBaseTable('online') . ' AS o')
-                ->select(null)
-                ->select('o.userID')
-                ->select('o.userName')
-                ->select('o.userRole')
-                ->select('o.channel')
-                ->select('UNIX_TIMESTAMP(o.dateTime) AS timeStamp')
-                ->select('INET6_NTOA(o.ip) AS ip')
-                ->leftJoin('users AS u ON o.userID = u.id')
-                ->where('u.anonymous = "no"')
-                ->where('u.anonymous_until = 0')
-                ->orderBy('o.userRole DESC')
-                ->orderBy('LOWER(o.userName) ASC');
+                                 ->select(null)
+                                 ->select('o.userID')
+                                 ->select('o.userName')
+                                 ->select('o.userRole')
+                                 ->select('o.channel')
+                                 ->select('UNIX_TIMESTAMP(o.dateTime) AS timeStamp')
+                                 ->select('INET6_NTOA(o.ip) AS ip')
+                                 ->leftJoin('users AS u ON o.userID = u.id')
+                                 ->where('u.anonymous = "no"')
+                                 ->where('u.anonymous_until = 0')
+                                 ->orderBy('o.userRole DESC')
+                                 ->orderBy('LOWER(o.userName) ASC');
 
             foreach ($sql as $row) {
                 $row['pmCount'] = $this->_message->get_count($row['userID']);
@@ -391,8 +395,8 @@ class AJAXChat
     public function removeFromOnlineList($userID)
     {
         $this->_fluent->deleteFrom($this->getDataBaseTable('online'))
-            ->where('userID = ?', $this->getUserID())
-            ->execute();
+                      ->where('userID = ?', $this->getUserID())
+                      ->execute();
 
         if ($this->getConfig('socketServerEnabled')) {
             $this->updateSocketAuthentication($userID);
@@ -478,20 +482,20 @@ class AJAXChat
         ];
 
         $lastInsertId = $this->_fluent->insertInto($this->getDataBaseTable('messages'))
-            ->values($values)
-            ->execute();
+                                      ->values($values)
+                                      ->execute();
 
         $set = [
-            'dailyshouts' => new \Envms\FluentPDO\Literal('dailyshouts + 1'),
-            'weeklyshouts' => new \Envms\FluentPDO\Literal('weeklyshouts + 1'),
-            'monthlyshouts' => new \Envms\FluentPDO\Literal('monthlyshouts + 1'),
-            'totalshouts' => new \Envms\FluentPDO\Literal('totalshouts + 1'),
+            'dailyshouts' => new Literal('dailyshouts + 1'),
+            'weeklyshouts' => new Literal('weeklyshouts + 1'),
+            'monthlyshouts' => new Literal('monthlyshouts + 1'),
+            'totalshouts' => new Literal('totalshouts + 1'),
         ];
 
         $this->_fluent->update('usersachiev')
-            ->set($set)
-            ->where('userid=?', $userID)
-            ->execute();
+                      ->set($set)
+                      ->where('userid=?', $userID)
+                      ->execute();
 
         if ($this->getConfig('socketServerEnabled')) {
             $this->sendSocketMessage($this->getSocketBroadcastMessage($lastInsertId, TIME_NOW, $userID, $userName, $userRole, $channelID, $text, $mode));
@@ -674,8 +678,8 @@ class AJAXChat
      * @return |null
      *
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws ServerUnhealthy
+     * @throws UnbegunTransaction
      */
     public function getUserRole()
     {
@@ -805,8 +809,8 @@ class AJAXChat
      * @return bool
      *
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws ServerUnhealthy
+     * @throws UnbegunTransaction
      */
     public function getValidLoginUserData()
     {
@@ -1042,11 +1046,11 @@ class AJAXChat
             $this->_bannedUsersData = [];
 
             $res = $this->_fluent->from($this->getDataBaseTable('bans'))
-                ->select(null)
-                ->select('userID')
-                ->select('userName')
-                ->select('INET6_NTOA(ip) AS ip')
-                ->where('dateTime>NOW()');
+                                 ->select(null)
+                                 ->select('userID')
+                                 ->select('userName')
+                                 ->select('INET6_NTOA(ip) AS ip')
+                                 ->where('dateTime>NOW()');
 
             foreach ($res as $row) {
                 array_push($this->_bannedUsersData, $row);
@@ -1147,8 +1151,8 @@ class AJAXChat
     public function purgeLogs()
     {
         $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
-            ->where('dateTime < ?', gmdate('Y-m-d H:i:s', TIME_NOW - ($this->getConfig('logsPurgeTimeDiff') * 86400)))
-            ->execute();
+                      ->where('dateTime < ?', gmdate('Y-m-d H:i:s', TIME_NOW - ($this->getConfig('logsPurgeTimeDiff') * 86400)))
+                      ->execute();
     }
 
     /**
@@ -1626,8 +1630,8 @@ class AJAXChat
             ];
 
             $this->_fluent->insertInto($this->getDataBaseTable('online'), $values)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                          ->onDuplicateKeyUpdate($update)
+                          ->execute();
 
             $this->resetOnlineUsersData();
             $this->_cache->set($key, $active_online, 60);
@@ -1772,12 +1776,12 @@ class AJAXChat
     public function deleteMessage($messageID)
     {
         $message = $this->_fluent->from($this->getDataBaseTable('messages'))
-            ->select(null)
-            ->select('channel')
-            ->select('userID')
-            ->select('userRole')
-            ->where('id=?', $messageID)
-            ->fetch();
+                                 ->select(null)
+                                 ->select('channel')
+                                 ->select('userID')
+                                 ->select('userRole')
+                                 ->where('id=?', $messageID)
+                                 ->fetch();
 
         $delete = $result = false;
         if (!empty($message) && $message['channel'] >= 0) {
@@ -1798,8 +1802,8 @@ class AJAXChat
             }
             if ($delete) {
                 $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
-                    ->where('id=?', $messageID)
-                    ->execute();
+                                        ->where('id=?', $messageID)
+                                        ->execute();
             }
 
             if ($result) {
@@ -1966,7 +1970,7 @@ class AJAXChat
      * @param $text
      *
      * @throws Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws UnbegunTransaction
      */
     public function insertParsedMessage($text)
     {
@@ -2201,8 +2205,8 @@ class AJAXChat
     public function removeExpiredInvitations()
     {
         $this->_fluent->deleteFrom($this->getDataBaseTable('invitations'))
-            ->where('DATE_SUB(NOW(), INTERVAL 1 DAY)>dateTime')
-            ->execute();
+                      ->where('DATE_SUB(NOW(), INTERVAL 1 DAY)>dateTime')
+                      ->execute();
     }
 
     /**
@@ -2242,9 +2246,9 @@ class AJAXChat
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
 
         $this->_fluent->deleteFrom($this->getDataBaseTable('invitations'))
-            ->where('userID = ?', $userID)
-            ->where('channel = ?', $channelID)
-            ->execute();
+                      ->where('userID = ?', $userID)
+                      ->where('channel = ?', $channelID)
+                      ->execute();
     }
 
     /**
@@ -2413,8 +2417,8 @@ class AJAXChat
             'ip' => inet_pton($ip),
         ];
         $this->_fluent->insertInto($this->getDataBaseTable('bans'))
-            ->values($values)
-            ->execute();
+                      ->values($values)
+                      ->execute();
     }
 
     /**
@@ -2433,8 +2437,8 @@ class AJAXChat
     public function removeExpiredBans()
     {
         $this->_fluent->deleteFrom($this->getDataBaseTable('bans'))
-            ->where('dateTime < NOW()')
-            ->execute();
+                      ->where('dateTime < NOW()')
+                      ->execute();
     }
 
     /**
@@ -2497,8 +2501,8 @@ class AJAXChat
     public function unbanUser($userName)
     {
         $this->_fluent->deleteFrom($this->getDataBaseTable('bans'))
-            ->where('userName = ?', $userName)
-            ->execute();
+                      ->where('userName = ?', $userName)
+                      ->execute();
     }
 
     /**
@@ -2851,52 +2855,52 @@ class AJAXChat
                 $joined = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
                 $seen = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
                 $seeder = $this->_fluent->from('peers')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('seeder = "yes"')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                        ->select(null)
+                                        ->select('COUNT(*) AS count')
+                                        ->where('seeder = "yes"')
+                                        ->where('userid=?', $whereisUserID)
+                                        ->fetch('count');
                 $seeding = '[color=#00FF00]' . number_format($seeder) . '[/color]';
                 $leeching = $this->_fluent->from('peers')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('seeder != "yes"')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                          ->select(null)
+                                          ->select('COUNT(*) AS count')
+                                          ->where('seeder != "yes"')
+                                          ->where('userid=?', $whereisUserID)
+                                          ->fetch('count');
                 $leeching = '[color=#00FF00]' . number_format($leeching) . '[/color]';
                 $uploads = $this->_fluent->from('torrents')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('owner = ?', $whereisUserID)
-                    ->fetch('count');
+                                         ->select(null)
+                                         ->select('COUNT(*) AS count')
+                                         ->where('owner = ?', $whereisUserID)
+                                         ->fetch('count');
                 $uploads = '[color=#00FF00]' . number_format($uploads) . '[/color]';
                 $snatched = $this->_fluent->from('snatched')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                          ->select(null)
+                                          ->select('COUNT(*) AS count')
+                                          ->where('userid=?', $whereisUserID)
+                                          ->fetch('count');
                 $snatched = '[color=#00FF00]' . number_format($snatched) . '[/color]';
                 $hnrs = $this->_fluent->from('snatched')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('mark_of_cain = "yes"')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                      ->select(null)
+                                      ->select('COUNT(*) AS count')
+                                      ->where('mark_of_cain = "yes"')
+                                      ->where('userid=?', $whereisUserID)
+                                      ->fetch('count');
                 $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
                 $connectyes = $this->_fluent->from('peers')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('seeder = "yes"')
-                    ->where('connectable = "yes"')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                            ->select(null)
+                                            ->select('COUNT(*) AS count')
+                                            ->where('seeder = "yes"')
+                                            ->where('connectable = "yes"')
+                                            ->where('userid=?', $whereisUserID)
+                                            ->fetch('count');
                 $connectno = $this->_fluent->from('peers')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('seeder = "yes"')
-                    ->where('connectable = "no"')
-                    ->where('userid=?', $whereisUserID)
-                    ->fetch('count');
+                                           ->select(null)
+                                           ->select('COUNT(*) AS count')
+                                           ->where('seeder = "yes"')
+                                           ->where('connectable = "no"')
+                                           ->where('userid=?', $whereisUserID)
+                                           ->fetch('count');
                 if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
                     $connectable = '[color=#CC0000]no[/color]';
                 } elseif ($connectyes != 0 && $connectno === 0) {
@@ -2918,13 +2922,13 @@ class AJAXChat
                 $allbonus = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
                 $earns = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
                 $seedsize = $this->_fluent->from('peers AS p')
-                    ->select(null)
-                    ->select('SUM(t.size) AS size')
-                    ->innerJoin('torrents AS t ON t.id=p.torrent')
-                    ->where('p.seeder = "yes"')
-                    ->where('p.connectable = "yes"')
-                    ->where('p.userid=?', $whereisUserID)
-                    ->fetch('size');
+                                          ->select(null)
+                                          ->select('SUM(t.size) AS size')
+                                          ->innerJoin('torrents AS t ON t.id=p.torrent')
+                                          ->where('p.seeder = "yes"')
+                                          ->where('p.connectable = "yes"')
+                                          ->where('p.userid=?', $whereisUserID)
+                                          ->fetch('size');
                 $volume = '[color=#00FF00]' . mksize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
                 $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
@@ -2991,12 +2995,12 @@ class AJAXChat
             $isRoleClass = get_user_class_name($user_data['class'], true);
             $user = '[' . $isRoleClass . ']' . $userName . '[/' . $isRoleClass . ']';
             $seen = $this->_fluent->from($this->getDataBaseTable('messages'))
-                ->select('UNIX_TIMESTAMP(dateTime) AS dateTime')
-                ->where('userID = ?', $userID)
-                ->where('channel = 0')
-                ->orderBy('id DESC')
-                ->limit(1)
-                ->fetch();
+                                  ->select('UNIX_TIMESTAMP(dateTime) AS dateTime')
+                                  ->where('userID = ?', $userID)
+                                  ->where('channel = 0')
+                                  ->orderBy('id DESC')
+                                  ->limit(1)
+                                  ->fetch();
 
             if ($seen) {
                 $gender = $user_data['it'];
@@ -3055,7 +3059,7 @@ class AJAXChat
      * @return bool
      *
      * @throws Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws UnbegunTransaction
      */
     public function insertParsedMessageRep($textParts)
     {
@@ -3112,7 +3116,7 @@ class AJAXChat
      * @return bool
      *
      * @throws Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws UnbegunTransaction
      */
     public function insertParsedMessageGift($textParts)
     {

@@ -38,8 +38,8 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
 }
 $lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
 $row = $fluent->from('torrents')
-    ->where('id=?', $id)
-    ->fetch();
+              ->where('id=?', $id)
+              ->fetch();
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }

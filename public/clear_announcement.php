@@ -12,10 +12,10 @@ $set = [
     'curr_ann_last_check' => 0,
 ];
 $fluent->update('users')
-    ->set($set)
-    ->where('id=?', $CURUSER['id'])
-    ->where('curr_ann_id != 0')
-    ->execute();
+       ->set($set)
+       ->where('id=?', $CURUSER['id'])
+       ->where('curr_ann_id != 0')
+       ->execute();
 
 $cache->update_row('user_' . $CURUSER['id'], [
     'curr_ann_id' => 0,

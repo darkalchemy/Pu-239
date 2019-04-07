@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function warned_update($data)
 {
@@ -16,11 +18,11 @@ function warned_update($data)
     $dt = TIME_NOW;
 
     $res = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('modcomment')
-        ->where('warned < ?', $dt)
-        ->where('warned>1');
+                  ->select(null)
+                  ->select('id')
+                  ->select('modcomment')
+                  ->where('warned < ?', $dt)
+                  ->where('warned>1');
 
     $subject = 'Warning expired.';
     $msg = "Your Warning has timed out and has been auto-removed by the system. Cheers!\n";
@@ -54,10 +56,10 @@ function warned_update($data)
         ];
 
         $fluent->update('users')
-            ->set($set)
-            ->where('warned < ?', $dt)
-            ->where('warned>1')
-            ->execute();
+               ->set($set)
+               ->where('warned < ?', $dt)
+               ->where('warned>1')
+               ->execute();
     }
 
     $time_end = microtime(true);

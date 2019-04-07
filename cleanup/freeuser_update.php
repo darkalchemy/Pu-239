@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function freeuser_update($data)
 {
@@ -15,11 +17,11 @@ function freeuser_update($data)
     ignore_user_abort(true);
 
     $query = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('modcomment')
-        ->where('free_switch>1')
-        ->where('free_switch < ?', TIME_NOW);
+                    ->select(null)
+                    ->select('id')
+                    ->select('modcomment')
+                    ->where('free_switch>1')
+                    ->where('free_switch < ?', TIME_NOW);
 
     $dt = TIME_NOW;
     $subject = 'Freeleech expired.';

@@ -36,21 +36,21 @@ if ($CURUSER['class'] < UC_STAFF) {
         stderr($lang['pm_error'], $lang['pm_forwardpm_dont_accept']);
     }
     $blocked = $fluent->from('blocks')
-        ->select(null)
-        ->select('id')
-        ->where('userid=?', $to_user['id'])
-        ->where('blockid=?', $CURUSER['id'])
-        ->fetch();
+                      ->select(null)
+                      ->select('id')
+                      ->where('userid=?', $to_user['id'])
+                      ->where('blockid=?', $CURUSER['id'])
+                      ->fetch();
     if (!$blocked) {
         stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_blocked']);
     }
     if ($to_user['acceptpms'] === 'friends') {
         $friend = $fluent->from('friends')
-            ->select(null)
-            ->select('id')
-            ->where('userid=?', $to_user['id'])
-            ->where('friendid=?', $CURUSER['id'])
-            ->fetch();
+                         ->select(null)
+                         ->select('id')
+                         ->where('userid=?', $to_user['id'])
+                         ->where('friendid=?', $CURUSER['id'])
+                         ->fetch();
         if (!$friend) {
             stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_accept']);
         }
@@ -93,10 +93,10 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
 
     $mail = new Message();
     $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-        ->addTo($to_user['email'])
-        ->setReturnPath($site_config['site']['email'])
-        ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-        ->setHtmlBody($body);
+         ->addTo($to_user['email'])
+         ->setReturnPath($site_config['site']['email'])
+         ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
+         ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site']['email']}";

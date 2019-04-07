@@ -15,29 +15,29 @@ $upload_errors_type = isset($_GET['ee']) ? intval($_GET['ee']) : 0;
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
 $where = $CURUSER['class'] < UC_STAFF ? 't.status = "ok" AND ' : $CURUSER['class'] < $min_delete_view_class ? 't.status != "deleted" AND ' : '';
 $arr = $fluent->from('topics AS t')
-    ->select(null)
-    ->select('t.id AS topic_id')
-    ->select('t.user_id')
-    ->select('t.topic_name')
-    ->select('t.locked')
-    ->select('t.last_post')
-    ->select('t.sticky')
-    ->select('t.status')
-    ->select('t.views')
-    ->select('t.poll_id')
-    ->select('t.num_ratings')
-    ->select('t.rating_sum')
-    ->select('t.topic_desc')
-    ->select('t.forum_id')
-    ->select('t.anonymous')
-    ->select('t.user_likes')
-    ->select('f.name AS forum_name')
-    ->select('f.min_class_read')
-    ->select('f.min_class_write')
-    ->select('f.parent_forum')
-    ->innerJoin('forums AS f ON t.forum_id=f.id')
-    ->where("{$where}t.id=?", $topic_id)
-    ->fetch();
+              ->select(null)
+              ->select('t.id AS topic_id')
+              ->select('t.user_id')
+              ->select('t.topic_name')
+              ->select('t.locked')
+              ->select('t.last_post')
+              ->select('t.sticky')
+              ->select('t.status')
+              ->select('t.views')
+              ->select('t.poll_id')
+              ->select('t.num_ratings')
+              ->select('t.rating_sum')
+              ->select('t.topic_desc')
+              ->select('t.forum_id')
+              ->select('t.anonymous')
+              ->select('t.user_likes')
+              ->select('f.name AS forum_name')
+              ->select('f.min_class_read')
+              ->select('f.min_class_write')
+              ->select('f.parent_forum')
+              ->innerJoin('forums AS f ON t.forum_id=f.id')
+              ->where("{$where}t.id=?", $topic_id)
+              ->fetch();
 
 if ($CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $min_delete_view_class && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -69,13 +69,13 @@ $topic_desc1 = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
 $members_votes = [];
 if ($arr['poll_id'] > 0) {
     $arr_poll = $fluent->from('forum_poll')
-        ->where('id=?', $arr['poll_id'])
-        ->fetch();
+                       ->where('id=?', $arr['poll_id'])
+                       ->fetch();
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $query = $fluent->from('forum_poll_votes')
-            ->where('forum_poll_votes.id>0')
-            ->where('poll_id=?', $arr['poll_id']);
+                        ->where('forum_poll_votes.id>0')
+                        ->where('poll_id=?', $arr['poll_id']);
         $who_voted = $query ? '<hr>' : 'no votes yet';
         foreach ($query as $arr_poll_voted) {
             $who_voted .= format_username($arr_poll_voted['user_id']);
@@ -83,11 +83,11 @@ if ($arr['poll_id'] > 0) {
     }
 
     $query = $fluent->from('forum_poll_votes')
-        ->select(null)
-        ->select('option')
-        ->where('poll_id=?', $arr['poll_id'])
-        ->where('user_id=?', $CURUSER['id'])
-        ->fetchAll();
+                    ->select(null)
+                    ->select('option')
+                    ->where('poll_id=?', $arr['poll_id'])
+                    ->where('user_id=?', $CURUSER['id'])
+                    ->fetchAll();
 
     $voted = 0;
     $members_vote = 1000;
@@ -102,18 +102,18 @@ if ($arr['poll_id'] > 0) {
     $poll_options = unserialize($arr_poll['poll_answers']);
     $multi_options = $arr_poll['multi_options'];
     $total_votes = $fluent->from('forum_poll_votes')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('option < 21')
-        ->where('poll_id=?', $arr['poll_id'])
-        ->fetch('count');
+                          ->select(null)
+                          ->select('COUNT(*) AS count')
+                          ->where('option < 21')
+                          ->where('poll_id=?', $arr['poll_id'])
+                          ->fetch('count');
 
     $num_non_votes = $fluent->from('forum_poll_votes')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('option>20')
-        ->where('poll_id=?', $arr['poll_id'])
-        ->fetch('count');
+                            ->select(null)
+                            ->select('COUNT(*) AS count')
+                            ->where('option>20')
+                            ->where('poll_id=?', $arr['poll_id'])
+                            ->fetch('count');
 
     $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
 
@@ -164,11 +164,11 @@ if ($arr['poll_id'] > 0) {
     for ($i = 0; $i < $number_of_options; ++$i) {
         if ($voted) {
             $vote_count = $fluent->from('forum_poll_votes')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('option = ?', $i)
-                ->where('poll_id=?', $arr['poll_id'])
-                ->fetch('count');
+                                 ->select(null)
+                                 ->select('COUNT(*) AS count')
+                                 ->where('option = ?', $i)
+                                 ->where('poll_id=?', $arr['poll_id'])
+                                 ->fetch('count');
 
             $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
             $math_text = $math . '% with ' . $vote_count . ' vote' . plural($vote_count);
@@ -247,18 +247,18 @@ if (0 != $arr['num_ratings']) {
 }
 
 $subscribed = $fluent->from('subscriptions')
-    ->select(null)
-    ->select('id')
-    ->where('topic_id=?', $topic_id)
-    ->where('user_id=?', $CURUSER['id'])
-    ->fetch('id');
+                     ->select(null)
+                     ->select('id')
+                     ->where('topic_id=?', $topic_id)
+                     ->where('user_id=?', $CURUSER['id'])
+                     ->fetch('id');
 
 $subscriptions = $subscribed ? "<a href='{$site_config['paths']['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'>{$lang['fe_unsubscribe_from_this_topic']}</a>" : "
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=add_subscription&amp;forum_id={$forum_id}&amp;topic_id={$topic_id}'>{$lang['fe_subscribe_to_this_topic']}</a>";
 
 $fluent->deleteFrom('now_viewing')
-    ->where('user_id=?', $CURUSER['id'])
-    ->execute();
+       ->where('user_id=?', $CURUSER['id'])
+       ->execute();
 
 $values = [
     'user_id' => $CURUSER['id'],
@@ -267,20 +267,20 @@ $values = [
     'added' => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
-    ->values($values)
-    ->execute();
+       ->values($values)
+       ->execute();
 
 $topic_users_cache = $cache->get('now_viewing_topic_');
 if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = '';
     $topic_users_cache = [];
     $query = $fluent->from('now_viewing')
-        ->select(null)
-        ->select('now_viewing.user_id')
-        ->select('users.perms')
-        ->innerJoin('users ON now_viewing.user_id=users.id')
-        ->where('topic_id=?', $topic_id)
-        ->where('users.perms < ?', bt_options::PERMS_STEALTH);
+                    ->select(null)
+                    ->select('now_viewing.user_id')
+                    ->select('users.perms')
+                    ->innerJoin('users ON now_viewing.user_id=users.id')
+                    ->where('topic_id=?', $topic_id)
+                    ->where('users.perms < ?', bt_options::PERMS_STEALTH);
 
     foreach ($query as $row) {
         $list[] = format_username($row['user_id']);
@@ -304,9 +304,9 @@ $set = [
     'views' => new Envms\FluentPDO\Literal('views + 1'),
 ];
 $fluent->update('topics')
-    ->set($set)
-    ->where('id=?', $topic_id)
-    ->execute();
+       ->set($set)
+       ->where('id=?', $topic_id)
+       ->execute();
 
 $res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
@@ -359,9 +359,9 @@ if ($arr['user_likes'] > 0) {
     $user_likes = $cache->get('topics_user_likes_' . $arr['topic_id']);
     if ($user_likes === false || is_null($user_likes)) {
         $query = $fluent->from('likes')
-            ->select(null)
-            ->select('user_id')
-            ->where('topic_id=?', $arr['topic_id']);
+                        ->select(null)
+                        ->select('user_id')
+                        ->where('topic_id=?', $arr['topic_id']);
         foreach ($query as $userid) {
             $user_likes[] = $userid['user_id'];
         }
@@ -518,9 +518,9 @@ foreach ($posts as $arr) {
         $user_likes = $cache->get('posts_user_likes_' . $arr['post_id']);
         if ($user_likes === false || is_null($user_likes)) {
             $query = $fluent->from('likes')
-                ->select(null)
-                ->select('user_id')
-                ->where('post_id=?', $arr['post_id']);
+                            ->select(null)
+                            ->select('user_id')
+                            ->where('post_id=?', $arr['post_id']);
             foreach ($query as $userid) {
                 $user_likes[] = $userid['user_id'];
             }
@@ -634,9 +634,9 @@ foreach ($posts as $arr) {
 }
 
 $fluent->deleteFrom('read_posts')
-    ->where('user_id=?', $CURUSER['id'])
-    ->where('topic_id=?', $topic_id)
-    ->execute();
+       ->where('user_id=?', $CURUSER['id'])
+       ->where('topic_id=?', $topic_id)
+       ->execute();
 
 $values = [
     'user_id' => $CURUSER['id'],
@@ -644,8 +644,8 @@ $values = [
     'last_post_read' => $postid,
 ];
 $fluent->insertInto('read_posts')
-    ->values($values)
-    ->execute();
+       ->values($values)
+       ->execute();
 
 $cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);

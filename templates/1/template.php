@@ -40,8 +40,8 @@ function stdhead($title = '', $stdhead = null)
 
     if (!empty($CURUSER) && $_SERVER['PHP_SELF'] != '/index.php') {
         $fluent->deleteFrom('ajax_chat_online')
-            ->where('userID = ?', $CURUSER['id'])
-            ->execute();
+               ->where('userID = ?', $CURUSER['id'])
+               ->execute();
     }
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
@@ -222,7 +222,7 @@ function stdfoot($stdfoot = false)
                 $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
-            $client = new \Redis();
+            $client = new Redis();
             if (!$site_config['redis']['use_socket']) {
                 $client->connect($site_config['redis']['host'], $site_config['redis']['port']);
             } else {
@@ -236,7 +236,7 @@ function stdfoot($stdfoot = false)
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
         } elseif ($site_config['cache']['driver'] === 'memcached' && extension_loaded('memcached')) {
-            $client = new \Memcached();
+            $client = new Memcached();
             if (!count($client->getServerList())) {
                 if (!$site_config['memcached']['use_socket']) {
                     $client->addServer($site_config['memcached']['host'], $site_config['memcached']['port']);
@@ -354,8 +354,8 @@ function stdfoot($stdfoot = false)
         <i class='icon-angle-circled-up' style='font-size:48px'></i>
     </a>
     <script>
-        $bg_image
-        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ";
+        $bg_image;
+        var is_12_hour =; " . ($use_12_hour ? 1 : 0) . ";
         var chat_height = '$height';
     </script>";
 
@@ -441,9 +441,9 @@ function platform_menu()
     $templates = $cache->get('templates_' . $CURUSER['class']);
     if ($templates === false || is_null($templates)) {
         $templates = $fluent->from('stylesheets')
-            ->orderBy('id')
-            ->where('min_class_to_view <= ?', $CURUSER['class'])
-            ->fetchAll();
+                            ->orderBy('id')
+                            ->where('min_class_to_view <= ?', $CURUSER['class'])
+                            ->fetchAll();
 
         $cache->set('templates_' . $CURUSER['class'], $templates, 0);
     }

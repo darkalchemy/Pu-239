@@ -6,13 +6,13 @@ $irc = $cache->get('ircusers_');
 if ($irc === false || is_null($irc)) {
     $irc = $list = [];
     $query = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('onirc = ?', 'yes')
-        ->where('perms < ?', bt_options::PERMS_STEALTH)
-        ->where('id != 2')
-        ->orderBy('username ASC')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('id')
+                    ->where('onirc = ?', 'yes')
+                    ->where('perms < ?', bt_options::PERMS_STEALTH)
+                    ->where('id != 2')
+                    ->orderBy('username ASC')
+                    ->fetchAll();
 
     $count = count($query);
     $i = 0;

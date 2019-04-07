@@ -100,10 +100,10 @@ if (isset($_GET['add'])) {
 }
 //=== get number of watched members
 $watched_users = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('watched_user != 0')
-    ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->where('watched_user != 0')
+                        ->fetch('count');
 $watched_users = number_format($watched_users);
 
 //=== get sort / asc desc, and be sure it's safe

@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function silvertorrents_update($data)
 {
@@ -16,12 +18,12 @@ function silvertorrents_update($data)
     $dt = TIME_NOW;
 
     $torrents = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('silver')
-        ->where('silver>1')
-        ->where('silver < ?', $dt)
-        ->fetchAll();
+                       ->select(null)
+                       ->select('id')
+                       ->select('silver')
+                       ->where('silver>1')
+                       ->where('silver < ?', $dt)
+                       ->fetchAll();
 
     $count = count($torrents);
     if ($count > 0) {
@@ -29,10 +31,10 @@ function silvertorrents_update($data)
             'silver' => 0,
         ];
         $fluent->update('torrents')
-            ->set($set)
-            ->where('silver>1')
-            ->where('silver < ?', $dt)
-            ->execute();
+               ->set($set)
+               ->where('silver>1')
+               ->where('silver < ?', $dt)
+               ->execute();
     }
     foreach ($torrents as $torrent) {
         $details = $cache->get('torrent_details_' . $torrent['id']);

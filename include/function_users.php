@@ -44,8 +44,8 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
         ];
 
         $fluent->insertInto('ajax_chat_messages')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
 }
 
@@ -54,6 +54,7 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  * @param string $mode
  * @param bool   $rep_is_on
  * @param int    $post_id
+ * @param bool   $anonymous
  *
  * @return string
  *
@@ -458,10 +459,12 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $icons
  * @param bool $tooltipper
  * @param bool $tag
+ * @param bool $comma
  *
  * @return string
  *
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
@@ -521,7 +524,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
         $tooltip = "class='" . get_user_class_name(($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
 
-    $username = $users_data['enabled'] != 'yes' ? '<strike>' . htmlsafechars($users_data['username']) . '</strike>' : $tag . htmlsafechars($users_data['username']);
+    $username = $users_data['enabled'] != 'yes' ? '<s>' . htmlsafechars($users_data['username']) . '</s>' : $tag . htmlsafechars($users_data['username']);
     $str = "
                 <span>$tip<a href='{$site_config['paths']['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>{$username}</span></a>";
 

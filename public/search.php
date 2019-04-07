@@ -25,12 +25,12 @@ if (empty($userid)) {
 $table = $body = $heading = '';
 if (!empty($search)) {
     $results = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('name')
-        ->select('hex(info_hash) AS info_hash')
-        ->where('name LIKE ?', "%$search%")
-        ->fetchAll();
+                      ->select(null)
+                      ->select('id')
+                      ->select('name')
+                      ->select('hex(info_hash) AS info_hash')
+                      ->where('name LIKE ?', "%$search%")
+                      ->fetchAll();
 
     if ($results) {
         echo json_encode($results);

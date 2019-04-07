@@ -5,13 +5,13 @@ global $site_config, $lang, $fluent, $cache;
 $latestuser = $cache->get('latestuser_');
 if ($latestuser === false || is_null($latestuser)) {
     $latestuser = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('status = ?', 'confirmed')
-        ->where('perms < ?', bt_options::PERMS_STEALTH)
-        ->orderBy('id DESC')
-        ->limit(1)
-        ->fetch();
+                         ->select(null)
+                         ->select('id')
+                         ->where('status = ?', 'confirmed')
+                         ->where('perms < ?', bt_options::PERMS_STEALTH)
+                         ->orderBy('id DESC')
+                         ->limit(1)
+                         ->fetch();
 
     $latestuser = format_username($latestuser['id']);
     $cache->set('latestuser_', $latestuser, $site_config['expires']['latestuser']);

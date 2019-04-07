@@ -112,11 +112,11 @@ if ($ip) {
         }
         if ($user['last_ip']) {
             $count = $fluent->from('bans')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
-                ->where('INET6_NTOA(last)>= ?', $user['last_ip'])
-                ->fetch('count');
+                            ->select(null)
+                            ->select('COUNT(*) AS count')
+                            ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
+                            ->where('INET6_NTOA(last)>= ?', $user['last_ip'])
+                            ->fetch('count');
 
             if ($count == 0) {
                 $ipstr = $user['last_ip'];

@@ -1,5 +1,8 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once INCL_DIR . 'function_html.php';
 
 /**
@@ -121,7 +124,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @return bool|string|null
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function get_episode($tvmaze_id, $season, $episode, $tid)
 {
@@ -172,8 +175,8 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @return bool|string
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ * @throws UnbegunTransaction
+ * @throws InvalidManipulation
  */
 function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '')
 {

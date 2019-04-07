@@ -74,8 +74,8 @@ function anime_titles_update($data)
 
                 foreach (array_chunk($values, $count) as $t) {
                     $fluent->insertInto('anime_titles', $t)
-                        ->onDuplicateKeyUpdate($update)
-                        ->execute();
+                           ->onDuplicateKeyUpdate($update)
+                           ->execute();
                 }
             }
 

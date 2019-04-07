@@ -93,10 +93,10 @@ if (strlen($search) > 4) {
 }
 
 $count = $fluent->from('torrents')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('name LIKE :name', $params)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('name LIKE :name', $params)
+                ->fetch('count');
 
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
@@ -104,21 +104,21 @@ $top = $bottom = '';
 $rows = $tids = [];
 
 $query = $fluent->from('torrents')
-    ->select(null)
-    ->select('id')
-    ->select('name')
-    ->select('leechers')
-    ->select('seeders')
-    ->select('poster')
-    ->select('times_completed AS snatched')
-    ->select('owner')
-    ->select('size')
-    ->select('added')
-    ->select('descr')
-    ->select('imdb_id')
-    ->select('anonymous')
-    ->where('name LIKE :name', $params)
-    ->limit($pager['pdo']);
+                ->select(null)
+                ->select('id')
+                ->select('name')
+                ->select('leechers')
+                ->select('seeders')
+                ->select('poster')
+                ->select('times_completed AS snatched')
+                ->select('owner')
+                ->select('size')
+                ->select('added')
+                ->select('descr')
+                ->select('imdb_id')
+                ->select('anonymous')
+                ->where('name LIKE :name', $params)
+                ->limit($pager['pdo']);
 
 foreach ($query as $ta) {
     $rows[] = $ta;
@@ -128,25 +128,25 @@ foreach ($query as $ta) {
 foreach ($tids as $tid) {
     if (!empty($tid)) {
         $query = $fluent->from('peers')
-            ->select(null)
-            ->select('id')
-            ->select('torrent AS tid')
-            ->select('seeder')
-            ->select('finishedat')
-            ->select('downloadoffset')
-            ->select('uploadoffset')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('started')
-            ->select('last_action')
-            ->select('userid AS p_uid')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('port')
-            ->where('torrent', $tid)
-            ->where('seeder = "yes"')
-            ->where('to_go = 0')
-            ->orderBy('uploaded DESC')
-            ->limit(5);
+                        ->select(null)
+                        ->select('id')
+                        ->select('torrent AS tid')
+                        ->select('seeder')
+                        ->select('finishedat')
+                        ->select('downloadoffset')
+                        ->select('uploadoffset')
+                        ->select('uploaded')
+                        ->select('downloaded')
+                        ->select('started')
+                        ->select('last_action')
+                        ->select('userid AS p_uid')
+                        ->select('INET6_NTOA(ip) AS ip')
+                        ->select('port')
+                        ->where('torrent', $tid)
+                        ->where('seeder = "yes"')
+                        ->where('to_go = 0')
+                        ->orderBy('uploaded DESC')
+                        ->limit(5);
 
         foreach ($query as $pa) {
             $peers[$pa['tid']][] = $pa;

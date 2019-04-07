@@ -33,11 +33,11 @@ class Ban
     public function get_range(string $ip)
     {
         $bans = $this->fluent->from('bans')
-            ->select('INET6_NTOA(first) AS first')
-            ->select('INET6_NTOA(last) AS last')
-            ->where('?>= first', inet_pton($ip))
-            ->where('? <= last', inet_pton($ip))
-            ->fetchAll();
+                             ->select('INET6_NTOA(first) AS first')
+                             ->select('INET6_NTOA(last) AS last')
+                             ->where('?>= first', inet_pton($ip))
+                             ->where('? <= last', inet_pton($ip))
+                             ->fetchAll();
 
         return $bans;
     }
@@ -52,11 +52,11 @@ class Ban
     public function get_count(string $ip)
     {
         $count = $this->fluent->from('bans')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('?>= first', inet_pton($ip))
-            ->where('? <= last', inet_pton($ip))
-            ->fetch('count');
+                              ->select(null)
+                              ->select('COUNT(*) AS count')
+                              ->where('?>= first', inet_pton($ip))
+                              ->where('? <= last', inet_pton($ip))
+                              ->fetch('count');
 
         return $count;
     }
@@ -78,12 +78,12 @@ class Ban
         $ban = $this->cache->get($key);
         if (($ban === false || is_null($ban)) && $ban != 0) {
             $ban = $this->fluent->from('bans')
-                ->select(null)
-                ->select('comment')
-                ->where('?>= first', inet_pton($ip))
-                ->where('? <= last', inet_pton($ip))
-                ->limit(1)
-                ->fetch('comment');
+                                ->select(null)
+                                ->select('comment')
+                                ->where('?>= first', inet_pton($ip))
+                                ->where('? <= last', inet_pton($ip))
+                                ->limit(1)
+                                ->fetch('comment');
 
             if (!empty($ban)) {
                 $this->cache->set($key, $ban, 86400);

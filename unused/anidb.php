@@ -49,8 +49,8 @@ if (!empty($anidb)) {
 
     foreach (array_chunk($anidb, $count) as $t) {
         $fluent->insertInto('anidb_titles', $t)
-            ->onDuplicateKeyUpdate($update)
-            ->execute();
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
     }
 }
 

@@ -347,8 +347,8 @@ if ($mode === 'upload' || $mode === 'edit') {
     $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
     $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
     $count = $fluent->from('subtitles')
-        ->select(null)
-        ->select('COUNT(*) AS count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count');
     if ($s && $w === 'name') {
         $count = $count->where('name LIKE ?', "${$s}%");
     } elseif ($s && $w === 'imdb') {

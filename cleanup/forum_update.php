@@ -14,17 +14,17 @@ function forum_update($data)
     ignore_user_abort(true);
 
     $fluent->deleteFrom('now_viewing')
-        ->where('added < ?', TIME_NOW - 900)
-        ->execute();
+           ->where('added < ?', TIME_NOW - 900)
+           ->execute();
 
     $forums = $fluent->from('forums')
-        ->select(null)
-        ->select('forums.id')
-        ->select('COUNT(DISTINCT topics.id) AS topics')
-        ->select('COUNT(posts.id) AS posts')
-        ->leftJoin('topics ON forums.id=topics.forum_id')
-        ->leftJoin('posts ON topics.id=posts.topic_id')
-        ->groupBy('forums.id');
+                     ->select(null)
+                     ->select('forums.id')
+                     ->select('COUNT(DISTINCT topics.id) AS topics')
+                     ->select('COUNT(posts.id) AS posts')
+                     ->leftJoin('topics ON forums.id=topics.forum_id')
+                     ->leftJoin('posts ON topics.id=posts.topic_id')
+                     ->groupBy('forums.id');
 
     $i = 1;
     foreach ($forums as $forum) {
@@ -34,44 +34,44 @@ function forum_update($data)
             'topic_count' => $forum['topics'],
         ];
         $fluent->update('forums')
-            ->set($set)
-            ->where('id=?', $forum['id'])
-            ->execute();
+               ->set($set)
+               ->where('id=?', $forum['id'])
+               ->execute();
         ++$i;
     }
     $topics = $fluent->from('topics')
-        ->select(null)
-        ->select('id')
-        ->fetchAll();
+                     ->select(null)
+                     ->select('id')
+                     ->fetchAll();
 
     foreach ($topics as $topic) {
         $last_post = $fluent->from('posts')
-            ->select(null)
-            ->select('id')
-            ->select('added')
-            ->where('topic_id=?', $topic['id'])
-            ->orderBy('added DESC')
-            ->limit(1)
-            ->fetch();
+                            ->select(null)
+                            ->select('id')
+                            ->select('added')
+                            ->where('topic_id=?', $topic['id'])
+                            ->orderBy('added DESC')
+                            ->limit(1)
+                            ->fetch();
 
         if (empty($last_post['id'])) {
             $fluent->deleteFrom('topics')
-                ->where('id=?', $topic['id'])
-                ->execute();
+                   ->where('id=?', $topic['id'])
+                   ->execute();
         } else {
             $count = $fluent->from('posts')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('topic_id=?', $topic['id'])
-                ->fetch('count');
+                            ->select(null)
+                            ->select('COUNT(*) AS count')
+                            ->where('topic_id=?', $topic['id'])
+                            ->fetch('count');
             $set = [
                 'last_post' => $last_post['id'],
                 'post_count' => $count,
             ];
             $fluent->update('topics')
-                ->set($set)
-                ->where('id=?', $topic['id'])
-                ->execute();
+                   ->set($set)
+                   ->where('id=?', $topic['id'])
+                   ->execute();
         }
     }
 

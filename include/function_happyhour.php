@@ -51,9 +51,9 @@ function happyHour($action)
             $todo = 255;
         } else {
             $categories = $fluent->from('categories')
-                ->select(null)
-                ->select('id')
-                ->fetchAll();
+                                 ->select(null)
+                                 ->select('id')
+                                 ->fetchAll();
 
             shuffle($categories);
             $todo = $categories[0];

@@ -107,12 +107,12 @@ function show_views()
     $human_from_date = getdate($from_time);
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from('topics AS t')
-        ->select(null)
-        ->select('t.forum_id')
-        ->where('t.added>= ?', $from_time)
-        ->where('t.added <= ?', $to_time)
-        ->groupBy('t.forum_id')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('t.forum_id')
+                    ->where('t.added>= ?', $from_time)
+                    ->where('t.added <= ?', $to_time)
+                    ->groupBy('t.forum_id')
+                    ->fetchAll();
 
     $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
@@ -121,17 +121,17 @@ function show_views()
     $pagertop = $count > $perpage ? $pager['pagertop'] : '';
     $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
     $query = $fluent->from('topics AS t')
-        ->select(null)
-        ->select('SUM(t.views) AS result_count')
-        ->select('t.forum_id')
-        ->select('f.name AS result_name')
-        ->leftJoin('forums AS f ON t.forum_id=f.id')
-        ->where('t.added>= ?', $from_time)
-        ->where('t.added <= ?', $to_time)
-        ->groupBy('t.forum_id')
-        ->orderBy("result_count $sort_by, t.forum_id")
-        ->limit($pager['pdo'])
-        ->fetchAll();
+                    ->select(null)
+                    ->select('SUM(t.views) AS result_count')
+                    ->select('t.forum_id')
+                    ->select('f.name AS result_name')
+                    ->leftJoin('forums AS f ON t.forum_id=f.id')
+                    ->where('t.added>= ?', $from_time)
+                    ->where('t.added <= ?', $to_time)
+                    ->groupBy('t.forum_id')
+                    ->orderBy("result_count $sort_by, t.forum_id")
+                    ->limit($pager['pdo'])
+                    ->fetchAll();
 
     $running_total = 0;
     $max_result = 0;
@@ -264,12 +264,12 @@ function result_screen($mode = 'reg')
     }
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from($sql_table)
-        ->select(null)
-        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
-        ->where("$sql_field>= $from_time")
-        ->where("$sql_field <= $to_time")
-        ->groupBy('result_time')
-        ->fetchAll();
+                    ->select(null)
+                    ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
+                    ->where("$sql_field>= $from_time")
+                    ->where("$sql_field <= $to_time")
+                    ->groupBy('result_time')
+                    ->fetchAll();
 
     $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
@@ -279,16 +279,16 @@ function result_screen($mode = 'reg')
     $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
 
     $query = $fluent->from($sql_table)
-        ->select(null)
-        ->select('COUNT(*) AS result_count')
-        ->select("MAX($sql_field) AS result_maxdate")
-        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
-        ->where("$sql_field>= $from_time")
-        ->where("$sql_field <= $to_time")
-        ->groupBy('result_time')
-        ->orderBy("result_maxdate $sort_by")
-        ->limit($pager['pdo'])
-        ->fetchAll();
+                    ->select(null)
+                    ->select('COUNT(*) AS result_count')
+                    ->select("MAX($sql_field) AS result_maxdate")
+                    ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
+                    ->where("$sql_field>= $from_time")
+                    ->where("$sql_field <= $to_time")
+                    ->groupBy('result_time')
+                    ->orderBy("result_maxdate $sort_by")
+                    ->limit($pager['pdo'])
+                    ->fetchAll();
 
     $running_total = 0;
     $max_result = 0;
@@ -398,11 +398,11 @@ function main_screen($mode = 'reg')
     $oldest = $cache->get('oldest_');
     if ($oldest === false || is_null($oldest)) {
         $oldest = $fluent->from('users')
-            ->select(null)
-            ->select('added')
-            ->orderBy('added')
-            ->limit(1)
-            ->fetch('added');
+                         ->select(null)
+                         ->select('added')
+                         ->orderBy('added')
+                         ->limit(1)
+                         ->fetch('added');
         $cache->set('oldest_', $oldest, 0);
     }
     $old_date = get_date($oldest, 'FORM', 1, 0);

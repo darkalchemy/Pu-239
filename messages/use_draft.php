@@ -91,10 +91,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
             $mail = new Message();
             $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-                ->addTo($arr_receiver['email'])
-                ->setReturnPath($site_config['site']['email'])
-                ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-                ->setHtmlBody($body);
+                 ->addTo($arr_receiver['email'])
+                 ->setReturnPath($site_config['site']['email'])
+                 ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
+                 ->setHtmlBody($body);
 
             $mailer = new SendmailMailer();
             $mailer->commandArgs = "-f{$site_config['site']['email']}";

@@ -208,8 +208,8 @@ $(function () {
     }
 
     if (typeof page_config != 'undefined' && $theme_control_panel) {
-        var pattern_classes = new Array();
-        var nav = new Array();
+        var pattern_classes = [];
+        var nav = [];
         var defaultSettings = {};
         if (page_config.nav) {
             var $bg_block = $('<div/>').attr('id', 'nav').addClass('style_block clearfix');

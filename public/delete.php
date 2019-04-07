@@ -16,17 +16,17 @@ if (!is_valid_id($id)) {
 }
 $dt = TIME_NOW;
 $row = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.info_hash')
-    ->select('t.owner')
-    ->select('t.name')
-    ->select('t.seeders')
-    ->select('t.added')
-    ->select('u.seedbonus')
-    ->leftJoin('users AS u ON u.id=t.owner')
-    ->where('t.id=?', $id)
-    ->fetch();
+              ->select(null)
+              ->select('t.id')
+              ->select('t.info_hash')
+              ->select('t.owner')
+              ->select('t.name')
+              ->select('t.seeders')
+              ->select('t.added')
+              ->select('u.seedbonus')
+              ->leftJoin('users AS u ON u.id=t.owner')
+              ->where('t.id=?', $id)
+              ->fetch();
 
 if (!$row) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");

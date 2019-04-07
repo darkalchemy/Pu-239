@@ -30,9 +30,9 @@ class Image
     public function insert(array $values)
     {
         $this->fluent->insertInto('images')
-            ->values($values)
-            ->ignore()
-            ->execute();
+                     ->values($values)
+                     ->ignore()
+                     ->execute();
     }
 
     /**
@@ -46,8 +46,8 @@ class Image
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('images', $t)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                         ->onDuplicateKeyUpdate($update)
+                         ->execute();
         }
     }
 }

@@ -40,8 +40,8 @@ class Message
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $result = $this->fluent->insertInto('messages')
-                ->values($t)
-                ->execute();
+                                   ->values($t)
+                                   ->execute();
         }
 
         if (count($values) > $count) {
@@ -76,8 +76,8 @@ class Message
     public function delete(int $id, int $userid)
     {
         $result = $this->fluent->delete('messages')
-            ->where('id=?', $id)
-            ->execute();
+                               ->where('id=?', $id)
+                               ->execute();
 
         $this->cache->decrement('inbox_' . $userid);
 
@@ -94,8 +94,8 @@ class Message
     public function get_by_id(int $id)
     {
         $message = $this->fluent->from('messages')
-            ->where('id=?', $id)
-            ->fetch();
+                                ->where('id=?', $id)
+                                ->fetch();
 
         return $message;
     }
@@ -111,9 +111,9 @@ class Message
     public function update(array $set, int $id)
     {
         $result = $this->fluent->update('messages')
-            ->set($set)
-            ->where('id=?', $id)
-            ->execute();
+                               ->set($set)
+                               ->where('id=?', $id)
+                               ->execute();
 
         return $result;
     }
@@ -128,10 +128,10 @@ class Message
     public function update_location(array $set, int $location, int $userid)
     {
         $this->fluent->update('messages')
-            ->set($set)
-            ->where('location = ?', $location)
-            ->where('receiver = ?', $userid)
-            ->execute();
+                     ->set($set)
+                     ->where('location = ?', $location)
+                     ->where('receiver = ?', $userid)
+                     ->execute();
     }
 
     /**
@@ -150,12 +150,12 @@ class Message
         }
         if ($pmCount === false || is_null($pmCount)) {
             $pmCount = $this->fluent->from('messages')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('receiver = ?', $userid)
-                ->where('unread = ?', 'yes')
-                ->where('location = ?', $location)
-                ->fetch('count');
+                                    ->select(null)
+                                    ->select('COUNT(*) AS count')
+                                    ->where('receiver = ?', $userid)
+                                    ->where('unread = ?', 'yes')
+                                    ->where('location = ?', $location)
+                                    ->fetch('count');
         }
         if ($location === 1) {
             $this->cache->set('inbox_' . $userid, $pmCount, $this->site_config['expires']['unread']);
@@ -174,26 +174,26 @@ class Message
     public function delete_old_messages(int $dt)
     {
         $messages_1 = $this->fluent->from('messages')
-            ->select(null)
-            ->select('receiver')
-            ->where('location = 0')
-            ->where('added <= ?', $dt);
+                                   ->select(null)
+                                   ->select('receiver')
+                                   ->where('location = 0')
+                                   ->where('added <= ?', $dt);
 
         $this->fluent->delete('messages')
-            ->where('location = 0')
-            ->where('added <= ?', $dt)
-            ->execute();
+                     ->where('location = 0')
+                     ->where('added <= ?', $dt)
+                     ->execute();
 
         $messages_2 = $this->fluent->from('messages')
-            ->select(null)
-            ->select('receiver')
-            ->where('location = 1')
-            ->where('added <= ?', $dt);
+                                   ->select(null)
+                                   ->select('receiver')
+                                   ->where('location = 1')
+                                   ->where('added <= ?', $dt);
 
         $this->fluent->delete('messages')
-            ->where('location = 1')
-            ->where('added <= ?', $dt)
-            ->execute();
+                     ->where('location = 1')
+                     ->where('added <= ?', $dt)
+                     ->execute();
 
         $i = 0;
         foreach ($messages_1 as $message) {

@@ -37,9 +37,9 @@ if (!empty($signup_vars)) {
     $signup_vars = unserialize($signup_vars);
 }
 $count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->fetch('count');
 
 if ($count >= $site_config['site']['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['site']['maxusers']));

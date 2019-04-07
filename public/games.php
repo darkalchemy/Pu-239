@@ -28,11 +28,11 @@ while ($count = mysqli_fetch_array($res)) {
 
 // Casino
 $casino_count = $fluent->from('casino')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('deposit>0')
-    ->where('userid != ?', $CURUSER['id'])
-    ->fetch('count');
+                       ->select(null)
+                       ->select('COUNT(*) AS count')
+                       ->where('deposit>0')
+                       ->where('userid != ?', $CURUSER['id'])
+                       ->fetch('count');
 if ($casino_count > 0) {
     $color9 = 'green';
 }

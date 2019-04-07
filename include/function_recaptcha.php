@@ -1,5 +1,8 @@
 <?php
 
+use ReCaptcha\ReCaptcha;
+use ReCaptcha\RequestMethod\CurlPost;
+
 require_once INCL_DIR . 'function_staff.php';
 /**
  * @param     $response
@@ -13,11 +16,11 @@ function verify_recaptcha($response, $timeout = 30)
         return false;
     }
     $ip = getip(true);
-    $recaptcha = new \ReCaptcha\ReCaptcha($site_config['recaptcha']['secret'], new \ReCaptcha\RequestMethod\CurlPost());
+    $recaptcha = new ReCaptcha($site_config['recaptcha']['secret'], new CurlPost());
     $resp = $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-        ->setChallengeTimeout($timeout)
-        ->setExpectedAction('login')
-        ->verify($response, $ip);
+                      ->setChallengeTimeout($timeout)
+                      ->setExpectedAction('login')
+                      ->verify($response, $ip);
 
     $results = $resp->toArray();
 

@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function hitrun_update($data)
 {
@@ -25,28 +27,28 @@ function hitrun_update($data)
             'mark_of_cain' => 'yes',
         ];
         $fluent->update('snatched')
-            ->set($set)
-            ->where('hit_and_run != 0')
-            ->where('hit_and_run < ?', $hnr)
-            ->execute();
+               ->set($set)
+               ->where('hit_and_run != 0')
+               ->where('hit_and_run < ?', $hnr)
+               ->execute();
 
         $query = $fluent->from('snatched AS s')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->select('s.userid')
-            ->select('u.username')
-            ->select('u.modcomment')
-            ->select('u.hit_and_run_total')
-            ->select('u.downloadpos')
-            ->innerJoin('users AS u ON s.userid=u.id')
-            ->where('s.mark_of_cain = "yes"')
-            ->where('u.hnrwarn = "no"')
-            ->where('u.immunity = 0')
-            ->groupBy('s.userid')
-            ->groupBy('u.username')
-            ->groupBy('u.modcomment')
-            ->groupBy('u.hit_and_run_total')
-            ->groupBy('u.downloadpos');
+                        ->select(null)
+                        ->select('COUNT(*) AS count')
+                        ->select('s.userid')
+                        ->select('u.username')
+                        ->select('u.modcomment')
+                        ->select('u.hit_and_run_total')
+                        ->select('u.downloadpos')
+                        ->innerJoin('users AS u ON s.userid=u.id')
+                        ->where('s.mark_of_cain = "yes"')
+                        ->where('u.hnrwarn = "no"')
+                        ->where('u.immunity = 0')
+                        ->groupBy('s.userid')
+                        ->groupBy('u.username')
+                        ->groupBy('u.modcomment')
+                        ->groupBy('u.hit_and_run_total')
+                        ->groupBy('u.downloadpos');
 
         foreach ($query as $bad_users) {
             if ($bad_users['count'] > $site_config['hnr_config']['cainallowed'] && $bad_users['downloadpos'] == 1) {

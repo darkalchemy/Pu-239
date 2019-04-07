@@ -34,8 +34,8 @@ class PollVoter
     public function get_count()
     {
         $search = $this->fluent->from('poll_voters')
-            ->select('COUNT(*) AS count')
-            ->fetch('count');
+                               ->select('COUNT(*) AS count')
+                               ->fetch('count');
 
         return $search;
     }
@@ -48,8 +48,8 @@ class PollVoter
     public function delete(int $poll_id)
     {
         $this->fluent->deleteFrom('poll_voters')
-            ->where('poll_id=?', $poll_id)
-            ->execute();
+                     ->where('poll_id=?', $poll_id)
+                     ->execute();
     }
 
     /**
@@ -61,8 +61,8 @@ class PollVoter
     public function insert(array $values, array $update)
     {
         $this->fluent->insertInto('poll_voters', $values)
-            ->onDuplicateKeyUpdate($update)
-            ->execute();
+                     ->onDuplicateKeyUpdate($update)
+                     ->execute();
     }
 
     /**
@@ -75,8 +75,8 @@ class PollVoter
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('poll_voters')
-            ->values($values)
-            ->execute();
+                           ->values($values)
+                           ->execute();
 
         return $id;
     }
@@ -108,14 +108,14 @@ class PollVoter
             $poll_data = $this->poll_stuffs->get_all(1);
             if (!empty($poll_data)) {
                 $vote_data = $this->fluent->from('poll_voters')
-                    ->select(null)
-                    ->select('INET6_NTOA(ip) AS ip')
-                    ->select('user_id')
-                    ->select('vote_date')
-                    ->where('user_id=?', $userid)
-                    ->where('poll_id=?', $poll_data['pid'])
-                    ->limit('1')
-                    ->fetch();
+                                          ->select(null)
+                                          ->select('INET6_NTOA(ip) AS ip')
+                                          ->select('user_id')
+                                          ->select('vote_date')
+                                          ->where('user_id=?', $userid)
+                                          ->where('poll_id=?', $poll_data['pid'])
+                                          ->limit('1')
+                                          ->fetch();
 
                 $poll_data['ip'] = $vote_data['ip'];
                 $poll_data['user_id'] = $vote_data['user_id'];

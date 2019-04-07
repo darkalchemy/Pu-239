@@ -151,9 +151,9 @@ switch ($do) {
 
     default:
         $count_msgs = $fluent->from('staffmessages')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->fetch('count');
+                             ->select(null)
+                             ->select('COUNT(*) AS count')
+                             ->fetch('count');
 
         $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');

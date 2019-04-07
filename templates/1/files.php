@@ -48,7 +48,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'theme_js':
-            return "{$site_config['paths']['baseurl']}/js/1/theme_ff3ca3dd.js";
+            return "{$site_config['paths']['baseurl']}/js/1/theme_ef7bc285.js";
         case 'sceditor_js':
             return "{$site_config['paths']['baseurl']}/js/1/sceditor_083732e1.js";
         case 'cheaters_js':

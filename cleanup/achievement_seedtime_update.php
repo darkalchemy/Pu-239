@@ -25,17 +25,17 @@ function achievement_seedtime_update($data)
     $seedtime9 = 12960000; // 200days
     $seedtime10 = 31536000; //1year
     $query = $fluent->from('snatched AS s')
-        ->select(null)
-        ->select('DISTINCT s.userid')
-        ->select('s.seedtime')
-        ->select('a.dayseed')
-        ->leftJoin('usersachiev AS a ON s.userid=a.userid')
-        ->where('seedtime>= ?', $seedtime)
-        ->groupBy('s.userid')
-        ->groupBy('s.seedtime')
-        ->groupBy('a.dayseed')
-        ->orderBy('a.dayseed')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('DISTINCT s.userid')
+                    ->select('s.seedtime')
+                    ->select('a.dayseed')
+                    ->leftJoin('usersachiev AS a ON s.userid=a.userid')
+                    ->where('seedtime>= ?', $seedtime)
+                    ->groupBy('s.userid')
+                    ->groupBy('s.seedtime')
+                    ->groupBy('a.dayseed')
+                    ->orderBy('a.dayseed')
+                    ->fetchAll();
 
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = $userids = [];
     if (!empty($query)) {

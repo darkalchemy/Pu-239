@@ -29,12 +29,12 @@ $level = (isset($_POST['level']) ? intval($_POST['level']) : 1);
 
 $highScore = 0;
 $highScore = $fluent->from('flashscores')
-    ->select(null)
-    ->select('score')
-    ->where('game = ?', $gname)
-    ->orderBy('score DESC')
-    ->limit(1)
-    ->fetch('score');
+                    ->select(null)
+                    ->select('score')
+                    ->where('game = ?', $gname)
+                    ->orderBy('score DESC')
+                    ->limit(1)
+                    ->fetch('score');
 
 sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES (' . sqlesc($gname) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($level) . ', ' . sqlesc($score) . ')') or sqlerr(__FILE__, __LINE__);
 $game_id = array_search($gname, $site_config['arcade']['games']);

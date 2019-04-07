@@ -162,8 +162,8 @@ $HTMLOUT .= "<script>
 $res = sql_query('SELECT * FROM modscredits') or sqlerr(__FILE__, __LINE__);
 
 $credits = $fluent->from('modscredits')
-    ->orderBy('id')
-    ->fetchAll();
+                  ->orderBy('id')
+                  ->fetchAll();
 $heading = "
     <tr>
         <th>{$lang['credits_name']}</th>

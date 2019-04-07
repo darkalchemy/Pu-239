@@ -14,8 +14,8 @@ function newsrss_cleanup($data)
     ignore_user_abort(true);
 
     $fluent->deleteFrom('newsrss')
-        ->where('added < NOW() - INTERVAL 30 DAY')
-        ->execute();
+           ->where('added < NOW() - INTERVAL 30 DAY')
+           ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

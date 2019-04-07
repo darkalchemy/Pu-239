@@ -15,12 +15,12 @@ if (!preg_match("/^(?:[\d\w]){60}$/", $token)) {
 }
 
 $row = $fluent->from('tokens')
-    ->select('users.status')
-    ->select('users.id AS user_id')
-    ->innerJoin('users ON users.email = tokens.email')
-    ->where('tokens.id=?', $id)
-    ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
-    ->fetch();
+              ->select('users.status')
+              ->select('users.id AS user_id')
+              ->innerJoin('users ON users.email = tokens.email')
+              ->where('tokens.id=?', $id)
+              ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+              ->fetch();
 
 if (!password_verify($token, $row['token'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_no_id']}");
@@ -33,14 +33,14 @@ if ($row['status'] != 'confirmed') {
 }
 
 $passed = $fluent->update('users')
-    ->set(['email' => $row['new_email']])
-    ->where('email = ?', $row['email'])
-    ->execute();
+                 ->set(['email' => $row['new_email']])
+                 ->where('email = ?', $row['email'])
+                 ->execute();
 
 if ($passed) {
     $fluent->deleteFrom('tokens')
-        ->where('id=?', $id)
-        ->execute();
+           ->where('id=?', $id)
+           ->execute();
 } else {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }

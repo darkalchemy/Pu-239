@@ -34,48 +34,6 @@ class User
     }
 
     /**
-     * @param int  $userid
-     * @param bool $fresh
-     *
-     * @return bool|mixed
-     *
-     * @throws Exception
-     */
-    public function getUserFromId(int $userid, bool $fresh = false)
-    {
-        $user = $this->cache->get('user_' . $userid);
-        if ($fresh || $user === false || is_null($user)) {
-            $user = $this->fluent->from('users AS u')
-                ->select('INET6_NTOA(u.ip) AS ip')
-                ->select('u.bjwins - u.bjlosses AS bj')
-                ->select('c.win - c.lost AS casino')
-                ->leftJoin('casino AS c ON u.id=c.userid')
-                ->where('id=?', $userid)
-                ->fetch();
-
-            if ($user) {
-                unset($user['hintanswer'], $user['passhash']);
-
-                if ('Male' === $user['gender']) {
-                    $user['it'] = 'he';
-                } elseif ('Female' === $user['gender']) {
-                    $user['it'] = 'she';
-                } else {
-                    $user['it'] = 'it';
-                }
-
-                $this->cache->set('user_' . $userid, $user, $this->site_config['expires']['user_cache']);
-            }
-        }
-
-        if (!empty($user) && $user['override_class'] < $user['class']) {
-            $user['class'] = $user['override_class'];
-        }
-
-        return $user;
-    }
-
-    /**
      * @param string $username
      *
      * @return bool|mixed
@@ -88,10 +46,10 @@ class User
 
         if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
-                ->select(null)
-                ->select('id')
-                ->where('LOWER(username) = ?', strtolower($username))
-                ->fetch('id');
+                                 ->select(null)
+                                 ->select('id')
+                                 ->where('LOWER(username) = ?', strtolower($username))
+                                 ->fetch('id');
 
             $this->cache->set('userid_from_' . urldecode($username), $user, $this->site_config['expires']['user_cache']);
         }
@@ -109,17 +67,17 @@ class User
     public function getUsersFromIP(string $ip)
     {
         $users = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('last_access')
-            ->select('added')
-            ->select('email')
-            ->select('downloaded')
-            ->select('uploaded')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->where('ip = ?', inet_pton($ip))
-            ->orderBy('id')
-            ->fetchAll();
+                              ->select(null)
+                              ->select('id')
+                              ->select('last_access')
+                              ->select('added')
+                              ->select('email')
+                              ->select('downloaded')
+                              ->select('uploaded')
+                              ->select('INET6_NTOA(ip) AS ip')
+                              ->where('ip = ?', inet_pton($ip))
+                              ->orderBy('id')
+                              ->fetchAll();
 
         foreach ($users as $user) {
             unset($user['hintanswer'], $user['passhash']);
@@ -173,6 +131,69 @@ class User
     }
 
     /**
+     * @param string $selector
+     *
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function get_remember(string $selector)
+    {
+        $remember = $this->fluent->from('auth_tokens')
+                                 ->where('selector = ?', $selector)
+                                 ->where('expires>= ?', date('Y-m-d H:i:s', TIME_NOW))
+                                 ->fetch();
+
+        return $remember;
+    }
+
+    /**
+     * @param string $selector
+     * @param int    $userid
+     * @param int    $expires
+     *
+     * @throws \Exception
+     */
+    public function refresh_remember(string $selector, int $userid, int $expires)
+    {
+        $this->fluent->deleteFrom('auth_tokens')
+                     ->where('selector = ?', $selector)
+                     ->execute();
+
+        $this->set_remember($userid, $expires);
+    }
+
+    /**
+     * @param int $userid
+     * @param int $expires
+     *
+     * @throws \Exception
+     */
+    public function set_remember(int $userid, int $expires)
+    {
+        $selector = bin2hex(random_bytes(16));
+        $validator = bin2hex(random_bytes(32));
+        $hashedValidator = hash('sha256', $validator);
+
+        $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
+
+        $this->fluent->deleteFrom('auth_tokens')
+                     ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
+                     ->execute();
+
+        $values = [
+            'selector' => $selector,
+            'hashedValidator' => $hashedValidator,
+            'userid' => $userid,
+            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
+            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
+        ];
+        $this->fluent->insertInto('auth_tokens')
+                     ->values($values)
+                     ->execute();
+    }
+
+    /**
      * @param string $username
      *
      * @return bool|mixed
@@ -185,18 +206,18 @@ class User
         $users = $this->cache->get('search_users_' . $username);
         if ($users === false || is_null($users)) {
             $users = $this->fluent->from('users AS u')
-                ->select(null)
-                ->select('u.id')
-                ->select('u.username')
-                ->select('u.class')
-                ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
-                ->innerJoin('class_config AS c ON u.class = c.id')
-                ->where("u.acceptpms != 'no'")
-                ->where('u.username != ?', $this->site_config['chatbot']['name'])
-                ->where('u.username LIKE ?', "$username%")
-                ->where('c.classname != ""')
-                ->orderBy('LOWER(u.username)')
-                ->fetchAll();
+                                  ->select(null)
+                                  ->select('u.id')
+                                  ->select('u.username')
+                                  ->select('u.class')
+                                  ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
+                                  ->innerJoin('class_config AS c ON u.class = c.id')
+                                  ->where("u.acceptpms != 'no'")
+                                  ->where('u.username != ?', $this->site_config['chatbot']['name'])
+                                  ->where('u.username LIKE ?', "$username%")
+                                  ->where('c.classname != ""')
+                                  ->orderBy('LOWER(u.username)')
+                                  ->fetchAll();
             $this->cache->set('search_users_' . $username, $users, 86400);
         }
 
@@ -216,78 +237,15 @@ class User
     public function update(array $set, int $userid, bool $persist = true)
     {
         $result = $this->fluent->update('users')
-            ->set($set)
-            ->where('id=?', $userid)
-            ->execute();
+                               ->set($set)
+                               ->where('id=?', $userid)
+                               ->execute();
 
         if ($result && $persist) {
             $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
         }
 
         return $result;
-    }
-
-    /**
-     * @param string $selector
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function get_remember(string $selector)
-    {
-        $remember = $this->fluent->from('auth_tokens')
-            ->where('selector = ?', $selector)
-            ->where('expires>= ?', date('Y-m-d H:i:s', TIME_NOW))
-            ->fetch();
-
-        return $remember;
-    }
-
-    /**
-     * @param int $userid
-     * @param int $expires
-     *
-     * @throws \Exception
-     */
-    public function set_remember(int $userid, int $expires)
-    {
-        $selector = bin2hex(random_bytes(16));
-        $validator = bin2hex(random_bytes(32));
-        $hashedValidator = hash('sha256', $validator);
-
-        $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
-
-        $this->fluent->deleteFrom('auth_tokens')
-            ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
-            ->execute();
-
-        $values = [
-            'selector' => $selector,
-            'hashedValidator' => $hashedValidator,
-            'userid' => $userid,
-            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
-            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
-        ];
-        $this->fluent->insertInto('auth_tokens')
-            ->values($values)
-            ->execute();
-    }
-
-    /**
-     * @param string $selector
-     * @param int    $userid
-     * @param int    $expires
-     *
-     * @throws \Exception
-     */
-    public function refresh_remember(string $selector, int $userid, int $expires)
-    {
-        $this->fluent->deleteFrom('auth_tokens')
-            ->where('selector = ?', $selector)
-            ->execute();
-
-        $this->set_remember($userid, $expires);
     }
 
     /**
@@ -298,8 +256,8 @@ class User
     public function delete_remember(int $userid)
     {
         $this->fluent->deleteFrom('auth_tokens')
-            ->where('userid=?', $userid)
-            ->execute();
+                     ->where('userid=?', $userid)
+                     ->execute();
     }
 
     /**
@@ -337,6 +295,48 @@ class User
     }
 
     /**
+     * @param int  $userid
+     * @param bool $fresh
+     *
+     * @return bool|mixed
+     *
+     * @throws Exception
+     */
+    public function getUserFromId(int $userid, bool $fresh = false)
+    {
+        $user = $this->cache->get('user_' . $userid);
+        if ($fresh || $user === false || is_null($user)) {
+            $user = $this->fluent->from('users AS u')
+                                 ->select('INET6_NTOA(u.ip) AS ip')
+                                 ->select('u.bjwins - u.bjlosses AS bj')
+                                 ->select('c.win - c.lost AS casino')
+                                 ->leftJoin('casino AS c ON u.id=c.userid')
+                                 ->where('id=?', $userid)
+                                 ->fetch();
+
+            if ($user) {
+                unset($user['hintanswer'], $user['passhash']);
+
+                if ('Male' === $user['gender']) {
+                    $user['it'] = 'he';
+                } elseif ('Female' === $user['gender']) {
+                    $user['it'] = 'she';
+                } else {
+                    $user['it'] = 'it';
+                }
+
+                $this->cache->set('user_' . $userid, $user, $this->site_config['expires']['user_cache']);
+            }
+        }
+
+        if (!empty($user) && $user['override_class'] < $user['class']) {
+            $user['class'] = $user['override_class'];
+        }
+
+        return $user;
+    }
+
+    /**
      * @param string $item
      * @param int    $userid
      *
@@ -361,15 +361,15 @@ class User
     public function get_login(string $username)
     {
         $row = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('passhash')
-            ->select('perms')
-            ->select('enabled')
-            ->select('status')
-            ->where('username = ?', $username)
-            ->fetch();
+                            ->select(null)
+                            ->select('id')
+                            ->select('INET6_NTOA(ip) AS ip')
+                            ->select('passhash')
+                            ->select('perms')
+                            ->select('enabled')
+                            ->select('status')
+                            ->where('username = ?', $username)
+                            ->fetch();
 
         return $row;
     }
@@ -387,14 +387,14 @@ class User
     public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
     {
         $userid = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->where('class>= ?', $class)
-            ->where('username = ?', $bot)
-            ->where('auth = ?', $auth)
-            ->where('torrent_pass = ?', $torrent_pass)
-            ->where('uploadpos = 1 AND suspended = "no"')
-            ->fetch('id');
+                               ->select(null)
+                               ->select('id')
+                               ->where('class>= ?', $class)
+                               ->where('username = ?', $bot)
+                               ->where('auth = ?', $auth)
+                               ->where('torrent_pass = ?', $torrent_pass)
+                               ->where('uploadpos = 1 AND suspended = "no"')
+                               ->fetch('id');
 
         return $userid;
     }
@@ -409,8 +409,8 @@ class User
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('users')
-            ->values($values)
-            ->execute();
+                           ->values($values)
+                           ->execute();
 
         return $id;
     }
@@ -423,10 +423,10 @@ class User
     public function get_all_ids()
     {
         $ids = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->where('enabled = "yes"')
-            ->fetchAll();
+                            ->select(null)
+                            ->select('id')
+                            ->where('enabled = "yes"')
+                            ->fetchAll();
 
         return $ids;
     }
@@ -446,11 +446,11 @@ class User
         $userid = $this->cache->get('torrent_pass_' . $torrent_pass);
         if ($userid === false || is_null($userid)) {
             $userid = $this->fluent->from('users')
-                ->select(null)
-                ->select('id')
-                ->where('torrent_pass = ?', $torrent_pass)
-                ->where("enabled = 'yes'")
-                ->fetch();
+                                   ->select(null)
+                                   ->select('id')
+                                   ->where('torrent_pass = ?', $torrent_pass)
+                                   ->where("enabled = 'yes'")
+                                   ->fetch();
             $userid = $userid['id'];
             $this->cache->set('torrent_pass_' . $torrent_pass, $userid, 86400);
         }
@@ -475,10 +475,10 @@ class User
     public function get_users_for_notifications(int $category)
     {
         $users = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('notifs')
-            ->where('notifs IS NOT NULL');
+                              ->select(null)
+                              ->select('id')
+                              ->select('notifs')
+                              ->where('notifs IS NOT NULL');
 
         $notify = [];
         foreach ($users as $user) {

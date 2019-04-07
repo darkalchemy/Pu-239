@@ -33,52 +33,52 @@ if ($author) {
 }
 if ($search || $author_id) {
     $count = $fluent->from('posts AS p')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('f.min_class_read <= ?', $CURUSER['class'])
-        ->leftJoin('topics AS t ON p.topic_id=t.id')
-        ->leftJoin('forums AS f ON t.forum_id=f.id');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('f.min_class_read <= ?', $CURUSER['class'])
+                    ->leftJoin('topics AS t ON p.topic_id=t.id')
+                    ->leftJoin('forums AS f ON t.forum_id=f.id');
 
     $results = $fluent->from('posts AS p')
-        ->select(null)
-        ->select('p.user_id AS userid')
-        ->select('p.id AS post_id')
-        ->select('p.body')
-        ->select('p.post_title')
-        ->select('p.added')
-        ->select('p.icon')
-        ->select('p.edited_by')
-        ->select('p.edit_reason')
-        ->select('p.edit_date')
-        ->select('p.bbcode')
-        ->select('p.anonymous AS pan')
-        ->select('t.anonymous AS anonymous')
-        ->select('t.id AS topic_id')
-        ->select('t.topic_name AS topic_title')
-        ->select('t.topic_desc')
-        ->select('t.post_count')
-        ->select('t.views')
-        ->select('t.locked')
-        ->select('t.sticky')
-        ->select('t.poll_id')
-        ->select('t.num_ratings')
-        ->select('t.rating_sum')
-        ->select('f.id AS forum_id')
-        ->select('f.name AS forum_name')
-        ->select('f.description AS forum_desc')
-        ->where('f.min_class_read <= ?', $CURUSER['class'])
-        ->leftJoin('topics AS t ON p.topic_id=t.id')
-        ->leftJoin('forums AS f ON t.forum_id=f.id');
+                      ->select(null)
+                      ->select('p.user_id AS userid')
+                      ->select('p.id AS post_id')
+                      ->select('p.body')
+                      ->select('p.post_title')
+                      ->select('p.added')
+                      ->select('p.icon')
+                      ->select('p.edited_by')
+                      ->select('p.edit_reason')
+                      ->select('p.edit_date')
+                      ->select('p.bbcode')
+                      ->select('p.anonymous AS pan')
+                      ->select('t.anonymous AS anonymous')
+                      ->select('t.id AS topic_id')
+                      ->select('t.topic_name AS topic_title')
+                      ->select('t.topic_desc')
+                      ->select('t.post_count')
+                      ->select('t.views')
+                      ->select('t.locked')
+                      ->select('t.sticky')
+                      ->select('t.poll_id')
+                      ->select('t.num_ratings')
+                      ->select('t.rating_sum')
+                      ->select('f.id AS forum_id')
+                      ->select('f.name AS forum_name')
+                      ->select('f.description AS forum_desc')
+                      ->where('f.min_class_read <= ?', $CURUSER['class'])
+                      ->leftJoin('topics AS t ON p.topic_id=t.id')
+                      ->leftJoin('forums AS f ON t.forum_id=f.id');
     if ($CURUSER['class'] < UC_STAFF) {
         $count = $count->where('p.status = "ok"')
-            ->where('t.status = "ok"');
+                       ->where('t.status = "ok"');
         $results = $results->where('p.status = "ok"')
-            ->where('t.status = "ok"');
+                           ->where('t.status = "ok"');
     } elseif ($CURUSER['class'] < $min_delete_view_class) {
         $count = $count->where('p.status != "deleted"')
-            ->where('t.status != "deleted"');
+                       ->where('t.status != "deleted"');
         $results = $results->where('p.status != "deleted"')
-            ->where('t.status != "deleted"');
+                           ->where('t.status != "deleted"');
     }
     if (!empty($search)) {
         if ($search_what === 'all') {
@@ -108,8 +108,8 @@ if ($search || $author_id) {
     }
 
     $query = $fluent->from('forums')
-        ->select(null)
-        ->select('id');
+                    ->select(null)
+                    ->select('id');
 
     foreach ($query as $arr_forum_ids) {
         if (isset($_GET['f' . $arr_forum_ids['id']])) {
@@ -296,18 +296,18 @@ if ($search || $author_id) {
 $search_in_forums = '<table class="table-striped">';
 $row_count = 0;
 $forums = $fluent->from('over_forums AS o_f')
-    ->select(null)
-    ->select('o_f.name AS over_forum_name')
-    ->select('o_f.id AS over_forum_id')
-    ->select('f.id AS real_forum_id')
-    ->select('f.name')
-    ->select('f.description')
-    ->select('f.forum_id')
-    ->leftJoin('forums AS f ON o_f.id=f.forum_id')
-    ->where('o_f.min_class_view <= ?', $CURUSER['class'])
-    ->where('f.min_class_read <= ?', $CURUSER['class'])
-    ->orderBy('o_f.sort')
-    ->orderBy('f.sort ASC');
+                 ->select(null)
+                 ->select('o_f.name AS over_forum_name')
+                 ->select('o_f.id AS over_forum_id')
+                 ->select('f.id AS real_forum_id')
+                 ->select('f.name')
+                 ->select('f.description')
+                 ->select('f.forum_id')
+                 ->leftJoin('forums AS f ON o_f.id=f.forum_id')
+                 ->where('o_f.min_class_view <= ?', $CURUSER['class'])
+                 ->where('f.min_class_read <= ?', $CURUSER['class'])
+                 ->orderBy('o_f.sort')
+                 ->orderBy('f.sort ASC');
 
 foreach ($forums as $arr_forums) {
     $search_in_forums .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr>

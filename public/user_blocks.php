@@ -378,11 +378,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
         $opt = $fluent->from('users')
-            ->select(null)
-            ->select('opt1')
-            ->select('opt2')
-            ->where('id=?', $CURUSER['id'])
-            ->fetch();
+                      ->select(null)
+                      ->select('opt1')
+                      ->select('opt2')
+                      ->where('id=?', $CURUSER['id'])
+                      ->fetch();
 
         $cache->update_row('user_' . $CURUSER['id'], [
             'opt1' => $opt['opt1'],

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307    USA
  */
 
-define("FULL_RECORD_LENGTH", 50);
+define('FULL_RECORD_LENGTH', 50);
 
 require_once 'geoip.inc';
 require_once 'geoipregionvars.php';
@@ -35,7 +35,7 @@ class geoiprecord
     public $latitude;
     public $longitude;
     public $area_code;
-    public $dma_code; # metro and dma code are the same. use metro_code
+    public $dma_code; // metro and dma code are the same. use metro_code
     public $metro_code;
     public $continent_code;
 }
@@ -46,6 +46,7 @@ function _get_record_v6($gi, $ipnum)
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
+
     return _common_get_record($gi, $seek_country);
 }
 
@@ -69,20 +70,20 @@ function _common_get_record($gi, $seek_country)
         fseek($gi->filehandle, $record_pointer, SEEK_SET);
         $record_buf = fread($gi->filehandle, FULL_RECORD_LENGTH);
     }
-    $record = new geoiprecord;
+    $record = new geoiprecord();
     $record_buf_pos = 0;
     $char = ord(substr($record_buf, $record_buf_pos, 1));
     $record->country_code = $gi->GEOIP_COUNTRY_CODES[$char];
     $record->country_code3 = $gi->GEOIP_COUNTRY_CODES3[$char];
     $record->country_name = $gi->GEOIP_COUNTRY_NAMES[$char];
     $record->continent_code = $gi->GEOIP_CONTINENT_CODES[$char];
-    $record_buf_pos++;
+    ++$record_buf_pos;
     $str_length = 0;
 
     // Get region
     $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     while ($char != 0) {
-        $str_length++;
+        ++$str_length;
         $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     }
     if ($str_length > 0) {
@@ -93,7 +94,7 @@ function _common_get_record($gi, $seek_country)
     // Get city
     $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     while ($char != 0) {
-        $str_length++;
+        ++$str_length;
         $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     }
     if ($str_length > 0) {
@@ -104,7 +105,7 @@ function _common_get_record($gi, $seek_country)
     // Get postal code
     $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     while ($char != 0) {
-        $str_length++;
+        ++$str_length;
         $char = ord(substr($record_buf, $record_buf_pos + $str_length, 1));
     }
     if ($str_length > 0) {
@@ -127,7 +128,7 @@ function _common_get_record($gi, $seek_country)
     $record->longitude = ($longitude / 10000) - 180;
     if (GEOIP_CITY_EDITION_REV1 == $gi->databaseType) {
         $metroarea_combo = 0;
-        if ($record->country_code == "US") {
+        if ($record->country_code == 'US') {
             for ($j = 0; $j < 3; ++$j) {
                 $char = ord(substr($record_buf, $record_buf_pos++, 1));
                 $metroarea_combo += ($char << ($j * 8));
@@ -139,6 +140,7 @@ function _common_get_record($gi, $seek_country)
     if ($mbExists) {
         mb_internal_encoding($enc);
     }
+
     return $record;
 }
 
@@ -148,6 +150,7 @@ function GeoIP_record_by_addr_v6($gi, $addr)
         return 0;
     }
     $ipnum = inet_pton($addr);
+
     return _get_record_v6($gi, $ipnum);
 }
 
@@ -157,6 +160,7 @@ function _get_record($gi, $ipnum)
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
+
     return _common_get_record($gi, $seek_country);
 }
 
@@ -166,5 +170,6 @@ function GeoIP_record_by_addr($gi, $addr)
         return 0;
     }
     $ipnum = ip2long($addr);
+
     return _get_record($gi, $ipnum);
 }

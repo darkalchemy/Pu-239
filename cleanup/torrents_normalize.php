@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function torrents_normalize($data)
 {
@@ -15,11 +17,11 @@ function torrents_normalize($data)
     ignore_user_abort(true);
 
     $torrents = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('info_hash')
-        ->select('owner')
-        ->orderBy('id');
+                       ->select(null)
+                       ->select('id')
+                       ->select('info_hash')
+                       ->select('owner')
+                       ->orderBy('id');
 
     $tids = $ids = $bad1 = $bad2 = [];
     foreach ($torrents as $torrent) {

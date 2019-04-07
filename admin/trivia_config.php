@@ -39,14 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $session->set('is-warning', $lang['triviaconfig_noanswer']);
                 } else {
                     $fluent->update('triviaq')
-                        ->set($set)
-                        ->where('qid = ?', $id)
-                        ->execute();
+                           ->set($set)
+                           ->where('qid = ?', $id)
+                           ->execute();
                 }
             } elseif ($type === 'delete' && isset($_POST['id']) && is_numeric($_POST['id'])) {
                 $fluent->deleteFrom('triviaq')
-                    ->where('qid = ?', $_POST['id'])
-                    ->execute();
+                       ->where('qid = ?', $_POST['id'])
+                       ->execute();
                 $session->set('is-success', sprintf($lang['triviaconfig_deleted'], $_POST['id']));
             } elseif ($type === 'insert') {
                 $values = $_POST;
@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $session->set('is-warning', $lang['triviaconfig_noanswer']);
                 } else {
                     $newid = $fluent->insertInto('triviaq')
-                        ->values($values)
-                        ->execute();
+                                    ->values($values)
+                                    ->execute();
                     if (!empty($newid)) {
                         $session->set('is-success', sprintf($lang['triviaconfig_inserted'], $newid));
                     }
@@ -70,17 +70,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($type === 'search') {
                 $search = $_POST['keywords'];
                 $count = $fluent->from('triviaq')
-                    ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                    ->fetch('count');
+                                ->select(null)
+                                ->select('COUNT(*) AS count')
+                                ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
+                                ->fetch('count');
 
                 $pager = pager(15, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=trivia_config&");
                 $questions = $fluent->from('triviaq')
-                    ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                    ->orderBy('qid')
-                    ->limit($pager['pdo'])
-                    ->fetchAll();
+                                    ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
+                                    ->orderBy('qid')
+                                    ->limit($pager['pdo'])
+                                    ->fetchAll();
             }
         }
     }
@@ -88,15 +88,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (empty($search)) {
     $count = $fluent->from('triviaq')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->fetch('count');
 
     $pager = pager(15, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=trivia_config&");
     $questions = $fluent->from('triviaq')
-        ->orderBy('qid')
-        ->limit($pager['pdo'])
-        ->fetchAll();
+                        ->orderBy('qid')
+                        ->limit($pager['pdo'])
+                        ->fetchAll();
 }
 
 $HTMLOUT = "

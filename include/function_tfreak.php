@@ -27,10 +27,10 @@ function rsstfreakinfo()
         $html .= "
             <div class='bordered $top'>
                 <div id='" . md5($item->getElementsByTagName('title')
-                ->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
+                                      ->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
                     <div class='has-text-primary size_5 padding10'>
                         " . htmlsafechars($item->getElementsByTagName('title')
-                ->item(0)->nodeValue) . "
+                                               ->item(0)->nodeValue) . "
                     </div>
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_2 has-text-primary'>
@@ -38,8 +38,8 @@ function rsstfreakinfo()
                 '<![CDATA[',
                 ']]>',
             ], '', htmlsafechars($item->getElementsByTagName('creator')
-                ->item(0)->nodeValue)) . ' on ' . htmlsafechars($item->getElementsByTagName('pubDate')
-                ->item(0)->nodeValue) . '
+                                      ->item(0)->nodeValue)) . ' on ' . htmlsafechars($item->getElementsByTagName('pubDate')
+                                                                                           ->item(0)->nodeValue) . '
                         </div>
                         <div>' . str_replace([
                 '<![CDATA[',
@@ -50,9 +50,9 @@ function rsstfreakinfo()
                 '',
                 'href="' . $site_config['site']['anonymizer_url'],
             ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')
-                ->item(0)->nodeValue, 1)) . "
+                                                                        ->item(0)->nodeValue, 1)) . "
                             <a href='{$site_config['site']['anonymizer_url']}" . $item->getElementsByTagName('link')
-                ->item(0)->nodeValue . "' target='_blank'>
+                                                                                      ->item(0)->nodeValue . "' target='_blank'>
                                 <span class='size_2 has-text-primary'>
                                     Read more
                                 </span>

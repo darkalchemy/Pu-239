@@ -31,9 +31,9 @@ if (isset($_POST['action2'])) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
             $boxnumber = $fluent->from('pmboxes')
-                ->select(null)
-                ->select('MAX(boxnumber) AS boxnumber')
-                ->fetch('boxnumber');
+                                ->select(null)
+                                ->select('MAX(boxnumber) AS boxnumber')
+                                ->fetch('boxnumber');
             $box = $boxnumber < 2 ? 2 : $boxnumber++;
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
@@ -45,8 +45,8 @@ if (isset($_POST['action2'])) {
                         'boxnumber' => $box,
                     ];
                     $fluent->insertInto('pmboxes')
-                        ->values($values)
-                        ->execute();
+                           ->values($values)
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                 }
@@ -59,8 +59,8 @@ if (isset($_POST['action2'])) {
 
         case 'edit_boxes':
             $boxes = $fluent->from('pmboxes')
-                ->where('userid=?', $CURUSER['id'])
-                ->fetchAll();
+                            ->where('userid=?', $CURUSER['id'])
+                            ->fetchAll();
 
             if (empty($boxes)) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
@@ -72,9 +72,9 @@ if (isset($_POST['action2'])) {
                         'name' => $name,
                     ];
                     $fluent->update('pmboxes')
-                        ->set($set)
-                        ->where('id=?', $row['id'])
-                        ->execute();
+                           ->set($set)
+                           ->where('id=?', $row['id'])
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $worked = '&name=1';
@@ -85,8 +85,8 @@ if (isset($_POST['action2'])) {
                     ];
                     $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
-                        ->where('id=?', $row['id'])
-                        ->execute();
+                           ->where('id=?', $row['id'])
+                           ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
@@ -113,9 +113,9 @@ if (isset($_POST['action2'])) {
             $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
             $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
             $category_ids = $fluent->from('categories')
-                ->select(null)
-                ->select('id')
-                ->fetchAll();
+                                   ->select(null)
+                                   ->select('id')
+                                   ->fetchAll();
 
             $rows = count($category_ids);
             for ($i = 0; $i < $rows; ++$i) {
@@ -148,9 +148,9 @@ if (isset($_POST['action2'])) {
 }
 
 $boxes = $fluent->from('pmboxes')
-    ->where('userid=?', $CURUSER['id'])
-    ->orderBy('name ASC')
-    ->fetchAll();
+                ->where('userid=?', $CURUSER['id'])
+                ->orderBy('name ASC')
+                ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {

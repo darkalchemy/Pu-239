@@ -1,5 +1,7 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
@@ -7,7 +9,7 @@ require_once INCL_DIR . 'function_staff.php';
  * @param int  $class
  * @param bool $staff
  *
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function class_check($class = 0, $staff = true)
 {

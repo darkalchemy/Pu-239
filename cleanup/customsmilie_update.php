@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function customsmilie_update($data)
 {
@@ -16,11 +18,11 @@ function customsmilie_update($data)
     $dt = TIME_NOW;
 
     $res = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->select('modcomment')
-        ->where('smile_until < ?', $dt)
-        ->where('smile_until != 0');
+                  ->select(null)
+                  ->select('id')
+                  ->select('modcomment')
+                  ->where('smile_until < ?', $dt)
+                  ->where('smile_until != 0');
 
     $subject = 'Custom smilies expired.';
     $msg = "Your Custom smilies have timed out and has been auto-removed by the system. If you would like to have them again, exchange some Karma Bonus Points again. Cheers!\n";
@@ -42,9 +44,9 @@ function customsmilie_update($data)
         ];
         ++$i;
         $fluent->update('users')
-            ->set($set)
-            ->where('id=?', $arr['id'])
-            ->execute();
+               ->set($set)
+               ->where('id=?', $arr['id'])
+               ->execute();
 
         $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }

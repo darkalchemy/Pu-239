@@ -67,12 +67,12 @@ foreach ($vars as $var) {
     }
 }
 $res_request = $fluent->from('requests')
-    ->select(null)
-    ->select('id')
-    ->select('request_name')
-    ->where('filled_by_user_id=0')
-    ->orderBy('request_name')
-    ->fetchAll();
+                      ->select(null)
+                      ->select('id')
+                      ->select('request_name')
+                      ->where('filled_by_user_id=0')
+                      ->orderBy('request_name')
+                      ->fetchAll();
 
 if ($res_request) {
     $has_request = "
@@ -92,13 +92,13 @@ if ($res_request) {
 }
 
 $res_offers = $fluent->from('offers')
-    ->select(null)
-    ->select('id')
-    ->select('offer_name')
-    ->where('offered_by_user_id=?', $CURUSER['id'])
-    ->where('status = "approved"')
-    ->orderBy('offer_name')
-    ->fetchAll();
+                     ->select(null)
+                     ->select('id')
+                     ->select('offer_name')
+                     ->where('offered_by_user_id=?', $CURUSER['id'])
+                     ->where('status = "approved"')
+                     ->orderBy('offer_name')
+                     ->fetchAll();
 
 if ($res_offers) {
     $offers = "

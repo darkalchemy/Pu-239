@@ -24,15 +24,15 @@ if (empty($current_user)) {
 }
 
 $correct_answer = $fluent->from('triviaq')
-    ->select('canswer')
-    ->where('qid=?', $qid)
-    ->fetch('canswer');
+                         ->select('canswer')
+                         ->where('qid=?', $qid)
+                         ->fetch('canswer');
 
 $user = $fluent->from('triviausers')
-    ->where('user_id=?', $current_user)
-    ->where('qid=?', $qid)
-    ->where('gamenum = ?', $gamenum)
-    ->fetch();
+               ->where('user_id=?', $current_user)
+               ->where('qid=?', $qid)
+               ->where('gamenum = ?', $gamenum)
+               ->fetch();
 
 $cleanup = trivia_time();
 
@@ -57,8 +57,8 @@ if (!empty($user)) {
         $values['correct'] = 0;
     }
     $fluent->insertInto('triviausers')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 }
 
 $cache->delete('triviaq_');

@@ -10,9 +10,9 @@ global $site_config, $lang, $fluent;
 $lang = array_merge($lang, load_language('ad_upinfo'));
 $HTMLOUT = $count = '';
 $count1 = $fluent->from('torrents')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->fetch('count');
+                 ->select(null)
+                 ->select('COUNT(*) AS count')
+                 ->fetch('count');
 
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=uploader_info&amp;');

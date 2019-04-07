@@ -238,10 +238,10 @@ if (!isset($dict['info'])) {
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
 $count = $fluent->from('torrents')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('info_hash = ?', $infohash)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('info_hash = ?', $infohash)
+                ->fetch('count');
 
 if ($count > 0) {
     $session->set('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');

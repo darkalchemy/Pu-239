@@ -1,9 +1,11 @@
 <?php
 
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 /**
  * @param $data
  *
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ * @throws InvalidManipulation
  */
 function tvmaze_schedule_update($data)
 {
@@ -21,7 +23,7 @@ function tvmaze_schedule_update($data)
     $start = date('Y-m-d');
     $date = new DateTime($start);
     $end = $date->modify('+1 day')
-        ->format('Y-m-d');
+                ->format('Y-m-d');
 
     $i = 0;
     if (!empty($tvmaze_data)) {

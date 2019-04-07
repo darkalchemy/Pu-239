@@ -16,8 +16,8 @@ function write_info($text)
         'txt' => $text,
     ];
     $id = $fluent->insertInto('infolog')
-        ->values($values)
-        ->execute();
+                 ->values($values)
+                 ->execute();
 
     return $id;
 }

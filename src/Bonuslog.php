@@ -26,7 +26,7 @@ class Bonuslog
     public function insert(array $values)
     {
         $this->fluent->insertInto('bonuslog')
-            ->values($values)
-            ->execute();
+                     ->values($values)
+                     ->execute();
     }
 }

@@ -102,8 +102,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         die();
     } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {
         $fluent->deleteFrom('ajax_chat_messages')
-            ->where('id>0')
-            ->execute();
+               ->where('id>0')
+               ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
@@ -174,9 +174,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                        ->select(null)
-                        ->select('DISTINCT value AS value')
-                        ->where('value>= ?', UC_STAFF);
+                                      ->select(null)
+                                      ->select('DISTINCT value AS value')
+                                      ->where('value>= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class);
                     }
@@ -197,14 +197,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         'av_class' => (int) $_POST['av_class'],
                     ];
                     $fluent->update('staffpanel')
-                        ->set($set)
-                        ->where('id=?', $id)
-                        ->execute();
+                           ->set($set)
+                           ->where('id=?', $id)
+                           ->execute();
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                        ->select(null)
-                        ->select('DISTINCT value AS value')
-                        ->where('value>= ?', UC_STAFF);
+                                      ->select(null)
+                                      ->select('DISTINCT value AS value')
+                                      ->where('value>= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class['value']);
                     }

@@ -100,6 +100,66 @@ class Session
     }
 
     /**
+     * @param string $value
+     *
+     * @return float|int
+     */
+    private function convert_to_bytes(string $value)
+    {
+        if (preg_match('/^(\d+)(.)$/', $value, $matches)) {
+            switch ($matches[2]) {
+                case 'K':
+                    return $matches[1] * 1024;
+                    break;
+
+                case 'M':
+                    return $matches[1] * 1024 * 1024;
+                    break;
+
+                case 'G':
+                    return $matches[1] * 1024 * 1024 * 1024;
+                    break;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @throws Exception
+     * @throws ServerUnhealthy
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function destroy()
+    {
+        global $CURUSER;
+
+        $userID = $CURUSER['id'];
+        if ($userID) {
+            $this->user_stuffs->delete_user_cache([
+                $userID,
+            ]);
+            $this->user_stuffs->delete_remember($userID);
+        }
+
+        $this->start();
+        $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie($this->site_config['cookies']['prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie(session_name(), '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
+
+        session_unset();
+        session_destroy();
+
+        $returnto = !empty($_SERVER['REQUEST_URI']) && !preg_match('/logout.php/', $_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
+        header("Location: {$this->site_config['paths']['baseurl']}/login.php" . $returnto);
+        die();
+    }
+
+    /**
      * @param string      $key
      * @param             $value
      * @param string|null $prefix
@@ -190,68 +250,8 @@ class Session
         return false;
     }
 
-    /**
-     * @throws Exception
-     * @throws ServerUnhealthy
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function destroy()
-    {
-        global $CURUSER;
-
-        $userID = $CURUSER['id'];
-        if ($userID) {
-            $this->user_stuffs->delete_user_cache([
-                $userID,
-            ]);
-            $this->user_stuffs->delete_remember($userID);
-        }
-
-        $this->start();
-        $_SESSION = [];
-
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
-            setcookie($this->site_config['cookies']['prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-            setcookie(session_name(), '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-        }
-
-        session_unset();
-        session_destroy();
-
-        $returnto = !empty($_SERVER['REQUEST_URI']) && !preg_match('/logout.php/', $_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
-        header("Location: {$this->site_config['paths']['baseurl']}/login.php" . $returnto);
-        die();
-    }
-
     public function close()
     {
         session_write_close();
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return float|int
-     */
-    private function convert_to_bytes(string $value)
-    {
-        if (preg_match('/^(\d+)(.)$/', $value, $matches)) {
-            switch ($matches[2]) {
-                case 'K':
-                    return $matches[1] * 1024;
-                    break;
-
-                case 'M':
-                    return $matches[1] * 1024 * 1024;
-                    break;
-
-                case 'G':
-                    return $matches[1] * 1024 * 1024 * 1024;
-                    break;
-            }
-        }
-
-        return 0;
     }
 }

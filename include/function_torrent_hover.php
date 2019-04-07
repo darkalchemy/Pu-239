@@ -1,24 +1,41 @@
 <?php
 
 /**
- * @param $text
+ * @param string $text
+ * @param int    $id
+ * @param int    $block_id
+ * @param string $name
+ * @param string $poster
+ * @param int    $uploader
+ * @param int    $added
+ * @param int    $size
+ * @param int    $seeders
+ * @param int    $leechers
+ * @param string $imdb_id
+ * @param int    $rating
+ * @param int    $year
+ * @param string $subtitles
+ * @param string $genre
+ * @param bool   $icons
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
+function torrent_tooltip(string $text, int $id, int $block_id, string $name, string $poster, int $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre, $icons = false)
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
-    $released = $plot = $show_subs = '';
+    $is_year = $released = $rated = $plot = $show_subs = '';
     if (!empty($imdb_id)) {
         $background = find_images($imdb_id, $type = 'background');
         $plot = $cache->get('imdb_plot_' . $imdb_id);
         if ($plot === false || is_null($plot)) {
             $plot = $fluent->from('imdb_info')
-                ->select(null)
-                ->select('plot')
-                ->where('imdb_id=?', str_replace('tt', '', $imdb_id))
-                ->fetch('plot');
+                           ->select(null)
+                           ->select('plot')
+                           ->where('imdb_id=?', str_replace('tt', '', $imdb_id))
+                           ->fetch('plot');
 
             $cache->set('imdb_plot_' . $imdb_id, $plot, 86400);
         }
@@ -44,7 +61,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <span class='size_4'>{$genre}</span>
                                                     </span>";
     }
-    $rated = '';
     if (!empty($rating) && $rating > 0) {
         $percent = $rating * 10;
         $rated = "
@@ -61,7 +77,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         </span>
                                                     </div>";
     }
-    $is_year = '';
     if (!empty($year)) {
         $released = "
                                                     <div class='column padding5 is-4'>
@@ -160,11 +175,26 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 }
 
 /**
- * @param $text
+ * @param string $text
+ * @param int    $id
+ * @param int    $block_id
+ * @param string $name
+ * @param string $poster
+ * @param int    $uploader
+ * @param int    $added
+ * @param int    $size
+ * @param int    $seeders
+ * @param int    $leechers
+ * @param string $imdb_id
+ * @param int    $rating
+ * @param int    $year
+ * @param string $subtitles
+ * @param string $genre
  *
  * @return string
+ * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre)
+function torrent_tooltip_wrapper(string $text, int $id, int $block_id, string $name, string $poster, int $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre)
 {
     global $site_config, $image, $cat, $times_completed;
 

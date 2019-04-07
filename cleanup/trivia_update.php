@@ -16,17 +16,17 @@ function trivia_update($data)
     $count = $cache->get('trivia_questions_count_');
     if ($count === false || is_null($count)) {
         $count = $fluent->from('triviaq')
-            ->select(null)
-            ->select('COUNT(qid) AS count')
-            ->fetch('count');
+                        ->select(null)
+                        ->select('COUNT(qid) AS count')
+                        ->fetch('count');
         $cache->set('trivia_questions_count_', $count, 900);
     }
     if ($count > 0) {
         $gamenum = $fluent->from('triviasettings')
-            ->select(null)
-            ->select('gamenum')
-            ->where('gameon = 1')
-            ->fetch('gamenum');
+                          ->select(null)
+                          ->select('gamenum')
+                          ->where('gameon = 1')
+                          ->fetch('gamenum');
         if ($gamenum >= 1) {
             $qids = get_qids();
             if (empty($qids) || count($qids) <= 100) {
@@ -35,9 +35,9 @@ function trivia_update($data)
                     'current' => 0,
                 ];
                 $fluent->update('triviaq')
-                    ->set($set)
-                    ->where('asked = 1')
-                    ->execute();
+                       ->set($set)
+                       ->where('asked = 1')
+                       ->execute();
                 $cache->delete('triviaquestions_');
                 $qids = get_qids();
             }
@@ -57,28 +57,28 @@ function trivia_update($data)
                 'current' => 0,
             ];
             $fluent->update('triviaq')
-                ->set($set)
-                ->where('current = 1')
-                ->execute();
+                   ->set($set)
+                   ->where('current = 1')
+                   ->execute();
             $set = [
                 'asked' => 1,
                 'current' => 1,
             ];
             $fluent->update('triviaq')
-                ->set($set)
-                ->where('qid=?', $qid)
-                ->execute();
+                   ->set($set)
+                   ->where('qid=?', $qid)
+                   ->execute();
 
             $values = $fluent->from('triviaq')
-                ->select('question')
-                ->select('answer1')
-                ->select('answer2')
-                ->select('answer3')
-                ->select('answer4')
-                ->select('answer5')
-                ->select('asked')
-                ->where('qid=?', $qid)
-                ->fetch();
+                             ->select('question')
+                             ->select('answer1')
+                             ->select('answer2')
+                             ->select('answer3')
+                             ->select('answer4')
+                             ->select('answer5')
+                             ->select('asked')
+                             ->where('qid=?', $qid)
+                             ->fetch();
             $cache->set('trivia_current_question_', $values, 360);
         }
     }
@@ -104,11 +104,11 @@ function get_qids()
     $qids = $cache->get('triviaquestions_');
     if ($qids === false || is_null($qids)) {
         $result = $fluent->from('triviaq')
-            ->select(null)
-            ->select('qid')
-            ->where('asked = 0')
-            ->where('current = 0')
-            ->fetchall('qid');
+                         ->select(null)
+                         ->select('qid')
+                         ->where('asked = 0')
+                         ->where('current = 0')
+                         ->fetchall('qid');
         foreach ($result as $qidarray) {
             $qids[] = $qidarray['qid'];
         }

@@ -13,24 +13,24 @@ function torrents_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
     $torrents = $fluent->from('torrents')
-        ->select(null)
-        ->select('id')
-        ->select('seeders')
-        ->select('leechers')
-        ->select('comments')
-        ->orderBy('id')
-        ->fetchAll();
+                       ->select(null)
+                       ->select('id')
+                       ->select('seeders')
+                       ->select('leechers')
+                       ->select('comments')
+                       ->orderBy('id')
+                       ->fetchAll();
 
     $peers = $fluent->from('peers')
-        ->select(null)
-        ->select('seeder')
-        ->select('torrent')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('seeder')
+                    ->select('torrent')
+                    ->fetchAll();
 
     $comments = $fluent->from('comments')
-        ->select(null)
-        ->select('torrent')
-        ->fetchAll();
+                       ->select(null)
+                       ->select('torrent')
+                       ->fetchAll();
 
     foreach ($torrents as $torrent) {
         $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;

@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
     }
     $user = $fluent->from('users')
-        ->where('email = ?', $email)
-        ->fetch();
+                   ->where('email = ?', $email)
+                   ->fetch();
 
     if (!$user || empty($user)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
@@ -59,16 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id' => $alt_id,
     ];
     $fluent->insertInto('tokens')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     $body = sprintf($lang['email_request'], $email, getip(), $site_config['paths']['baseurl'], $alt_id, $secret, $site_config['site']['name']);
     $mail = new Message();
     $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-        ->addTo($user['email'])
-        ->setReturnPath($site_config['site']['email'])
-        ->setSubject("{$site_config['site']['name']} {$lang['email_subjreset']}")
-        ->setHtmlBody($body);
+         ->addTo($user['email'])
+         ->setReturnPath($site_config['site']['email'])
+         ->setSubject("{$site_config['site']['name']} {$lang['email_subjreset']}")
+         ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site']['email']}";
@@ -86,13 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $row = $fluent->from('tokens')
-        ->select('users.username')
-        ->select('users.email')
-        ->select('users.id AS user_id')
-        ->innerJoin('users ON users.email = tokens.email')
-        ->where('tokens.id=?', $id)
-        ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
-        ->fetch();
+                  ->select('users.username')
+                  ->select('users.email')
+                  ->select('users.id AS user_id')
+                  ->innerJoin('users ON users.email = tokens.email')
+                  ->where('tokens.id=?', $id)
+                  ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+                  ->fetch();
 
     if (!password_verify($token, $row['token'])) {
         stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -106,19 +106,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'passhash' => $newpasshash,
     ];
     $update = $fluent->update('users')
-        ->set($set)
-        ->where('id=?', $row['user_id'])
-        ->execute();
+                     ->set($set)
+                     ->where('id=?', $row['user_id'])
+                     ->execute();
     if (!$update || empty($update)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
     $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['paths']['baseurl'], $site_config['site']['name']);
     $mail = new Message();
     $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-        ->addTo($email)
-        ->setReturnPath($site_config['site']['email'])
-        ->setSubject("{$site_config['site']['name']} {$lang['email_subjdetails']}")
-        ->setHtmlBody($body);
+         ->addTo($email)
+         ->setReturnPath($site_config['site']['email'])
+         ->setSubject("{$site_config['site']['name']} {$lang['email_subjdetails']}")
+         ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site']['email']}";

@@ -1,9 +1,11 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function gift_update($data)
 {
@@ -17,10 +19,10 @@ function gift_update($data)
         die();
     }
     $query = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('gotgift = "yes"')
-        ->fetchAll();
+                    ->select(null)
+                    ->select('id')
+                    ->where('gotgift = "yes"')
+                    ->fetchAll();
 
     $set = [
         'gotgift' => 'no',

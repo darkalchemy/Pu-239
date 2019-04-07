@@ -34,18 +34,18 @@ class Snatched
         $snatches = $this->cache->get("snatches_{$userid}_{$tid}");
         if ($snatches === false || is_null($snatches)) {
             $snatches = $this->fluent->from('snatched')
-                ->select(null)
-                ->select('id')
-                ->select('seedtime')
-                ->select('leechtime')
-                ->select('uploaded')
-                ->select('downloaded')
-                ->select('finished')
-                ->select('timesann')
-                ->select('start_date AS start_snatch')
-                ->where('torrentid=?', $tid)
-                ->where('userid=?', $userid)
-                ->fetch();
+                                     ->select(null)
+                                     ->select('id')
+                                     ->select('seedtime')
+                                     ->select('leechtime')
+                                     ->select('uploaded')
+                                     ->select('downloaded')
+                                     ->select('finished')
+                                     ->select('timesann')
+                                     ->select('start_date AS start_snatch')
+                                     ->where('torrentid=?', $tid)
+                                     ->where('userid=?', $userid)
+                                     ->fetch();
 
             $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
         }
@@ -61,8 +61,8 @@ class Snatched
     public function insert(array $values)
     {
         $this->fluent->insertInto('snatched')
-            ->values($values)
-            ->execute();
+                     ->values($values)
+                     ->execute();
     }
 
     /**
@@ -76,10 +76,10 @@ class Snatched
     public function update(array $set, int $tid, int $userid)
     {
         $this->fluent->update('snatched')
-            ->set($set)
-            ->where('torrentid=?', $tid)
-            ->where('userid=?', $userid)
-            ->execute();
+                     ->set($set)
+                     ->where('torrentid=?', $tid)
+                     ->where('userid=?', $userid)
+                     ->execute();
 
         $this->cache->update_row("snatches_{$userid}_{$tid}", $set);
     }
@@ -92,7 +92,7 @@ class Snatched
     public function delete_stale(int $dt)
     {
         $this->fluent->delete('snatched')
-            ->where('last_action < ?', $dt)
-            ->execute();
+                     ->where('last_action < ?', $dt)
+                     ->execute();
     }
 }

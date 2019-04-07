@@ -36,9 +36,9 @@ if (!$site_config['openreg']['open']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['paths']['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
 }
 $users_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->fetch('count');
+                      ->select(null)
+                      ->select('COUNT(id) AS count')
+                      ->fetch('count');
 
 if ($users_count >= $site_config['site']['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
@@ -141,10 +141,10 @@ if ($rulesverify != 'yes' || $faqverify != 'yes' || $ageverify != 'yes') {
 }
 
 $email_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('email = ?', $email)
-    ->fetch('count');
+                      ->select(null)
+                      ->select('COUNT(id) AS count')
+                      ->where('email = ?', $email)
+                      ->fetch('count');
 if ($email_count != 0) {
     $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
     header("Location: {$site_config['paths']['baseurl']}/signup.php");
@@ -153,10 +153,10 @@ if ($email_count != 0) {
 
 if ($site_config['signup']['dupeip_check_on']) {
     $ip_count = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(id) AS count')
-        ->where('ip = ?', inet_pton($ip))
-        ->fetch('count');
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('ip = ?', inet_pton($ip))
+                       ->fetch('count');
     if ($ip_count != 0) {
         $session->set('is-warning', '[h2]The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.[/h2]');
         header("Location: {$site_config['paths']['baseurl']}/signup.php");
@@ -223,8 +223,8 @@ if ($users_count > 0 && $site_config['signup']['email_confirm']) {
         'id' => $alt_id,
     ];
     $fluent->insertInto('tokens')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 }
 unset($values);
 $cache->delete('birthdayusers');
@@ -276,10 +276,10 @@ if ($users_count > 0 && $site_config['signup']['email_confirm']) {
 
     $mail = new Message();
     $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-        ->addTo($email)
-        ->setReturnPath($site_config['site']['email'])
-        ->setSubject("{$site_config['site']['name']} {$lang['takesignup_confirm']}")
-        ->setHtmlBody($body);
+         ->addTo($email)
+         ->setReturnPath($site_config['site']['email'])
+         ->setSubject("{$site_config['site']['name']} {$lang['takesignup_confirm']}")
+         ->setHtmlBody($body);
 
     $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site']['email']}";

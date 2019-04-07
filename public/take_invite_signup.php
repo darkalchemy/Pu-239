@@ -32,9 +32,9 @@ if (!$site_config['openreg']['invites_only']) {
     stderr('Sorry', 'Invite Signups are closed presently');
 }
 $users_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->fetch('count');
+                      ->select(null)
+                      ->select('COUNT(id) AS count')
+                      ->fetch('count');
 
 /*
 if ($users_count>= $site_config['site']['maxusers']) {
@@ -134,10 +134,10 @@ if ($rulesverify != 'yes' || $faqverify != 'yes' || $ageverify != 'yes') {
 }
 
 $email_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('email = ?', $email)
-    ->fetch('count');
+                      ->select(null)
+                      ->select('COUNT(id) AS count')
+                      ->where('email = ?', $email)
+                      ->fetch('count');
 if ($email_count != 0) {
     $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
     header("Location: {$site_config['paths']['baseurl']}/signup.php");
@@ -146,10 +146,10 @@ if ($email_count != 0) {
 
 if ($site_config['signup']['dupeip_check_on']) {
     $ip_count = $fluent->from('users')
-        ->select(null)
-        ->select('COUNT(id) AS count')
-        ->where('ip = ?', inet_pton($ip))
-        ->fetch('count');
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('ip = ?', inet_pton($ip))
+                       ->fetch('count');
     if ($ip_count != 0) {
         $session->set('is-warning', '[h2]The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.[/h2]');
         header("Location: {$site_config['paths']['baseurl']}/signup.php");
@@ -167,8 +167,8 @@ $dst_in_use = localtime($dt + ($time_offset * 3600), true);
 check_banned_emails($email);
 
 $inviter = $fluent->from('invite_codes')
-    ->where('code = ?', $invite)
-    ->fetchAll();
+                  ->where('code = ?', $invite)
+                  ->fetchAll();
 
 if (empty($inviter)) {
     $session->set('is-warning', '[h2]Invite not found.[br]Please request a invite from one of our members.[/h2]');
@@ -182,10 +182,10 @@ if ($inviter['receiver'] != 0) {
 }
 $email = $inviter['email'];
 $email_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('email = ?', $email)
-    ->fetch('count');
+                      ->select(null)
+                      ->select('COUNT(id) AS count')
+                      ->where('email = ?', $email)
+                      ->fetch('count');
 if ($email_count != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
     $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
@@ -252,10 +252,10 @@ $set = [
     'status' => 'Confirmed',
 ];
 $fluent->update('invite_codes')
-    ->set($set)
-    ->where('sender = ?', $inviter['sender'])
-    ->where('code = ?', $invite)
-    ->execute();
+       ->set($set)
+       ->where('sender = ?', $inviter['sender'])
+       ->where('code = ?', $invite)
+       ->execute();
 
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');

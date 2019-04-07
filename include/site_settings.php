@@ -5,11 +5,11 @@ global $site_config, $cache, $fluent, $CURUSER, $session;
 $staff_settings = $cache->get('is_staff_');
 if ($staff_settings === false || is_null($staff_settings)) {
     $sql = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('class>= ?', UC_STAFF)
-        ->where('class <= ?', UC_MAX)
-        ->orderBy('id ASC');
+                  ->select(null)
+                  ->select('id')
+                  ->where('class>= ?', UC_STAFF)
+                  ->where('class <= ?', UC_MAX)
+                  ->orderBy('id ASC');
     foreach ($sql as $res) {
         $staff_settings['is_staff'][] = $res['id'];
     }
@@ -24,11 +24,11 @@ if ($staff_settings === false || is_null($staff_settings)) {
 $staff_forums = $cache->get('staff_forums_');
 if ($staff_forums === false || is_null($staff_forums)) {
     $sql = $fluent->from('forums')
-        ->select(null)
-        ->select('id')
-        ->where('min_class_read>= ?', UC_STAFF)
-        ->orderBy('id')
-        ->fetchAll();
+                  ->select(null)
+                  ->select('id')
+                  ->where('min_class_read>= ?', UC_STAFF)
+                  ->orderBy('id')
+                  ->fetchAll();
 
     foreach ($sql as $res) {
         $staff_forums['staff_forums'][] = $res['id'];
@@ -40,8 +40,8 @@ if ($staff_forums === false || is_null($staff_forums)) {
 $site_settings = $cache->get('site_settings_');
 if ($site_settings === false || is_null($site_settings)) {
     $sql = $fluent->from('site_config')
-        ->orderBy('parent')
-        ->orderBy('name');
+                  ->orderBy('parent')
+                  ->orderBy('name');
 
     foreach ($sql as $row) {
         switch ($row['type']) {
@@ -93,10 +93,10 @@ if ($site_settings === false || is_null($site_settings)) {
 $badwords = $cache->get('badwords_');
 if ($badwords === false || is_null($badwords)) {
     $query = $fluent->from('class_config')
-        ->select('name')
-        ->select('classname')
-        ->where('template = 1')
-        ->where('classname != ""');
+                    ->select('name')
+                    ->select('classname')
+                    ->where('template = 1')
+                    ->where('classname != ""');
     foreach ($query as $classname) {
         $temp[] = $classname['name'];
         $temp[] = $classname['classname'];
@@ -110,7 +110,7 @@ if ($badwords === false || is_null($badwords)) {
 $hnr_config = $cache->get('hnr_config_');
 if ($hnr_config === false || is_null($hnr_config)) {
     $query = $fluent->from('hit_and_run_settings')
-        ->orderBy('name');
+                    ->orderBy('name');
     foreach ($query as $row) {
         $hnr_config['hnr_config'][$row['name']] = $row['value'];
     }

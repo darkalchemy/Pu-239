@@ -12,8 +12,8 @@ function set_event(int $modifier, int $begin, int $expires, int $setby, string $
         'title' => $title,
     ];
     $fluent->insertInto('events')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     $cache->set('site_events_', $values, $expires);
 }
@@ -26,9 +26,9 @@ function update_event(int $expires, int $new_expires)
         'expires' => $new_expires,
     ];
     $fluent->update('events')
-        ->set($set)
-        ->where('expires = ?', $expires)
-        ->execute();
+           ->set($set)
+           ->where('expires = ?', $expires)
+           ->execute();
 
     $free = [
         'modifier' => 0,
@@ -46,10 +46,10 @@ function get_event(bool $all)
         $free = $cache->get('site_events_');
         if ($free === false || is_null($free)) {
             $free = $fluent->from('events')
-                ->where('expires>?', TIME_NOW)
-                ->orderBy('id DESC')
-                ->limit(1)
-                ->fetch();
+                           ->where('expires>?', TIME_NOW)
+                           ->orderBy('id DESC')
+                           ->limit(1)
+                           ->fetch();
 
             if (empty($free)) {
                 $free = [
@@ -61,9 +61,9 @@ function get_event(bool $all)
         }
     } else {
         $free = $fluent->from('events')
-            ->orderBy('id DESC')
-            ->limit(20)
-            ->fetchAll();
+                       ->orderBy('id DESC')
+                       ->limit(20)
+                       ->fetchAll();
 
         $free = array_reverse($free);
     }

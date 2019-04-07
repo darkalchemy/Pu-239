@@ -67,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail = new Message();
             $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-                ->addTo($arr['email'])
-                ->setReturnPath($site_config['site']['email'])
-                ->setSubject("{$lang['inactive_youracc']}{$site_config['site']['name']}!")
-                ->setHtmlBody($body);
+                 ->addTo($arr['email'])
+                 ->setReturnPath($site_config['site']['email'])
+                 ->setSubject("{$lang['inactive_youracc']}{$site_config['site']['name']}!")
+                 ->setHtmlBody($body);
 
             $mailer = new SendmailMailer();
             $mailer->commandArgs = "-f{$site_config['site']['email']}";

@@ -2,6 +2,7 @@
 
 namespace Pu239;
 
+use CouchbaseCluster;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use MatthiasMullie\Scrapbook\Adapters\Apc;
@@ -38,7 +39,7 @@ class Cache extends TransactionalStore
 
         switch ($this->site_config['cache']['driver']) {
             case 'couchbase':
-                $cluster = new \CouchbaseCluster('couchbase://localhost');
+                $cluster = new CouchbaseCluster('couchbase://localhost');
                 $bucket = $cluster->openBucket('default');
                 $this->cache = new Couchbase($bucket);
                 break;

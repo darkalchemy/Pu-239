@@ -255,19 +255,19 @@ function add_user(array $values)
 
     $fluent = new Pu239\Database();
     $user_id = $fluent->insertInto('users')
-        ->values($values)
-        ->execute();
+                      ->values($values)
+                      ->execute();
 
     if ($user_id) {
         $values = [
             'userid' => $user_id,
         ];
         $fluent->insertInto('usersachiev')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
         $fluent->insertInto('user_blocks')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
 }
 
@@ -275,8 +275,8 @@ function update_config(array $set, string $parent, string $name)
 {
     $fluent = new Pu239\Database();
     $fluent->update('site_config')
-        ->set($set)
-        ->where('parent = ?', $parent)
-        ->where('name = ?', $name)
-        ->execute();
+           ->set($set)
+           ->where('parent = ?', $parent)
+           ->where('name = ?', $name)
+           ->execute();
 }

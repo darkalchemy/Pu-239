@@ -55,6 +55,8 @@ class ImageProxy
             $hash = $this->resize_image($url, $path, $width, $height);
         }
 
+        $this->set_permissions($path);
+
         return $hash;
     }
 
@@ -78,51 +80,12 @@ class ImageProxy
 
             return false;
         }
-        chmod($path, 0775);
         if ($this->optimize($path, false, false)) {
+            $this->set_permissions($path);
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * @param $url
-     * @param $path
-     * @param $quality
-     *
-     * @return string
-     *
-     * @throws InvalidManipulation
-     */
-    protected function convert_image(string $url, string $path, ?int $quality)
-    {
-        $hash = hash('sha512', $url . '_converted' . (!empty($quality) ? '_' . $quality : ''));
-        $new_path = PROXY_IMAGES_DIR . $hash;
-
-        if (!file_exists($path)) {
-            return false;
-        }
-
-        if (file_exists($new_path)) {
-            return $hash;
-        }
-
-        if (mime_content_type($path) !== 'image/gif') {
-            if (mime_content_type($path) !== 'image/jpeg') {
-                Image::load($path)
-                    ->format(Manipulations::FORMAT_JPG)
-                    ->quality($quality)
-                    ->save($new_path);
-            } else {
-                Image::load($path)
-                    ->quality($quality)
-                    ->save($new_path);
-            }
-            $this->optimize($new_path, false, false);
-        }
-
-        return $hash;
     }
 
     /**
@@ -143,7 +106,7 @@ class ImageProxy
                     $before = filesize($path);
                 }
                 $optimizerChain->setTimeout(5)
-                    ->optimize($path, $temp);
+                               ->optimize($path, $temp);
                 rename($temp, $path);
                 if ($debug) {
                     $after = filesize($path);
@@ -173,6 +136,55 @@ class ImageProxy
     }
 
     /**
+     * @param $path
+     */
+    protected function set_permissions($path)
+    {
+        if (file_exists($path) && is_writable($path)) {
+            chmod($path, 0775);
+        }
+    }
+
+    /**
+     * @param $url
+     * @param $path
+     * @param $quality
+     *
+     * @return string
+     *
+     * @throws InvalidManipulation
+     */
+    protected function convert_image(string $url, string $path, ?int $quality)
+    {
+        $hash = hash('sha512', $url . '_converted' . (!empty($quality) ? '_' . $quality : ''));
+        $new_path = PROXY_IMAGES_DIR . $hash;
+
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        if (file_exists($new_path)) {
+            return $hash;
+        }
+
+        if (mime_content_type($path) !== 'image/gif') {
+            if (mime_content_type($path) !== 'image/jpeg') {
+                Image::load($path)
+                     ->format(Manipulations::FORMAT_JPG)
+                     ->quality($quality)
+                     ->save($new_path);
+            } else {
+                Image::load($path)
+                     ->quality($quality)
+                     ->save($new_path);
+            }
+            $this->optimize($new_path, false, false);
+        }
+
+        return $hash;
+    }
+
+    /**
      * @param string   $url
      * @param string   $path
      * @param int|null $width
@@ -191,10 +203,10 @@ class ImageProxy
         }
         try {
             $image = $manager->make($path)
-                ->resize($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+                             ->resize($width, $height, function ($constraint) {
+                                 $constraint->aspectRatio();
+                                 $constraint->upsize();
+                             });
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage() . "\n";
 
@@ -223,13 +235,14 @@ class ImageProxy
         }
         if ($width || $height) {
             $image = $manager->make($path)
-                ->resize($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+                             ->resize($width, $height, function ($constraint) {
+                                 $constraint->aspectRatio();
+                                 $constraint->upsize();
+                             });
             $image->save($path);
         }
         $this->optimize($path, false, $debug);
+        $this->set_permissions($path);
 
         return true;
     }
@@ -245,7 +258,7 @@ class ImageProxy
     {
         $manager = new ImageManager(['driver' => 'imagick']);
         $img = $manager->canvas($width, $height, $color)
-            ->encode('jpg', 50);
+                       ->encode('jpg', 50);
 
         return $img;
     }

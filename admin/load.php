@@ -154,7 +154,7 @@ $body .= "
 
 $HTMLOUT .= main_div($body) . "
     <script>
-        var percent = $percent;
+        var percent =; $percent;
         var width = document.getElementById('load').offsetWidth;
         width = Math.ceil(width / 100 * percent);
         document.getElementById('load_image').style.width = width + 'px';

@@ -63,10 +63,10 @@ if ($action === 'add') {
     </form>";
 
     $allrows = $fluent->from('usercomments')
-        ->where('user = ?', $userid)
-        ->orderBy('id DESC')
-        ->limit(5)
-        ->fetchAll();
+                      ->where('user = ?', $userid)
+                      ->orderBy('id DESC')
+                      ->limit(5)
+                      ->fetchAll();
 
     if ($allrows) {
         $HTMLOUT .= '
@@ -129,8 +129,8 @@ if ($action === 'add') {
         stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-success'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
-        ->where('id=?', $commentid)
-        ->fetch();
+                  ->where('id=?', $commentid)
+                  ->fetch();
 
     if ($arr) {
         $userid = (int) $arr['userid'];
@@ -158,8 +158,8 @@ if ($action === 'add') {
         stderr('Error', 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments')
-        ->where('id=?', $commentid)
-        ->fetch();
+                  ->where('id=?', $commentid)
+                  ->fetch();
 
     if (!$arr) {
         stderr('Error', 'Invalid ID');

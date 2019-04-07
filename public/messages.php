@@ -107,10 +107,10 @@ if (isset($_GET['show_pm_avatar'])) {
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
     $opt2 = $fluent->from('users')
-        ->select(null)
-        ->select('opt2')
-        ->where('id=?', $CURUSER['id'])
-        ->fetch('opt2');
+                   ->select(null)
+                   ->select('opt2')
+                   ->where('id=?', $CURUSER['id'])
+                   ->fetch('opt2');
 
     $cache->update_row('user_' . $CURUSER['id'], [
         'opt2' => $opt2,
@@ -206,12 +206,12 @@ function get_all_boxes($box = 1)
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $get_all_boxes = $fluent->from('pmboxes')
-            ->select(null)
-            ->select('boxnumber')
-            ->select('name')
-            ->where('userid=?', $CURUSER['id'])
-            ->orderBy('boxnumber')
-            ->fetchAll();
+                                ->select(null)
+                                ->select('boxnumber')
+                                ->select('name')
+                                ->where('userid=?', $CURUSER['id'])
+                                ->orderBy('boxnumber')
+                                ->fetchAll();
 
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }

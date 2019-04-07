@@ -1,5 +1,7 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -165,13 +167,13 @@ function show_form($type = 'edit')
         $title = $lang['rep_ad_form_title'];
         $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . " ({$lang['rep_ad_form_id']}{$res['reputationlevelid']})</span><br>";
         $button = $lang['rep_ad_form_btn'];
-        $extra = "<input type='button' class='button is-small' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)'>";
+        $extra = "<input type='button' class='button is-small' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='history.back(1)'>";
         $mode = 'doedit';
     } else {
         $title = $lang['rep_ad_form_add_title'];
         $button = $lang['rep_ad_form_add_btn'];
         $mode = 'doadd';
-        $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)'>";
+        $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='history.back(1)'>";
     }
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
@@ -466,7 +468,7 @@ function view_list()
 }
 
 /**
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function do_delete_rep()
 {
@@ -493,7 +495,7 @@ function do_delete_rep()
 }
 
 /**
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function do_edit_rep()
 {

@@ -50,9 +50,9 @@ function commenttable($rows, $variant = 'torrent')
             $user_likes = $cache->get("{$type}_user_likes_" . $cid);
             if ($user_likes === false || is_null($user_likes)) {
                 $likes = $fluent->from('likes')
-                    ->select(null)
-                    ->select('user_id')
-                    ->where("{$variantc}_id=?", $cid);
+                                ->select(null)
+                                ->select('user_id')
+                                ->where("{$variantc}_id=?", $cid);
                 foreach ($likes as $like) {
                     $user_likes[] = $like['user_id'];
                 }

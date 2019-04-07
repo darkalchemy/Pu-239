@@ -7,6 +7,8 @@
  * @link https://blueimp.net/ajax/
  */
 
+use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+
 /**
  * Class CustomAJAXChat.
  */
@@ -22,7 +24,7 @@ class CustomAJAXChat extends AJAXChat
      *
      * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws ServerUnhealthy
      */
     public function getValidLoginUserData()
     {

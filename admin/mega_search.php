@@ -62,16 +62,16 @@ if (!empty($user_names)) {
     foreach ($searched_users as $search_users) {
         $users = [];
         $results = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('added')
-            ->select('last_access')
-            ->select('email')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('invitedby')
-            ->where('username LIKE ?', " %{
+                          ->select(null)
+                          ->select('id')
+                          ->select('INET6_NTOA(ip) AS ip')
+                          ->select('added')
+                          ->select('last_access')
+                          ->select('email')
+                          ->select('uploaded')
+                          ->select('downloaded')
+                          ->select('invitedby')
+                          ->where('username LIKE ?', " %{
     $search_users}%");
         foreach ($results as $result) {
             $users[] = $result;
@@ -150,16 +150,16 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($email_to_test[0] as $tested_email) {
         $users = [];
         $results = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('email')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('added')
-            ->select('last_access')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('invitedby')
-            ->where('email = ?', $tested_email);
+                          ->select(null)
+                          ->select('id')
+                          ->select('email')
+                          ->select('INET6_NTOA(ip) AS ip')
+                          ->select('added')
+                          ->select('last_access')
+                          ->select('uploaded')
+                          ->select('downloaded')
+                          ->select('invitedby')
+                          ->where('email = ?', $tested_email);
         foreach ($results as $result) {
             $users[] = $result;
         }
@@ -231,10 +231,10 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($email_to_test_like[0] as $tested_email_like) {
         $users = [];
         $results = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('email')
-            ->where('email LIKE ?', " % $tested_email_like % ");
+                          ->select(null)
+                          ->select('id')
+                          ->select('email')
+                          ->where('email LIKE ?', " % $tested_email_like % ");
         foreach ($results as $result) {
             $users[] = $result;
         }
@@ -269,16 +269,16 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($ip_to_test[0] as $tested_ip) {
         $users = [];
         $results = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('email')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('added')
-            ->select('last_access')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('invitedby')
-            ->where('INET6_NTOA(ip) = ?', $tested_ip);
+                          ->select(null)
+                          ->select('id')
+                          ->select('email')
+                          ->select('INET6_NTOA(ip) AS ip')
+                          ->select('added')
+                          ->select('last_access')
+                          ->select('uploaded')
+                          ->select('downloaded')
+                          ->select('invitedby')
+                          ->where('INET6_NTOA(ip) = ?', $tested_ip);
         foreach ($results as $result) {
             $users[] = $result;
         }
@@ -348,20 +348,20 @@ if (isset($_POST['msg_to_analyze'])) {
 if (isset($_POST['invite_code'])) {
     $heading = $body = $user = '';
     $user = $fluent->from('users')
-        ->select(null)
-        ->select('users.id')
-        ->select('users.email')
-        ->select('INET6_NTOA(users.ip) AS ip')
-        ->select('users.added')
-        ->select('users.last_access')
-        ->select('users.uploaded')
-        ->select('users.downloaded')
-        ->select('users.invitedby')
-        ->select('invite_codes.id AS invite_id')
-        ->select('invite_codes.added AS invite_added')
-        ->leftJoin('invite_codes ON users.id=invite_codes.sender')
-        ->where('invite_codes.code = ?', $invite_code)
-        ->fetch();
+                   ->select(null)
+                   ->select('users.id')
+                   ->select('users.email')
+                   ->select('INET6_NTOA(users.ip) AS ip')
+                   ->select('users.added')
+                   ->select('users.last_access')
+                   ->select('users.uploaded')
+                   ->select('users.downloaded')
+                   ->select('users.invitedby')
+                   ->select('invite_codes.id AS invite_id')
+                   ->select('invite_codes.added AS invite_added')
+                   ->leftJoin('invite_codes ON users.id=invite_codes.sender')
+                   ->where('invite_codes.code = ?', $invite_code)
+                   ->fetch();
 
     if ($user['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_invite_gone'], 'top20');
@@ -398,19 +398,19 @@ if (isset($_POST['invite_code'])) {
     $user_invited = [];
     $heading = $body = $users = '';
     $user_invited = $fluent->from('users')
-        ->select(null)
-        ->select('users.id')
-        ->select('users.email')
-        ->select('INET6_NTOA(users.ip) AS ip')
-        ->select('users.added')
-        ->select('users.last_access')
-        ->select('users.uploaded')
-        ->select('users.downloaded')
-        ->select('users.invitedby')
-        ->select('invite_codes.id AS invite_id')
-        ->leftJoin('invite_codes ON users.id=invite_codes.receiver')
-        ->where('invite_codes.code = ?', $invite_code)
-        ->fetch();
+                           ->select(null)
+                           ->select('users.id')
+                           ->select('users.email')
+                           ->select('INET6_NTOA(users.ip) AS ip')
+                           ->select('users.added')
+                           ->select('users.last_access')
+                           ->select('users.uploaded')
+                           ->select('users.downloaded')
+                           ->select('users.invitedby')
+                           ->select('invite_codes.id AS invite_id')
+                           ->leftJoin('invite_codes ON users.id=invite_codes.receiver')
+                           ->where('invite_codes.code = ?', $invite_code)
+                           ->fetch();
 
     if ($user_invited['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_not_used'], 'top20');

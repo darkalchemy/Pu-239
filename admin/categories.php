@@ -59,13 +59,13 @@ function move_cat()
     }
 
     $count = $fluent->from('categories')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('id', [
-            $params['id'],
-            $params['new_cat_id'],
-        ])
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('id', [
+                        $params['id'],
+                        $params['new_cat_id'],
+                    ])
+                    ->fetch('count');
 
     if ($count != 2) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
@@ -75,9 +75,9 @@ function move_cat()
     ];
 
     $results = $fluent->update('torrents')
-        ->set($set)
-        ->where('category = ?', $params['id'])
-        ->execute();
+                      ->set($set)
+                      ->where('category = ?', $params['id'])
+                      ->execute();
 
     flush_torrents($params['id']);
     flush_torrents($params['new_cat_id']);
@@ -163,8 +163,8 @@ function add_cat()
         'parent_id' => $params['parent_id'],
     ];
     $insert = $fluent->insertInto('categories')
-        ->values($values)
-        ->execute();
+                     ->values($values)
+                     ->execute();
 
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
@@ -185,25 +185,25 @@ function delete_cat()
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $cat = $fluent->from('categories')
-        ->where('id=?', $params['id'])
-        ->fetch();
+                  ->where('id=?', $params['id'])
+                  ->fetch();
 
     if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
     $count = $fluent->from('torrents')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('category = ?', $params['id'])
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('category = ?', $params['id'])
+                    ->fetch('count');
 
     if ($count) {
         stderr($lang['categories_error'], $lang['categories_not_empty']);
     }
 
     $results = $fluent->deleteFrom('categories')
-        ->where('id =?', $params['id'])
-        ->execute();
+                      ->where('id =?', $params['id'])
+                      ->execute();
 
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
@@ -230,10 +230,10 @@ function delete_cat_form()
     }
 
     $count = $fluent->from('torrents')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('category = ?', $params['id'])
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('category = ?', $params['id'])
+                    ->fetch('count');
 
     if ($count) {
         stderr($lang['categories_error'], $lang['categories_not_empty']);
@@ -288,9 +288,9 @@ function edit_cat()
         'parent_id' => $params['parent_id'],
     ];
     $update = $fluent->update('categories')
-        ->set($set)
-        ->where('id=?', $params['id'])
-        ->execute();
+                     ->set($set)
+                     ->where('id=?', $params['id'])
+                     ->execute();
 
     if ($update) {
         set_ordered($params);
@@ -436,9 +436,9 @@ function get_parents(array $cat)
     global $fluent, $lang;
 
     $parents = $fluent->from('categories')
-        ->where('parent_id=0')
-        ->orderBy('ordered')
-        ->fetchAll();
+                      ->where('parent_id=0')
+                      ->orderBy('ordered')
+                      ->fetchAll();
 
     foreach ($parents as $parent) {
         $parent['name'] = htmlsafechars($parent['name'], ENT_QUOTES);
@@ -468,7 +468,7 @@ function reorder_cats(bool $redirect = true)
 
     $i = 0;
     $cats = $fluent->from('categories')
-        ->orderBy('ordered');
+                   ->orderBy('ordered');
 
     foreach ($cats as $cat) {
         $set = [
@@ -476,9 +476,9 @@ function reorder_cats(bool $redirect = true)
         ];
 
         $fluent->update('categories')
-            ->set($set)
-            ->where('id=?', $cat['id'])
-            ->execute();
+               ->set($set)
+               ->where('id=?', $cat['id'])
+               ->execute();
     }
 
     flush_torrents(0);
@@ -500,10 +500,10 @@ function set_ordered(array $params)
         'ordered' => new Envms\FluentPDO\Literal('ordered + 1'),
     ];
     $fluent->update('categories')
-        ->set($set)
-        ->where('ordered>= ?', $params['order_id'])
-        ->where('id != ?', $params['id'])
-        ->execute();
+           ->set($set)
+           ->where('ordered>= ?', $params['order_id'])
+           ->where('id != ?', $params['id'])
+           ->execute();
 }
 
 function get_images(array $cat)
@@ -546,14 +546,14 @@ function get_cat(int $id)
     global $fluent;
 
     $cat = $fluent->from('categories')
-        ->where('id=?', $id)
-        ->fetch();
+                  ->where('id=?', $id)
+                  ->fetch();
 
     $current_cat['parent_name'] = $fluent->from('categories')
-        ->select(null)
-        ->select('name')
-        ->where('id=?', $cat['parent_id'])
-        ->fetch('name');
+                                         ->select(null)
+                                         ->select('name')
+                                         ->where('id=?', $cat['parent_id'])
+                                         ->fetch('name');
 
     $cat['name'] = htmlsafechars($cat['name'], ENT_QUOTES);
     $cat['cat_desc'] = htmlsafechars($cat['cat_desc'], ENT_QUOTES);
@@ -568,8 +568,8 @@ function flush_torrents(int $id)
     global $fluent, $site_config, $cache;
 
     $torrents = $fluent->from('torrents')
-        ->select(null)
-        ->select('id');
+                       ->select(null)
+                       ->select('id');
     if (!empty($id)) {
         $torrents->where('category = ?', $id);
     } else {

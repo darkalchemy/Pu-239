@@ -26,7 +26,7 @@ class Sitelog
     public function insert(array $values)
     {
         $this->fluent->insertInto('sitelog')
-            ->values($values)
-            ->execute();
+                     ->values($values)
+                     ->execute();
     }
 }

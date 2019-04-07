@@ -80,10 +80,10 @@ function comment_like_unlike($fields)
         $data['label'] = 'you lost me';
     }
     $sql = $fluent->from('likes')
-        ->select(null)
-        ->select('user_id')
-        ->where("{$type}_id=?", $id)
-        ->where('user_id != ?', $CURUSER['id']);
+                  ->select(null)
+                  ->select('user_id')
+                  ->where("{$type}_id=?", $id)
+                  ->where('user_id != ?', $CURUSER['id']);
     foreach ($sql as $row) {
         $rows[] = format_username($row['user_id']);
     }

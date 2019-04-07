@@ -98,9 +98,9 @@ function cleanup_show_main()
     global $site_config, $lang, $fluent;
 
     $count1 = $fluent->from('cleanup')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->fetch('count');
+                     ->select(null)
+                     ->select('COUNT(*) AS count')
+                     ->fetch('count');
 
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
@@ -225,7 +225,7 @@ function cleanup_show_edit()
 
     <div style='text-align:center;'>
         <input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small right1-'>
-        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()'>
+        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='history.back()'>
     </div>
     </form>
     </div>";
@@ -342,7 +342,7 @@ function cleanup_show_new()
 
     <div style='text-align:center;'>
         <input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small right10'>
-        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()'>
+        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='history.back()'>
     </div>
     </form>
     </div>";

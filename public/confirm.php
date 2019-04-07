@@ -19,12 +19,12 @@ if (!preg_match("/^(?:[\d\w]){60}$/", $token)) {
 }
 
 $row = $fluent->from('tokens')
-    ->select('users.status')
-    ->select('users.id AS user_id')
-    ->innerJoin('users ON users.email = tokens.email')
-    ->where('tokens.id=?', $id)
-    ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
-    ->fetch();
+              ->select('users.status')
+              ->select('users.id AS user_id')
+              ->innerJoin('users ON users.email = tokens.email')
+              ->where('tokens.id=?', $id)
+              ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+              ->fetch();
 
 if (!password_verify($token, $row['token'])) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -36,14 +36,14 @@ if ($row['status'] != 'pending') {
     die();
 }
 $passed = $fluent->update('users')
-    ->set(['status' => 'confirmed'])
-    ->where('email = ?', $row['email'])
-    ->where('status = ?', 'pending')
-    ->execute();
+                 ->set(['status' => 'confirmed'])
+                 ->where('email = ?', $row['email'])
+                 ->where('status = ?', 'pending')
+                 ->execute();
 
 $fluent->deleteFrom('tokens')
-    ->where('id=?', $id)
-    ->execute();
+       ->where('id=?', $id)
+       ->execute();
 
 if (!$passed) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");

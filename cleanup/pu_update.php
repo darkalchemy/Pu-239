@@ -1,10 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 /**
  * @param $data
  *
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function pu_update($data)
 {
@@ -19,8 +21,8 @@ function pu_update($data)
     $dt = TIME_NOW;
 
     $promos = $fluent->from('class_promo')
-        ->orderBy('id')
-        ->fetchAll();
+                     ->orderBy('id')
+                     ->fetchAll();
     foreach ($promos as $ac) {
         $class_config[$ac['name']]['id'] = $ac['id'];
         $class_config[$ac['name']]['name'] = $ac['name'];
@@ -35,28 +37,28 @@ function pu_update($data)
 
         $class_value = $class_config[$ac['name']]['name'];
         $classes = $fluent->from('class_config')
-            ->where('value = ?', $class_value)
-            ->fetch();
+                          ->where('value = ?', $class_value)
+                          ->fetch();
         $class_name = $classes['classname'];
         $prev_class = $class_value - 1;
 
         $classes = $fluent->from('class_config')
-            ->where('value = ?', $prev_class)
-            ->fetch();
+                          ->where('value = ?', $prev_class)
+                          ->fetch();
         $prev_class_name = $classes['classname'];
         $users = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('invites')
-            ->select('modcomment')
-            ->where('class = ?', $prev_class)
-            ->where('enabled = "yes"')
-            ->where('added < ?', $maxdt)
-            ->where('uploaded>= ?', $limit)
-            ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
-            ->fetchAll();
+                        ->select(null)
+                        ->select('id')
+                        ->select('uploaded')
+                        ->select('downloaded')
+                        ->select('invites')
+                        ->select('modcomment')
+                        ->where('class = ?', $prev_class)
+                        ->where('enabled = "yes"')
+                        ->where('added < ?', $maxdt)
+                        ->where('uploaded>= ?', $limit)
+                        ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
+                        ->fetchAll();
 
         $msgs_buffer = $users_buffer = [];
         $comment = '';
@@ -95,13 +97,13 @@ function pu_update($data)
                     'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
                 ];
                 $fluent->update('users')
-                    ->set($set)
-                    ->where('class = ?', $prev_class)
-                    ->where('enabled = "yes"')
-                    ->where('added < ?', $maxdt)
-                    ->where('uploaded>= ?', $limit)
-                    ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
-                    ->execute();
+                       ->set($set)
+                       ->where('class = ?', $prev_class)
+                       ->where('enabled = "yes"')
+                       ->where('added < ?', $maxdt)
+                       ->where('uploaded>= ?', $limit)
+                       ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
+                       ->execute();
             }
             $time_end = microtime(true);
             $run_time = $time_end - $time_start;

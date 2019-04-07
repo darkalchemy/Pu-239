@@ -6,10 +6,10 @@ if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
         $newapp = $fluent->from('uploadapp')
-            ->select(null)
-            ->select('COUNT(id) AS count')
-            ->where('status = ?', 'pending')
-            ->fetch('count');
+                         ->select(null)
+                         ->select('COUNT(id) AS count')
+                         ->where('status = ?', 'pending')
+                         ->fetch('count');
 
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);
     }

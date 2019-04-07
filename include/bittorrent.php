@@ -1,5 +1,9 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 $starttime = microtime(true);
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'app.php';
@@ -158,8 +162,8 @@ function status_change(int $id)
  *
  * @throws Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws ServerUnhealthy
+ * @throws UnbegunTransaction
  */
 function userlogin()
 {
@@ -1153,8 +1157,8 @@ function suspended()
 /**
  * @throws Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws ServerUnhealthy
+ * @throws UnbegunTransaction
  */
 function check_user_status()
 {
@@ -1453,7 +1457,7 @@ function get_anonymous_name()
  *
  * @return string
  *
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ * @throws InvalidManipulation
  */
 function url_proxy($url, $image = false, $width = null, $height = null, $quality = null)
 {

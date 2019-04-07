@@ -15,13 +15,13 @@ function sitestats_update($data)
     $dt = TIME_NOW - 300;
 
     $users = $fluent->from('users')
-        ->select(null)
-        ->select('status')
-        ->select('donor')
-        ->select('last_access')
-        ->select('gender')
-        ->select('class')
-        ->select('enabled');
+                    ->select(null)
+                    ->select('status')
+                    ->select('donor')
+                    ->select('last_access')
+                    ->select('gender')
+                    ->select('class')
+                    ->select('enabled');
 
     $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = 0;
     foreach ($users as $user) {
@@ -42,9 +42,9 @@ function sitestats_update($data)
 
     $unconnectables = $seeders = $leechers = $connectable = 0;
     $peers = $fluent->from('peers')
-        ->select(null)
-        ->select('connectable')
-        ->select('seeder');
+                    ->select(null)
+                    ->select('connectable')
+                    ->select('seeder');
 
     foreach ($peers as $peer) {
         $seeders += $peer['seeder'] === 'yes' ? 1 : 0;
@@ -54,8 +54,8 @@ function sitestats_update($data)
 
     $posts_count = $poststoday = $postsmonth = 0;
     $forumposts = $fluent->from('posts')
-        ->select(null)
-        ->select('added');
+                         ->select(null)
+                         ->select('added');
 
     foreach ($forumposts as $post) {
         ++$posts_count;
@@ -65,8 +65,8 @@ function sitestats_update($data)
 
     $topics_count = $topicstoday = $topicsmonth = 0;
     $forumtopics = $fluent->from('topics')
-        ->select(null)
-        ->select('added');
+                          ->select(null)
+                          ->select('added');
 
     foreach ($forumtopics as $topic) {
         ++$topics_count;
@@ -76,8 +76,8 @@ function sitestats_update($data)
 
     $torrent_count = $torrentstoday = $torrentsmonth = 0;
     $torrents = $fluent->from('torrents')
-        ->select(null)
-        ->select('added');
+                       ->select(null)
+                       ->select('added');
 
     foreach ($torrents as $torrent) {
         ++$torrent_count;

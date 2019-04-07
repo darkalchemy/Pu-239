@@ -31,50 +31,6 @@ class Cookie
     }
 
     /**
-     * @param $value
-     * @param $expires
-     *
-     * @return bool
-     */
-    public function set(string $value, int $expires)
-    {
-        if (empty($this->key) || empty($value)) {
-            return false;
-        }
-        $params = session_get_cookie_params();
-        $encrypted = CryptoJSAES::encrypt($value, $this->site_config['salt']['one']);
-        setcookie($this->site_config['cookies']['prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-
-        return true;
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function get()
-    {
-        if (empty($this->key) || empty($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key])) {
-            return false;
-        }
-        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key]), $this->site_config['salt']['one']);
-
-        return $decrypted;
-    }
-
-    /**
-     * @return array|bool
-     */
-    public function getToken()
-    {
-        $cookies = $this->get();
-        if ($cookies) {
-            return explode(':', $cookies);
-        }
-
-        return false;
-    }
-
-    /**
      * @throws Exception
      */
     public function reset_expire()
@@ -91,9 +47,53 @@ class Cookie
                 'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
             ];
             $this->fluent->update('auth_tokens')
-                ->set($set)
-                ->where('selector = ?', $selector)
-                ->execute();
+                         ->set($set)
+                         ->where('selector = ?', $selector)
+                         ->execute();
         }
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function getToken()
+    {
+        $cookies = $this->get();
+        if ($cookies) {
+            return explode(':', $cookies);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function get()
+    {
+        if (empty($this->key) || empty($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key])) {
+            return false;
+        }
+        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->site_config['cookies']['prefix'] . $this->key]), $this->site_config['salt']['one']);
+
+        return $decrypted;
+    }
+
+    /**
+     * @param $value
+     * @param $expires
+     *
+     * @return bool
+     */
+    public function set(string $value, int $expires)
+    {
+        if (empty($this->key) || empty($value)) {
+            return false;
+        }
+        $params = session_get_cookie_params();
+        $encrypted = CryptoJSAES::encrypt($value, $this->site_config['salt']['one']);
+        setcookie($this->site_config['cookies']['prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+
+        return true;
     }
 }

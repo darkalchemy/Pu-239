@@ -1,5 +1,7 @@
 <?php
 
+use Intervention\Image\Image;
+
 /**
  * @return string
  */
@@ -294,8 +296,8 @@ function write_class_files($template)
     $t = 'define(';
     $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
-        ->orderBy('value ASC')
-        ->where('template = ?', $template);
+                  ->orderBy('value ASC')
+                  ->where('template = ?', $template);
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
@@ -335,7 +337,7 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @return bool|\Intervention\Image\Image|mixed|string
+ * @return bool|Image|mixed|string
  */
 function placeholder_image($size = 10)
 {

@@ -28,9 +28,9 @@ $set = [
     'staff_picks' => $staff_picks,
 ];
 $result = $fluent->update('torrents')
-    ->set($set)
-    ->where('id=?', $id)
-    ->execute();
+                 ->set($set)
+                 ->where('id=?', $id)
+                 ->execute();
 
 if ($result) {
     $cache->delete('staff_picks_');

@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
+
 use SlashTrace\SlashTrace;
 use SlashTrace\Sentry\SentryHandler;
 use SlashTrace\EventHandler\DebugHandler;

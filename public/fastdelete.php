@@ -18,16 +18,16 @@ if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
 $id = (int) $_GET['id'];
 
 $tid = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.info_hash')
-    ->select('t.owner')
-    ->select('t.name')
-    ->select('t.added')
-    ->select('u.seedbonus')
-    ->leftJoin('users AS u ON u.id=t.owner')
-    ->where('t.id=?', $id)
-    ->fetch();
+              ->select(null)
+              ->select('t.id')
+              ->select('t.info_hash')
+              ->select('t.owner')
+              ->select('t.name')
+              ->select('t.added')
+              ->select('u.seedbonus')
+              ->leftJoin('users AS u ON u.id=t.owner')
+              ->where('t.id=?', $id)
+              ->fetch();
 
 if (!$tid) {
     stderr('Oops', 'Something went wrong - Contact admin!!');
@@ -54,9 +54,9 @@ if ($site_config['bonus']['on']) {
             'seedbonus' => $sb,
         ];
         $fluent->update('users')
-            ->set($set)
-            ->where('id=?', $tid['owner'])
-            ->execute();
+               ->set($set)
+               ->where('id=?', $tid['owner'])
+               ->execute();
 
         $cache->update_row('user_' . $tid['owner'], [
             'seedbonus' => $sb,

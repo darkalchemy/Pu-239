@@ -27,23 +27,23 @@ if ($action === 'app' || $action === 'show') {
     if ($action === 'show') {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
         $res = $fluent->from('uploadapp')
-            ->select('users.uploaded')
-            ->select('users.downloaded')
-            ->select('users.added')
-            ->select('users.class')
-            ->leftJoin('users ON uploadapp.userid=users.id')
-            ->where('status = "pending"')
-            ->fetchAll();
+                      ->select('users.uploaded')
+                      ->select('users.downloaded')
+                      ->select('users.added')
+                      ->select('users.class')
+                      ->leftJoin('users ON uploadapp.userid=users.id')
+                      ->where('status = "pending"')
+                      ->fetchAll();
     } else {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>";
         $res = $fluent->from('uploadapp')
-            ->select('users.uploaded')
-            ->select('users.downloaded')
-            ->select('users.added')
-            ->select('users.class')
-            ->leftJoin('users ON uploadapp.userid=users.id')
-            ->where('uploadapp.status = "pending"')
-            ->fetchAll();
+                      ->select('users.uploaded')
+                      ->select('users.downloaded')
+                      ->select('users.added')
+                      ->select('users.class')
+                      ->leftJoin('users ON uploadapp.userid=users.id')
+                      ->where('uploadapp.status = "pending"')
+                      ->fetchAll();
     }
 
     $count = count($res);
@@ -114,13 +114,13 @@ if ($action === 'app' || $action === 'show') {
 if ($action === 'viewapp') {
     $id = (int) $_GET['id'];
     $arr = $fluent->from('uploadapp')
-        ->select('users.uploaded')
-        ->select('users.downloaded')
-        ->select('users.added')
-        ->select('users.class')
-        ->leftJoin('users ON uploadapp.userid=users.id')
-        ->where('uploadapp.id=?', $id)
-        ->fetch();
+                  ->select('users.uploaded')
+                  ->select('users.downloaded')
+                  ->select('users.added')
+                  ->select('users.class')
+                  ->leftJoin('users ON uploadapp.userid=users.id')
+                  ->where('uploadapp.id=?', $id)
+                  ->fetch();
 
     $membertime = get_date($arr['added'], '', 0, 1);
     $elapsed = get_date($arr['applied'], '', 0, 1);
@@ -234,13 +234,13 @@ if ($action === 'acceptapp') {
         stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
     }
     $arr = $fluent->from('uploadapp')
-        ->select(null)
-        ->select('uploadapp.userid AS uid')
-        ->select('uploadapp.id')
-        ->select('users.modcomment')
-        ->leftJoin('users ON uploadapp.userid=users.id')
-        ->where('uploadapp.id=?', $id)
-        ->fetch();
+                  ->select(null)
+                  ->select('uploadapp.userid AS uid')
+                  ->select('uploadapp.id')
+                  ->select('users.modcomment')
+                  ->leftJoin('users ON uploadapp.userid=users.id')
+                  ->where('uploadapp.id=?', $id)
+                  ->fetch();
 
     $note = htmlsafechars($_POST['note']);
     $subject = $lang['uploadapps_subject'];

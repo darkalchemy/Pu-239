@@ -6,10 +6,10 @@ if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
         $bugs = $fluent->from('bugs')
-            ->select(null)
-            ->select('COUNT(id) AS count')
-            ->where('status = ?', 'na')
-            ->fetch('count');
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('status = ?', 'na')
+                       ->fetch('count');
 
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
     }

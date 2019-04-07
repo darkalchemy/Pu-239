@@ -50,23 +50,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     exit;
 }
 $disabled = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('enabled = "no"')
-    ->fetch('count');
+                   ->select(null)
+                   ->select('COUNT(*) AS count')
+                   ->where('enabled = "no"')
+                   ->fetch('count');
 $pending = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->where('status = "pending"')
-    ->fetch('count');
+                  ->select(null)
+                  ->select('COUNT(*) AS count')
+                  ->where('status = "pending"')
+                  ->fetch('count');
 $count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(*) AS count')
-    ->whereOr([
-        'enabled' => 'no',
-        'status' => 'pending',
-    ])
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->whereOr([
+                    'enabled' => 'no',
+                    'status' => 'pending',
+                ])
+                ->fetch('count');
 $disabled = number_format($disabled);
 $pending = number_format($pending);
 $count = number_format($count);

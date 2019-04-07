@@ -12,7 +12,7 @@ function tables($no_data = '')
     $tables = $temp = [];
     $no_data = explode('|', $no_data);
     $query = $fluent->getPdo()
-        ->prepare('SHOW TABLES');
+                    ->prepare('SHOW TABLES');
     $query->execute();
     $all_tables = $query->fetchAll();
 
@@ -77,8 +77,8 @@ function backupdb($data)
         'userid' => $site_config['site']['owner'],
     ];
     $fluent->insertInto('dbbackup')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

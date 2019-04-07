@@ -14,8 +14,8 @@ function backup_update($data)
     $days = 3;
     $hours = 6 * 3600;
     $files = $fluent->from('dbbackup')
-        ->where('added < ?', $dt - ($days * 86400))
-        ->fetchAll();
+                    ->where('added < ?', $dt - ($days * 86400))
+                    ->fetchAll();
 
     foreach ($files as $arr) {
         $filename = BACKUPS_DIR . $arr['name'];
@@ -25,8 +25,8 @@ function backup_update($data)
     }
 
     $fluent->deleteFrom('dbbackup')
-        ->where('added < ?', $dt - ($days * 86400))
-        ->execute();
+           ->where('added < ?', $dt - ($days * 86400))
+           ->execute();
 
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(BACKUPS_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
