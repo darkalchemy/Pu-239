@@ -1,5 +1,7 @@
 <?php
 
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 /**
  * @param $num
  *
@@ -31,6 +33,8 @@ function readMore($text, $char, $link)
  * @param string $variant
  *
  * @return string
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  */
 function torrenttable($res, $variant = 'index')
 {

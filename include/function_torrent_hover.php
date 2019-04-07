@@ -1,28 +1,27 @@
 <?php
 
 /**
- * @param string $text
- * @param int    $id
- * @param string $block_id
- * @param string $name
- * @param string $poster
- * @param string $uploader
- * @param int    $added
- * @param int    $size
- * @param int    $seeders
- * @param int    $leechers
- * @param string $imdb_id
- * @param int    $rating
- * @param int    $year
- * @param string $subtitles
- * @param string $genre
- * @param bool   $icons
+ * @param      $text
+ * @param      $id
+ * @param      $block_id
+ * @param      $name
+ * @param      $poster
+ * @param      $uploader
+ * @param      $added
+ * @param      $size
+ * @param      $seeders
+ * @param      $leechers
+ * @param      $imdb_id
+ * @param      $rating
+ * @param      $year
+ * @param      $subtitles
+ * @param      $genre
+ * @param bool $icons
  *
  * @return string
- *
  * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip(string $text, int $id, string $block_id, string $name, string $poster, string $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre, $icons = false)
+function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
@@ -175,26 +174,27 @@ function torrent_tooltip(string $text, int $id, string $block_id, string $name, 
 }
 
 /**
- * @param string $text
- * @param int    $id
- * @param string $block_id
- * @param string $name
- * @param string $poster
- * @param string $uploader
- * @param int    $added
- * @param int    $size
- * @param int    $seeders
- * @param int    $leechers
- * @param string $imdb_id
- * @param int    $rating
- * @param int    $year
- * @param string $subtitles
- * @param string $genre
+ * @param      $text
+ * @param      $id
+ * @param      $block_id
+ * @param      $name
+ * @param      $poster
+ * @param      $uploader
+ * @param      $added
+ * @param      $size
+ * @param      $seeders
+ * @param      $leechers
+ * @param      $imdb_id
+ * @param      $rating
+ * @param      $year
+ * @param      $subtitles
+ * @param      $genre
+ * @param bool $icons
  *
  * @return string
  * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip_wrapper(string $text, int $id, string $block_id, string $name, string $poster, string $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre)
+function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
 {
     global $site_config, $image, $cat, $times_completed;
 
