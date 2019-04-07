@@ -355,7 +355,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image;
-        var is_12_hour =; " . ($use_12_hour ? 1 : 0) . ";
+        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ";
         var chat_height = '$height';
     </script>";
 
