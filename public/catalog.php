@@ -118,36 +118,39 @@ $query = $fluent->from('torrents')
     ->select('imdb_id')
     ->select('anonymous')
     ->where('name LIKE :name', $params)
-    ->limit(str_replace('LIMIT ', '', $pager['limit']));
+    ->limit($pager['pdo']);
 
 foreach ($query as $ta) {
     $rows[] = $ta;
-    $tid[] = $ta['id'];
+    $tids[] = $ta['id'];
 }
 
-if (!empty($tid)) {
-    $query = $fluent->from('peers')
-        ->select(null)
-        ->select('id')
-        ->select('torrent AS tid')
-        ->select('seeder')
-        ->select('finishedat')
-        ->select('downloadoffset')
-        ->select('uploadoffset')
-        ->select('uploaded')
-        ->select('downloaded')
-        ->select('started')
-        ->select('last_action')
-        ->select('userid AS p_uid')
-        ->select('INET6_NTOA(ip) AS ip')
-        ->select('port')
-        ->where('torrent', $tid)
-        ->where('seeder = "yes"')
-        ->where('to_go = 0')
-        ->limit(5);
+foreach ($tids as $tid) {
+    if (!empty($tid)) {
+        $query = $fluent->from('peers')
+            ->select(null)
+            ->select('id')
+            ->select('torrent AS tid')
+            ->select('seeder')
+            ->select('finishedat')
+            ->select('downloadoffset')
+            ->select('uploadoffset')
+            ->select('uploaded')
+            ->select('downloaded')
+            ->select('started')
+            ->select('last_action')
+            ->select('userid AS p_uid')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('port')
+            ->where('torrent', $tid)
+            ->where('seeder = "yes"')
+            ->where('to_go = 0')
+            ->orderBy('uploaded DESC')
+            ->limit(5);
 
-    foreach ($query as $pa) {
-        $peers[$pa['tid']][] = $pa;
+        foreach ($query as $pa) {
+            $peers[$pa['tid']][] = $pa;
+        }
     }
 }
 
@@ -230,9 +233,9 @@ if (!empty($rows)) {
         <div class='w-100'>
             <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
             " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : main_div("
-            <h2 class='has-text-centered'>{$lang['catol_no_info_show']}</h2>")) . '
+            <p class='has-text-centered'>{$lang['catol_no_info_show']}</p>", '', 'padding20')) . '
         </div>';
-        $htmlout .= main_div($div, 'top20');
+        $htmlout .= main_div($div, 'top20', 'padding20');
     }
     $htmlout .= "
         <div>
