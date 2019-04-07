@@ -3,10 +3,10 @@
 /**
  * @param string $text
  * @param int    $id
- * @param int    $block_id
+ * @param string $block_id
  * @param string $name
  * @param string $poster
- * @param int    $uploader
+ * @param string $uploader
  * @param int    $added
  * @param int    $size
  * @param int    $seeders
@@ -22,7 +22,7 @@
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip(string $text, int $id, int $block_id, string $name, string $poster, int $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre, $icons = false)
+function torrent_tooltip(string $text, int $id, string $block_id, string $name, string $poster, string $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre, $icons = false)
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
@@ -177,10 +177,10 @@ function torrent_tooltip(string $text, int $id, int $block_id, string $name, str
 /**
  * @param string $text
  * @param int    $id
- * @param int    $block_id
+ * @param string $block_id
  * @param string $name
  * @param string $poster
- * @param int    $uploader
+ * @param string $uploader
  * @param int    $added
  * @param int    $size
  * @param int    $seeders
@@ -194,7 +194,7 @@ function torrent_tooltip(string $text, int $id, int $block_id, string $name, str
  * @return string
  * @throws \Envms\FluentPDO\Exception
  */
-function torrent_tooltip_wrapper(string $text, int $id, int $block_id, string $name, string $poster, int $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre)
+function torrent_tooltip_wrapper(string $text, int $id, string $block_id, string $name, string $poster, string $uploader, int $added, int $size, int $seeders, int $leechers, string $imdb_id, int $rating, int $year, string $subtitles, string $genre)
 {
     global $site_config, $image, $cat, $times_completed;
 
