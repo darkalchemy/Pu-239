@@ -2,16 +2,17 @@
 
 /** Use <select><option> for enum edit instead of regular input text on enum type in PostgreSQL
  *
- * @link    https://www.adminer.org/plugins/#use
+ * @see     https://www.adminer.org/plugins/#use
+ *
  * @author  Adam Kuśmierz, http://kusmierz.be/
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
 class AdminerEnumTypes
 {
-    var $_types = null;
+    public $_types = null;
 
-    function editInput($table, $field, $attrs, $value)
+    public function editInput($table, $field, $attrs, $value)
     {
         // PostgreSQL only
         if (!in_array(strtolower(connection()->extension), [
@@ -34,22 +35,22 @@ class AdminerEnumTypes
             }
         }
 
-        if (array_key_exists($field["type"], $this->_types)) {
-            $options = $this->_types[$field["type"]];
+        if (array_key_exists($field['type'], $this->_types)) {
+            $options = $this->_types[$field['type']];
             $options = array_combine($options, $options);
             $selected = $value;
 
-            if ($field["null"]) {
-                $options = ["" => ["" => "NULL"]] + $options;
-                if ($value === null && !isset($_GET["select"])) {
-                    $selected = "";
+            if ($field['null']) {
+                $options = ['' => ['' => 'NULL']] + $options;
+                if ($value === null && !isset($_GET['select'])) {
+                    $selected = '';
                 }
             }
-            if (isset($_GET["select"])) {
-                $options = ["" => [-1 => lang('original')]] + $options;
+            if (isset($_GET['select'])) {
+                $options = ['' => [-1 => lang('original')]] + $options;
             }
 
-            return "<select$attrs>" . optionlist($options, (string) $selected, 1) . "</select>";
+            return "<select$attrs>" . optionlist($options, (string) $selected, 1) . '</select>';
         }
     }
 }

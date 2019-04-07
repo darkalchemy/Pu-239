@@ -3,17 +3,17 @@
 /** This plugin replaces UNIX timestamps with human-readable dates in your local format.
  * Mouse click on the date field reveals timestamp back.
  *
- * @link    https://www.adminer.org/plugins/#use
+ * @see     https://www.adminer.org/plugins/#use
+ *
  * @author  Anonymous
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
 class AdminerReadableDates
 {
-    /** @access protected */
-    var $prepend;
+    public $prepend;
 
-    function __construct()
+    public function __construct()
     {
         $this->prepend = <<<EOT
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 EOT;
     }
 
-    function head()
+    public function head()
     {
         echo script($this->prepend);
     }

@@ -1,4 +1,6 @@
 ### 06 Apr, 2019
+cleanup: adminer plugins  
+fix: adminer  
 update: format_bbcode $images == false hides image instead of leaving bbcode  
 fix: hnr_online  
 fix: incorrect site_config key  
