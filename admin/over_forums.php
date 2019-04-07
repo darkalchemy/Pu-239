@@ -88,24 +88,24 @@ switch ($action) {
             <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
         <tr>
-            <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
+            <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</td>
           </tr>
-            <td><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
+            <td><span class="has-text-weight-bold">' . $lang['ad_over_name'] . '</span></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '"></td>
           </tr>
           <tr>
-            <td><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
+            <td><span class="has-text-weight-bold">' . $lang['ad_over_description'] . '</span>  </td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '"></td>
           </tr>
             <tr>
-            <td><span style="font-weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
+            <td><span class="has-text-weight-bold">' . $lang['ad_over_minview'] . ' </span></td>
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
-            <td><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
+            <td><span class="has-text-weight-bold">' . $lang['ad_over_sort'] . '</span></td>
             <td>
             <select name="sort">';
             $res = mysqli_query($mysqli, 'SELECT sort FROM over_forums');
@@ -142,8 +142,8 @@ switch ($action) {
             <tr>
                 <td class="has-text-centered">' . (int) $row['sort'] . '</td>
             <td>
-                <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
-                ' . htmlsafechars($row['description'], ENT_QUOTES) . '
+                <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</a><br>
+                ' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '
             </td>
             <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
             <td class="has-text-centered">

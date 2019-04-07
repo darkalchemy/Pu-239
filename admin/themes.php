@@ -286,8 +286,8 @@ if (!isset($_GET['act'])) {
         $body .= "
         <tr>
             <td>$template[id]</td>
-            <td>" . htmlsafechars($template['uri'], ENT_QUOTES) . '</td>
-            <td>' . htmlsafechars($template['name'], ENT_QUOTES) . '</td>
+            <td>" . htmlsafechars(htmlspecialchars($template['uri'], ENT_QUOTES, 'UTF-8')) . '</td>
+            <td>' . htmlsafechars(htmlspecialchars($template['name'], ENT_QUOTES, 'UTF-8')) . '</td>
             <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b></td>
             <td>' . get_user_class_name($template['min_class_to_view']) . "</td>
             <td>

@@ -83,7 +83,7 @@ function update_poll()
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_title']);
     }
-    $poll_title = htmlsafechars(strip_tags($_POST['poll_question']), ENT_QUOTES);
+    $poll_title = htmlsafechars(htmlspecialchars(strip_tags($_POST['poll_question']), ENT_QUOTES, 'UTF-8'));
     $poll_data = makepoll();
     $total_votes = isset($poll_data['total_votes']) ? intval($poll_data['total_votes']) : 0;
     unset($poll_data['total_votes']);
@@ -115,7 +115,7 @@ function insert_new_poll()
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
     }
-    $poll_title = htmlsafechars(strip_tags($_POST['poll_question']), ENT_QUOTES);
+    $poll_title = htmlsafechars(htmlspecialchars(strip_tags($_POST['poll_question']), ENT_QUOTES, 'UTF-8'));
     $poll_data = makepoll();
     if (!is_array($poll_data) || !count($poll_data)) {
         stderr($lang['poll_inp_sys_err'], $lang['poll_inp_no_data']);
@@ -274,28 +274,28 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
     $form_type = ($form_type != '' ? $form_type : 'poll_update');
     $HTMLOUT = ";
     </script>
-    <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
-    <form id='postingform' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
-        <input type='hidden' name='mode' value='$form_type'>
-        <input type='hidden' name='pid' value='$pid'>
+    <h1; class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
+    <form; id='postingform'; action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager'; method='post'; name='inputform'; enctype='multipart/form-data'; accept-charset='utf-8'>
+        <input; type='hidden'; name='mode'; value='$form_type'>
+        <input; type='hidden'; name='pid'; value='$pid'>
         <div>
-            <fieldset class='bottom20'>
+            <fieldset; class='bottom20'>
                 <legend>{$lang['poll_pb_title']}</legend>
-                <input type='text' name='poll_question' value='$poll_question' class='w-100 bottom20'>
+                <input; type='text'; name='poll_question'; value='$poll_question'; class='w-100 bottom20'>
             </fieldset>
 
-            <fieldset class='bottom20'>
+            <fieldset; class='bottom20'>
                 <legend>{$lang['poll_pb_content']}</legend>
-                <div id='poll-box-main' class=''></div>
+                <div; id='poll-box-main'; class=''></div>
             </fieldset>
 
-            <fieldset class='bottom20'>
+            <fieldset; class='bottom20'>
                 <legend>{$lang['poll_pb_info']}</legend>
-                <div id='poll-box-stat' class=''></div>
+                <div; id='poll-box-stat'; class=''></div>
             </fieldset>
-            <div class='has-text-centered'>
-                <input type='submit' name='submit' value='{$lang['poll_pb_post']}' class='button is-small right20'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>{$lang['poll_pb_cancel']}</a>
+            <div; class='has-text-centered'>
+                <input; type='submit'; name='submit'; value='{$lang['poll_pb_post']}'; class='button is-small right20'>
+                <a; href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager'; class='button is-small'>{$lang['poll_pb_cancel']}</a>
             </div>
         </div>
     </form>";
@@ -317,7 +317,7 @@ function makepoll()
             if (!$q || !$id) {
                 continue;
             }
-            $questions[$id]['question'] = htmlsafechars(strip_tags($q), ENT_QUOTES);
+            $questions[$id]['question'] = htmlsafechars(htmlspecialchars(strip_tags($q), ENT_QUOTES, 'UTF-8'));
         }
     }
     if (isset($_POST['multi']) && is_array($_POST['multi']) && count($_POST['multi'])) {
@@ -339,7 +339,7 @@ function makepoll()
             if (!$questions[$question_id]['question']) {
                 continue;
             }
-            $questions[$question_id]['choice'][$choice_id] = htmlsafechars(strip_tags($choice), ENT_QUOTES);
+            $questions[$question_id]['choice'][$choice_id] = htmlsafechars(htmlspecialchars(strip_tags($choice), ENT_QUOTES, 'UTF-8'));
             $_POST['votes'] = isset($_POST['votes']) ? $_POST['votes'] : 0;
             $questions[$question_id]['votes'][$choice_id] = intval($_POST['votes'][$question_id . '_' . $choice_id]);
             $poll_total_votes += $questions[$question_id]['votes'][$choice_id];

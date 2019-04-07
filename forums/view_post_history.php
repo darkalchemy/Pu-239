@@ -12,11 +12,11 @@ $res = sql_query('SELECT p.added, p.body, p.edited_by, p.user_id AS poster_id, p
 $arr = mysqli_fetch_array($res);
 $arr_edited = $user_stuffs->getUserFromId($arr['edited_by']);
 $icon = htmlsafechars($arr['icon']);
-$post_title = htmlsafechars($arr['post_title'], ENT_QUOTES);
+$post_title = htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8'));
 $location_bar = '<h1><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
-        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
+        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8')) . '</a>
         <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
-        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a></h1>
+        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '</a></h1>
         <span>' . $mini_menu . '</span><br><br>';
 $HTMLOUT .= $location_bar;
 $HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</>' : format_username($arr['id'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr_edited['id'])) . '</h1>

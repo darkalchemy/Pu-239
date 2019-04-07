@@ -106,7 +106,7 @@ if ($count == 0) {
                     <td>' . htmlsafechars($banned['first']) . '</td>
                     <td>' . htmlsafechars($banned['last']) . '</td>
                     <td>' . format_username($banned['addedby']) . '</td>
-                    <td>' . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
+                    <td>' . htmlsafechars(htmlspecialchars($banned['comment'], ENT_QUOTES, 'UTF-8')) . "</td>
                     <td><a href='" . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='{$lang['text_remove']}'></i></a></td>
                </tr>";
     }

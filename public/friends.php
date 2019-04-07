@@ -258,7 +258,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
+        <h1 class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars(htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8')) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>

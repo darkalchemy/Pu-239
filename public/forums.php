@@ -442,14 +442,14 @@ switch ($action) {
         foreach ($updated as $arr_forums) {
             $body = ($arr_forums['over_forum_id'] !== $over_forum_id ? "
                 <h2 class='margin20'>
-	                <a href='{$site_config['paths']['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description'], ENT_QUOTES) . "' class='tooltipper'>
-	                    <span>" . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span>
+	                <a href='{$site_config['paths']['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars(htmlspecialchars($arr_forums['over_forum_description'], ENT_QUOTES, 'UTF-8')) . "' class='tooltipper'>
+	                    <span>" . htmlsafechars(htmlspecialchars($arr_forums['over_forum_name'], ENT_QUOTES, 'UTF-8')) . '</span>
 	                </a>
 	            </h2>' : '');
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
                 $forum_id = $arr_forums['real_forum_id'];
-                $forum_name = htmlsafechars($arr_forums['name'], ENT_QUOTES);
-                $forum_description = htmlsafechars($arr_forums['description'], ENT_QUOTES);
+                $forum_name = htmlsafechars(htmlspecialchars($arr_forums['name'], ENT_QUOTES, 'UTF-8'));
+                $forum_description = htmlsafechars(htmlspecialchars($arr_forums['description'], ENT_QUOTES, 'UTF-8'));
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
                 $last_post_arr = $cache->get('forum_last_post_' . $forum_id . '_' . $CURUSER['class']);
@@ -491,12 +491,12 @@ switch ($action) {
 
                     if ($last_post_arr['tan'] === 'yes') {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -515,7 +515,7 @@ switch ($action) {
                                     ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }

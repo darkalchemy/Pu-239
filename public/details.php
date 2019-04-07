@@ -280,7 +280,7 @@ if (!empty($torrent['name'])) {
                 $banner
                 <div class='bg-00 round10 columns padding20 is-gapless level'>
                     <span class='column is-1 size_7 has-text-left padding20'>$previous</span>
-                    <h1 class='column has-text-centered padding20'>" . htmlsafechars($torrent['name'], ENT_QUOTES) . "</h1>
+                    <h1 class='column has-text-centered padding20'>" . htmlsafechars(htmlspecialchars($torrent['name'], ENT_QUOTES, 'UTF-8')) . "</h1>
                     <span class='column is-1 size_7 has-text-right padding20'>$next</span>
                 </div>
             </div>";
@@ -663,4 +663,4 @@ foreach ($sections as $section => $container) {
     }
 }
 
-echo stdhead(htmlsafechars($torrent['name'], ENT_QUOTES), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(htmlsafechars(htmlspecialchars($torrent['name'], ENT_QUOTES, 'UTF-8')), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

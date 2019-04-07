@@ -712,7 +712,7 @@ function sqlerr($file = '', $line = '')
                    <blockquote>\n<h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
                    You can try to refresh the page by clicking <a href=\"javascript:window.location=window.location;\">here</a>.
                    <br><br><b>Error Returned</b><br>
-                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars($the_error, ENT_QUOTES) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
+                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars(htmlspecialchars($the_error, ENT_QUOTES, 'UTF-8')) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
         echo $out;
     }
     die();
@@ -1675,6 +1675,7 @@ function insert_update_ip()
  * @param bool $fresh
  *
  * @return bool|mixed|string
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function fetch($url, $fresh = true)
@@ -1710,6 +1711,7 @@ function fetch($url, $fresh = true)
                     $key = hash('sha256', $url);
                     $cache->set($key, $contents, 86400);
                 }
+
                 return $contents;
             }
         } else {

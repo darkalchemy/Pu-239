@@ -215,7 +215,7 @@ function do_update($type = '')
         }
         $level = sqlesc($level);
         $minrep = sqlesc(intval($input['minimumreputation']));
-        $redirect = '' . $lang['rep_ad_update_saved'] . ' <i>' . htmlsafechars($input['level'], ENT_QUOTES) . '</i> ' . $lang['rep_ad_update_success'] . '';
+        $redirect = '' . $lang['rep_ad_update_saved'] . ' <i>' . htmlsafechars(htmlspecialchars($input['level'], ENT_QUOTES, 'UTF-8')) . '</i> ' . $lang['rep_ad_update_success'] . '';
     }
     // what we gonna do?
     if ($type === 'new') {
@@ -362,7 +362,7 @@ function view_list()
         if (!empty($input['leftby'])) {
             $left_b = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftby'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_b)) {
-                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftby'], ENT_QUOTES));
+                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars(htmlspecialchars($input['leftby'], ENT_QUOTES, 'UTF-8')));
             }
             $leftby = mysqli_fetch_assoc($left_b);
             $who = $leftby['id'];
@@ -371,7 +371,7 @@ function view_list()
         if (!empty($input['leftfor'])) {
             $left_f = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_f)) {
-                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftfor'], ENT_QUOTES));
+                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars(htmlspecialchars($input['leftfor'], ENT_QUOTES, 'UTF-8')));
             }
             $leftfor = mysqli_fetch_assoc($left_f);
             $user = $leftfor['id'];

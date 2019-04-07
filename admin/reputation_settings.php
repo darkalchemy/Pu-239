@@ -22,7 +22,7 @@ function rep_cache()
 
     $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
     foreach ($_POST as $k => $v) {
-        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars(htmlspecialchars($v, ENT_QUOTES, 'UTF-8')) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
     }
     $rep_out .= "\t'g_rep_negative' => true,\n";
     $rep_out .= "\t'g_rep_seeown' => true,\n";

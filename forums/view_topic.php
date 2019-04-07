@@ -63,8 +63,8 @@ switch ($status) {
 
 $forum_id = $arr['forum_id'];
 $topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['user_id']);
-$topic_name = htmlsafechars($arr['topic_name'], ENT_QUOTES);
-$topic_desc1 = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
+$topic_name = htmlsafechars(htmlspecialchars($arr['topic_name'], ENT_QUOTES, 'UTF-8'));
+$topic_desc1 = htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8'));
 
 $members_votes = [];
 if ($arr['poll_id'] > 0) {
@@ -235,12 +235,12 @@ if (isset($_GET['search'])) {
     $search = htmlsafechars($_GET['search']);
     $topic_name = highlightWords($topic_name, $search);
 }
-$forum_desc = (!empty($arr['topic_desc']) ? '<span>' . htmlsafechars($arr['topic_desc'], ENT_QUOTES) . '</span>' : '');
+$forum_desc = (!empty($arr['topic_desc']) ? '<span>' . htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '');
 $locked = ($arr['locked'] === 'yes' ? 'yes' : 'no');
 $sticky = ($arr['sticky'] === 'yes' ? 'yes' : 'no');
 $views = number_format($arr['views']);
 
-$forum_name = htmlsafechars($arr['forum_name'], ENT_QUOTES);
+$forum_name = htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8'));
 
 if (0 != $arr['num_ratings']) {
     $rating = round($arr['rating_sum'] / $arr['num_ratings'], 1);
@@ -407,7 +407,7 @@ if ($arr['parent_forum'] > 0) {
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '<span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
     $parent_forum_name = '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=" &#9658;" title="&#9658;" class="tooltipper emoticon lazy">
-		<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
+		<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars(htmlspecialchars($parent_forum_arr[0], ENT_QUOTES, 'UTF-8')) . '</a>';
 }
 
 $the_top = '
@@ -454,7 +454,7 @@ foreach ($posts as $arr) {
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ';
-    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '';
+    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8')) . '</span>' : '';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy'>" : '';
     $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, $arr['post_id'], $arr['anonymous']) : '';
     $edited_by = '';

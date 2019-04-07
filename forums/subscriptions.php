@@ -77,14 +77,14 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     }
     $new = ($topic_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
     $topicpic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . $multi_pages;
+    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($topic_arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '</a> ' . $multi_pages;
     $body .= '<tr>
 		<td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
 		<td>' . $icon . '</td>
 		<td>
 	    	' . $topic_name . $first_post_text . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!">' : '') . '</td>
     		' . $rpic . '
-		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '
+		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($topic_arr['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '') . '
         </td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count']) . '</td>

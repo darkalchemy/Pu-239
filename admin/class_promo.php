@@ -7,10 +7,6 @@ class_check($class);
 global $CURUSER, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_class_promo'));
-//== ID list - Add individual user IDs to this list for access to this script
-/*$allowed_ids = array(
-1
-); //== 1 Is Sysop*/
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }

@@ -26,7 +26,7 @@ $arr = $fluent->from('forums')
               ->limit(1)
               ->fetch();
 
-$forum_name = htmlsafechars($arr['name'], ENT_QUOTES);
+$forum_name = htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8'));
 
 $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
@@ -97,21 +97,21 @@ foreach ($query as $sub_forums_arr) {
 
         if ($post_arr['tan'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '">
+						<span style="font-weight: bold;">' . CutName(htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             } else {
                 $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . format_username($post_arr['user_id']) . ']
 						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
-						in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+						in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '">
+						<span style="font-weight: bold;">' . CutName(htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             }
         } else {
             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . format_username($post_arr['user_id']) . '
 						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
-						in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+						in &#9658; <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '">
+						<span style="font-weight: bold;">' . CutName(htmlsafechars(htmlspecialchars($post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
         }
 
@@ -134,7 +134,7 @@ foreach ($query as $sub_forums_arr) {
                             <img src='{$site_config['paths']['images_baseurl']}forums/{$img}.gif' alt='{$img}' title='{$img}' class='tooltipper icon'>
                         </td>
                         <td>
-                            <a class='altlink' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . htmlsafechars($sub_forums_arr['sub_form_name'], ENT_QUOTES) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
+                            <a class='altlink' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . htmlsafechars(htmlspecialchars($sub_forums_arr['sub_form_name'], ENT_QUOTES, 'UTF-8')) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
                             <span class='level-right'>
                                 <span class='left10'>
                                     <a href='staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id={$sub_forums_arr['sub_forum_id']}'>
@@ -147,7 +147,7 @@ foreach ($query as $sub_forums_arr) {
                                     </a>
                                 </span>
                             </span>" : '') . '
-                            <span>' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span>
+                            <span>' . htmlsafechars(htmlspecialchars($sub_forums_arr['sub_form_description'], ENT_QUOTES, 'UTF-8')) . '</span>
                         </td>
                     </tr>
                 </table>
@@ -176,7 +176,7 @@ foreach ($query as $sub_forums_arr) {
         $child = "<span>[ {$lang['fe_child_board']} ]</span>";
         $parent_forum_name = "
             <img src='{$site_config['paths']['images_baseurl']}arrow_next.gif' alt='&#9658;' title='&#9658;' class='tooltipper icon'>
-		    <a class='altlink' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
+		    <a class='altlink' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . htmlsafechars(htmlspecialchars($parent_forum_arr['parent_forum_name'], ENT_QUOTES, 'UTF-8')) . '</a>';
     }
 }
 
@@ -382,7 +382,7 @@ if (!empty($topic_arrs)) {
 		        <div>
 		        ' . $rpic . '
     		    </div>
-    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($topic_arr['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '') . '</td>
     		<td class="has-text-centered">' . $thread_starter . '</td>
 	    	<td class="has-text-centered">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		    <td class="has-text-centered">' . number_format($topic_arr['views']) . '</td>

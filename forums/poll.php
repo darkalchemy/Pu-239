@@ -214,7 +214,7 @@ switch ($action) {
         $HTMLOUT .= '<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
-		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
+		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($arr_poll['topic_name'], ENT_QUOTES, 'UTF-8')) . '</a>"</h1>
 	<form action="forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_add">
@@ -462,7 +462,7 @@ switch ($action) {
 	<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
-		<h1>' . $lang['poll_edit_poll_in'] . ' <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . ' </a>"</h1>
+		<h1>' . $lang['poll_edit_poll_in'] . ' <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($arr_poll['topic_name'], ENT_QUOTES, 'UTF-8')) . ' </a>"</h1>
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_edit">
 		<input type="hidden" name="do_poll_edit" value="1">

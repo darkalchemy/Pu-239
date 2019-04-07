@@ -88,7 +88,6 @@ if ($count > 0) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 } else {
-    $HTMLOUT .= stderr('', 'There are not any cheaters');
+    stderr('', 'There are not any cheaters');
 }
 echo stdhead($lang['cheaters_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-die();

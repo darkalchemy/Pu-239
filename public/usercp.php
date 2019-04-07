@@ -187,9 +187,9 @@ if ($action === 'avatar') {
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] === 'yes' ? 'checked' : '') . ' value="yes"> Yes
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] !== 'yes' ? 'checked' : '') . ' value="no"> No', 1);
     $HTMLOUT .= tr('Signature', '
-                                            <textarea name="signature" class="w-100" rows="4">' . htmlsafechars($CURUSER['signature'], ENT_QUOTES) . '</textarea><br>BBcode can be used', 1);
+                                            <textarea name="signature" class="w-100" rows="4">' . htmlsafechars(htmlspecialchars($CURUSER['signature'], ENT_QUOTES, 'UTF-8')) . '</textarea><br>BBcode can be used', 1);
     $HTMLOUT .= tr($lang['usercp_info'], "
-                                            <textarea name='info' class='w-100' rows='4'>" . htmlsafechars($CURUSER['info'], ENT_QUOTES) . "</textarea><br>{$lang['usercp_tags']}", 1);
+                                            <textarea name='info' class='w-100' rows='4'>" . htmlsafechars(htmlspecialchars($CURUSER['info'], ENT_QUOTES, 'UTF-8')) . "</textarea><br>{$lang['usercp_tags']}", 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -307,7 +307,7 @@ if ($action === 'avatar') {
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>
                                                 <input type='hidden' name='action' value='links'>
-                                                " . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Menu
+                                                " . htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "'s Menu
                                             </th>
                                         </tr>
                                     </thead>
@@ -344,7 +344,7 @@ if ($action === 'avatar') {
                                 <table class='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
-                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</th>
+                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "'s Entertainment</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -769,4 +769,4 @@ $HTMLOUT .= '
                 </form>
             </div>';
 
-echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

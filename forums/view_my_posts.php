@@ -69,7 +69,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
             break;
     }
     $post_icon = (!empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" title="Normal Topic" class="emoticon"> ');
-    $post_title = (!empty($arr['post_title']) ? ' <span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
+    $post_title = (!empty($arr['post_title']) ? ' <span style="font-weight: bold; font-size: x-small;">' . htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8')) . '</span>' : '' . $lang['fe_link_to_post'] . '');
     $edited_by = '';
     if ($arr['edit_date'] > 0) {
         $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
@@ -90,9 +90,9 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <table class="table table-bordered table-striped">
         <tr>
             <td colspan="3">' . $lang['fe_forum'] . ': <a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
-			    <span style="color: white;font-weight: bold;">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+			    <span style="color: white;font-weight: bold;">' . htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8')) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
     			' . $lang['fe_topic'] . ': <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
-	    		<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '
+	    		<span style="color: white;font-weight: bold;">' . htmlsafechars(htmlspecialchars($arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '</span></a>' . $topic_status_image . '
             </td>
         </tr>
 		<tr>

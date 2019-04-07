@@ -12,10 +12,13 @@ $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
 $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
+
 /**
  * @param $id
  *
  * @return bool
+ *
+ * @throws Exception
  */
 function validate($id)
 {

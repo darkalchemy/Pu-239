@@ -218,7 +218,7 @@ $forum_name = $fluent->from('forums')
                      ->where('id=?', $forum_id)
                      ->fetch('name');
 
-$section_name = htmlsafechars($forum_name, ENT_QUOTES);
+$section_name = htmlsafechars(htmlspecialchars($forum_name, ENT_QUOTES, 'UTF-8'));
 
 $HTMLOUT .= '
     <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>

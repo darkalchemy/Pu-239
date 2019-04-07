@@ -59,6 +59,9 @@ function resettimer()
     die();
 }
 
+/**
+ * @throws Exception
+ */
 function manualclean()
 {
     global $params, $lang;
@@ -93,6 +96,10 @@ function manualclean()
     die();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function cleanup_show_main()
 {
     global $site_config, $lang, $fluent;
@@ -132,7 +139,7 @@ function cleanup_show_main()
         $row['clean_increment'] = (int) $row['clean_increment'];
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
         $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
-        $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
+        $row['_clean_time'] = $row['clean_on'] != 1 ? "<span class='has-text-danger'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $on_off = $row['clean_on'] != 1 ? "<i class='icon-toggle-off icon has-text-danger'></i>" : "<i class='icon-toggle-on icon has-text-success'></i>";
         $htmlout .= "
         <tr>
@@ -162,6 +169,10 @@ function cleanup_show_main()
     echo stdhead($lang['cleanup_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function cleanup_show_edit()
 {
     global $params, $lang;
@@ -176,11 +187,11 @@ function cleanup_show_edit()
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr3']);
     }
     $row = mysqli_fetch_assoc($sql);
-    $row['clean_title'] = htmlsafechars($row['clean_title'], ENT_QUOTES);
-    $row['clean_desc'] = htmlsafechars($row['clean_desc'], ENT_QUOTES);
-    $row['clean_file'] = htmlsafechars($row['clean_file'], ENT_QUOTES);
-    $row['clean_title'] = htmlsafechars($row['clean_title'], ENT_QUOTES);
-    $row['function_name'] = htmlsafechars($row['function_name'], ENT_QUOTES);
+    $row['clean_title'] = htmlsafechars(htmlspecialchars($row['clean_title'], ENT_QUOTES, 'UTF-8'));
+    $row['clean_desc'] = htmlsafechars(htmlspecialchars($row['clean_desc'], ENT_QUOTES, 'UTF-8'));
+    $row['clean_file'] = htmlsafechars(htmlspecialchars($row['clean_file'], ENT_QUOTES, 'UTF-8'));
+    $row['clean_title'] = htmlsafechars(htmlspecialchars($row['clean_title'], ENT_QUOTES, 'UTF-8'));
+    $row['function_name'] = htmlsafechars(htmlspecialchars($row['function_name'], ENT_QUOTES, 'UTF-8'));
     $logyes = $row['clean_log'] ? 'checked' : '';
     $logno = !$row['clean_log'] ? 'checked' : '';
     $cleanon = $row['clean_on'] ? 'checked' : '';
@@ -232,11 +243,14 @@ function cleanup_show_edit()
     echo stdhead($lang['cleanup_show_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function cleanup_take_edit()
 {
     global $params, $lang;
 
-    //ints
     foreach ([
                  'cid',
                  'clean_increment',
@@ -264,7 +278,6 @@ function cleanup_take_edit()
         }
     }
     unset($opts);
-    // strings
     foreach ([
                  'clean_title',
                  'clean_desc',
@@ -294,6 +307,9 @@ function cleanup_take_edit()
     die();
 }
 
+/**
+ * @throws Exception
+ */
 function cleanup_show_new()
 {
     global $lang;
@@ -349,11 +365,13 @@ function cleanup_show_new()
     echo stdhead($lang['cleanup_new_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws Exception
+ */
 function cleanup_take_new()
 {
     global $params, $lang, $mysqli;
 
-    //ints
     foreach ([
                  'clean_increment',
                  'clean_log',
@@ -380,7 +398,6 @@ function cleanup_take_new()
         }
     }
     unset($opts);
-    // strings
     foreach ([
                  'clean_title',
                  'clean_desc',
@@ -413,6 +430,9 @@ function cleanup_take_new()
     die();
 }
 
+/**
+ * @throws Exception
+ */
 function cleanup_take_delete()
 {
     global $params, $lang, $mysqli;
@@ -436,6 +456,10 @@ function cleanup_take_delete()
     die();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function cleanup_take_unlock()
 {
     global $params, $lang, $mysqli;

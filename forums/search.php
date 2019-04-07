@@ -161,13 +161,13 @@ if ($search || $author_id) {
                 foreach ($results as $arr) {
                     $table_body = '';
                     if ($search_what === 'all' || $search_what === 'title') {
-                        $topic_title = highlightWords(htmlsafechars($arr['topic_title'], ENT_QUOTES), $search);
-                        $topic_desc = highlightWords(htmlsafechars($arr['topic_desc'], ENT_QUOTES), $search);
-                        $post_title = highlightWords(htmlsafechars($arr['post_title'], ENT_QUOTES), $search);
+                        $topic_title = highlightWords(htmlsafechars(htmlspecialchars($arr['topic_title'], ENT_QUOTES, 'UTF-8')), $search);
+                        $topic_desc = highlightWords(htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8')), $search);
+                        $post_title = highlightWords(htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8')), $search);
                     } else {
-                        $topic_title = htmlsafechars($arr['topic_title'], ENT_QUOTES);
-                        $topic_desc = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
-                        $post_title = htmlsafechars($arr['post_title'], ENT_QUOTES);
+                        $topic_title = htmlsafechars(htmlspecialchars($arr['topic_title'], ENT_QUOTES, 'UTF-8'));
+                        $topic_desc = htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8'));
+                        $post_title = htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8'));
                     }
                     $body = format_comment($arr['body'], true, false);
                     $post_id = $arr['post_id'];
@@ -217,8 +217,8 @@ if ($search || $author_id) {
                 </div>
             </td>
             <td>
-                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
-                ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr['forum_desc'], ENT_QUOTES) . '</span>' : '') . '
+                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8')) . '</a>
+                ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($arr['forum_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '') . '
             </td>
             <td>' . number_format($posts - 1) . '</td>
             <td>' . number_format($arr['views']) . '</td>
@@ -232,14 +232,14 @@ if ($search || $author_id) {
                 $x = 0;
                 foreach ($results as $arr) {
                     $user = $user_stuffs->getUserFromId($arr['userid']);
-                    $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : 'Link to Post');
+                    $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8')) . '</span>' : 'Link to Post');
                     if ($search_what === 'all' || $search_what === 'title') {
-                        $topic_title = highlightWords(htmlsafechars($arr['topic_title'], ENT_QUOTES), $search);
-                        $topic_desc = highlightWords(htmlsafechars($arr['topic_desc'], ENT_QUOTES), $search);
+                        $topic_title = highlightWords(htmlsafechars(htmlspecialchars($arr['topic_title'], ENT_QUOTES, 'UTF-8')), $search);
+                        $topic_desc = highlightWords(htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8')), $search);
                         $post_title = highlightWords($post_title, $search);
                     } else {
-                        $topic_title = htmlsafechars($arr['topic_title'], ENT_QUOTES);
-                        $topic_desc = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
+                        $topic_title = htmlsafechars(htmlspecialchars($arr['topic_title'], ENT_QUOTES, 'UTF-8'));
+                        $topic_desc = htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8'));
                     }
                     $post_id = $arr['post_id'];
                     $posts = $arr['post_count'];
@@ -254,7 +254,7 @@ if ($search || $author_id) {
         <tr>
             <td colspan="3">in:
                 <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
-                    <span>' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span>
+                    <span>' . htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8')) . '</span>
                 </a> in:
                 <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
                     <span>' . $topic_title . '</span>
@@ -311,14 +311,14 @@ $forums = $fluent->from('over_forums AS o_f')
 
 foreach ($forums as $arr_forums) {
     $search_in_forums .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr>
-    <td class="has-no-border" colspan="3"><span style="color: white;">' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span></td></tr>' : '');
+    <td class="has-no-border" colspan="3"><span style="color: white;">' . htmlsafechars(htmlspecialchars($arr_forums['over_forum_name'], ENT_QUOTES, 'UTF-8')) . '</span></td></tr>' : '');
     if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
         $search_in_forums .= '
                 <tr>
                     <td class="has-no-border">
                         <div class="is-flex level-left">
                             <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox"' . ($selected_forums ? ' checked' : '') . ' value="1">
-                            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '
+                            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars(htmlspecialchars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES, 'UTF-8')) . '
                             </a>
                         </div>
                     </td>

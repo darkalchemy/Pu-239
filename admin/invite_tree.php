@@ -83,7 +83,7 @@ if ($id !== 0) {
                                                         <td>' . mksize($arr_invited_really_deep['uploaded']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['downloaded']) . '</td>
                                                         <td>' . member_ratio($arr_invited_really_deep['uploaded'], $arr_invited_really_deep['downloaded']) . '</td>
-                                                        <td>' . ($arr_invited_really_deep['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td>
+                                                        <td>' . ($arr_invited_really_deep['status'] === 'confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
                                                     </tr>');
                                 }
                                 $deeper .= '
@@ -100,7 +100,7 @@ if ($id !== 0) {
                                         <td>' . mksize($arr_invited_deeper['uploaded']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['downloaded']) . '</td>
                                         <td>' . member_ratio($arr_invited_deeper['uploaded'], $arr_invited_deeper['downloaded']) . '</td>
-                                        <td>' . ($arr_invited_deeper['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td>
+                                        <td>' . ($arr_invited_deeper['status'] === 'confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
                                     </tr>');
                     }
                     $deeper .= '
@@ -118,10 +118,10 @@ if ($id !== 0) {
                         <td>' . mksize($arr_invited['downloaded']) . '</td>
                         <td>' . member_ratio($arr_invited['uploaded'], $arr_invited['downloaded']) . '</td>
                         <td>' . ($arr_invited['status'] === 'confirmed' ? '
-                            <span style="color: green;">' . $lang['invite_confirmed'] . '</span>
+                            <span class="has-color-lime">' . $lang['invite_confirmed'] . '</span>
                         </td>
                     </tr>' : '
-                            <span style="color: red;">' . $lang['invite_pending'] . '</span>
+                            <span class="has-color-danger">' . $lang['invite_pending'] . '</span>
                         </td>
                     </tr>');
             $HTMLOUT .= $deeper;

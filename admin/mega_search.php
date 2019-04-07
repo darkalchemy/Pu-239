@@ -244,7 +244,7 @@ if (isset($_POST['msg_to_analyze'])) {
             $similar_emails .= "<tr><td><h1>{$lang['mega_email_using']} $tested_email_like </h1>";
             $number = 1;
             foreach ($users as $arr) {
-                $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span style="color: red; font-weight: bold;">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level - left">&nbsp;' . format_username($arr['id']) . '</span></div></td></tr>';
+                $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span class="has-color-lime has-text-weight-bold">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level - left">&nbsp;' . format_username($arr['id']) . '</span></div></td></tr>';
             }
         }
     }
@@ -312,18 +312,18 @@ if (isset($_POST['msg_to_analyze'])) {
                     $body .= '
                 <tr>
                     <td>' . format_username($arr['id']) . '</td>
-                    <td><span style="color: red; font-weight: bold;">' . $tested_ip . ' </span></td>
+                    <td><span class="has-color-lime has-text-weight-bold">' . $tested_ip . ' </span></td>
                     <td>' . htmlsafechars($arr['email']) . '</td>
                     <td>
-                        <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
-                        <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span>
+                        <span class="has-color-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
+                        <span class="has-color-lime" title="last access">' . get_date($arr['last_access'], '') . '</span>
                     </td>
                     <td>
                         <img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> 
-                        <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
+                        <span class="has-color-lime">' . mksize($arr['uploaded']) . '</span>
                         ' . ($site_config['site']['ratio_free'] ? '' : '<br>
                         <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
-                        <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
+                        <span class="has-color-danger">' . mksize($arr['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                     <td>' . make_nice_address($arr['ip']) . '<br>
                     </td>
@@ -385,10 +385,10 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user['ip']) . '</td>
                     <td>' . get_date($user['last_access'], '') . '</td>
                     <td>' . get_date($user['added'], '') . '</td>
-                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
+                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span class="has-color-lime">' . mksize($user['uploaded']) . '</span>
                     ' . ($site_config['site']['ratio_free'] ? '' : '<br>
                     <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
-                    <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
+                    <span class="has-color-danger">' . mksize($user['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user['uploaded'], $site_config['site']['ratio_free'] ? '0' : $user['downloaded']) . '</td>
                     <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
                 </tr>';
@@ -434,10 +434,10 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user_invited['ip']) . '</td>
                     <td>' . get_date($user_invited['last_access'], '') . '</td>
                     <td>' . get_date($user_invited['added'], '') . '</td>
-                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
+                    <td><img src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span class="has-color-lime">' . mksize($user_invited['uploaded']) . '</span>
                     ' . ($site_config['site']['ratio_free'] ? '' : '<br>
                     <img src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
-                    <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
+                    <span class="has-color-danger">' . mksize($user_invited['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user_invited['uploaded'], $site_config['site']['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
                     <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>
                 </tr>';

@@ -103,9 +103,9 @@ if ($count === 0) {
                             <td>' . $rpic . '</td>
                         </tr>
                     </table>
-                    ' . (!empty($arr_unread['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '
-                    <hr>in: <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
-                    ' . (!empty($arr_unread['topic_desc']) ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '
+                    ' . (!empty($arr_unread['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($arr_unread['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '') . '
+                    <hr>in: <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr_unread['forum_id'] . '">' . htmlsafechars(htmlspecialchars($arr_unread['forum_name'], ENT_QUOTES, 'UTF-8')) . '</a>
+                    ' . (!empty($arr_unread['topic_desc']) ? ' [ <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($arr_unread['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span> ]' : '') . '
                 </td>
                 <td>' . number_format($arr_unread['post_count']) . '</td>
                 <td>' . number_format($arr_unread['views']) . '</td>

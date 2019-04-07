@@ -283,11 +283,11 @@ $pm_drop_down = '
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
                     <tr>
-                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
+                        <td><span class="has-text-weight-bold">' . $lang['bonusmanager_pm_subject'] . '</span></td>
                         <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
                     </tr>
                     <tr>
-                        <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
+                        <td><span class="has-text-weight-bold">' . $lang['bonusmanager_pm_body'] . '</span></td>
                         <td class="is-paddingless">' . BBcode($body) . '</td>
                     </tr>
                 </table>
@@ -316,7 +316,7 @@ $body = '
             <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
         </tr>
         <tr>
-            <td width="160px"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
+            <td width="160px"><span class="has-text-weight-bold">' . $lang['bonusmanager_bonus_type'] . '</span></td>
             <td>' . $drop_down . '
                 <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '<hr></div>
                 <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '<hr></div>
@@ -326,7 +326,7 @@ $body = '
             </td>
         </tr>
         <tr>
-            <td><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
+            <td><span class="has-text-weight-bold">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
             <td>
                 <div>' . $all_classes_check_boxes . '</div>
             </td>

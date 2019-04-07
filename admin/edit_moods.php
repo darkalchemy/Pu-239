@@ -26,13 +26,6 @@ if ($edit_mood['action'] === 'added') {
     $cache->delete('topmoods');
     write_log('<b>' . $lang['moods_edited'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="">');
 }
-/*
-elseif ($edit_mood['action'] == 'remove') {
-   sql_query('DELETE FROM moods WHERE id='.$edit_mood['id'].' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-   $cache->delete('topmoods');
-   write_log2('<b>'.$lang['moods_deleted'].'</b> '.$CURUSER['username'].' - '.$edit_mood['id']);
-}
-*/
 if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
     $edit_mood['res'] = sql_query('SELECT * FROM moods WHERE id=' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($edit_mood['res'])) {

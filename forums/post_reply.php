@@ -144,7 +144,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 }
 
 $HTMLOUT .= '
-    <h1 class="has-text-centered">' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a>"</h1>
+    <h1 class="has-text-centered">' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '</a>"</h1>
     <form method="post" action="' . $site_config['paths']['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';

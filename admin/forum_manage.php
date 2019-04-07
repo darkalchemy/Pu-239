@@ -90,15 +90,15 @@ switch ($action) {
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
                     <table class="table table-bordered table-striped">
                     <tr>
-                    <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
+                    <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -108,7 +108,7 @@ switch ($action) {
             $res = sql_query('SELECT * FROM over_forums');
             while ($arr = mysqli_fetch_array($res)) {
                 $i = (int) $arr['id'];
-                $options .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
+                $options .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
             }
             $HTMLOUT .= $options . '</select></td></tr>
                 <tr>
@@ -119,7 +119,7 @@ switch ($action) {
             $res = sql_query('SELECT name, id FROM forums');
             while ($arr = mysqli_fetch_array($res)) {
                 if (is_valid_id($arr['id'])) {
-                    $options_2 .= '<option class="body" value="' . (int) $arr['id'] . '"' . ($parent_forum == $arr['id'] ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
+                    $options_2 .= '<option class="body" value="' . (int) $arr['id'] . '"' . ($parent_forum == $arr['id'] ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
                 }
             }
             $HTMLOUT .= $options_2 . '</select></td></tr>
@@ -181,18 +181,18 @@ if (mysqli_num_rows($res) > 0) {
         $forum_id = (int) $row['forum_id'];
         $res2 = sql_query('SELECT name FROM over_forums WHERE id=' . sqlesc($forum_id));
         $arr2 = mysqli_fetch_assoc($res2);
-        $name = htmlsafechars($arr2['name'], ENT_QUOTES);
+        $name = htmlsafechars(htmlspecialchars($arr2['name'], ENT_QUOTES, 'UTF-8'));
         $subforum = (int) $row['parent_forum'];
         if ($subforum) {
             $res3 = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($subforum));
             $arr3 = mysqli_fetch_assoc($res3);
-            $subforum_name = htmlsafechars($arr3['name'], ENT_QUOTES);
+            $subforum_name = htmlsafechars(htmlspecialchars($arr3['name'], ENT_QUOTES, 'UTF-8'));
         } else {
             $subforum_name = '';
         }
         $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
-            <span>' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br>
-            ' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
+            <span>' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</span></a><br>
+            ' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '</td>
             <td><span>' . $subforum_name . '</span></td>
             <td>' . $name . '</td>
             <td>' . get_user_class_name($row['min_class_read']) . '</td>
@@ -237,7 +237,7 @@ $forum_id = (int) $row['forum_id'];
 $res = sql_query('SELECT * FROM over_forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
-    $option_7 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
+    $option_7 .= '<option class="body" value="' . htmlsafechars(htmlspecialchars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
 }
 $HTMLOUT .= $option_7 . '</select></td></tr>
             <tr>
@@ -249,7 +249,7 @@ $forum_id = (int) $row['forum_id'];
 $res = sql_query('SELECT * FROM forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
-    $option_8 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
+    $option_8 .= '<option class="body" value="' . htmlsafechars(htmlspecialchars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
 }
 $HTMLOUT .= $option_8 . '</select></td></tr><tr>
             <td><span>' . $lang['fm_mp_min_r'] . '</span></td>

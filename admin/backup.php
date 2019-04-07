@@ -8,7 +8,7 @@ class_check($class);
 global $CURUSER, $site_config, $lang, $session, $fluent;
 
 $lang = array_merge($lang, load_language('ad_backup'));
-if (!in_array($CURUSER['id'], $staff_settings['is_staff'])) {
+if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 

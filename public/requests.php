@@ -191,7 +191,7 @@ switch ($action) {
             $body .= '
         <tr>
             <td>' . $caticon . '</td>
-            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars($request['request_name'], ENT_QUOTES) . '</a></td>
+            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars(htmlspecialchars($request['request_name'], ENT_QUOTES, 'UTF-8')) . '</a></td>
             <td>' . get_date($request['added'], 'LONG') . '</td>
             <td>' . number_format($request['comments']) . '</td>
             <td>yes: ' . number_format($request['vote_yes_count']) . '<br>
@@ -259,7 +259,7 @@ switch ($action) {
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars($arr['request_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  <td colspan="2"><h1>' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
   [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
@@ -276,7 +276,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>link:</td>
-  <td><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
+  <td><a class="altlink" href="' . htmlsafechars(htmlspecialchars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES, 'UTF-8')) . '</a></td>
   </tr>
     <tr>
         <td>IMDb</td>
@@ -309,7 +309,7 @@ switch ($action) {
   </tr>
   </table>';
         $HTMLOUT .= '
-            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
+            <h1 class="has-text-centered">Comments for ' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '</h1>
             <a id="startcomments"></a>
             <div class="has-text-centered margin20">
                 <a class="button is-small" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
@@ -337,7 +337,7 @@ switch ($action) {
             $HTMLOUT .= commenttable($allrows, 'request');
             $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_request':
@@ -397,12 +397,12 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w-100" required></td>
+    <td><input type="text" name="request_name" value="' . htmlsafechars(htmlspecialchars($request_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
+        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" required>
         <div id="imdb_outer">
         </div>
     </td>
@@ -464,7 +464,7 @@ switch ($action) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars($exists['request_name'], ENT_QUOTES) . '"</b>? If so click
+            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars(htmlspecialchars($exists['request_name'], ENT_QUOTES, 'UTF-8')) . '"</b>? If so click
         <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('requests')
@@ -516,7 +516,7 @@ switch ($action) {
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
                 $category_drop_down .= "
-                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name'], ENT_QUOTES) . '::' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
+                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($cat['name'], ENT_QUOTES) . '::' . htmlsafechars($row['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -533,15 +533,15 @@ switch ($action) {
    </tr>
    <tr>
    <td>name:</td>
-   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars(htmlspecialchars($request_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>image:</td>
-   <td><input type="url" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="url" name="image" value="' . htmlsafechars(htmlspecialchars($image, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>link:</td>
-   <td><input type="url" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="w-100" required></td>
+   <td><input type="url" name="link" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>category:</td>
@@ -610,7 +610,7 @@ switch ($action) {
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
-                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
+                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
@@ -685,7 +685,7 @@ switch ($action) {
     <input type="hidden" name="cid" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
      <tr>
-    <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
+    <td colspan="2"><h1>Edit comment to "' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
     </tr>
      <tr>
     <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>

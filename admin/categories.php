@@ -1,5 +1,7 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
@@ -47,6 +49,10 @@ switch ($params['mode']) {
         break;
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function move_cat()
 {
     global $site_config, $params, $lang, $cache, $fluent;
@@ -92,9 +98,13 @@ function move_cat()
     }
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function move_cat_form()
 {
-    global $params, $lang, $site_config, $fluent;
+    global $params, $lang, $site_config;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -113,7 +123,7 @@ function move_cat_form()
     foreach ($cats as $cat) {
         foreach ($cat['children'] as $child) {
             $select .= ($child['id'] != $current_cat['id']) ? "
-                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars($child['name'], ENT_QUOTES) . '</option>' : '';
+                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars(htmlspecialchars($child['name'], ENT_QUOTES, 'UTF-8')) . '</option>' : '';
         }
     }
     $select .= '
@@ -122,11 +132,11 @@ function move_cat_form()
         <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
-            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name'], ENT_QUOTES) . "</h2>
+            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars(htmlspecialchars($current_cat['name'], ENT_QUOTES, 'UTF-8')) . "</h2>
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
     $htmlout .= main_div("
             <div class='w-50 has-text-centered padding20'>
-                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($current_cat['parent_name'], ENT_QUOTES) . '::' . htmlsafechars($current_cat['name'], ENT_QUOTES) . "</span></p>
+                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars(htmlspecialchars($current_cat['parent_name'], ENT_QUOTES, 'UTF-8') . '::' . htmlsafechars(htmlspecialchars($current_cat['name'], ENT_QUOTES, 'UTF-8'))) . "</span></p>
                 <p class='has-text-green level'>{$lang['categories_select_new']} $select</p>
                 <div class='has-text-centered'>
                     <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
@@ -139,6 +149,10 @@ function move_cat_form()
     echo stdhead($lang['categories_move_stdhead'] . $current_cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function add_cat()
 {
     global $site_config, $params, $lang, $cache, $fluent;
@@ -177,6 +191,10 @@ function add_cat()
     }
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function delete_cat()
 {
     global $site_config, $params, $lang, $cache, $fluent;
@@ -216,6 +234,10 @@ function delete_cat()
     }
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function delete_cat_form()
 {
     global $params, $lang, $site_config, $fluent;
@@ -259,6 +281,10 @@ function delete_cat_form()
     echo stdhead($lang['categories_del_stdhead'] . $cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function edit_cat()
 {
     global $site_config, $params, $lang, $cache, $fluent;
@@ -307,9 +333,12 @@ function edit_cat()
     }
 }
 
+/**
+ * @throws Exception
+ */
 function edit_cat_form()
 {
-    global $site_config, $params, $lang, $fluent;
+    global $site_config, $params, $lang;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -343,6 +372,10 @@ function edit_cat_form()
     echo stdhead($lang['categories_edit_stdhead'] . $cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function show_categories()
 {
     global $site_config, $lang;
@@ -398,6 +431,12 @@ function show_categories()
     echo stdhead($lang['categories_show_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @param array  $data
+ * @param string $parent_name
+ *
+ * @return string
+ */
 function build_table(array $data, string $parent_name)
 {
     global $site_config, $lang;
@@ -431,6 +470,13 @@ function build_table(array $data, string $parent_name)
     return $row;
 }
 
+/**
+ * @param array $cat
+ *
+ * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_parents(array $cat)
 {
     global $fluent, $lang;
@@ -441,9 +487,9 @@ function get_parents(array $cat)
                       ->fetchAll();
 
     foreach ($parents as $parent) {
-        $parent['name'] = htmlsafechars($parent['name'], ENT_QUOTES);
-        $parent['cat_desc'] = htmlsafechars($parent['cat_desc'], ENT_QUOTES);
-        $parent['image'] = htmlsafechars($parent['image'], ENT_QUOTES);
+        $parent['name'] = htmlsafechars(htmlspecialchars($parent['name'], ENT_QUOTES, 'UTF-8'));
+        $parent['cat_desc'] = htmlsafechars(htmlspecialchars($parent['cat_desc'], ENT_QUOTES, 'UTF-8'));
+        $parent['image'] = htmlsafechars(htmlspecialchars($parent['image'], ENT_QUOTES, 'UTF-8'));
     }
 
     $out = "
@@ -462,6 +508,12 @@ function get_parents(array $cat)
     return $out;
 }
 
+/**
+ * @param bool $redirect
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ */
 function reorder_cats(bool $redirect = true)
 {
     global $site_config, $fluent, $cache;
@@ -492,6 +544,11 @@ function reorder_cats(bool $redirect = true)
     }
 }
 
+/**
+ * @param array $params
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function set_ordered(array $params)
 {
     global $fluent;
@@ -506,6 +563,11 @@ function set_ordered(array $params)
            ->execute();
 }
 
+/**
+ * @param array $cat
+ *
+ * @return string
+ */
 function get_images(array $cat)
 {
     global $lang;
@@ -527,7 +589,7 @@ function get_images(array $cat)
         foreach ($files as $file) {
             $selected = !empty($cat) && $file == $cat['image'] ? ' selected' : '';
             $select .= "
-                    <option value='" . htmlsafechars($file, ENT_QUOTES) . "'{$selected}>" . htmlsafechars($file, ENT_QUOTES) . '</option>';
+                    <option value='" . htmlsafechars(htmlspecialchars($file, ENT_QUOTES) . "'{$selected}>" . htmlsafechars(htmlspecialchars($file, ENT_QUOTES, 'UTF-8'))) . '</option>';
         }
         $select .= "
                 </select>
@@ -541,6 +603,13 @@ function get_images(array $cat)
     return $select;
 }
 
+/**
+ * @param int $id
+ *
+ * @return mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_cat(int $id)
 {
     global $fluent;
@@ -555,14 +624,20 @@ function get_cat(int $id)
                                          ->where('id=?', $cat['parent_id'])
                                          ->fetch('name');
 
-    $cat['name'] = htmlsafechars($cat['name'], ENT_QUOTES);
-    $cat['cat_desc'] = htmlsafechars($cat['cat_desc'], ENT_QUOTES);
-    $cat['image'] = htmlsafechars($cat['image'], ENT_QUOTES);
-    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars($cat['parent_name'], ENT_QUOTES) : '';
+    $cat['name'] = htmlsafechars(htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'));
+    $cat['cat_desc'] = htmlsafechars(htmlspecialchars($cat['cat_desc'], ENT_QUOTES, 'UTF-8'));
+    $cat['image'] = htmlsafechars(htmlspecialchars($cat['image'], ENT_QUOTES, 'UTF-8'));
+    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars(htmlspecialchars($cat['parent_name'], ENT_QUOTES, 'UTF-8')) : '';
 
     return $cat;
 }
 
+/**
+ * @param int $id
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ */
 function flush_torrents(int $id)
 {
     global $fluent, $site_config, $cache;

@@ -69,7 +69,6 @@ function stdhead($title = '', $stdhead = null)
         'resetpw.php',
         'recover.php',
     ];
-    $action = in_array(basename($_SERVER['PHP_SELF']), $captcha) ? 'login' : 'homepage';
     if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($site_config['recaptcha']['site'])) {
         $htmlout .= "
         <script>
