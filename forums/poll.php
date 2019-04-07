@@ -211,7 +211,7 @@ switch ($action) {
         for ($i = 2; $i < 21; ++$i) {
             $options .= '<option class="body" value="' . $i . '">' . $i . ' options</option>';
         }
-        $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
 		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
@@ -219,7 +219,7 @@ switch ($action) {
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_add">
 		<input type="hidden" name="add_the_poll" value="1">
-	<table border="0" cellspacing="0" cellpadding="5" width="800">
+	<tablecellspacing="0" cellpadding="5" width="800">
 	<tr>
 		<td colspan="3"><span style="color: white; font-weight: bold;"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" style="vertical-align: middle;"> ' . $lang['poll_add_poll_to_topic'] . '!</span></td>
 	</tr>
@@ -459,7 +459,7 @@ switch ($action) {
         //=== ok looks like they can be here
         $HTMLOUT .= '
 	<form action="forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
-	<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
+	<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
 		<h1>' . $lang['poll_edit_poll_in'] . ' <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . ' </a>"</h1>
@@ -467,7 +467,7 @@ switch ($action) {
 		<input type="hidden" name="action_2" value="poll_edit">
 		<input type="hidden" name="do_poll_edit" value="1">
 
-	<table border="0" cellspacing="0" cellpadding="5" width="800">
+	<tablecellspacing="0" cellpadding="5" width="800">
 	<tr>
 		<td colspan="3"><span style="color: white; font-weight: bold;"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" style="vertical-align: middle;"> ' . $lang['poll_add_poll_to_topic'] . '!</span>
 		        ' . $lang['poll_editing_the_poll_will_re_set_all_the_votes'] . '</td>

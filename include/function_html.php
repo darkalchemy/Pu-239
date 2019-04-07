@@ -1,6 +1,7 @@
 <?php
 
 use Intervention\Image\Image;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @return string
@@ -27,11 +28,10 @@ function end_main_frame()
 /**
  * @param string $caption
  * @param bool   $center
- * @param int    $padding
  *
  * @return string
  */
-function begin_frame($caption = '', $center = false, $padding = 10)
+function begin_frame($caption = '', $center = false)
 {
     $tdextra = '';
     $htmlout = '';
@@ -42,14 +42,6 @@ function begin_frame($caption = '', $center = false, $padding = 10)
     $htmlout .= "<table class='shit table table-bordered table-striped'><tr><td$tdextra>\n";
 
     return $htmlout;
-}
-
-/**
- * @param int $padding
- */
-function attach_frame($padding = 10)
-{
-    echo "</td></tr><tr><td style='border-top: 0'>\n";
 }
 
 /**
@@ -162,7 +154,8 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null,
 
 /**
  * @param      $text
- * @param null $class
+ * @param null $outer_class
+ * @param null $inner_class
  *
  * @return string|void
  */
@@ -358,6 +351,8 @@ function placeholder_image($size = 10)
  * @param $url
  *
  * @return mixed|string|null
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  */
 function validate_url($url)
 {

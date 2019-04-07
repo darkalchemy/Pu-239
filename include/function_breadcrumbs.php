@@ -7,7 +7,7 @@
  */
 function breadcrumbs()
 {
-    global $site_config, $session, $CURUSER;
+    global $site_config;
 
     $lang = load_language('breadcrumbs');
     $path = $query = '';

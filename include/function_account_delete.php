@@ -7,7 +7,7 @@
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function account_delete($userid)
+function account_delete(int $userid)
 {
     global $cache, $user_stuffs;
 
@@ -19,7 +19,7 @@ function account_delete($userid)
     $cache->delete('all_users_');
     $cache->delete('user_' . $userid);
 
-    sql_query("DELETE FROM users WHERE id=$userid") or sqlerr(__FILE__, __LINE__);
+    sql_query("DELETE FROM users WHERE id = $userid") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages WHERE sender = $userid") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages_answers WHERE sender = $userid") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM messages WHERE sender = $userid") or sqlerr(__FILE__, __LINE__);

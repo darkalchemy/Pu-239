@@ -20,7 +20,7 @@ $location_bar = '<h1><a class="altlink" href="' . $site_config['paths']['baseurl
         <span>' . $mini_menu . '</span><br><br>';
 $HTMLOUT .= $location_bar;
 $HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</>' : format_username($arr['id'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr_edited['id'])) . '</h1>
-    <table border="0" cellspacing="5" cellpadding="10" width="90%">
+    <tablecellspacing="5" cellpadding="10" width="90%">
     <tr>
     <td class="forum_head" align="left" width="120px" valign="middle">
     <span style="white-space:nowrap;">#' . $post_id . '

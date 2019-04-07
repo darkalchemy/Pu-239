@@ -20,7 +20,7 @@ $HTMLOUT = "
                 </div>
             </div>
             <fieldset id='rules'>
-                <legend class='is-flex'>
+                <legend class='level-center-center padding20 size_7'>
                     <img src='{$site_config['paths']['images_baseurl']}info.png' alt='' class='tooltipper right10 icon' title='Guidelines'>{$lang['faq_contents_header']}
                 </legend>
                 <div class='bordered'>

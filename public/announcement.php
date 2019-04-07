@@ -13,8 +13,8 @@ $dt = TIME_NOW;
 $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
         FROM users AS u
-        LEFT JOIN announcement_main AS ann_main ON ann_main.main_id=u.curr_ann_id
-        WHERE u.id=' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
+        LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
+        WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
@@ -99,7 +99,7 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
             <div class='tabular-row'>
                 <div class='tabular-cell'><b><span class='has-text-danger'>{$lang['annouce_announcement']}: " . htmlsafechars($ann_subject) . "</span></b></div>
             </div>
-            <span style='color: blue;'>" . format_comment($ann_body) . "</span>
+            <span class='has-text-blue'>" . format_comment($ann_body) . "</span>
             {$lang['annouce_click']} <a href='{$site_config['paths']['baseurl']}/clear_announcement.php'>
             <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.
         </div>
@@ -108,7 +108,7 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
     $HTMLOUT .= main_div("
         <div class='padding20'>
             <h1>{$lang['index_announce']}</h1>
-            <div>{$lang['annouce_announcement']}: <span class='has-text-blue'>{$lang['annouce_cur_no_new_ann']}</span></div>
+            <div>{$lang['annouce_announcement']}: <span class='has-text-success'>{$lang['annouce_cur_no_new_ann']}</span></div>
         </div>", 'has-text-centered');
 }
 echo stdhead($lang['annouce_std_head']) . wrapper($HTMLOUT) . stdfoot();

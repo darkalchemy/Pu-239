@@ -47,7 +47,7 @@ switch ($action2) {
         $level_of_shittyness .= '</select>';
         $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add" accept-charset="utf-8">
-   <table border="0">
+   <table>
    <tr>
       <td class="colhead" colspan="2">new <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">
       <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">

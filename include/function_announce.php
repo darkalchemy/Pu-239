@@ -65,7 +65,7 @@ function crazyhour_announce()
         }
 
         return false;
-    } elseif (($cz['crazyhour']['var'] < $crazy_hour) && ($cz['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
+    } elseif (($cz['crazyhour']['var'] < $crazy_hour) && ($cz['crazyhour']['var'] >= TIME_NOW)) {
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
             if (($cz_lock = $cache->set('crazyhour_lock_', 1, 10)) !== false) {
@@ -80,7 +80,7 @@ function crazyhour_announce()
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);
 
-                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:">';
+                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="' . IMAGES_DIR . 'smilies/w00t.gif" alt=":w00t:">';
                 $values = [
                     'added' => TIME_NOW,
                     'txt' => $text,

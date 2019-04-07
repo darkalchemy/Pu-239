@@ -1,5 +1,12 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
+/**
+ * @param $pass
+ *
+ * @return bool|string
+ */
 function make_passhash($pass)
 {
     $options = get_options();
@@ -9,14 +16,28 @@ function make_passhash($pass)
     return password_hash($pass, $algo, $options);
 }
 
+/**
+ * @param int $bytes
+ *
+ * @return string
+ * @throws Exception
+ */
 function make_password($bytes = 12)
 {
     return bin2hex(random_bytes($bytes));
 }
 
+/**
+ * @param $hash
+ * @param $password
+ * @param $userid
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ */
 function rehash_password($hash, $password, $userid)
 {
-    global $user_stuffs, $site_config;
+    global $user_stuffs;
 
     $options = get_options();
     $algo = $options['algo'];
@@ -30,6 +51,9 @@ function rehash_password($hash, $password, $userid)
     }
 }
 
+/**
+ * @return array
+ */
 function get_options()
 {
     global $site_config;

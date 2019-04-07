@@ -87,10 +87,13 @@ function happyCheck($action, $id = null)
     if ($action === 'checkid' && (($happycheck == '255') || $happycheck == $id)) {
         return true;
     }
+    return false;
 }
 
 /**
  * @param $act
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function happyFile($act)
 {

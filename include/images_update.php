@@ -1,5 +1,8 @@
 <?php
 
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'share_images.php';
 global $cache;
@@ -18,6 +21,12 @@ if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || i
     echo "Already running.\n";
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws InvalidManipulation
+ * @throws Exception
+ */
 function images_update()
 {
     require_once INCL_DIR . 'function_tmdb.php';

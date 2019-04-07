@@ -1,5 +1,7 @@
 <?php
 
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 /**
  * @param        $rows
  * @param string $variant
@@ -7,6 +9,7 @@
  * @return string
  *
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  */
 function commenttable($rows, $variant = 'torrent')
 {
@@ -25,7 +28,7 @@ function commenttable($rows, $variant = 'torrent')
     if (isset($variant_options[$variant])) {
         $type = $variant_options[$variant];
     } else {
-        return;
+        return null;
     }
     $extra_link = ($variant === 'request' ? '&amp;type=request' : ($variant === 'offer' ? '&amp;type=offer' : ''));
     $delete = ($variant === 'request' || $variant === 'offer') ? 'action=delete_comment' : 'action=delete';

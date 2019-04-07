@@ -25,7 +25,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
-    $is_year = $released = $rated = $plot = $show_subs = '';
+    $is_year = $released = $rated = $plot = $show_subs = $show_icons = '';
     if (!empty($imdb_id)) {
         $background = find_images($imdb_id, $type = 'background');
         $plot = $cache->get('imdb_plot_' . $imdb_id);
@@ -77,13 +77,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                     </div>";
     }
     if (!empty($year)) {
-        $released = "
-                                                    <div class='column padding5 is-4'>
-                                                        <span class='size_4 has-text-primary has-text-weight-bold'>Released:</span>
-                                                    </div>
-                                                    <div class='column padding5 is-8'>
-                                                        <span class='size_4'>{$year}</span>
-                                                    </div>";
         $is_year = " ($year)";
     }
     if (!empty($subtitles)) {
@@ -107,7 +100,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         }
     }
     if ($icons) {
-        $icons = "
+        $show_icons = "
                                     <div class='level'>
                                         <div>$text</div>
                                         <div>$icons</div>
@@ -147,7 +140,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_size']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8'>" . mksize($size) . "</div>{$genre}{$show_subs}
+                                                                <div class='column padding5 is-8'>" . mksize($size) . "</div>{$genre}{$show_subs}{$show_icons}
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_seeder']}</span>
                                                                 </div>
@@ -202,7 +195,7 @@ function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploade
     $content = "
                     <tr>
                         <td class='has-text-centered'>$caticon</td>
-                        <td>" . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre) . "
+                        <td>" . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons) . "
                         <td class='has-text-centered'>{$times_completed}</td>
                         <td class='has-text-centered'>{$seeders}</td>
                         <td class='has-text-centered'>{$leechers}</td>

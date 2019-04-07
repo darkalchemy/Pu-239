@@ -35,6 +35,7 @@ function readMore($text, $char, $link)
  * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws Exception
  */
 function torrenttable($res, $variant = 'index')
 {
@@ -226,6 +227,7 @@ function torrenttable($res, $variant = 'index')
         }
         $poster = empty($row['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
         $user_rating = empty($row['rating_sum']) ? '' : ratingpic($row['rating_sum'] / $row['num_ratings']);
+        $descr = '';
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['paths']['baseurl'] . '/details.php?id=' . $row['id'] . '&amp;hit=1'));
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
@@ -457,12 +459,12 @@ function torrenttable($res, $variant = 'index')
             $staff_pick = '';
             if ($CURUSER['class'] >= $site_config['allowed']['staff_picks'] && $row['staff_picks'] > 0) {
                 $staff_pick = "
-                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
+                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
                     <i class='icon-star-empty icon has-text-danger' aria-hidden='true'></i>
                 </span>";
             } elseif ($CURUSER['class'] >= $site_config['allowed']['staff_picks']) {
                 $staff_pick = "
-                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
+                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
                     <i class='icon-star-empty icon has-text-success' aria-hidden='true'></i>
                 </span>";
             }

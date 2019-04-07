@@ -169,7 +169,7 @@ if ($search || $author_id) {
                         $topic_desc = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
                         $post_title = htmlsafechars($arr['post_title'], ENT_QUOTES);
                     }
-                    $body = format_comment($arr['body'], 1, 0);
+                    $body = format_comment($arr['body'], true, false);
                     $post_id = $arr['post_id'];
                     $posts = $arr['post_count'];
                     $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . $lang['fe_post_preview'] . '');

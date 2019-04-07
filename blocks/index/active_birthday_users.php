@@ -18,7 +18,7 @@ if ($birthday === false || is_null($birthday)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many'], 0);
+        $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many']);
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {

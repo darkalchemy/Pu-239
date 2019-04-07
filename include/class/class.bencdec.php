@@ -245,10 +245,6 @@ class bencdec
         return self::decode($data, $options);
     }
 
-    //////////////////////////////////////////////////////////
-    // Decoding Functions //
-    //////////////////////////////////////////////////////////
-
     /**
      * @param     $str
      * @param int $options

@@ -15,7 +15,7 @@ $lang = array_merge(load_language('global'), load_language('rules'));
 
 $HTMLOUT = "
         <fieldset id='rules'>
-            <legend>
+            <legend class='level-center-center padding20 size_7'>
                 <img src='{$site_config['paths']['images_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
             </legend>";
 

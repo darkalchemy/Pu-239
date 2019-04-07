@@ -10,13 +10,14 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_type
  *
  * @return string
+ * @throws InvalidManipulation
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     global $site_config, $BLOCKS;
 
     if (!$BLOCKS['tvmaze_api_on']) {
-        return;
+        return null;
     }
 
     $cast = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
@@ -65,7 +66,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                                             <span id='cast_{$role['id']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 250) . "' class='tooltip-poster'>
+                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 250) . "' alt='' class='tooltip-poster'>
                                                         <p class='top10'>{$role['name']}</p>
                                                         <p>{$role['character']}</p>
                                                     </span>
@@ -177,6 +178,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws InvalidManipulation
+ * @throws Exception
  */
 function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '')
 {
@@ -249,7 +251,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
             <div class='padding10'>
                 <div class='columns'>
                     <div class='column is-3'>
-                        <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
+                        <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' alt='' class='lazy round10 img-polaroid'>
                     </div>
                     <div class='column'>" . tvmaze_format($tvmaze_show_data, 'show') . $episode . '
                     </div>

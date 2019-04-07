@@ -278,7 +278,7 @@ $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmana
 $pm_drop_down = '
             <form name="compose" method="post" action="mass_bonus_for_members.php" accept-charset="utf-8">
             <input type="hidden" name="pm" value="pm">
-                <table border="0" style="max - width: 800px;">
+                <tablestyle="max - width: 800px;">
                     <tr>
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>

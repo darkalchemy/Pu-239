@@ -68,7 +68,7 @@ if (!file_exists($rep_set_cache)) {
     }
 }
 $HTMLOUT = '<div>
-                <table width="100%" border="0">
+                <table width="100%">
                    <tr>
                     <td style="font-size: 12px; vertical-align: middle; font-weight: bold; color: rgb(0, 0, 0);">' . $lang['repset_settings'] . '</td></tr>
 
@@ -85,7 +85,7 @@ $HTMLOUT = '<div>
                     <div style="padding: 5px; background - color: rgb(30, 30, 30);">
                             <div style="border: 1px solid rgb(0, 0, 0);">
 
-                            <table width="100 % " border="0">
+                            <table width="100 % ">
                              <tr>
                              <td width="70 % "><b>' . $lang['repset_enable'] . '</b><div><hr style="color:#A83838;" size="1"></div><div style="color: lightgray;">' . $lang['repset_setop'] . '</div></td>
 

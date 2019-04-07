@@ -3,6 +3,8 @@
 /**
  * @param string $imdb_id
  *
+ * @param string $type
+ *
  * @return bool
  *
  * @throws \Envms\FluentPDO\Exception

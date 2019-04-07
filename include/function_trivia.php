@@ -11,7 +11,7 @@ require_once INCL_DIR . 'function_users.php';
  */
 function trivia_table()
 {
-    global $lang, $site_config, $fluent, $session, $cache;
+    global $fluent, $cache;
 
     $triviaq = $cache->get('triviaq_');
     if ($triviaq === false || is_null($triviaq)) {
@@ -69,20 +69,20 @@ function trivia_table()
 
         $heading = "
         <tr>
-            <th class='has-text-left' width='5%'>Username</th>
-            <th class='has-text-centered' width='5%'>Ratio</th>
-            <th class='has-text-centered' width='5%'>Correct</th>
-            <th class='has-text-centered' width='5%'>Incorrect</th>
+            <th class='has-text-left w-5'>Username</th>
+            <th class='has-text-centered w-5'>Ratio</th>
+            <th class='has-text-centered w-5'>Correct</th>
+            <th class='has-text-centered w-5'>Incorrect</th>
         </tr>";
         $body = '';
         foreach ($users as $user) {
             $percentage = $user['correct'] / ($user['correct'] + $user['incorrect']) * 100;
             $body .= "
         <tr>
-            <td width='5%'><div class='is-pulled-left'>" . format_username($user['uid']) . "</div></td>
-            <td class='has-text-centered' width='5%'>" . sprintf('%.2f%%', $percentage) . "</td>
-            <td class='has-text-centered' width='5%'>{$user['correct']}</td>
-            <td class='has-text-centered' width='5%'>{$user['incorrect']}</td>
+            <td class='w-5'><div class='is-pulled-left'>" . format_username($user['uid']) . "</div></td>
+            <td class='has-text-centered w-5'>" . sprintf('%.2f%%', $percentage) . "</td>
+            <td class='has-text-centered w-5'>{$user['correct']}</td>
+            <td class='has-text-centered w-5'>{$user['incorrect']}</td>
         </tr>";
         }
 
@@ -141,6 +141,7 @@ function trivia_time()
 {
     global $fluent;
 
+    $round = $game = 0;
     $cleanup = $fluent->from('cleanup')
                       ->select(null)
                       ->select('clean_time - UNIX_TIMESTAMP(NOW()) AS clean_time')

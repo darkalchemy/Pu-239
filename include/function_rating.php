@@ -10,7 +10,7 @@
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $site_config, $fluent, $cache;
+    global $CURUSER, $fluent, $cache;
 
     $return = false;
     if ($id == 0 || !in_array($what, [

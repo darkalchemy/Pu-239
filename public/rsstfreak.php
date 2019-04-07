@@ -12,7 +12,7 @@ $icount = 1;
 
 $xml = $cache->get('tfreaknewsrss_');
 if ($xml === false || is_null($xml)) {
-    $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
+    $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
     $cache->set('tfreaknewsrss_', $xml, 300);
 }
 
@@ -22,10 +22,8 @@ $items = $doc->getElementsByTagName('item');
 foreach ($items as $item) {
     $div = "
         <div class='has-text-left padding20'>
-            <h2>" . $item->getElementsByTagName('title')
-                         ->item(0)->nodeValue . '</h2>
-            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')
-                                                                                ->item(0)->nodeValue) . '
+            <h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2>
+            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '
         </div>';
     $html .= main_div($div, $icount < $limit ? 'bottom20' : '');
     if ($use_limit && $icount++ >= $limit) {

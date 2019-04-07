@@ -4,14 +4,18 @@ use ReCaptcha\ReCaptcha;
 use ReCaptcha\RequestMethod\CurlPost;
 
 require_once INCL_DIR . 'function_staff.php';
+
 /**
  * @param     $response
  * @param int $timeout
  *
  * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
  */
 function verify_recaptcha($response, $timeout = 30)
 {
+    global $site_config;
+
     if ($response === '') {
         return false;
     }

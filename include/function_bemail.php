@@ -2,6 +2,8 @@
 
 /**
  * @param $email
+ *
+ * @throws Exception
  */
 function check_banned_emails($email)
 {

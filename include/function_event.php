@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @param int    $modifier
+ * @param int    $begin
+ * @param int    $expires
+ * @param int    $setby
+ * @param string $title
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function set_event(int $modifier, int $begin, int $expires, int $setby, string $title)
 {
     global $cache, $fluent;
@@ -18,6 +27,12 @@ function set_event(int $modifier, int $begin, int $expires, int $setby, string $
     $cache->set('site_events_', $values, $expires);
 }
 
+/**
+ * @param int $expires
+ * @param int $new_expires
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function update_event(int $expires, int $new_expires)
 {
     global $cache, $fluent;
@@ -38,6 +53,12 @@ function update_event(int $expires, int $new_expires)
     $cache->set('site_events_', $free, $free['expires']);
 }
 
+/**
+ * @param bool $all
+ *
+ * @return array|bool|mixed
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_event(bool $all)
 {
     global $cache, $fluent;

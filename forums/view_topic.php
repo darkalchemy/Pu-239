@@ -122,7 +122,7 @@ if ($arr['poll_id'] > 0) {
 	    <fieldset class="poll_select">
 	        <input type="hidden" name="topic_id" value="' . $topic_id . '">
 	        <input type="hidden" name="action_2" value="poll_vote">') . '
-	        <table border="0" cellspacing="5" cellpadding="5">
+	        <tablecellspacing="5" cellpadding="5">
 	            <tr>
 	                <td colspan="2">
 	                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="tooltipper emoticon lazy">
@@ -173,7 +173,7 @@ if ($arr['poll_id'] > 0) {
             $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
             $math_text = $math . '% with ' . $vote_count . ' vote' . plural($vote_count);
             $math_image = '
-            <table border="0" width="200px">
+            <tablewidth="200px">
 		        <tr>
 		            <td style="padding: 0px; background-image: url(' . $site_config['paths']['images_baseurl'] . 'forums/vote_img_bg.gif); background-repeat: repeat-x">
                         <span class="tooltipper" title="' . $math_text . '">
@@ -483,7 +483,7 @@ foreach ($posts as $arr) {
     $post_id = $arr['post_id'];
     $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id=' . sqlesc($arr['user_id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($attachments_res) > 0) {
-        $attachments = '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
+        $attachments = '<table width="100%"cellspacing="0" cellpadding="5"><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
         while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
             $attachments .= '<span>' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="tooltipper emoticon lazy"> ' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="tooltipper emoticon lazy"> ') . ' 
 					<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">

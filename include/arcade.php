@@ -2,7 +2,6 @@
 
 global $site_config, $CURUSER, $cache, $user_stuffs;
 
-//====  make sure name is what you expect or error... add or remove to match your site
 if (isset($_POST['gname'])) {
     $gname = htmlspecialchars($_POST['gname']);
     $all_our_games = $site_config['arcade']['games'];
@@ -10,7 +9,7 @@ if (isset($_POST['gname'])) {
         stderr('Error', 'I smell a fat rat!');
     }
 }
-//====  make sure level name is what you expect or error... add or remove to match your site
+
 if (isset($_POST['levelName'])) {
     $levelName = htmlspecialchars($_POST['levelName']);
     $all_levels = [
@@ -23,7 +22,6 @@ if (isset($_POST['levelName'])) {
     }
 }
 
-//=== get score or "gscore"
 $score = (isset($_POST['score']) ? intval($_POST['score']) : (isset($_POST['gscore']) ? intval($_POST['gscore']) : 0));
 $level = (isset($_POST['level']) ? intval($_POST['level']) : 1);
 
@@ -40,7 +38,6 @@ sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES (' . sql
 $game_id = array_search($gname, $site_config['arcade']['games']);
 $game = $site_config['arcade']['game_names'][$game_id];
 $link = '[url=' . $site_config['paths']['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
-//$link = '[url=' . $site_config['paths']['baseurl'] . '/arcade.php]' . $game . '[/url]';
 $classColor = get_user_class_color($CURUSER['class']);
 if ($highScore < $score) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['arcade']['top_score_points']} karma points.";
@@ -60,7 +57,7 @@ require_once INCL_DIR . 'function_users.php';
 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
     autoshout($message);
 }
-// update alltime high scores
+
 $res = sql_query('SELECT MAX(score) AS score, game FROM flashscores GROUP BY game') or sqlerr(__FILE__, __LINE__);
 while ($row = $res->fetch_assoc()) {
     $next = sql_query("SELECT score, game, level, user_id FROM flashscores WHERE game = '" . $row['game'] . "' AND score = " . $row['score']) or sqlerr(__FILE__, __LINE__);

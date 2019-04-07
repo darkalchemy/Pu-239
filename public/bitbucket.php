@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-require_once INCL_DIR . 'dragndrop.php';
+require_once INCL_DIR . 'function_bitbucket.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 

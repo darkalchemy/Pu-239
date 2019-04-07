@@ -7,6 +7,7 @@ use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
  * @param bool $stealth
  *
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  */
 function stealth($id, $stealth = true)
 {
@@ -15,16 +16,15 @@ function stealth($id, $stealth = true)
     $setbits = $clrbits = 0;
     if ($stealth) {
         $display = 'is';
-        $setbits |= bt_options::PERMS_STEALTH; // stealth on
+        $setbits |= bt_options::PERMS_STEALTH;
     } else {
         $display = 'is not';
-        $clrbits |= bt_options::PERMS_STEALTH; // stealth off
+        $clrbits |= bt_options::PERMS_STEALTH;
     }
-    // update perms
+
     if ($setbits || $clrbits) {
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
-    // grab current data
     $res = sql_query('SELECT username, perms, modcomment FROM users WHERE id=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];

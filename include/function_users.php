@@ -62,13 +62,12 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $anonymous = false)
 {
-    global $site_config, $CURUSER, $user_stuffs;
+    global $site_config, $user_stuffs;
 
     if (empty($user['username'])) {
         $user = $user_stuffs->getUserFromId($user);
     }
 
-    $member_reputation = '';
     if ($rep_is_on) {
         include CACHE_DIR . 'rep_cache.php';
         require_once INCL_DIR . 'function_html.php';
@@ -133,8 +132,8 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $ano
         if ($user['g_rep_hide']) { // can set this to a group option if required, via admin?
             $posneg = 'off';
             $rep_level = 'rep_off';
-        } else { // it ain't off then, so get on with it! I wanna see shiny stuff!!
-            $rep_level = $user_reputation ? $user_reputation : 'rep_undefined'; // just incase
+        } else {
+            $rep_level = isset($user_reputation) ? $user_reputation : 'rep_undefined';
 
             for ($i = 0; $i <= $rep_bar; ++$i) {
                 $posneg .= "<span title='Reputation Power $rep_power<br> " . htmlsafechars($user['username']) . " $rep_level' class='tooltipper'>";
@@ -352,6 +351,7 @@ function ratio_image_machine($ratio_to_check)
         case $ratio_to_check < 0.25:
             return '<span class="tooltipper" title="Shit"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" class="lazy emoticon"></span>';
     }
+    return null;
 }
 
 /**

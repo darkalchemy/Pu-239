@@ -1265,6 +1265,27 @@ ul li ul li {
     margin-bottom: 1.25em;
 }
 
+.readmore {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+}
+
+@keyframes scroll {
+    from {
+        transform: translate(0,0);
+    }
+    to {
+       transform: translate(-300px,0);
+    }
+}
+
+.marquee {
+    animation: scroll 7s linear 0s infinite;
+    position: absolute;
+}
+
 @media (max-width: 1087px) {
     .parallax {
         display: flex;
@@ -1377,11 +1398,3 @@ ul li ul li {
         display: none;
     }
 }
-
-.readmore {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 10;
-    -webkit-box-orient: vertical;
-}
-

@@ -37,7 +37,7 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
     $mp = $pages - 1;
     if ($page >= 1) {
         $pager = "
-                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile'title='Goto Page $page'>Previous</a>";
+                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile' title='Goto Page $page'>Previous</a>";
     } else {
         $pager = "
                         <a class='pagination-previous button $class is_hidden-mobile' disabled>Previous</a>";

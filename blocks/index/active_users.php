@@ -18,7 +18,7 @@ if ($active === false || is_null($active)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $active['activeusers'] = format_comment($lang['index_blocks_too_many'], 0);
+        $active['activeusers'] = format_comment($lang['index_blocks_too_many']);
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {

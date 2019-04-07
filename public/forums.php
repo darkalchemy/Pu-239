@@ -201,7 +201,7 @@ for ($i = 2; $i < 21; ++$i) {
 }
 $more_options = '
 <div id="staff_tools" ' . ((isset($_POST['poll_question']) && '' !== $_POST['poll_question']) ? '' : 'style="display:none"') . '>
-<table border="0" cellspacing="0" cellpadding="5" width="800">
+<tablecellspacing="0" cellpadding="5" width="800">
 <tr>
 </tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>

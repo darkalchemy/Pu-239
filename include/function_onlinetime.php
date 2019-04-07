@@ -65,4 +65,5 @@ function time_return($stamp)
     if (is_array($nicetime)) {
         return implode(', ', $nicetime);
     }
+    return null;
 }

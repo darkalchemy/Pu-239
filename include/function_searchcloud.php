@@ -5,7 +5,8 @@ use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 /**
  * @param int $limit
  *
- * @return array|string
+ * @return array|bool|mixed
+ * @throws \Envms\FluentPDO\Exception
  */
 function searchcloud($limit = 100)
 {
@@ -53,8 +54,9 @@ function searchcloud($limit = 100)
 /**
  * @param $word
  *
+ * @param $column
+ *
  * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  */
 function searchcloud_insert($word, $column)
 {
@@ -99,6 +101,7 @@ function searchcloud_insert($word, $column)
 
 /**
  * @return string
+ * @throws \Envms\FluentPDO\Exception
  */
 function cloud()
 {
@@ -115,7 +118,6 @@ function cloud()
         if ($spread == 0) {
             $spread = 1;
         }
-        $cloud_html = '';
         $cloud_tags = [];
         foreach ($tags['search'] as $tag) {
             if (!empty($tag['searchedfor'])) {

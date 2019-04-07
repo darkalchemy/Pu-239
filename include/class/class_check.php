@@ -10,6 +10,7 @@ require_once INCL_DIR . 'function_staff.php';
  * @param bool $staff
  *
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  */
 function class_check($class = 0, $staff = true)
 {

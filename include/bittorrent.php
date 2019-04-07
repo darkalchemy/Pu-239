@@ -1666,15 +1666,26 @@ function insert_update_ip()
         'lastbrowse' => $added,
     ];
     $ip_stuffs->insert_update($values, $update, $CURUSER['id']);
+    return true;
 }
 
 /**
- * @param $url
+ * @param      $url
+ * @param bool $fresh
  *
  * @return bool|string
  */
-function fetch($url)
+function fetch($url, $fresh = true)
 {
+    if (!$fresh) {
+        global $cache;
+
+        $key = hash('SHA-256', $url);
+        $result = $cache->get($key);
+        if (!empty($result)) {
+            return $result;
+        }
+    }
     $client = new GuzzleHttp\Client([
         'curl' => [
             CURLOPT_SSL_VERIFYPEER => false,
@@ -1690,8 +1701,15 @@ function fetch($url)
     try {
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
-                return $res->getBody()
-                           ->getContents();
+                $contents = $res->getBody()->getContents();
+                if (!$fresh) {
+                    global $cache;
+
+                    $key = hash('SHA-256', $url);
+                    $cache->set($key, $contents, 86400);
+                    return $contents;
+                }
+
             }
         } else {
             return false;
@@ -1704,8 +1722,7 @@ function fetch($url)
 }
 
 /**
- * @param      $details
- * @param bool $portrait
+ * @param $details
  *
  * @return bool|mixed|string
  *

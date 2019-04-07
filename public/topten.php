@@ -196,7 +196,7 @@ if ($counted == '10') {
     $upped10 = $arr[9]['uploaded'];
     $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''></div>", 'top20');
 } else {
-    $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
+    $HTMLOUT .= main_div('<h4>Insufficient Uploaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Downloaders</h2></div>";
 $result = sql_query("SELECT username, downloaded FROM users WHERE enabled = 'yes' ORDER BY downloaded DESC LIMIT 10");
@@ -225,7 +225,7 @@ if ($counted == '10') {
     $upped10 = $arr[9]['downloaded'];
     $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''/></div>", 'top20');
 } else {
-    $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
+    $HTMLOUT .= main_div('<h4>Insufficient Downloaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
 $result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - added) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
@@ -254,7 +254,7 @@ if ($counted == '10') {
     $upped10 = $arr[9]['upspeed'];
     $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>", 'top20');
 } else {
-    $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
+    $HTMLOUT .= main_div('<h4>Insufficient Uploaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
 $result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - added) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
@@ -283,6 +283,6 @@ if ($counted == '10') {
     $upped10 = $arr[9]['downspeed'];
     $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>", 'top20');
 } else {
-    $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
+    $HTMLOUT .= main_div('<h4>Insufficient Downloaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 echo stdhead($lang['head_title']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

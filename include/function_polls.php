@@ -1,11 +1,15 @@
 <?php
 
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 /**
- * @return string
+ * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  */
 function parse_poll()
 {
-    global $CURUSER, $site_config, $pollvoter_stuffs;
+    global $CURUSER, $pollvoter_stuffs;
 
     $htmlout = '';
     $check = 0;
@@ -45,13 +49,13 @@ function parse_poll()
     }
 
     if ($check === 1) {
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
+        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
         $tv_poll = 0;
         foreach ($poll_answers as $id => $data) {
             //subtitle question
-            $question = htmlsafechars($data['question'], ENT_QUOTES);
+            $question = htmlsafechars(htmlspecialchars($data['question'], ENT_QUOTES, 'UTF-8'));
             $choice_html = '';
             //get total votes for each choice
             foreach ($poll_answers[$id]['votes'] as $number) {
@@ -59,7 +63,7 @@ function parse_poll()
             }
             // Get the choises from the unserialised array
             foreach ($data['choice'] as $choice_id => $text) {
-                $choice = htmlsafechars($text, ENT_QUOTES);
+                $choice = htmlsafechars(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
                 $votes = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
@@ -77,28 +81,27 @@ function parse_poll()
         $htmlout .= show_total_votes($tv_poll);
     } elseif ($check == 2) {
         // only for guests when view before vote is off
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
+        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
         //$htmlout .= poll_show_no_guest_view();
         $htmlout .= show_total_votes($total_votes);
     } else {
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         //output poll form
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
+        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
         foreach ($poll_answers as $id => $data) {
             foreach ($poll_answers[$id]['votes'] as $number) {
                 $total_votes += intval($number);
             }
             // get the question again!
-            $question = htmlsafechars($data['question'], ENT_QUOTES);
+            $question = htmlsafechars(htmlspecialchars($data['question'], ENT_QUOTES, 'UTF-8'));
             $choice_html = '';
             // get choices for this question
             foreach ($data['choice'] as $choice_id => $text) {
-                $choice = htmlsafechars($text, ENT_QUOTES);
+                $choice = htmlsafechars(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
                 $votes = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
                 }
-                //do we wanna allow URL's and if so convert them
                 if ($GVARS['allow_poll_tags']) {
                     $choice = format_comment($choice);
                 }
@@ -226,7 +229,7 @@ function poll_show_rendered_question($question = '', $choice_html = '')
 }
 
 /**
- * @param string $total_votes
+ * @param int $total_votes
  *
  * @return string
  */

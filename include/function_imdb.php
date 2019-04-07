@@ -9,7 +9,22 @@ require_once INCL_DIR . 'function_html.php';
 use Imdb\Config;
 use Imdb\Person;
 use Imdb\Title;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
+/**
+ * @param string      $imdb_id
+ * @param bool        $title
+ * @param bool        $data_only
+ * @param int|null    $tid
+ * @param string|null $poster
+ *
+ * @return array|bool|mixed
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws InvalidManipulation
+ * @throws Exception
+ */
 function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid, ?string $poster)
 {
     global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config, $fluent;
@@ -43,7 +58,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'cast' => $movie->cast(),
             'genres' => $movie->genres(),
             'plotoutline' => $movie->plotoutline(true),
-            'trailers' => $movie->trailers(true, true),
+            'trailers' => $movie->trailers(true),
             'language' => $movie->language(),
             'rating' => is_numeric($movie->rating()) ? $movie->rating() : 0,
             'year' => $movie->year(),
@@ -267,7 +282,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 110) . "' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 110) . "' alt='' class='round5'>
                                         </span>
                                         <div class='tooltip_templates'>
                                             <div id='cast_{$pp['imdb']}_tooltip'>
@@ -275,7 +290,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 													<div class='columns is-marginless is-paddingless'>
 														<div class='column padding10 is-4'>
                                                             <span>
-                                                                <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' class='tooltip-poster'>
+                                                                <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' alt='' class='tooltip-poster'>
                                                             </span>
 														</div>
 														<div class='column paddin10 is-8'>
@@ -379,7 +394,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         <div class='padding20'>
             <div class='columns bottom20'>
                 <div class='column is-one-third'>
-                    <img src='" . placeholder_image('450') . "' data-src='" . url_proxy($poster, true, 450) . "' class='lazy round10 img-polaroid'>
+                    <img src='" . placeholder_image('450') . "' data-src='" . url_proxy($poster, true, 450) . "' alt='' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $imdb_info
@@ -412,7 +427,6 @@ function get_imdb_title($imdb_id)
         return false;
     }
 
-    $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
     $imdb_data = get_imdb_info($imdb_id, true, true, null, null);
     if (empty($imdb_data['title'])) {
@@ -431,7 +445,7 @@ function get_imdb_title($imdb_id)
  */
 function get_imdb_info_short($imdb_id)
 {
-    global $cache, $BLOCKS, $site_config, $image_stuffs;
+    global $BLOCKS, $site_config, $image_stuffs;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -647,6 +661,14 @@ function get_random_useragent()
     return $browser[0];
 }
 
+/**
+ * @param string $imdb_id
+ *
+ * @return bool
+ * @throws InvalidManipulation
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ */
 function update_torrent_data(string $imdb_id)
 {
     global $BLOCKS, $fluent, $cache, $site_config;
@@ -683,8 +705,15 @@ function update_torrent_data(string $imdb_id)
             $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
         }
     }
+    return true;
 }
 
+/**
+ * @param $person_id
+ *
+ * @return array|bool|mixed
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_imdb_person($person_id)
 {
     global $BLOCKS, $cache, $fluent, $site_config;
@@ -713,7 +742,7 @@ function get_imdb_person($person_id)
         $config->default_agent = get_random_useragent();
 
         $person = new Person($person_id, $config);
-        $update = $imdb_person = [];
+        $imdb_person = [];
         if (!empty($person->name())) {
             $imdb_person['name'] = $person->name();
         } else {

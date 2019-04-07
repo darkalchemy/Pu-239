@@ -121,9 +121,8 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     ], file_get_contents($nfofilename));
     $nfo = $nfo_content;
     if (isset($strip) && $strip) {
-        require_once INCL_DIR . 'strip.php';
-        $nfo = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
-        strip($nfo);
+        $nfo = preg_replace('`/[^\\x20-\\x7e\\x0a\\x0d]`', ' ', $nfo);
+        $nfo = preg_replace('`[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\xff]`', '', $nfo);
     }
 }
 

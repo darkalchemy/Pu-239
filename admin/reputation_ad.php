@@ -399,7 +399,7 @@ function view_list()
                 $orderby = 'dateadd';
         }
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
-        $table_header = "<table width='80%' border='1'><tr>";
+        $table_header = "<table width='80%'><tr>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
         $table_header .= "<td width='20%'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
         $table_header .= "<td width='20%'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
