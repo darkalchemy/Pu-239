@@ -80,7 +80,7 @@ function adminer_object()
         {
             global $CURUSER, $site_config;
 
-            if (in_array($CURUSER['id'], $site_config['adminer_allowed_ids'])) {
+            if (in_array($CURUSER['id'], $site_config['adminer']['allowed_ids'])) {
                 return [
                     'localhost',
                     $site_config['database']['username'],
