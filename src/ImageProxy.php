@@ -82,6 +82,7 @@ class ImageProxy
         }
         if ($this->optimize($path, false, false)) {
             $this->set_permissions($path);
+
             return true;
         }
 

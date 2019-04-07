@@ -19,6 +19,7 @@
  * @param bool $icons
  *
  * @return string
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
@@ -185,6 +186,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
  * @param bool $icons
  *
  * @return string
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)

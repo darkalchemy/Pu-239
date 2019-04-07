@@ -212,6 +212,7 @@ function get_movie_id($imdbid, $type)
 
         return $json['id'];
     }
+
     return null;
 }
 
@@ -317,6 +318,7 @@ function get_imdbid($tmdbid)
     if (!empty($json['imdb_id'])) {
         return $json['imdb_id'];
     }
+
     return null;
 }
 

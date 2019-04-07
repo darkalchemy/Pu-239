@@ -10,6 +10,7 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_type
  *
  * @return string
+ *
  * @throws InvalidManipulation
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)

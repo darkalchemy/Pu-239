@@ -1666,6 +1666,7 @@ function insert_update_ip()
         'lastbrowse' => $added,
     ];
     $ip_stuffs->insert_update($values, $update, $CURUSER['id']);
+
     return true;
 }
 
@@ -1673,14 +1674,15 @@ function insert_update_ip()
  * @param      $url
  * @param bool $fresh
  *
- * @return bool|string
+ * @return bool|mixed|string
+ * @throws \Envms\FluentPDO\Exception
  */
 function fetch($url, $fresh = true)
 {
     if (!$fresh) {
         global $cache;
 
-        $key = hash('SHA-256', $url);
+        $key = hash('sha256', $url);
         $result = $cache->get($key);
         if (!empty($result)) {
             return $result;
@@ -1694,7 +1696,7 @@ function fetch($url, $fresh = true)
         'synchronous' => true,
         'http_errors' => false,
         'headers' => [
-            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+            'User-Agent' => get_random_useragent(),
         ],
         'verify' => false,
     ]);
@@ -1705,11 +1707,10 @@ function fetch($url, $fresh = true)
                 if (!$fresh) {
                     global $cache;
 
-                    $key = hash('SHA-256', $url);
+                    $key = hash('sha256', $url);
                     $cache->set($key, $contents, 86400);
-                    return $contents;
                 }
-
+                return $contents;
             }
         } else {
             return false;
@@ -1785,6 +1786,44 @@ function get_body_image($details)
     $cache->delete('backgrounds_');
 
     return false;
+}
+
+/**
+ * @return bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
+function get_random_useragent()
+{
+    global $fluent, $cache, $site_config, $BLOCKS;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+
+    $browser = $cache->get('browser_user_agents_');
+    if ($browser === false || is_null($browser)) {
+        $results = $fluent->from('users')
+                          ->select(null)
+                          ->select('DISTINCT browser')
+                          ->limit(100);
+        $browser = [];
+        foreach ($results as $result) {
+            preg_match('/Agent : (.*)/', $result['browser'], $match);
+            if (!empty($match[1])) {
+                $browser[] = $match[1];
+            }
+        }
+        $cache->set('browser_user_agents_', $browser, $site_config['expires']['browser_user_agent']);
+    }
+
+    if (!empty($browser)) {
+        shuffle($browser);
+    } else {
+        $browser[] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36';
+    }
+
+    return $browser[0];
 }
 
 if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {

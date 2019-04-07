@@ -351,6 +351,7 @@ function ratio_image_machine($ratio_to_check)
         case $ratio_to_check < 0.25:
             return '<span class="tooltipper" title="Shit"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" class="lazy emoticon"></span>';
     }
+
     return null;
 }
 

@@ -336,7 +336,6 @@ function generate_html(array $data)
                                     <div class='column padding5 is-8'>
                                         <span class='size_4'>" . htmlsafechars($data['ep_title']) . '</span>
                                     </div>';
-
     }
     if (!empty($data['season'])) {
         $html .= "

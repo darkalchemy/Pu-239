@@ -1,11 +1,10 @@
 <?php
 
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
-
 /**
  * @param int $limit
  *
  * @return array|bool|mixed
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function searchcloud($limit = 100)
@@ -53,7 +52,6 @@ function searchcloud($limit = 100)
 
 /**
  * @param $word
- *
  * @param $column
  *
  * @throws \Envms\FluentPDO\Exception
@@ -101,6 +99,7 @@ function searchcloud_insert($word, $column)
 
 /**
  * @return string
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function cloud()

@@ -64,5 +64,6 @@ function get_poster($imdb_id)
             return $images[0]['url'];
         }
     }
+
     return false;
 }

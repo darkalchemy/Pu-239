@@ -87,6 +87,7 @@ function happyCheck($action, $id = null)
     if ($action === 'checkid' && (($happycheck == '255') || $happycheck == $id)) {
         return true;
     }
+
     return false;
 }
 

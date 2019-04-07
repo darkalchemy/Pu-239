@@ -351,6 +351,7 @@ function placeholder_image($size = 10)
  * @param $url
  *
  * @return mixed|string|null
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  */

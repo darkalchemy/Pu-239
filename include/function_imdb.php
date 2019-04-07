@@ -20,6 +20,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param string|null $poster
  *
  * @return array|bool|mixed
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws InvalidManipulation
@@ -624,47 +625,10 @@ function get_upcoming()
 }
 
 /**
- * @return bool|mixed
- *
- * @throws \Envms\FluentPDO\Exception
- */
-function get_random_useragent()
-{
-    global $fluent, $cache, $site_config, $BLOCKS;
-
-    if (!$BLOCKS['imdb_api_on']) {
-        return false;
-    }
-
-    $browser = $cache->get('browser_user_agents_');
-    if ($browser === false || is_null($browser)) {
-        $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('DISTINCT browser')
-                          ->limit(100);
-        $browser = [];
-        foreach ($results as $result) {
-            preg_match('/Agent : (.*)/', $result['browser'], $match);
-            if (!empty($match[1])) {
-                $browser[] = $match[1];
-            }
-        }
-        $cache->set('browser_user_agents_', $browser, $site_config['expires']['browser_user_agent']);
-    }
-
-    if (!empty($browser)) {
-        shuffle($browser);
-    } else {
-        $browser[] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36';
-    }
-
-    return $browser[0];
-}
-
-/**
  * @param string $imdb_id
  *
  * @return bool
+ *
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
@@ -705,6 +669,7 @@ function update_torrent_data(string $imdb_id)
             $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
         }
     }
+
     return true;
 }
 
@@ -712,6 +677,7 @@ function update_torrent_data(string $imdb_id)
  * @param $person_id
  *
  * @return array|bool|mixed
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function get_imdb_person($person_id)

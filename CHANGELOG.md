@@ -1,4 +1,5 @@
 ### 07 Apr, 2019
+fix: return null fetch()  
 update: more code cleanup  
 remove: explicit type, since often may be null  
 move: remaining unused files to unused  

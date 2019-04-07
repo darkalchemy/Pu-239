@@ -245,8 +245,6 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
 
 /**
  * @param $content
- *
- * @return null
  */
 function get_or_null($content)
 {

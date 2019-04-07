@@ -57,6 +57,7 @@ function update_event(int $expires, int $new_expires)
  * @param bool $all
  *
  * @return array|bool|mixed
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function get_event(bool $all)

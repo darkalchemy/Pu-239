@@ -10,6 +10,7 @@ require_once INCL_DIR . 'function_staff.php';
  * @param int $timeout
  *
  * @return bool|string
+ *
  * @throws \Envms\FluentPDO\Exception
  */
 function verify_recaptcha($response, $timeout = 30)

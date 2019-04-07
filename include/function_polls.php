@@ -4,6 +4,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @return bool|string
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  */
