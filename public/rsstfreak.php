@@ -10,12 +10,12 @@ $use_limit = true;
 $limit = 15;
 $icount = 1;
 
-//$xml = $cache->get('tfreaknewsrss_');
-//if ($xml === false || is_null($xml)) {
+$xml = $cache->get('tfreaknewsrss_');
+if ($xml === false || is_null($xml)) {
     $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
-//    $cache->set('tfreaknewsrss_', $xml, 300);
-//}
-dd($xml);
+    $cache->set('tfreaknewsrss_', $xml, 300);
+}
+
 $doc = new DOMDocument();
 @$doc->loadXML($xml);
 $items = $doc->getElementsByTagName('item');
