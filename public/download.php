@@ -22,7 +22,7 @@ if (!empty($T_Pass)) {
     $user = $CURUSER;
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$usessl = get_scheme() === 'https' ? 1 : 0;
+$usessl = get_scheme() === 'https' ? 'https' : 'http';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
@@ -124,7 +124,7 @@ $cache->deleteMulti([
 ]);
 
 $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
-$dict['announce'] = $site_config['announce_urls'][$usessl] . '?torrent_pass=' . $user['torrent_pass'];
+$dict['announce'] = $site_config['announce_urls'][$usessl][0] . '?torrent_pass=' . $user['torrent_pass'];
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {

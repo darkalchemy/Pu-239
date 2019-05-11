@@ -14,6 +14,7 @@ $yes_no = [
     'no',
 ];
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
+    $usessl = get_scheme() === 'https' ? 'https' : 'http';
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($_GET['owner'])) {
         $torrents = $torrent_stuffs->get_all_by_owner($userid);
@@ -31,7 +32,7 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $zip = new ZipArchive();
     $zip->open($zipfile, ZipArchive::CREATE);
 
-    $announce_url = $site_config['announce_urls'][0];
+    $announce_url = $site_config['announce_urls'][$usessl][0];
     if (get_scheme() === 'https') {
         $announce_url = $site_config['announce_urls'][1];
     }
