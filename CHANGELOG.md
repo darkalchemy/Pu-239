@@ -1,3 +1,6 @@
+### 12 May, 2019
+fix: a few bugs  
+
 ### 07 Apr, 2019
 fix: return null fetch()  
 update: more code cleanup  

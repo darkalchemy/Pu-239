@@ -52,6 +52,7 @@ class Session
                     ini_set('memory_limit', '512M');
                 }
             }
+            ini_set('session.cookie_domain', '');
             ini_set('session.use_strict_mode', 1);
             ini_set('session.use_trans_sid', 0);
             ini_set('default_charset', 'utf-8');

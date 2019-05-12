@@ -507,15 +507,15 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Karma: </span>
-                                <span class='level-right'>" . number_format($users_data['seedbonus']) . "</span>
+                                <span class='level-right'>" . number_format((float) $users_data['seedbonus']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Seeding: </span>
-                                <span class='level-right'>" . number_format($peers['yes']) . "</span>
+                                <span class='level-right'>" . number_format((float) $peers['yes']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Leeching: </span>
-                                <span class='level-right'>" . number_format($peers['no']) . '</span>
+                                <span class='level-right'>" . number_format((float) $peers['no']) . '</span>
                             </span>
                         </div>
                     </div>
@@ -572,11 +572,11 @@ function member_ratio($up, $down)
 {
     switch (true) {
         case $down > 0 && $up > 0:
-            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format($up / $down, 3) . '</span>';
+            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format((float) $up / (float) $down, 3) . '</span>';
             break;
 
         case $down > 0 && $up == 0:
-            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / $down, 3) . '</span>';
+            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / (float) $down, 3) . '</span>';
             break;
 
         case $down == 0 && $up > 0:

@@ -188,6 +188,7 @@ function get_infopage($lang, $queries, $path)
     }
     $list = explode('=', $queries[1]);
     $ignore1 = [
+        'incldead',
         'topic_id',
         'post_id',
         'id',
@@ -357,7 +358,7 @@ function get_basepage($lang, $path)
 
     $title = $lang[trim($path, '/')];
     if (empty($title)) {
-        dd('path = ' . $path);
+        die('path = ' . $path);
     }
 
     return "<a href='{$site_config['paths']['baseurl']}{$path}'>{$title}</a>";

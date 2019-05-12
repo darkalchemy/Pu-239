@@ -140,14 +140,14 @@ if (isset($_GET['vip'])) {
     $addparam .= "vip={$_GET['vip']}&amp;";
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
-    $count = $count->where('s.to_go IS NULL')
+    $count = $count->where('s.to_go = 0')
                    ->leftJoin('snatched AS s on s.torrentid=t.id AND s.userid=?', $CURUSER['id']);
-    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+    $select = $select->select('IF(s.to_go != 0, (t.size - s.to_go) / t.size, 0) AS to_go')
                      ->leftJoin('snatched AS s on s.torrentid=t.id AND s.userid=?', $CURUSER['id'])
                      ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
-    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+    $select = $select->select('IF(s.to_go != 0, (t.size - s.to_go) / t.size, 0) AS to_go')
                      ->leftJoin('snatched AS s on s.torrentid=t.id AND s.userid=?', $CURUSER['id']);
 }
 
@@ -256,19 +256,19 @@ foreach ($valid_search as $search) {
         } elseif ($search === 'spf') {
             $count = $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
                            ->innerJoin('imdb_person AS i ON t.imdb_id=CONCAT("tt", i.imdb_id)')
-                           ->innerJoin('person AS p ON i.person_id=p.imdb_id')
-                           ->groupBy('t.id');
+                           ->innerJoin('person AS p ON i.person_id=p.imdb_id');
+                           //->groupBy('t.id');
             $select = $select->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
                              ->innerJoin('imdb_person AS i ON t.imdb_id=CONCAT("tt", i.imdb_id)')
-                             ->innerJoin('person AS p ON i.person_id=p.imdb_id')
-                             ->groupBy('t.id');
+                             ->innerJoin('person AS p ON i.person_id=p.imdb_id');
+                             //->groupBy('t.id');
         } elseif ($search === 'sr') {
             $count = $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                           ->innerJoin('imdb_role AS r ON t.imdb_id=CONCAT("tt", r.imdb_id)')
-                           ->groupBy('t.id');
+                           ->innerJoin('imdb_role AS r ON t.imdb_id=CONCAT("tt", r.imdb_id)');
+                           //->groupBy('t.id');
             $select = $select->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                             ->innerJoin('imdb_role AS r ON t.imdb_id=CONCAT("tt", r.imdb_id)')
-                             ->groupBy('t.id');
+                             ->innerJoin('imdb_role AS r ON t.imdb_id=CONCAT("tt", r.imdb_id)');
+                             //->groupBy('t.id');
         }
     }
 }

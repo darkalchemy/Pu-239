@@ -77,7 +77,7 @@ if (!empty($CURUSER)) {
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_karma']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></div>
+        <div><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format((float) $CURUSER['seedbonus']) . "</a></div>
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_achpoints']}</div>

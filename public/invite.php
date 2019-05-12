@@ -70,7 +70,7 @@ if ($do === 'view_page') {
                         <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
                         <td>{$status}</td>";
-            if ($row['status'] === 'pending') {
+            if ($row['status'] === 'Pending') {
                 $body .= "
                         <td>
                             <a {$site_config['paths']['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int) $row['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "'>
@@ -88,7 +88,7 @@ if ($do === 'view_page') {
 
     $HTMLOUT .= main_table($body, $heading);
     $body = $heading = '';
-    $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'Pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
     $HTMLOUT .= "<h1 class='has-text-centered top20'>{$lang['invites_codes']}</h1>";
     if (!$num_row) {
@@ -149,7 +149,7 @@ if ($do === 'view_page') {
     $count = $fluent->from('invite_codes')
                     ->select(null)
                     ->select('COUNT(*) AS count')
-                    ->where('status = "Pending')
+                    ->where('status = "Pending"')
                     ->fetch('count');
     if ($count >= $site_config['site']['invites']) {
         stderr($lang['invites_error'], $lang['invites_limit']);
@@ -247,7 +247,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     $fetch = $fluent->from('invite_codes')
                     ->where('id=?', $id)
                     ->where('sender = ?', $CURUSER['id'])
-                    ->where('status = "pending"')
+                    ->where('status = "Pending"')
                     ->fetch();
 
     if (!$fetch) {
@@ -277,7 +277,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } elseif ($do === 'delete_invite') {
     $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
-    $query = sql_query('SELECT * FROM invite_codes WHERE id=' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "pending"') or sqlerr(__FILE__, __LINE__);
+    $query = sql_query('SELECT * FROM invite_codes WHERE id=' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_noexsist']);
@@ -289,7 +289,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     $fluent->deleteFrom('invite_codes')
            ->where('id=?', $id)
            ->where('sender = ?', $CURUSER['id'])
-           ->where('status = "pending"')
+           ->where('status = "Pending"')
            ->execute();
 
     $set = [
@@ -321,7 +321,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     if (!$sure) {
         stderr($lang['invites_confirm1'], $lang['invites_sure1'] . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $CURUSER['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
     }
-    sql_query('UPDATE users SET status = "confirmed" WHERE id=' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="pending"') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET status = "confirmed" WHERE id=' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="Pending"') or sqlerr(__FILE__, __LINE__);
 
     $cache->update_row('user_' . $userid, [
         'status' => 'confirmed',

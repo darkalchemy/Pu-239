@@ -31,7 +31,7 @@ class Referer
      */
     public function insert(array $values)
     {
-        $id = $this->fluent->insertInto('referer')
+        $id = $this->fluent->insertInto('referrers')
                            ->values($values)
                            ->execute();
 

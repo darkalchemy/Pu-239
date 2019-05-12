@@ -2753,7 +2753,7 @@ class AJAXChat
     {
         $res = sql_query("SELECT COUNT(*) AS count FROM blackjack WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
-        $msg = '[code][color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
+        $msg = '[code][color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
 
         $res = sql_query("SELECT COUNT(*) AS count, SUM(amount) AS amount FROM casino_bets WHERE winner = ''") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
@@ -2763,7 +2763,7 @@ class AJAXChat
         } else {
             $count = !empty($row[0]) ? count($row[0]) : 0;
             $msg .= '
-[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
+[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['paths']['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
         }
 
         unset($row);
@@ -2791,14 +2791,14 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $msg .= '
-[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url].[/color] ';
+[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $this->_siteConfig['paths']['baseurl'] . '/casino.php]Casino[/url].[/color] ';
         }
 
         $resbj = sql_query('SELECT SUM(bjwins) FROM users') or sqlerr(__FILE__, __LINE__);
         $bjsum = mysqli_fetch_row($resbj);
         if ($bjsum) {
             $msg .= '
-[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
+[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
         }
         $msg .= '[/code]';
         $type = null;
@@ -2931,7 +2931,7 @@ class AJAXChat
                                           ->fetch('size');
                 $volume = '[color=#00FF00]' . mksize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
-                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['paths']['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str = '';
                 $str .= isset($stats['donor']) && $stats['donor'] === 'yes' ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'star.png[/img]' : '';
                 $str .= isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'alertred.png[/img]' : '';
