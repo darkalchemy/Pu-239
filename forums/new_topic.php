@@ -1,12 +1,17 @@
 <?php
 
-global $lang, $CURUSER, $site_config;
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
 
 flood_limit('forums');
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
+global $container, $CURUSER, $site_config;
 
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
@@ -19,7 +24,6 @@ $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : ''
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body = isset($_POST['body']) ? $_POST['body'] : '';
-$ip = getip();
 $bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] == 'yes' ? 'yes' : 'no';
 $anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no';
 
@@ -30,6 +34,7 @@ $poll_starts = isset($_POST['poll_starts']) ? (($_POST['poll_starts'] === 0) ? T
 $poll_starts = $poll_starts > ((int) $poll_ends + 1) ? TIME_NOW : $poll_starts;
 $change_vote = isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
 $subscribe = isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes' ? 'yes' : 'no';
+$fluent = $container->get(Database::class);
 if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
@@ -87,7 +92,6 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         'icon' => $icon,
         'post_title' => $post_title,
         'bbcode' => $bb_code,
-        'ip' => inet_pton($ip),
         'anonymous' => $anonymous,
     ];
 
@@ -96,15 +100,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                       ->execute();
 
     $set = [
-        'forumtopics' => new Envms\FluentPDO\Literal('forumtopics + 1'),
+        'forumtopics' => new Literal('forumtopics + 1'),
     ];
     $fluent->update('usersachiev')
            ->set($set)
-           ->where('userid=?', $CURUSER['id'])
+           ->where('userid = ?', $CURUSER['id'])
            ->execute();
 
     clr_forums_cache($post_id);
     clr_forums_cache($forum_id);
+    $cache = $container->get(Cache::class);
     $cache->delete('forum_posts_' . $CURUSER['id']);
 
     $set = [
@@ -114,16 +119,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     ];
     $fluent->update('topics')
            ->set($set)
-           ->where('id=?', $topic_id)
+           ->where('id = ?', $topic_id)
            ->execute();
 
     $set = [
-        'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
-        'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
+        'post_count' => new Literal('post_count + 1'),
+        'topic_count' => new Literal('topic_count + 1'),
     ];
     $fluent->update('forums')
            ->set($set)
-           ->where('id=?', $forum_id)
+           ->where('id = ?', $forum_id)
            ->execute();
 
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
@@ -134,43 +139,34 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     }
     if ($site_config['bonus']['on']) {
         $set = [
-            'seedbonus' => new Envms\FluentPDO\Literal('seedbonus + ' . $site_config['bonus']['per_topic']),
+            'seedbonus' => $CURUSER['seedbonus'] + $site_config['bonus']['per_topic'],
         ];
         $fluent->update('users')
                ->set($set)
-               ->where('id=?', $CURUSER['id'])
+               ->where('id = ?', $CURUSER['id'])
                ->execute();
         $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $CURUSER['seedbonus'] + $site_config['bonus']['per_topic'],
         ]);
     }
 
-    if ($CURUSER['class'] >= $min_upload_class) {
+    if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
                 $size = intval($_FILES['attachment']['size'][$key]);
                 $type = $_FILES['attachment']['type'][$key];
                 $extension_error = $size_error = 0;
                 $name = str_replace(' ', '_', $name);
-                $accepted_file_types = [
-                    'application/zip',
-                    'application/x-zip',
-                    'application/rar',
-                    'application/x-rar',
-                ];
-                $accepted_file_extension = strrpos($name, '.');
-                $file_extension = strtolower(substr($name, $accepted_file_extension));
+                $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
+                $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
                 $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
+                $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 switch (true) {
                     case $size > $max_file_size:
                         $size_error = ($size_error + 1);
                         break;
 
-                    case !in_array($file_extension, $accepted_file_extension) && false == $accepted_file_extension:
-                        $extension_error = ($extension_error + 1);
-                        break;
-
-                    case $accepted_file_extension === 0:
+                    case !in_array($file_extension, $accepted_file_types):
                         $extension_error = ($extension_error + 1);
                         break;
 
@@ -215,10 +211,10 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 $forum_name = $fluent->from('forums')
                      ->select(null)
                      ->select('name')
-                     ->where('id=?', $forum_id)
+                     ->where('id = ?', $forum_id)
                      ->fetch('name');
 
-$section_name = htmlsafechars(htmlspecialchars($forum_name, ENT_QUOTES, 'UTF-8'));
+$section_name = htmlsafechars($forum_name);
 
 $HTMLOUT .= '
     <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>

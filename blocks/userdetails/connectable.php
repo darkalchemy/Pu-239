@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache, $user;
+declare(strict_types = 1);
+global $CURUSER, $site_config;
 
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = 'port_data_';
@@ -13,7 +14,7 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
     }
     if ($port_data > 0) {
         $connect = $port_data[0];
-        $port = $port_data[1];
+        $port = (int) $port_data[1];
         $Ident_Client = $port_data[2];
         $XBT_or_PHP = 'yes';
         if ($connect == $XBT_or_PHP) {
@@ -39,7 +40,7 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $table_data .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_port']}</td>
-            <td class='tablea'>" . htmlsafechars($port) . "</td>
+            <td class='tablea'>$port</td>
         </tr>
         <tr>
             <td class='rowhead'>{$lang['userdetails_client']}</td>

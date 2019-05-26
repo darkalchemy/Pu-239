@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //stderr
     'mysql_stats_days' => ' Days ',

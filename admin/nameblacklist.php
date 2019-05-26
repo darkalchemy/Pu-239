@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_nameblacklist'));
-$blacklist = file_exists($site_config['path']['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['path']['nameblacklist']))) ? unserialize(file_get_contents($site_config['path']['nameblacklist'])) : [];
-//dd($blacklist);
+global $site_config;
+
+$blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['paths']['nameblacklist']))) ? unserialize(file_get_contents($site_config['paths']['nameblacklist'])) : [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $badnames = isset($_POST['badnames']) && !empty($_POST['badnames']) ? trim($_POST['badnames']) : '';
     if (empty($badnames)) {
@@ -22,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $blacklist[$badnames] = (int) 1;
     }
-    if (file_put_contents($site_config['path']['nameblacklist'], serialize($blacklist))) {
+    if (file_put_contents($site_config['paths']['nameblacklist'], serialize($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
         stderr($lang['name_success'], $lang['name_file']);
     } else {
-        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['path']['nameblacklist'] . '</b>' . $lang['name_is'] . '');
+        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['paths']['nameblacklist'] . '</b>' . $lang['name_is'] . '');
     }
 } else {
     $out = stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Misc
     'stdhead_staff' => 'Staff',

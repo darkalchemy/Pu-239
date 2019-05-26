@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //takeinvites
     'takeinvites_error' => 'Error',

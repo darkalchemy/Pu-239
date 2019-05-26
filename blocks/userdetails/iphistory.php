@@ -1,39 +1,37 @@
 <?php
 
-global $user_stuffs, $CURUSER, $fluent, $user;
+declare(strict_types = 1);
 
+use Delight\Auth\Auth;
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config, $CURUSER, $user;
+
+$cache = $container->get(Cache::class);
+$auth = $container->get(Auth::class);
+$user['ip'] = $auth->getIpAddress();
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
+    $cache->delete('ip_history_' . $id);
     $iphistory = $cache->get('ip_history_' . $id);
     if ($iphistory === false || is_null($iphistory)) {
-        $ipuse['yes'] = $ipuse['no'] = 0;
-        $ipsinuse = $fluent->from('users')
+        $fluent = $container->get(Database::class);
+        $ipsinuse = $fluent->from('ips')
                            ->select(null)
-                           ->select('COUNT(*) AS count')
-                           ->select('enabled')
+                           ->select('COUNT(id) AS count')
                            ->where('INET6_NTOA(ip) = ?', $user['ip'])
-                           ->groupBy('enabled')
-                           ->fetchAll();
-        if (!empty($ipsinuse[0])) {
-            $ipuse[$ipsinuse[0]['enabled']] = $ipsinuse[0]['count'];
-        }
-        if (!empty($ipsinuse[1])) {
-            $ipuse[$ipsinuse[1]['enabled']] = $ipsinuse[1]['count'];
-        }
-
-        if (($ipuse['yes'] == 1 && $ipuse['no'] == 0) || ($ipuse['no'] == 1 && $ipuse['yes'] == 0)) {
+                           ->fetch('count');
+        if ($ipsinuse === 0) {
             $iphistory['use'] = '';
         } else {
             $ipcheck = $user['ip'];
-            $enbl = $ipuse['yes'] ? $ipuse['yes'] . ' enabled ' : '';
-            $dbl = $ipuse['no'] ? $ipuse['no'] . ' disabled ' : '';
-            $mid = $enbl && $dbl ? ' and ' : '';
             $iphistory['use'] = "
         <span class='has-text-danger'>{$lang['userdetails_ip_warn']}</span>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
-            {$lang['userdetails_ip_used']}{$enbl}{$mid}{$dbl}{$lang['userdetails_ip_users']}
+            {$lang['userdetails_ip_used']}{$lang['userdetails_ip_users']}
         </a>";
         }
-        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid=' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
         $iphistory['ips'] = mysqli_num_rows($resip);
         $cache->set('ip_history_' . $id, $iphistory, $site_config['expires']['iphistory']);
     }

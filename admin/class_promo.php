@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_class_promo'));
+global $site_config, $CURUSER;
+
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }

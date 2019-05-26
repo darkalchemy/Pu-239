@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Achievement.
@@ -11,17 +14,24 @@ class Achievement
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $env;
     protected $limit;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Achievement constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
+        $this->env = $this->container->get('env');
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->limit = $this->env['db']['query_limit'];
     }
 
     /**
@@ -32,7 +42,7 @@ class Achievement
      */
     public function insert(array $values, array $update)
     {
-        $count = floor($this->limit / max(array_map('count', $values)));
+        $count = (int) ($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('achievements', $t)
                          ->onDuplicateKeyUpdate($update)

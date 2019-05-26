@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'set_class_temp' => 'Temporary Demotion',
     'set_class_ok' => 'Ok!',

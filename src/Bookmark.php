@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -12,10 +14,14 @@ class Bookmark
     protected $fluent;
     protected $cache;
 
-    public function __construct()
+    /**
+     * Bookmark constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     */
+    public function __construct(Cache $cache, Database $fluent)
     {
-        global $cache, $fluent;
-
         $this->fluent = $fluent;
         $this->cache = $cache;
     }
@@ -23,16 +29,16 @@ class Bookmark
     /**
      * @param int $userid
      *
-     * @return array|bool|mixed
-     *
      * @throws Exception
+     *
+     * @return array|bool|mixed
      */
     public function get(int $userid)
     {
         $bookmarks = $this->cache->get('bookmarks_' . $userid);
         if ($bookmarks === false || is_null($bookmarks)) {
             $books = $this->fluent->from('bookmarks')
-                                  ->where('userid=?', $userid)
+                                  ->where('userid = ?', $userid)
                                   ->fetchAll();
 
             $bookmarks = [];

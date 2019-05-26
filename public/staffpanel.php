@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
 check_user_status();
-global $site_config, $CURUSER, $cache, $session, $fluent, $mysqli;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -23,6 +27,9 @@ $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
+global $container, $CURUSER, $site_config;
+
+$cache = $container->get(Cache::class);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
     $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value>= '$staff' GROUP BY value ORDER BY value ASC");
@@ -32,6 +39,8 @@ if ($staff_classes === false || is_null($staff_classes)) {
     }
     $cache->set('staff_classes_', $staff_classes, 0);
 }
+global $container, $CURUSER, $site_config;
+
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
@@ -65,9 +74,11 @@ while ($list = mysqli_fetch_assoc($sql)) {
 }
 ksort($staff_tools);
 
+$fluent = $container->get(Database::class);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
+    $session = $container->get(Session::class);
     if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
         $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -162,15 +173,15 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if ($action === 'add') {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
                                       VALUES (' . implode(', ', array_map('sqlesc', [
-                            $page_name,
-                            $file_name,
-                            $description,
-                            $type,
-                            (int) $_POST['av_class'],
-                            (int) $CURUSER['id'],
-                            TIME_NOW,
-                            $navbar,
-                        ])) . ')');
+                        $page_name,
+                        $file_name,
+                        $description,
+                        $type,
+                        (int) $_POST['av_class'],
+                        (int) $CURUSER['id'],
+                        TIME_NOW,
+                        $navbar,
+                    ])) . ')');
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
@@ -378,8 +389,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             <h1 class='has-text-centered text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>";
                 }
                 $show_in_nav = $arr['navbar'] == 1 ? '
-                <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '" data-csrf="' . $session->get('csrf_token') . '">true</span>' : '
-                <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '" data-csrf="' . $session->get('csrf_token') . '">false</span>';
+                <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">true</span>' : '
+                <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">false</span>';
 
                 $body .= "
                     <tr>
@@ -395,12 +406,12 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         </td>
                         <td>
                             <div class='has-text-centered'>
-                                " . format_username($arr['added_by']) . "
+                                " . format_username((int) $arr['added_by']) . "
                             </div>
                         </td>
                         <td>
                             <div class='has-text-centered'>
-                                <span>" . get_date($arr['added'], 'DATE', 0, 1) . '</span>
+                                <span>" . get_date((int) $arr['added'], 'DATE', 0, 1) . '</span>
                             </div>
                         </td>';
                 if ($CURUSER['class'] >= UC_MAX) {

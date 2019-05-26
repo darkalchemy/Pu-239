@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @param $action
  *
- * @return false|float|int|string
- *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|false|float|int|string
  */
 function happyHour($action)
 {
-    global $site_config, $fluent;
+    global $container, $site_config;
 
     if ($action === 'generate') {
         $nextDay = date('Y-m-d', TIME_NOW + 86400);
@@ -50,6 +54,7 @@ function happyHour($action)
         if ($act === 1) {
             $todo = 255;
         } else {
+            $fluent = $container->get(\Pu239\Database::class);
             $categories = $fluent->from('categories')
                                  ->select(null)
                                  ->select('id')
@@ -94,6 +99,8 @@ function happyCheck($action, $id = null)
 /**
  * @param $act
  *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function happyFile($act)
@@ -129,6 +136,9 @@ function happyFile($act)
  * @param $userid
  * @param $torrentid
  * @param $multi
+ *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
  */
 function happyLog($userid, $torrentid, $multi)
 {

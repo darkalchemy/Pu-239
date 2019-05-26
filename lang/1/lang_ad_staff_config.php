@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'staffcfg_file_created' => "\nThis file created on ",
     'staffcfg_mod_by' => ".\nSite Config staff.\n",

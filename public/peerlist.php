@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\Torrent;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bt_client.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $lang, $torrent_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int) $_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
@@ -18,11 +21,13 @@ $HTMLOUT = '';
  * @param $arr
  * @param $torrent
  *
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
 function dltable($name, $arr, $torrent)
 {
-    global $CURUSER, $lang, $site_config;
+    global $site_config, $CURUSER, $lang;
 
     if (!count($arr)) {
         return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>");
@@ -54,7 +59,7 @@ function dltable($name, $arr, $torrent)
             <td><b>$username</b></td>";
             } else {
                 $body .= '
-            <td>' . format_username($e['userid']) . '</td>';
+            <td>' . format_username((int) $e['userid']) . '</td>';
             }
         } else {
             $body .= '
@@ -82,12 +87,16 @@ function dltable($name, $arr, $torrent)
     return $htmlout;
 }
 
+global $container, $site_config;
+
+$torrent_stuffs = $container->get(Torrent::class);
 $torrent = $torrent_stuffs->get($id);
 if (empty($torrent)) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
 $downloaders = [];
 $seeders = [];
+$fluent = $container->get(Database::class);
 $peers = $fluent->from('peers AS p')
                 ->select('t.anonymous AS tanonymous')
                 ->select('p.seeder')

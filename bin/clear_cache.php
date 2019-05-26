@@ -1,8 +1,14 @@
 <?php
 
-require_once __DIR__ . '/../include/bittorrent.php';
-global $cache;
+declare(strict_types = 1);
 
+global $site_config;
+
+require_once __DIR__ . '/../include/bittorrent.php';
+$database = '';
+if (file_exists(DI_CACHE_DIR) && file_exists(DI_CACHE_DIR . 'CompiledContainer.php')) {
+    unlink(DI_CACHE_DIR . 'CompiledContainer.php');
+}
 if (!empty($argv[1]) && !is_array($argv[1])) {
     $cache->delete($argv[1]);
     die("Cache: {$argv[1]} cleared\n");
@@ -11,8 +17,9 @@ if (!empty($argv[1]) && !is_array($argv[1])) {
         exec("sudo rm -r {$site_config['files']['path']}");
     } else {
         $cache->flushDB();
+        if ($site_config['cache']['driver'] === 'redis') {
+            $database = " [DB:{$site_config['redis']['database']}]";
+        }
     }
-    die(ucfirst($site_config['cache']['driver']) . " Cache was flushed\n");
+    die(ucfirst($site_config['cache']['driver']) . " Cache{$database} was flushed\n");
 }
-
-echo "Nothing was done\n";

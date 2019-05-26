@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'createlink_no_permision' => 'No Permision',
     'createlink_system_file' => 'system file',

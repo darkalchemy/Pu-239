@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 
 check_user_status();
-global $CURUSER, $site_config, $cache, $message_stuffs;
-
-$HTMLOUT = '';
 $lang = load_language('global');
+global $container, $site_config, $CURUSER;
 
 $uploaded = (int) $CURUSER['uploaded'];
 $downloaded = (int) $CURUSER['downloaded'];
@@ -32,9 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $dt = TIME_NOW;
     $subject = '10% Addition';
-    $msg = 'Today, ' . get_date($dt, 'LONG', 0, 1) . ', you have increased your total upload amount by 10% from [b]' . mksize($uploaded) . '[/b] to [b]' . mksize($newuploaded) . '[/b], which brings your ratio to [b]' . $newratio . '[/b].';
+    $msg = 'Today, ' . get_date((int) $dt, 'LONG', 0, 1) . ', you have increased your total upload amount by 10% from [b]' . mksize($uploaded) . '[/b] to [b]' . mksize($newuploaded) . '[/b], which brings your ratio to [b]' . $newratio . '[/b].';
     $res = sql_query("UPDATE users SET uploaded = uploaded * 1.1, tenpercent = 'yes' WHERE id=" . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['uploaded'] = ($CURUSER['uploaded'] * 1.1);
+    $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $CURUSER['id'], [
         'tenpercent' => 'yes',
         'uploaded' => $update['uploaded'],
@@ -53,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr('10% Added', 'Your total upload amount has been increased by 10% from <b>' . mksize($uploaded) . '</b> to <b>' . mksize($newuploaded) . "</b>, which brings your ratio to <b>$newratio</b>.");
     }
 }
+$HTMLOUT = '';
 if ($CURUSER['tenpercent'] === 'no') {
     $HTMLOUT .= '
   <script>

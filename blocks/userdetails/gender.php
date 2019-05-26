@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $site_config, $user;
+
 $HTMLOUT .= "
     <tr>
         <td class='rowhead'>{$lang['userdetails_gender']}</td>

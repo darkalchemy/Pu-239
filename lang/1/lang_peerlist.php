@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //valid id
     'peerslist_user_error' => 'USER Error',
@@ -28,7 +30,5 @@ $lang = [
     'peerslist_for' => 'Peerlist for',
     'peerslist_seeders' => 'Seeder',
     'peerslist_leechers' => 'Leecher',
-    'peerslist_for' => 'Peerlist for',
-    //stdhead
     'peerslist_stdhead' => 'Details',
 ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Contact Staff
     'contactstaff_title' => 'Send message to staff',

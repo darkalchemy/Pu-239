@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'mtor_edit' => 'Edit',
     'mtor_torrents' => 'Torrents',

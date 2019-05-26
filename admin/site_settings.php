@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\Session;
+
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $home = 'site';
 $stdfoot = [
@@ -13,9 +16,11 @@ $stdfoot = [
     ],
 ];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    global $site_config, $session, $cache, $fluent;
+global $container;
 
+$fluent = $container->get(Database::class);
+$session = $container->get(Session::class);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values = $keys = [];
     $_post = $_POST;
     unset($_POST);
@@ -66,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
         } elseif ($id === 'Add') {
             if (!empty($item)) {
-                $set['value'] = implode('|', $item) . '|' . $value;
+                $set['value'] = $item . '|' . $value;
                 $fluent->update('site_config')
                        ->set($set)
                        ->where('parent = ?', $parent)
@@ -131,15 +136,7 @@ foreach ($sql as $row) {
             $row['value'] = (bool) $row['value'];
             break;
         case 'array':
-            if ($row['name'] === 'recaptcha') {
-                if (empty($row['value'])) {
-                    $temp = explode('|', $row['value']);
-                    $row['value'] = [
-                        'site' => !empty($temp[0]) ? $temp[0] : '',
-                        'secret' => !empty($temp[1]) ? $temp[1] : '',
-                    ];
-                }
-            } elseif (empty($row['value'])) {
+            if (empty($row['value'])) {
                 $row['value'] = [];
             } else {
                 $value = explode('|', $row['value']);

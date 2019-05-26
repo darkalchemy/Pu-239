@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 $smilies = [
     ':-)' => 'smile1.gif',
     ':smile:' => 'smile2.gif',

@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang;
+declare(strict_types = 1);
+global $CURUSER, $site_config;
 
 if ($CURUSER['gotgift'] === 'no') {
     $christmas_gift .= "

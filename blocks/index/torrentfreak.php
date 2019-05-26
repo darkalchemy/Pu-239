@@ -1,8 +1,8 @@
 <?php
 
-require_once INCL_DIR . 'function_tfreak.php';
-global $lang;
+declare(strict_types = 1);
 
+require_once INCL_DIR . 'function_tfreak.php';
 $feed = rsstfreakinfo();
 if (!empty($feed)) {
     $tfreak_feed .= "

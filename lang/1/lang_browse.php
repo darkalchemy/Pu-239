@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Browse
     'browse_error' => 'Error',
@@ -10,8 +12,8 @@ $lang = [
     'browse_inc_dead' => 'Including Dead',
     'browse_dead' => 'Only Dead',
     'browse_go' => 'Go!',
+    'browse_subs' => 'Subtitles',
     'browse_toggle' => 'Show Cats!',
-    'browse_search' => 'Search results for ',
     'browse_not_found' => 'Nothing found!',
     'browse_tryagain' => 'Try again with a refined search string.',
     'browse_nothing' => 'Nothing here!',
@@ -19,6 +21,7 @@ $lang = [
     'search_name' => 'Search by Name (fuzzy)',
     'search_desc' => 'Search by Description (fuzzy)',
     'search_genre' => 'Search by Genre',
+    'search_subs' => 'Search by Subtitle',
     'search_person' => 'Search by Cast Member',
     'search_person_fuzzy' => 'Search by Cast Member (fuzzy)',
     'search_role' => 'Search by Character Name (fuzzy)',

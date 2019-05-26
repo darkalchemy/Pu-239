@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'pmview_error' => 'Error',
     'pmview_noacc' => 'You have no rights to be here',

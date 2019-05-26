@@ -1,25 +1,32 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\User;
 
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  */
 function trivia_points_update($data)
 {
-    $time_start = microtime(true);
-    global $site_config, $cache, $message_stuffs, $fluent;
+    global $container;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $time_start = microtime(true);
     $dt = TIME_NOW;
     $count = 0;
     $msgs = [];
     $i = 1;
-
+    $fluent = $container->get(Database::class);
     $gamenum = $fluent->from('triviasettings')
                       ->select(null)
                       ->select('gamenum')
@@ -33,7 +40,7 @@ function trivia_points_update($data)
                       ->select('u.seedbonus')
                       ->select('u.username')
                       ->select('u.modcomment')
-                      ->innerJoin('users AS  u ON t.user_id=u.id')
+                      ->innerJoin('users AS  u ON t.user_id = u.id')
                       ->where('t.correct = 1')
                       ->where('gamenum = ?', $gamenum)
                       ->groupBy('t.user_id')
@@ -45,9 +52,11 @@ function trivia_points_update($data)
                       ->fetchAll();
 
     if ($results) {
+        $user_stuffs = $container->get(User::class);
         $subject = 'Trivia Bonus Points Award.';
         foreach ($results as $winners) {
-            $correct = $modcomment = $user_id = '';
+            $user_id = $seedbonus = $correct = 0;
+            $modcomment = '';
             extract($winners);
             $points = 0;
             switch ($i) {
@@ -84,8 +93,7 @@ function trivia_points_update($data)
             }
 
             $msg = 'You answered ' . number_format($correct) . ' trivia question' . plural($correct) . " correctly and were awarded $points Bonus Points!!\n";
-            $comment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n";
-            $modcomment = $comment . $modcomment;
+            $comment = get_date((int) TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n";
             $msgs[] = [
                 'sender' => 0,
                 'receiver' => $user_id,
@@ -93,28 +101,17 @@ function trivia_points_update($data)
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-
-            $points = $winners['seedbonus'] + $points;
-            $user = $cache->get('user_' . $user_id);
-            if (!empty($user)) {
-                $cache->update_row('user_' . $user_id, [
-                    'modcomment' => $modcomment,
-                    'seedbonus' => $points,
-                ], $site_config['expires']['user_cache']);
-            }
-            $set = [
-                'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
-                'seedbonus' => $points,
+            $values = [
+                'modcomment' => $comment . $modcomment,
+                'seedbonus' => $seedbonus + $points,
             ];
-            $fluent->update('users')
-                   ->set($set)
-                   ->where('id=?', $user_id)
-                   ->execute();
+            $user_stuffs->update($values, $user_id);
             $count = $i++;
         }
     }
 
     if (!empty($msgs)) {
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($msgs);
     }
 

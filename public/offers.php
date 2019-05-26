@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Database;
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -8,9 +15,8 @@ require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli, $commentid;
-
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
+global $site_config, $CURUSER;
 
 $stdhead = [
     'css' => [
@@ -35,16 +41,16 @@ if (isset($_GET['comment_id']) && $comment_id === 0) {
     $comment_id = $_POST['comment_id'];
 }
 $category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
-$offered_by_id = isset($_GET['offered_by_id']) ? intval($_GET['offered_by_id']) : 0;
+$requested_by_id = isset($_GET['requested_by_id']) ? intval($_GET['requested_by_id']) : 0;
 $vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
-$posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '')));
+$posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars((string) $_GET['action']) : (isset($_POST['action']) ? htmlsafechars((string) $_POST['action']) : '')));
 
 $valid_actions = [
-    'add_new_offer',
-    'delete_offer',
-    'edit_offer',
-    'update_offer',
-    'offer_details',
+    'add_new_request',
+    'delete_request',
+    'edit_request',
+    'update_request',
+    'request_details',
     'vote',
     'add_comment',
     'edit',
@@ -56,9 +62,9 @@ $valid_actions = [
     'pay_bounty',
 ];
 $action = in_array($posted_action, $valid_actions) ? $posted_action : 'default';
-$bounty_note1 = 'Bounties are paid automatically 48 hours after uploaded, if not paid by the offeror before then.';
-$bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded matches this offer. If not, notify staff.<br>
-2) You are responsible for paying the bounties or challenging them as not metting your offer.<br>
+$bounty_note1 = 'Bounties are paid automatically 48 hours after uploaded, if not paid by the requestor before then.';
+$bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded matches this request. If not, notify staff.<br>
+2) You are responsible for paying the bounties or challenging them as not metting your request.<br>
 3) If you do not pay the bounty within 48 hours, or challenge them, the system will force them paid.<br>
 4) After the bounties have been paid, they are not reversable.';
 
@@ -69,29 +75,32 @@ $top_menu = '
                 <a href="' . $site_config['paths']['baseurl'] . '/offers.php">View Offers</a>
             </li>
             <li class="altlink margin10">
-                <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=add_new_offer">New Offer</a>
+                <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=add_new_request">New Request</a>
             </li>
         </ul>
     </div>';
+$session = $container->get(Session::class);
+$fluent = $container->get(Database::class);
+$user_stuffs = $container->get(User::class);
 switch ($action) {
-    case 'update_offer':
+    case 'update_request':
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('offers')
                          ->select(null)
-                         ->select('offered_by_user_id')
-                         ->where('id=?', $id)
+                         ->select('requested_by_user_id')
+                         ->where('id = ?', $id)
                          ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         $set = [
             'id' => $_POST['id'],
-            'offer_name' => $_POST['offer_name'],
+            'request_name' => $_POST['request_name'],
             'image' => $_POST['image'],
             'link' => $_POST['link'],
             'category' => $_POST['category'],
@@ -100,10 +109,10 @@ switch ($action) {
         ];
         $fluent->update('offers')
                ->set($set)
-               ->where('id=?', $id)
+               ->where('id = ?', $id)
                ->execute();
 
-        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . sqlesc($id));
+        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&id=' . sqlesc($id));
         die();
         break;
 
@@ -111,39 +120,39 @@ switch ($action) {
         if (!isset($id) || !is_valid_id($id) || !isset($vote) || !is_valid_id($vote)) {
             stderr('USER ERROR', 'Bad id / bad vote');
         }
-        $voted = $fluent->from('offer_votes')
+        $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id=?', $CURUSER['id'])
-                        ->where('offer_id=?', $id)
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
                         ->fetch('vote');
 
         if (!empty($voted)) {
-            stderr('USER ERROR', 'You have voted on this offer before.');
+            stderr('USER ERROR', 'You have voted on this request before.');
         } else {
             $yes_or_no = $vote === 1 ? 'yes' : 'no';
             $values = [
-                'offer_id' => $id,
+                'request_id' => $id,
                 'user_id' => $CURUSER['id'],
                 'vote' => $yes_or_no,
             ];
-            $fluent->insertInto('offer_votes')
+            $fluent->insertInto('request_votes')
                    ->values($values)
                    ->execute();
             if ($vote === 1) {
                 $set = [
-                    'vote_yes_count' => new Envms\FluentPDO\Literal('vote_yes_count + 1'),
+                    'vote_yes_count' => new Literal('vote_yes_count + 1'),
                 ];
             } else {
                 $set = [
-                    'vote_no_count' => new Envms\FluentPDO\Literal('vote_no_count + 1'),
+                    'vote_no_count' => new Literal('vote_no_count + 1'),
                 ];
             }
             $fluent->update('offers')
                    ->set($set)
-                   ->where('id=?', $id)
+                   ->where('id = ?', $id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&voted=1&id=' . sqlesc($id));
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
         }
         break;
@@ -151,7 +160,7 @@ switch ($action) {
     case 'default':
         $count = $fluent->from('offers')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->fetch('count');
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -160,20 +169,21 @@ switch ($action) {
         $menu_top = $pager['pagertop'];
         $menu_bottom = $pager['pagerbottom'];
 
-        $offers = $fluent->from('offers AS r')
+        $offers = $fluent->from('offers AS o')
                          ->select('c.name AS cat_name')
                          ->select('c.image AS cat_image')
                          ->select('p.name AS parent_name')
-                         ->leftJoin('categories AS c ON r.category = c.id')
-                         ->leftJoin('categories AS p ON c.parent_id=p.id')
-                         ->orderBy('r.added DESC')
-                         ->limit($pager['pdo'])
+                         ->leftJoin('categories AS c ON o.category = c.id')
+                         ->leftJoin('categories AS p ON c.parent_id = p.id')
+                         ->orderBy('o.added DESC')
+                         ->limit($pager['pdo']['limit'])
+                         ->offset($pager['pdo']['offset'])
                          ->fetchAll();
 
         if (empty($offers)) {
-            stderr('Error!', 'Sorry, there are no current offers!');
+            stderr('Error!', 'Sorry, there are no current offers!', 'bottom20');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>offer Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
         $heading = '
         <tr>
             <th>Type</th>
@@ -181,47 +191,47 @@ switch ($action) {
             <th>Added</th>
             <th>Comm</th>
             <th>Votes</th>
-            <th>offered By</th>
+            <th>Requested By</th>
             <th>Filled</th>
         </tr>';
         $body = '';
-        foreach ($offers as $offer) {
-            $offer['cat'] = $offer['parent_name'] . '::' . $offer['cat_name'];
-            $caticon = !empty($offer['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($offer['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($offer['cat']) . "' title='" . htmlsafechars($offer['cat']) . "' height='20px' width='auto'>" : htmlsafechars($offer['cat']);
+        foreach ($offers as $request) {
+            $request['cat'] = $request['parent_name'] . '::' . $request['cat_name'];
+            $caticon = !empty($request['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $request['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $request['cat']) . "' title='" . htmlsafechars((string) $request['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $request['cat']);
             $body .= '
         <tr>
             <td>' . $caticon . '</td>
-            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $offer['id'] . '">' . htmlsafechars(htmlspecialchars($offer['offer_name'], ENT_QUOTES, 'UTF-8')) . '</a></td>
-            <td>' . get_date($offer['added'], 'LONG') . '</td>
-            <td>' . number_format($offer['comments']) . '</td>
-            <td>yes: ' . number_format($offer['vote_yes_count']) . '<br>
-            no: ' . number_format($offer['vote_no_count']) . '</td>
-            <td>' . format_username($offer['offered_by_user_id']) . '</td>
-            <td>' . ($offer['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $offer['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
+            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars((string) $request['request_name']) . '</a></td>
+            <td>' . get_date((int) $request['added'], 'LONG') . '</td>
+            <td>' . number_format($request['comments']) . '</td>
+            <td>yes: ' . number_format($request['vote_yes_count']) . '<br>
+            no: ' . number_format($request['vote_no_count']) . '</td>
+            <td>' . format_username((int) $request['requested_by_user_id']) . '</td>
+            <td>' . ($request['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $request['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
         </tr>';
         }
         $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no offers</div>');
         $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 
-        echo stdhead('offers', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offers', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
-    case 'offer_details':
+    case 'request_details':
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }
-        $arr = $fluent->from('offers AS r')
-                      ->select('r.id AS offer_id')
+        $arr = $fluent->from('offers AS o')
+                      ->select('o.id AS request_id')
                       ->select('c.name AS cat_name')
                       ->select('c.image AS cat_image')
                       ->select('p.name AS parent_name')
-                      ->leftJoin('categories AS c ON r.category = c.id')
-                      ->leftJoin('categories AS p ON c.parent_id=p.id')
-                      ->where('r.id=?', $id)
+                      ->leftJoin('categories AS c ON o.category = c.id')
+                      ->leftJoin('categories AS p ON c.parent_id = p.id')
+                      ->where('o.id = ?', $id)
                       ->fetch();
 
         $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
-        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
+        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $arr['cat']) . "' title='" . htmlsafechars((string) $arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $arr['cat']);
 
         if (!empty($arr['link'])) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
@@ -229,11 +239,11 @@ switch ($action) {
         }
         $movie_info = get_imdb_info($imdb, false, false, null, null);
 
-        $voted = $fluent->from('offer_votes')
+        $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id=?', $CURUSER['id'])
-                        ->where('offer_id=?', $id)
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
                         ->fetch('vote');
 
         if (!$voted) {
@@ -242,7 +252,7 @@ switch ($action) {
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="1">
                     <input type="submit" class="button is-small" value="vote yes!">
-                    </form> ~ you will be notified when this offer is filled.';
+                    </form> ~ you will be notified when this request is filled.';
             $vote_no = '<form method="post" action="' . $site_config['paths']['baseurl'] . ' / offers.php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
@@ -255,12 +265,12 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $voted;
         }
-        $usersdata = $user_stuffs->getUserFromId($arr['offered_by_user_id']);
+        $usersdata = $user_stuffs->getUserFromId($arr['requested_by_user_id']);
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars(htmlspecialchars($arr['offer_name'], ENT_QUOTES, 'UTF-8')) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
-  [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_offer&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
+  <td colspan="2"><h1>' . htmlsafechars((string) $arr['request_name']) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
   <td>image:</td>
@@ -276,7 +286,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>link:</td>
-  <td><a class="altlink" href="' . htmlsafechars(htmlspecialchars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES, 'UTF-8')) . '</a></td>
+  <td><a class="altlink" href="' . htmlsafechars((string) $arr['link']) . '"  target="_blank">' . htmlsafechars($arr['link']) . '</a></td>
   </tr>
     <tr>
         <td>IMDb</td>
@@ -289,19 +299,19 @@ switch ($action) {
   <span>no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
   </tr>
   <tr>
-  <td>offered by:</td>
-  <td>' . format_username($usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  <td>requested by:</td>
+  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
   ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
   <td><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
   </tr>' : '') . '
   <tr>
-  <td>Report offer</td>
+  <td>Report Offer</td>
   <td>
-    <form action="' . $site_config['paths']['baseurl'] . '/report.php?type=offer&amp;id=' . $id . '" method="post" accept-charset="utf-8">
+    <form action="' . $site_config['paths']['baseurl'] . '/report.php?type=Offer&amp;id=' . $id . '" method="post" accept-charset="utf-8">
         <div class="has-text-centered margin20">
-            <input type="submit" class="button is-small" value="Report This offer">
+            <input type="submit" class="button is-small" value="Report This Offer">
         </div>
         For breaking the <a class="altlink" href="rules . php">rules</a>
     </form>
@@ -309,7 +319,7 @@ switch ($action) {
   </tr>
   </table>';
         $HTMLOUT .= '
-            <h1 class="has-text-centered">Comments for ' . htmlsafechars(htmlspecialchars($arr['offer_name'], ENT_QUOTES, 'UTF-8')) . '</h1>
+            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name']) . '</h1>
             <a id="startcomments"></a>
             <div class="has-text-centered margin20">
                 <a class="button is-small" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
@@ -320,34 +330,35 @@ switch ($action) {
         } else {
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
-            $link = $site_config['paths']['baseurl'] . "/offers.php?action=offer_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage ={$perpage}&amp;" : '');
+            $link = $site_config['paths']['baseurl'] . "/offers.php?action=request_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage ={$perpage}&amp;" : '');
             $pager = pager($perpage, $count, $link);
             $menu_top = $pager['pagertop'];
             $menu_bottom = $pager['pagerbottom'];
 
             $allrows = $fluent->from('comments')
                               ->select('id AS comment_id')
-                              ->where('offer = ?', $id)
+                              ->where('request = ?', $id)
                               ->orderBy('id DESC')
-                              ->limit($pager['pdo'])
+                              ->limit($pager['pdo']['limit'])
+                              ->offset($pager['pdo']['offset'])
                               ->fetchAll();
 
             $HTMLOUT .= '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
-            $HTMLOUT .= commenttable($allrows, 'offer');
+            $HTMLOUT .= commenttable($allrows, 'request');
             $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
-        echo stdhead('offer details for: ' . htmlsafechars(htmlspecialchars($arr['offer_name'], ENT_QUOTES, 'UTF-8')), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offer details for: ' . htmlsafechars($arr['request_name']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
-    case 'add_new_offer':
-        $offer_name = strip_tags(isset($_POST['offer_name']) ? trim($_POST['offer_name']) : '');
+    case 'add_new_request':
+        $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : '');
         $image = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
         $body = isset($_POST['body']) ? trim($_POST['body']) : '';
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
         $category_drop_down = '
                 <select name="category" required>
-                    <option value="">Select offer Category</option>';
+                    <option value="">Select Offer Category</option>';
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
@@ -358,51 +369,51 @@ switch ($action) {
                 </select>';
         if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
             $values = [
-                'offer_name' => $offer_name,
+                'request_name' => $request_name,
                 'image' => $image,
                 'description' => $body,
                 'category' => $category,
                 'added' => TIME_NOW,
-                'offered_by_user_id' => $CURUSER['id'],
+                'requested_by_user_id' => $CURUSER['id'],
                 'link' => $link,
             ];
-            $new_offer_id = $fluent->insertInto('offers')
-                                   ->values($values)
-                                   ->execute();
+            $new_request_id = $fluent->insertInto('offers')
+                                     ->values($values)
+                                     ->execute();
 
             $color = get_user_class_name($CURUSER['class'], true);
             $msg = "[{
-        $color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url ={$site_config['paths']['baseurl']}/offers.php?action=offer_details & id ={$new_offer_id}]{$offer_name}[/url]";
+        $color}]{$CURUSER['username']}[/{$color}] posted a new request: [url ={$site_config['paths']['baseurl']}/offers.php?action=request_details & id ={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&new=1&id=' . $new_offer_id);
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&new=1&id=' . $new_request_id);
             die();
         }
         $stdfoot['js'] = array_merge($stdfoot['js'], [
             get_file_name('dragndrop_js'),
         ]);
         $HTMLOUT .= $top_menu . '
-    <h1 class="has-text-centered">New offer</h1>
+    <h1 class="has-text-centered">New Offer</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="' . $site_config['paths']['baseurl'] . ' / offers.php?action=add_new_offer" accept-charset="utf-8">
+    <form method="post" action="' . $site_config['paths']['baseurl'] . ' / offers.php?action=add_new_request" accept-charset="utf-8">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
-    <td colspan="2"><h1>Making a offer</h1></td>
+    <td colspan="2"><h1>Making a Offer</h1></td>
     </tr>
     <tr>
-    <td colspan="2">Before you make an offer, <a class="altlink" href="browse.php">Search</a>
-    to be sure it has not yet been offered, offered, or uploaded!<br><br>Be sure to fill in all fields!
+    <td colspan="2">Before you make an request, <a class="altlink" href="browse.php">Search</a>
+    to be sure it has not yet been requested, offered, or uploaded!<br><br>Be sure to fill in all fields!
     <div class="has-text-centered error size_6 margin20"><span></span></div>
     </td>
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="offer_name" value="' . htmlsafechars(htmlspecialchars($offer_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" required>
+        <input type="url" id="url" name="link" class="w-100" value="' . htmlsafechars($link) . '" required>
         <div id="imdb_outer">
         </div>
     </td>
@@ -410,7 +421,7 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
+        <input type="url" id="image_url"  placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
         <input type="url" id="poster" maxlength="255" name="poster" class="w-100 is-hidden">
         <div class="poster_container has-text-centered"></div>
     </td>
@@ -444,79 +455,79 @@ switch ($action) {
     </tr>
     </tbody>
     </table></form>';
-        echo stdhead('Add new offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
-    case 'delete_offer':
+    case 'delete_request':
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
         $exists = $fluent->from('offers')
                          ->select(null)
-                         ->select('offer_name')
-                         ->select('offered_by_user_id')
-                         ->where('id=?', $id)
+                         ->select('request_name')
+                         ->select('requested_by_user_id')
+                         ->where('id = ?', $id)
                          ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'Are you sure you would like to delete the offer <b>"' . htmlsafechars(htmlspecialchars($exists['offer_name'], ENT_QUOTES, 'UTF-8')) . '"</b>? If so click
-        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_offer&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
+            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars($exists['request_name']) . '"</b>? If so click
+        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('offers')
-                   ->where('id=?', $id)
+                   ->where('id = ?', $id)
                    ->execute();
             $fluent->deleteFrom('comments')
-                   ->where('offer = ?', $id)
+                   ->where('request = ?', $id)
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?offer_deleted=1');
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?request_deleted=1');
             die();
         }
-        echo stdhead('Delete offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
-    case 'edit_offer':
+    case 'edit_request':
         require_once INCL_DIR . 'function_bbcode.php';
         if (!isset($id) || !is_valid_id($id)) {
             stderr('Error', 'Bad ID.');
         }
-        $edit_arr = $fluent->from('offers AS r')
-                           ->select('r.id AS offer_id')
+        $edit_arr = $fluent->from('offers AS o')
+                           ->select('o.id AS request_id')
                            ->select('c.name AS cat_name')
                            ->select('c.image AS cat_image')
                            ->select('p.name AS parent_name')
-                           ->leftJoin('categories AS c ON r.category = c.id')
-                           ->leftJoin('categories AS p ON c.parent_id=p.id')
-                           ->where('r.id=?', $id)
+                           ->leftJoin('categories AS c ON o.category = c.id')
+                           ->leftJoin('categories AS p ON c.parent_id = p.id')
+                           ->where('o.id = ?', $id)
                            ->fetch();
 
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
         $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
 
-        if ($CURUSER['class'] < UC_STAFF && $CURUSER['id'] !== $edit_arr['offered_by_user_id']) {
-            stderr('Error!', 'This is not your offer to edit!');
+        if ($CURUSER['class'] < UC_STAFF && $CURUSER['id'] !== $edit_arr['requested_by_user_id']) {
+            stderr('Error!', 'This is not your request to edit!');
         }
         $filled_by = '';
         if ($edit_arr['filled_by_user_id'] > 0) {
-            $filled_by = 'this offer was filled by ' . format_username($edit_arr['filled_by_user_id']);
+            $filled_by = 'this request was filled by ' . format_username((int) $edit_arr['filled_by_user_id']);
         }
-        $offer_name = strip_tags(isset($_POST['offer_name']) ? trim($_POST['offer_name']) : $edit_arr['offer_name']);
+        $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : $edit_arr['request_name']);
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
         $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
         $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
         $category_drop_down = '
-                <select name="category" required><option value="">Select offer Category</option>';
+                <select name="category" required><option value="">Select Offer Category</option>';
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
                 $category_drop_down .= "
-                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($cat['name'], ENT_QUOTES) . '::' . htmlsafechars($row['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -524,8 +535,8 @@ switch ($action) {
         $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
    <td class="embedded">
-   <h1 class="has-text-centered">Edit offer</h1>' . $top_menu . '
-   <form method="post" action="' . $site_config['paths']['baseurl'] . '/offers.php?action=update_offer" accept-charset="utf-8">
+   <h1 class="has-text-centered">Edit Offer</h1>' . $top_menu . '
+   <form method="post" action="' . $site_config['paths']['baseurl'] . '/offers.php?action=update_request" accept-charset="utf-8">
    <input type="hidden" name="id" value="' . $id . '">
    <table class="table table-bordered table-striped">
    <tr>
@@ -533,15 +544,15 @@ switch ($action) {
    </tr>
    <tr>
    <td>name:</td>
-   <td><input type="text" name="offer_name" value="' . htmlsafechars(htmlspecialchars($offer_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>image:</td>
-   <td><input type="url" name="image" value="' . htmlsafechars(htmlspecialchars($image, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="url" name="image" value="' . htmlsafechars($image) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>link:</td>
-   <td><input type="url" name="link" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="url" name="link" value="' . htmlsafechars($link) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>category:</td>
@@ -553,7 +564,7 @@ switch ($action) {
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
-   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . '> check this box to re-set this offer. [ removes filled by ]  </td>
+   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . '> check this box to re-set this request. [ removes filled by ]  </td>
    </tr>') . '
    <tr>
    <td colspan="2">
@@ -564,7 +575,7 @@ switch ($action) {
    </tr>
    </table></form>
     </td></tr></table><br>';
-        echo stdhead('Edit offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_comment':
@@ -573,12 +584,12 @@ switch ($action) {
         }
         $arr = $fluent->from('offers')
                       ->select(null)
-                      ->select('offer_name')
-                      ->where('id=?', $id)
+                      ->select('request_name')
+                      ->where('id = ?', $id)
                       ->fetch();
 
         if (!$arr) {
-            stderr('Error', 'No offer with that ID.');
+            stderr('Error', 'No request with that ID.');
         }
         if (isset($_POST['button']) && $_POST['button'] === 'Save') {
             $body = trim($_POST['body']);
@@ -587,7 +598,7 @@ switch ($action) {
             }
             $values = [
                 'user' => $CURUSER['id'],
-                'offer' => $id,
+                'request' => $id,
                 'added' => TIME_NOW,
                 'text' => $body,
                 'ori_text' => $body,
@@ -596,12 +607,12 @@ switch ($action) {
                             ->values($values)
                             ->execute();
             $set = [
-                'comments' => new Envms\FluentPDO\Literal('comments + 1'),
+                'comments' => new Literal('comments + 1'),
             ];
             $fluent->update('offers')
                    ->set($set)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -610,7 +621,7 @@ switch ($action) {
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
-                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars(htmlspecialchars($arr['offer_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
+                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
@@ -628,16 +639,16 @@ switch ($action) {
 
         $allrows = $fluent->from('comments')
                           ->select('id AS comment_id')
-                          ->where('offer = ?', $id)
+                          ->where('request = ?', $id)
                           ->orderBy('id DESC')
                           ->limit(5)
                           ->fetchAll();
 
         if ($allrows) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
-            $HTMLOUT .= commenttable($allrows, 'offer');
+            $HTMLOUT .= commenttable($allrows, 'request');
         }
-        echo stdhead('Add a comment to "' . $arr['offer_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit':
@@ -646,9 +657,9 @@ switch ($action) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments AS c')
-                      ->select('r.offer_name')
-                      ->leftJoin('offers AS r ON c.offer = r.id')
-                      ->where('c.id=?', $comment_id)
+                      ->select('o.request_name')
+                      ->leftJoin('offers AS o ON c.request = o.id')
+                      ->where('c.id = ?', $comment_id)
                       ->fetch();
 
         if (!$arr) {
@@ -669,9 +680,9 @@ switch ($action) {
             ];
             $fluent->update('comments')
                    ->set($set)
-                   ->where('id=?', $comment_id)
+                   ->where('id = ?', $comment_id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
@@ -681,11 +692,11 @@ switch ($action) {
             $avatar = get_avatar($arr_user);
         }
         $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['paths']['baseurl'] . '/offers.php?action=edit" accept-charset="utf-8">
-    <input type="hidden" name="id" value="' . $arr['offer'] . '">
+    <input type="hidden" name="id" value="' . $arr['request'] . '">
     <input type="hidden" name="cid" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
      <tr>
-    <td colspan="2"><h1>Edit comment to "' . htmlsafechars(htmlspecialchars($arr['offer_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
+    <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
     </tr>
      <tr>
     <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>
@@ -698,7 +709,7 @@ switch ($action) {
         </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . $arr['offer_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_comment':
@@ -708,11 +719,11 @@ switch ($action) {
         $arr = $fluent->from('offers')
                       ->select(null)
                       ->select('user')
-                      ->select('offer')
+                      ->select('request')
                       ->select('text')
-                      ->where('id =?', $comment_id)
+                      ->where('id  = ?', $comment_id)
                       ->fetch();
-        if (emtpy($arr)) {
+        if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
@@ -726,11 +737,11 @@ switch ($action) {
         ];
         $fluent->update('comments')
                ->set($set)
-               ->where('id=?', $comment_id)
+               ->where('id = ?', $comment_id)
                ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
-        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '#comm' . $comment_id);
+        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&id=' . $id . '#comm' . $comment_id);
         die();
         break;
 
@@ -740,30 +751,30 @@ switch ($action) {
         }
         $arr = $fluent->from('comments')
                       ->select('user')
-                      ->select('offer')
-                      ->where('id=?', $comment_id)
+                      ->select('request')
+                      ->where('id = ?', $comment_id)
                       ->fetch();
-        if (emtpy($arr)) {
+        if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_comment&amp;id=' . (int) $arr['offer'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
+            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_comment&amp;id=' . (int) $arr['request'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('comments')
-                   ->where('id=?', $comment_id)
+                   ->where('id = ?', $comment_id)
                    ->execute();
             $set = [
-                'comments' => new Envms\FluentPDO\Literal('comments - 1'),
+                'comments' => new Literal('comments - 1'),
             ];
             $fluent->update('offers')
                    ->set($set)
-                   ->where('id=?', $arr['offer'])
+                   ->where('id = ?', $arr['request'])
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
+            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=request_details&id=' . $id . '&comment_deleted=1');
             die();
         }
         break;
@@ -776,11 +787,11 @@ switch ($action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
         $arr = $fluent->from('comments')
-                      ->where('id=?', $comment_id)
+                      ->where('id = ?', $comment_id)
                       ->fetch();
 
         if (!$arr) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid . ");
+            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $comment_id . ");
         }
         $HTMLOUT = " < h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 

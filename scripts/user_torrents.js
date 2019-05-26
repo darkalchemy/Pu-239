@@ -1,29 +1,29 @@
 if ($('#inner_torrents').length) {
     var el = document.querySelector('#inner_torrents');
-    get_torrents(el.dataset.csrf, el.dataset.uid, 'torrents');
+    get_torrents(el.dataset.uid, 'torrents');
 }
 
 if ($('#inner_seeding').length) {
     var el = document.querySelector('#inner_seeding');
-    get_torrents(el.dataset.csrf, el.dataset.uid, 'seeding');
+    get_torrents(el.dataset.uid, 'seeding');
 }
 
 if ($('#inner_leeching').length) {
     var el = document.querySelector('#inner_leeching');
-    get_torrents(el.dataset.csrf, el.dataset.uid, 'leeching');
+    get_torrents(el.dataset.uid, 'leeching');
 }
 
 if ($('#inner_snatched').length) {
     var el = document.querySelector('#inner_snatched');
-    get_torrents(el.dataset.csrf, el.dataset.uid, 'snatched');
+    get_torrents(el.dataset.uid, 'snatched');
 }
 
 if ($('#inner_snatched_staff').length) {
     var el = document.querySelector('#inner_snatched_staff');
-    get_torrents(el.dataset.csrf, el.dataset.uid, 'snatched_staff');
+    get_torrents(el.dataset.uid, 'snatched_staff');
 }
 
-function get_torrents(csrf, uid, type) {
+function get_torrents(uid, type) {
     var selector = '#inner_' + type;
     var el = document.querySelector(selector);
     var e = document.createElement('div');
@@ -37,7 +37,6 @@ function get_torrents(csrf, uid, type) {
         dataType: 'json',
         context: this,
         data: {
-            csrf: csrf,
             uid: uid,
             type: type
         },

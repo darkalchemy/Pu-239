@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
- * @return string
- *
  * @throws Exception
+ *
+ * @return string
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $BLOCKS;
+    global $CURUSER, $site_config, $BLOCKS, $lang;
 
     $navbar = '';
     $staff_links = staff_panel();
@@ -24,11 +31,9 @@ function navbar()
                     <ul class='level'>
                         <li>
                             <a href='{$site_config['paths']['baseurl']}' class='is-flex'>
-                            <i class='icon-home size_6'></i>
-                            <span class='home'>{$site_config['site']['name']}</span>
+                                <i class='icon-home size_6'></i>
+                                <span class='home'>{$site_config['site']['name']}</span>
                             </a>
-                        </li>
-                        <li>
                         </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
                         <li id='movies_links' class='clickable'>
                             <a href='#'>{$lang['gl_movies_tv']}</a>
@@ -90,6 +95,7 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/hnrs.php'>{$lang['gl_hnrs']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/invite.php?do=view_page'>{$lang['gl_invites']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
@@ -109,8 +115,6 @@ function navbar()
                         <li>
                             <a href='{$site_config['paths']['baseurl']}/staffpanel.php'>{$lang['gl_staffpanel']}</a>
                         </li>" : '')) . "
-                        <li>
-                        </li>
                         <li>
                             <a href='{$site_config['paths']['baseurl']}/logout.php' class='is-flex'>
                             <i class='icon-logout size_6' aria-hidden='true'></i>
@@ -143,19 +147,23 @@ function make_link($value)
 }
 
 /**
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function staff_panel()
 {
-    global $site_config, $CURUSER, $BLOCKS, $cache, $fluent;
+    global $BLOCKS, $CURUSER, $container, $site_config;
 
+    $cache = $container->get(Cache::class);
     $panel = '';
     $panels = [];
     if ($BLOCKS['global_staff_menu_on'] && $CURUSER['class'] >= UC_STAFF) {
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
         if ($staff_panel === false || is_null($staff_panel)) {
+            $fluent = $container->get(Database::class);
             $staff_panel = $fluent->from('staffpanel')
                                   ->where('navbar = 1')
                                   ->where('av_class <= ?', $CURUSER['class'])
@@ -191,13 +199,12 @@ function staff_panel()
         foreach ($panels as $key => $value) {
             $panel .= "
                 <li class='clickable'>
-                    <a id='staff_other' href='#'>[" . substr($key, 1) . "]</a>
-                        <ul class='ddFade ddFadeFast'>" . make_link([
-                    'file_name' => 'staffpanel.php',
-                    'page_name' => 'Staff Panel',
-                ]) . implode('', $value) . '
-                        </ul>
-                    </a>
+                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='#'>[" . substr($key, 1) . "]</a>
+                    <ul class='ddFade ddFadeFast'>" . make_link([
+                'file_name' => 'staffpanel.php',
+                'page_name' => 'Staff Panel',
+            ]) . implode('', $value) . '
+                    </ul>
                 </li>';
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //bonusmanager
     'bonusmanager_wtf' => 'WTF?',

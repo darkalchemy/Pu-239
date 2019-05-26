@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //torrenttable
     'torrenttable_type' => 'Type',
@@ -8,7 +10,6 @@ $lang = [
     'torrenttable_dl' => 'DL',
     'torrenttable_wait' => 'Wait',
     'torrenttable_edit' => 'Edit',
-    'torrenttable_visible' => 'Visible',
     'torrenttable_files' => 'Files',
     'torrenttable_comments' => 'Comments',
     'torrenttable_rating' => 'Rating',
@@ -26,7 +27,6 @@ $lang = [
     'torrenttable_wait_none' => 'None',
     'torrenttable_view_nfo_alt' => 'View NFO',
     'torrenttable_download_alt' => 'Download',
-    'torrenttable_edit' => 'Edit',
     'torrenttable_not_visible' => 'No',
     'torrenttable_visible' => 'Yes',
     'torrenttable_hour_singular' => 'hour',

@@ -1,21 +1,32 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\User;
+
 /**
- * @param $userid
+ * @param int $userid
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function account_delete(int $userid)
 {
-    global $cache, $user_stuffs;
+    global $container;
 
     if (empty($userid)) {
         return false;
     }
+    $user_stuffs = $container->get(User::class);
     $user = $user_stuffs->getUserFromId($userid);
     $username = $user['username'];
+    $cache = $container->get(Cache::class);
     $cache->delete('all_users_');
     $cache->delete('user_' . $userid);
 

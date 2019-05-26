@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $site_config, $cache, $message_stuffs, $mysqli;
-
 check_user_status();
+$lang = array_merge(load_language('global'), load_language('casino'));
+global $container, $site_config, $CURUSER;
+
 if ($CURUSER['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play in the casino!');
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play in the casino!', 'bottom20');
 }
 
-$lang = array_merge(load_language('global'), load_language('casino'));
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $dummy = '';
@@ -46,13 +51,13 @@ $sendfrom = 2; //== The id of the user which notification PM's are noted as sent
 $casino = 'casino.php'; //== Name of file
 //== End of Config
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
-    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled']);
+    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20');
     die();
 }
 
 $min_text = mksize(100 * 1073741824);
 if ($CURUSER['uploaded'] < 1073741824 * 100) {
-    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.");
+    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
 }
 
 $sql = sql_query('SELECT uploaded, downloaded ' . 'FROM users ' . 'WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -84,10 +89,10 @@ $user_date = (int) $row['date'];
 $user_deposit = $row['deposit'];
 $user_enableplay = htmlsafechars($row['enableplay']);
 if ($user_enableplay === 'no') {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_banned_from_casino']}");
+    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_banned_from_casino']}", 'bottom20');
 }
 if (($user_win - $user_lost) > $max_download_user) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_have_reached_the_max_dl_for_a_single_user']}");
+    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_have_reached_the_max_dl_for_a_single_user']}", 'bottom20');
 }
 if ($CURUSER['downloaded'] > 0) {
     $ratio = number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 2);
@@ -97,7 +102,7 @@ if ($CURUSER['downloaded'] > 0) {
     $ratio = 0;
 }
 if (!$site_config['site']['ratio_free'] && $ratio < $required_ratio) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}");
+    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}", 'bottom20');
 }
 $global_down2 = sql_query('SELECT (sum(win)-sum(lost)) AS globaldown,(sum(deposit)) AS globaldeposit, sum(win) AS win, sum(lost) AS lost FROM casino') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($global_down2);
@@ -136,7 +141,7 @@ if ($user_win < $user_everytimewin_mb) {
     }
 }
 if ($global_down > $max_download_global) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_global_max_win_is_above']} " . htmlsafechars(mksize($max_download_global)));
+    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_global_max_win_is_above']} " . htmlsafechars(mksize($max_download_global)), 'bottom20');
 }
 
 $goback = "<a href='$casino'>{$lang['casino_go_back']}</a>";
@@ -162,9 +167,11 @@ $betmb_options = [
     $bet_value7 => 1,
     $bet_value8 => 1,
 ];
-$post_color = (isset($_POST['color']) ? $_POST['color'] : '');
-$post_number = (isset($_POST['number']) ? $_POST['number'] : '');
-$post_betmb = (isset($_POST['betmb']) ? $_POST['betmb'] : '');
+$post_color = isset($_POST['color']) ? $_POST['color'] : '';
+$post_number = isset($_POST['number']) ? $_POST['number'] : '';
+$post_betmb = isset($_POST['betmb']) ? $_POST['betmb'] : '';
+$cache = $container->get(Cache::class);
+$message_stuffs = $container->get(Message::class);
 if (isset($color_options[$post_color], $number_options[$post_number]) || isset($betmb_options[$post_betmb])) {
     $betmb = $_POST['betmb'];
     if (isset($_POST['number'])) {
@@ -176,7 +183,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $win = $win_amount * $betmb;
     if ($CURUSER['uploaded'] < $betmb) {
-        stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_you_have_not_uploaded']} " . htmlsafechars(mksize($betmb)));
+        stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_you_have_not_uploaded']} " . htmlsafechars(mksize($betmb)), 'bottom20');
     }
     if (random_int(0, $cheat_value) == $cheat_value) {
         sql_query('UPDATE users SET uploaded = uploaded + ' . sqlesc($win) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -185,7 +192,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $cache->update_row('user_' . $CURUSER['id'], [
             'uploaded' => $update['uploaded'],
         ], $site_config['expires']['user_cache']);
-        stderr($lang['casino_yes'], '' . htmlsafechars($winner_was) . " {$lang['casino_is_the_result']} " . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_got_it_and_win']} " . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback");
+        stderr($lang['casino_yes'], '' . htmlsafechars($winner_was) . " {$lang['casino_is_the_result']} " . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_got_it_and_win']} " . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback", 'bottom20');
     } else {
         if (isset($_POST['number'])) {
             do {
@@ -204,7 +211,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $cache->update_row('user_' . $CURUSER['id'], [
             'uploaded' => $update['uploaded_loser'],
         ], $site_config['expires']['user_cache']);
-        stderr($lang['gl_sorry'], '' . htmlsafechars($fake_winner) . " {$lang['casino_is_the_winner_and_not']} " . htmlsafechars($winner_was) . ', ' . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_lost']} " . htmlsafechars(mksize($betmb)) . "&#160;&#160;&#160;$goback");
+        stderr($lang['gl_sorry'], '' . htmlsafechars($fake_winner) . " {$lang['casino_is_the_winner_and_not']} " . htmlsafechars($winner_was) . ', ' . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_lost']} " . htmlsafechars(mksize($betmb)) . "&#160;&#160;&#160;$goback", 'bottom20');
     }
 } else {
     //== Get user stats
@@ -243,16 +250,16 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $tbet = mysqli_fetch_assoc($loc);
         $nogb = mksize($tbet['amount']);
         if ($CURUSER['id'] == $tbet['userid']) {
-            stderr($lang['gl_sorry'], "{$lang['casino_you_want_to_bet_against_yourself_lol']} ?&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], "{$lang['casino_you_want_to_bet_against_yourself_lol']} ?&#160;&#160;&#160;$goback", 'bottom20');
         } elseif ($tbet['challenged'] != 'empty') {
-            stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($CURUSER['uploaded'] < $tbet['amount']) {
             $debt = $tbet['amount'] - $CURUSER['uploaded'];
             $newup = $CURUSER['uploaded'] - $debt;
         }
         if (isset($debt) && $alwdebt != 1) {
-            stderr($lang['gl_sorry'], "<h2>{$lang['casino_you_are']} " . htmlsafechars(mksize(($nobits - $CURUSER['uploaded']))) . " {$lang['casino_short_of_making_that_bet']}!</h2>&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], "<h2>{$lang['casino_you_are']} " . htmlsafechars(mksize(($nobits - $CURUSER['uploaded']))) . " {$lang['casino_short_of_making_that_bet']}!</h2>&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($rand > 50000) {
             // Current user WINS
@@ -284,7 +291,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             if ($delold == 1) {
                 sql_query('DELETE FROM casino_bets WHERE id =' . sqlesc($tbet['id'])) or sqlerr(__FILE__, __LINE__);
             }
-            stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at " . format_username($tbet['userid']) . "</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback");
+            stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at " . format_username((int) $tbet['userid']) . "</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback", 'bottom20');
             die();
         } else {
             if (empty($newup)) {
@@ -334,7 +341,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             if ($delold == 1) {
                 sql_query('DELETE FROM casino_bets WHERE id =' . sqlesc($tbet['id'])) or sqlerr(__FILE__, __LINE__);
             }
-            stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} " . format_username($tbet['userid']) . " {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback");
+            stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} " . format_username((int) $tbet['userid']) . " {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback", 'bottom20');
         }
         die();
     }
@@ -350,26 +357,26 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     if (isset($_POST['unit'])) {
         if ($openbet >= $maxusrbet) {
-            stderr($lang['gl_sorry'], "{$lang['casino_there_are_already']} " . htmlsafechars($openbet) . " {$lang['casino_bets_open_take_an_open_bet']}!&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], "{$lang['casino_there_are_already']} $openbet {$lang['casino_bets_open_take_an_open_bet']}!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 0) {
-            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_a_pos_val']}?&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_a_pos_val']}?&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits === '.') {
-            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_without_a_dec']}?&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_without_a_dec']}?&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($maxbet < $nobits) {
-            stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " The Max allowed bet is $maxbetGB GB!&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " The Max allowed bet is $maxbetGB GB!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 104857599) {
-            stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " The Min allowed bet is 100 MB!&#160;&#160;&#160;$goback");
+            stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " The Min allowed bet is 100 MB!&#160;&#160;&#160;$goback", 'bottom20');
         }
 
         $newups = $CURUSER['uploaded'] - $nobits;
         $debt = $nobits - $CURUSER['uploaded'];
         if ($CURUSER['uploaded'] < $nobits) {
             if ($alwdebt != 1) {
-                stderr($lang['gl_sorry'], "<h2>{$lang['casino_thats']} " . htmlsafechars(mksize($debt)) . " {$lang['casino_more_than_you_got']}!</h2>$goback");
+                stderr($lang['gl_sorry'], "<h2>{$lang['casino_thats']} " . htmlsafechars(mksize($debt)) . " {$lang['casino_more_than_you_got']}!</h2>$goback", 'bottom20');
             }
         }
         $betsp = sql_query('SELECT id, amount FROM casino_bets WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY time ASC') or sqlerr(__FILE__, __LINE__);
@@ -402,7 +409,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     //== Place bet table
     if ($openbet < $maxusrbet) {
         if ($totbets >= $maxtotbet) {
-            $HTMLOUT .= "{$lang['casino_there_are_already']} " . htmlsafechars($maxtotbet) . " {$lang['casino_bets_open_take_an_open_bet']}!";
+            $HTMLOUT .= "{$lang['casino_there_are_already']} $maxtotbet {$lang['casino_bets_open_take_an_open_bet']}!";
         } else {
             $HTMLOUT .= "
             <form name='p2p' method='post' action='{$casino}' accept-charset='utf-8'>
@@ -433,7 +440,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             </form>";
         }
     } else {
-        $HTMLOUT .= "<b>{$lang['casino_you_already_have']} " . htmlsafechars($maxusrbet) . " {$lang['casino_open_bets_wait_until_they_are_comp']}.</b><br><br>";
+        $HTMLOUT .= "<b>{$lang['casino_you_already_have']} $maxusrbet {$lang['casino_open_bets_wait_until_they_are_comp']}.</b><br><br>";
     }
     //== Open Bets table
     $maxbetShow = mksize($maxbet);
@@ -454,9 +461,9 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     while ($res = mysqli_fetch_assoc($loca)) {
         $HTMLOUT .= "
                         <tr>
-                            <td class='has-text-centered'>" . format_username($res['userid']) . "</td>
+                            <td class='has-text-centered'>" . format_username((int) $res['userid']) . "</td>
                             <td class='has-text-centered'>" . htmlsafechars(mksize($res['amount'])) . "</td>
-                            <td class='has-text-centered'>" . get_date($res['time'], 'LONG', 0, 1) . "</td>
+                            <td class='has-text-centered'>" . get_date((int) $res['time'], 'LONG', 0, 1) . "</td>
                             <td class='has-text-centered'>
                                 <b><a href='{$casino}?takebet=" . (int) $res['id'] . "'>{$lang['casino_take_bet']}</a></b>
                             </td>

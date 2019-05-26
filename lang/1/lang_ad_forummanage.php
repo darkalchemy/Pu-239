@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $site_config;
+
 $lang = [
     //Misc
     'btn_addnew' => 'Add New',
@@ -26,7 +29,7 @@ $lang = [
     'text_noid' => 'No fecking id!',
     'text_notopic' => 'There are no topics in this forum!',
     'text_smthbad' => 'Something bad happened!',
-    'text_forumdeleted' => "Forum deleted return to <a href='staffpanel.php?tool=forum_manage&amp;action=forum_manage'>Forum Management</a>",
+    'text_forumdeleted' => "Forum deleted return to <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>Forum Management</a>",
     'text_nowheretomove' => 'Nowhere to move!',
     'text_warning' => 'You are about to delete a forum! ',
     'text_warning_cont' => ' Continue? ',

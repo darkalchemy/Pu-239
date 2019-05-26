@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'hitnrun_chance' => 'Current Hit and Runs who still have a chance',
     'hitnrun_nochance' => 'Hit and Runs with no chance',

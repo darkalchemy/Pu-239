@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session;
-
 $lang = array_merge(load_language('global'), load_language('invite_code'));
-
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+global $container, $CURUSER, $site_config;
 
 $HTMLOUT = $sure = '';
-$do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
+$do = isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : '');
 $valid_actions = [
     'create_invite',
     'delete_invite',
@@ -26,6 +28,8 @@ if ($CURUSER['suspended'] === 'yes') {
     stderr('Sorry', 'Your account is suspended');
 }
 
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
 if ($do === 'view_page') {
     $sql = $fluent->from('users')
                   ->select(null)
@@ -54,35 +58,21 @@ if ($do === 'view_page') {
                         <th>{$lang['invites_downloaded']}</th>") . "
                         <th>{$lang['invites_ratio']}</th>
                         <th>{$lang['invites_status']}</th>
-                        <th>{$lang['invites_confirm']}</th>
                     </tr>";
         foreach ($rows as $row) {
             $ratio = member_ratio($row['uploaded'], $site_config['site']['ratio_free'] ? '0' : $row['downloaded']);
-            if ($row['status'] === 'confirmed') {
+            if ($row['status'] === 0) {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
                 $status = "<span class='has-text-danger'>{$lang['invites_pend']}</span>";
             }
             $body .= "
                     <tr>
-                        <td class='level-left'>" . format_username($row['id']) . '</td>
+                        <td class='level-left'>" . format_username((int) $row['id']) . '</td>
                         <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
                         <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
                         <td>{$status}</td>";
-            if ($row['status'] === 'Pending') {
-                $body .= "
-                        <td>
-                            <a {$site_config['paths']['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int) $row['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "'>
-                                <img src='{$site_config['paths']['images_baseurl']}confirm.png' alt='confirm' class='tooltipper' title='Confirm'>
-                            </a>
-                        </td>
-                    </tr>";
-            } else {
-                $body .= '
-                        <td>---</td>
-                    </tr>';
-            }
         }
     }
 
@@ -121,10 +111,10 @@ if ($do === 'view_page') {
                         <td class='has-text-centered'>
                             <span>" . (!empty($fetch_assoc['email']) ? htmlsafechars($fetch_assoc['email']) : '---') . "</span>
                         </td>
-                        <td class='has-text-centered'>" . get_date($fetch_assoc['added'], '', 0, 1) . "</td>
+                        <td class='has-text-centered'>" . get_date((int) $fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
                             <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int) $fetch_assoc['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "' class='tooltipper' title='Delete'>
-                                <i class='icon-cancel icon has-text-danger'></i>
+                                <i class='icon-trash-empty icon has-text-danger'></i>
                             </a>
                         </td>
                         <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . '</td>
@@ -148,7 +138,7 @@ if ($do === 'view_page') {
     }
     $count = $fluent->from('invite_codes')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(id) AS count')
                     ->where('status = "Pending"')
                     ->fetch('count');
     if ($count >= $site_config['site']['invites']) {
@@ -166,11 +156,11 @@ if ($do === 'view_page') {
            ->execute();
 
     $set = [
-        'invites' => new Envms\FluentPDO\Literal('invites - 1'),
+        'invites' => $CURUSER['invites'] - 1,
     ];
     $fluent->update('users')
            ->set($set)
-           ->where('id=?', $CURUSER['id'])
+           ->where('id = ?', $CURUSER['id'])
            ->execute();
 
     $update['invites'] = ($CURUSER['invites'] - 1);
@@ -188,7 +178,7 @@ if ($do === 'view_page') {
         }
         $check = $fluent->from('users')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->where('email = ?', $email)
                         ->fetch('count');
         if ($check != 0) {
@@ -218,34 +208,25 @@ This is a private site and you must agree to the rules before you can enter:</p>
 <p>{$site_config['paths']['baseurl']}/faq.php</p>
 <hr>
 <p>To confirm your invitation, you have to follow this link:</p>
-{$site_config['paths']['baseurl']}/invite_signup.php?id={$secret}&code=$invite
+{$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite
 <hr>
 <p>After you do this, $inviter may need to confirm your account.<br>
 We urge you to read the RULES and FAQ before you start using {$site_config['site']['name']}.</p>
 </body>
 </html>";
-
-        $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-             ->addTo($email)
-             ->setReturnPath($site_config['site']['email'])
-             ->setSubject("You have been invited to {$site_config['site']['name']}")
-             ->setHtmlBody($body);
-
-        $mailer = new SendmailMailer();
-        $mailer->commandArgs = "-f{$site_config['site']['email']}";
-        $mailer->send($mail);
-
-        $session->set('is-success', $lang['invites_confirmation']);
-        header("Location: {$site_config['paths']['baseurl']}/invite.php?do=view_page");
-        die();
+        if (send_mail($email, "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
+            $session = $container->get(Session::class);
+            $session->set('is-success', $lang['invites_confirmation']);
+            header("Location: {$site_config['paths']['baseurl']}/invite.php?do=view_page");
+            die();
+        }
     }
     $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
     if (!is_valid_id($id)) {
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
     $fetch = $fluent->from('invite_codes')
-                    ->where('id=?', $id)
+                    ->where('id = ?', $id)
                     ->where('sender = ?', $CURUSER['id'])
                     ->where('status = "Pending"')
                     ->fetch();
@@ -269,7 +250,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
                 </table>
                 <div class='has-text-centered margin20'>
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "'>
-                    <input type='hidden' name='secret' value='" . htmlsafechars($fetch['id']) . "'>
+                    <input type='hidden' name='secret' value='{$fetch['id']}'>
                     <input type='submit' value='Send e-mail' class='button is-small'>
                 </div>
             </form>
@@ -284,21 +265,21 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $CURUSER['id'] . '&amp;sure=yes">here</a> to delete it or <a href="?do=view_page">here</a> to go back.');
+        stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $CURUSER['id'] . '&amp;sure=yes"><span class="has-text-danger">here</span></a> to delete it or <a href="' . $_SERVER['PHP_SELF'] . '?do=view_page"><span class="has-text-success"> here</span></a> to go back.');
     }
     $fluent->deleteFrom('invite_codes')
-           ->where('id=?', $id)
+           ->where('id = ?', $id)
            ->where('sender = ?', $CURUSER['id'])
            ->where('status = "Pending"')
            ->execute();
 
     $set = [
-        'invites' => new Envms\FluentPDO\Literal('invites + 1'),
+        'invites' => $CURUSER['invites'] + 1,
     ];
 
     $fluent->update('users')
            ->set($set)
-           ->where('id=?', $CURUSER['id'])
+           ->where('id = ?', $CURUSER['id'])
            ->execute();
     $update['invites'] = ($CURUSER['invites'] + 1);
 
@@ -312,7 +293,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
 
-    $select = sql_query('SELECT id, username FROM users WHERE id=' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT id, username FROM users WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($select);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_errorid']);
@@ -321,7 +302,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     if (!$sure) {
         stderr($lang['invites_confirm1'], $lang['invites_sure1'] . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $CURUSER['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
     }
-    sql_query('UPDATE users SET status = "confirmed" WHERE id=' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="Pending"') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET status = "confirmed" WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
 
     $cache->update_row('user_' . $userid, [
         'status' => 'confirmed',

@@ -1,9 +1,11 @@
 <?php
 
-global $site_config, $lang, $user_stuffs, $id, $CURUSER, $user;
+declare(strict_types = 1);
+
+global $CURUSER, $lang, $user, $site_config;
 
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
-    $days = round((TIME_NOW - $user['added']) / 86400);
+    $days = round((TIME_NOW - $user['registered']) / 86400);
     if ($site_config['site']['ratio_free']) {
         $table_data .= "
         <tr>

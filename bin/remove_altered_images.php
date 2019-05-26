@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\ImageProxy;
+
 require_once __DIR__ . '/../include/bittorrent.php';
+global $container;
 
-$image_proxy = new Pu239\ImageProxy();
+$image_proxy = $container->get(ImageProxy::class);
 $path = IMAGES_DIR . 'proxy/';
-
+$fluent = $container->get(Database::class);
 $urls = $fluent->from('images')
                ->select('url');
-
+$images = [];
 foreach ($urls as $url) {
     $hash = hash('sha512', $url['url']);
     $images[] = PROXY_IMAGES_DIR . $hash;
@@ -29,7 +35,7 @@ $set = [
 ];
 $fluent->update('images')
        ->set($set)
-       ->where('id>0')
+       ->where('id > 0')
        ->execute();
 
 echo "$i altered images removed

@@ -1,15 +1,15 @@
 var count = 0;
 $('#url').change(function () {
     var el = document.querySelector('#url');
-    get_imdb(el.dataset.csrf, el.value);
+    get_imdb(el.value);
 });
 
 if ($('#imdb').length) {
     var el = document.querySelector('#imdb');
-    get_imdb(el.dataset.csrf, el.dataset.imdbid, el.dataset.tid, el.dataset.poster);
+    get_imdb(el.dataset.imdbid, el.dataset.tid, el.dataset.poster);
 }
 
-function get_imdb(csrf, url, tid, image) {
+function get_imdb(url, tid, image) {
     count++;
     var el = document.querySelector('#imdb_outer');
     var e = document.createElement('div');
@@ -24,15 +24,12 @@ function get_imdb(csrf, url, tid, image) {
         timeout: 7500,
         context: this,
         data: {
-            csrf: csrf,
             url: url,
             tid: tid,
             image: image
         },
         success: function (data) {
-            if (data['fail'] === 'csrf') {
-                e.innerHTML = 'CSRF Failure, try refreshing the page';
-            } else if (data['fail'] === 'invalid') {
+           if (data['fail'] === 'invalid') {
                 e.innerHTML = 'IMDb Lookup Failed. Please check that your imdb link is correct.';
             } else {
                 e.remove();
@@ -47,7 +44,7 @@ function get_imdb(csrf, url, tid, image) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
                 } else {
                     e.remove();
-                    get_imdb(csrf, url, tid, image);
+                    get_imdb(url, tid, image);
                 }
             } else {
                 e.innerHTML = 'Another *unknown* was returned';

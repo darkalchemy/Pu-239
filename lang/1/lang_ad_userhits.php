@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'userhits_stderr' => 'No views',
     'userhits_stderr1' => 'This user has had no profile views yet.',

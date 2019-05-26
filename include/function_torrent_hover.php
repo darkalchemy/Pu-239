@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Image;
+use Pu239\Torrent;
+
 /**
  * @param      $text
  * @param      $id
@@ -18,28 +25,22 @@
  * @param      $genre
  * @param bool $icons
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
 {
-    global $site_config, $lang, $fluent, $subs, $cache;
+    global $container, $site_config, $lang;
 
     $is_year = $released = $rated = $plot = $show_subs = $show_icons = '';
     if (!empty($imdb_id)) {
-        $background = find_images($imdb_id, $type = 'background');
-        $plot = $cache->get('imdb_plot_' . $imdb_id);
-        if ($plot === false || is_null($plot)) {
-            $plot = $fluent->from('imdb_info')
-                           ->select(null)
-                           ->select('plot')
-                           ->where('imdb_id=?', str_replace('tt', '', $imdb_id))
-                           ->fetch('plot');
-
-            $cache->set('imdb_plot_' . $imdb_id, $plot, 86400);
-        }
-
+        $image_stuffs = $container->get(Image::class);
+        $background = $image_stuffs->find_images($imdb_id, $type = 'background');
+        $torrent = $container->get(Torrent::class);
+        $plot = $torrent->get_plot($imdb_id);
         if (!empty($plot)) {
             $stripped = strip_tags($plot);
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
@@ -68,35 +69,37 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <span class='size_4 has-text-primary has-text-weight-bold'>Rating:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
-                                                        <span class='level-left'>
+                                                        <div class='level-left'>
                                                             <div class='right5'>$rating</div>
                                                             <div class='star-ratings-css'>
                                                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                                             </div>
-                                                        </span>
+                                                        </div>
                                                     </div>";
     }
     if (!empty($year)) {
         $is_year = " ($year)";
     }
     if (!empty($subtitles)) {
-        require_once CACHE_DIR . 'subs.php';
-        $subs_array = explode(',', $subtitles);
-        foreach ($subs_array as $k => $sid) {
+        $subs = $container->get('subtitles');
+        $subtitles = explode('|', $subtitles);
+        $Subs = [];
+        foreach ($subtitles as $k => $subname) {
             foreach ($subs as $sub) {
-                if ($sub['id'] == $sid) {
-                    $Subs[] = "<img src='{$sub['pic']}' class='tooltipper icon' width='16px' alt='{$sub['name']}' title='{$sub['name']}'>";
+                if (strtolower($sub['name']) === strtolower($subname)) {
+                    $Subs[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . "'>";
                 }
             }
         }
+
         if (!empty($Subs)) {
             $show_subs = "
                                                     <div class='column padding5 is-4'>
                                                         <span class='size_4 has-text-primary has-text-weight-bold'>Subtitles:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
-                                                        <span class='size_4'>" . implode(' ', $Subs) . '</span>
+                                                        <span class='size_4 right10'>" . implode(' ', $Subs) . '</span>
                                                     </div>';
         }
     }
@@ -110,7 +113,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                                <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
+                                <div class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>
@@ -137,7 +140,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_added']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8'>" . get_date($added, 'DATE', 0, 1) . "</div>
+                                                                <div class='column padding5 is-8'>" . get_date((int) $added, 'DATE', 0, 1) . "</div>
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_size']}</span>
                                                                 </div>
@@ -161,7 +164,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                             </div>
                                         </div>
                                     </div>
-                                </span>
+                                </div>
                             </a>";
 
     return $content;
@@ -185,19 +188,24 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
  * @param      $genre
  * @param bool $icons
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
 {
-    global $site_config, $image, $cat, $times_completed;
+    global $site_config, $times_completed, $cat;
 
     $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
     $content = "
                     <tr>
                         <td class='has-text-centered'>$caticon</td>
-                        <td>" . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons) . "
+                        <td>
+                            <a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>
+                                " . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons) . "
+                            </a>
                         <td class='has-text-centered'>{$times_completed}</td>
                         <td class='has-text-centered'>{$seeders}</td>
                         <td class='has-text-centered'>{$leechers}</td>

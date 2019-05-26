@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\User;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
-global $site_config, $fluent, $session, $user_stuffs, $cache;
-
 header('content-type: application/json');
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    echo json_encode(['show_in_navbar' => 'csrf']);
-    die();
-}
+global $container;
 
-$current_user = $session->get('userID');
-$class = $user_stuffs->get_item('class', $current_user);
+$auth = $container->get(Auth::class);
+$current_user = $auth->getUserId();
+if (!empty($current_user)) {
+    $user_stuffs = $container->get(User::class);
+    $class = $user_stuffs->get_item('class', $current_user);
+}
 if (empty($current_user) || $class < UC_STAFF) {
     echo json_encode(['show_in_navbar' => 'class']);
     die();
@@ -25,12 +31,14 @@ $show = $_POST['show'] == 0 ? 1 : 0;
 $set = [
     'navbar' => $show,
 ];
+$fluent = $container->get(Database::class);
 $result = $fluent->update('staffpanel')
                  ->set($set)
-                 ->where('id=?', $_POST['id'])
+                 ->where('id = ?', $_POST['id'])
                  ->execute();
 
 if ($result) {
+    $cache = $container->get(Cache::class);
     $cache->delete('staff_panels_' . $class);
     $data['show_in_navbar'] = $show;
     echo json_encode($data);

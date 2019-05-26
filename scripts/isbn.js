@@ -1,15 +1,15 @@
 var count = 0;
 $('#isbn').change(function () {
     var el = document.querySelector('#isbn');
-    get_book(el.dataset.csrf, el.value, '');
+    get_book(el.value, '');
 });
 
 if ($('#book').length) {
     var el = document.querySelector('#book');
-    get_isbn(el.dataset.csrf, el.dataset.isbn, el.dataset.name, el.dataset.tid);
+    get_isbn(el.dataset.isbn, el.dataset.name, el.dataset.tid);
 }
 
-function get_isbn(csrf, isbn, name, tid) {
+function get_isbn(isbn, name, tid) {
     count++;
     var el = document.querySelector('#isbn_outer');
     var e = document.createElement('div');

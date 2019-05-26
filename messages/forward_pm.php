@@ -1,21 +1,27 @@
 <?php
 
-require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $message_stuffs, $user_stuffs, $fluent, $site_config;
+declare(strict_types = 1);
 
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+require_once INCL_DIR . 'function_html.php';
+
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\User;
+
+global $container, $CURUSER, $site_config;
 
 flood_limit('messages');
+$message_stuffs = $container->get(Message::class);
 $message = $message_stuffs->get_by_id($pm_id);
+$fluent = $container->get(Database::class);
 if (empty($message)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_notfound']);
 }
 if ($message['receiver'] == $CURUSER['id'] && $message['sender'] == $CURUSER['id']) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_gentleman']);
 }
-
-$to_user = $user_stuffs->getUserFromId($user_stuffs->getUserIdFromName($_POST['to']));
+$user_stuffs = $container->get(User::class);
+$to_user = $user_stuffs->getUserFromId((int) $user_stuffs->getUserIdFromName((string) $_POST['to']));
 if (empty($to_user)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
 }
@@ -38,8 +44,8 @@ if ($CURUSER['class'] < UC_STAFF) {
     $blocked = $fluent->from('blocks')
                       ->select(null)
                       ->select('id')
-                      ->where('userid=?', $to_user['id'])
-                      ->where('blockid=?', $CURUSER['id'])
+                      ->where('userid = ?', $to_user['id'])
+                      ->where('blockid = ?', $CURUSER['id'])
                       ->fetch();
     if (!$blocked) {
         stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_blocked']);
@@ -48,8 +54,8 @@ if ($CURUSER['class'] < UC_STAFF) {
         $friend = $fluent->from('friends')
                          ->select(null)
                          ->select('id')
-                         ->where('userid=?', $to_user['id'])
-                         ->where('friendid=?', $CURUSER['id'])
+                         ->where('userid = ?', $to_user['id'])
+                         ->where('friendid = ?', $CURUSER['id'])
                          ->fetch();
         if (!$friend) {
             stderr($lang['pm_forwardpm_refused'], $lang['pm_forwardpm_accept']);
@@ -58,7 +64,7 @@ if ($CURUSER['class'] < UC_STAFF) {
 }
 
 $subject = htmlsafechars($_POST['subject']);
-$first_from = (valid_username($_POST['first_from']) ? htmlsafechars($_POST['first_from']) : '');
+$first_from = valid_username($_POST['first_from']) ? htmlsafechars($_POST['first_from']) : '';
 $msg = "\n\n" . $_POST['body'] . "\n\n{$lang['pm_forwardpm_0']}[b]" . $first_from . "{$lang['pm_forwardpm_1']}[/b] \"" . htmlsafechars($message['subject']) . "\"{$lang['pm_forwardpm_2']}" . $message['msg'] . "\n";
 
 $msgs_buffer[] = [
@@ -91,16 +97,7 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
 </body>
 </html>";
 
-    $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-         ->addTo($to_user['email'])
-         ->setReturnPath($site_config['site']['email'])
-         ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-         ->setHtmlBody($body);
-
-    $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site']['email']}";
-    $mailer->send($mail);
+    send_mail($to_user['email'], "{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}", $body, strip_tags($body));
 }
 header('Location: messages.php?action=view_mailbox&forwarded=1');
 die();

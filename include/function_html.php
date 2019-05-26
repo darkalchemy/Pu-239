@@ -1,7 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use Intervention\Image\Image;
-use Spatie\Image\Exceptions\InvalidManipulation;
+use PHPMailer\PHPMailer\PHPMailer;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\ImageProxy;
 
 /**
  * @return string
@@ -252,7 +259,7 @@ function write_css($data, $template)
 function write_classes($data, $classes)
 {
     $html = file_get_contents(CHAT_DIR . 'js/config.js');
-    $classes = "bbCodeTags: [\n        'b',\n        'i',\n        'u',\n        'quote',\n        'code',\n        'color',\n        'url',\n        'img',\n        'chatbot',\n        'level',\n        'updown',\n        'video'," . "\n        '" . implode("',\n        '", $classes) . "'\n    ],";
+    $classes = "bbCodeTags: [\n        'b',\n        'i',\n        'u',\n        'quote',\n        'code',\n        'color',\n        'url',\n        'img',\n        'chatbot',\n        'center',\n        'updown',\n        'video',\n        'size_7',\n        'size_6',\n        'size_5',\n        'size_4',\n        'size_3',\n        'size_2',\n        'size_1',\n        '" . implode("',\n        '", $classes) . "'\n    ],";
     $html = preg_replace('/(bbCodeTags:\s+\[.*?\],)/s', $classes, $html);
     file_put_contents(CHAT_DIR . 'js/config.js', $html);
 
@@ -279,15 +286,18 @@ ajaxChat.getRoleClass = function(roleID) {
 /**
  * @param $template
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function write_class_files($template)
 {
-    global $site_config, $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $classes = $js_classes = $config_classes = $data = [];
     $t = 'define(';
-    $configfile = "<?php\n\n";
+    $configfile = "<?php\n\ndeclare(strict_types = 1);\n\n";
     $res = $fluent->from('class_config')
                   ->orderBy('value ASC')
                   ->where('template = ?', $template);
@@ -310,10 +320,15 @@ function write_class_files($template)
     file_put_contents(CONFIG_DIR . 'classes.php', $configfile);
 }
 
+/**
+ * @throws DependencyException
+ * @throws NotFoundException
+ */
 function clear_image_cache()
 {
-    global $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $cache->deleteMulti([
         'latest_torrents_',
         'top_torrents_',
@@ -331,16 +346,20 @@ function clear_image_cache()
  * @param int $size
  *
  * @return bool|Image|mixed|string
+ * @throws NotFoundException
+ *
+ * @throws DependencyException
  */
-function placeholder_image($size = 10)
+function placeholder_image(int $size = 10)
 {
-    global $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $image = $cache->get('placeholder_image_' . $size);
     if ($image === false || is_null($image)) {
-        $image_proxy = new Pu239\ImageProxy();
+        $image_proxy = new ImageProxy();
         $image = $image_proxy->create_image($size, $size, '#7d7e7d');
-        $image = 'data:image/jpeg;base64, ' . base64_encode($image);
+        $image = 'data:image/jpeg;charset=utf-8;base64,' . base64_encode((string) $image);
         $cache->set('placeholder_image_' . $size, $image, 0);
     }
 
@@ -351,20 +370,13 @@ function placeholder_image($size = 10)
  * @param $url
  *
  * @return mixed|string|null
- *
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
  */
 function validate_url($url)
 {
-    require_once INCL_DIR . 'function_bbcode.php';
-
-    $url = format_comment_no_bbcode($url);
-    $url = filter_var($url, FILTER_SANITIZE_URL);
+    $url = filter_var(strip_tags($url), FILTER_SANITIZE_URL);
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
         return null;
     }
-
     if (preg_match("/^https?:\/\/$/i", $url) || preg_match('/[&;]/', $url) || preg_match('#javascript:#is', $url) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $url)) {
         return null;
     }
@@ -380,7 +392,7 @@ function doc_head()
     global $site_config;
 
     return "<!doctype html>
-<html>
+<html lang='en'>
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -388,4 +400,62 @@ function doc_head()
     <meta property='og:url' content='{$site_config['paths']['baseurl']}'>
     <meta property='og:type' content='website'>
     <meta property='og:description' content='{$site_config['session']['domain']} - {$site_config['site']['name']}'>";
+}
+
+/**
+ * @param $email
+ * @param $subject
+ * @param $html
+ * @param $plain
+ *
+ * @return bool
+ * @throws NotFoundException
+ * @throws \PHPMailer\PHPMailer\Exception
+ *
+ * @throws DependencyException
+ */
+function send_mail($email, $subject, $html, $plain)
+{
+    global $container, $site_config;
+
+    $mail = $container->get(PHPMailer::class);
+    if ($mail) {
+        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}");
+        $mail->addAddress($email);
+        $mail->addReplyTo($site_config['site']['email']);
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $html;
+        $mail->AltBody = $plain;
+        if ($mail->send()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * @param int    $id
+ * @param string $code
+ *
+ * @return mixed
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function validate_invite(int $id, string $code)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $email = $fluent->from('invite_codes')
+                    ->select(null)
+                    ->select('email')
+                    ->where('id = ?', $id)
+                    ->where('code = ?', $code)
+                    ->where('status = "Pending"')
+                    ->fetch('email');
+
+    return $email;
 }

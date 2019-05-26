@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
-global $CURUSER, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
+global $container, $CURUSER, $site_config;
+
 $stdfoot = [
     'js' => [
         get_file_name('bookmarks_js'),
@@ -16,15 +23,21 @@ $stdfoot = [
 ];
 
 $htmlout = '';
+
 /**
  * @param        $res
+ * @param        $userid
  * @param string $variant
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
 function bookmarktable($res, $userid, $variant = 'index')
 {
-    global $site_config, $lang, $session, $fluent;
+    global $container, $site_config, $lang;
 
     $htmlout = "
     <div class='has-text-centered bottom20'>
@@ -72,6 +85,8 @@ function bookmarktable($res, $userid, $variant = 'index')
             'image' => $value['image'],
         ];
     }
+    $session = $container->get(Session::class);
+    $fluent = $container->get(Database::class);
     foreach ($res as $row) {
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
@@ -107,7 +122,7 @@ function bookmarktable($res, $userid, $variant = 'index')
                         </td>";
         $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
+                            <span data-tid='{$id}' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
                                 <i class='icon-bookmark-empty icon has-text-danger'></i>
                             </span>
                         </td>" : '');
@@ -118,20 +133,20 @@ function bookmarktable($res, $userid, $variant = 'index')
                             </a>
                         </td>" : '');
         $bms = $fluent->from('bookmarks')
-                      ->where('torrentid=?', $id)
-                      ->where('userid=?', $userid)
-                      ->fetch();
+            ->where('torrentid = ?', $id)
+            ->where('userid = ?', $userid)
+            ->fetch();
         if ($bms['private'] === 'yes') {
             $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_public2']}'>
+                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_public2']}'>
                                 <i class='icon-key icon has-text-success'></i>
                             </span>
                         </td>" : '');
         } elseif ($bms['private'] === 'no') {
             $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_private2']}'>
+                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_private2']}'>
                                 <i class='icon-users icon has-text-danger'></i>
                             </span>
                         </td>" : '');
@@ -173,7 +188,7 @@ function bookmarktable($res, $userid, $variant = 'index')
             }
         }
         $body .= "
-                        <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>
+                        <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>
                         <td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . '</td>';
         if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
@@ -213,7 +228,7 @@ function bookmarktable($res, $userid, $variant = 'index')
         }
         if ($variant === 'index') {
             $body .= "
-                        <td class='has-text-centered'>" . (isset($row['owner']) ? format_username($row['owner']) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . '</td>';
+                        <td class='has-text-centered'>" . (isset($row['owner']) ? format_username((int) $row['owner']) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . '</td>';
         }
         $body .= '
                     </tr>';
@@ -240,11 +255,12 @@ $htmlout .= '
         </div>
     </div>';
 
+$fluent = $container->get(Database::class);
 $count = $fluent->from('bookmarks')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('userid=?', $userid)
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('userid = ?', $userid)
+    ->fetch('count');
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (empty($torrentsperpage)) {
     $torrentsperpage = 25;
@@ -253,29 +269,30 @@ if (empty($torrentsperpage)) {
 if ($count) {
     $pager = pager($torrentsperpage, $count, 'bookmarks.php?&amp;');
     $bookmarks = $fluent->from('bookmarks AS b')
-                        ->select(null)
-                        ->select('b.id as bookmarkid')
-                        ->select('t.owner')
-                        ->select('t.id')
-                        ->select('t.name')
-                        ->select('t.comments')
-                        ->select('t.leechers')
-                        ->select('t.seeders')
-                        ->select('t.save_as')
-                        ->select('t.numfiles')
-                        ->select('t.added')
-                        ->select('t.filename')
-                        ->select('t.size')
-                        ->select('t.views')
-                        ->select('t.visible')
-                        ->select('t.hits')
-                        ->select('t.times_completed')
-                        ->select('t.category')
-                        ->innerJoin('torrents AS t ON b.torrentid=t.id')
-                        ->where('b.userid=?', $userid)
-                        ->orderBy('t.id DESC')
-                        ->limit($pager['pdo'])
-                        ->fetchAll();
+        ->select(null)
+        ->select('b.id as bookmarkid')
+        ->select('t.owner')
+        ->select('t.id')
+        ->select('t.name')
+        ->select('t.comments')
+        ->select('t.leechers')
+        ->select('t.seeders')
+        ->select('t.save_as')
+        ->select('t.numfiles')
+        ->select('t.added')
+        ->select('t.filename')
+        ->select('t.size')
+        ->select('t.views')
+        ->select('t.visible')
+        ->select('t.hits')
+        ->select('t.times_completed')
+        ->select('t.category')
+        ->innerJoin('torrents AS t ON b.torrentid=t.id')
+        ->where('b.userid = ?', $userid)
+        ->orderBy('t.id DESC')
+        ->limit($pager['pdo']['limit'])
+        ->offset($pager['pdo']['offset'])
+        ->fetchAll();
 
     $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
     $htmlout .= bookmarktable($bookmarks, $userid, 'index');

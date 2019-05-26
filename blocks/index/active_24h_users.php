@@ -1,10 +1,17 @@
 <?php
 
-global $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 $active24 = $cache->get('last24_users_');
 if ($active24 === false || is_null($active24)) {
     $list = [];
+    $fluent = $container->get(Database::class);
     $record = $fluent->from('avps')
                      ->where('arg = ?', 'last24')
                      ->fetch();
@@ -13,7 +20,7 @@ if ($active24 === false || is_null($active24)) {
     $query = $fluent->from('users')
                     ->select(null)
                     ->select('id')
-                    ->where('last_access>?', $dt)
+                    ->where('last_access > ?', $dt)
                     ->where('perms < ?', bt_options::PERMS_STEALTH)
                     ->where('id != 2')
                     ->orderBy('username ASC')
@@ -26,9 +33,9 @@ if ($active24 === false || is_null($active24)) {
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
-                $list[] = format_username($row['id'], true, true, false, true);
+                $list[] = format_username((int) $row['id'], true, true, false, true);
             } else {
-                $list[] = format_username($row['id']);
+                $list[] = format_username((int) $row['id']);
             }
         }
         $active24['activeusers24'] = implode('&nbsp;&nbsp;', $list);
@@ -38,7 +45,7 @@ if ($active24 === false || is_null($active24)) {
     $active24['totalonline24'] = number_format($count);
     $active24['last24'] = number_format($record['value_i']);
     $active24['ss24'] = $lang['gl_member'] . plural($count);
-    $active24['record'] = get_date($record['value_u'], '');
+    $active24['record'] = get_date((int) $record['value_u'], '');
     if ($count > $record['value_i']) {
         $set = [
             'value_s' => 0,

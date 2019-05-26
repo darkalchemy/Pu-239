@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -8,8 +16,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -23,6 +29,8 @@ $stdfoot = [
 ];
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
+
+global $CURUSER, $site_config;
 
 $maxbox = 100 * ($CURUSER['class'] + 1);
 $maxboxes = 5 * ($CURUSER['class'] + 1);
@@ -80,6 +88,10 @@ $top_links = '
         </ul>
     </div>';
 
+global $container;
+
+$cache = $container->get(Cache::class);
+$fluent = $container->get(Database::class);
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);
     sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -109,7 +121,7 @@ if (isset($_GET['show_pm_avatar'])) {
     $opt2 = $fluent->from('users')
                    ->select(null)
                    ->select('opt2')
-                   ->where('id=?', $CURUSER['id'])
+                   ->where('id = ?', $CURUSER['id'])
                    ->fetch('opt2');
 
     $cache->update_row('user_' . $CURUSER['id'], [
@@ -123,7 +135,7 @@ if (isset($_GET['show_pm_avatar'])) {
     }
     die();
 }
-
+$session = $container->get(Session::class);
 isset($_GET['deleted']) ? $session->set('is-success', $lang['pm_deleted']) : null;
 isset($_GET['avatar']) ? $session->set('is-success', $lang['pm_avatar']) : null;
 isset($_GET['pm']) ? $session->set('is-success', $lang['pm_changed']) : null;
@@ -137,7 +149,7 @@ isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved'])
 isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
 isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
 
-$mailbox_name = ($mailbox === $site_config['pm']['inbox'] ? $lang['pm_inbox'] : ($mailbox === $site_config['pm']['sent'] ? $lang['pm_sentbox'] : ($mailbox === $site_config['pm']['deleted'] ? $lang['pm_deleted'] : $lang['pm_drafts'])));
+$mailbox_name = ($mailbox === $site_config['pm']['inbox'] ? $lang['pm_inbox'] : ($mailbox === $site_config['pm']['sent'] ? $lang['pm_sentbox'] : ($mailbox === $site_config['pm']['deleted'] ? $lang['pm_deleted_box'] : $lang['pm_drafts'])));
 switch ($action) {
     case 'view_mailbox':
         require_once PM_DIR . 'view_mailbox.php';
@@ -195,16 +207,20 @@ switch ($action) {
 /**
  * @param int $box
  *
- * @return array|string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function get_all_boxes($box = 1)
 {
-    global $CURUSER, $site_config, $lang, $cache, $fluent;
+    global $container, $site_config, $lang, $CURUSER;
 
+    $cache = $container->get(Cache::class);
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
+        $fluent = $container->get(Database::class);
         $get_all_boxes = $fluent->from('pmboxes')
                                 ->select(null)
                                 ->select('boxnumber')
@@ -217,12 +233,12 @@ function get_all_boxes($box = 1)
     }
     $box = (int) $box;
     $boxes = "
-        <select name='boxx' class='right10'>
+        <select name='boxx' class='margin10'>
             <option value='10000'>{$lang['pm_search_move_to']}</option>" . ($box !== 1 ? "
             <option value='1'>{$lang['pm_inbox']}</option>" : '') . ($box !== -1 ? "
             <option value='-1'>{$lang['pm_sentbox']}</option>" : '') . ($box !== -2 ? "
             <option value='-2'>{$lang['pm_drafts']}</option>" : '') . ($box !== 0 ? "
-            <option value='0'>{$lang['pm_deleted']}</option>" : '');
+            <option value='0'>{$lang['pm_deleted_box']}</option>" : '');
     if (!empty($get_all_boxes)) {
         foreach ($get_all_boxes as $boxx) {
             $boxes .= $box === (int) $boxx['boxnumber'] ? '' : "
@@ -238,12 +254,16 @@ function get_all_boxes($box = 1)
 /**
  * @param $mailbox
  *
- * @return array|string
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return bool|mixed|string
  */
 function insertJumpTo($mailbox)
 {
-    global $CURUSER, $site_config, $lang, $cache;
+    global $container, $site_config, $lang, $CURUSER;
 
+    $cache = $container->get(Cache::class);
     $cache->delete('insertJumpTo_' . $CURUSER['id']);
     $insertJumpTo = $cache->get('insertJumpTo_' . $CURUSER['id']);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
@@ -251,19 +271,18 @@ function insertJumpTo($mailbox)
         $insertJumpTo = '
             <form action="messages.php" method="get" accept-charset="utf-8">
                 <input type="hidden" name="action" value="view_mailbox">
-                <label for="box">' . $lang['pm_jump_to'] . '
-                    <select name="box" onchange="location=this.options[this.selectedIndex].value;">
-                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
-                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted'] . '</option>';
+                <label for="box" class="right10">' . $lang['pm_jump_to'] . '</label>
+                <select name="box" onchange="location=this.options[this.selectedIndex].value;">
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted_box'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
-                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
         $insertJumpTo .= '
-                    </select>
-                </label>
+                </select>
             </form>';
         $cache->set('insertJumpTo_' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }

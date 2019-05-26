@@ -39,7 +39,7 @@
             document.getElementById('dateFormatSetting').value = ajaxChat.getSetting('dateFormat');
             document.getElementById('persistFontColorSetting').checked = ajaxChat.getSetting('persistFontColor');
             for (var i = 0; i < document.getElementById('audioVolumeSetting').options.length; i++) {
-                if (document.getElementById('audioVolumeSetting').options[i].value == ajaxChat.getSetting('audioVolume')) {
+                if (document.getElementById('audioVolumeSetting').options[i].value === ajaxChat.getSetting('audioVolume')) {
                     document.getElementById('audioVolumeSetting').options[i].selected = true;
                     break;
                 }
@@ -115,9 +115,6 @@
         <label for="languageSelection">[LANG]language[/LANG]:</label>
         <select id="languageSelection" onchange="ajaxChat.switchLanguage(this.value);">[LANGUAGE_OPTIONS/]</select>
     </div>
-    <!--[if lt IE 7]>
-    <div></div>
-    <![endif]-->
     <div id="mainPanelContainer">
         <div id="chatList"></div>
     </div>

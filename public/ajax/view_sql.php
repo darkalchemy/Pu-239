@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 check_user_status();
-global $CURUSER, $site_config, $session;
-
 if (empty($CURUSER) || $CURUSER['class'] < UC_MAX) {
     $session->set('is-warning', 'You do not have access to view that page');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
@@ -51,6 +51,7 @@ function adminer_object()
         public function __construct($plugins)
         {
             $this->plugins = $plugins;
+            parent::__construct($this->plugins);
         }
 
         /**
@@ -70,7 +71,7 @@ function adminer_object()
         {
             global $site_config;
 
-            return "{$site_config['database']['database']}";
+            return "{$site_config['db']['database']}";
         }
 
         /**
@@ -78,13 +79,13 @@ function adminer_object()
          */
         public function credentials()
         {
-            global $CURUSER, $site_config;
+            global $site_config, $CURUSER;
 
             if (in_array($CURUSER['id'], $site_config['adminer']['allowed_ids'])) {
                 return [
                     'localhost',
-                    $site_config['database']['username'],
-                    $site_config['database']['password'],
+                    $site_config['db']['username'],
+                    $site_config['db']['password'],
                 ];
             }
         }

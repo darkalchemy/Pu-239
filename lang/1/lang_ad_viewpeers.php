@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'wpeers_h2' => 'Site peers',
     'wpeers_there' => 'There is approx&#160;',

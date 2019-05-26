@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -12,10 +14,10 @@ $table = "
             <div class='portlet'>";
 while ($result = mysqli_fetch_assoc($res)) {
     $gamenum = (int) $result['gamenum'];
-    $ended = $result['ended'] >= 1 ? get_date($result['ended'], 'LONG') : 0;
-    $started = $result['started'] >= 1 ? get_date($result['started'], 'LONG') : 0;
+    $ended = $result['ended'] >= 1 ? get_date((int) $result['ended'], 'LONG') : 0;
+    $started = $result['started'] >= 1 ? get_date((int) $result['started'], 'LONG') : 0;
     $sql = 'SELECT t.gamenum, t.user_id, COUNT(t.correct) AS correct,
-                (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id=t.user_id AND gamenum = ' . sqlesc($gamenum) . ') AS incorrect,
+                (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id AND gamenum = ' . sqlesc($gamenum) . ') AS incorrect,
                 u.username, u.modcomment
             FROM triviausers AS t
             INNER JOIN users AS u ON u.id=t.user_id
@@ -31,9 +33,9 @@ while ($result = mysqli_fetch_assoc($res)) {
         $table .= "
                 <div class='bg-02 has-text-centered top20 round5'>
                     <div class='padtop20'>
-                        <h3>Game #{$gamenum} $date</h3>
+                        <h1>Game #{$gamenum} $date</h1>
                     </div>
-                    <table class='table table-bordered table-striped bottom20'>
+                    <table class='table table-bordered table-striped'>
                         <thead>
                             <tr>
                                 <th>Username</th>
@@ -45,10 +47,11 @@ while ($result = mysqli_fetch_assoc($res)) {
                         <tbody>";
 
         while ($player = mysqli_fetch_assoc($query)) {
+            $correct = $incorrect = 0;
             extract($player);
             $table .= '
                         <tr>
-                            <td>' . format_username($user_id) . '</td>
+                            <td>' . format_username((int) $user_id) . '</td>
                             <td>' . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                             <td>$correct</td>
                             <td>$incorrect</td>

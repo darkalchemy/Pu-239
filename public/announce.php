@@ -1,16 +1,24 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
-require_once INCL_DIR . 'function_announce.php';
-global $site_config, $cache, $ip_stuffs, $peer_stuffs, $snatched_stuffs, $torrent_stuffs, $user_stuffs;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\IP;
+use Pu239\Peer;
+use Pu239\Snatched;
+use Pu239\Torrent;
+use Pu239\User;
+
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
+require_once INCL_DIR . 'function_announce.php';
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 
 $dt = TIME_NOW;
 $info_hash = $peer_id = $compact = $no_peer_id = '';
-$torrent_updateset = $snatch_updateset = $user_updateset = [];
+$torrent_updateset = $snatched_values = $user_updateset = [];
+global $container, $site_config;
 $ratio_free = $site_config['site']['ratio_free'];
 extract($_GET);
 unset($_GET);
@@ -19,24 +27,24 @@ if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
 }
 
 foreach ([
-             'torrent_pass',
-             'info_hash',
-             'peer_id',
-             'port',
-             'downloaded',
-             'uploaded',
-             'left',
-             'compact',
-         ] as $x) {
+    'torrent_pass',
+    'info_hash',
+    'peer_id',
+    'port',
+    'downloaded',
+    'uploaded',
+    'left',
+    'compact',
+] as $x) {
     if (!isset(${$x})) {
         err("Missing key: $x");
     }
 }
 
 foreach ([
-             'info_hash',
-             'peer_id',
-         ] as $x) {
+    'info_hash',
+    'peer_id',
+] as $x) {
     if (strlen(${$x}) != 20) {
         err("Invalid $x (" . strlen(${$x}) . ' - ' . urlencode(${$x}) . ')');
     }
@@ -49,10 +57,10 @@ $uploaded = (int) $uploaded;
 $left = (int) $left;
 $rsize = 30;
 foreach ([
-             'num want',
-             'numwant',
-             'num_want',
-         ] as $x) {
+    'num want',
+    'numwant',
+    'num_want',
+] as $x) {
     if (isset(${$x})) {
         $rsize = (int) ${$x};
         break;
@@ -74,11 +82,14 @@ if (!isset($event)) {
     $event = '';
 }
 $seeder = $left === 0 ? 'yes' : 'no';
+$torrent_stuffs = $container->get(Torrent::class);
 $torrent = $torrent_stuffs->get_torrent_from_hash($info_hash);
 if (!$torrent) {
     err('torrent not registered with this tracker');
 }
+$user_stuffs = $container->get(User::class);
 $user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
+$peer_stuffs = $container->get(Peer::class);
 if (!$user) {
     err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
 } elseif ($user['enabled'] === 'no') {
@@ -94,13 +105,14 @@ if (!$user) {
     if ($count > 3) {
         err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
     }
-} elseif ($user['class'] === 0 && $seeder === 'no' && ($user['uploaded'] - $user['downloaded']) < $torrent['size']) {
+} elseif ($user['class'] === 0 && $seeder === 'no' && $torrent['size'] > ($user['uploaded'] - $user['downloaded'])) {
     err('You do not have enough upload credit to download this torrent.');
 }
 
 $userid = $user['id'];
 $connectable = 'yes';
 $conn_ttl = 300;
+$cache = $container->get(Cache::class);
 if (portblacklisted($port)) {
     err("Port $port is blacklisted.");
 } elseif ($site_config['tracker']['connectable_check']) {
@@ -118,11 +130,11 @@ if (portblacklisted($port)) {
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
-if ($connectable === 'no' && $site_config['tracker']['require_connectable']) {
+if ($site_config['tracker']['require_connectable'] && $connectable === 'no') {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 if ($site_config['site']['ip_logging']) {
-    $no_log_ip = ($user['perms'] & bt_options::PERMS_NO_IP);
+    $no_log_ip = $user['perms'] & bt_options::PERMS_NO_IP;
     if ($no_log_ip) {
         $connectable = 'no';
         $ip = '127.0.0.1';
@@ -132,12 +144,13 @@ if ($site_config['site']['ip_logging']) {
             'ip' => $ip,
             'userid' => $userid,
             'type' => 'announce',
-            'lastannounce' => $dt,
+            'last_announce' => $dt,
         ];
         $update = [
-            'lastannounce' => $dt,
+            'last_announce' => $dt,
         ];
-        $ip_stuffs->insert_update($values, $update, $userid);
+        $ip_stuffs = $container->get(IP::class);
+        $ip_stuffs->insert($values, $update, $userid);
         unset($values, $update);
     }
 }
@@ -249,18 +262,26 @@ foreach ($agentarray as $bannedclient) {
     }
 }
 $announce_wait = $site_config['tracker']['min_interval'];
-
 if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 if (!isset($self)) {
     $count = $peer_stuffs->get_torrent_count($torrent['id'], $torrent_pass, false);
-    if ($count > 3) {
+    if ($count > 1) {
         err('Connection limit exceeded!');
     }
 } else {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
+    if ($user['highspeed'] === 'no' && $upthis > 103872) {
+        $diff = $dt - $self['ts'];
+        $rate = $upthis / ($diff + 1);
+        $last_up = (int) $user['uploaded'];
+        //=== about 5 MB/s
+        if ($rate > 503872) {
+            auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrent['id'], $agent, $realip, $last_up);
+        }
+    }
     if ($happy_multiplier) {
         $upthis = $upthis * $happy_multiplier;
         $downthis = 0;
@@ -285,7 +306,6 @@ if (!isset($self)) {
         if ($torrent['silver'] != 0 || $issilver) {
             $downthis = $downthis / 2;
         }
-
         $crazyhour_on = ($site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false);
         if ($downthis > 0) {
             if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
@@ -300,38 +320,22 @@ if (!isset($self)) {
             }
         }
     }
-    if ($user['highspeed'] === 'no' && $upthis > 103872) {
-        $diff = ($dt - $self['ts']);
-        $rate = ($upthis / ($diff + 1));
-        $last_up = (int) $user['uploaded'];
-        //=== about 5 MB/s
-        if ($rate > 503872) {
-            auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrent['id'], $agent, $realip, $last_up);
-        }
-    }
 }
-$snatched = $snatched_stuffs->get_snatched($userid, $torrent['id']);
-if (empty($snatched)) {
-    $values = [
-        'torrentid' => $torrent['id'],
-        'userid' => $userid,
-        'uploaded' => $uploaded,
-        'downloaded' => $ratio_free ? 0 : $downloaded,
-        'to_go' => $left,
-        'start_date' => $dt,
-        'last_action' => $dt,
-        'seeder' => $seeder,
-        'timesann' => 1,
-    ];
-    if ($seeder === 'no') {
-        $snatched_stuffs->insert($values);
-    } else {
-        $values['seeder'] = 'yes';
-        $values['complete_date'] = $dt;
-        $values['finished'] = 'yes';
-        $snatched_stuffs->insert($values);
-    }
-    unset($values);
+$snatches = $container->get(Snatched::class);
+$snatched = $snatches->get_snatched($userid, $torrent['id']);
+file_put_contents('/var/log/nginx/announce.log', 'snatched: ' . json_encode($snatched) . PHP_EOL, FILE_APPEND);
+$snatched_values['torrentid'] = $torrent['id'];
+$snatched_values['userid'] = $userid;
+$snatched_values['uploaded'] = $uploaded;
+$snatched_values['downloaded'] = $ratio_free ? 0 : $downloaded;
+$snatched_values['to_go'] = $left;
+$snatched_values['start_date'] = $dt;
+$snatched_values['last_action'] = $dt;
+$snatched_values['seeder'] = $seeder;
+$snatched_values['timesann'] = 1;
+if ($seeder === 'yes') {
+    $snatched_values['complete_date'] = $dt;
+    $snatched_values['finished'] = 'yes';
 }
 $peer_deleted = false;
 if ($event === 'stopped') {
@@ -343,58 +347,6 @@ if ($event === 'stopped') {
 if (isset($self) && $event === 'stopped') {
     $seeder = 'no';
     $self['announcetime'] = $self['announcetime'] > 0 ? $self['announcetime'] : 1;
-
-    if (($snatched['uploaded'] + $upthis) < ($snatched['downloaded'] + $downthis) && $snatched['finished'] === 'yes') {
-        $HnR_time_seeded = ($snatched['seedtime'] + $self['announcetime']);
-        switch (true) {
-            case $user['class'] <= $site_config['hnr_config']['firstclass']:
-                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
-                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
-                break;
-
-            case $user['class'] < $site_config['hnr_config']['secondclass']:
-                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
-                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
-                break;
-
-            case $user['class'] >= $site_config['hnr_config']['thirdclass']:
-                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
-                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
-                break;
-
-            default:
-                $days_3 = 0;
-                $days_14 = 0;
-                $days_over_14 = 0;
-        }
-        switch (true) {
-            case ($snatched['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['torrentage1'] * 86400:
-                $minus_ratio = ($days_3 - $HnR_time_seeded);
-                break;
-
-            case ($snatched['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['torrentage2'] * 86400:
-                $minus_ratio = ($days_14 - $HnR_time_seeded);
-                break;
-
-            case ($snatched['start_snatch'] - $torrent['ts']) >= $site_config['hnr_config']['torrentage3'] * 86400:
-                $minus_ratio = ($days_over_14 - $HnR_time_seeded);
-                break;
-
-            default:
-                $minus_ratio = 0;
-        }
-        if ($site_config['hnr_config']['hnr_online'] == 1 && $minus_ratio > 0 && ($snatched['uploaded'] + $upthis) < ($snatched['downloaded'] + $downthis)) {
-            $hit_and_run = $dt;
-            $seeder = 'no';
-        } else {
-            $hit_and_run = 0;
-        }
-    } else {
-        $hit_and_run = 0;
-    }
     if ($peer_deleted) {
         if ($self['seeder'] === 'yes') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], -1, 0, 0);
@@ -402,27 +354,26 @@ if (isset($self) && $event === 'stopped') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, -1, 0);
         }
         if (!empty($snatched)) {
-            $snatch_updateset['uploaded'] = $snatched['uploaded'] + $upthis;
-            $snatch_updateset['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
-            $snatch_updateset['to_go'] = $left;
-            $snatch_updateset['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
-            $snatch_updateset['downspeed'] = $downthis > 0 ? $downthis / $self['announcetime'] : 0;
-            if ($self['seeder'] == 'yes') {
-                $snatch_updateset['seedtime'] = $snatched['seedtime'] + $self['announcetime'];
+            $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
+            $snatched_values['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
+            $snatched_values['to_go'] = $left;
+            $snatched_values['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
+            $snatched_values['downspeed'] = $downthis > 0 ? $downthis / $self['announcetime'] : 0;
+            if ($self['seeder'] === 'yes') {
+                $snatched_values['seedtime'] = $snatched['seedtime'] + $self['announcetime'];
             } else {
-                $snatch_updateset['leechtime'] = $snatched['leechtime'] = $self['announcetime'];
+                $snatched_values['leechtime'] = $snatched['leechtime'] = $self['announcetime'];
             }
-            $snatch_updateset['last_action'] = $dt;
-            $snatch_updateset['seeder'] = $seeder;
-            $snatch_updateset['hit_and_run'] = $hit_and_run;
+            $snatched_values['last_action'] = $dt;
+            $snatched_values['seeder'] = $seeder;
         }
     }
 } elseif (isset($self)) {
     $set = [];
     if ($event === 'completed') {
         if (!empty($snatched)) {
-            $snatch_updateset['complete_date'] = $dt;
-            $snatch_updateset['finished'] = 'yes';
+            $snatched_values['complete_date'] = $dt;
+            $snatched_values['finished'] = 'yes';
         }
         $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1;
         $set = [
@@ -460,19 +411,19 @@ if (isset($self) && $event === 'stopped') {
             }
         }
         if (!empty($snatched)) {
-            $snatch_updateset['uploaded'] = $snatched['uploaded'] + $upthis;
-            $snatch_updateset['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
-            $snatch_updateset['to_go'] = $left;
-            $snatch_updateset['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
-            $snatch_updateset['downspeed'] = $downthis > 0 && $self['announcetime'] > 0 ? $downthis / $self['announcetime'] : 0;
-            if ($self['seeder'] == 'yes') {
-                $snatch_updateset['seedtime'] = $snatched['seedtime'] + $self['announcetime'];
+            $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
+            $snatched_values['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
+            $snatched_values['to_go'] = $left;
+            $snatched_values['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
+            $snatched_values['downspeed'] = $downthis > 0 && $self['announcetime'] > 0 ? $downthis / $self['announcetime'] : 0;
+            if ($self['seeder'] === 'yes') {
+                $snatched_values['seedtime'] = $snatched['seedtime'] + $self['announcetime'];
             } else {
-                $snatch_updateset['leechtime'] = $snatched['leechtime'] + $self['announcetime'];
+                $snatched_values['leechtime'] = $snatched['leechtime'] + $self['announcetime'];
             }
-            $snatch_updateset['last_action'] = $dt;
-            $snatch_updateset['seeder'] = $seeder;
-            $snatch_updateset['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
+            $snatched_values['last_action'] = $dt;
+            $snatched_values['seeder'] = $seeder;
+            $snatched_values['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
         }
     }
 } else {
@@ -513,12 +464,11 @@ if (isset($self) && $event === 'stopped') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, 1, 0);
         }
         if (!empty($snatched)) {
-            $snatch_updateset['to_go'] = $left;
-            $snatch_updateset['last_action'] = $dt;
-            $snatch_updateset['seeder'] = $seeder;
-            $snatch_updateset['hit_and_run'] = 0;
-            $snatch_updateset['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
-            $snatch_updateset['mark_of_cain'] = 'no';
+            $snatched_values['to_go'] = $left;
+            $snatched_values['last_action'] = $dt;
+            $snatched_values['seeder'] = $seeder;
+            $snatched_values['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
+            $snatched_values['mark_of_cain'] = 'no';
         }
     }
     $cache->delete('peers_' . $userid);
@@ -539,8 +489,9 @@ if ($seeder === 'yes') {
 if (!empty($torrent_updateset)) {
     $torrent_stuffs->update($torrent_updateset, $torrent['id']);
 }
-if (!empty($snatch_updateset)) {
-    $snatched_stuffs->update($snatch_updateset, $torrent['id'], $userid);
+if (!empty($snatched_values)) {
+    $update = $snatched_values;
+    $snatches->insert($snatched_values, $update);
 }
 if (!empty($user_updateset)) {
     $user_stuffs->update($user_updateset, $userid, true);

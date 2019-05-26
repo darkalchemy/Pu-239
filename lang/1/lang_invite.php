@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //email invite mod
     'invites_error' => 'Error',
@@ -10,8 +12,6 @@ $lang = [
     'invites_deny' => 'Denied',
     'invites_invalidid' => 'Invalid Id',
     'invites_notyours' => 'Not your invite to cancel',
-    'invites_sorry' => 'Sorry',
-    'invites_removed' => 'Your invite privileges have been removed.',
     'invites_maxreached' => 'We have reached our current invite limit, please check back again later.<br>You have ',
     'invites_userinvites' => ' invites to send once invites are open again.',
     'invites_noinvites' => "You don't have any invites available, please check back soon.",
@@ -38,7 +38,7 @@ $lang = [
     'invites_mail' => 'Specified Email',
     'invites_mail1' => 'Please Ensure This is the correct Email Address befor Sending!',
     'invites_mail2' => 'Send Code',
-    'invites_email' => 'Please enter a Valid Email',
+    'invites_email3' => 'Please enter a Valid Email',
     'invites_email2' => 'Email already in use!',
     'invites_gencodes' => 'Generate Invite Code',
 ];

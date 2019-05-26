@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_event.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_freeleech'));
+global $site_config, $CURUSER;
+
 $checked1 = $checked2 = $checked3 = $checked4 = $HTMLOUT = '';
 $free = get_event(true);
 
@@ -18,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die();
     }
 
-    $fl['modifier'] = (isset($_POST['modifier']) ? (int) $_POST['modifier'] : false);
-    if (isset($_POST['expires']) && $_POST['expires'] == 255) {
+    $fl['modifier'] = isset($_POST['modifier']) ? (int) $_POST['modifier'] : false;
+    if (isset($_POST['expires']) && (int) $_POST['expires'] === 255) {
         $fl['expires'] = 1;
     } else {
         $fl['expires'] = isset($_POST['expires']) ? $_POST['expires'] * 86400 + TIME_NOW : false;
@@ -37,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ++$i;
     }
-    set_event($fl['modifier'], TIME_NOW, $fl['expires'], $fl['setby'], $fl['title']);
+    set_event($fl['modifier'], TIME_NOW, $fl['expires'], (int) $fl['setby'], $fl['title']);
     header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech");
     die();
 }
@@ -57,7 +59,7 @@ if (isset($free) && (count($free) < 1)) {
     $i = 0;
     $body = '';
     foreach ($free as $fl) {
-        $username = format_username($fl['setby']);
+        $username = format_username((int) $fl['setby']);
         switch ($fl['modifier']) {
             case 1:
                 $checked1 = 'checked';
@@ -85,8 +87,8 @@ if (isset($free) && (count($free) < 1)) {
         $body .= "
             <tr>
                 <td>$mode</td>
-                <td>" . get_date($fl['begin'], 'LONG') . '</td>
-                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freeleech_until']}" . get_date($fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
+                <td>" . get_date((int) $fl['begin'], 'LONG') . '</td>
+                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freeleech_until']}" . get_date((int) $fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
                 <td>{$username}</td>
                 <td>{$fl['title']}</td>
                 <td class='has-text-centered'>
@@ -138,7 +140,7 @@ $HTMLOUT .= "
     <td><input type='text' class= 'w-100' name='title' placeholder='{$lang['freeleech_title']}'>
     </td></tr>
     <tr><td class='rowhead'>{$lang['freeleech_setby']}</td>
-    <td><span>" . format_username($CURUSER['id']) . "</span>
+    <td><span>" . format_username((int) $CURUSER['id']) . "</span>
     </td></tr>
     <tr><td colspan='2' class='has-text-centered'>
     <input type='hidden' class='w-100' value ='" . $CURUSER['id'] . "' name='setby'>

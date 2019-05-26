@@ -1,6 +1,7 @@
 <?php
 
-global $username, $username2, $id;
+declare(strict_types = 1);
+global $site_config, $id, $username2, $username;
 
 $lang = [
     //Errors

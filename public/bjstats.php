@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
+$lang = array_merge(load_language('global'), load_language('blackjack'));
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'), load_language('blackjack'));
 if ($CURUSER['class'] < $site_config['allowed']['play']) {
     stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
     exit;
@@ -15,11 +17,14 @@ if ($CURUSER['class'] < $site_config['allowed']['play']) {
  * @param $res
  * @param $frame_caption
  *
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
 function bjtable($res, $frame_caption)
 {
     global $lang;
+
     $htmlout = '';
     $htmlout .= begin_frame($frame_caption, true);
     $htmlout .= begin_table();
@@ -45,7 +50,7 @@ function bjtable($res, $frame_caption)
             $plus_minus = '-';
             $plus_minus .= mksize(($a['losses'] - $a['wins']) * 100 * 1024 * 1024);
         }
-        $htmlout .= "<tr><td>$num</td><td>" . format_username($a['id']) . '</td>' . "<td class='has-text-right'>" . number_format($a['wins'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['losses'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['games'], 0) . '</td>' . "<td class='has-text-right'>$win_perc</td>" . "<td class='has-text-right'>$plus_minus</td>" . "</tr>\n";
+        $htmlout .= "<tr><td>$num</td><td>" . format_username((int) $a['id']) . '</td>' . "<td class='has-text-right'>" . number_format($a['wins'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['losses'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['games'], 0) . '</td>' . "<td class='has-text-right'>$win_perc</td>" . "<td class='has-text-right'>$plus_minus</td>" . "</tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();

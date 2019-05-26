@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $id, $user;
+declare(strict_types = 1);
+global $CURUSER, $user, $lang, $site_config;
 
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if ($user['downloaded'] > 0) {

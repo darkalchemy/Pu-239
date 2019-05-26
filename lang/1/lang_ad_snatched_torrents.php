@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //ad_snatched_torrents
     'ad_snatched_torrents_none' => 'None',

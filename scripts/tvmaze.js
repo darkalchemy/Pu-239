@@ -1,7 +1,7 @@
 var count = 0;
 if ($('#tvmaze').length) {
     var el = document.querySelector('#tvmaze');
-    get_tvmaze(el.dataset.csrf, el.dataset.tvmazeid, el.dataset.name, el.dataset.tid);
+    get_tvmaze(el.dataset.tvmazeid, el.dataset.name, el.dataset.tid);
 }
 
 function get_tvmaze(csrf, tvmazeid, name, tid) {

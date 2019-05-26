@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 //admin index lang file
 $lang = [
     'index_bans' => 'Bans',

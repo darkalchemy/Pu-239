@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -11,10 +13,13 @@ class Sitelog
 {
     protected $fluent;
 
-    public function __construct()
+    /**
+     * Sitelog constructor.
+     *
+     * @param Database $fluent
+     */
+    public function __construct(Database $fluent)
     {
-        global $fluent;
-
         $this->fluent = $fluent;
     }
 

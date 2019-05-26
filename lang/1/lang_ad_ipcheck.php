@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //errors
     'ipcheck_users' => 'Duplicate IP users:',
@@ -17,7 +19,7 @@ $lang = [
     'ipcheck_yes' => 'Yes',
     'ipcheck_no' => 'No',
     'ipcheck_noaccess' => 'You are not able to view this page.',
-    'ipcheck_stdhead' => 'Ip Check',
+    'ipcheck_stdhead' => 'IP Check',
     'ipcheck_sorry' => 'Sorry',
-    'ipcheck_no_dupes' => "The are no duplicate IP's in use.",
+    'ipcheck_no_dupes' => "There are no duplicate IP's in use.",
 ];

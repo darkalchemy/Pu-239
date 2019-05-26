@@ -1,55 +1,46 @@
 <?php
 
-use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\ImageProxy;
+use Pu239\IP;
+use Pu239\Referrer;
+use Pu239\Session;
+use Pu239\Settings;
+use Pu239\Sitelog;
+use Pu239\User;
+use Pu239\Userblock;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 $starttime = microtime(true);
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once INCL_DIR . 'app.php';
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'app.php';
+$env = $container->get('env');
+$settings = $container->get(Settings::class);
+$site_config = $settings->get_settings();
 
+require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'function_users.php';
-$session = new Pu239\Session();
-$user_stuffs = new Pu239\User();
-$torrent_stuffs = new Pu239\Torrent();
-$image_stuffs = new Pu239\Image();
-$comment_stuffs = new Pu239\Comment();
-$failed_logins = new Pu239\FailedLogin();
-$message_stuffs = new Pu239\Message();
-$ip_stuffs = new Pu239\IP();
-$ban_stuffs = new Pu239\Ban();
-$searchcloud_stuffs = new Pu239\Searchcloud();
-$post_stuffs = new Pu239\Post();
-$referer_stuffs = new Pu239\Referer();
-$achievement_stuffs = new Pu239\Achievement();
-$usersachiev_stuffs = new Pu239\Usersachiev();
-$pollvoter_stuffs = new Pu239\PollVoter();
-$happylog_stuffs = new Pu239\HappyLog();
-$snatched_stuffs = new Pu239\Snatched();
-$userblock_stuffs = new Pu239\Userblock();
-
-if ($site_config['database']['use_socket']) {
-    $mysqli = new mysqli($site_config['database']['host'], $site_config['database']['username'], $site_config['database']['password'], $site_config['database']['database'], null, $site_config['database']['socket']);
-} else {
-    $mysqli = new mysqli($site_config['database']['host'], $site_config['database']['username'], $site_config['database']['password'], $site_config['database']['database'], $site_config['database']['port']);
-}
-
-$session->start();
-
 require_once CLASS_DIR . 'class_blocks_index.php';
 require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_blocks_apis.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
-require_once INCL_DIR . 'database.php';
 
 if (!$site_config['site']['production']) {
-    $pu239_version = new SebastianBergmann\Version('0.5', ROOT_DIR);
+    $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
     $site_config['sourcecode']['version'] = $pu239_version->getVersion();
 }
-
 $load = sys_getloadavg();
+$cache = $container->get(Cache::class);
 $cores = $cache->get('cores_');
 if ($cores === false || is_null($cores)) {
     $cores = `grep -c processor /proc/cpuinfo`;
@@ -74,116 +65,65 @@ if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_C
 
 /**
  * @param string $txt
+ * @param bool   $strip
  *
  * @return mixed|string
  */
-function htmlsafechars($txt = '')
+function htmlsafechars(string $txt, bool $strip = true)
 {
-    $txt = preg_replace('/&(?!#[0-9]+;)(?:amp;)?/s', '&amp;', $txt);
-    $txt = str_replace([
-        '<',
-        '>',
-        '"',
-        "'",
-    ], [
-        '&lt;',
-        '&gt;',
-        '&quot;',
-        '&#039;',
-    ], $txt);
+    $txt = $strip ? strip_tags($txt) : $txt;
+    $txt = htmlspecialchars($txt, ENT_QUOTES, 'UTF-8');
 
     return $txt;
 }
 
 /**
- * @param $ip
- *
- * @return bool
- */
-function validip($ip)
-{
-    return filter_var($ip, FILTER_VALIDATE_IP, [
-        'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-        FILTER_FLAG_NO_RES_RANGE,
-    ]) ? true : false;
-}
-
-/**
  * @param bool $login
  *
- * @return mixed
+ * @throws NotFoundException
+ * @throws DependencyException
+ *
+ * @return string
  */
 function getip($login = false)
 {
-    global $CURUSER, $site_config;
+    global $CURUSER, $site_config, $container;
 
-    $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+    $auth = $container->get(Auth::class);
+    $ip = $auth->getIpAddress();
     if (!validip($ip)) {
-        $ip = '127.0.0.1';
+        $ip = '10.0.0.1';
     }
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
     if ($login || ($site_config['site']['ip_logging'] && !$no_log_ip)) {
         return $ip;
     }
 
-    return '127.0.0.1';
+    return $ip;
 }
 
-function dbconn()
-{
-    global $mysqli;
-
-    if ($mysqli->connect_error) {
-        die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
-    }
-}
-
-/**
- * @param int $id
- *
- * @throws \Envms\FluentPDO\Exception
- */
-function status_change(int $id)
-{
-    global $fluent;
-
-    $set = [
-        'status' => 0,
-    ];
-    $fluent->update('announcement_process')
-           ->set($set)
-           ->where('user_id=?', $id)
-           ->where('status = 1')
-           ->execute();
-}
-
-/**
- * @return bool
- *
- * @throws Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws ServerUnhealthy
- * @throws UnbegunTransaction
- */
+/*
 function userlogin()
 {
-    global $site_config, $whereis, $CURUSER, $cache, $session, $user_stuffs, $ban_stuffs, $userblock_stuffs;
+    global $container, $site_config;
 
     unset($GLOBALS['CURUSER']);
 
     if (isset($CURUSER)) {
         return true;
     }
-
-    $id = $user_stuffs->getUserId();
+    $user_stuffs = $container->get(User::class);
+    $session = $container->get(Session::class);
+    $id = $user_stuffs->getUserId($session);
     if (!$id) {
-        $session->destroy();
+        $user_stuffs->logout();
     }
+    $cache = $container->get(Cache::class);
     $forced_logout = $cache->get('forced_logout_' . $id);
     if ($forced_logout) {
         $last_access = $session->get('last_access');
         if (!empty($last_access) && $last_access <= $forced_logout) {
-            $session->destroy();
+            //$session->destroy();
         }
     }
 
@@ -191,14 +131,15 @@ function userlogin()
 
     $users_data = $user_stuffs->getUserFromId($id);
     if (empty($users_data)) {
-        $session->destroy();
+        //$session->destroy();
     }
 
     if (!$site_config['site']['online'] && $users_data['class'] < UC_STAFF) {
-        $session->destroy();
+        //$session->destroy();
     }
 
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
+        $ban_stuffs = $container->get(Ban::class);
         if ($ban_stuffs->check_bans($ip)) {
             require_once INCL_DIR . 'function_html.php';
             header('Content-Type: text/html; charset=utf-8');
@@ -210,7 +151,7 @@ function userlogin()
     <h1>Unauthorized IP address!</h1>
 </body>
 </html>';
-            $session->destroy();
+            //$session->destroy();
             die();
         }
     }
@@ -233,51 +174,11 @@ function userlogin()
         }
     }
 
+    $userblock_stuffs = $container->get(Userblock::class);
     $userblocks = $userblock_stuffs->get($id);
     $users_data['blocks'] = $userblocks;
     $users_data['username'] = htmlsafechars($users_data['username']);
-    $whereis_array = [
-        'ajaxchat' => '%s is viewing <a href="%s">AJAX Chat</a>',
-        'index' => '%s is viewing the <a href="%s">Home Page</a>',
-        'browse' => '%s is viewing the <a href="%s">Torrents Browse Page</a>',
-        'catalog' => '%s is viewing the <a href="%s">Torrents Catalog Page</a>',
-        'offers' => '%s is viewing the <a href="%s">Offers</a>',
-        'requests' => '%s is viewing the <a href="%s">Requests</a>',
-        'upload' => '%s is viewing the <a href="%s">Upload Torrent Page</a>',
-        'casino' => '%s is playing in the <a href="%s">Casino</a>',
-        'blackjack' => '%s is playing the <a href="%s">Blackjack</a>',
-        'bet' => '%s is making a <a href="%s">Bet</a>',
-        'forums' => '%s is viewing the <a href="%s">Forums</a>',
-        'chat' => '%s is viewing the <a href="%s">IRC</a>',
-        'topten' => '%s is viewing the <a href="%s">Statistics</a>',
-        'faq' => '%s is viewing the <a href="%s">FAQ</a>',
-        'rules' => '%s is viewing the <a href="%s">Rules</a>',
-        'staff' => '%s is viewing the <a href="%s">Staff Page</a>',
-        'announcement' => '%s is viewing the <a href="%s">Announcements/a>',
-        'usercp' => '%s is viewing the <a href="%s">Users Control Panel</a>',
-        'messages' => '%s is viewing the <a href="%s">Mailbox</a>',
-        'userdetails' => '%s is viewing the <a href="%s">Personal Profile</a>',
-        'details' => '%s is viewing the <a href="%s">Torrents Detail</a>',
-        'games' => '%s is viewing the <a href="%s">Games</a>',
-        'arcade' => '%s is viewing the <a href="%s">Arcade</a>',
-        'flash' => '%s is playing a <a href="%s">Flash Game</a>',
-        'arcade_top_score' => '%s is viewing the <a href="%s">Arcade Top Scores</a>',
-        'staffpanel' => '%s is viewing the <a href="%s">Staff Panel</a>',
-        'movies' => '%s is viewing the <a href="%s">Movies and TV</a>',
-        'needseeds' => '%s is viewing the <a href="%s">Need Seeds Page</a>',
-        'bitbucket' => '%s is viewing the <a href="%s">Bitbucket</a>',
-        'mybonus' => '%s is viewing the <a href="%s">Karma Store</a>',
-        'getrss' => '%s is viewing the <a href="%s">RSS</a>',
-        'rsstfreak' => '%s is viewing the <a href="%s">Torrent Freak Page</a>',
-        'wiki' => '%s is viewing the <a href="%s">Wiki Page</a>',
-        'lottery' => '%s is playing the <a href="%s">Lottery</a>',
-        'bookmarks' => '%s is viewing the <a href="%s">Bookmarks Page</a>',
-        'sharemarks' => '%s is viewing the <a href="%s">Sharemarks Page</a>',
-        'friends' => '%s is viewing the <a href="%s">Friends List</a>',
-        'users' => '%s is searching the <a href="%s">Users</a>',
-        'tmovies' => '%s is viewing the <a href="%s">Movies</a>',
-        'unknown' => '%s location is unknown',
-    ];
+
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
             $whereis = sprintf($whereis_array[$whereis_temp[1]], $users_data['username'], htmlsafechars($_SERVER['REQUEST_URI']));
@@ -308,38 +209,35 @@ function userlogin()
     $session->set('use_12_hour', $users_data['use_12_hour']);
     $GLOBALS['CURUSER'] = $users_data;
     get_template();
-    $mood_stuffs = new Pu239\Mood();
-    $moods = $mood_stuffs->get();
 
     return true;
 }
-
+*/
 /**
- * @return int
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function get_stylesheet()
 {
-    global $site_config, $user_stuffs, $session, $fluent, $cache;
+    global $container, $site_config;
 
-    $user = '';
-    $userid = $session->get('userID');
+    $auth = $container->get(Auth::class);
+    $userid = (int) $auth->getUserId();
     if (!empty($userid)) {
+        $user_stuffs = $container->get(User::class);
         $user = $user_stuffs->getUserFromId($userid);
+        if (empty($user)) {
+            return $site_config['site']['stylesheet'];
+        }
     }
 
     $style = isset($user['stylesheet']) ? $user['stylesheet'] : $site_config['site']['stylesheet'];
 
+    $cache = $container->get(Cache::class);
     $class_config = $cache->get('class_config_' . $style);
-    if ($class_config === false || is_null($class_config)) {
-        $class_config = $fluent->from('class_config')
-                               ->orderBy('value ASC')
-                               ->where('template = ?', $style)
-                               ->fetchAll();
-
-        $cache->set('class_config_' . $style, $class_config, 86400);
-    }
     foreach ($class_config as $arr) {
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
             $site_config['class_names'][$arr['value']] = $arr['classname'];
@@ -356,7 +254,7 @@ function get_stylesheet()
  */
 function get_category_icons()
 {
-    global $site_config, $CURUSER;
+    global $CURUSER, $site_config;
 
     return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['site']['cat_icons'];
 }
@@ -366,7 +264,7 @@ function get_category_icons()
  */
 function get_language()
 {
-    global $site_config, $CURUSER;
+    global $CURUSER, $site_config;
 
     return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language']['site'];
 }
@@ -406,19 +304,23 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @return array|bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function make_freeslots($userid, $key)
 {
-    global $cache, $fluent;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
+        $fluent = $container->get(Database::class);
         $slot = $fluent->from('freeslots')
-                       ->where('userid=?', $userid)
-                       ->fetchAll();
+            ->where('userid = ?', $userid)
+            ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -429,25 +331,29 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @return array|bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function genrelist(bool $grouped)
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
+    $cache = $container->get(Cache::class);
+    $fluent = $container->get(Database::class);
     if ($grouped) {
         $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
-                              ->where('parent_id=0')
-                              ->orderBy('ordered');
+                ->where('parent_id=0')
+                ->orderBy('ordered');
             foreach ($parents as $parent) {
                 $children = $fluent->from('categories')
-                                   ->where('parent_id=?', $parent['id'])
-                                   ->orderBy('ordered')
-                                   ->fetchAll();
+                    ->where('parent_id = ?', $parent['id'])
+                    ->orderBy('ordered')
+                    ->fetchAll();
 
                 $parent['children'] = $children;
                 $ret[] = $parent;
@@ -459,9 +365,9 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
-                           ->select('p.name AS parent_name')
-                           ->leftJoin('categories AS p ON c.parent_id=p.id')
-                           ->orderBy('ordered');
+                ->select('p.name AS parent_name')
+                ->leftJoin('categories AS p ON c.parent_id=p.id')
+                ->orderBy('ordered');
 
             foreach ($cats as $cat) {
                 if (!empty($cat['parent_name'])) {
@@ -502,26 +408,26 @@ function mksize($size)
     }
 
     return round($size, [
-            0,
-            0,
-            1,
-            2,
-            2,
-            3,
-            3,
-            4,
-            4,
-        ][$i]) . ' ' . [
-            'B',
-            'kB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
-            'EB',
-            'ZB',
-            'YB',
-        ][$i];
+        0,
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+    ][$i]) . ' ' . [
+        'B',
+        'kB',
+        'MB',
+        'GB',
+        'TB',
+        'PB',
+        'EB',
+        'ZB',
+        'YB',
+    ][$i];
 }
 
 /**
@@ -536,11 +442,11 @@ function mkprettytime($s)
     }
     $t = [];
     foreach ([
-                 '60:sec',
-                 '60:min',
-                 '24:hour',
-                 '0:day',
-             ] as $x) {
+        '60:sec',
+        '60:min',
+        '24:hour',
+        '0:day',
+    ] as $x) {
         $y = explode(':', $x);
         if ($y[0] > 1) {
             $v = $s % $y[0];
@@ -558,29 +464,6 @@ function mkprettytime($s)
     }
 
     return sprintf('%d:%02d', $t['min'], $t['sec']);
-}
-
-/**
- * @param $vars
- *
- * @return int
- */
-function mkglobal($vars)
-{
-    if (!is_array($vars)) {
-        $vars = explode(':', $vars);
-    }
-    foreach ($vars as $v) {
-        if (isset($_GET[$v])) {
-            $GLOBALS[$v] = unesc($_GET[$v]);
-        } elseif (isset($_POST[$v])) {
-            $GLOBALS[$v] = unesc($_POST[$v]);
-        } else {
-            return 0;
-        }
-    }
-
-    return 1;
 }
 
 /**
@@ -609,38 +492,6 @@ function validemail($email)
 }
 
 /**
- * @param $x
- *
- * @return int|string
- */
-function sqlesc($x)
-{
-    global $mysqli;
-
-    if (is_integer($x)) {
-        return (int) $x;
-    }
-
-    return sprintf('\'%s\'', mysqli_real_escape_string($mysqli, $x));
-}
-
-/**
- * @param $x
- *
- * @return int|string
- */
-function sqlesc_noquote($x)
-{
-    global $mysqli;
-
-    if (is_integer($x)) {
-        return (int) $x;
-    }
-
-    return mysqli_real_escape_string($mysqli, $x);
-}
-
-/**
  * @param $s
  *
  * @return mixed
@@ -661,71 +512,36 @@ function searchfield($s)
 }
 
 /**
- * @param        $heading
- * @param        $text
- * @param string $class
+ * @param             $heading
+ * @param             $text
+ * @param string|null $outer_class
+ * @param string|null $inner_class
  *
- * @throws Exception
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  */
-function stderr($heading, $text, $class = 'bottom20')
+function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null)
 {
-    echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
-    die();
-}
-
-/**
- * @param string $file
- * @param string $line
- */
-function sqlerr($file = '', $line = '')
-{
-    global $site_config, $CURUSER, $mysqli;
-
-    $the_error = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
-    $the_error_no = ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
-    if (!$site_config['database']['debug']) {
-        die();
-    } elseif ($site_config['paths']['sql_error_log'] && $site_config['database']['debug']) {
-        $_error_string = "\n===================================================";
-        $_error_string .= "\n Date: " . date('r');
-        $_error_string .= "\n Error Number: " . $the_error_no;
-        $_error_string .= "\n Error: " . $the_error;
-        $_error_string .= "\n IP Address: " . getip();
-        $_error_string .= "\n in file " . $file . ' on line ' . $line;
-        $_error_string .= "\n URL:" . !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Empty';
-        $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
-        if ($FH = @fopen($site_config['paths']['sql_error_log'], 'a')) {
-            @fwrite($FH, $_error_string);
-            @fclose($FH);
-        }
-        echo '<html><head><title>MySQLI Error</title>
-                    <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style></head><body>
-                       <blockquote><h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
-                       You can try to refresh the page by clicking <a href="javascript:window.location=window.location;">here</a>
-                  </body></html>';
-    } else {
-        $the_error = "\nSQL error: " . $the_error . "\n";
-        $the_error .= 'SQL error code: ' . $the_error_no . "\n";
-        $the_error .= 'Date: ' . date("l dS \of F Y h:i:s A");
-        $out = "<html>\n<head>\n<title>MySQLI Error</title>\n
-                   <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style>\n</head>\n<body>\n
-                   <blockquote>\n<h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
-                   You can try to refresh the page by clicking <a href=\"javascript:window.location=window.location;\">here</a>.
-                   <br><br><b>Error Returned</b><br>
-                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars(htmlspecialchars($the_error, ENT_QUOTES, 'UTF-8')) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
-        echo $out;
-    }
+    echo stdhead() . stdmsg($heading, $text, $outer_class, $inner_class) . stdfoot();
     die();
 }
 
 /**
  * @param $text
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function write_log($text)
 {
-    $sitelog = new Pu239\Sitelog();
+    global $container;
+
+    $sitelog = $container->get(Sitelog::class);
     $values = [
         'added' => TIME_NOW,
         'txt' => $text,
@@ -759,7 +575,7 @@ function unixstamp_to_human($unix = 0)
  */
 function get_time_offset()
 {
-    global $CURUSER, $site_config;
+    global $site_config, $CURUSER;
 
     $r = !empty($CURUSER['time_offset']) ? $CURUSER['time_offset'] * 3600 : $site_config['time']['offset'] * 3600;
     if ($site_config['time']['adjust']) {
@@ -773,17 +589,22 @@ function get_time_offset()
 }
 
 /**
- * @param      $date
+ * @param int  $date
  * @param      $method
  * @param int  $norelative
  * @param int  $full_relative
  * @param bool $calc
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
  * @return false|mixed|string
  */
 function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
-    global $site_config, $session;
+    global $container, $site_config;
+
+    $session = $container->get(Session::class);
 
     static $offset_set = 0;
     static $today_time = 0;
@@ -796,12 +617,13 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
 
     $time_options = [
         'JOINED' => $site_config['time']['joined'],
-        'SHORT' => $site_config['time']['short'] . $time_string,
-        'LONG' => $site_config['time']['long'] . $time_string,
+        'SHORT' => $site_config['time']['short'] . ' ' . $time_string,
+        'LONG' => $site_config['time']['long'] . ' ' . $time_string,
         'TINY' => $site_config['time']['tiny'],
         'DATE' => $site_config['time']['date'],
         'FORM' => $site_config['time']['form'],
         'TIME' => $time_string,
+        'MYSQL' => 'Y-m-d G:i:s',
         'WITH_SEC' => $time_string,
         'WITHOUT_SEC' => $time_string_without_seconds,
     ];
@@ -907,9 +729,9 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         if (!empty($text)) {
             return implode(', ', $text);
         }
-    } else {
-        return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
     }
+
+    return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
 }
 
 /**
@@ -935,22 +757,20 @@ function ratingpic($num)
  *
  * @return string
  */
-function CutName($txt, $len = 40)
+function CutName(string $txt, int $len = 40)
 {
-    return strlen($txt) > $len ? substr($txt, 0, $len - 1) . '...' : $txt;
+    return strlen($txt) > $len ? substr($txt, 0, $len - 4) . '...' : $txt;
 }
 
 /**
  * @param string $file
  *
- * @return array
- *
  * @throws Exception
+ *
+ * @return array
  */
 function load_language($file = '')
 {
-    global $site_config;
-
     $site_lang = get_language();
     $lang = [];
     if (file_exists(LANG_DIR . "{$site_lang}/lang_{$file}.php")) {
@@ -971,8 +791,9 @@ function load_language($file = '')
  */
 function flood_limit($table)
 {
-    global $CURUSER, $site_config, $lang, $session;
+    global $container, $site_config, $CURUSER, $lang;
 
+    $session = $container->get(Session::class);
     if (!file_exists($site_config['paths']['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['paths']['flood_file'])))) {
         return;
     }
@@ -995,7 +816,7 @@ function flood_limit($table)
 
     $count = $last_post[1] + 1;
     $floodtime = $last_post[0];
-    if ($last_post[0] - TIME_NOW > $site_config['flood']['time']) {
+    if ($site_config['flood']['time'] < $last_post[0] - TIME_NOW) {
         $count = 1;
         $floodtime = TIME_NOW;
     }
@@ -1006,34 +827,6 @@ function flood_limit($table)
 }
 
 /**
- * @param $query
- *
- * @return bool|mysqli_result
- */
-function sql_query($query)
-{
-    global $query_stat, $queries, $mysqli, $site_config;
-
-    dbconn();
-    if ($site_config['database']['debug']) {
-        $query_start_time = microtime(true);
-        mysqli_set_charset($mysqli, 'utf8mb4');
-        $result = mysqli_query($mysqli, $query);
-        $query_end_time = microtime(true);
-        $query_stat[] = [
-            'seconds' => number_format($query_end_time - $query_start_time, 6),
-            'query' => formatQuery($query),
-        ];
-        $queries = count($query_stat);
-    } else {
-        mysqli_set_charset($mysqli, 'utf8mb4');
-        $result = mysqli_query($mysqli, $query);
-    }
-
-    return $result;
-}
-
-/**
  * @param $p
  *
  * @return string
@@ -1041,6 +834,7 @@ function sql_query($query)
 function get_percent_completed_image($p)
 {
     global $site_config;
+
     $img = 'progress-';
     switch (true) {
         case $p >= 100:
@@ -1072,14 +866,17 @@ function get_percent_completed_image($p)
 }
 
 /**
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function referer()
 {
-    global $referer_stuffs;
+    global $container;
 
-    $http_referer = getenv('HTTP_REFERER');
-    if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
+    $referer_stuffs = $container->get(Referrer::class);
+    $http_referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    if (!empty($_SERVER['HTTP_HOST']) && !empty($http_referer) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false) {
         $ip = getip(true);
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
         $http_page = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
@@ -1088,7 +885,6 @@ function referer()
         }
         $values = [
             'browser' => $http_agent,
-            'ip' => inet_pton($ip),
             'referer' => $http_referer,
             'page' => $http_page,
             'date' => TIME_NOW,
@@ -1155,23 +951,37 @@ function suspended()
 }
 
 /**
- * @throws Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws ServerUnhealthy
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  */
 function check_user_status()
 {
-    global $session;
+    global $container, $site_config;
 
-    userlogin();
-    if (!$session->validateToken($session->get('auth'), 'auth')) {
-        $session->destroy();
+    $auth = $container->get(Auth::class);
+    if ($auth->isLoggedIn()) {
+        referer();
+        parked();
+        suspended();
+        insert_update_ip();
+        $user = $container->get(User::class);
+        $userid = $auth->id();
+        $users_data = $user->getUserFromId($userid);
+        $userblock_stuffs = $container->get(Userblock::class);
+        $userblocks = $userblock_stuffs->get($userid);
+        $users_data['blocks'] = $userblocks;
+        $user->update_last_access($userid);
+        $session = $container->get(Session::class);
+        $session->set('UserRole', $users_data['class']);
+        $GLOBALS['CURUSER'] = $users_data;
+        get_template();
+    } else {
+        header("Location: {$site_config['paths']['baseurl']}/login.php");
+        die();
     }
-    referer();
-    parked();
-    suspended();
-    insert_update_ip();
 }
 
 /**
@@ -1198,14 +1008,17 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @return bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function user_exists($user_id)
 {
-    global $user_stuffs;
+    global $container;
 
+    $user_stuffs = $container->get(User::class);
     $user = $user_stuffs->getUserFromId($user_id);
     if (!empty($user)) {
         return true;
@@ -1250,7 +1063,7 @@ function array_msort(array $array, array $cols)
     foreach ($cols as $col => $order) {
         $colarr[$col] = [];
         foreach ($array as $k => $row) {
-            $colarr[$col]['_' . $k] = strtolower($row[$col]);
+            $colarr[$col]['_' . $k] = strtolower((string) $row[$col]);
         }
     }
     $eval = 'array_multisort(';
@@ -1274,23 +1087,27 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @return array|bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function countries()
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
+    $cache = $container->get(Cache::class);
     $countries = $cache->get('countries_arr_');
     if ($countries === false || is_null($countries)) {
+        $fluent = $container->get(Database::class);
         $countries = $fluent->from('countries')
-                            ->select(null)
-                            ->select('id')
-                            ->select('name')
-                            ->select('flagpic')
-                            ->orderBy('name')
-                            ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('flagpic')
+            ->orderBy('name')
+            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1312,18 +1129,18 @@ function bubble($link, $text, $title = false)
         <span class='dt-tooltipper-large size_5 has-text-primary' data-tooltip-content='#{$id}'>
             $link
         </span>
-        <div class='tooltip_templates'>
+        <span class='tooltip_templates'>
             <span id='$id'>";
     if ($title) {
         $bubble .= "
-                <div class='size_6 has-text-green has-text-centered bottom20'>
+                <span class='size_6 has-text-green has-text-centered bottom20'>
                     $title
-                </div>";
+                </span>";
     }
     $bubble .= "
                 $text
             </span>
-        </div>";
+        </span>";
 
     return $bubble;
 }
@@ -1361,13 +1178,13 @@ function plural(int $int)
  * @param      $username
  * @param bool $ajax
  *
- * @return bool
- *
  * @throws Exception
+ *
+ * @return bool
  */
 function valid_username($username, $ajax = false)
 {
-    global $lang, $site_config;
+    global $site_config, $lang;
 
     if ($username === '') {
         return false;
@@ -1375,7 +1192,7 @@ function valid_username($username, $ajax = false)
     $namelength = strlen($username);
     if ($namelength < 3 || $namelength > 64) {
         if ($ajax) {
-            return "<span style='color: #cc0000;'>{$lang['takesignup_username_length']}</span> - $namelength characters";
+            return "<span class='has-text-danger'>{$lang['takesignup_username_length']}</span> - $namelength characters";
         } else {
             stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
         }
@@ -1383,16 +1200,15 @@ function valid_username($username, $ajax = false)
 
     if (!preg_match("/^[\p{L}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
+            echo "<span class='has-text-danger'>{$lang['takesignup_allowed_chars']}</span>";
             die();
         }
 
         return false;
     }
-
-    if (preg_match('/' . $site_config['site']['badwords'] . '/i', urldecode($username))) {
+    if (preg_match('/' . implode('|', $site_config['site']['badwords']) . '/i', urldecode($username))) {
         if ($ajax) {
-            echo "<span style='color: #cc0000;'>{$lang['takesignup_badwords']}</span>";
+            echo "<span class='has-text-danger'>{$lang['takesignup_badwords']}</span>";
             die();
         }
 
@@ -1405,9 +1221,9 @@ function valid_username($username, $ajax = false)
 /**
  * @param bool $celebrate
  *
- * @return bool
- *
  * @throws Exception
+ *
+ * @return bool
  */
 function Christmas($celebrate = true)
 {
@@ -1449,19 +1265,22 @@ function get_anonymous_name()
 }
 
 /**
- * @param      $url
- * @param bool $image
- * @param null $width
- * @param null $height
- * @param null $quality
+ * @param string   $url
+ * @param bool     $image
+ * @param int|null $width
+ * @param int|null $height
+ * @param int|null $quality
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
- *
- * @throws InvalidManipulation
  */
-function url_proxy($url, $image = false, $width = null, $height = null, $quality = null)
+function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
-    global $site_config;
+    global $container, $site_config;
 
     if (empty($url) || preg_match('#' . preg_quote($site_config['session']['domain']) . '#', $url) || preg_match('#' . preg_quote($site_config['paths']['images_baseurl']) . '#', $url)) {
         return $url;
@@ -1470,12 +1289,10 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
         return (!empty($site_config['site']['anonymizer_url']) ? $site_config['site']['anonymizer_url'] : '') . $url;
     }
     if ($site_config['site']['image_proxy']) {
-        $image_proxy = new Pu239\ImageProxy();
+        $image_proxy = $container->get(ImageProxy::class);
         $image = $image_proxy->get_image($url, $width, $height, $quality);
 
-        if (!$image) {
-            return $site_config['paths']['images_baseurl'] . 'noposter.png';
-        } else {
+        if (!empty($image)) {
             return $site_config['paths']['images_baseurl'] . 'proxy/' . $image;
         }
     }
@@ -1510,14 +1327,17 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @return bool|mixed|null
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|null
  */
 function get_show_id(string $name)
 {
-    global $fluent, $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     if (empty($name)) {
         return null;
     }
@@ -1525,9 +1345,10 @@ function get_show_id(string $name)
     $hash = hash('sha512', $name);
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
+        $fluent = $container->get(Database::class);
         $items = $fluent->from('tvmaze')
-                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-                        ->fetchAll();
+            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+            ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1549,22 +1370,26 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @return bool|mixed|null
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|null
  */
 function get_show_id_by_imdb(string $imdbid)
 {
-    global $fluent, $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     if (empty($imdbid)) {
         return null;
     }
     $id_array = $cache->get('tvshow_ids_' . $imdbid);
     if ($id_array === false || is_null($id_array)) {
+        $fluent = $container->get(Database::class);
         $id_array = $fluent->from('tvmaze')
-                           ->where('imdb_id=?', $imdbid)
-                           ->fetch();
+            ->where('imdb_id = ?', $imdbid)
+            ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1581,15 +1406,18 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
  * @return false|mixed|string
  */
 function time24to12($timestamp, $sec = false)
 {
     if ($sec) {
-        return get_date($timestamp, 'WITH_SEC', 1, 1);
+        return get_date((int) $timestamp, 'WITH_SEC', 1, 0);
     }
 
-    return get_date($timestamp, 'WITHOUT_SEC', 1, 1);
+    return get_date((int) $timestamp, 'WITHOUT_SEC', 1, 0);
 }
 
 /**
@@ -1637,53 +1465,61 @@ function GetDirectorySize($path, $human, $count)
  */
 function formatQuery($query)
 {
-    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/', "\n$0", $query);
-    $query = preg_replace('/\b(INNER|OUTER|LEFT|RIGHT|FULL|CASE|WHEN|END|ELSE|AND)\b/', "\n\t$0", $query);
+    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/i', "\n$0", $query);
+    $query = preg_replace('/\b(INNER|OUTER|LEFT|RIGHT|FULL|CASE|WHEN|END|ELSE|AND)\b/i', "\n\t$0", $query);
     $query = preg_replace("/\s+\n/", "\n", $query); // remove trailing spaces
     return $query;
 }
 
 /**
- * @return bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function insert_update_ip()
 {
-    global $CURUSER, $ip_stuffs;
+    global $container, $CURUSER;
 
     if (empty($CURUSER)) {
         return false;
     }
-    $added = TIME_NOW;
+    $added = get_date(TIME_NOW, 'MYSQL', 1, 0);
     $values = [
         'ip' => getip(),
         'userid' => $CURUSER['id'],
         'type' => 'browse',
-        'lastbrowse' => $added,
+        'last_access' => $added,
     ];
     $update = [
-        'lastbrowse' => $added,
+        'last_access' => $added,
     ];
-    $ip_stuffs->insert_update($values, $update, $CURUSER['id']);
+    $ip_stuffs = $container->get(IP::class);
+    $ip_stuffs->insert($values, $update, $CURUSER['id']);
 
     return true;
 }
 
 /**
- * @param      $url
- * @param bool $fresh
+ * @param string $url
+ * @param bool   $fresh
+ * @param bool   $async
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
- *
- * @throws \Envms\FluentPDO\Exception
  */
-function fetch($url, $fresh = true)
+function fetch(string $url, bool $fresh = true, bool $async = false)
 {
-    if (!$fresh) {
-        global $cache;
+    global $container;
 
-        $key = hash('sha256', $url);
+    $expires = mt_rand(86400, 172800);
+    $cache = $container->get(Cache::class);
+    $key = hash('sha256', $url);
+    if (!$fresh) {
         $result = $cache->get($key);
         if (!empty($result)) {
             return $result;
@@ -1694,7 +1530,7 @@ function fetch($url, $fresh = true)
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
         ],
-        'synchronous' => true,
+        'synchronous' => $async,
         'http_errors' => false,
         'headers' => [
             'User-Agent' => get_random_useragent(),
@@ -1704,21 +1540,19 @@ function fetch($url, $fresh = true)
     try {
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
-                $contents = $res->getBody()->getContents();
+                $contents = $res->getBody()
+                    ->getContents();
                 if (!$fresh) {
-                    global $cache;
-
-                    $key = hash('sha256', $url);
-                    $cache->set($key, $contents, 86400);
+                    $cache->set($key, $contents, $expires);
                 }
 
                 return $contents;
             }
-        } else {
-            return false;
         }
     } catch (GuzzleHttp\Exception\GuzzleException $e) {
-        return false;
+    }
+    if (!$fresh) {
+        $cache->set($key, 'No Results', $expires);
     }
 
     return false;
@@ -1727,26 +1561,33 @@ function fetch($url, $fresh = true)
 /**
  * @param $details
  *
- * @return bool|mixed|string
- *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return mixed|string
  */
 function get_body_image($details)
 {
-    global $cache, $fluent, $torrent;
+    global $container;
 
+    $cache = $container->get(Cache::class);
+    $fluent = $container->get(Database::class);
     $image = '';
     if ($details && !empty($torrent['imdb_id'])) {
         $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "background"')
-                             ->where('imdb_id=?', $torrent['imdb_id'])
-                             ->fetchAll();
-
-            $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
+                ->select(null)
+                ->select('url')
+                ->where('type = "background"')
+                ->where('imdb_id = ?', $torrent['imdb_id'])
+                ->fetchAll();
+            if (!empty($images)) {
+                $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
+            } else {
+                $cache->set('backgrounds_' . $torrent['imdb_id'], [], 3600);
+            }
         }
 
         if (!empty($images)) {
@@ -1760,9 +1601,9 @@ function get_body_image($details)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-                          ->select(null)
-                          ->select('url')
-                          ->where('type = ?', 'background');
+            ->select(null)
+            ->select('url')
+            ->where('type = "background"');
 
         $backgrounds = [];
         foreach ($results as $background) {
@@ -1770,9 +1611,12 @@ function get_body_image($details)
         }
         if (!empty($backgrounds)) {
             $cache->set('backgrounds_', $backgrounds, 86400);
+        } else {
+            $cache->set('backgrounds_', [], 86400);
         }
     }
 
+    $image = '';
     if (!empty($backgrounds)) {
         shuffle($backgrounds);
         $image = array_pop($backgrounds);
@@ -1781,51 +1625,51 @@ function get_body_image($details)
         } else {
             $cache->set('backgrounds_', $backgrounds, 86400);
         }
-
-        return $image;
     }
 
-    $cache->delete('backgrounds_');
-
-    return false;
+    return $image;
 }
 
 /**
- * @return bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed
  */
 function get_random_useragent()
 {
-    global $fluent, $cache, $site_config, $BLOCKS;
+    global $container, $site_config;
 
-    if (!$BLOCKS['imdb_api_on']) {
-        return false;
-    }
+    $cache = $container->get(Cache::class);
 
-    $browser = $cache->get('browser_user_agents_');
-    if ($browser === false || is_null($browser)) {
+    $browsers = $cache->get('browser_user_agents_');
+    if ($browsers === false || is_null($browsers)) {
+        $fluent = $container->get(Database::class);
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('DISTINCT browser')
-                          ->limit(100);
-        $browser = [];
-        foreach ($results as $result) {
-            preg_match('/Agent : (.*)/', $result['browser'], $match);
-            if (!empty($match[1])) {
-                $browser[] = $match[1];
+            ->select(null)
+            ->select('DISTINCT browser AS browser')
+            ->where('browser IS NOT null')
+            ->limit(100)
+            ->fetchAll();
+        $browsers = [];
+        if (empty($results)) {
+            $browsers = [
+                0 => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+            ];
+        } else {
+            foreach ($results as $result) {
+                preg_match('/Agent : (.*)/', $result['browser'], $match);
+                if (!empty($match[1])) {
+                    $browsers[] = $match[1];
+                }
             }
         }
-        $cache->set('browser_user_agents_', $browser, $site_config['expires']['browser_user_agent']);
+        $cache->set('browser_user_agents_', $browsers, $site_config['expires']['browser_user_agent']);
     }
+    shuffle($browsers);
 
-    if (!empty($browser)) {
-        shuffle($browser);
-    } else {
-        $browser[] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36';
-    }
-
-    return $browser[0];
+    return $browsers[0];
 }
 
 if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {

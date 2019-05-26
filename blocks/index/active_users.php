@@ -1,15 +1,22 @@
 <?php
 
-global $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 $active = $cache->get('activeusers_');
 if ($active === false || is_null($active)) {
     $list = [];
     $dt = TIME_NOW - 900;
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('users')
                     ->select(null)
                     ->select('id')
-                    ->where('last_access>?', $dt)
+                    ->where('last_access > ?', $dt)
                     ->where('perms < ?', bt_options::PERMS_STEALTH)
                     ->where('id != 2')
                     ->orderBy('username ASC')
@@ -22,9 +29,9 @@ if ($active === false || is_null($active)) {
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
-                $list[] = format_username($row['id'], true, true, false, true);
+                $list[] = format_username((int) $row['id'], true, true, false, true);
             } else {
-                $list[] = format_username($row['id']);
+                $list[] = format_username((int) $row['id']);
             }
         }
         $active['activeusers'] = implode('&nbsp;&nbsp;', $list);

@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('userhistory'));
+global $container, $site_config, $CURUSER;
+
 $userid = (int) $_GET['id'];
 if (!is_valid_id($userid)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_invalidid']);
@@ -20,7 +24,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : '';
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 $perpage = 25;
 $HTMLOUT = '';
-
+$user_stuffs = $container->get(User::class);
 if ($action === 'viewposts') {
     $select_is = 'COUNT(DISTINCT p.id)';
     $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id';
@@ -33,7 +37,7 @@ if ($action === 'viewposts') {
     $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
-        $subject = format_username($user['id']);
+        $subject = format_username((int) $user['id']);
     } else {
         $subject = $lang['posts_unknown'] . '[' . $userid . ']';
     }
@@ -55,12 +59,12 @@ if ($action === 'viewposts') {
         $topicname = htmlsafechars($arr['topic_name']);
         $forumid = (int) $arr['f_id'];
         $forumname = htmlsafechars($arr['name']);
-        $dt = TIME_NOW - $site_config['forums']['readpost_expiry'];
+        $dt = TIME_NOW - $site_config['forum_config']['readpost_expiry'];
         $newposts = 0;
         if ($arr['added'] > $dt) {
             $newposts = ($arr['last_post_read'] < $arr['last_post']) && $CURUSER['id'] == $userid;
         }
-        $added = get_date($arr['added'], '');
+        $added = get_date((int) $arr['added'], '');
         $title = "
         $added -- <b>{$lang['posts_forum']}: </b>
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
@@ -76,7 +80,7 @@ if ($action === 'viewposts') {
             $body .= "
                 <p>
                     <div class='size_4'>
-                        {$lang['posts_lasteditedby']} " . format_username($arr['edited_by']) . " {$lang['posts_at']} " . get_date($arr['edit_date'], 'LONG', 0, 1) . '
+                        {$lang['posts_lasteditedby']} " . format_username((int) $arr['edited_by']) . " {$lang['posts_at']} " . get_date((int) $arr['edit_date'], 'LONG', 0, 1) . '
                     </div>
                 </p>';
         }
@@ -94,7 +98,7 @@ if ($action === 'viewposts') {
     echo stdhead($lang['head_post']) . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($action === 'viewcomments') {
-    $select_is = 'COUNT(*)';
+    $select_is = 'COUNT(id)';
     $from_is = 'comments AS c LEFT JOIN torrents as t
                   ON c.torrent = t.id';
     $where_is = 'c.user =' . sqlesc($userid) . '';
@@ -106,7 +110,7 @@ if ($action === 'viewposts') {
     $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
-        $subject = format_username($user['id']);
+        $subject = format_username((int) $user['id']);
     } else {
         $subject = $lang['posts_unknown'] . '[' . $userid . ']';
     }
@@ -128,12 +132,12 @@ if ($action === 'viewposts') {
             $torrent = substr($torrent, 0, 52) . '...';
         }
         $torrentid = (int) $arr['t_id'];
-        $subres = sql_query('SELECT COUNT(*) FROM comments WHERE torrent = ' . sqlesc($torrentid) . ' AND id < ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        $subres = sql_query('SELECT COUNT(id) FROM comments WHERE torrent = ' . sqlesc($torrentid) . ' AND id < ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         $subrow = mysqli_fetch_row($subres);
         $count = $subrow[0];
         $comm_page = floor($count / 20);
         $page_url = $comm_page ? "&amp;page=$comm_page" : '';
-        $added = get_date($arr['added'], '') . ' (' . get_date($arr['added'], '', 0, 1) . ')';
+        $added = get_date((int) $arr['added'], '') . ' (' . get_date((int) $arr['added'], '', 0, 1) . ')';
         $body = format_comment($arr['text']);
         $HTMLOUT .= "
         <div class='portlet'>

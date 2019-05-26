@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'system_phpinfo' => 'PHP INFO',
     'system_unable' => 'Unable to obtain process information',

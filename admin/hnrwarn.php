@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $mysqli;
-
 $lang = array_merge($lang, load_language('ad_hnrwarn'));
+global $site_config;
+
 $HTMLOUT = '';
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'hnrwarn';
+global $container, $CURUSER;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cache = $container->get(Cache::class);
     $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('intval', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
@@ -41,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($act === 'disable') {
-        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_disabled'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . $lang['hnrwarn_disabled'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user_' . $uid, [
                     'enabled' => 'no',
@@ -65,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ], $site_config['expires']['user_cache']);
         if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
-            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);
@@ -110,8 +117,8 @@ if ($count == 0) {
                   <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
                   <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
-                  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-                  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
+                  <td nowrap='nowrap'>" . get_date((int) $a['last_access'], 'LONG', 0, 1) . "</td>
+                  <td nowrap='nowrap'>" . get_date((int) $a['added'], 'DATE', 1) . "</td>
                   <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>
                 </tr>";
     }

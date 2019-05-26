@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $user_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $stdfoot = [
     'js' => [
@@ -19,14 +25,18 @@ $htmlout = '';
 
 /**
  * @param        $res
+ * @param        $userid
  * @param string $variant
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
 function sharetable($res, $userid, $variant = 'index')
 {
-    global $site_config, $CURUSER, $lang, $session, $fluent;
-
+    global $container, $site_config, $CURUSER, $lang;
     $htmlout = "
         <div class='has-text-centered bottom20'>
             {$lang['bookmarks_icon']}
@@ -69,6 +79,7 @@ function sharetable($res, $userid, $variant = 'index')
     $heading .= '
         </tr>';
     $categories = genrelist(false);
+    $change = [];
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
             'id' => $value['id'],
@@ -114,16 +125,18 @@ function sharetable($res, $userid, $variant = 'index')
                                 <i class='icon-download icon'></i>
                             </a>
                         </td>" : '');
+        $fluent = $container->get(Database::class);
         $bms = $fluent->from('bookmarks')
-                      ->where('torrentid=?', $id)
-                      ->where('userid=?', $userid)
+                      ->where('torrentid = ?', $id)
+                      ->where('userid = ?', $userid)
                       ->fetch();
 
+        $session = $container->get(Session::class);
         $bookmarked = (empty($bms) ? "
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
+                            <span data-tid='{$id}' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                                 <i class='icon-ok icon'></i>
                             </span>" : "
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
+                            <span data-tid='{$id}' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
                                 <i class='icon-bookmark-empty icon has-text-danger'></i>
                             </span>");
         $body .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
@@ -153,10 +166,10 @@ function sharetable($res, $userid, $variant = 'index')
                 $body .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . "</a></b></td>\n";
             }
         }
-        $body .= '<td><span>' . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
+        $body .= '<td><span>' . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>\n";
         $body .= '
     <td>' . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
-        if (1 != $row['times_completed']) {
+        if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
@@ -178,7 +191,7 @@ function sharetable($res, $userid, $variant = 'index')
             $body .= "<td><span class='" . linkcolor($row['seeders']) . "'>" . (int) $row['seeders'] . "</span></td>\n";
         }
         if ($row['leechers']) {
-            if ('index' == $variant) {
+            if ($variant == 'index') {
                 $body .= "<td><b><a href='peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>\n";
             } else {
                 $body .= "<td><b><a class='" . linkcolor($row['leechers']) . "' href='peerlist.php?id=$id#leechers'>" . (int) $row['leechers'] . "</a></b></td>\n";
@@ -187,7 +200,7 @@ function sharetable($res, $userid, $variant = 'index')
             $body .= "<td>0</td>\n";
         }
         if ($variant === 'index') {
-            $body .= '<td>' . (isset($row['username']) ? format_username($row['owner']) : '<i>(' . get_anonymous_name() . ')</i>') . "</td>\n";
+            $body .= '<td>' . (isset($row['username']) ? format_username((int) $row['owner']) : '<i>(' . get_anonymous_name() . ')</i>') . "</td>\n";
         }
         $body .= "</tr>\n";
     }
@@ -196,24 +209,28 @@ function sharetable($res, $userid, $variant = 'index')
     return $htmlout;
 }
 
+global $container, $CURUSER, $site_config;
+
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : '';
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID.');
 }
 $htmlout .= '
     <div class="has-text-centered bottom20">
-        <h1>Sharemarks for ' . format_username($userid) . '</h1>
+        <h1>Sharemarks for ' . format_username((int) $userid) . '</h1>
         <div class="tabs is-centered">
             <ul>
                 <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
             </ul>
         </div>
     </div>';
+
+$fluent = $container->get(Database::class);
 $count = $fluent->from('bookmarks')
                 ->select(null)
-                ->select('COUNT(*) AS count')
+                ->select('COUNT(id) AS count')
                 ->where('private = "no"')
-                ->where('userid=?', $userid)
+                ->where('userid = ?', $userid)
                 ->fetch('count');
 
 $torrentsperpage = $CURUSER['torrentsperpage'];
@@ -245,15 +262,16 @@ if ($count) {
                          ->innerJoin('torrents AS t ON b.torrentid=t.id')
                          ->leftJoin('users AS u on b.userid=u.id')
                          ->where('private = "no"')
-                         ->where('b.userid=?', $userid)
+                         ->where('b.userid = ?', $userid)
                          ->orderBy('t.id DESC')
-                         ->limit($pager['pdo'])
+                         ->limit($pager['pdo']['limit'])
+                         ->offset($pager['pdo']['offset'])
                          ->fetchAll();
 
     $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
     $htmlout .= sharetable($sharemarks, $userid, 'index');
     $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
-
+$user_stuffs = $container->get(User::class);
 $username = $user_stuffs->get_item('username', $userid);
 echo stdhead('Sharemarks for ' . htmlsafechars($username)) . wrapper($htmlout) . stdfoot($stdfoot);

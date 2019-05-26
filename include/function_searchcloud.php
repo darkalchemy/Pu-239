@@ -1,18 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Searchcloud;
+
 /**
  * @param int $limit
  *
- * @return array|bool|mixed
- *
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function searchcloud($limit = 100)
 {
-    global $cache, $fluent;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $searchcloud = $cache->get('searchcloud_');
     if ($searchcloud === false || is_null($searchcloud)) {
+        $fluent = $container->get(Database::class);
         $search = $fluent->from('searchcloud')
                          ->select('searchedfor')
                          ->select('howmuch')
@@ -54,20 +67,25 @@ function searchcloud($limit = 100)
  * @param $word
  * @param $column
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function searchcloud_insert($word, $column)
 {
-    global $cache, $searchcloud_stuffs;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $searchcloud = searchcloud();
     $ip = getip();
     $howmuch = 1;
     $add = true;
-    foreach ($searchcloud['search'] as $cloud) {
-        if (strtolower($word) === strtolower($cloud['searchedfor'])) {
-            $add = false;
-            $howmuch = $cloud['howmuch'] + 1;
+    if (!empty($searchcloud)) {
+        foreach ($searchcloud['search'] as $cloud) {
+            if (strtolower($word) === strtolower($cloud['searchedfor'])) {
+                $add = false;
+                $howmuch = $cloud['howmuch'] + 1;
+            }
         }
     }
 
@@ -86,21 +104,22 @@ function searchcloud_insert($word, $column)
         'searchedfor' => $word,
         'search_column' => $column,
         'howmuch' => 1,
-        'ip' => inet_pton($ip),
     ];
     $update = [
         'howmuch' => $howmuch,
-        'search_column' => new Envms\FluentPDO\Literal('VALUES(search_column)'),
-        'ip' => new Envms\FluentPDO\Literal('VALUES(ip)'),
+        'search_column' => new Literal('VALUES(search_column)'),
     ];
 
+    $searchcloud_stuffs = $container->get(Searchcloud::class);
     $searchcloud_stuffs->insert($values, $update);
 }
 
 /**
- * @return string
- *
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string
  */
 function cloud()
 {
@@ -109,7 +128,6 @@ function cloud()
     $small = 14;
     $big = 80;
     $tags = searchcloud();
-
     if (!empty($tags)) {
         $minimum_count = $tags['min'];
         $maximum_count = $tags['max'];
@@ -117,7 +135,7 @@ function cloud()
         if ($spread == 0) {
             $spread = 1;
         }
-        $cloud_tags = [];
+        $cloud_tags = $search = [];
         foreach ($tags['search'] as $tag) {
             if (!empty($tag['searchedfor'])) {
                 $search[$tag['searchedfor']] = $tag;

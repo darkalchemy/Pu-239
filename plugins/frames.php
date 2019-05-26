@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Allow using Adminer inside a frame (disables ClickJacking protection)
  *

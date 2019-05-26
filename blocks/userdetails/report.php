@@ -1,3 +1,9 @@
 <?php
 
-$HTMLOUT .= tr($lang['userdetails_report'], "<form method='post' action='report.php?type=User&amp;id={$id}'><input type='submit' value='{$lang['userdetails_report']}' class='button is-small'>{$lang['userdetails_report_click']}</form accept-charset='utf-8'>", 1);
+declare(strict_types = 1);
+global $lang, $site_config;
+
+$HTMLOUT .= tr($lang['userdetails_report'], "
+    <form method='post' action='{$site_config['paths']['baseurl']}/report.php?type=User&amp;id={$id}' accept-charset='utf-8'>
+        <input type='submit' value='{$lang['userdetails_report']}' class='button is-small'>{$lang['userdetails_report_click']}
+    </form>", 1);

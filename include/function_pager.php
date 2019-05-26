@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @param       $perpage
  * @param       $count
@@ -100,7 +102,10 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
         'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
         'limit' => "LIMIT $start, $perpage",
-        'pdo' => "$start, $perpage",
+        'pdo' => [
+            'limit' => $perpage,
+            'offset' => $start,
+        ],
     ];
 }
 

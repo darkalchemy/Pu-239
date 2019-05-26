@@ -1,12 +1,12 @@
 <?php
 
-global $CURUSER, $site_config, $lang;
+declare(strict_types = 1);
 
-if ($site_config['bonus']['happy_hour']) {
-    if ($CURUSER) {
-        require_once INCL_DIR . 'function_happyhour.php';
-        if (happyHour('check')) {
-            $htmlout .= "
+global $site_config, $CURUSER, $lang;
+if ($site_config['bonus']['happy_hour'] && !empty($CURUSER)) {
+    require_once INCL_DIR . 'function_happyhour.php';
+    if (happyHour('check')) {
+        $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/browse.php?cat=" . happyCheck('check') . "'>
             <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#happyhour_tooltip'>{$lang['gl_happyhour']}</span>
@@ -25,6 +25,5 @@ if ($site_config['bonus']['happy_hour']) {
             </div>
         </a>
     </li>';
-        }
     }
 }

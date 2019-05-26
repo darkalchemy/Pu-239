@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_trivia.php';
-global $lang, $site_config, $fluent, $session;
+global $site_config;
 
 $table = trivia_table();
 $qid = $table['qid'];
@@ -31,7 +33,7 @@ $trivia .= "
     <div id='trivia' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
-                <div id='trivia_display' data-csrf='" . $session->get('csrf_token') . "' data-qid='{$qid}' data-gamenum='{$gamenum}'>
+                <div id='trivia_display' data-qid='{$qid}' data-gamenum='{$gamenum}'>
                     <div id='trivia_content' class='has-text-centered'>{$table}{$content}</div>
                     <div id='trivia_buttons'>{$buttons}</div>
                 </div>

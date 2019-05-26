@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //SENDMESSAGE
     'sendmessage_sorry' => 'Sorry...',
@@ -47,7 +49,6 @@ Read the forums for details.',
     'sendmessage_system_error' => 'SYSTEM ERROR',
     'sendmessage_it_broke' => 'it broke',
     'sendmessage_user_error' => 'USER ERROR',
-    'sendmessage_denied' => 'Permission denied.',
     'sendmessage_no_id' => 'No user with that ID.',
     'sendmessage_user_wrote' => "\n\n\n-------- %s wrote: --------\n%s\n",
     'sendmessage_re' => 'Re: ',

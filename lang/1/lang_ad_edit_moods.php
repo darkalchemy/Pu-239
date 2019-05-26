@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'moods_example' => 'is example mood',
     'moods_added' => 'Mood Added',

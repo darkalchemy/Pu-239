@@ -1,19 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function lotteryclean($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $queries, $cache, $message_stuffs, $fluent, $site_config;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $dt = TIME_NOW;
     $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
     $lottery_config = $_pms = $_userq = $uids = [];
@@ -24,7 +31,7 @@ function lotteryclean($data)
         $tickets = [];
         $q = sql_query('SELECT t.user AS uid, u.seedbonus, u.modcomment
                             FROM tickets AS t
-                            LEFT JOIN users AS u ON u.id=t.user
+                            LEFT JOIN users AS u ON u.id = t.user
                             ORDER BY RAND()') or sqlerr(__FILE__, __LINE__);
         while ($a = mysqli_fetch_assoc($q)) {
             $tickets[] = $a;
@@ -51,7 +58,7 @@ function lotteryclean($data)
         $msg['subject'] = 'You have won the lottery';
         $msg['body'] = 'Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.';
         foreach ($lottery['winners'] as $winner) {
-            $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date($dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
+            $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date((int) $dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
             $_userq[] = [
                 'id' => (int) $winner['uid'],
                 'seedbonus' => (float) $winner['seedbonus'] + $lottery['user_pot'],
@@ -75,22 +82,25 @@ function lotteryclean($data)
         ];
         if (!empty($_userq) && count($_userq)) {
             foreach ($_userq as $update) {
-                sql_query("UPDATE users SET seedbonus = {$update['seedbonus']}, modcomment = {$update['modcomment']} WHERE id={$update['id']}") or sqlerr(__FILE__, __LINE__);
+                sql_query("UPDATE users SET seedbonus = {$update['seedbonus']}, modcomment = {$update['modcomment']} WHERE id = {$update['id']}") or sqlerr(__FILE__, __LINE__);
             }
         }
         if (!empty($_pms) && count($_pms)) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($_pms);
         }
+        $cache = $container->get(Cache::class);
         foreach ($uids as $user_id) {
             $cache->delete('user_' . $user_id);
         }
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . implode(', ', $lconfig_update) . '
-                    ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
+                    ON DUPLICATE KEY UPDATE value = VALUES(value)') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM tickets WHERE id > 0') or sqlerr(__FILE__, __LINE__);
 
         if (!empty($site_config['auto_lotto']) && $site_config['auto_lotto']['enable']) {
             $values = [];
+            $fluent = $container->get(Database::class);
             foreach ($site_config['auto_lotto'] as $key => $value) {
                 if ($key === 'duration') {
                     $values[] = [
@@ -114,7 +124,7 @@ function lotteryclean($data)
                 }
             }
             $update = [
-                'value' => new Envms\FluentPDO\Literal('VALUES(value)'),
+                'value' => new Literal('VALUES(value)'),
             ];
             $fluent->insertInto('lottery_config', $values)
                    ->onDuplicateKeyUpdate($update)
@@ -136,7 +146,7 @@ function lotteryclean($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Lottery Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Lottery Cleanup: Completed' . $text);
     }
 }

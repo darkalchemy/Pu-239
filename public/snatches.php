@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
-global $session, $CURUSER, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('snatches'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
+    $session = $container->get(Session::class);
     $session->set('is-warning', 'Invalid Information');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
@@ -64,7 +69,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
-    $snatchuser = (isset($arr['userid']) ? format_username($arr['userid']) : "{$lang['snatches_unknown']}");
+    $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : "{$lang['snatches_unknown']}");
     $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $body .= "
         <tr>
@@ -77,8 +82,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
             <td class='has-text-right'>" . htmlsafechars($completed) . "</td>
             <td class='has-text-right'>" . mkprettytime($arr['seedtime']) . "</td>
             <td class='has-text-right'>" . mkprettytime($arr['leechtime']) . "</td>
-            <td class='has-text-centered'>" . get_date($arr['last_action'], '', 0, 1) . "</td>
-            <td class='has-text-centered'>" . get_date($arr['complete_date'], '', 0, 1) . "</td>
+            <td class='has-text-centered'>" . get_date((int) $arr['last_action'], '', 0, 1) . "</td>
+            <td class='has-text-centered'>" . get_date((int) $arr['complete_date'], '', 0, 1) . "</td>
             <td class='has-text-centered'>" . (int) $arr['timesann'] . '</td>
         </tr>';
 }

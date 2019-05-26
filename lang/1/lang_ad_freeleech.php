@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'freeleech_thisfile' => "?php\n\n/**\nThis file created on ",
     'freeleech_error_form' => 'Error Complete the Form.',
@@ -32,6 +34,4 @@ $lang = [
     'freeleech_doit' => 'Do it!',
     'freeleech_cache' => 'Cache',
     'freeleech_stdhead' => 'Freeleech Status',
-    'freeleech_title' => 'Set the Title',
-    'freeleech_message' => 'Set the message',
 ];

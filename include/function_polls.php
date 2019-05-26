@@ -1,16 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\PollVoter;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @return bool|string
- *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
 function parse_poll()
 {
-    global $CURUSER, $pollvoter_stuffs;
+    global $container, $CURUSER;
 
     $htmlout = '';
     $check = 0;
@@ -20,6 +27,7 @@ function parse_poll()
         'allow_result_view' => 1,
         'allow_poll_tags' => 1,
     ];
+    $pollvoter_stuffs = $container->get(PollVoter::class);
     $poll_data = $pollvoter_stuffs->get_user_poll($CURUSER['id']);
     if (empty($poll_data)) {
         return false;
@@ -50,13 +58,13 @@ function parse_poll()
     }
 
     if ($check === 1) {
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
+        $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
         $tv_poll = 0;
         foreach ($poll_answers as $id => $data) {
             //subtitle question
-            $question = htmlsafechars(htmlspecialchars($data['question'], ENT_QUOTES, 'UTF-8'));
+            $question = htmlsafechars($data['question']);
             $choice_html = '';
             //get total votes for each choice
             foreach ($poll_answers[$id]['votes'] as $number) {
@@ -64,7 +72,7 @@ function parse_poll()
             }
             // Get the choises from the unserialised array
             foreach ($data['choice'] as $choice_id => $text) {
-                $choice = htmlsafechars(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
+                $choice = htmlsafechars($text);
                 $votes = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
@@ -82,23 +90,23 @@ function parse_poll()
         $htmlout .= show_total_votes($tv_poll);
     } elseif ($check == 2) {
         // only for guests when view before vote is off
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
+        $htmlout .= poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
         //$htmlout .= poll_show_no_guest_view();
         $htmlout .= show_total_votes($total_votes);
     } else {
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         //output poll form
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars(htmlspecialchars($poll_data['poll_question'], ENT_QUOTES, 'UTF-8')));
+        $htmlout .= poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
         foreach ($poll_answers as $id => $data) {
             foreach ($poll_answers[$id]['votes'] as $number) {
                 $total_votes += intval($number);
             }
             // get the question again!
-            $question = htmlsafechars(htmlspecialchars($data['question'], ENT_QUOTES, 'UTF-8'));
+            $question = htmlsafechars($data['question']);
             $choice_html = '';
             // get choices for this question
             foreach ($data['choice'] as $choice_id => $text) {
-                $choice = htmlsafechars(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
+                $choice = htmlsafechars($text);
                 $votes = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
@@ -147,8 +155,8 @@ function parse_poll()
 function poll_header($pid = '', $poll_q = '')
 {
     global $site_config;
-    $HTMLOUT = '';
-    $HTMLOUT .= "<script>
+
+    $HTMLOUT = "<script>
     /*<![CDATA[*/
     function go_gadget_show()
     {
@@ -203,7 +211,7 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
                 $answer
             </div>
             <div class='level-center-center'>
-                <img src='{$site_config['paths']['images_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt=''>
+                <img src='{$site_config['paths']['images_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' alt=''>
                 [$percentage%]
             </div>
             <span class='size_4'>Total Votes: $votes</span>

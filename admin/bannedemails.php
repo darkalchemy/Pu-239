@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_banemail'));
+global $ontainer, $CURUSER, $site_config;
 
 $HTMLOUT = '';
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
@@ -46,10 +49,11 @@ $body = "
         </tr>";
 $HTMLOUT .= main_table($body) . '
     </form>';
+$fluent = $container->get(Database::class);
 $count1 = $fluent->from('bannedemails')
-                 ->select(null)
-                 ->select('COUNT(*) AS count')
-                 ->fetch('count');
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->fetch('count');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
@@ -72,9 +76,9 @@ if (mysqli_num_rows($res) == 0) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $body .= '
         <tr>
-            <td>' . get_date($arr['added'], '') . '</td>
+            <td>' . get_date((int) $arr['added'], '') . '</td>
             <td>' . htmlsafechars($arr['email']) . '</td>
-            <td>' . format_username($arr['addedby']) . '</td>
+            <td>' . format_username((int) $arr['addedby']) . '</td>
             <td>' . htmlsafechars($arr['comment']) . "</td>
             <td><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int) $arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td>
         </tr>";

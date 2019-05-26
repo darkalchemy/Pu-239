@@ -1,20 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
-
 $lang = array_merge($lang, load_language('ad_edit_moods'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = '';
 if (isset($_POST) || isset($_GET)) {
     $edit_params = array_merge($_GET, $_POST);
 }
-$edit_mood['action'] = (isset($edit_params['action']) ? $edit_params['action'] : 0);
-$edit_mood['id'] = (isset($edit_params['id']) ? (int) $edit_params['id'] : 0);
-$edit_mood['name'] = (isset($edit_params['name']) ? $edit_params['name'] : 0);
-$edit_mood['image'] = (isset($edit_params['image']) ? $edit_params['image'] : 0);
-$edit_mood['bonus'] = (isset($edit_params['bonus']) ? 1 : 0);
+$edit_mood['action'] = isset($edit_params['action']) ? $edit_params['action'] : 0;
+$edit_mood['id'] = isset($edit_params['id']) ? (int) $edit_params['id'] : 0;
+$edit_mood['name'] = isset($edit_params['name']) ? $edit_params['name'] : '';
+$edit_mood['image'] = isset($edit_params['image']) ? $edit_params['image'] : '';
+$edit_mood['bonus'] = isset($edit_params['bonus']) ? 1 : 0;
+$cache = $container->get(Cache::class);
 if ($edit_mood['action'] === 'added') {
     if ($edit_mood['name'] != $lang['moods_example'] && $edit_mood['image'] != 'smile1.gif') {
         sql_query('INSERT INTO moods (name, image, bonus) VALUES (' . sqlesc($edit_mood['name']) . ', ' . sqlesc($edit_mood['image']) . ', ' . sqlesc($edit_mood['bonus']) . ')') or sqlerr(__FILE__, __LINE__);

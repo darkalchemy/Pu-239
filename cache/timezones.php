@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 // Time zones...
 $TZ['time_-12'] = '(UTC - 12:00 hours) Enitwetok, Kwajalien';
 $TZ['time_-11'] = '(UTC - 11:00 hours) Midway Island, Samoa';

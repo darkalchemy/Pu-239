@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\Image;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-require_once INCL_DIR . 'share_images.php';
 check_user_status();
-global $site_config, $fluent, $cache;
-
 $lang = array_merge(load_language('global'), load_language('browse'));
 $valid_search = [
     'sn',
@@ -15,10 +17,12 @@ $valid_search = [
     'srs',
     'sre',
 ];
+global $container, $site_config;
 
+$fluent = $container->get(Database::class);
 $count = $fluent->from('torrents AS t')
                 ->select(null)
-                ->select('COUNT(*) AS count')
+                ->select('COUNT(id) AS count')
                 ->where('t.category', $site_config['categories']['movie']);
 
 $select = $fluent->from('torrents AS t')
@@ -47,8 +51,8 @@ foreach ($valid_search as $search) {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
         } elseif ($search === 'sys') {
-            $count = $count->where('t.year>= ?', (int) $cleaned);
-            $select = $select->where('t.year>= ?', (int) $cleaned)
+            $count = $count->where('t.year >= ?', (int) $cleaned);
+            $select = $select->where('t.year >= ?', (int) $cleaned)
                              ->orderBy('t.year DESC');
         } elseif ($search === 'sye') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
@@ -56,8 +60,8 @@ foreach ($valid_search as $search) {
                              ->orderBy('t.year DESC');
         } elseif ($search === 'srs') {
             $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
-            $count = $count->where('t.rating>= ?', (float) $_GET['srs']);
-            $select = $select->where('t.rating>= ?', (float) $_GET['srs'])
+            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
+            $select = $select->where('t.rating >= ?', (float) $_GET['srs'])
                              ->orderBy('t.rating DESC');
         } elseif ($search === 'sre') {
             $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
@@ -72,13 +76,15 @@ $count = $count->fetch('count');
 $perpage = 25;
 $addparam = empty($addparam) ? '?' : $addparam . '&amp;';
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/tmovies.php{$addparam}");
-$select = $select->limit($pager['pdo'])
+$select = $select->limit($pager['pdo']['limit'])
+                 ->offset($pager['pdo']['offset'])
                  ->orderBy('t.added DESC');
 $HTMLOUT = "
     <h1 class='has-text-centered top20'>Movies</h1>";
 
 $body = "
         <div class='masonry padding20'>";
+$image_stuffs = $container->get(Image::class);
 foreach ($select as $torrent) {
     $cast = $cache->get('cast_' . $torrent['imdb_id']);
     if ($cast === false || is_null($cast)) {
@@ -87,7 +93,7 @@ foreach ($select as $torrent) {
                        ->select('p.id')
                        ->select('p.name')
                        ->innerJoin('imdb_person AS i ON p.imdb_id=i.person_id')
-                       ->where('i.imdb_id=?', str_replace('tt', '', $torrent['imdb_id']))
+                       ->where('i.imdb_id = ?', str_replace('tt', '', $torrent['imdb_id']))
                        ->where('i.type = "cast"')
                        ->orderBy('p.id')
                        ->limit(7)
@@ -103,7 +109,7 @@ foreach ($select as $torrent) {
 
     $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
-        $image = find_images($torrent['imdb_id'], 'poster');
+        $image = $image_stuffs->find_images($torrent['imdb_id'], 'poster');
         if (!empty($image)) {
             $image = url_proxy($image, true);
         } else {
@@ -116,13 +122,13 @@ foreach ($select as $torrent) {
     $rating = "
                 <a href='{$site_config['paths']['baseurl']}/browse.php?srs={$torrent['rating']}&amp;sre={$torrent['rating']}'>
                     <div>
-                        <span class='level-left'>
+                        <div class='level-left'>
                             <div class='right5'>{$percent}%</div>
                             <div class='star-ratings-css'>
                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
-                        </span>
+                        </div>
                     </div>
                 </a>";
 
@@ -153,7 +159,7 @@ $HTMLOUT .= main_div("
                         <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search' name='sn' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
+                                <input id='search' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
                             </div>
                             <div class='column'>
                                 <div class='columns'>

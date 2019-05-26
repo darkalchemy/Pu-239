@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $session;
-
 $lang = array_merge($lang, load_language('ad_class_config'));
+global $CURUSER, $site_config;
 
 $style = get_stylesheet();
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
@@ -34,61 +41,66 @@ if (!in_array($mode, $possible_modes)) {
  * @param int    $value
  * @param string $direction
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function update_forum_classes(int $value, string $direction)
 {
-    global $fluent, $cache;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     if ($direction === 'increment') {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
-               ->where('min_class_read>= ?', $value)
+               ->set(['min_class_read' => new Literal('min_class_read + 1')])
+               ->where('min_class_read >= ?', $value)
                ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
-               ->where('min_class_write>= ?', $value)
+               ->set(['min_class_write' => new Literal('min_class_write + 1')])
+               ->where('min_class_write >= ?', $value)
                ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
-               ->where('min_class_create>= ?', $value)
+               ->set(['min_class_create' => new Literal('min_class_create + 1')])
+               ->where('min_class_create >= ?', $value)
                ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
-               ->where('min_delete_view_class>= ?', $value)
+               ->set(['min_delete_view_class' => new Literal('min_delete_view_class + 1')])
+               ->where('min_delete_view_class >= ?', $value)
                ->execute();
     } else {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
-               ->where('min_class_read>= ?', $value)
-               ->where('min_class_read>0')
+               ->set(['min_class_read' => new Literal('min_class_read - 1')])
+               ->where('min_class_read >= ?', $value)
+               ->where('min_class_read > 0')
                ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
-               ->where('min_class_write>= ?', $value)
+               ->set(['min_class_write' => new Literal('min_class_write - 1')])
+               ->where('min_class_write >= ?', $value)
                ->where('min_class_write>0')
                ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
-               ->where('min_class_create>= ?', $value)
+               ->set(['min_class_create' => new Literal('min_class_create - 1')])
+               ->where('min_class_create >= ?', $value)
                ->where('min_class_create>0')
                ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
-               ->where('min_delete_view_class>= ?', $value)
+               ->set(['min_delete_view_class' => new Literal('min_delete_view_class - 1')])
+               ->where('min_delete_view_class >= ?', $value)
                ->where('min_delete_view_class>0')
                ->execute();
     }
-
+    $cache = $container->get(Cache::class);
     $cache->delete('staff_forums_');
 }
 
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
     $old_max = 0;
@@ -230,6 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->delete('is_staff_');
         }
     } elseif ($mode === 'remove') {
+        $value = 0;
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
         $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {

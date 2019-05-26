@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 global $site_config;
 
 $lang = [
@@ -109,17 +110,17 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='site1'></a>
         <p>What is this bittorrent all about anyway? How do I get the files?</p>
-        <p>Check out <a href='" . url_proxy('https://www.btfaq.com/') . "'>Brian's BitTorrent FAQ and Guide.</a></p>
+        <p>Check out <a href='https://www.btfaq.com/'>Brian's BitTorrent FAQ and Guide.</a></p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
-        <a id='site2'>
+        <a id='site2'></a>
         <p>Where does the donated money go?</p>
         <p>{$site_config['site']['name']} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &#36;125.00.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='site4'></a>
         <p>Where can I get a copy of the source code?</p>
-        <p>Pu-239 is an active open source project available for download via Github <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!</p>
+        <p>Pu-239 is an active open source project available for download via Github <a href='https://github.com/darkalchemy/Pu-239'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!</p>
     </div>",
 
     'faq_userinfo_body' => "
@@ -129,7 +130,7 @@ $lang = [
         <p>You can contact site staff with your request on irc</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
-        <a id='user2'>
+        <a id='user2'></a>
         <p>I've lost my user name or password! Can you send it to me?</p>
         <p>Please use <a href='{$site_config['paths']['baseurl']}/recover.php'>this form</a> to have the login details emailed to you.</p>
     </div>
@@ -570,8 +571,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox1'></a>
         <p>What is a proxy?</p>
-        <p>Basically a middleman. When you are browsing a site through a proxy your requests are sent to the proxy and the proxy forwards them to the site instead of you connecting directly to the site. There are several classifications (the terminology is far from standard):</p>
-        <p>",
+        <p>Basically a middleman. When you are browsing a site through a proxy your requests are sent to the proxy and the proxy forwards them to the site instead of you connecting directly to the site. There are several classifications (the terminology is far from standard):</p>",
     'faq_proxy_body2' => main_table("
         <tr>
             <td class='rowhead'>Transparent</td>
@@ -671,7 +671,6 @@ $lang = [
     'faq_problem_title' => "What if I can't find the answer to my problem here?",
     'faq_problem_body' => "
     <div class='top20 bg-02 padding20 round10'>
-        <a id='answer_9'></a>
         <p>Post in the <a href='{$site_config['paths']['baseurl']}/forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:</p>
         <ul class='disc left20'>
             <li class='padding10'>

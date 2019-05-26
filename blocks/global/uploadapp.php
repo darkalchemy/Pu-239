@@ -1,10 +1,17 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
+global $CURUSER, $container, $lang, $site_config;
 
 if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
+    $cache = $container->get(Cache::class);
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
+        $fluent = $container->get(Database::class);
         $newapp = $fluent->from('uploadapp')
                          ->select(null)
                          ->select('COUNT(id) AS count')

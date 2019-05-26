@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -10,10 +12,9 @@ require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_bluray.php';
 require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session;
-
 $lang = load_language('global');
 $image = placeholder_image();
+global $site_config;
 
 $lists = [
     'upcoming',
@@ -33,7 +34,7 @@ switch ($list) {
     case 'bluray':
         $title = 'Bluray Releases';
         $pubs = get_bluray_info();
-        if (!empty($pubs)) {
+        if (is_array($pubs)) {
             $div = "
         <div class='level-center'>";
             foreach ($pubs as $data) {
@@ -43,9 +44,8 @@ switch ($list) {
         </div>';
             $div = main_div($div);
         } else {
-            $div = main_div("<p1 class='has-text-centered'>Blu-ray.com may be down, check back later</p1>", '', 'padding20');
+            $div = main_div("<p class='has-text-centered'>Blu-ray.com may be down, check back later</p>", '', 'padding20');
         }
-
         $HTMLOUT = "
         <h1 class='has-text-centered'>Blu-ray Releases</h1>" . $div;
 
@@ -55,7 +55,7 @@ switch ($list) {
         $title = 'TV Schedule';
         $tvmaze_data = get_schedule();
 
-        if ($tvmaze_data) {
+        if (is_array($tvmaze_data)) {
             $today = date('Y-m-d');
             $shows = [];
             foreach ($tvmaze_data as $listing) {
@@ -64,7 +64,7 @@ switch ($list) {
                 }
             }
 
-            if (!empty($shows)) {
+            if (is_array($shows)) {
                 usort($shows, 'timeSort');
                 $titles = $body = [];
                 foreach ($shows as $tv) {
@@ -81,7 +81,7 @@ switch ($list) {
                             'episode' => $tv['number'],
                             'runtime' => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
                             'type' => $tv['_embedded']['show']['type'],
-                            'airtime' => !empty($tv['airtime']) ? $use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1) : '',
+                            'airtime' => !empty($tv['airtime']) ? get_date((int) $airtime, 'WITHOUT_SEC', 0, 1) : '',
                             'id' => $tv['_embedded']['show']['id'],
                             'overview' => str_replace([
                                 '<p>',
@@ -97,7 +97,7 @@ switch ($list) {
                 }
 
                 $div = "
-        <h1 class='has-text-centered'>TV Today</h1>
+        <h1 class='has-text-centered'>TVMaze TV Today</h1>
         <div class='level-center'>";
                 foreach ($body as $data) {
                     $div .= generate_html($data);
@@ -108,7 +108,8 @@ switch ($list) {
                 $HTMLOUT = main_div($div);
             }
         } else {
-            $HTMLOUT = main_div("<p class='has-text-centered'>TVMaze may be down, check back later</p>", '', 'padding20');
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>TVMaze TV Today</h1>" . main_div("<p class='has-text-centered'>TVMaze may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -138,7 +139,7 @@ switch ($list) {
 
         $tvs = get_tv_by_day($today);
 
-        if ($tvs) {
+        if (is_array($tvs)) {
             $titles = $body = [];
             foreach ($tvs as $tv) {
                 if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
@@ -170,7 +171,8 @@ switch ($list) {
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>TMBb TV Airing By Date</h1>" . main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -178,11 +180,11 @@ switch ($list) {
     case 'theaters':
         $title = 'In Theaters';
         $HTMLOUT = "
-    <h1 class='has-text-centered'>In Theaters</h1>";
+    <h1 class='has-text-centered'>TMDb In Theaters</h1>";
 
         $movies = get_movies_in_theaters();
 
-        if ($movies) {
+        if (is_array($movies)) {
             $titles = $body = [];
             foreach ($movies as $movie) {
                 if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
@@ -214,7 +216,8 @@ switch ($list) {
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>TMBb In Theaters</h1>" . main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
 
         break;
@@ -226,7 +229,7 @@ switch ($list) {
 
         $movies = get_movies_by_vote_average(100);
 
-        if ($movies) {
+        if (is_array($movies)) {
             $titles = $body = [];
             foreach ($movies as $movie) {
                 if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
@@ -258,7 +261,8 @@ switch ($list) {
 
             $HTMLOUT .= main_div($div);
         } else {
-            $HTMLOUT = main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>TMBb Top 100 Movies</h1>" . main_div("<p class='has-text-centered'>TMDb may be down, check back later</p>", '', 'padding20');
         }
         break;
 
@@ -267,11 +271,11 @@ switch ($list) {
         $HTMLOUT = '';
 
         $imdbs = get_upcoming();
-        if ($imdbs) {
+        if (is_array($imdbs)) {
             foreach ($imdbs as $key => $imdb) {
                 $body = '';
                 $HTMLOUT .= "
-        <h1 class='has-text-centered'>Upcoming Movies $key</h1>";
+        <h1 class='has-text-centered'>IMDb Upcoming Movies $key</h1>";
 
                 $body .= "
         <div class='level-center'>";
@@ -287,10 +291,18 @@ switch ($list) {
 
                 $HTMLOUT .= main_div($body);
             }
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>IMBb Upcoming Movies</h1>" . main_div("<p class='has-text-centered'>IMDb.com may be down, check back later</p>", '', 'padding20');
         }
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
 
+/**
+ * @param array $data
+ *
+ * @return string
+ */
 function generate_html(array $data)
 {
     $html = "
@@ -298,6 +310,7 @@ function generate_html(array $data)
         <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
             <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
             <div class='has-text-centered top10'>{$data['title']}</div>";
+
     if (!empty($data['airtime'])) {
         $html .= "
                     <div class='has-text-centered top10'>{$data['airtime']}</div>";
@@ -343,7 +356,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>Season: </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['season']) . '</span>
+                                        <span class='size_4'>" . (int) $data['season'] . '</span>
                                     </div>';
     }
     if (!empty($data['episode'])) {
@@ -352,7 +365,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>Episode: </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['episode']) . '</span>
+                                        <span class='size_4'>" . (int) $data['episode'] . '</span>
                                     </div>';
     }
     if (!empty($data['runtime'])) {
@@ -388,7 +401,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>Popularity: </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['popularity']) . '</span>
+                                        <span class='size_4'>" . (int) $data['popularity'] . '</span>
                                     </div>';
     }
     if (!empty($data['vote_average'])) {
@@ -397,7 +410,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>Votes: </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['vote_average']) . '</span>
+                                        <span class='size_4'>" . (int) $data['vote_average'] . '</span>
                                     </div>';
     }
     if (!empty($data['overview'])) {

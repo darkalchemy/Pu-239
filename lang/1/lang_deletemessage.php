@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //DeleteMessage
     'deletemessage_bad_id' => 'Bad message ID',

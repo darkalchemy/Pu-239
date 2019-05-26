@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli, $fluent;
+$lang = array_merge(load_language('global'), load_language('staffbox'));
+global $container, $site_config, $CURUSER;
 
 $dt = TIME_NOW;
-$lang = array_merge(load_language('global'), load_language('staffbox'));
+$session = $container->get(Session::class);
 if ($CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', $lang['staffbox_class']);
     header('Location: index.php');
@@ -27,6 +33,7 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array(
 $message = isset($_POST['message']) && !empty($_POST['message']) ? htmlsafechars($_POST['message']) : '';
 $reply = isset($_POST['reply']) && $_POST['reply'] == 1 ? true : false;
 $HTMLOUT = '';
+$cache = $container->get(Cache::class);
 switch ($do) {
     case 'delete':
         if ($id > 0) {
@@ -95,9 +102,9 @@ switch ($do) {
                     <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
                     <form action='{$_SERVER['PHP_SELF']}' method='post' accept-charset='utf-8'>
                         <div class='bordered top20 bottom20 bg-00'>
-                            <div>{$lang['staffbox_pm_from']}: " . format_username($a['sender']) . ' at ' . get_date($a['added'], 'DATE', 1) . "</div>
+                            <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'DATE', 1) . "</div>
                             <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
-                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username($a['answeredby']) : '<span>No</span>') . "</div>
+                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) : '<span>No</span>') . "</div>
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>" . format_comment($a['msg']) . "
                         </div>
@@ -152,7 +159,7 @@ switch ($do) {
     default:
         $count_msgs = $fluent->from('staffmessages')
                              ->select(null)
-                             ->select('COUNT(*) AS count')
+                             ->select('COUNT(id) AS count')
                              ->fetch('count');
 
         $perpage = 15;
@@ -181,9 +188,9 @@ switch ($do) {
                 $body .= "
                         <tr>
                             <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int) $a['id'] . "'>" . htmlsafechars($a['subject']) . '</a></td>
-                            <td><b>' . ($a['username'] ? format_username($a['sender']) : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
-                            <td>' . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . '</span></td>
-                            <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username($a['answeredby']) : '<span>No</span>') . "</b></td>
+                            <td><b>' . ($a['username'] ? format_username((int) $a['sender']) : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
+                            <td>' . get_date((int) $a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date((int) $a['added'], 0, 1) . '</span></td>
+                            <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username((int) $a['answeredby']) : '<span>No</span>') . "</b></td>
                             <td><input type='checkbox' name='id[]' value='" . (int) $a['id'] . "'></td>
                         </tr>";
             }

@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config, $session, $cache, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
+global $container, $site_config, $CURUSER;
+
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -25,7 +30,9 @@ $HTMLOUT = $offers = $subs_list = $has_request = $descr = '';
 if ($CURUSER['class'] < $site_config['allowed']['upload'] || $CURUSER['uploadpos'] != 1 || $CURUSER['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
+$cache = $container->get(Cache::class);
 $upload_vars = $cache->get('user_upload_variables_' . $CURUSER['id']);
+$poster = $youtube = $strip = $uplver = $allow_comments = $free_length = $half_length = $tags = $description = $body = '';
 if (!empty($upload_vars)) {
     $upload_vars = unserialize($upload_vars);
 }
@@ -66,6 +73,7 @@ foreach ($vars as $var) {
         ${$var} = isset($upload_vars[$var]) ? $upload_vars[$var] : '';
     }
 }
+$fluent = $container->get(Database::class);
 $res_request = $fluent->from('requests')
                       ->select(null)
                       ->select('id')
@@ -95,7 +103,7 @@ $res_offers = $fluent->from('offers')
                      ->select(null)
                      ->select('id')
                      ->select('offer_name')
-                     ->where('offered_by_user_id=?', $CURUSER['id'])
+                     ->where('offered_by_user_id = ?', $CURUSER['id'])
                      ->where('status = "approved"')
                      ->orderBy('offer_name')
                      ->fetchAll();
@@ -120,10 +128,11 @@ $announce_url = $site_config['announce_urls']['http'][0];
 if (get_scheme() === 'https') {
     $announce_url = $site_config['announce_urls']['https'][0];
 }
+$session = $container->get(Session::class);
 $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
-        <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
+        <input type='hidden' id='csrf' name='csrf'  data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>
         <div class='has-text-centered margin10'>{$lang['upload_announce_url']}:<br>
             <input type='text' class='has-text-centered w-100' readonly='readonly' value='{$announce_url}' id='announce_url'>
@@ -160,7 +169,7 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_imdb_url']}</td>
                 <td>
-                    <input type='url' id='url' name='url' maxlength='80' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='{$url}'><br>
+                    <input type='url' id='url' name='url' maxlength='80' class='w-100' value='{$url}'><br>
                     {$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}
                     <div id='imdb_outer'></div>
                 </td>
@@ -168,7 +177,7 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_isbn']}</td>
                 <td>
-                    <input type='text' id='isbn' name='isbn' maxlength='13' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='$isbn'><br>
+                    <input type='text' id='isbn' name='isbn' maxlength='13' class='w-100' value='$isbn'><br>
                     {$lang['upload_isbn_details']}
                     <div id='isbn_outer'></div>
                 </td>
@@ -176,7 +185,7 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_poster']}</td>
                 <td>
-                    <input type='url' id='image_url' data-csrf='" . $session->get('csrf_token') . "' placeholder='External Image URL' class='w-100' onchange=\"return grab_url(event)\">
+                    <input type='url' id='image_url' placeholder='External Image URL' class='w-100' onchange=\"return grab_url(event)\">
                     <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' value='$poster'>
                     <br>{$lang['upload_poster1']}
                     <div class='poster_container has-text-centered'></div>
@@ -231,14 +240,13 @@ $HTMLOUT .= $offers;
 $HTMLOUT .= $has_request;
 $subs_list .= "
                 <div id='subs' class='level-center'>";
+$subs = $container->get('subtitles');
 foreach ($subs as $s) {
     $subs_list .= "
-                    <div class='w-15 margin10 tooltipper bordered level-center' title='" . htmlsafechars($s['name']) . "'>
-                        <span class='has-text-centered'>
-                            <input name='subs[]' type='checkbox' value='{$s['id']}'" . (in_array($s['id'], $has_subs) ? ' checked' : '') . ">
-                            <image class='sub_flag' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "'>
-                        </span>
-                        <span class='has-text-centered'>" . htmlsafechars($s['name']) . '</span>
+                    <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
+                        <input name='subs[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $has_subs) ? ' checked' : '') . " class='margin20'>
+                        <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='" . htmlsafechars($s['name']) . "'>
+                        <span class='has-text-centered margin20'>" . htmlsafechars($s['name']) . '</span>
                     </div>';
 }
 $subs_list .= '

@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
-
 $lang = load_language('global');
+global $container, $site_config, $CURUSER;
+
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
@@ -42,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
+    $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);

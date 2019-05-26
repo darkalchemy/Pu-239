@@ -1,6 +1,6 @@
 <?php
 
-global $mysqli;
+declare(strict_types = 1);
 
 $key = 'VGhlIE1vemlsbGEgZmFtaWx5IGFwcG';
 $vars = [
@@ -16,7 +16,6 @@ if ($key !== $vars['key'] || empty($vars['username'])) {
     die('hmm something looks odd');
 }
 require_once __DIR__ . '/include/bittorrent.php';
-dbconn();
 switch ($vars['do']) {
     case 'check':
         $q = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($vars['username']));

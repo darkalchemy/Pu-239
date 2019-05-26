@@ -1,38 +1,54 @@
-$(window).on('load resize scroll', function (e) {
-    if (document.body.clientWidth >= 1088) {
-        var col1 = document.getElementById('left_column').offsetHeight;
-        var col2 = document.getElementById('center_column').offsetHeight;
-        var col3 = document.getElementById('right_column').offsetHeight;
+window.addEventListener('load', event => {
+    parallax(event);
+});
+window.addEventListener('resize', event => {
+    parallax(event);
+});
+window.addEventListener('scroll', event => {
+    parallax(event);
+});
+
+function parallax(event) {
+    event.preventDefault();
+    if (document.body.clientWidth >= 1087) {
+        var col1Name = document.getElementById('left_column');
+        var col2Name = document.getElementById('center_column');
+        var col3Name = document.getElementById('right_column');
+        var col1 = col1Name.offsetHeight;
+        var col2 = col2Name.offsetHeight;
+        var col3 = col3Name.offsetHeight;
+        var cols = document.getElementById('parallax');
+        var topOfColumns = cols.offsetTop;
         var max = Math.max(col1, col2, col3);
-
-        var getTop = function (col) {
-            var height = $(window).innerHeight();
-            var columns = $('.parallax').outerHeight() - height;
-            var travel = max - col;
-            var scrollInterval = columns / travel;
-            var scrolltop = $(window).scrollTop();
-            var topOfColumns = $('.parallax').offset().top;
-            var distance = scrolltop - topOfColumns;
-
-            if (scrolltop < topOfColumns + max - height + 20) {
-                return Math.floor(distance / scrollInterval);
-            } else {
-                return travel;
-            }
-        };
-
-        var topOfColumns = $('.parallax').offset().top;
-        var scrolltop = $(window).scrollTop();
+        var scrolltop = window.scrollY;
         var distance = scrolltop - topOfColumns;
-
         if (distance > 0) {
-            $('#left_column').css('margin-top', getTop(col1));
-            $('#center_column').css('margin-top', getTop(col2));
-            $('#right_column').css('margin-top', getTop(col3));
+            col1Name.style.marginTop = getTop(col1, max) + 'px';
+            col2Name.style.marginTop = getTop(col2, max) + 'px';
+            col3Name.style.marginTop = getTop(col3, max) + 'px';
         } else {
-            $('#left_column').css('margin-top', 0);
-            $('#center_column').css('margin-top', 0);
-            $('#right_column').css('margin-top', 0);
+            col1Name.style.marginTop = '0';
+            col2Name.style.marginTop = '0';
+            col3Name.style.marginTop = '0';
         }
     }
-});
+}
+
+function getTop(col, max) {
+    var height = window.innerHeight;
+    var cols = document.getElementById('parallax');
+    var topOfColumns = cols.offsetTop;
+    var columns = cols.offsetHeight - height;
+    var travel = max - col;
+    var scrollInterval = columns / travel;
+
+    var scrolltop = window.scrollY;
+    var distance = scrolltop - topOfColumns;
+
+
+    if (scrolltop < topOfColumns + max - height + 20) {
+        return Math.floor(distance / scrollInterval);
+    } else {
+        return travel;
+    }
+}

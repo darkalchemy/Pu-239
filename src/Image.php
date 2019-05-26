@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Envms\FluentPDO\Literal;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Image.
@@ -10,16 +14,25 @@ use Envms\FluentPDO\Exception;
 class Image
 {
     protected $fluent;
-    protected $site_config;
+    protected $env;
     protected $limit;
+    protected $container;
+    protected $cache;
 
-    public function __construct()
+    /**
+     * Image constructor.
+     *
+     * @param Database           $fluent
+     * @param Cache              $cache
+     * @param ContainerInterface $c
+     */
+    public function __construct(Database $fluent, Cache $cache, ContainerInterface $c)
     {
-        global $fluent, $site_config;
-
+        $this->container = $c;
+        $this->env = $this->container->get('env');
         $this->fluent = $fluent;
-        $this->site_config = $site_config;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->cache = $cache;
+        $this->limit = $this->env['db']['query_limit'];
     }
 
     /**
@@ -37,17 +50,73 @@ class Image
 
     /**
      * @param array $values
+     *
+     * @throws Exception
+     */
+    public function insert_update(array $values)
+    {
+        $update = [
+            'imdb_id' => new Literal('VALUES(imdb_id)'),
+            'tmdb_id' => new Literal('VALUES(tmdb_id)'),
+            'type' => new Literal('VALUES(type)'),
+        ];
+        $count = (int) ($this->limit / max(array_map('count', $values)));
+        foreach (array_chunk($values, $count) as $t) {
+            $this->fluent->insertInto('images', $t)
+                         ->onDuplicateKeyUpdate($update)
+                         ->execute();
+        }
+    }
+
+    /**
+     * @param array $values
      * @param array $update
      *
      * @throws Exception
      */
     public function update(array $values, array $update)
     {
-        $count = floor($this->limit / max(array_map('count', $values)));
+        $count = (int) ($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('images', $t)
                          ->onDuplicateKeyUpdate($update)
                          ->execute();
         }
+    }
+
+    /**
+     * @param string $imdb
+     * @param string $type
+     *
+     * @throws Exception
+     *
+     * @return string|null
+     */
+    public function find_images(string $imdb, string $type = 'poster')
+    {
+        $images = $this->cache->get($type . '_' . $imdb);
+        if ($images === false || is_null($images)) {
+            $images = $this->fluent->from('images')
+                                   ->select(null)
+                                   ->select('url')
+                                   ->where('type = ?', $type)
+                                   ->where('imdb_id = ?', $imdb)
+                                   ->fetchAll();
+
+            if (!empty($images)) {
+                $this->cache->set($type . '_' . $imdb, $images, 86400);
+            } else {
+                $this->cache->set($type . '_' . $imdb, [], 3600);
+            }
+        }
+
+        if (!empty($images)) {
+            shuffle($images);
+            $image = $images[0]['url'];
+
+            return $image;
+        }
+
+        return null;
     }
 }

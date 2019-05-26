@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $session;
-
 $stdfoot = [
     'js' => [
         get_file_name('categories_js'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('getrss'));
+global $site_config, $CURUSER;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cats = !empty($_POST['cats']) ? array_map('intval', $_POST['cats']) : [];
     $feed = !empty($_POST['feed']) && $_POST['feed'] === 'dl' ? 'dl' : 'web';
@@ -40,7 +42,7 @@ $HTMLOUT = "
 require_once PARTIALS_DIR . 'categories.php';
 $HTMLOUT .= main_div("
         <div class='padding20'>
-            <div class='level-center'>
+            <ul class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
                     <label for='bm'>Bookmarked Torrents<br>
                         <select name='bm' class='top10 w-100'>
@@ -67,7 +69,7 @@ $HTMLOUT .= main_div("
                         </select>
                     </label>
                 </li>
-            </div>
+            </ul>
             <div class='level-center top20'>
                 <input type='submit' class='button is-small' value='{$lang['getrss_btn']}'>
             </div>

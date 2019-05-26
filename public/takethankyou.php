@@ -1,49 +1,88 @@
 <?php
 
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $mysqli;
-
 $lang = array_merge(load_language('global'), load_language('takerate'));
-if (!mkglobal('id')) {
+global $container, $site_config, $CURUSER;
+
+if (empty($_POST['id']) && empty($_GET['id'])) {
     die();
 }
-$id = (int) $id;
+$id = !empty($_GET['id']) ? (int) $_GET['id'] : (int) $_POST['id'];
 if (!is_valid_id($id)) {
-    stderr('Error', 'Bad Id');
+    stderr('Error', 'Bad Id', 'bottom20');
 }
 if (!isset($CURUSER)) {
-    stderr('Error', 'Your not logged in');
+    stderr('Error', 'Your not logged in', 'bottom20');
 }
-$res = sql_query('SELECT 1, thanks, comments FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_assoc($res);
-if (!$arr) {
-    stderr('Error', 'Torrent not found');
+$fluent = $container->get(Database::class);
+$torrent = $fluent->from('torrents')
+                  ->select(null)
+                  ->select('id')
+                  ->select('thanks')
+                  ->select('comments')
+                  ->where('id = ?', $id)
+                  ->fetch();
+
+if (empty($torrent)) {
+    stderr('Error', 'Torrent not found', 'bottom20');
 }
-$res1 = sql_query('SELECT 1 FROM thankyou WHERE torid=' . sqlesc($id) . ' AND uid =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res1);
-if ($row) {
-    stderr('Error', 'You already thanked.');
+$thanks = $fluent->from('thankyou')
+                 ->select(null)
+                 ->select('tid')
+                 ->where('torid = ?', $id)
+                 ->where('uid = ?', $CURUSER['id'])
+                 ->fetch('tid');
+
+if (!empty($thanks)) {
+    stderr('Error', 'You already thanked.', 'bottom20');
 }
 $text = ':thankyou:';
-$newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-sql_query('INSERT INTO thankyou (uid, torid, thank_date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
-sql_query('INSERT INTO comments (user, torrent, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "', " . sqlesc($text) . ',' . sqlesc($text) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$update['thanks'] = ($arr['thanks'] + 1);
-$update['comments'] = ($arr['comments'] + 1);
-$cache->update_row('torrent_details_' . $id, [
-    'thanks' => $update['thanks'],
-    'comments' => $update['comments'],
-], $site_config['expires']['torrent_details']);
+$values = [
+    'uid' => $CURUSER['id'],
+    'torid' => $id,
+    'thank_date' => TIME_NOW,
+];
+$fluent->insertInto('thankyou')
+       ->values($values)
+       ->execute();
+$values = [
+    'user' => $CURUSER['id'],
+    'torrent' => $id,
+    'added' => TIME_NOW,
+    'text' => $text,
+    'ori_text' => $text,
+];
+$fluent->insertInto('comments')
+       ->values($values)
+       ->execute();
+
+$set = [
+    'thanks' => new Literal('thanks + 1'),
+    'comments' => new Literal('comments + 1'),
+];
+$fluent->update('torrents')
+       ->set($set)
+       ->where('id = ?, $id')
+       ->execute();
+
 $cache->delete('latest_comments_');
 if ($site_config['bonus']['on']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus']['per_comment']);
-    $cache->update_row('user_' . $CURUSER['id'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_cache']);
+    $set = [
+        'seedbonus' => new Literal('seedbonus + ' . $site_config['bonus']['per_comment']),
+    ];
+    $fluent->update('users')
+           ->set($set)
+           ->where('id = ?', $CURUSER['id'])
+           ->execute();
 }
+$session = $container->get(Session::class);
 $session->set('is-success', "Your 'Thank you' has been registered!");
 header("Refresh: 0; url=details.php?id=$id");

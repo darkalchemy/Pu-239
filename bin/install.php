@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use DI\ContainerBuilder;
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
 }
@@ -69,8 +78,8 @@ $vars['session']['prefix'] = $vars['session']['name'] . '_';
 $vars['cookies']['prefix'] = $vars['session']['prefix'];
 $vars['cookies']['domain'] = $vars['baseurl'];
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-$file = CONFIG_DIR . 'config.php.example';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+$file = CONFIG_DIR . 'config_example.php';
 $config = file_get_contents($file);
 $config = str_replace([
     '#mysql_db',
@@ -87,128 +96,54 @@ $config = str_replace([
 ], $config);
 
 if (!file_put_contents(CONFIG_DIR . 'config.php', $config)) {
-    die(CONFIG_DIR . 'config.php file could not be saved');
+    die(CONFIG_DIR . 'config.php file could not be saved, check your permissions.');
 }
 
-require_once INCL_DIR . 'function_common.php';
-require_once CONFIG_DIR . 'config.php';
+$production = false;
 require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
-require_once INCL_DIR . 'function_password.php';
+require_once INCL_DIR . 'function_common.php';
 
-use Noodlehaus\Config;
-
-$conf = new Config([
-    CONFIG_DIR . DIRECTORY_SEPARATOR . 'config.php',
-]);
-$site_config = $conf->all();
-
-$site_config['password']['memory_cost'] = 2048;
-$site_config['password']['time_cost'] = 12;
-$site_config['password']['threads'] = 4;
-$host = $site_config['database']['host'];
-$user = $site_config['database']['username'];
-$pass = quotemeta($site_config['database']['password']);
-$db = $site_config['database']['database'];
-
-$mysql_test = new mysqli($host, $user, $pass, $db);
-if ($mysql_test->connect_error) {
-    die("There was an error while selecting the database\n" . $mysql_test->error . "\n");
+$builder = new ContainerBuilder();
+if ($production) {
+    $builder->enableCompilation(DI_CACHE_DIR);
+}
+$builder->addDefinitions(CONFIG_DIR . '/config.php');
+$builder->addDefinitions(CONFIG_DIR . '/definitions.php');
+$builder->useAutowiring(true);
+$builder->useAnnotations(false);
+try {
+    $container = $builder->build();
+} catch (Exception $e) {
+    //TODO Logger;
 }
 
-$query = 'SELECT VERSION() AS ver';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
-$retval = shell_exec($sql);
-if (!preg_match('/10\.\d+\.\d+\-MariaDB|8\.\d+\.\d+/i', $retval)) {
-    $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
-    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
-    $retval = shell_exec($sql);
-    if (!preg_match('/innodb_large_prefix\s+ON/', $retval)) {
-        die("Please add/update my.cnf 'innodb_large_prefix = 1' and restart mysql.\n");
-    }
-
-    $query = 'SHOW VARIABLES LIKE "innodb_file_format"';
-    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
-    $retval = shell_exec($sql);
-    if (!preg_match('/innodb_file_format\s+Barracuda/', $retval)) {
-        die("Please add/update my.cnf 'innodb_file_format = Barracuda' and restart mysql.\n");
-    }
-}
-
-$query = 'SHOW VARIABLES LIKE "innodb_file_per_table"';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
-$retval = shell_exec($sql);
-if (!preg_match('/innodb_file_per_table\s+ON/', $retval)) {
-    die("Please add/update my.cnf 'innodb_file_per_table = 1' and restart mysql.\n");
-}
-
-$query = 'SHOW VARIABLES LIKE "innodb_autoinc_lock_mode"';
-$sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $query);
-$retval = shell_exec($sql);
-if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
-    die("Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.\n");
-}
-$admin = [
-    'username' => $vars['admin']['username'],
-    'email' => $vars['admin']['email'],
-    'passhash' => make_passhash(trim($vars['admin']['pass'])),
-    'status' => 'confirmed',
-    'added' => TIME_NOW,
-    'last_access' => TIME_NOW,
-    'torrent_pass' => make_password(32),
-    'auth' => make_password(32),
-    'apikey' => make_password(32),
-    'ip' => inet_pton('127.0.0.1'),
-    'class' => UC_MAX,
-];
-$bot = [
-    'username' => $vars['chatbot']['name'],
-    'email' => '',
-    'passhash' => make_passhash(make_password()),
-    'status' => 'confirmed',
-    'added' => TIME_NOW,
-    'last_access' => TIME_NOW,
-    'torrent_pass' => make_password(32),
-    'auth' => make_password(32),
-    'apikey' => make_password(32),
-    'ip' => inet_pton('127.0.0.1'),
-];
-
-$timestamp = strtotime('today midnight');
+$site_config = $container->get('env');
+$site_config['files']['path'] = CACHE_DIR . 'install';
+$cache = $container->get(Cache::class);
+$auth = $container->get(Auth::class);
+$pdo = $container->get(PDO::class);
+$cache->flushDB();
 $sources = [
-    'schema' => DATABASE_DIR . 'schema.sql.gz',
-    'data' => DATABASE_DIR . 'data.sql.gz',
-    'trivia' => DATABASE_DIR . 'trivia.sql.gz',
-    'tvmaze' => DATABASE_DIR . 'tvmaze.sql.gz',
-    'timestamps' => "UPDATE cleanup SET clean_time = $timestamp WHERE clean_time > 0",
-    'admin' => $admin,
-    'bot' => $bot,
+    'schema' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'schema.sql.gz'),
+    'data' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'data.sql.gz'),
+    'trivia' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'trivia.sql.gz'),
+    'tvmaze' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'tvmaze.sql.gz'),
 ];
 
-$tables = [
-    'trivia',
-    'tvmaze',
-];
-$data = [
-    'schema',
-    'data',
-];
 foreach ($sources as $name => $source) {
-    if ($name === 'admin' || $name === 'bot') {
-        add_user($source);
-    } elseif (in_array($name, $tables)) {
-        echo 'Importing database table: ' . $name . "\n";
-        exec("gunzip < '$source' | /usr/bin/mysql -u'{$user}' -h '{$host}' -p'{$pass}' {$db}");
-    } elseif (in_array($name, $data)) {
-        echo 'Importing database ' . $name . "\n";
-        exec("gunzip < '$source' | /usr/bin/mysql -u'{$user}' -h '{$host}' -p'{$pass}' {$db}");
-    } else {
-        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $host, $user, $pass, $db, $source);
-        exec($sql, $output, $retval);
-    }
-    if ($retval != 0) {
+    echo 'Importing: ' . $name . "\n";
+    $result = $pdo->exec($source);
+    if ($result != 0) {
         die("There was an error while working with database, at step: {$name}\n");
     }
+}
+
+$timestamp = strtotime('today midnight');
+$query = "UPDATE cleanup SET clean_time = $timestamp WHERE clean_time > 0";
+$stmt = $pdo->query($query);
+if (!$stmt->execute()) {
+    die("There was an error while working with database, at step: {$name}\n");
 }
 
 foreach ($vars['site'] as $key => $value) {
@@ -239,44 +174,81 @@ foreach ($vars['chatbot'] as $key => $value) {
     update_config($set, 'chatbot', $key);
 }
 
-echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
+$userId = $auth->registerWithUniqueUsername(strip_tags($vars['admin']['email']), strip_tags($vars['admin']['pass']), strip_tags($vars['admin']['username']));
+if (!empty($userId)) {
+    update_user($userId, UC_MAX);
+}
+$userId = $auth->registerWithUniqueUsername('donkey.kong@nintendo.com', bin2hex(random_bytes(16)), strip_tags($vars['chatbot']['name']));
 
+echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
+$cache->flushDB();
+
+/**
+ * @param $x
+ *
+ * @return string
+ */
 function regex($x)
 {
     return '/\#' . str_replace([
-            'https://',
-            'http://',
-        ], '', trim($x)) . '/';
+        'https://',
+        'http://',
+    ], '', trim($x)) . '/';
 }
 
-function add_user(array $values)
-{
-    global $site_config;
-
-    $fluent = new Pu239\Database();
-    $user_id = $fluent->insertInto('users')
-                      ->values($values)
-                      ->execute();
-
-    if ($user_id) {
-        $values = [
-            'userid' => $user_id,
-        ];
-        $fluent->insertInto('usersachiev')
-               ->values($values)
-               ->execute();
-        $fluent->insertInto('user_blocks')
-               ->values($values)
-               ->execute();
-    }
-}
-
+/**
+ * @param array  $set
+ * @param string $parent
+ * @param string $name
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function update_config(array $set, string $parent, string $name)
 {
-    $fluent = new Pu239\Database();
+    global $container;
+
+    $fluent = $container->get(Database::class);
     $fluent->update('site_config')
            ->set($set)
            ->where('parent = ?', $parent)
            ->where('name = ?', $name)
+           ->execute();
+}
+
+/**
+ * @param int $userid
+ * @param int $class
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
+function update_user(int $userid, int $class)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $dt = TIME_NOW;
+    $set = [
+        'free_switch' => $dt + 14 * 86400,
+        'torrent_pass' => bin2hex(random_bytes(32)),
+        'auth' => bin2hex(random_bytes(32)),
+        'apikey' => bin2hex(random_bytes(32)),
+        'stylesheet' => 1,
+        'last_access' => $dt,
+        'class' => $class,
+    ];
+    $fluent->update('users')
+           ->set($set)
+           ->where('id = ?', $userid)
+           ->execute();
+    $fluent->insertInto('usersachiev')
+           ->values(['userid' => $userid])
+           ->execute();
+    $fluent->insertInto('user_blocks')
+           ->values(['userid' => $userid])
            ->execute();
 }

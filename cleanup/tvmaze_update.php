@@ -1,21 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $data
  *
- * @return bool|void
- *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return bool|void
  */
 function tvmaze_update($data)
 {
-    $time_start = microtime(true);
-    global $fluent, $BLOCKS;
+    global $container, $BLOCKS;
 
+    $time_start = microtime(true);
     if (!$BLOCKS['tvmaze_api_on']) {
         return;
     }
-
+    $fluent = $container->get(Database::class);
     $max = $fluent->from('tvmaze')
                   ->select(null)
                   ->select('MAX(tvmaze_id) AS id')
@@ -70,6 +78,10 @@ function tvmaze_update($data)
 function get_or_empty($param)
 {
     if (!empty($param)) {
+        if (is_int($param)) {
+            return $param;
+        }
+
         return htmlsafechars($param);
     }
 

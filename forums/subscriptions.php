@@ -1,10 +1,12 @@
 <?php
 
-global $lang, $CURUSER;
+declare(strict_types = 1);
+
+global $site_config, $CURUSER;
 
 $posts = $lppostid = $topicpoll = $rpic = $body = '';
-$HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username($CURUSER['id']) . '</h1>';
-$res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+$HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username((int) $CURUSER['id']) . '</h1>';
+$res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 if ($count === 0) {
@@ -24,24 +26,24 @@ $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
-$res = sql_query('SELECT s.id AS subscribed_id, t.id AS topic_id, t.topic_name, t.topic_desc, t.last_post, t.views, t.post_count, t.locked, t.sticky, t.poll_id, t.user_id, t.anonymous AS tan, p.id AS post_id, p.added, p.user_id, p.anonymous AS pan, u.username, u.id, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM subscriptions AS s LEFT JOIN topics AS t ON s.topic_id=t.id LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id=t.forum_id LEFT JOIN users AS u ON u.id=p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' s.user_id=' . $CURUSER['id'] . ' AND f.min_class_read < ' . sqlesc($CURUSER['class']) . ' AND s.user_id=' . sqlesc($CURUSER['id']) . '  ORDER BY t.id DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT s.id AS subscribed_id, t.id AS topic_id, t.topic_name, t.topic_desc, t.last_post, t.views, t.post_count, t.locked, t.sticky, t.poll_id, t.user_id, t.anonymous AS tan, p.id AS post_id, p.added, p.user_id, p.anonymous AS pan, u.username, u.id, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM subscriptions AS s LEFT JOIN topics AS t ON s.topic_id=t.id LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id=t.forum_id LEFT JOIN users AS u ON u.id=p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' s.user_id=' . $CURUSER['id'] . ' AND f.min_class_read < ' . sqlesc($CURUSER['class']) . ' AND s.user_id=' . sqlesc($CURUSER['id']) . '  ORDER BY t.id DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
 while ($topic_arr = mysqli_fetch_assoc($res)) {
     $topic_id = (int) $topic_arr['topic_id'];
     $locked = $topic_arr['locked'] === 'yes';
     $sticky = $topic_arr['sticky'] === 'yes';
     $topic_poll = $topic_arr['poll_id'] > 0;
-    $last_post_username = ($topic_arr['pan'] === 'no' && !empty($topic_arr['username']) ? format_username($topic_arr['id']) : '[<i>' . get_anonymous_name() . '</i>]');
+    $last_post_username = ($topic_arr['pan'] === 'no' && !empty($topic_arr['username']) ? format_username((int) $topic_arr['id']) : '[<i>' . get_anonymous_name() . '</i>]');
     $last_post_id = (int) $topic_arr['last_post'];
-    $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         } else {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username($first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username((int) $first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = (!empty($first_post_arr['username']) ? format_username($first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+        $thread_starter = (!empty($first_post_arr['username']) ? format_username((int) $first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
     }
     $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" class="icon tooltipper" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '">');
     $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($first_post_arr['body'], true, true, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
@@ -75,21 +77,21 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
             $multi_pages .= '</span>';
             break;
     }
-    $new = ($topic_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
+    $new = ($topic_arr['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
     $topicpic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars(htmlspecialchars($topic_arr['topic_name'], ENT_QUOTES, 'UTF-8')) . '</a> ' . $multi_pages;
+    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name']) . '</a> ' . $multi_pages;
     $body .= '<tr>
 		<td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
 		<td>' . $icon . '</td>
 		<td>
 	    	' . $topic_name . $first_post_text . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!">' : '') . '</td>
     		' . $rpic . '
-		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars(htmlspecialchars($topic_arr['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '') . '
+		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc']) . '</span>' : '') . '
         </td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count']) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>
-		<td><span style="white-space:nowrap;">' . get_date($topic_arr['added'], '') . '</span><br>by&nbsp;' . $last_post_username . '</td>
+		<td><span style="white-space:nowrap;">' . get_date((int) $topic_arr['added'], '') . '</span><br>by&nbsp;' . $last_post_username . '</td>
 		<td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '">
 		<img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post"></a></td>
 		<td><input type="checkbox" name="remove[]" value="' . (int) $topic_arr['subscribed_id'] . '"></td>
@@ -100,7 +102,7 @@ $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<form action="' . $site_conf
 $heading = '
 		<tr>
 		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></th>
-		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title = ' . $lang['fe_thread_icon'] . '"></th>
+		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"></th>
 		<th>' . $lang['fe_topic'] . '</th>
 		<th>' . $lang['fe_started_by'] . '</th>
 		<th>' . $lang['fe_replies'] . '</th>

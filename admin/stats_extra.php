@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_stats_extra'));
 $inbound = $_GET;
 unset($inbound['page']);
@@ -31,11 +37,11 @@ $month_names = [
 ];
 switch ($inbound['mode']) {
     case 'show_reg':
-        result_screen('reg');
+        result_screen('reg', $inbound, $month_names);
         break;
 
     case 'show_topic':
-        result_screen('topic');
+        result_screen('topic', $inbound, $month_names);
         break;
 
     case 'topic':
@@ -43,7 +49,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_comms':
-        result_screen('comms');
+        result_screen('comms', $inbound, $month_names);
         break;
 
     case 'comms':
@@ -51,7 +57,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_torrents':
-        result_screen('torrents');
+        result_screen('torrents', $inbound, $month_names);
         break;
 
     case 'torrents':
@@ -59,7 +65,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_reps':
-        result_screen('reps');
+        result_screen('reps', $inbound, $month_names);
         break;
 
     case 'reps':
@@ -67,7 +73,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_post':
-        result_screen('post');
+        result_screen('post', $inbound, $month_names);
         break;
 
     case 'post':
@@ -75,7 +81,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_msg':
-        result_screen('msg');
+        result_screen('msg', $inbound, $month_names);
         break;
 
     case 'msg':
@@ -83,7 +89,7 @@ switch ($inbound['mode']) {
         break;
 
     case 'show_views':
-        show_views();
+        show_views($inbound, $month_names);
         break;
 
     case 'views':
@@ -95,9 +101,19 @@ switch ($inbound['mode']) {
         break;
 }
 
-function show_views()
+/**
+ * @param array $inbound
+ * @param array $month_names
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ * @throws Exception
+ */
+function show_views(array $inbound, array $month_names)
 {
-    global $inbound, $month_names, $lang, $site_config, $fluent;
+    global $container, $site_config, $lang;
 
     $page_title = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
@@ -106,6 +122,7 @@ function show_views()
     $human_to_date = getdate($to_time - 86400);
     $human_from_date = getdate($from_time);
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('topics AS t')
                     ->select(null)
                     ->select('t.forum_id')
@@ -130,7 +147,7 @@ function show_views()
                     ->where('t.added <= ?', $to_time)
                     ->groupBy('t.forum_id')
                     ->orderBy("result_count $sort_by, t.forum_id")
-                    ->limit($pager['pdo'])
+                    ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
                     ->fetchAll();
 
     $running_total = 0;
@@ -150,6 +167,7 @@ function show_views()
                 <th>{$lang['stats_ex_count']}</th>
             </tr>";
 
+    $body = '';
     if ($count > 0) {
         foreach ($query as $row) {
             if ($row['result_count'] > $max_result) {
@@ -161,7 +179,6 @@ function show_views()
                 'result_count' => $row['result_count'],
             ];
         }
-        $body = '';
         foreach ($results as $data) {
             $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
             if ($img_width < 1) {
@@ -200,12 +217,23 @@ function show_views()
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-function result_screen($mode = 'reg')
+/**
+ * @param string $mode
+ * @param array  $inbound
+ * @param array  $month_names
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
+function result_screen(string $mode, array $inbound, array $month_names)
 {
-    global $site_config, $inbound, $month_names, $lang, $fluent;
+    global $container, $site_config, $lang;
 
     $page_title = $lang['stats_ex_center_result'];
-    $page_detail = '';
+    $table = $page_detail = $sql_table = $sql_field = '';
     $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
     $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
     $human_to_date = getdate($to_time - 86400);
@@ -263,6 +291,7 @@ function result_screen($mode = 'reg')
             break;
     }
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
+    $fluent = $container->get(Database::class);
     $count = $fluent->from($sql_table)
                     ->select(null)
                     ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
@@ -280,14 +309,14 @@ function result_screen($mode = 'reg')
 
     $query = $fluent->from($sql_table)
                     ->select(null)
-                    ->select('COUNT(*) AS result_count')
+                    ->select('COUNT(id) AS result_count')
                     ->select("MAX($sql_field) AS result_maxdate")
                     ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
                     ->where("$sql_field>= $from_time")
                     ->where("$sql_field <= $to_time")
                     ->groupBy('result_time')
                     ->orderBy("result_maxdate $sort_by")
-                    ->limit($pager['pdo'])
+                    ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
                     ->fetchAll();
 
     $running_total = 0;
@@ -364,10 +393,20 @@ function result_screen($mode = 'reg')
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-function main_screen($mode = 'reg')
+/**
+ * @param string $mode
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
+function main_screen($mode)
 {
-    global $site_config, $lang, $cache, $fluent, $inbound;
+    global $container, $site_config, $lang;
 
+    $form_code = $table = '';
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
     if ($mode === 'reg') {
@@ -395,8 +434,10 @@ function main_screen($mode = 'reg')
         $form_code = 'show_reps';
         $table = $lang['stats_ex_repsts'];
     }
+    $cache = $container->get(Cache::class);
     $oldest = $cache->get('oldest_');
     if ($oldest === false || is_null($oldest)) {
+        $fluent = $container->get(Database::class);
         $oldest = $fluent->from('users')
                          ->select(null)
                          ->select('added')
@@ -405,8 +446,8 @@ function main_screen($mode = 'reg')
                          ->fetch('added');
         $cache->set('oldest_', $oldest, 0);
     }
-    $old_date = get_date($oldest, 'FORM', 1, 0);
-    $new_date = get_date(TIME_NOW, 'FORM', 1, 0);
+    $old_date = get_date((int) $oldest, 'FORM', 1, 0);
+    $new_date = get_date((int) TIME_NOW, 'FORM', 1, 0);
     $menu = make_side_menu();
     $htmlout = $menu . "
         <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
@@ -468,6 +509,13 @@ function main_screen($mode = 'reg')
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @param        $name
+ * @param array  $in
+ * @param string $default
+ *
+ * @return string
+ */
 function make_select($name, $in = [], $default = '')
 {
     $html = "
@@ -487,6 +535,9 @@ function make_select($name, $in = [], $default = '')
     return $html;
 }
 
+/**
+ * @return string
+ */
 function make_side_menu()
 {
     global $site_config, $lang;

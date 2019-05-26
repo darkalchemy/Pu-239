@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //head
     'head_signup' => 'Signup',
@@ -38,7 +40,7 @@ $lang = [
     'signup_pass' => 'Pick a password:',
     'signup_passa' => 'Enter password again:',
     'signup_email' => 'Email address:',
-    'signup_valemail' => "The email address must be valid.You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere.",
+    'signup_valemail' => "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere.",
     'signup_timez' => 'Timezone',
     'signup_q1' => "Mother's birthplace",
     'signup_q2' => 'Best childhood friend',
@@ -56,7 +58,8 @@ $lang = [
     'signup_age' => 'I am at least 18 years old.',
     'signup_btn' => 'Sign up!',
     'signup_open' => 'Signup is open',
-    'signup_closed' => 'Signup is closed',
+    'signup_closed' => 'Signups are presently closed',
+    'signup_invite' => 'Signups are Invite Only',
     'signup_click' => 'Now click the button marked',
     'signup_x' => 'X',
     'signup_click1' => 'to complete the sign up!',

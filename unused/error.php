@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
-global $site_config;
-
 $string = $_SERVER['QUERY_STRING'];
 if ($string === '404') {
     $page = 'Page Not Found - 404';

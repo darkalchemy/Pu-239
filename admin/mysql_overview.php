@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 class_check(UC_MAX);
-global $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
+global $site_config;
+
 if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
-    $table = htmlspecialchars(strip_tags($_GET['table']));
+    $table = htmlsafechars(strip_tags($_GET['table']));
     if (!preg_match('/[^A-Za-z_]+/', $table)) {
         $Table = "`{$table}`";
     } else {
@@ -45,6 +49,7 @@ $heading = "
         </tr>";
 
 $count = 0;
+$fluent = $container->get(Database::class);
 $tables = $fluent->getPdo()
                  ->prepare('SHOW TABLE STATUS');
 $tables->execute();

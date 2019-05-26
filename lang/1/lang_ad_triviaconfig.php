@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'triviaconfig_title' => 'Trivia Config',
     'triviaconfig_update' => 'Update',

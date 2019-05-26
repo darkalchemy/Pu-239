@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'ref_sorry' => 'Sorry',
     'ref_no_auth' => 'Only moderators can view this page.',
@@ -20,5 +22,4 @@ $lang = [
     'ref_nr' => 'Nr.',
     'ref_search_results' => 'Search results for ',
     'ref_unknow' => 'Unknow Browser',
-    'ref_stdhead' => 'Referrers',
 ];

@@ -1,24 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
 
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  */
 function irc_update($data)
 {
-    $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache;
+    global $container, $site_config;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $time_start = microtime(true);
     $users_buffer = [];
 
     $res = sql_query("SELECT id, seedbonus, irctotal FROM users WHERE onirc = 'yes'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $users_buffer[] = '(' . $arr['id'] . ', ' . $site_config['bonus']['irc_per_duration'] . ', ' . $site_config['irc']['autoclean_interval'] . ')';
             $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus']['irc_per_duration']);
@@ -41,7 +47,7 @@ function irc_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Irc Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Irc Cleanup: Completed' . $text);
     }
 }

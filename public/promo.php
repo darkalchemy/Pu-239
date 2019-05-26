@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
 check_user_status();
-global $CURUSER, $site_config, $mysqli;
+$lang = array_merge(load_language('global'), load_language('signup'));
+global $CURUSER, $site_config;
 
 if (!$CURUSER) {
     get_template();
 }
-$lang = array_merge(load_language('global'), load_language('signup'));
 $HTMLOUT = '';
 
-$do = (isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : ''));
-$id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0'));
-$link = (isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : ''));
-$sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no');
+$do = isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : '');
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0');
+$link = isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : '');
+$sure = isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     $promoname = (isset($_POST['promoname']) ? $_POST['promoname'] : '');
     if (empty($promoname)) {
@@ -38,18 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
     $link = md5('promo_link' . TIME_NOW);
     $q = sql_query('INSERT INTO promo (name,added,days_valid,max_users,link,creator,bonus_upload,bonus_invites,bonus_karma) VALUES (' . implode(',', array_map('sqlesc', [
-            $promoname,
-            TIME_NOW,
-            $days_valid,
-            $max_users,
-            $link,
-            $CURUSER['id'],
-            $bonus_upload,
-            $bonus_invites,
-            $bonus_karma,
-        ])) . ') ') or sqlerr(__FILE__, __LINE__);
+        $promoname,
+        TIME_NOW,
+        $days_valid,
+        $max_users,
+        $link,
+        $CURUSER['id'],
+        $bonus_upload,
+        $bonus_invites,
+        $bonus_karma,
+    ])) . ') ') or sqlerr(__FILE__, __LINE__);
     if (!$q) {
-        stderr('Error', 'Something wrong happned, please retry');
+        stderr('Error', 'Something wrong happened, please retry');
     } else {
         stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['paths']['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" class="button is-small" value="Back to Promos"></a>');
     }
@@ -108,17 +110,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
 
         $wanthintanswer = make_passhash($hintanswer);
 
-        $res = sql_query('INSERT INTO users(username, passhash, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
-                $username,
-                $passhash,
-                $email,
-                TIME_NOW,
-                ($ar_check['bonus_upload'] * 1073741824),
-                $ar_check['bonus_invites'],
-                $ar_check['bonus_karma'],
-                $passhint,
-                $wanthintanswer,
-            ])) . ') ') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('INSERT INTO users(username, password, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
+            $username,
+            $passhash,
+            $email,
+            TIME_NOW,
+            ($ar_check['bonus_upload'] * 1073741824),
+            $ar_check['bonus_invites'],
+            $ar_check['bonus_karma'],
+            $passhint,
+            $wanthintanswer,
+        ])) . ') ') or sqlerr(__FILE__, __LINE__);
         if ($res) {
             //==Updating promo table
             $userid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
@@ -311,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     <table width='200' class='has-text-centered' style='border-collapse: collapse;'>
     <tr><td class='rowhead' class='has-text-left' width='100'> User</td><td class='rowhead' class='has-text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
-                    $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='has-text-left' nowrap='nowrap'>" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
+                    $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username((int) $ap['id']) . "</td><td class='has-text-left' nowrap='nowrap'>" . get_date((int) $ap['added'], 'LONG', 0, 1) . '</td></tr>';
                 }
                 $HTMLOUT .= "</table>
                         <br>
@@ -332,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
     $r = sql_query('SELECT p.*,u.username FROM promo AS p LEFT JOIN users AS u ON p.creator=u.id ORDER BY p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) == 0) {
-        stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
+        stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>', 'bottom20');
     } else {
         $HTMLOUT .= begin_frame('Current Promos&#160;<a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo"><span class="size_3">- Add promo</span></a>', true);
         $HTMLOUT .= "<script>
@@ -372,7 +374,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 <td nowrap='nowrap' class='has-text-centered'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_invites']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_karma']) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
+                <td nowrap='nowrap' class='has-text-centered'>" . format_username((int) $ar['creator']) . "</a></td>
                 <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['paths']['images_baseurl']}del.png' alt='Drop'></a></td>
             </tr>";
         }

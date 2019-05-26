@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
 
 /**
  * @param $data
@@ -10,21 +14,19 @@ use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
  */
 function freetorrents_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $fluent, $cache;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('torrents')
                     ->select(null)
                     ->select('id')
                     ->select('free')
-                    ->where('free>1')
+                    ->where('free > 1')
                     ->where('free < ?', TIME_NOW);
 
     $count = 0;
+    $cache = $container->get(Cache::class);
     foreach ($query as $arr) {
         $set = [
             'free' => 0,
@@ -32,7 +34,7 @@ function freetorrents_update($data)
 
         $fluent->update('torrents')
                ->set($set)
-               ->where('id=?', $arr['id'])
+               ->where('id = ?', $arr['id'])
                ->execute();
 
         $cache->update_row('torrent_details_' . $arr['id'], [
@@ -49,7 +51,7 @@ function freetorrents_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Free Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Free Cleanup: Completed' . $text);
     }
 }

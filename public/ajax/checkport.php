@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../../include/bittorrent.php';
-dbconn();
 
 if (empty($_POST['ip']) || empty($_POST['port'])) {
     return false;

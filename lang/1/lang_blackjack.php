@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'bj_title' => 'Blackjack',
     'bj_title1' => 'Blackjack 1GB',

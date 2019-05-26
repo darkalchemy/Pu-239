@@ -1,8 +1,15 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache, $message_stuffs;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Message;
+
+global $container, $CURUSER, $site_config;
+
+$message_stuffs = $container->get(Message::class);
 $message = $message_stuffs->get_by_id($pm_id);
+$cache = $container->get(Cache::class);
 if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
     stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_msg'] . '</a> to message.');
 }

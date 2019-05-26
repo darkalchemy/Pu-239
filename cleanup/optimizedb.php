@@ -1,18 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+
 /**
  * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function optimizedb($data)
 {
+    global $site_config;
     $time_start = microtime(true);
-    dbconn();
-    global $queries, $site_config;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $minwaste = 1024 * 1024 * 10; // 10 MB
-    $sql = sql_query("SHOW TABLE STATUS FROM {$site_config['database']['database']} WHERE Data_free>" . sqlesc($minwaste)) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query("SHOW TABLE STATUS FROM {$site_config['db']['database']} WHERE Data_free > " . sqlesc($minwaste)) or sqlerr(__FILE__, __LINE__);
     $oht = '';
     $tables = [];
 
@@ -24,8 +29,8 @@ function optimizedb($data)
     foreach ($tables as $table) {
         sql_query("OPTIMIZE TABLE {$table}") or sqlerr(__FILE__, __LINE__);
     }
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Auto Optimize DB Cleanup: Completed using $queries queries");
+    if ($data['clean_log']) {
+        write_log('Auto Optimize DB Cleanup: Completed');
     }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

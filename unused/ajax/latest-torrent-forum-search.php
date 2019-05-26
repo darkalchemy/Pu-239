@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();

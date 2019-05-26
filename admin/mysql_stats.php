@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_mysql_stats'));
 class_check(UC_MAX);
 $GLOBALS['byteUnits'] = [
@@ -82,6 +82,7 @@ function byteformat($value, $limes = 2, $comma = 0)
 function timespanFormat($seconds)
 {
     global $lang;
+
     $return_string = '';
     $days = floor($seconds / 86400);
     if ($days > 0) {
@@ -112,7 +113,7 @@ function localisedDate($timestamp = -1, $format = '')
         $format = $datefmt;
     }
     if ($timestamp == -1) {
-        $timestamp = time();
+        $timestamp = TIME_NOW;
     }
     $date = preg_replace('@%[aA]@', $day_of_week[(int) strftime('%w', $timestamp)], $format);
     $date = preg_replace('@%[bB]@', $month[(int) strftime('%m', $timestamp) - 1], $date);
@@ -132,7 +133,7 @@ unset($res, $row);
 
 $res = sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
-$HTMLOUT .= "<p class='has-text-centered'>{$lang['mysql_stats_server']}" . timespanFormat($serverStatus['Uptime']) . $lang['mysql_stats_started'] . localisedDate($row[0]) . '</p>';
+$HTMLOUT .= "<p class='has-text-centered'>{$lang['mysql_stats_server']}" . timespanFormat($serverStatus['Uptime']) . $lang['mysql_stats_started'] . localisedDate((int) $row[0]) . '</p>';
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
@@ -150,7 +151,7 @@ $TRAFFIC_STATS = '';
 $TRAFFIC_STATS_HEAD = "<p class='has-text-centered'>{$lang['mysql_stats_traffic_per_hour']}{$lang['mysql_stats_tables']}</p>";
 $TRAFFIC_STATS .= main_table("
     <tr>
-        <td colspan='3' bgcolor='grey'>{$lang['mysql_stats_traffic_per_hour']}</td>
+        <td colspan='3' class='bg-08'>{$lang['mysql_stats_traffic_per_hour']}</td>
     </tr>
     <tr>
         <td>{$lang['mysql_stats_received']}</td>
@@ -163,36 +164,36 @@ $TRAFFIC_STATS .= main_table("
         <td>' . implode(' ', byteformat($serverStatus['Bytes_sent'] * 3600 / $serverStatus['Uptime'])) . "</td>
     </tr>
     <tr>
-        <td bgcolor='grey'>&{$lang['mysql_stats_total']}</td>
-        <td bgcolor='grey'>" . implode(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "</td>
-        <td bgcolor='grey'>" . implode(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '</td>
+        <td class='bg-08'>&{$lang['mysql_stats_total']}</td>
+        <td class='bg-08'>" . implode(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "</td>
+        <td class='bg-08'>" . implode(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '</td>
     </tr>');
 $TRAFFIC_STATS2 = main_table("
     <tr>
-        <td colspan='4' bgcolor='grey'>{$lang['mysql_stats_connection_per_hour']}</td>
+        <td colspan='4' class='bg-08'>{$lang['mysql_stats_connection_per_hour']}</td>
     </tr>
     <tr>
         <td>{$lang['mysql_stats_failed']}</td>
-        <td>" . number_format($serverStatus['Aborted_connects'], 0, '.', ',') . '</td>
-        <td>' . number_format(($serverStatus['Aborted_connects'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
-        <td>' . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_connects'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '%' : '---' . '') . "</td>
+        <td>" . number_format((float) $serverStatus['Aborted_connects'], 0, '.', ',') . '</td>
+        <td>' . number_format((float) ($serverStatus['Aborted_connects'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+        <td>' . (($serverStatus['Connections'] > 0) ? number_format((float) ($serverStatus['Aborted_connects'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '%' : '---' . '') . "</td>
     </tr>
     <tr>
         <td>{$lang['mysql_stats_aborted']}</td>
-        <td>" . number_format($serverStatus['Aborted_clients'], 0, '.', ',') . '</td>
-        <td>' . number_format(($serverStatus['Aborted_clients'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
-        <td>' . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_clients'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '%' : '---') . "</td>
+        <td>" . number_format((float) $serverStatus['Aborted_clients'], 0, '.', ',') . '</td>
+        <td>' . number_format((float) ($serverStatus['Aborted_clients'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+        <td>' . (($serverStatus['Connections'] > 0) ? number_format((float) ($serverStatus['Aborted_clients'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '%' : '---') . "</td>
     </tr>
     <tr>
-        <td bgcolor='grey'>{$lang['mysql_stats_total']}</td>
-        <td bgcolor='grey'>" . number_format($serverStatus['Connections'], 0, '.', ',') . "</td>
-        <td bgcolor='grey'>" . number_format(($serverStatus['Connections'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "</td>
-        <td bgcolor='grey'>" . number_format(100, 2, '.', ',') . '%</td>
+        <td class='bg-08'>{$lang['mysql_stats_total']}</td>
+        <td class='bg-08'>" . number_format((float) $serverStatus['Connections'], 0, '.', ',') . "</td>
+        <td class='bg-08'>" . number_format((float) ($serverStatus['Connections'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "</td>
+        <td class='bg-08'>" . number_format(100, 2, '.', ',') . '%</td>
     </tr>');
 $QUERY_STATS = "
     <div class='has-text-centered'>
         <h1>{$lang['mysql_stats_query']}</h1>
-        {$lang['mysql_stats_since']}" . number_format($serverStatus['Questions'], 0, '.', ',') . "{$lang['mysql_stats_querys']}
+        {$lang['mysql_stats_since']}" . number_format((float) $serverStatus['Questions'], 0, '.', ',') . "{$lang['mysql_stats_querys']}
     </div>";
 $heading = "
     <tr>
@@ -203,10 +204,10 @@ $heading = "
     </tr>";
 $body = '
     <tr>
-        <td>' . number_format($serverStatus['Questions'], 0, '.', ',') . '</td>
-        <td>' . number_format(($serverStatus['Questions'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
-        <td>' . number_format(($serverStatus['Questions'] * 60 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
-        <td>' . number_format(($serverStatus['Questions'] / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+        <td>' . number_format((float) $serverStatus['Questions'], 0, '.', ',') . '</td>
+        <td>' . number_format((float) ($serverStatus['Questions'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+        <td>' . number_format((float) ($serverStatus['Questions'] * 60 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+        <td>' . number_format((float) ($serverStatus['Questions'] / $serverStatus['Uptime']), 2, '.', ',') . '</td>
     </tr>';
 $QUERY_STATS .= main_table($body, $heading, 'bottom20');
 
@@ -221,9 +222,9 @@ foreach ($queryStats as $name => $value) {
     $body .= '
         <tr>
             <td>' . htmlsafechars($name) . '</td>
-            <td>' . number_format($value, 0, '.', ',') . '</td>
-            <td>' . number_format(($value * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
-            <td>' . number_format(($value * 100 / ($serverStatus['Questions'] - $serverStatus['Connections'])), 2, '.', ',') . '%</td>
+            <td>' . number_format((float) $value, 0, '.', ',') . '</td>
+            <td>' . number_format((float) ($value * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
+            <td>' . number_format((float) ($value * 100 / ($serverStatus['Questions'] - $serverStatus['Connections'])), 2, '.', ',') . '%</td>
         </tr>';
 }
 

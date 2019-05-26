@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use PDOStatement;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Peer.
@@ -12,25 +15,37 @@ class Peer
 {
     protected $cache;
     protected $fluent;
+    protected $env;
     protected $site_config;
     protected $limit;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Peer constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param Settings           $settings
+     * @param ContainerInterface $c
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, Settings $settings, ContainerInterface $c)
     {
-        global $cache, $fluent, $site_config;
-
+        $this->container = $c;
+        $this->env = $this->container->get('env');
+        $this->site_config = $settings->get_settings();
         $this->cache = $cache;
         $this->fluent = $fluent;
-        $this->site_config = $site_config;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->limit = $this->env['db']['query_limit'];
     }
 
     /**
      * @param int $userid
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function getPeersFromUserId(int $userid)
     {
@@ -43,7 +58,7 @@ class Peer
                                   ->select(null)
                                   ->select('seeder')
                                   ->select('connectable')
-                                  ->where('userid=?', $userid);
+                                  ->where('userid = ?', $userid);
 
             foreach ($query as $a) {
                 $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
@@ -73,9 +88,9 @@ class Peer
     /**
      * @param int $tid
      *
-     * @return array|bool|mixed|PDOStatement
-     *
      * @throws Exception
+     *
+     * @return array|bool|mixed|PDOStatement
      */
     public function get_torrent_peers_by_tid(int $tid)
     {
@@ -109,20 +124,20 @@ class Peer
      * @param string $torrent_pass
      * @param bool   $by_class
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_torrent_count(int $tid, string $torrent_pass, bool $by_class)
     {
         $count = $this->fluent->from('peers')
                               ->select(null)
-                              ->select('COUNT(*) AS count')
+                              ->select('COUNT(id) AS count')
                               ->where('torrent = ?', $tid)
                               ->where('torrent_pass = ?', $torrent_pass);
 
         if ($by_class) {
-            $count = $count->where('to_go>0');
+            $count = $count->where('to_go > 0');
         }
 
         $count = $count->fetch('count');
@@ -135,9 +150,9 @@ class Peer
      * @param int    $tid
      * @param string $info_hash
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function delete_by_peerid(string $peerid, int $tid, string $info_hash)
     {
@@ -162,9 +177,9 @@ class Peer
      * @param int    $tid
      * @param string $info_hash
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function delete_by_id(int $pid, int $tid, string $info_hash)
     {
@@ -187,9 +202,9 @@ class Peer
      * @param array $values
      * @param array $update
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function insert_update(array $values, array $update)
     {
@@ -197,7 +212,7 @@ class Peer
                            ->select(null)
                            ->select('id')
                            ->where('torrent = ?', $values['torrent'])
-                           ->where('peer_id=?', $values['peer_id'])
+                           ->where('peer_id = ?', $values['peer_id'])
                            ->where('port = ?', $values['port'])
                            ->where('INET6_NTOA(ip) = ?', $values['ip'])
                            ->fetch('id');
@@ -230,9 +245,9 @@ class Peer
      * @param array $set
      * @param int   $id
      *
-     * @return bool|int|PDOStatement
-     *
      * @throws Exception
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $id)
     {

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
@@ -25,7 +27,7 @@ if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
 if (($row['curr_ann_last_check'] != 0) && (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
     $row['curr_ann_last_check'] = 0;
 }
-if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Force an immediate check...
+if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0) {
     $query = sprintf('
                 SELECT m.*,p.process_id
                 FROM announcement_main AS m
@@ -34,7 +36,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
                 ORDER BY m.main_id ASC
                 LIMIT 1', sqlesc($row['id']));
     $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($result)) { // Main Result set exists
+    if (mysqli_num_rows($result)) {
         $ann_row = mysqli_fetch_assoc($result);
         $query = $ann_row['sql_query'];
         // Ensure it only selects...
@@ -88,10 +90,10 @@ if ((!empty($add_set))) {
     sql_query("UPDATE users SET $add_set WHERE id=" . ($row['id'])) or sqlerr(__FILE__, __LINE__);
 }
 
-// Announcement Code...
-$ann_subject = trim($row['curr_ann_subject']);
-$ann_body = trim($row['curr_ann_body']);
 if ((!empty($ann_subject)) && (!empty($ann_body))) {
+    $ann_subject = trim($row['curr_ann_subject']);
+    $ann_body = trim($row['curr_ann_body']);
+
     $HTMLOUT .= "
     <div class='article'>
         <div class='article_header'>{$lang['index_announce']}</div>

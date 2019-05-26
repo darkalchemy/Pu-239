@@ -1,6 +1,7 @@
 <?php
 
-global $site_config, $lang;
+declare(strict_types = 1);
+global $site_config;
 
 $disclaimer .= "
     <a id='disclaimer-hash'></a>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -11,17 +13,27 @@ class Usersachiev
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $env;
     protected $limit;
+    protected $settings;
+    protected $site_config;
 
-    public function __construct()
+    /**
+     * Usersachiev constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     * @param Settings $settings
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, Settings $settings)
     {
-        global $fluent, $cache, $site_config;
-
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
+        $this->limit = $this->site_config['db']['query_limit'];
     }
 
     /**
@@ -32,7 +44,7 @@ class Usersachiev
      */
     public function insert(array $values, array $update)
     {
-        $count = floor($this->limit / max(array_map('count', $values)));
+        $count = (int) ($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $this->fluent->insertInto('usersachiev', $t)
                          ->onDuplicateKeyUpdate($update)

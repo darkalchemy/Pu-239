@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $user, $lang;
+
 $HTMLOUT .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_class']}</td>

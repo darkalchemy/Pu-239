@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_autopost.php';
@@ -8,415 +15,372 @@ require_once INCL_DIR . 'function_staff.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
-dbconn();
-global $CURUSER, $site_config, $lang, $cache, $user_stuffs, $fluent, $message_stuffs;
-
 $lang = array_merge($lang, load_language('modtask'));
 
 $dt = TIME_NOW;
-$curuser_cache = $user_cache = '';
-
-/**
- * @param $torrent_pass
- *
- * @return bool
- */
-function remove_torrent_pass($torrent_pass)
-{
-    global $cache;
-
-    if (strlen($torrent_pass) != 64 || !bin2hex($torrent_pass)) {
-        return false;
-    }
-    $cache->delete('user_torrent_pass_' . $torrent_pass);
-
-    return true;
-}
+global $CURUSER, $site_config;
 
 if ($CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
 }
 
-if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
-    if (isset($_POST['userid'])) {
-        $userid = (int) $_POST['userid'];
-    } else {
-        stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
+    $post = $_POST;
+    unset($_POST);
+    $userid = !empty($post['userid']) ? (int) $post['userid'] : 0;
     if (!is_valid_id($userid)) {
-        stderr("{$lang['modtask_error']}", "{$lang['modtask_bad_id']}");
+        stderr($lang['modtask_error'], $lang['modtask_bad_id']);
     }
-    require_once CLASS_DIR . 'validator.php';
-    if (!validate($_POST['validator'], "ModTask_$userid")) {
-        die($lang['modtask_invalid']);
-    }
-    if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-        stderr($lang['modtask_pmsl'], $lang['modtask_die_bit']);
-    }
+    $user_stuffs = $container->get(User::class);
     $user = $user_stuffs->getUserFromId($userid);
-    if ($CURUSER['class'] <= $user['class'] && ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_MAX)) {
+    if ($CURUSER['id'] !== $userid && $CURUSER['class'] <= $user['class'] && $CURUSER['class'] < UC_MAX) {
         stderr($lang['modtask_error'], $lang['modtask_cannot_edit']);
     }
     if ($user['immunity'] >= 1 && $CURUSER['class'] < UC_MAX) {
         stderr($lang['modtask_error'], $lang['modtask_user_immune']);
     }
-    $updateset = $curuser_cache = $user_cache = $useredit['update'] = [];
-    $setbits = $clrbits = $setbits2 = $clearbits2 = 0;
     $username = $CURUSER['perms'] & bt_options::PERMS_STEALTH ? 'System' : htmlsafechars($CURUSER['username']);
-    $modcomment = isset($_POST['modcomment']) && $CURUSER['class'] === UC_MAX ? $_POST['modcomment'] : $user['modcomment'];
+    $modcomment = !empty($user['modcomment']) ? $user['modcomment'] : '';
+    $cache = $container->get(Cache::class);
+    $fluent = $container->get(Database::class);
 
-    if (isset($_POST['class']) && (($class = $_POST['class']) != $user['class'])) {
-        if (($class >= UC_MAX && $CURUSER['class'] != UC_MAX) || ($class >= $CURUSER['class'] && $CURUSER['class'] != UC_MAX) || ($user['class'] >= $CURUSER['class'] && $CURUSER['class'] != UC_MAX)) {
-            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+    if ($user['id'] !== $CURUSER['id']) {
+        if ($CURUSER['class'] === UC_MAX && empty($post['modcomment'])) {
+            $update['modcomment'] = '';
         }
-        if (!valid_class($class) || ($CURUSER['class'] <= $_POST['class'] && $CURUSER['class'] != UC_MAX)) {
-            stderr(($lang['modtask_error']), $lang['modtask_badclass']);
+        if (isset($post['class']) && (($class = (int) $post['class']) !== $user['class'])) {
+            if ($CURUSER['class'] !== UC_MAX && ($class === UC_MAX || $class >= $CURUSER['class'] || $user['class'] >= $CURUSER['class'])) {
+                stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
+            }
+            if (!valid_class($class)) {
+                stderr(($lang['modtask_error']), $lang['modtask_badclass']);
+            }
+            $what = $class > $user['class'] ? $lang['modtask_promoted'] : $lang['modtask_demoted'];
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_have_been'], $what) . ' ' . get_user_class_name($class) . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_cls_change'],
+            ];
+            $update['class'] = $class;
+            $useredit[] = $what . $lang['modtask_to'] . get_user_class_name($class);
+            $modcomment = get_date($dt, 'DATE', 1) . " - $what {$lang['modtask_to']} '" . get_user_class_name($class) . "'{$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
         }
-
-        $what = $class > $user['class'] ? "{$lang['modtask_promoted']}" : "{$lang['modtask_demoted']}";
-        $subject = $lang['modtask_cls_change'];
-        $msg = sprintf($lang['modtask_have_been'], $what) . ' ' . get_user_class_name($class) . " {$lang['modtask_by']} " . $username;
-        $msgs_buffer[] = [
-            'sender' => 0,
+    }
+    if ((isset($post['donated'])) && (($donated = (int) $post['donated']) !== $user['donated'])) {
+        $values = [
+            'cash' => $donated,
+            'user' => $userid,
+            'added' => $dt,
+        ];
+        $cache->delete('totalfunds_');
+        $fluent->insertInto('funds')
+            ->values($values)
+            ->execute();
+        $update = [
+            'donated' => $donated,
+            'total_donated' => $user['total_donated'] + $donated,
+        ];
+    }
+    if (isset($post['donorlength']) && (($donorlength = (int) $post['donorlength']))) {
+        if ($donorlength > 0) {
+            if ($donorlength === 255) {
+                $msg = $lang['modtask_donor_received'] . $username;
+                $subject = $lang['modtask_donor_subject'];
+                $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']} {$CURUSER['username']}\n" . $modcomment;
+                $update['donoruntil'] = 0;
+            } else {
+                $donoruntil = $dt + ($donorlength * 604800);
+                $dur = $donorlength . $lang['modtask_donor_week'] . ($donorlength > 1 ? $lang['modtask_donor_weeks'] : '');
+                $msg = $lang['modtask_donor_dear'] . $user['username'] . "{$lang['modtask_donor_msg']} $dur {$lang['modtask_donor_msg1']}" . $username;
+                $subject = $lang['modtask_donor_subject'];
+                $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']}" . $CURUSER['username'] . ".\n" . $modcomment;
+                $update['donoruntil'] = $dt + ($donorlength * 604800);
+            }
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $update['donor'] = 'yes';
+            $useredit[] = $lang['modtask_donor_yes'];
+            if ($user['class'] <= UC_VIP) {
+                $update['class'] = UC_VIP;
+                $update['vipclass_before'] = $user['class'];
+            }
+        }
+    }
+    if (isset($post['donorlengthadd']) && (($donorlengthadd = (int) $post['donorlengthadd']) !== $user['donorlengthadd'])) {
+        $donoruntil = $user['donoruntil'];
+        $dur = $donorlengthadd . $lang['modtask_donor_week'] . ($donorlengthadd > 1 ? $lang['modtask_donor_weeks'] : '');
+        $msg = $lang['modtask_donor_dear'] . htmlsafechars($user['username']) . "{$lang['modtask_donor_msg2']} $dur {$lang['modtask_donor_msg3']}" . $username;
+        $subject = $lang['modtask_donor_subject_again'];
+        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set_another']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
+        $donorlengthadd = $donorlengthadd * 7;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $message_stuffs->insert($msgs_buffer);
-        $updateset[] = 'class = ' . sqlesc($class);
-        $useredit['update'][] = '' . $what . $lang['modtask_to'] . get_user_class_name($class);
-        $curuser_cache['class'] = $class;
-        $user_cache['class'] = $class;
-        $cache->delete('user_icons_' . $userid);
-        $cache->delete('is_staff_');
-        $modcomment = get_date($dt, 'DATE', 1) . " - $what {$lang['modtask_to']} '" . get_user_class_name($class) . "'{$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        $update['donoruntil'] = $user['donoruntil'] === 0 ? $dt + (86400 * $donorlengthadd) : $user['donoruntil'] + (86400 * $donorlengthadd);
+        $update['donated'] = $user['donated'] + (int) $post['donated'];
+        $update['total_donated'] = $user['total_donated'] + (int) $post['donated'];
     }
-    if ((isset($_POST['donated'])) && (($donated = $_POST['donated']) != $user['donated'])) {
-        sql_query('INSERT INTO funds (cash, user, added) VALUES (' . sqlesc($donated) . ', ' . sqlesc($userid) . ", $dt)") or sqlerr(__FILE__, __LINE__);
-        $updateset[] = 'donated = ' . sqlesc($donated);
-        $updateset[] = 'total_donated = ' . $user['total_donated'] . ' + ' . sqlesc($donated);
-        $cache->delete('totalfunds_');
-        $curuser_cache['donated'] = $donated;
-        $user_cache['donated'] = $donated;
-        $curuser_cache['total_donated'] = ($user['total_donated'] + $donated);
-        $user_cache['total_donated'] = ($user['total_donated'] + $donated);
-    }
-    if ((isset($_POST['donorlength'])) && ($donorlength = (int) $_POST['donorlength'])) {
-        if ($donorlength == 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']} " . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_donor_received'] . $username);
-            $subject = sqlesc($lang['modtask_donor_subject']);
-            $updateset[] = "donoruntil = '0'";
-            $curuser_cache['donoruntil'] = '0';
-            $user_cache['donoruntil'] = '0';
-        } else {
-            $donoruntil = ($dt + $donorlength * 604800);
-            $dur = $donorlength . $lang['modtask_donor_week'] . ($donorlength > 1 ? $lang['modtask_donor_weeks'] : '');
-            $msg = sqlesc($lang['modtask_donor_dear'] . $user['username'] . "{$lang['modtask_donor_msg']} $dur {$lang['modtask_donor_msg1']}" . $username);
-            $subject = sqlesc($lang['modtask_donor_subject']);
-            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']}" . $CURUSER['username'] . ".\n" . $modcomment;
-            $updateset[] = 'donoruntil = ' . sqlesc($donoruntil);
-            $curuser_cache['donoruntil'] = $donoruntil;
-            $user_cache['donoruntil'] = $donoruntil;
-            if ($user['class'] <= UC_VIP) {
-                $updateset[] = 'vipclass_before = ' . sqlesc($user['class']);
-                $curuser_cache['vipclass_before'] = $user['class'];
-                $user_cache['vipclass_before'] = $user['class'];
-            }
-        }
-        sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $dt)") or sqlerr(__FILE__, __LINE__);
-        $updateset[] = "donor = 'yes'";
-        $useredit['update'][] = $lang['modtask_donor_yes'];
-        $curuser_cache['donor'] = 'yes';
-        $user_cache['donor'] = 'yes';
-        if ($user['class'] <= UC_VIP) {
-            $updateset[] = 'class = ' . UC_VIP . '';
-            $curuser_cache['class'] = UC_VIP;
-            $user_cache['class'] = UC_VIP;
-        }
-    }
-    if ((isset($_POST['donorlengthadd'])) && ($donorlengthadd = (int) $_POST['donorlengthadd'])) {
-        $donoruntil = (int) $user['donoruntil'];
-        $dur = $donorlengthadd . $lang['modtask_donor_week'] . ($donorlengthadd > 1 ? $lang['modtask_donor_weeks'] : '');
-        $msg = sqlesc($lang['modtask_donor_dear'] . htmlsafechars($user['username']) . "{$lang['modtask_donor_msg2']} $dur {$lang['modtask_donor_msg3']}" . $username);
-        $subject = sqlesc($lang['modtask_donor_subject_again']);
-        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set_another']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
-        $donorlengthadd = $donorlengthadd * 7;
-        sql_query('UPDATE users SET vipclass_before=' . sqlesc($user['class']) . ', donoruntil = IF(donoruntil=0, ' . $dt . " + 86400 * $donorlengthadd, donoruntil + 86400 * $donorlengthadd) WHERE id =" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $dt)") or sqlerr(__FILE__, __LINE__);
-        $updateset[] = 'donated = ' . $user['donated'] . ' + ' . sqlesc($_POST['donated']);
-        $updateset[] = 'total_donated = ' . $user['total_donated'] . ' + ' . sqlesc($_POST['donated']);
-        $curuser_cache['donated'] = ($user['donated'] + $_POST['donated']);
-        $user_cache['donated'] = ($user['donated'] + $_POST['donated']);
-        $curuser_cache['total_donated'] = ($user['total_donated'] + $_POST['donated']);
-        $user_cache['total_donated'] = ($user['total_donated'] + $_POST['donated']);
-    }
-    if (isset($_POST['donor']) && (($donor = $_POST['donor']) != $user['donor'])) {
-        $updateset[] = 'donor = ' . sqlesc($donor);
-        $updateset[] = "donoruntil = '0'";
-        $updateset[] = "donated = '0'";
-        $updateset[] = 'class = ' . sqlesc($user['vipclass_before']);
-        $useredit['update'][] = $lang['modtask_donor_no'];
-        $curuser_cache['donor'] = $donor;
-        $user_cache['donor'] = $donor;
-        $curuser_cache['donoruntil'] = '0';
-        $user_cache['donoruntil'] = '0';
-        $curuser_cache['donated'] = '0';
-        $user_cache['donated'] = '0';
-        $curuser_cache['class'] = $user['vipclass_before'];
-        $user_cache['class'] = $user['vipclass_before'];
+    if (isset($post['donor']) && (($donor = $post['donor']) !== $user['donor'])) {
+        $update['donor'] = $donor;
+        $update['donoruntil'] = 0;
+        $update['donated'] = 0;
+        $update['class'] = $user['vipclass_before'];
+        $useredit[] = $lang['modtask_donor_no'];
         if ($donor === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_removed']} " . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc(sprintf($lang['modtask_donor_removed']) . $username);
-            $subject = sqlesc($lang['modtask_donor_subject_expire']);
-            sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+            $msg = sprintf($lang['modtask_donor_removed']) . $username;
+            $subject = $lang['modtask_donor_subject_expire'];
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
         }
     }
-    if ((isset($_POST['enabled'])) && (($enabled = $_POST['enabled']) != $user['enabled'])) {
-        if ($enabled === 'yes') {
-            $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_enabled']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        } else {
-            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_disabled']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        }
-        $updateset[] = 'enabled = ' . sqlesc($enabled);
-        $useredit['update'][] = $lang['modtask_enabled_disabled'] . $enabled . '';
-        $curuser_cache['enabled'] = $enabled;
-        $user_cache['enabled'] = $enabled;
+    if ((isset($post['enabled'])) && (($enabled = $post['enabled']) !== $user['enabled'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . ' ' . ($enabled === 'yes' ? $lang['modtask_enabled'] : $lang['modtask_disabled']) . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['enabled'] = $enabled;
+        $useredit[] = $lang['modtask_enabled_disabled'] . $enabled;
         $fluent->deleteFrom('ajax_chat_online')
-               ->where('userID = ?', $userid)
-               ->execute();
+            ->where('userID = ?', $userid)
+            ->execute();
         $cache->set('forced_logout_' . $userid, $dt, 2591999);
     }
-    if (isset($_POST['downloadpos']) && ($downloadpos = (int) $_POST['downloadpos'])) {
-        unset($disable_pm);
-        if (isset($_POST['disable_pm'])) {
-            $disable_pm = $_POST['disable_pm'];
+    if (isset($post['downloadpos']) && ($downloadpos = (int) $post['downloadpos'])) {
+        $disable_pm = '';
+        if (isset($post['disable_pm'])) {
+            $disable_pm = $post['disable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($downloadpos == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($downloadpos === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_down_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $disable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_down_dis_right'] . $username . ($disable_pm ? "\n\n{$lang['modtask_gl_reason']} $disable_pm" : ''));
-            $updateset[] = 'downloadpos = 0';
-            $useredit['update'][] = $lang['modtask_down_pos_no'];
-            $curuser_cache['downloadpos'] = '0';
-            $user_cache['downloadpos'] = '0';
-        } elseif ($downloadpos == 42) {
+            $msg = $lang['modtask_down_dis_right'] . $username . (!empty($disable_pm) ? "\n\n{$lang['modtask_gl_reason']} $disable_pm" : '');
+            $update['downloadpos'] = 0;
+            $useredit[] = $lang['modtask_down_pos_no'];
+        } elseif ($downloadpos === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_down_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_down_res_by'] . $username);
-            $updateset[] = 'downloadpos = 1';
-            $useredit['update'][] = $lang['modtask_down_pos_yes'];
-            $curuser_cache['downloadpos'] = '1';
-            $user_cache['downloadpos'] = '1';
+            $msg = $lang['modtask_down_res_by'] . $username;
+            $update['downloadpos'] = 1;
+            $useredit[] = $lang['modtask_down_pos_yes'];
         } else {
-            $downloadpos_until = ($dt + $downloadpos * 604800);
+            $downloadpos_until = $dt + ($downloadpos * 604800);
             $dur = $downloadpos . $lang['modtask_gl_week'] . ($downloadpos > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_down_dis_from']} " . $username . ($disable_pm ? "\n\n{$lang['modtask_gl_reason']} $disable_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_down_dis_from']} " . $username . ($disable_pm ? "\n\n{$lang['modtask_gl_reason']} $disable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_down_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $disable_pm\n" . $modcomment;
-            $updateset[] = 'downloadpos = ' . $downloadpos_until;
-            $useredit['update'][] = $lang['modtask_down_disabled'] . $downloadpos_until . '';
-            $curuser_cache['downloadpos'] = $downloadpos_until;
-            $user_cache['downloadpos'] = $downloadpos_until;
+            $update['downloadpos'] = $downloadpos_until;
+            $useredit[] = $lang['modtask_down_disabled'] . $downloadpos_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['uploadpos']) && ($uploadpos = (int) $_POST['uploadpos'])) {
-        unset($updisable_pm);
-        if (isset($_POST['updisable_pm'])) {
-            $updisable_pm = $_POST['updisable_pm'];
+    if (isset($post['uploadpos']) && ($uploadpos = (int) $post['uploadpos'])) {
+        $updisable_pm = '';
+        if (isset($post['updisable_pm'])) {
+            $updisable_pm = $post['updisable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($uploadpos == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($uploadpos === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_up_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $updisable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_up_dis_right'] . $username . ($updisable_pm ? "\n\n{$lang['modtask_gl_reason']} $updisable_pm" : ''));
-            $updateset[] = 'uploadpos = 0';
-            $useredit['update'][] = $lang['modtask_up_pos_no'];
-            $curuser_cache['uploadpos'] = '0';
-            $user_cache['uploadpos'] = '0';
-        } elseif ($uploadpos == 42) {
+            $msg = $lang['modtask_up_dis_right'] . $username . (!empty($updisable_pm) ? "\n\n{$lang['modtask_gl_reason']} $updisable_pm" : '');
+            $update['uploadpos'] = 0;
+            $useredit[] = $lang['modtask_up_pos_no'];
+        } elseif ($uploadpos === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_up_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_up_res_by'] . $username);
-            $updateset[] = 'uploadpos = 1';
-            $useredit['update'][] = $lang['modtask_up_pos_yes'];
-            $curuser_cache['uploadpos'] = '1';
-            $user_cache['uploadpos'] = '1';
+            $msg = $lang['modtask_up_res_by'] . $username;
+            $update['uploadpos'] = 1;
+            $useredit[] = $lang['modtask_up_pos_yes'];
         } else {
-            $uploadpos_until = ($dt + $uploadpos * 604800);
+            $uploadpos_until = $dt + ($uploadpos * 604800);
             $dur = $uploadpos . $lang['modtask_gl_week'] . ($uploadpos > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_up_dis_from']}" . $username . ($updisable_pm ? "\n\n{$lang['modtask_gl_reason']} $updisable_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_up_dis_from']}" . $username . ($updisable_pm ? "\n\n{$lang['modtask_gl_reason']} $updisable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_up_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $updisable_pm\n" . $modcomment;
-            $updateset[] = 'uploadpos = ' . $uploadpos_until;
-            $useredit['update'][] = $lang['modtask_up_disabled'] . $uploadpos_until . '';
-            $curuser_cache['uploadpos'] = $uploadpos_until;
-            $user_cache['uploadpos'] = $uploadpos_until;
+            $update['uploadpos'] = $uploadpos_until;
+            $useredit[] = $lang['modtask_up_disabled'] . $uploadpos_until . '';
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-              VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['sendpmpos']) && ($sendpmpos = (int) $_POST['sendpmpos'])) {
-        unset($pmdisable_pm);
-        if (isset($_POST['pmdisable_pm'])) {
-            $pmdisable_pm = $_POST['pmdisable_pm'];
+    if (isset($post['sendpmpos']) && ($sendpmpos = (int) $post['sendpmpos'])) {
+        $pmdisable_pm = '';
+        if (isset($post['pmdisable_pm'])) {
+            $pmdisable_pm = $post['pmdisable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($sendpmpos == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($sendpmpos === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_pm_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $pmdisable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_pm_dis_right'] . $username . ($pmdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $pmdisable_pm" : ''));
-            $updateset[] = 'sendpmpos = 0';
-            $useredit['update'][] = $lang['modtask_pm_pos_no'];
-            $curuser_cache['sendpmpos'] = '0';
-            $user_cache['sendpmpos'] = '0';
-        } elseif ($sendpmpos == 42) {
+            $msg = $lang['modtask_pm_dis_right'] . $username . (!empty($pmdisable_pm) ? "\n\n{$lang['modtask_gl_reason']} $pmdisable_pm" : '');
+            $update['sendpmpos'] = 0;
+            $useredit[] = $lang['modtask_pm_pos_no'];
+        } elseif ($sendpmpos === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_pm_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_pm_res_by'] . $username);
-            $updateset[] = 'sendpmpos = 1';
-            $useredit['update'][] = $lang['modtask_pm_pos_yes'];
-            $curuser_cache['sendpmpos'] = '1';
-            $user_cache['sendpmpos'] = '1';
+            $msg = $lang['modtask_pm_res_by'] . $username;
+            $update['sendpmpos'] = 1;
+            $useredit[] = $lang['modtask_pm_pos_yes'];
         } else {
-            $sendpmpos_until = ($dt + $sendpmpos * 604800);
+            $sendpmpos_until = $dt + ($sendpmpos * 604800);
             $dur = $sendpmpos . $lang['modtask_gl_week'] . ($sendpmpos > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_pm_dis_from']}" . $username . ($pmdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $pmdisable_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_pm_dis_from']}" . $username . ($pmdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $pmdisable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_pm_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $pmdisable_pm\n" . $modcomment;
-            $updateset[] = 'sendpmpos = ' . $sendpmpos_until;
-            $useredit['update'][] = $lang['modtask_pm_disabled'] . $sendpmpos_until . '';
-            $curuser_cache['sendpmpos'] = $sendpmpos_until;
-            $user_cache['sendpmpos'] = $sendpmpos_until;
+            $update['sendpmpos'] = $sendpmpos_until;
+            $useredit[] = $lang['modtask_pm_disabled'] . $sendpmpos_until . '';
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['chatpost']) && ($chatpost = (int) $_POST['chatpost'])) {
-        unset($chatdisable_pm);
-        if (isset($_POST['chatdisable_pm'])) {
-            $chatdisable_pm = $_POST['chatdisable_pm'];
+    if (isset($post['chatpost']) && ($chatpost = (int) $post['chatpost'])) {
+        $chatdisable_pm = '';
+        if (isset($post['chatdisable_pm'])) {
+            $chatdisable_pm = $post['chatdisable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($chatpost == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($chatpost === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_ajaxchat_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_ajaxchat_dis_right'] . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
-            $updateset[] = 'chatpost = 0';
-            $useredit['update'][] = $lang['modtask_ajaxchat_pos_no'];
-            $curuser_cache['chatpost'] = '0';
-            $user_cache['chatpost'] = '0';
-        } elseif ($chatpost == 42) {
+            $msg = $lang['modtask_ajaxchat_dis_right'] . $username . (!empty($chatdisable_pm) ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : '');
+            $update['chatpost'] = 0;
+            $useredit[] = $lang['modtask_ajaxchat_pos_no'];
+        } elseif ($chatpost === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_ajaxchat_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_ajaxchat_res_by'] . $username);
-            $updateset[] = 'chatpost = 1';
-            $useredit['update'][] = $lang['modtask_ajaxchat_pos_yes'];
-            $curuser_cache['chatpost'] = '1';
-            $user_cache['chatpost'] = '1';
+            $msg = $lang['modtask_ajaxchat_res_by'] . $username;
+            $update['chatpost'] = 1;
+            $useredit[] = $lang['modtask_ajaxchat_pos_yes'];
         } else {
-            $chatpost_until = ($dt + $chatpost * 604800);
+            $chatpost_until = $dt + ($chatpost * 604800);
             $dur = $chatpost . $lang['modtask_gl_week'] . ($chatpost > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_ajaxchat_dis_from']}" . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_ajaxchat_dis_from']}" . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_ajaxchat_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
-            $updateset[] = 'chatpost = ' . $chatpost_until;
-            $useredit['update'][] = $lang['modtask_ajaxchat_disabled'] . $chatpost_until . '';
-            $curuser_cache['chatpost'] = $chatpost_until;
-            $user_cache['chatpost'] = $chatpost_until;
+            $update['chatpost'] = $chatpost_until;
+            $useredit[] = $lang['modtask_ajaxchat_disabled'] . $chatpost_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['immunity']) && ($immunity = (int) $_POST['immunity'])) {
-        unset($immunity_pm);
-        if (isset($_POST['immunity_pm'])) {
-            $immunity_pm = $_POST['immunity_pm'];
+    if (isset($post['immunity']) && (($immunity = (int) $post['immunity']) !== $user['immunity'])) {
+        $immunity_pm = '';
+        if (isset($post['immunity_pm'])) {
+            $immunity_pm = $post['immunity_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($immunity == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($immunity === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_immune_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $immunity_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_immune_received'] . $username . ($immunity_pm ? "\n\n{$lang['modtask_gl_reason']} $immunity_pm" : ''));
-            $updateset[] = 'immunity = 1';
-            $curuser_cache['immunity'] = '1';
-            $user_cache['immunity'] = '1';
-        } elseif ($immunity == 42) {
+            $msg = $lang['modtask_immune_received'] . $username . (!empty($immunity_pm) ? "\n\n{$lang['modtask_gl_reason']} $immunity_pm" : '');
+            $update['immunity'] = 1;
+        } elseif ($immunity === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_immune_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_immune_removed'] . $username);
-            $updateset[] = 'immunity = 0';
-            $curuser_cache['immunity'] = '0';
-            $user_cache['immunity'] = '0';
+            $msg = $lang['modtask_immune_removed'] . $username;
+            $update['immunity'] = 0;
         } else {
-            $immunity_until = ($dt + $immunity * 604800);
+            $immunity_until = $dt + ($immunity * 604800);
             $dur = $immunity . $lang['modtask_gl_week'] . ($immunity > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_immune_status_from']}" . $username . ($immunity_pm ? "\n\n{$lang['modtask_gl_reason']} $immunity_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_immune_status_from']}" . $username . ($immunity_pm ? "\n\n{$lang['modtask_gl_reason']} $immunity_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_immune_status_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $immunity_pm\n" . $modcomment;
-            $updateset[] = 'immunity = ' . $immunity_until;
-            $curuser_cache['immunity'] = $immunity_until;
-            $user_cache['immunity'] = $immunity_until;
+            $update['immunity'] = $immunity_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['leechwarn']) && ($leechwarn = (int) $_POST['leechwarn'])) {
-        unset($leechwarn_pm);
-        if (isset($_POST['leechwarn_pm'])) {
-            $leechwarn_pm = $_POST['leechwarn_pm'];
+    if (isset($post['leechwarn']) && (($leechwarn = (int) $post['leechwarn']) !== $user['leechwarn'])) {
+        $leechwarn_pm = '';
+        if (isset($post['leechwarn_pm'])) {
+            $leechwarn_pm = $post['leechwarn_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($leechwarn == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($leechwarn === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_leechwarn_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $leechwarn_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_leechwarn_received'] . $username . ($leechwarn_pm ? "\n\n{$lang['modtask_gl_reason']} $leechwarn_pm" : ''));
-            $updateset[] = 'leechwarn = 1';
-            $curuser_cache['leechwarn'] = '1';
-            $user_cache['leechwarn'] = '1';
-        } elseif ($leechwarn == 42) {
+            $msg = $lang['modtask_leechwarn_received'] . $username . (!empty($leechwarn_pm) ? "\n\n{$lang['modtask_gl_reason']} $leechwarn_pm" : '');
+            $update['leechwarn'] = 1;
+        } elseif ($leechwarn === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_leechwarn_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_leechwarn_removed'] . $username);
-            $updateset[] = 'leechwarn = 0';
-            $curuser_cache['leechwarn'] = '0';
-            $user_cache['leechwarn'] = '0';
+            $msg = $lang['modtask_leechwarn_removed'] . $username;
+            $update['leechwarn'] = 0;
         } else {
-            $leechwarn_until = ($dt + $leechwarn * 604800);
+            $leechwarn_until = $dt + ($leechwarn * 604800);
             $dur = $leechwarn . $lang['modtask_gl_week'] . ($leechwarn > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_leechwarn_status_from']}" . $username . ($leechwarn_pm ? "\n\n{$lang['modtask_gl_reason']} $leechwarn_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_leechwarn_status_from']}" . $username . ($leechwarn_pm ? "\n\n{$lang['modtask_gl_reason']} $leechwarn_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_leechwarn_status_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $leechwarn_pm\n" . $modcomment;
-            $updateset[] = 'leechwarn = ' . $leechwarn_until;
-            $curuser_cache['leechwarn'] = $leechwarn_until;
-            $user_cache['leechwarn'] = $leechwarn_until;
+            $update['leechwarn'] = $leechwarn_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
-    if (isset($_POST['warned']) && ($warned = (int) $_POST['warned'])) {
-        unset($warned_pm);
-        if (isset($_POST['warned_pm'])) {
-            $warned_pm = $_POST['warned_pm'];
+    if (isset($post['warned']) && (($warned = (int) $post['warned']) !== $user['warned'])) {
+        $warned_pm = '';
+        if (isset($post['warned_pm'])) {
+            $warned_pm = $post['warned_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($warned == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($warned === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_warned_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $warned_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_warned_received'] . $username . ($warned_pm ? "\n\n{$lang['modtask_gl_reason']} $warned_pm" : ''));
-            $updateset[] = 'warned = 1';
-            $curuser_cache['warned'] = '1';
-            $user_cache['warned'] = '1';
-        } elseif ($warned == 42) {
+            $msg = $lang['modtask_warned_received'] . $username . (!empty($warned_pm) ? "\n\n{$lang['modtask_gl_reason']} $warned_pm" : '');
+            $update['warned'] = 1;
+        } elseif ($warned === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_warned_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_warned_removed'] . $username);
-            $updateset[] = 'warned = 0';
-            $curuser_cache['warned'] = '0';
-            $user_cache['warned'] = '0';
+            $msg = $lang['modtask_warned_removed'] . $username;
+            $update['warned'] = 0;
         } else {
-            $warned_until = ($dt + $warned * 604800);
+            $warned_until = $dt + ($warned * 604800);
             $dur = $warned . $lang['modtask_gl_week'] . ($warned > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_warned_status_from']}" . $username . ($warned_pm ? "\n\n{$lang['modtask_gl_reason']} $warned_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_warned_status_from']}" . $username . ($warned_pm ? "\n\n{$lang['modtask_gl_reason']} $warned_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_warned_status_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $warned_pm\n" . $modcomment;
-            $updateset[] = 'warned = ' . $warned_until;
-            $curuser_cache['warned'] = $warned_until;
-            $user_cache['warned'] = $warned_until;
+            $update['warned'] = $warned_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
     }
     if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-        $uploadtoadd = (int) $_POST['amountup'];
-        $downloadtoadd = (int) $_POST['amountdown'];
-        $formatup = $_POST['formatup'];
-        $formatdown = $_POST['formatdown'];
-        $mpup = $_POST['upchange'];
-        $mpdown = $_POST['downchange'];
+        $uploadtoadd = (int) $post['amountup'];
+        $downloadtoadd = (int) $post['amountdown'];
+        $formatup = $post['formatup'];
+        $formatdown = $post['formatdown'];
+        $mpup = $post['upchange'];
+        $mpdown = $post['downchange'];
         if ($uploadtoadd > 0) {
             if ($mpup === 'plus') {
                 $newupload = $user['uploaded'] + ($formatup === 'mb' ? ($uploadtoadd * 1048576) : ($uploadtoadd * 1073741824));
@@ -427,11 +391,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
                     $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_subtract_upload']} (" . $uploadtoadd . ' ' . $formatup . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
                 }
             }
-            if ($newupload >= 0) {
-                $updateset[] = 'uploaded = ' . sqlesc($newupload) . '';
+            if ($newupload !== 0) {
+                $update['uploaded'] = $newupload;
             }
-            $useredit['update'][] = $lang['modtask_uploaded_altered'] . mksize($uploadtoadd) . $lang['modtask_to'] . mksize($newupload);
-            $user_cache['uploaded'] = $newupload;
+            $useredit[] = $lang['modtask_uploaded_altered'] . mksize($uploadtoadd) . $lang['modtask_to'] . mksize($newupload);
         }
         if ($downloadtoadd > 0) {
             if ($mpdown === 'plus') {
@@ -443,64 +406,52 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
                     $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_subtract_download']} (" . $downloadtoadd . ' ' . $formatdown . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
                 }
             }
-            if ($newdownload >= 0) {
-                $updateset[] = 'downloaded = ' . sqlesc($newdownload) . '';
+            if ($newdownload !== 0) {
+                $update['downloaded'] = $newdownload;
             }
-            $useredit['update'][] = $lang['modtask_download_altered'] . mksize($downloadtoadd) . $lang['modtask_to'] . mksize($newdownload);
-            $user_cache['downloaded'] = $newdownload;
+            $useredit[] = $lang['modtask_download_altered'] . mksize($downloadtoadd) . $lang['modtask_to'] . mksize($newdownload);
         }
     }
-    if ((isset($_POST['title'])) && (($title = $_POST['title']) != ($curtitle = $user['title']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_custom_title']}'" . $title . "'{$lang['modtask_gl_from']}'" . $curtitle . "'{$lang['modtask_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'title = ' . sqlesc($title);
-        $useredit['update'][] = $lang['modtask_custom_title_altered'];
-        $curuser_cache['title'] = $title;
-        $user_cache['title'] = $title;
+    if ((isset($post['title'])) && (($title = $post['title']) !== ($curtitle = $user['title']))) {
+        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_custom_title']}'" . $title . "'{$lang['modtask_gl_from']}'" . $curtitle . "' {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['title'] = $title;
+        $useredit[] = $lang['modtask_custom_title_altered'];
     }
-    if (!empty($_POST['reset_torrent_pass'])) {
+    if (!empty($post['reset_torrent_pass'])) {
         $newtorrentpass = make_password(32);
-        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} " . sqlesc($newtorrentpass) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $curuser_cache['torrent_pass'] = $newtorrentpass;
-        $user_cache['torrent_pass'] = $newtorrentpass;
-        $updateset[] = 'torrent_pass = ' . sqlesc($newtorrentpass);
-        $useredit['update'][] = "{$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} $newtorrentpass}";
+        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_torrent_pass']} {$user['torrent_pass']} {$lang['modtask_reset']} {$newtorrentpass} {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['torrent_pass'] = $newtorrentpass;
+        $useredit[] = "{$lang['modtask_torrent_pass']} {$user['torrent_pass']} {$lang['modtask_reset']} $newtorrentpass}";
     }
-    if (!empty($_POST['reset_auth'])) {
+    if (!empty($post['reset_auth'])) {
         $newauthkey = make_password(32);
-        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} " . sqlesc($newauthkey) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $curuser_cache['auth'] = $newauthkey;
-        $user_cache['auth'] = $newauthkey;
-        $updateset[] = 'auth = ' . sqlesc($newauthkey);
-        $useredit['update'][] = "{$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} $newauthkey";
+        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_authkey']} {$user['auth']} {$lang['modtask_reset']} {$newauthkey} {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['auth'] = $newauthkey;
+        $useredit[] = "{$lang['modtask_authkey']} {$user['auth']} {$lang['modtask_reset']} $newauthkey";
     }
-    if (!empty($_POST['reset_apikey'])) {
+    if (!empty($post['reset_apikey'])) {
         $newapikey = make_password(32);
-        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_apikey']} " . sqlesc($user['apikey']) . " {$lang['modtask_reset']} " . sqlesc($newapikey) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $curuser_cache['apikey'] = $newapikey;
-        $user_cache['apikey'] = $newapikey;
-        $updateset[] = 'apikey = ' . sqlesc($newapikey);
-        $useredit['update'][] = "{$lang['modtask_apikey']} " . sqlesc($user['apikey']) . " {$lang['modtask_reset']} $newapikey";
+        $modcomment = get_date($dt, 'DATE', 1) . " - {$lang['modtask_apikey']} {$user['apikey']} {$lang['modtask_reset']} {$newapikey} {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['apikey'] = $newapikey;
+        $useredit[] = "{$lang['modtask_apikey']} {$user['apikey']} {$lang['modtask_reset']} $newapikey";
     }
-    if ((isset($_POST['seedbonus'])) && (($seedbonus = $_POST['seedbonus']) != ($curseedbonus = $user['seedbonus']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $curseedbonus . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'seedbonus = ' . sqlesc($seedbonus);
-        $useredit['update'][] = $lang['modtask_seedbonus_total'];
-        $user_cache['seedbonus'] = $seedbonus;
+    if ((isset($post['seedbonus'])) && (($seedbonus = (int) $post['seedbonus']) !== $user['seedbonus'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $user['seedbonus'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['seedbonus'] = $seedbonus;
+        $useredit[] = $lang['modtask_seedbonus_total'];
     }
-    if ((isset($_POST['reputation'])) && (($reputation = $_POST['reputation']) != ($curreputation = $user['reputation']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_reputation'] . $reputation . $lang['modtask_gl_from'] . $curreputation . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'reputation = ' . sqlesc($reputation);
-        $useredit['update'][] = $lang['modtask_reputation_total'];
-        $curuser_cache['reputation'] = $reputation;
-        $user_cache['reputation'] = $reputation;
+    if ((isset($post['reputation'])) && (($reputation = (int) $post['reputation']) !== $user['reputation'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_reputation'] . $reputation . $lang['modtask_gl_from'] . $user['reputation'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['reputation'] = $reputation;
+        $useredit[] = $lang['modtask_reputation_total'];
     }
     if ((isset($_POST['addcomment'])) && ($addcomment = trim($_POST['addcomment']))) {
         $modcomment = get_date($dt, 'DATE', 1) . ' - ' . $addcomment . ' - ' . $CURUSER['username'] . ".\n" . $modcomment;
     }
-    if ((isset($_POST['avatar'])) && (($avatar = $_POST['avatar']) != ($curavatar = $user['avatar']))) {
+    if ((isset($post['avatar'])) && (($avatar = $post['avatar']) !== $user['avatar'])) {
         $avatar = validate_url($avatar);
         if (!empty($avatar)) {
-            $img_size = @getimagesize($avatar);
+            $img_size = getimagesize($avatar);
             if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
@@ -508,16 +459,14 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
         }
-        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_avatar_change']}" . htmlsafechars($curavatar) . "{$lang['modtask_to']}" . htmlsafechars($avatar) . "{$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'avatar = ' . sqlesc($avatar);
-        $useredit['update'][] = $lang['modtask_avatar_changed'];
-        $curuser_cache['avatar'] = $avatar;
-        $user_cache['avatar'] = $avatar;
+        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_avatar_change']}" . htmlsafechars((string) $user['avatar']) . "{$lang['modtask_to']}" . htmlsafechars((string) $avatar) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['avatar'] = !empty($avatar) ? $avatar : '';
+        $useredit[] = $lang['modtask_avatar_changed'];
     }
-    if ((isset($_POST['signature'])) && (($signature = $_POST['signature']) != ($cursignature = $user['signature']))) {
+    if ((isset($post['signature'])) && (($signature = $post['signature']) !== $user['signature'])) {
         $signature = validate_url($signature);
         if (!empty($signature)) {
-            $img_size = @getimagesize($signature);
+            $img_size = getimagesize($signature);
             if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
@@ -525,27 +474,21 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
         }
-        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_signature_change']}" . htmlsafechars($cursignature) . "{$lang['modtask_to']}" . htmlsafechars($signature) . "{$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'signature = ' . sqlesc($signature);
-        $useredit['update'][] = $lang['modtask_signature_changed'];
-        $curuser_cache['signature'] = $signature;
-        $user_cache['signature'] = $signature;
+        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_signature_change']}" . htmlsafechars((string) $user['signature']) . "{$lang['modtask_to']}" . htmlsafechars((string) $signature) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['signature'] = !empty($signature) ? $signature : '';
+        $useredit[] = $lang['modtask_signature_changed'];
     }
-    if ((isset($_POST['invite_on'])) && (($invite_on = $_POST['invite_on']) != $user['invite_on'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_invites_allowed'] . htmlsafechars($user['invite_on']) . " {$lang['modtask_to']} $invite_on{$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'invite_on = ' . sqlesc($invite_on);
-        $useredit['update'][] = $lang['modtask_invites_enabled'] . htmlsafechars($invite_on) . '';
-        $curuser_cache['invite_on'] = $invite_on;
-        $user_cache['invite_on'] = $invite_on;
+    if ((isset($post['invite_on'])) && (($invite_on = $post['invite_on']) != $user['invite_on'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_invites_allowed'] . htmlsafechars((string) $user['invite_on']) . " {$lang['modtask_to']} $invite_on{$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['invite_on'] = $invite_on;
+        $useredit[] = $lang['modtask_invites_enabled'] . $invite_on;
     }
-    if ((isset($_POST['invites'])) && (($invites = $_POST['invites']) != ($curinvites = $user['invites']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_invites_amount'] . $invites . $lang['modtask_gl_from'] . $curinvites . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'invites = ' . sqlesc($invites);
-        $useredit['update'][] = $lang['modtask_invites_total'];
-        $curuser_cache['invites'] = $invites;
-        $user_cache['invites'] = $invites;
+    if ((isset($post['invites'])) && (($invites = (int) $post['invites']) !== $user['invites'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_invites_amount'] . $invites . $lang['modtask_gl_from'] . $user['invites'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['invites'] = $invites;
+        $useredit[] = $lang['modtask_invites_total'];
     }
-    if ((isset($_POST['support'])) && (($support = $_POST['support']) != $user['support'])) {
+    if ((isset($post['support'])) && (($support = $post['support']) !== $user['support'])) {
         if ($support === 'yes') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_fls_promoted'] . $CURUSER['username'] . ".\n" . $modcomment;
         } elseif ($support === 'no') {
@@ -553,182 +496,173 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         } else {
             stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
         }
-        $supportfor = $_POST['supportfor'];
-        $updateset[] = 'support = ' . sqlesc($support);
-        $updateset[] = 'supportfor = ' . sqlesc($supportfor);
-        $useredit['update'][] = $lang['modtask_fls_support'] . $support . '';
-        $useredit['update'][] = $lang['modtask_fls_support'] . $supportfor . '';
-        $curuser_cache['support'] = $support;
-        $user_cache['support'] = $support;
-        $curuser_cache['supportfor'] = $supportfor;
-        $user_cache['supportfor'] = $supportfor;
+        $supportfor = $post['supportfor'];
+        $update['support'] = $support;
+        $update['supportfor'] = $supportfor;
+        $useredit[] = $lang['modtask_fls_support'] . $support;
+        $useredit[] = $lang['modtask_fls_support'] . $supportfor;
     }
-    if ((isset($_POST['freeslots'])) && (($freeslots = $_POST['freeslots']) != ($curfreeslots = $user['freeslots']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_freeslots_amount'] . $freeslots . $lang['modtask_gl_from'] . $curfreeslots . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'freeslots = ' . sqlesc($freeslots);
-        $useredit['update'][] = $lang['modtask_freeslots_total'];
-        $curuser_cache['freeslots'] = $freeslots;
-        $user_cache['freeslots'] = $freeslots;
+    if ((isset($post['freeslots'])) && (($freeslots = (int) $post['freeslots']) !== $user['freeslots'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_freeslots_amount'] . $freeslots . $lang['modtask_gl_from'] . $user['freeslots'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['freeslots'] = $freeslots;
+        $useredit[] = $lang['modtask_freeslots_total'];
     }
-    if (isset($_POST['free_switch']) && ($free_switch = (int) $_POST['free_switch'])) {
-        unset($free_pm);
-        if (isset($_POST['free_pm'])) {
-            $free_pm = $_POST['free_pm'];
+    if (isset($post['free_switch']) && ($free_switch = (int) $post['free_switch'])) {
+        $free_pm = '';
+        if (isset($post['free_pm'])) {
+            $free_pm = $post['free_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($free_switch == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($free_switch === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_freeleech_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_freeleech_received'] . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
-            $updateset[] = 'free_switch = 1';
-            $useredit['update'][] = $lang['modtask_freeleech_yes'];
-            $curuser_cache['free_switch'] = '1';
-            $user_cache['free_switch'] = '1';
-        } elseif ($free_switch == 42) {
+            $msg = $lang['modtask_freeleech_received'] . $username . (!empty($free_pm) ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : '');
+            $update['free_switch'] = 1;
+            $useredit[] = $lang['modtask_freeleech_yes'];
+        } elseif ($free_switch === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_freeleech_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_freeleech_removed'] . $username);
-            $updateset[] = 'free_switch = 0';
-            $useredit['update'][] = $lang['modtask_freeleech_no'];
-            $curuser_cache['free_switch'] = '0';
-            $user_cache['free_switch'] = '0';
+            $msg = $lang['modtask_freeleech_removed'] . $username;
+            $update['free_switch'] = 0;
+            $useredit[] = $lang['modtask_freeleech_no'];
         } else {
-            $free_until = ($dt + $free_switch * 604800);
+            $free_until = $dt + ($free_switch * 604800);
             $dur = $free_switch . $lang['modtask_gl_week'] . ($free_switch > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_freeleech_from']}Freeleech Status from " . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_freeleech_from']}Freeleech Status from " . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_freeleech_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
-            $updateset[] = 'free_switch = ' . $free_until;
-            $useredit['update'][] = $lang['modtask_freeleech_enabled'] . get_date($free_until, 'DATE', 0, 1) . '';
-            $curuser_cache['free_switch'] = $free_until;
-            $user_cache['free_switch'] = $free_until;
+            $update['free_switch'] = $free_until;
+            $useredit[] = $lang['modtask_freeleech_enabled'] . get_date((int) $free_until, 'DATE', 0, 1);
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if (isset($_POST['game_access']) && ($game_access = (int) $_POST['game_access'])) {
-        //unset($game_disable_pm);
-        if (isset($_POST['game_disable_pm'])) {
-            $disable_pm = $_POST['game_disable_pm'];
+    if (isset($post['game_access']) && ($game_access = (int) $post['game_access'])) {
+        $disable_pm = '';
+        if (isset($post['game_disable_pm'])) {
+            $disable_pm = $post['game_disable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($game_access == 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_games_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $game_disable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_games_dis_right'] . $username . ($game_disable_pm ? "\n\n{$lang['modtask_gl_reason']} $game_disable_pm" : ''));
-            $updateset[] = 'game_access = 0';
-            $useredit['update'][] = $lang['modtask_games_poss_no'];
-            $curuser_cache['game_access'] = 0;
-            $user_cache['game_access'] = 0;
-        } elseif ($game_access == 42) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($game_access === 255) {
+            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_games_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']}\n" . $modcomment;
+            $msg = $lang['modtask_games_dis_right'] . $username . "\n\n{$lang['modtask_gl_reason']}";
+            $update['game_access'] = 0;
+            $useredit[] = $lang['modtask_games_poss_no'];
+        } elseif ($game_access === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_games_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_games_res_by'] . $username);
-            $updateset[] = 'game_access = 1';
-            $useredit['update'][] = $lang['modtask_games_poss_yes'];
-            $curuser_cache['game_access'] = 1;
-            $user_cache['game_access'] = 1;
+            $msg = $lang['modtask_games_res_by'] . $username;
+            $update['game_access'] = 1;
+            $useredit[] = $lang['modtask_games_poss_yes'];
         } else {
-            $game_access_until = ($dt + $game_access * 604800);
+            $game_access_until = $dt + ($game_access * 604800);
             $dur = $game_access . $lang['modtask_gl_week'] . ($game_access > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_games_dis_from']}" . $username . ($game_disable_pm ? "\n\n{$lang['modtask_gl_reason']} $game_disable_pm" : ''));
-            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_games_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $game_disable_pm\n" . $modcomment;
-            $updateset[] = 'game_access = ' . $game_access_until;
-            $useredit['update'][] = $lang['modtask_games_disabled'] . get_date($game_access_until, 'DATE', 0, 1) . '';
-            $curuser_cache['game_access'] = $game_access_until;
-            $user_cache['game_access'] = $game_access_until;
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_games_dis_from']}" . $username . "\n\n{$lang['modtask_gl_reason']}";
+            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_games_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']}\n" . $modcomment;
+            $update['game_access'] = $game_access_until;
+            $useredit[] = $lang['modtask_games_disabled'] . get_date((int) $game_access_until, 'DATE', 0, 1);
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if (isset($_POST['avatarpos']) && ($avatarpos = (int) $_POST['avatarpos'])) {
-        unset($avatardisable_pm);
-        if (isset($_POST['avatardisable_pm'])) {
-            $avatardisable_pm = $_POST['avatardisable_pm'];
+    if (isset($post['avatarpos']) && ($avatarpos = (int) $post['avatarpos'])) {
+        $avatardisable_pm = '';
+        if (isset($post['avatardisable_pm'])) {
+            $avatardisable_pm = $post['avatardisable_pm'];
         }
-        $subject = sqlesc($lang['modtask_gl_notification']);
-        if ($avatarpos == 255) {
+        $subject = $lang['modtask_gl_notification'];
+        if ($avatarpos === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_avatar_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $avatardisable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_avatar_dis_right'] . $username . ($avatardisable_pm ? "\n\n{$lang['modtask_gl_reason']} $avatardisable_pm" : ''));
-            $updateset[] = 'avatarpos = 0';
-            $useredit['update'][] = $lang['modtask_avatar_poss_no'];
-            $curuser_cache['avatarpos'] = 0;
-            $user_cache['avatarpos'] = 0;
-        } elseif ($avatarpos == 42) {
+            $msg = $lang['modtask_avatar_dis_right'] . $username . (!empty($avatardisable_pm) ? "\n\n{$lang['modtask_gl_reason']} $avatardisable_pm" : '');
+            $update['avatarpos'] = 0;
+            $useredit[] = $lang['modtask_avatar_poss_no'];
+        } elseif ($avatarpos === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_avatar_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_avatar_res_by'] . $username);
-            $updateset[] = 'avatarpos = 1';
-            $useredit['update'][] = $lang['modtask_avatar_poss_yes'];
-            $curuser_cache['avatarpos'] = 1;
-            $user_cache['avatarpos'] = 1;
+            $msg = $lang['modtask_avatar_res_by'] . $username;
+            $update['avatarpos'] = 1;
+            $useredit[] = $lang['modtask_avatar_poss_yes'];
         } else {
-            $avatarpos_until = ($dt + $avatarpos * 604800);
+            $avatarpos_until = $dt + ($avatarpos * 604800);
             $dur = $avatarpos . $lang['modtask_gl_week'] . ($avatarpos > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_avatar_dis_from']}" . $username . ($avatardisable_pm ? "\n\n{$lang['modtask_gl_reason']} $avatardisable_pm" : ''));
+            $msg = "{$lang['modtask_gl_received']} $dur {$lang['modtask_avatar_dis_from']}" . $username . ($avatardisable_pm ? "\n\n{$lang['modtask_gl_reason']} $avatardisable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_avatar_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $avatardisable_pm\n" . $modcomment;
-            $updateset[] = 'avatarpos = ' . $avatarpos_until;
-            $useredit['update'][] = $lang['modtask_avatar_sel_dis'] . get_date($avatarpos_until, 'DATE', 0, 1) . '';
-            $curuser_cache['avatarpos'] = $avatarpos_until;
-            $user_cache['avatarpos'] = $avatarpos_until;
+            $update['avatarpos'] = $avatarpos_until;
+            $useredit[] = $lang['modtask_avatar_sel_dis'] . get_date((int) $avatarpos_until, 'DATE', 0, 1);
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
-                VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if ((isset($_POST['highspeed'])) && (($highspeed = $_POST['highspeed']) != $user['highspeed'])) {
+    if ((isset($post['highspeed'])) && (($highspeed = $post['highspeed']) !== $user['highspeed'])) {
         if ($highspeed === 'yes') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_highs_enable_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $subject = sqlesc($lang['modtask_highs_status']);
-            $msg = sqlesc($lang['modtask_highs_set'] . $username . $lang['modtask_highs_msg']);
-            sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $dt)") or sqlerr(__FILE__, __LINE__);
+            $subject = $lang['modtask_highs_status'];
+            $msg = $lang['modtask_highs_set'] . $username . $lang['modtask_highs_msg'];
         } elseif ($highspeed === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_highs_disable_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $subject = sqlesc($lang['modtask_highs_status']);
-            $msg = sqlesc($lang['modtask_highs_disabled'] . $username . $lang['modtask_highs_pm'] . $username . $lang['modtask_highs_reason']);
-            sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $dt)") or sqlerr(__FILE__, __LINE__);
+            $subject = $lang['modtask_highs_status'];
+            $msg = $lang['modtask_highs_disabled'] . $username . $lang['modtask_highs_pm'] . $username . $lang['modtask_highs_reason'];
         } else {
-            die();
+            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
         }
-        $updateset[] = 'highspeed = ' . sqlesc($highspeed);
-        $useredit['update'][] = $lang['modtask_highs_enabled'] . $highspeed . '';
-        $curuser_cache['highspeed'] = $highspeed;
-        $user_cache['highspeed'] = $highspeed;
+        $update['highspeed'] = $highspeed;
+        $useredit[] = $lang['modtask_highs_enabled'] . $highspeed;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if ((isset($_POST['can_leech'])) && (($can_leech = $_POST['can_leech']) != $user['can_leech'])) {
-        if ($can_leech == 1) {
+    if ((isset($post['can_leech'])) && (($can_leech = (int) $post['can_leech']) !== $user['can_leech'])) {
+        if ($can_leech === 1) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_canleech_on_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $subject = sqlesc($lang['modtask_canleech_status']);
-            $msg = sqlesc($lang['modtask_canleech_rights_on'] . $username . '.');
-            sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $dt)") or sqlerr(__FILE__, __LINE__);
-        } elseif ($can_leech == 0) {
+            $subject = $lang['modtask_canleech_status'];
+            $msg = $lang['modtask_canleech_rights_on'] . $username . ' . ';
+        } elseif ($can_leech === 0) {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_canleech_off_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $subject = sqlesc($lang['modtask_canleech_status']);
-            $msg = sqlesc($lang['modtask_canleech_ability'] . $username . $lang['modtask_canleech_pm'] . $username . $lang['modtask_canleech_reason']);
-            sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $dt)") or sqlerr(__FILE__, __LINE__);
+            $subject = $lang['modtask_canleech_status'];
+            $msg = $lang['modtask_canleech_ability'] . $username . $lang['modtask_canleech_pm'] . $username . $lang['modtask_canleech_reason'];
         } else {
-            die();
+            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
         }
-        $updateset[] = 'can_leech = ' . sqlesc($can_leech);
-        $useredit['update'][] = $lang['modtask_canleech_edited'] . $can_leech . '';
-        $curuser_cache['can_leech'] = $can_leech;
-        $user_cache['can_leech'] = $can_leech;
+        $update['can_leech'] = $can_leech;
+        $useredit[] = $lang['modtask_canleech_edited'] . $can_leech;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if ((isset($_POST['wait_time'])) && (($wait_time = $_POST['wait_time']) != $user['wait_time'])) {
+    if ((isset($post['wait_time'])) && (($wait_time = $post['wait_time']) !== $user['wait_time'])) {
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_wait_set']} $wait_time{$lang['modtask_gl_was']}" . (int) $user['wait_time'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'wait_time = ' . sqlesc($wait_time);
-        $useredit['update'][] = $lang['modtask_wait_yes'];
-        $curuser_cache['wait_time'] = $wait_time;
-        $user_cache['wait_time'] = $wait_time;
+        $update['wait_time'] = $wait_time;
+        $useredit[] = $lang['modtask_wait_yes'];
     }
-    if ((isset($_POST['peers_limit'])) && (($peers_limit = $_POST['peers_limit']) != $user['peers_limit'])) {
+    if ((isset($post['peers_limit'])) && (($peers_limit = $post['peers_limit']) !== $user['peers_limit'])) {
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_peer_limit']} $peers_limit{$lang['modtask_gl_was']}" . (int) $user['peers_limit'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'peers_limit = ' . sqlesc($peers_limit);
-        $useredit['update'][] = $lang['modtask_peer_adjusted'];
-        $curuser_cache['peers_limit'] = $peers_limit;
-        $user_cache['peers_limit'] = $peers_limit;
+        $update['peers_limit'] = $peers_limit;
+        $useredit[] = $lang['modtask_peer_adjusted'];
     }
-    if ((isset($_POST['torrents_limit'])) && (($torrents_limit = $_POST['torrents_limit']) != $user['torrents_limit'])) {
+    if ((isset($post['torrents_limit'])) && (($torrents_limit = $post['torrents_limit']) !== $user['torrents_limit'])) {
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_torrent_limit']} $torrents_limit{$lang['modtask_gl_was']}" . (int) $user['torrents_limit'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'torrents_limit = ' . sqlesc($torrents_limit);
-        $useredit['update'][] = $lang['modtask_torrent_adjusted'];
-        $curuser_cache['torrents_limit'] = $torrents_limit;
-        $user_cache['torrents_limit'] = $torrents_limit;
+        $update['torrents_limit'] = $torrents_limit;
+        $useredit[] = $lang['modtask_torrent_adjusted'];
     }
-    if ((isset($_POST['parked'])) && (($parked = $_POST['parked']) != $user['parked'])) {
+    if ((isset($post['parked'])) && (($parked = $post['parked']) !== $user['parked'])) {
         if ($parked === 'yes') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_parked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
         } elseif ($parked === 'no') {
@@ -736,218 +670,163 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         } else {
             stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
         }
-        $updateset[] = 'parked = ' . sqlesc($parked);
-        $useredit['update'][] = $lang['modtask_parked_acc'] . $parked . '';
-        $curuser_cache['parked'] = $parked;
-        $user_cache['parked'] = $parked;
+        $update['parked'] = $parked;
+        $useredit[] = $lang['modtask_parked_acc'] . $parked;
     }
-    if ((isset($_POST['suspended'])) && (($suspended = $_POST['suspended']) != ($suspended = $user['suspended']))) {
-        $suspended_reason = $_POST['suspended_reason'];
+    if ((isset($post['suspended'])) && (($suspended = $post['suspended']) !== $user['suspended'])) {
+        $suspended_reason = $post['suspended_reason'];
         if (!$suspended_reason) {
             stderr($lang['modtask_error'], $lang['modtask_suspend_err']);
         }
-        if ($_POST['suspended'] === 'yes') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_suspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . sqlesc($suspended_reason) . ".\n" . $modcomment;
-            $updateset[] = "downloadpos = '0'";
-            $updateset[] = "uploadpos = '0'";
-            $updateset[] = "forum_post = 'no'";
-            $updateset[] = "invite_on = 'no'";
-            $curuser_cache['downloadpos'] = '0';
-            $user_cache['downloadpos'] = '0';
-            $curuser_cache['uploadpos'] = '0';
-            $user_cache['uploadpos'] = '0';
-            $curuser_cache['forum_post'] = 'no';
-            $user_cache['forum_post'] = 'no';
-            $curuser_cache['invite_on'] = 'no';
-            $user_cache['invite_on'] = 'no';
-            $useredit['update'][] = $lang['modtask_suspended_yes'];
-            $subject = sqlesc($lang['modtask_suspend_title']);
-            $msg = sqlesc($lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ".\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5']);
-            //=== post to forum
-            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . sqlesc($suspended_reason);
+        if ($post['suspended'] === 'yes') {
+            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_suspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . $suspended_reason . ".\n" . $modcomment;
+            $update['downloadpos'] = 0;
+            $update['uploadpos'] = 0;
+            $update['forum_post'] = 'no';
+            $update['invite_on'] = 'no';
+            $update['chatpost'] = 'no';
+            $useredit[] = $lang['modtask_suspended_yes'];
+            $subject = $lang['modtask_suspend_title'];
+            $msg = $lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n{$suspended_reason}.\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5'];
+            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['paths']['baseurl'] . ' / userdetails . php ? id = ' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . $suspended_reason;
             auto_post($lang['modtask_suspend_title'], $body);
         }
-        if ($_POST['suspended'] === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unsuspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . sqlesc($suspended_reason) . ".\n" . $modcomment;
-            $updateset[] = "downloadpos = '1'";
-            $updateset[] = "uploadpos = '1'";
-            $updateset[] = "forum_post = 'yes'";
-            $updateset[] = "invite_on = 'yes'";
-            $useredit['update'][] = $lang['modtask_suspended_no'];
-            $subject = sqlesc($lang['modtask_unsuspend_title']);
-            $msg = sqlesc($lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ". \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5']);
+        if ($post['suspended'] === 'no') {
+            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unsuspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . $suspended_reason . ".\n" . $modcomment;
+            $update['downloadpos'] = 1;
+            $update['uploadpos'] = 1;
+            $update['forum_post'] = 'yes';
+            $update['invite_on'] = 'yes';
+            $update['chatpost'] = 'yes';
+            $useredit[] = $lang['modtask_suspended_no'];
+            $subject = $lang['modtask_unsuspend_title'];
+            $msg = $lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n{$suspended_reason}. \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5'];
         }
-        $updateset[] = 'suspended = ' . sqlesc($_POST['suspended']);
-        $curuser_cache['suspended'] = $_POST['suspended'];
-        $user_cache['suspended'] = $_POST['suspended'];
-        $curuser_cache['downloadpos'] = '1';
-        $user_cache['downloadpos'] = '1';
-        $curuser_cache['uploadpos'] = '1';
-        $user_cache['uploadpos'] = '1';
-        $curuser_cache['forum_post'] = 'yes';
-        $user_cache['forum_post'] = 'yes';
-        $curuser_cache['invite_on'] = 'yes';
-        $user_cache['invite_on'] = 'yes';
-        sql_query("INSERT INTO messages (sender, subject, receiver, added, msg) VALUES(0, $subject, $userid, $dt, $msg)");
+        $update['suspended'] = $post['suspended'];
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
     }
-    if ((isset($_POST['hit_and_run_total'])) && (($hit_and_run_total = $_POST['hit_and_run_total']) != $user['hit_and_run_total'])) {
+    if ((isset($post['hit_and_run_total'])) && (($hit_and_run_total = (int) $post['hit_and_run_total']) !== $user['hit_and_run_total'])) {
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_hit_run_set']} $hit_and_run_total{$lang['modtask_gl_was']}" . (int) $user['hit_and_run_total'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'hit_and_run_total = ' . sqlesc($hit_and_run_total);
-        $useredit['update'][] = $lang['modtask_hit_run_adjusted'];
-        $curuser_cache['hit_and_run_total'] = $hit_and_run_total;
-        $user_cache['hit_and_run_total'] = $hit_and_run_total;
+        $update['hit_and_run_total'] = $hit_and_run_total;
+        $useredit[] = $lang['modtask_hit_run_adjusted'];
     }
-    if ((isset($_POST['forum_post'])) && (($forum_post = $_POST['forum_post']) != $user['forum_post'])) {
+    if ((isset($post['forum_post'])) && (($forum_post = $post['forum_post']) !== $user['forum_post'])) {
         if ($forum_post === 'yes') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_post_en_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_post_give_back'] . $username . $lang['modtask_post_forum_again']);
+            $msg = $lang['modtask_post_give_back'] . $username . $lang['modtask_post_forum_again'];
         } else {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_post_dis_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_post_rem_by'] . $username . $lang['modtask_post_pm'] . $username . $lang['modtask_post_reason']);
+            $msg = $lang['modtask_post_rem_by'] . $username . $lang['modtask_post_pm'] . $username . $lang['modtask_post_reason'];
         }
-        sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($user['id']) . ', ' . $msg . ', \' ' . $lang['modtask_post_rights'] . ' \', ' . $dt . ')');
-        $updateset[] = 'forum_post = ' . sqlesc($forum_post);
-        $useredit['update'][] = $lang['modtask_post_enabled'] . $forum_post . '';
-        $curuser_cache['forum_post'] = $forum_post;
-        $user_cache['forum_post'] = $forum_post;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
+        $update['forum_post'] = $forum_post;
+        $useredit[] = $lang['modtask_post_enabled'] . $forum_post;
     }
-    if ((isset($_POST['signature_post'])) && (($signature_post = $_POST['signature_post']) != $user['signature_post'])) {
+    if ((isset($post['signature_post'])) && (($signature_post = $post['signature_post']) !== $user['signature_post'])) {
         if ($signature_post === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_signature_rights_off'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_signature_rights_off_by'] . $username . $lang['modtask_signature_rights_pm']);
+            $msg = $lang['modtask_signature_rights_off_by'] . $username . $lang['modtask_signature_rights_pm'];
         } else {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_signature_rights_on'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_signature_rights_on_by'] . $username . '.');
+            $msg = $lang['modtask_signature_rights_on_by'] . $username . '.';
         }
-        sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($user['id']) . ', ' . $msg . ', \' ' . $lang['modtask_signature_rights'] . ' \', ' . $dt . ')');
-        $updateset[] = 'signature_post = ' . sqlesc($signature_post);
-        $useredit['update'][] = $lang['modtask_signature_rights_enabled'] . $signature_post . '';
-        $curuser_cache['signature_post'] = $signature_post;
-        $user_cache['signature_post'] = $signature_post;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
+        $update['signature_post'] = $signature_post;
+        $useredit[] = $lang['modtask_signature_rights_enabled'] . $signature_post;
     }
-    if ((isset($_POST['avatar_rights'])) && (($avatar_rights = $_POST['avatar_rights']) != $user['avatar_rights'])) {
+    if ((isset($post['avatar_rights'])) && (($avatar_rights = $post['avatar_rights']) !== $user['avatar_rights'])) {
         if ($avatar_rights === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_avatar_rights_off'] . $CURUSER['username'] . ".\n" . $modcomment;
         } else {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_avatar_rights_on'] . $CURUSER['username'] . ".\n" . $modcomment;
         }
-        $updateset[] = 'avatar_rights = ' . sqlesc($avatar_rights);
-        $useredit['update'][] = $lang['modtask_avatar_rights_enabled'] . $avatar_rights . '';
-        $curuser_cache['avatar_rights'] = $avatar_rights;
-        $user_cache['avatar_rights'] = $avatar_rights;
+        $update['avatar_rights'] = $avatar_rights;
+        $useredit[] = $lang['modtask_avatar_rights_enabled'] . $avatar_rights;
     }
-    if ((isset($_POST['offensive_avatar'])) && (($offensive_avatar = $_POST['offensive_avatar']) != $user['offensive_avatar'])) {
+    if ((isset($post['offensive_avatar'])) && (($offensive_avatar = $post['offensive_avatar']) !== $user['offensive_avatar'])) {
         if ($offensive_avatar === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_offensive_no'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_offensive_no_by'] . $username);
+            $msg = $lang['modtask_offensive_no_by'] . $username;
         } else {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_offensive_yes'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_offensive_yes_by'] . $username . $lang['modtask_offensive_pm']);
+            $msg = $lang['modtask_offensive_yes_by'] . $username . $lang['modtask_offensive_pm'];
         }
-        sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($user['id']) . ', ' . $msg . ', \' ' . $lang['modtask_offensive_avatar'] . ' \', ' . $dt . ')');
-        $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
-        $useredit['update'][] = $lang['modtask_offensive_enabled'] . $offensive_avatar . '';
-        $curuser_cache['offensive_avatar'] = $offensive_avatar;
-        $user_cache['offensive_avatar'] = $offensive_avatar;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $lang['modtask_cls_change'],
+        ];
+        $update['offensive_avatar'] = $offensive_avatar;
+        $useredit[] = $lang['modtask_offensive_enabled'] . $offensive_avatar;
     }
-    if ((isset($_POST['view_offensive_avatar'])) && (($view_offensive_avatar = $_POST['view_offensive_avatar']) != $user['view_offensive_avatar'])) {
+    if ((isset($post['view_offensive_avatar'])) && (($view_offensive_avatar = $post['view_offensive_avatar']) !== $user['view_offensive_avatar'])) {
         if ($view_offensive_avatar === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_viewoffensive_no'] . $CURUSER['username'] . ".\n" . $modcomment;
         } else {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_viewoffensive_yes'] . $CURUSER['username'] . ".\n" . $modcomment;
         }
-        $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
-        $useredit['update'][] = $lang['modtask_viewoffensive_enabled'] . $view_offensive_avatar . '';
-        $curuser_cache['view_offensive_avatar'] = $view_offensive_avatar;
-        $user_cache['view_offensive_avatar'] = $view_offensive_avatar;
+        $update['view_offensive_avatar'] = $view_offensive_avatar;
+        $useredit[] = $lang['modtask_viewoffensive_enabled'] . $view_offensive_avatar;
     }
-    if ((isset($_POST['paranoia'])) && (($paranoia = $_POST['paranoia']) != $user['paranoia'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_paranoia_changed_to'] . intval($_POST['paranoia']) . $lang['modtask_gl_from'] . intval($user['paranoia']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'paranoia = ' . sqlesc($paranoia);
-        $useredit['update'][] = $lang['modtask_paranoia_changed'];
-        $curuser_cache['paranoia'] = $paranoia;
-        $user_cache['paranoia'] = $paranoia;
+    if ((isset($post['paranoia'])) && (($paranoia = (int) $post['paranoia']) !== $user['paranoia'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_paranoia_changed_to'] . intval($post['paranoia']) . $lang['modtask_gl_from'] . intval($user['paranoia']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['paranoia'] = $paranoia;
+        $useredit[] = $lang['modtask_paranoia_changed'];
     }
-    if ((isset($_POST['website'])) && (($website = $_POST['website']) != $user['website'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_website_changed_to'] . strip_tags($_POST['website']) . $lang['modtask_gl_from'] . htmlsafechars($user['website']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'website = ' . sqlesc($website);
-        $useredit['update'][] = $lang['modtask_website_changed'];
-        $curuser_cache['website'] = $website;
-        $user_cache['website'] = $website;
+    if ((isset($post['website'])) && (($website = $post['website']) !== $user['website'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_website_changed_to'] . strip_tags($post['website']) . $lang['modtask_gl_from'] . htmlsafechars((string) $user['website']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['website'] = $website;
+        $useredit[] = $lang['modtask_website_changed'];
     }
-    if ((isset($_POST['google_talk'])) && (($google_talk = $_POST['google_talk']) != $user['google_talk'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_gtalk_changed_to'] . strip_tags($_POST['google_talk']) . $lang['modtask_gl_from'] . htmlsafechars($user['google_talk']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'google_talk = ' . sqlesc($google_talk);
-        $useredit['update'][] = $lang['modtask_gtalk_changed'];
-        $curuser_cache['google_talk'] = $google_talk;
-        $user_cache['google_talk'] = $google_talk;
+    if ((isset($post['skype'])) && (($skype = $post['skype']) !== $user['skype'])) {
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_skype_changed_to'] . strip_tags($post['skype']) . $lang['modtask_gl_from'] . htmlsafechars((string) $user['skype']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $update['skype'] = $skype;
+        $useredit[] = $lang['modtask_skype_changed'];
     }
-    if ((isset($_POST['msn'])) && (($msn = $_POST['msn']) != $user['msn'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_msn_changed_to'] . strip_tags($_POST['msn']) . $lang['modtask_gl_from'] . htmlsafechars($user['msn']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'msn = ' . sqlesc($msn);
-        $useredit['update'][] = $lang['modtask_msn_changed'];
-        $curuser_cache['msn'] = $msn;
-        $user_cache['msn'] = $msn;
+    if (!empty($update)) {
+        $user_stuffs->update($update, $userid);
+        if ($post['enabled'] !== 'yes') {
+            $cache->delete('user_' . $userid);
+        }
+        if ((isset($post['class'])) && (($class = $post['class']) !== $user['class'])) {
+            $cache->delete('is_staff_');
+        }
+        $cache->deleteMulti([
+            'last24_users_',
+            'birthdayusers_',
+            'ircusers_',
+            'activeusers_',
+        ]);
     }
-    if ((isset($_POST['aim'])) && (($aim = $_POST['aim']) != $user['aim'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_aim_changed_to'] . strip_tags($_POST['aim']) . $lang['modtask_gl_from'] . htmlsafechars($user['aim']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'aim = ' . sqlesc($aim);
-        $useredit['update'][] = $lang['modtask_aim_changed'];
-        $curuser_cache['aim'] = $aim;
-        $user_cache['aim'] = $aim;
+    if (!empty($msgs)) {
+        $messages = $container->get(Message::class);
+        $messages->insert($msgs);
     }
-    if ((isset($_POST['yahoo'])) && (($yahoo = $_POST['yahoo']) != $user['yahoo'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_yahoo_changed_to'] . strip_tags($_POST['yahoo']) . $lang['modtask_gl_from'] . htmlsafechars($user['yahoo']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'yahoo = ' . sqlesc($yahoo);
-        $useredit['update'][] = $lang['modtask_yahoo_changed'];
-        $curuser_cache['yahoo'] = $yahoo;
-        $user_cache['yahoo'] = $yahoo;
+    if (!empty($useredit)) {
+        write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username((int) $userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit) . "{$lang['modtask_gl_by']}" . format_username((int) $CURUSER['id']));
     }
-    if ((isset($_POST['icq'])) && (($icq = $_POST['icq']) != $user['icq'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_icq_changed_to'] . strip_tags($_POST['icq']) . $lang['modtask_gl_from'] . htmlsafechars($user['icq']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        $updateset[] = 'icq = ' . sqlesc($icq);
-        $useredit['update'][] = $lang['modtask_icq_changed'];
-        $curuser_cache['icq'] = $icq;
-        $user_cache['icq'] = $icq;
-    }
-    if (($CURUSER['class'] == UC_MAX && ($user['modcomment'] != $_POST['modcomment'] || $modcomment != $_POST['modcomment'])) || ($CURUSER['class'] < UC_MAX && $modcomment != $user['modcomment'])) {
-        $updateset[] = 'modcomment = ' . sqlesc($modcomment);
-    }
-    $user_cache['modcomment'] = $modcomment;
-    if ($user_cache) {
-        $cache->update_row('user_' . $userid, $user_cache, $site_config['expires']['user_cache']);
-    }
-    if (!empty($updateset)) {
-        sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    }
-    if ($_POST['enabled'] !== 'yes') {
-        $cache->delete('user_' . $userid);
-    }
-
-    status_change($userid);
-    if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
-        $cache->delete('is_staff_');
-    }
-    if (!empty($setbits) || !empty($countbits)) {
-        sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    }
-
-    $res = sql_query('SELECT opt1, opt2 FROM users WHERE id=' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_assoc($res);
-    $cache->update_row('user_' . $userid, [
-        'opt1' => $row['opt1'],
-        'opt2' => $row['opt2'],
-    ], $site_config['expires']['user_cache']);
-    $cache->deleteMulti([
-        'last24_users_',
-        'birthdayusers_',
-        'ircusers_',
-        'activeusers_',
-    ]);
-
-    write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username($userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit['update']) . "{$lang['modtask_gl_by']}" . format_username($CURUSER['id']));
-    $returnto = htmlsafechars($_POST['returnto']);
+    $returnto = htmlsafechars($post['returnto']) . '#edit';
     header("Location: {$site_config['paths']['baseurl']}/$returnto");
-    stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
 }
+
 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_no_idea']}");

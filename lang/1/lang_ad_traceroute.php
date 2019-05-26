@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'trace_out' => 'Trace Output:',
     'trace_done' => 'done...',

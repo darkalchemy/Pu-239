@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER;
+declare(strict_types = 1);
+global $CURUSER, $user, $lang;
 
 if ($CURUSER['id'] == $user['id'] || $user['paranoia'] < 2) {
     $HTMLOUT .= "

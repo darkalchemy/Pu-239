@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     ///***GB Upload***///
     'bonusmanager_up_err' => 'Upload Credit Error',

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_stats'));
+global $site_config;
+
 $HTMLOUT = '';
 //$HTMLOUT .= begin_main_frame();
 $res = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
@@ -79,8 +81,8 @@ if ($count === 0) {
     while ($uper = mysqli_fetch_assoc($res)) {
         $body .= '
     <tr>
-        <td>' . format_username($uper['id']) . '</td>
-        <td ' . ($uper['last'] ? ('>' . get_date($uper['last'], '') . ' (' . get_date($uper['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
+        <td>' . format_username((int) $uper['id']) . '</td>
+        <td ' . ($uper['last'] ? ('>' . get_date((int) $uper['last'], '') . ' (' . get_date((int) $uper['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$uper['n_t']}</td>
         <td>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . '</td>
         <td>' . $uper['n_p'] . '</td>
@@ -121,7 +123,7 @@ if ($n_tor == 0) {
         $body .= '
     <tr>
         <td>' . htmlsafechars($cat['name']) . '</td>
-        <td ' . ($cat['last'] ? ('>' . get_date($cat['last'], '') . ' (' . get_date($cat['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
+        <td ' . ($cat['last'] ? ('>' . get_date((int) $cat['last'], '') . ' (' . get_date((int) $cat['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$cat['n_t']}</td>
         <td>" . number_format(100 * $cat['n_t'] / $n_tor, 1) . "%</td>
         <td>{$cat['n_p']}</td>

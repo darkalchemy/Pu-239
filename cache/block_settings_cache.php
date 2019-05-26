@@ -25,6 +25,7 @@ $BLOCKS = [
     'christmas_gift_on' => 1,
     'active_poll_on' => 1,
     'movie_ofthe_week_on' => 1,
+    'submit' => 0,
     'global_freeleech_on' => 1,
     'global_demotion_on' => 1,
     'global_message_on' => 1,
@@ -76,5 +77,4 @@ $BLOCKS = [
     'google_books_api_on' => 1,
     'tvmaze_api_on' => 1,
     'anime_api_on' => 1,
-    'submit' => 0,
 ];

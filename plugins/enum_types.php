@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Use <select><option> for enum edit instead of regular input text on enum type in PostgreSQL
  *
@@ -12,6 +12,14 @@ class AdminerEnumTypes
 {
     public $_types = null;
 
+    /**
+     * @param $table
+     * @param $field
+     * @param $attrs
+     * @param $value
+     *
+     * @return string|void
+     */
     public function editInput($table, $field, $attrs, $value)
     {
         // PostgreSQL only

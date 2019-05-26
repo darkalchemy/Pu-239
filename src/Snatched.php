@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -13,10 +15,14 @@ class Snatched
     protected $cache;
     protected $fluent;
 
-    public function __construct()
+    /**
+     * Snatched constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     */
+    public function __construct(Cache $cache, Database $fluent)
     {
-        global $cache, $fluent;
-
         $this->cache = $cache;
         $this->fluent = $fluent;
     }
@@ -25,9 +31,9 @@ class Snatched
      * @param int $userid
      * @param int $tid
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_snatched(int $userid, int $tid)
     {
@@ -40,14 +46,17 @@ class Snatched
                                      ->select('leechtime')
                                      ->select('uploaded')
                                      ->select('downloaded')
+                                     ->select('real_uploaded')
+                                     ->select('real_downloaded')
                                      ->select('finished')
                                      ->select('timesann')
                                      ->select('start_date AS start_snatch')
-                                     ->where('torrentid=?', $tid)
-                                     ->where('userid=?', $userid)
+                                     ->where('torrentid = ?', $tid)
+                                     ->where('userid = ?', $userid)
                                      ->fetch();
-
-            $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
+            if (!empty($snatches)) {
+                $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
+            }
         }
 
         return $snatches;
@@ -55,13 +64,14 @@ class Snatched
 
     /**
      * @param array $values
+     * @param array $update
      *
      * @throws Exception
      */
-    public function insert(array $values)
+    public function insert(array $values, array $update)
     {
-        $this->fluent->insertInto('snatched')
-                     ->values($values)
+        $this->fluent->insertInto('snatched', $values)
+                     ->onDuplicateKeyUpdate($update)
                      ->execute();
     }
 
@@ -77,8 +87,8 @@ class Snatched
     {
         $this->fluent->update('snatched')
                      ->set($set)
-                     ->where('torrentid=?', $tid)
-                     ->where('userid=?', $userid)
+                     ->where('torrentid = ?', $tid)
+                     ->where('userid = ?', $userid)
                      ->execute();
 
         $this->cache->update_row("snatches_{$userid}_{$tid}", $set);

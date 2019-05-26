@@ -1,21 +1,32 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  */
 function birthday_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
     require_once INCL_DIR . 'function_users.php';
-    global $site_config, $cache, $message_stuffs, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $dt = TIME_NOW;
     $date = getdate();
-
+    $fluent = $container->get(Database::class);
     $users = $fluent->from('users')
                     ->select(null)
                     ->select('id')
@@ -29,6 +40,7 @@ function birthday_update($data)
     $msgs = [];
     if (!empty($users)) {
         $subject = "It's your birthday!!";
+        $cache = $container->get(Cache::class);
         foreach ($users as $arr) {
             $msg = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
             $msgs[] = [
@@ -39,9 +51,15 @@ function birthday_update($data)
                 'msg' => $msg,
                 'subject' => $subject,
             ];
+            if (!empty($user)) {
+                $cache->update_row('user_' . $arr['id'], [
+                    'uploaded' => $arr['uploaded'] + 10737418240,
+                ], $site_config['expires']['user_cache']);
+            }
         }
         $count = count($msgs);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             if ($count > 100) {
                 foreach (array_chunk($msgs, 150) as $t) {
                     echo 'Inserting ' . count($t) . " messages\n";
@@ -52,7 +70,7 @@ function birthday_update($data)
             }
 
             $set = [
-                'uploaded' => new Envms\FluentPDO\Literal('uploaded + 10737418240'),
+                'uploaded' => new Literal('uploaded + 10737418240'),
             ];
             $fluent->update('users')
                    ->set($set)

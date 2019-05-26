@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\ImageProxy;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
-
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
-$image_proxy = new Pu239\ImageProxy();
-
-header('content-type: application/json');
+global $container, $site_config, $CURUSER;
 
 $SaLt = $site_config['salt']['one'];
 $SaLty = $site_config['salt']['two'];
@@ -20,8 +20,6 @@ $maxsize = $site_config['bucket']['maxsize'];
 $folders = date('Y/m');
 $formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
-$str = str_replace('.', '', $str);
-
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
 $PICSALT = $SaLt . $CURUSER['username'];
@@ -29,6 +27,8 @@ $USERSALT = substr(md5($SaLty . $CURUSER['id']), 0, 6);
 make_year(BITBUCKET_DIR);
 make_month(BITBUCKET_DIR);
 
+header('content-type: application/json');
+$image_proxy = $container->get(ImageProxy::class);
 for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file_' . $i]['name']);
     $it1 = exif_imagetype($_FILES['file_' . $i]['tmp_name']);
@@ -59,7 +59,6 @@ if (!empty($images)) {
         'msg' => $lang['bitbucket_success'],
         'urls' => $images,
     ];
-    file_put_contents('/var/log/nginx/images.log', json_encode($output) . PHP_EOL, FILE_APPEND);
     echo json_encode($output);
     die();
 } else {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'annhistory_ann' => 'Announcement History',
     'annhistory_error' => 'Error',

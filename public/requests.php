@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Database;
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -8,9 +15,8 @@ require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli, $commentid;
-
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
+global $site_config, $CURUSER;
 
 $stdhead = [
     'css' => [
@@ -37,7 +43,7 @@ if (isset($_GET['comment_id']) && $comment_id === 0) {
 $category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
 $requested_by_id = isset($_GET['requested_by_id']) ? intval($_GET['requested_by_id']) : 0;
 $vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
-$posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '')));
+$posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars((string) $_GET['action']) : (isset($_POST['action']) ? htmlsafechars((string) $_POST['action']) : '')));
 
 $valid_actions = [
     'add_new_request',
@@ -73,6 +79,9 @@ $top_menu = '
             </li>
         </ul>
     </div>';
+$session = $container->get(Session::class);
+$fluent = $container->get(Database::class);
+$user_stuffs = $container->get(User::class);
 switch ($action) {
     case 'update_request':
         if (!isset($id) || !is_valid_id($id)) {
@@ -81,7 +90,7 @@ switch ($action) {
         $exists = $fluent->from('requests')
                          ->select(null)
                          ->select('requested_by_user_id')
-                         ->where('id=?', $id)
+                         ->where('id = ?', $id)
                          ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
@@ -100,7 +109,7 @@ switch ($action) {
         ];
         $fluent->update('requests')
                ->set($set)
-               ->where('id=?', $id)
+               ->where('id = ?', $id)
                ->execute();
 
         header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . sqlesc($id));
@@ -114,8 +123,8 @@ switch ($action) {
         $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id=?', $CURUSER['id'])
-                        ->where('request_id=?', $id)
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
                         ->fetch('vote');
 
         if (!empty($voted)) {
@@ -132,16 +141,16 @@ switch ($action) {
                    ->execute();
             if ($vote === 1) {
                 $set = [
-                    'vote_yes_count' => new Envms\FluentPDO\Literal('vote_yes_count + 1'),
+                    'vote_yes_count' => new Literal('vote_yes_count + 1'),
                 ];
             } else {
                 $set = [
-                    'vote_no_count' => new Envms\FluentPDO\Literal('vote_no_count + 1'),
+                    'vote_no_count' => new Literal('vote_no_count + 1'),
                 ];
             }
             $fluent->update('requests')
                    ->set($set)
-                   ->where('id=?', $id)
+                   ->where('id = ?', $id)
                    ->execute();
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
@@ -151,7 +160,7 @@ switch ($action) {
     case 'default':
         $count = $fluent->from('requests')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->fetch('count');
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -167,11 +176,12 @@ switch ($action) {
                            ->leftJoin('categories AS c ON r.category = c.id')
                            ->leftJoin('categories AS p ON c.parent_id=p.id')
                            ->orderBy('r.added DESC')
-                           ->limit($pager['pdo'])
+                           ->limit($pager['pdo']['limit'])
+                           ->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
         if (empty($requests)) {
-            stderr('Error!', 'Sorry, there are no current requests!');
+            stderr('Error!', 'Sorry, there are no current requests!', 'bottom20');
         }
         $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
         $heading = '
@@ -187,16 +197,16 @@ switch ($action) {
         $body = '';
         foreach ($requests as $request) {
             $request['cat'] = $request['parent_name'] . '::' . $request['cat_name'];
-            $caticon = !empty($request['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($request['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($request['cat']) . "' title='" . htmlsafechars($request['cat']) . "' height='20px' width='auto'>" : htmlsafechars($request['cat']);
+            $caticon = !empty($request['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $request['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $request['cat']) . "' title='" . htmlsafechars((string) $request['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $request['cat']);
             $body .= '
         <tr>
             <td>' . $caticon . '</td>
-            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars(htmlspecialchars($request['request_name'], ENT_QUOTES, 'UTF-8')) . '</a></td>
-            <td>' . get_date($request['added'], 'LONG') . '</td>
+            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars((string) $request['request_name']) . '</a></td>
+            <td>' . get_date((int) $request['added'], 'LONG') . '</td>
             <td>' . number_format($request['comments']) . '</td>
             <td>yes: ' . number_format($request['vote_yes_count']) . '<br>
             no: ' . number_format($request['vote_no_count']) . '</td>
-            <td>' . format_username($request['requested_by_user_id']) . '</td>
+            <td>' . format_username((int) $request['requested_by_user_id']) . '</td>
             <td>' . ($request['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $request['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
         </tr>';
         }
@@ -216,12 +226,12 @@ switch ($action) {
                       ->select('c.image AS cat_image')
                       ->select('p.name AS parent_name')
                       ->leftJoin('categories AS c ON r.category = c.id')
-                      ->leftJoin('categories AS p ON c.parent_id=p.id')
-                      ->where('r.id=?', $id)
+                      ->leftJoin('categories AS p ON c.parent_id = p.id')
+                      ->where('r.id = ?', $id)
                       ->fetch();
 
         $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
-        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
+        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $arr['cat']) . "' title='" . htmlsafechars((string) $arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $arr['cat']);
 
         if (!empty($arr['link'])) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
@@ -232,8 +242,8 @@ switch ($action) {
         $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id=?', $CURUSER['id'])
-                        ->where('request_id=?', $id)
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('request_id = ?', $id)
                         ->fetch('vote');
 
         if (!$voted) {
@@ -259,7 +269,7 @@ switch ($action) {
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  <td colspan="2"><h1>' . htmlsafechars((string) $arr['request_name']) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
   [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
@@ -276,7 +286,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>link:</td>
-  <td><a class="altlink" href="' . htmlsafechars(htmlspecialchars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES, 'UTF-8')) . '</a></td>
+  <td><a class="altlink" href="' . htmlsafechars((string) $arr['link']) . '"  target="_blank">' . htmlsafechars($arr['link']) . '</a></td>
   </tr>
     <tr>
         <td>IMDb</td>
@@ -290,7 +300,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>requested by:</td>
-  <td>' . format_username($usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
   ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
@@ -309,7 +319,7 @@ switch ($action) {
   </tr>
   </table>';
         $HTMLOUT .= '
-            <h1 class="has-text-centered">Comments for ' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '</h1>
+            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name']) . '</h1>
             <a id="startcomments"></a>
             <div class="has-text-centered margin20">
                 <a class="button is-small" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
@@ -329,7 +339,8 @@ switch ($action) {
                               ->select('id AS comment_id')
                               ->where('request = ?', $id)
                               ->orderBy('id DESC')
-                              ->limit($pager['pdo'])
+                              ->limit($pager['pdo']['limit'])
+                              ->offset($pager['pdo']['offset'])
                               ->fetchAll();
 
             $HTMLOUT .= '<a id="comments"></a>';
@@ -337,7 +348,7 @@ switch ($action) {
             $HTMLOUT .= commenttable($allrows, 'request');
             $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
-        echo stdhead('Request details for: ' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_request':
@@ -397,12 +408,12 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="request_name" value="' . htmlsafechars(htmlspecialchars($request_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" required>
+        <input type="url" id="url" name="link" class="w-100" value="' . htmlsafechars($link) . '" required>
         <div id="imdb_outer">
         </div>
     </td>
@@ -410,7 +421,7 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
+        <input type="url" id="image_url"  placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
         <input type="url" id="poster" maxlength="255" name="poster" class="w-100 is-hidden">
         <div class="poster_container has-text-centered"></div>
     </td>
@@ -455,7 +466,7 @@ switch ($action) {
                          ->select(null)
                          ->select('request_name')
                          ->select('requested_by_user_id')
-                         ->where('id=?', $id)
+                         ->where('id = ?', $id)
                          ->fetch();
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
@@ -464,11 +475,11 @@ switch ($action) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars(htmlspecialchars($exists['request_name'], ENT_QUOTES, 'UTF-8')) . '"</b>? If so click
+            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars($exists['request_name']) . '"</b>? If so click
         <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('requests')
-                   ->where('id=?', $id)
+                   ->where('id = ?', $id)
                    ->execute();
             $fluent->deleteFrom('comments')
                    ->where('request = ?', $id)
@@ -492,7 +503,7 @@ switch ($action) {
                            ->select('p.name AS parent_name')
                            ->leftJoin('categories AS c ON r.category = c.id')
                            ->leftJoin('categories AS p ON c.parent_id=p.id')
-                           ->where('r.id=?', $id)
+                           ->where('r.id = ?', $id)
                            ->fetch();
 
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
@@ -503,7 +514,7 @@ switch ($action) {
         }
         $filled_by = '';
         if ($edit_arr['filled_by_user_id'] > 0) {
-            $filled_by = 'this request was filled by ' . format_username($edit_arr['filled_by_user_id']);
+            $filled_by = 'this request was filled by ' . format_username((int) $edit_arr['filled_by_user_id']);
         }
         $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : $edit_arr['request_name']);
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
@@ -516,7 +527,7 @@ switch ($action) {
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
                 $category_drop_down .= "
-                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($cat['name'], ENT_QUOTES) . '::' . htmlsafechars($row['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -533,15 +544,15 @@ switch ($action) {
    </tr>
    <tr>
    <td>name:</td>
-   <td><input type="text" name="request_name" value="' . htmlsafechars(htmlspecialchars($request_name, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>image:</td>
-   <td><input type="url" name="image" value="' . htmlsafechars(htmlspecialchars($image, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="url" name="image" value="' . htmlsafechars($image) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>link:</td>
-   <td><input type="url" name="link" value="' . htmlsafechars(htmlspecialchars($link, ENT_QUOTES, 'UTF-8')) . '" class="w-100" required></td>
+   <td><input type="url" name="link" value="' . htmlsafechars($link) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>category:</td>
@@ -574,7 +585,7 @@ switch ($action) {
         $arr = $fluent->from('requests')
                       ->select(null)
                       ->select('request_name')
-                      ->where('id=?', $id)
+                      ->where('id = ?', $id)
                       ->fetch();
 
         if (!$arr) {
@@ -596,7 +607,7 @@ switch ($action) {
                             ->values($values)
                             ->execute();
             $set = [
-                'comments' => new Envms\FluentPDO\Literal('comments + 1'),
+                'comments' => new Literal('comments + 1'),
             ];
             $fluent->update('requests')
                    ->set($set)
@@ -610,7 +621,7 @@ switch ($action) {
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
-                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
+                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
@@ -648,7 +659,7 @@ switch ($action) {
         $arr = $fluent->from('comments AS c')
                       ->select('r.request_name')
                       ->leftJoin('requests AS r ON c.request = r.id')
-                      ->where('c.id=?', $comment_id)
+                      ->where('c.id = ?', $comment_id)
                       ->fetch();
 
         if (!$arr) {
@@ -669,7 +680,7 @@ switch ($action) {
             ];
             $fluent->update('comments')
                    ->set($set)
-                   ->where('id=?', $comment_id)
+                   ->where('id = ?', $comment_id)
                    ->execute();
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
@@ -685,7 +696,7 @@ switch ($action) {
     <input type="hidden" name="cid" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
      <tr>
-    <td colspan="2"><h1>Edit comment to "' . htmlsafechars(htmlspecialchars($arr['request_name'], ENT_QUOTES, 'UTF-8')) . '"</h1></td>
+    <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
     </tr>
      <tr>
     <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>
@@ -710,9 +721,9 @@ switch ($action) {
                       ->select('user')
                       ->select('request')
                       ->select('text')
-                      ->where('id =?', $comment_id)
+                      ->where('id  = ?', $comment_id)
                       ->fetch();
-        if (emtpy($arr)) {
+        if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
@@ -726,7 +737,7 @@ switch ($action) {
         ];
         $fluent->update('comments')
                ->set($set)
-               ->where('id=?', $comment_id)
+               ->where('id = ?', $comment_id)
                ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
@@ -741,9 +752,9 @@ switch ($action) {
         $arr = $fluent->from('comments')
                       ->select('user')
                       ->select('request')
-                      ->where('id=?', $comment_id)
+                      ->where('id = ?', $comment_id)
                       ->fetch();
-        if (emtpy($arr)) {
+        if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
         if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
@@ -753,14 +764,14 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('comments')
-                   ->where('id=?', $comment_id)
+                   ->where('id = ?', $comment_id)
                    ->execute();
             $set = [
-                'comments' => new Envms\FluentPDO\Literal('comments - 1'),
+                'comments' => new Literal('comments - 1'),
             ];
             $fluent->update('requests')
                    ->set($set)
-                   ->where('id=?', $arr['request'])
+                   ->where('id = ?', $arr['request'])
                    ->execute();
 
             header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
@@ -776,11 +787,11 @@ switch ($action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
         $arr = $fluent->from('comments')
-                      ->where('id=?', $comment_id)
+                      ->where('id = ?', $comment_id)
                       ->fetch();
 
         if (!$arr) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid . ");
+            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $comment_id . ");
         }
         $HTMLOUT = " < h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 

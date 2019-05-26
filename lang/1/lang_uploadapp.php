@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $site_config;
+
 $lang = [
     //uploadapp errors
     'uploadapp_error' => 'Error',
@@ -7,7 +10,7 @@ $lang = [
     'uploadapp_alreadyup' => 'It appears you are already part of our uploading team.',
     'uploadapp_pending' => 'It appears you are currently pending confirmation of your uploader application.',
     'uploadapp_rejected' => 'It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.',
-    'uploadapp_tryagain' => 'It appears something went wrong while sending your application. Please <a href=uploadapp.php>try again</a>',
+    'uploadapp_tryagain' => "It appears something went wrong while sending your application. Please <a href='{$site_config['paths']['baseurl']}/uploadapp.php'>try again</a>",
     'uploadapp_speedblank' => 'It appears you have left the field with your upload speed blank.',
     'uploadapp_offerblank' => 'It appears you have left the field with the things you have to offer blank.',
     'uploadapp_reasonblank' => 'It appears you have left the field with the reason why we should promote you blank.',

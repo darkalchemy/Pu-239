@@ -1,23 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+use Pu239\Torrent;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $site_config, $cache, $session, $torrent_stuffs;
-
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
+global $container, $site_config, $CURUSER;
+
 $torrent_cache = $torrent_txt_cache = '';
 $possible_extensions = [
     'nfo',
     'txt',
 ];
-if (!mkglobal('id:name:body:type')) {
-    $session->set('is-warning', 'Id, descr, name or type is missing');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
-}
-$id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+$session = $container->get(Session::class);
+$id = $name = $body = $type = '';
+extract($_POST);
 if (!is_valid_id($id)) {
     $session->set('is-warning', $lang['takedit_no_data']);
     header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -93,10 +96,10 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
 }
 
 foreach ([
-             $type,
-             $body,
-             $name,
-         ] as $x) {
+    $type,
+    $body,
+    $name,
+] as $x) {
     if (empty($x)) {
         $session->set('is-warning', $lang['takedit_no_data']);
         header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -104,7 +107,7 @@ foreach ([
     }
 }
 if (!empty($_POST['youtube'])) {
-    preg_match('/' . $site_config['youtube']['pattern'] . '/i', $_POST['youtube'], $temp_youtube);
+    preg_match('#' . $site_config['youtube']['pattern'] . '#i', $_POST['youtube'], $temp_youtube);
     if (isset($temp_youtube[0]) && $temp_youtube[0] != $fetch_assoc['youtube']) {
         $updateset[] = 'youtube = ' . sqlesc($temp_youtube[0]);
         $torrent_cache['youtube'] = $temp_youtube[0];
@@ -154,7 +157,7 @@ if ($CURUSER['class'] > UC_STAFF) {
 }
 
 if (in_array($category, $site_config['categories']['movie'])) {
-    $subs = isset($_POST['subs']) ? implode(',', $_POST['subs']) : '';
+    $subs = isset($_POST['subs']) ? implode('|', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;
 }
@@ -203,7 +206,7 @@ if (isset($_POST['free_length']) && $free_length = (int) $_POST['free_length']) 
     }
     $updateset[] = 'free = ' . sqlesc($free);
     $torrent_cache['free'] = $free;
-    write_log("Torrent $id ($name) set Free for " . ($free != 1 ? 'Until ' . get_date($free, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
+    write_log("Torrent $id ($name) set Free for " . ($free != 1 ? 'Until ' . get_date((int) $free, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
 }
 if (isset($_POST['fl']) && ($_POST['fl'] == 1)) {
     $updateset[] = "free = '0'";
@@ -221,7 +224,7 @@ if (isset($_POST['half_length']) && ($half_length = (int) $_POST['half_length'])
     }
     $updateset[] = 'silver = ' . sqlesc($silver);
     $torrent_cache['silver'] = $silver;
-    write_log("Torrent $id ($name) set Half leech for " . ($silver != 1 ? 'Until ' . get_date($silver, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
+    write_log("Torrent $id ($name) set Half leech for " . ($silver != 1 ? 'Until ' . get_date((int) $silver, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
 }
 if (isset($_POST['slvr']) && ($_POST['slvr'] == 1)) {
     $updateset[] = "silver = '0'";
@@ -309,6 +312,7 @@ if (count($updateset) > 0) {
     $sql = 'UPDATE torrents SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
+$cache = $container->get(Cache::class);
 if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
     $cache->deleteMulti([
@@ -323,6 +327,7 @@ if ($torrent_cache) {
         'scroller_torrents_',
     ]);
 }
+$torrent_stuffs = $container->get(Torrent::class);
 $torrent_stuffs->remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
 $cache->delete('editedby_' . $id);

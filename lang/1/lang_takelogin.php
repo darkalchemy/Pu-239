@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //takelogin errors
     'tlogin_failed' => 'Login failed!',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Chat
     'chat_channel' => 'The official IRC channel is ',

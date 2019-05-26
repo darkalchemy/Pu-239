@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //blocks
     'gl_bug_alert' => 'Bug Alert Message',

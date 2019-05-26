@@ -1,26 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $mysqli;
-
 $lang = array_merge($lang, load_language('ad_cleanup_manager'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 switch ($params['mode']) {
     case 'unlock':
-        cleanup_take_unlock();
+        cleanup_take_unlock($params);
         break;
 
     case 'delete':
-        cleanup_take_delete();
+        cleanup_take_delete($params);
         break;
 
     case 'takenew':
-        cleanup_take_new();
+        cleanup_take_new($params);
         break;
 
     case 'new':
@@ -28,7 +33,7 @@ switch ($params['mode']) {
         break;
 
     case 'takeedit':
-        cleanup_take_edit();
+        cleanup_take_edit($params);
         break;
 
     case 'edit':
@@ -36,7 +41,7 @@ switch ($params['mode']) {
         break;
 
     case 'run':
-        manualclean();
+        manualclean($params);
         break;
 
     case 'reset':
@@ -48,23 +53,34 @@ switch ($params['mode']) {
         break;
 }
 
+/**
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function resettimer()
 {
-    global $session;
+    global $container;
 
+    $session = $container->get(Session::class);
     $timestamp = strtotime('today midnight');
     sql_query("UPDATE cleanup SET clean_time = $timestamp WHERE clean_time > 0");
-    $session->set('is-success', 'Cleanup Time Set to ' . get_date($timestamp, 'LONG'));
+    $session->set('is-success', 'Cleanup Time Set to ' . get_date((int) $timestamp, 'LONG'));
     cleanup_show_main();
     die();
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function manualclean()
+function manualclean($params)
 {
-    global $params, $lang;
+    global $lang;
 
     if (function_exists('docleanup')) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr1']);
@@ -92,7 +108,7 @@ function manualclean()
         }
     }
 
-    cleanup_show_main(); //instead of header() so can see queries in footer (using sql_query())
+    cleanup_show_main();
     die();
 }
 
@@ -102,11 +118,12 @@ function manualclean()
  */
 function cleanup_show_main()
 {
-    global $site_config, $lang, $fluent;
+    global $container, $site_config, $lang;
 
+    $fluent = $container->get(Database::class);
     $count1 = $fluent->from('cleanup')
                      ->select(null)
-                     ->select('COUNT(*) AS count')
+                     ->select('COUNT(clean_id) AS count')
                      ->fetch('count');
 
     $perpage = 15;
@@ -135,7 +152,7 @@ function cleanup_show_main()
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
     }
     while ($row = mysqli_fetch_assoc($sql)) {
-        $row['_clean_time'] = get_date($row['clean_time'], 'LONG');
+        $row['_clean_time'] = get_date((int) $row['clean_time'], 'LONG', 1, 0);
         $row['clean_increment'] = (int) $row['clean_increment'];
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
         $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
@@ -175,7 +192,7 @@ function cleanup_show_main()
  */
 function cleanup_show_edit()
 {
-    global $params, $lang;
+    global $lang;
 
     if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id($params['cid'])) {
         cleanup_show_main();
@@ -187,11 +204,11 @@ function cleanup_show_edit()
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr3']);
     }
     $row = mysqli_fetch_assoc($sql);
-    $row['clean_title'] = htmlsafechars(htmlspecialchars($row['clean_title'], ENT_QUOTES, 'UTF-8'));
-    $row['clean_desc'] = htmlsafechars(htmlspecialchars($row['clean_desc'], ENT_QUOTES, 'UTF-8'));
-    $row['clean_file'] = htmlsafechars(htmlspecialchars($row['clean_file'], ENT_QUOTES, 'UTF-8'));
-    $row['clean_title'] = htmlsafechars(htmlspecialchars($row['clean_title'], ENT_QUOTES, 'UTF-8'));
-    $row['function_name'] = htmlsafechars(htmlspecialchars($row['function_name'], ENT_QUOTES, 'UTF-8'));
+    $row['clean_title'] = htmlsafechars((string) $row['clean_title']);
+    $row['clean_desc'] = htmlsafechars((string) $row['clean_desc']);
+    $row['clean_file'] = htmlsafechars((string) $row['clean_file']);
+    $row['clean_title'] = htmlsafechars((string) $row['clean_title']);
+    $row['function_name'] = htmlsafechars((string) $row['function_name']);
     $logyes = $row['clean_log'] ? 'checked' : '';
     $logno = !$row['clean_log'] ? 'checked' : '';
     $cleanon = $row['clean_on'] ? 'checked' : '';
@@ -244,19 +261,23 @@ function cleanup_show_edit()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function cleanup_take_edit()
+function cleanup_take_edit($params)
 {
-    global $params, $lang;
+    global $lang;
 
     foreach ([
-                 'cid',
-                 'clean_increment',
-                 'clean_log',
-                 'clean_on',
-             ] as $x) {
+        'cid',
+        'clean_increment',
+        'clean_log',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'cid' || $x === 'clean_increment') {
             $opts = [
@@ -279,11 +300,11 @@ function cleanup_take_edit()
     }
     unset($opts);
     foreach ([
-                 'clean_title',
-                 'clean_desc',
-                 'clean_file',
-                 'function_name',
-             ] as $x) {
+        'clean_title',
+        'clean_desc',
+        'clean_file',
+        'function_name',
+    ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -366,17 +387,22 @@ function cleanup_show_new()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws Exception
  */
-function cleanup_take_new()
+function cleanup_take_new($params)
 {
-    global $params, $lang, $mysqli;
+    global $container, $lang;
 
+    $mysqli = $container->get(Mysqli::class);
     foreach ([
-                 'clean_increment',
-                 'clean_log',
-                 'clean_on',
-             ] as $x) {
+        'clean_increment',
+        'clean_log',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'clean_increment') {
             $opts = [
@@ -399,11 +425,11 @@ function cleanup_take_new()
     }
     unset($opts);
     foreach ([
-                 'clean_title',
-                 'clean_desc',
-                 'clean_file',
-                 'function_name',
-             ] as $x) {
+        'clean_title',
+        'clean_desc',
+        'clean_file',
+        'function_name',
+    ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -431,12 +457,17 @@ function cleanup_take_new()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws Exception
  */
-function cleanup_take_delete()
+function cleanup_take_delete($params)
 {
-    global $params, $lang, $mysqli;
+    global $container, $lang;
 
+    $mysqli = $container->get(Mysqli::class);
     $opts = [
         'options' => [
             'min_range' => 1,
@@ -457,17 +488,22 @@ function cleanup_take_delete()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function cleanup_take_unlock()
+function cleanup_take_unlock($params)
 {
-    global $params, $lang, $mysqli;
+    global $container, $lang;
 
+    $mysqli = $container->get(Mysqli::class);
     foreach ([
-                 'cid',
-                 'clean_on',
-             ] as $x) {
+        'cid',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'cid') {
             $opts = [

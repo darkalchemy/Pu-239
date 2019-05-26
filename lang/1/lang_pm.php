@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'pm_error' => 'Error',
     'pm_error_ruffian' => 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.',
@@ -25,7 +27,7 @@ $lang = [
     'pm_inbox' => 'Inbox',
     'pm_sentbox' => 'Sentbox',
     'pm_drafts' => 'Drafts',
-    'pm_deleted' => 'Deleted',
+    'pm_deleted_box' => 'Deleted',
     //=== insert jump to box
     'pm_jump_to' => 'Jump to:',
     'pm_stdhead' => 'Mailbox',
@@ -155,7 +157,6 @@ $lang = [
     'pm_search_sysbot' => 'Sys-bot',
     'pm_search_title' => 'Search Messages',
     'pm_search_s' => 'Search',
-    'pm_search_btn' => 'seach',
     'pm_search_terms' => 'Search terms:',
     'pm_search_common' => ' [ words to search for. common words are ignored ]',
     'pm_search_box' => 'Search box:',
@@ -166,7 +167,6 @@ $lang = [
     'pm_search_system' => 'System messages:',
     'pm_search_system_only' => ' System [ search system messages only ]',
     'pm_search_in' => 'Search in:',
-    'pm_search_subject' => ' subject [ default ] ',
     'pm_search_msgtext' => ' message text [ select one or both. if none selected, both are assumed ]',
     'pm_search_sortby' => 'Sort by:',
     'pm_search_relevance' => 'Relevance',
@@ -188,7 +188,6 @@ $lang = [
     'pm_search_message' => 'Message',
     'pm_search_btn' => 'search',
     'pm_search_your_for' => 'your search for ',
-    'pm_search_member' => 'member ',
     'pm_search_pms' => "'s PMs",
     'pm_search_sysmsg' => 'system messages',
     'pm_search_returned' => 'returned',

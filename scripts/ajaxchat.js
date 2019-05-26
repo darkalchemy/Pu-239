@@ -7,7 +7,7 @@ ajaxChat.view = {
         this.bindButtonToPopup('bbCodeColor', 'colorCodesContainer');
     },
     bindButtonToPopup: function (buttonID, popupID) {
-        var buttonElement = document.getElementById(buttonID), popupElement = document.getElementById(popupID);
+        let buttonElement = document.getElementById(buttonID), popupElement = document.getElementById(popupID);
         if (!buttonElement || !popupElement) {
             return;
         }
@@ -25,18 +25,13 @@ ajaxChat.view = {
     },
     toggleButton: function (e) {
         e = e || window.event;
-        var target = e.target || e.srcElement;
+        let target = e.target || e.srcElement;
         target.className = target.className === 'button' ? 'button off' : 'button';
         ajaxChat.showHide(target.linkedPopupID);
     },
     renderResize: function () {
-        var self = this;
+        let self = this;
         self.useDebounce(function () {
-            if (typeof isIElt8 !== 'undefined') {
-                var cont = document.getElementById('mainPanelContainer');
-                cont.removeAttribute('style');
-                cont.style.height = cont.clientHeight;
-            }
             self.bindPopups();
             if (self.isMobile()) {
                 ajaxChat.updateChatlistView();
@@ -49,7 +44,7 @@ ajaxChat.view = {
         });
     },
     useDebounce: function (callback) {
-        var self = this;
+        let self = this;
         if (self.debounce === false) {
             self.debounce = true;
             setTimeout(function () {
@@ -69,7 +64,7 @@ ajaxChat.view = {
     },
     toggleContainer: function (containerID, hideContainerIDs) {
         if (hideContainerIDs) {
-            for (var i = 0; i < hideContainerIDs.length; i++) {
+            for (let i = 0; i < hideContainerIDs.length; i++) {
                 ajaxChat.showHide(hideContainerIDs[i], 'none');
             }
         }
@@ -101,13 +96,13 @@ function initialize() {
     document.getElementById('maxWordLengthSetting').value = ajaxChat.getSetting('maxWordLength');
     document.getElementById('dateFormatSetting').value = ajaxChat.getSetting('dateFormat');
     document.getElementById('persistFontColorSetting').checked = ajaxChat.getSetting('persistFontColor');
-    for (var i = 0; i < document.getElementById("audioBackendSetting").options.length; i++) {
+    for (let i = 0; i < document.getElementById("audioBackendSetting").options.length; i++) {
         if (document.getElementById('audioBackendSetting').options[i].value == ajaxChat.getSetting('audioBackend')) {
             document.getElementById('audioBackendSetting').options[i].selected = true;
             break;
         }
     }
-    for (var i = 0; i < document.getElementById("audioVolumeSetting").options.length; i++) {
+    for (let i = 0; i < document.getElementById("audioVolumeSetting").options.length; i++) {
         if (document.getElementById('audioVolumeSetting').options[i].value == ajaxChat.getSetting('audioVolume')) {
             document.getElementById('audioVolumeSetting').options[i].selected = true;
             break;

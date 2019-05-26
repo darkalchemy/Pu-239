@@ -1,20 +1,17 @@
 <?php
 
-global $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
-$latestuser = $cache->get('latestuser_');
-if ($latestuser === false || is_null($latestuser)) {
-    $latestuser = $fluent->from('users')
-                         ->select(null)
-                         ->select('id')
-                         ->where('status = ?', 'confirmed')
-                         ->where('perms < ?', bt_options::PERMS_STEALTH)
-                         ->orderBy('id DESC')
-                         ->limit(1)
-                         ->fetch();
+use Pu239\User;
 
-    $latestuser = format_username($latestuser['id']);
-    $cache->set('latestuser_', $latestuser, $site_config['expires']['latestuser']);
+global $container, $lang, $site_config;
+
+$user = $container->get(User::class);
+$userid = $user->get_latest_user();
+if (!empty($userid)) {
+    $latestuser = format_username((int) $userid);
+} else {
+    $latestuser = 'Unknown';
 }
 
 $latest_user .= "

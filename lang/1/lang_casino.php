@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'casino_stdhead' => 'Casino',
     'casino_your_gaming_rights_have_been_disabled' => 'Your gaming rights have been disabled.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'credits_error' => 'Error',
     'credits_error2' => 'Fuck something went Pete Tong!',

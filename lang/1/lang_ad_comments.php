@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'text_overview' => 'Comment Overview',
     'text_all' => 'View All',

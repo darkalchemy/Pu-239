@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 class_check(UC_MAX);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_systemview'));
+global $site_config;
+
 if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     @ob_start();
     phpinfo();
@@ -53,6 +55,9 @@ hr {width: 100%; background-color: #ccc; border: 0; height: 1px;}
 $html = [];
 
 /**
+ * @throws \DI\NotFoundException
+ * @throws \DI\DependencyException
+ *
  * @return string
  */
 function sql_get_version()
@@ -80,7 +85,7 @@ $using_cache = 0;
 $avp = sql_query("SELECT value_s FROM avps WHERE arg = 'loadlimit'") or sqlerr(__FILE__, __LINE__);
 if (false !== $row = mysqli_fetch_assoc($avp)) {
     $loadinfo = explode('-', $row['value_s']);
-    if (intval($loadinfo[1]) > (time() - 20)) {
+    if (isset($loadinfo[1]) && intval($loadinfo[1]) > (time() - 20)) {
         $server_load_found = 1;
         $using_cache = 1;
         $load_limit = $loadinfo[0];

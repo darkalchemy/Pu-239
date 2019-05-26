@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -7,7 +9,7 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config;
 
 $HTMLOUT = '';
 $count = 0;
@@ -37,7 +39,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $content = trim($content);
 
     $date_formats = "(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?|\[\w+ \w+ \d+ \d{2}:\d{2}:\d{2}\.\d+ \d{4}\])";
-    if (!preg_match('/(sqlerr_logs|access\.log|cron.*\.log|images.*\.log|announce\.log)/i', $file)) {
+    if (!preg_match('/(sqlerr|access\.log|cron.*\.log|images.*\.log|announce\.log)/i', $file)) {
         preg_match_all('!' . $date_formats . '!iU', $content, $matches);
         if (!empty($matches[1])) {
             $contents = $matches[1];
@@ -62,16 +64,13 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     }
     $i = 0;
     $content = [];
-    $pager_pdo = explode(', ', $pager['pdo']);
     foreach ($contents as $line) {
         if (!empty($line)) {
             ++$i;
-            if ($i >= $pager_pdo[0]) {
-                $class = $i % 2 === 0 ? 'bg-08 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
-                $line = trim($line);
-                $content[] = "<$state class='{$class}'>{$line}</$state>";
-            }
-            if ($i >= $pager_pdo[0] + $pager_pdo[1]) {
+            $class = $i % 2 === 0 ? 'bg-08 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
+            $line = trim($line);
+            $content[] = "<$state class='{$class}'>{$line}</$state>";
+            if ($i >= $pager['pdo']['limit'] + $pager['pdo']['offset']) {
                 break;
             }
         }
@@ -122,7 +121,7 @@ if (!empty($files)) {
                 <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&amp;action=view&amp;file=" . urlencode($file) . "'>$file</a>
             </td>
             <td class='has-text-centered'>
-                " . get_date(filemtime($file), 'LONG') . "
+                " . get_date((int) filemtime($file), 'LONG') . "
             </td>
             <td class='has-text-right w-10'>
                 " . mksize(filesize($file)) . "

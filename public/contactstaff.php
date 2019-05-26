@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $mysqli;
-
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
+global $container, $CURUSER;
+
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -22,6 +27,8 @@ $stdfoot = [
 ];
 
 $msg = '';
+$session = $container->get(Session::class);
+$cache = $container->get(Cache::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';

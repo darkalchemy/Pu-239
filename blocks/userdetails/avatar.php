@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+declare(strict_types = 1);
 
 if ($user['avatar']) {
     $HTMLOUT .= "

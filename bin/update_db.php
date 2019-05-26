@@ -1,23 +1,43 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
-require_once CONFIG_DIR . 'classes.php';
-require_once VENDOR_DIR . 'autoload.php';
-require_once INCL_DIR . 'function_common.php';
+declare(strict_types = 1);
 
-date_default_timezone_set('UTC');
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Settings;
 
-use Noodlehaus\Config;
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+require_once INCL_DIR . 'app.php';
 
-$conf = new Config([
-    CONFIG_DIR . 'config.php',
-]);
-$site_config = $conf->all();
-$cache = new Pu239\Cache();
-$fluent = new Pu239\Database();
+$env = $container->get('env');
+$settings = $container->get(Settings::class);
+$site_config = $settings->get_settings();
+
 require_once DATABASE_DIR . 'sql_updates.php';
-
+$site_config['cache']['driver'] = 'memory';
 if (!empty($argv[1]) && !empty($argv[2])) {
+    update_database($argv, $sql_updates, $site_config);
+} else {
+    get_updates($argv, $sql_updates, $site_config);
+}
+
+/**
+ * @param $argv
+ * @param $sql_updates
+ * @param $site_config
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function update_database($argv, $sql_updates, $site_config)
+{
+    global $container;
+
+    $cache = $container->get(Cache::class);
+    $fluent = $container->get(Database::class);
     $qid = array_search($argv[2], array_column($sql_updates, 'id'));
     if (empty($qid)) {
         die("{$argv[2]} is an invalid ID\n");
@@ -29,15 +49,15 @@ if (!empty($argv[1]) && !empty($argv[2])) {
         $comment = [];
         try {
             $query = $fluent->getPdo()
-                            ->prepare($sql);
+                ->prepare($sql);
             $query->execute();
             $values = [
                 'id' => $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                   ->values($values)
-                   ->execute();
+                ->values($values)
+                ->execute();
 
             if ($flush) {
                 $cache->flushDB();
@@ -62,32 +82,49 @@ if (!empty($argv[1]) && !empty($argv[2])) {
             }
         }
         echo implode("\n", $comment) . "\n";
-        die();
     } elseif ($argv[1] === 'ignore') {
         $values = [
             'id' => (int) $id,
             'query' => $sql,
         ];
         $fluent->insertInto('database_updates')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
     }
-}
-$results = $fluent->from('database_updates')
-                  ->select(null)
-                  ->select('id')
-                  ->select('added')
-                  ->fetchPairs('id', 'added');
-
-foreach ($sql_updates as $update) {
-    if (array_key_exists($update['id'], $results)) {
-        continue;
-    }
-
-    echo "ID: {$update['id']}\nInfo: {$update['info']}\nQuery: {$update['query']}\n\n";
-    echo "To run query:\nphp {$argv[0]} run {$update['id']}\n\n";
-    echo "To ignore query:\nphp {$argv[0]} ignore {$update['id']}\n\n";
-    die();
+    echo "\n\n======================================================================\n\n";
+    get_updates($argv, $sql_updates);
 }
 
-echo "There are not database updates.\n";
+/**
+ * @param $argv
+ * @param $sql_updates
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function get_updates($argv, $sql_updates)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+
+    $results = $fluent->from('database_updates')
+        ->select(null)
+        ->select('id')
+        ->select('added')
+        ->fetchPairs('id', 'added');
+
+    foreach ($sql_updates as $update) {
+        if (array_key_exists($update['id'], $results)) {
+            continue;
+        }
+
+        echo "ID: {$update['id']}\nInfo: {$update['info']}\nQuery: {$update['query']}\n\n";
+        echo "To run query:\nphp {$argv[0]} run {$update['id']}\n\n";
+        echo "To ignore query:\nphp {$argv[0]} ignore {$update['id']}\n\n";
+        die();
+    }
+
+    echo "There are no database updates.\n";
+}

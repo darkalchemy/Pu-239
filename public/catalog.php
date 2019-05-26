@@ -1,27 +1,37 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+use Pu239\Image;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-require_once INCL_DIR . 'share_images.php';
 check_user_status();
-global $CURUSER;
-
 $lang = array_merge(load_language('global'), load_language('catalogue'));
+global $container, $site_config, $CURUSER;
 
 /**
  * @param $text
  * @param $char
  * @param $link
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ *
  * @return mixed|string
  */
 function readMore($text, $char, $link)
 {
     global $lang;
-
     $text = strip_tags(format_comment($text));
 
     return strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : htmlsafechars($text);
@@ -29,6 +39,10 @@ function readMore($text, $char, $link)
 
 /**
  * @param $array
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -55,7 +69,7 @@ function peer_list($array)
         $time = max(1, (TIME_NOW - $p['started']) - (TIME_NOW - $p['last_action']));
         $body .= '
         <tr>
-            <td>' . format_username($p['p_uid']) . '</td>';
+            <td>' . format_username((int) $p['p_uid']) . '</td>';
         if ($CURUSER['class'] >= UC_STAFF) {
             $body .= '
             <td>' . ($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
@@ -64,8 +78,8 @@ function peer_list($array)
             <td>' . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . '</td>
             <td>' . ($p['downloaded'] > 0 ? mksize($p['downloaded']) . ' @' . (mksize(($p['downloaded'] - $p['downloadoffset']) / $time)) . 's' : '0kb') . '</td>
             <td>' . ($p['uploaded'] > 0 ? mksize($p['uploaded']) . ' @' . (mksize(($p['uploaded'] - $p['uploadoffset']) / $time)) . 's' : '0kb') . '</td>
-            <td>' . (get_date($p['started'], 'LONG', 0, 1)) . '</td>
-            <td>' . (get_date($p['finishedat'], 'LONG', 0, 1)) . '</td>
+            <td>' . (get_date((int) $p['started'], 'LONG', 0, 1)) . '</td>
+            <td>' . (get_date((int) $p['finishedat'], 'LONG', 0, 1)) . '</td>
         </tr>';
     }
 
@@ -91,12 +105,12 @@ if (strlen($search) > 4) {
     $p = 'letter=a&amp;';
     $letter = 'a';
 }
-
+$fluent = $container->get(Database::class);
 $count = $fluent->from('torrents')
-                ->select(null)
-                ->select('COUNT(*) AS count')
-                ->where('name LIKE :name', $params)
-                ->fetch('count');
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('name LIKE :name', $params)
+    ->fetch('count');
 
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
@@ -104,21 +118,22 @@ $top = $bottom = '';
 $rows = $tids = [];
 
 $query = $fluent->from('torrents')
-                ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('leechers')
-                ->select('seeders')
-                ->select('poster')
-                ->select('times_completed AS snatched')
-                ->select('owner')
-                ->select('size')
-                ->select('added')
-                ->select('descr')
-                ->select('imdb_id')
-                ->select('anonymous')
-                ->where('name LIKE :name', $params)
-                ->limit($pager['pdo']);
+    ->select(null)
+    ->select('id')
+    ->select('name')
+    ->select('leechers')
+    ->select('seeders')
+    ->select('poster')
+    ->select('times_completed AS snatched')
+    ->select('owner')
+    ->select('size')
+    ->select('added')
+    ->select('descr')
+    ->select('imdb_id')
+    ->select('anonymous')
+    ->where('name LIKE :name', $params)
+    ->limit($pager['pdo']['limit'])
+    ->offset($pager['pdo']['offset']);
 
 foreach ($query as $ta) {
     $rows[] = $ta;
@@ -128,25 +143,25 @@ foreach ($query as $ta) {
 foreach ($tids as $tid) {
     if (!empty($tid)) {
         $query = $fluent->from('peers')
-                        ->select(null)
-                        ->select('id')
-                        ->select('torrent AS tid')
-                        ->select('seeder')
-                        ->select('finishedat')
-                        ->select('downloadoffset')
-                        ->select('uploadoffset')
-                        ->select('uploaded')
-                        ->select('downloaded')
-                        ->select('started')
-                        ->select('last_action')
-                        ->select('userid AS p_uid')
-                        ->select('INET6_NTOA(ip) AS ip')
-                        ->select('port')
-                        ->where('torrent', $tid)
-                        ->where('seeder = "yes"')
-                        ->where('to_go = 0')
-                        ->orderBy('uploaded DESC')
-                        ->limit(5);
+            ->select(null)
+            ->select('id')
+            ->select('torrent AS tid')
+            ->select('seeder')
+            ->select('finishedat')
+            ->select('downloadoffset')
+            ->select('uploadoffset')
+            ->select('uploaded')
+            ->select('downloaded')
+            ->select('started')
+            ->select('last_action')
+            ->select('userid AS p_uid')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('port')
+            ->where('torrent', $tid)
+            ->where('seeder = "yes"')
+            ->where('to_go = 0')
+            ->orderBy('uploaded DESC')
+            ->limit(5);
 
         foreach ($query as $pa) {
             $peers[$pa['tid']][] = $pa;
@@ -178,14 +193,15 @@ $div .= '
 $htmlout .= main_div($div);
 
 if (!empty($rows)) {
+    $image_stuffs = $container->get(Image::class);
     foreach ($rows as $row) {
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
-            $row['poster'] = find_images($row['imdb_id']);
+            $row['poster'] = $image_stuffs->find_images($row['imdb_id']);
         }
         if ($row['anonymous'] === 'yes' && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
             $uploader = get_anonymous_name();
         } else {
-            $uploader = format_username($row['owner']);
+            $uploader = format_username((int) $row['owner']);
         }
 
         $div = "
@@ -211,7 +227,7 @@ if (!empty($rows)) {
         $body = "
                     <tr>
                         <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
-                        <td>' . get_date($row['added'], 'LONG', 0, 1) . "</td>
+                        <td>' . get_date((int) $row['added'], 'LONG', 0, 1) . "</td>
                         <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
                         <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>
                         <td>' . (int) $row['seeders'] . '</td>

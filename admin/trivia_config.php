@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\Session;
+
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $fluent, $session;
-
 $lang = array_merge($lang, load_language('ad_triviaconfig'));
 $search = '';
+global $container, $site_config;
+
+$fluent = $container->get(Database::class);
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $canswers = [
         'canswer1',
@@ -71,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $search = $_POST['keywords'];
                 $count = $fluent->from('triviaq')
                                 ->select(null)
-                                ->select('COUNT(*) AS count')
+                                ->select('COUNT(qid) AS count')
                                 ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
                                 ->fetch('count');
 
@@ -79,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $questions = $fluent->from('triviaq')
                                     ->where('MATCH (question, answer1, answer2, answer3, answer4, answer5) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
                                     ->orderBy('qid')
-                                    ->limit($pager['pdo'])
+                                    ->limit($pager['pdo']['limit'])
+                                    ->offset($pager['pdo']['offset'])
                                     ->fetchAll();
             }
         }
@@ -89,13 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (empty($search)) {
     $count = $fluent->from('triviaq')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(qid) AS count')
                     ->fetch('count');
 
     $pager = pager(15, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=trivia_config&");
     $questions = $fluent->from('triviaq')
                         ->orderBy('qid')
-                        ->limit($pager['pdo'])
+                        ->limit($pager['pdo']['limit'])
+                        ->offset($pager['pdo']['offset'])
                         ->fetchAll();
 }
 

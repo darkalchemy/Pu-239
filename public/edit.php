@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+$lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
+global $container, $site_config, $CURUSER;
 
 $stdhead = [
     'css' => [
@@ -19,14 +24,12 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-if (!mkglobal('id')) {
+$id = $_GET['id'];
+if (empty($id)) {
     die();
 }
 $id = (int) $id;
-if (!$id) {
-    die();
-}
-
+$cache = $container->get(Cache::class);
 if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
     $cache->delete('editedby_' . $id);
     $returl = "details.php?id=$id";
@@ -36,9 +39,9 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     header("Refresh: 1; url=$returl");
     die();
 }
-$lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
+$fluent = $container->get(Database::class);
 $row = $fluent->from('torrents')
-              ->where('id=?', $id)
+              ->where('id = ?', $id)
               ->fetch();
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
@@ -97,13 +100,14 @@ $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 
 $subs_list .= "
         <div class='level-center'>";
+$subs = $container->get('subtitles');
 foreach ($subs as $s) {
-    $torrent_subs = explode(',', $row['subs']);
+    $torrent_subs = explode('|', $row['subs']);
     $subs_list .= "
-            <div class='w-15 margin10 tooltipper bordered level-center tooltipstered'>
-                <input name='subs[]' type='checkbox' class='reset' value='{$s['id']}'" . (in_array($s['id'], $torrent_subs) ? ' checked' : '') . ">
-                <image class='sub_flag left5' src='{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
-                <span class='left5'>" . htmlsafechars($s['name']) . '</span>
+            <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
+                <input name='subs[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $torrent_subs) ? ' checked' : '') . " class='margin20'>
+                <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
+                <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
             </div>';
 }
 $subs_list .= '
@@ -120,7 +124,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
 if ($CURUSER['class'] >= $site_config['allowed']['upload']) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5'>No", 1);
-    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' class='w-100'>", 1);
+    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars((string) $row['nukereason']) . "' class='w-100'>", 1);
 }
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1'> Remove Freeleech" : "
@@ -134,7 +138,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     <option value='255'>Unlimited</option>
     </select>"), 1);
     if ($row['free'] != 0) {
-        $HTMLOUT .= tr('Free Leech Duration', ($row['free'] != 1 ? 'Until ' . get_date($row['free'], 'DATE') . '
+        $HTMLOUT .= tr('Free Leech Duration', ($row['free'] != 1 ? 'Until ' . get_date((int) $row['free'], 'DATE') . '
          (' . mkprettytime($row['free'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
     }
     $HTMLOUT .= tr('Silver torrent ', ($row['silver'] != 0 ? "<input type='checkbox' name='slvr' value='1'> Remove Silver torrent" : "
@@ -148,7 +152,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     <option value='255'>Unlimited</option>
     </select>"), 1);
     if ($row['silver'] != 0) {
-        $HTMLOUT .= tr('Silver Torrent Duration', ($row['silver'] != 1 ? 'Until ' . get_date($row['silver'], 'DATE') . '
+        $HTMLOUT .= tr('Silver Torrent Duration', ($row['silver'] != 1 ? 'Until ' . get_date((int) $row['silver'], 'DATE') . '
          (' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
     }
 }

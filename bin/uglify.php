@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once BIN_DIR . 'functions.php';
-global $site_config, $BLOCKS;
+global $site_config, $site_config;
 
 if (empty($BLOCKS)) {
     die('BLOCKS are empty');
 }
 
+$site_config['cache']['driver'] = 'memory';
 foreach ($argv as $arg) {
     if (!$site_config['site']['production'] && ($arg === 'update' || $arg === 'all')) {
         passthru('composer self-update');
@@ -49,7 +52,6 @@ if ($site_config['site']['production']) {
     $css_ext = '.min.css';
     $js_ext = '.min.js';
 }
-
 exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 
 foreach ($styles as $folder) {
@@ -85,7 +87,6 @@ foreach ($styles as $folder) {
             'chat_js' => [
                 CHAT_DIR . 'js/lang/en.js',
                 CHAT_DIR . 'js/config.js',
-                CHAT_DIR . 'js/FABridge.js',
                 SCRIPTS_DIR . 'ajaxchat.js',
                 SCRIPTS_DIR . 'popup.js',
             ],
@@ -93,7 +94,6 @@ foreach ($styles as $folder) {
                 CHAT_DIR . 'js/logs.js',
                 CHAT_DIR . 'js/lang/en.js',
                 CHAT_DIR . 'js/config.js',
-                CHAT_DIR . 'js/FABridge.js',
             ],
         ]);
     }
@@ -120,11 +120,12 @@ foreach ($styles as $folder) {
     }
 
     if ($BLOCKS['latest_torrents_slider_on']) {
-        $js_list['slider_js'] = [
-            ROOT_DIR . 'node_modules/flexslider/jquery.flexslider.js',
-            SCRIPTS_DIR . 'flexslider.js',
+        $js_list['glider_js'] = [
+            ROOT_DIR . 'node_modules/@glidejs/glide/dist/glide.js',
+            SCRIPTS_DIR . 'glide.js',
         ];
     }
+
     $js_list['userdetails_js'] = [
         SCRIPTS_DIR . 'jquery.tabcontrol.js',
         SCRIPTS_DIR . 'flip_box.js',
@@ -141,8 +142,9 @@ foreach ($styles as $folder) {
         ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
     ];
 
-    $js_list['recaptcha_js'] = [
-        SCRIPTS_DIR . 'recaptcha.js',
+    $js_list['cookieconsent_js'] = [
+        ROOT_DIR . 'node_modules/cookieconsent/src/cookieconsent.js',
+        SCRIPTS_DIR . 'cookieconsent.js',
     ];
 
     $js_list['bookmarks_js'] = [
@@ -188,6 +190,7 @@ foreach ($styles as $folder) {
         ROOT_DIR . 'node_modules/tooltipster/dist/js/tooltipster.bundle.js',
         SCRIPTS_DIR . 'tooltipster.js',
     ];
+
     $js_list['vendor_js'] = [
         SCRIPTS_DIR . 'yall.js',
         SCRIPTS_DIR . 'popup.js',
@@ -201,6 +204,7 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'copy_to_clipboard.js',
         SCRIPTS_DIR . 'flipper.js',
         SCRIPTS_DIR . 'replaced.js',
+        SCRIPTS_DIR . 'hide_html.js',
     ];
 
     $js_list = array_merge($js_list, [
@@ -208,11 +212,10 @@ foreach ($styles as $folder) {
             SCRIPTS_DIR . 'checkports.js',
         ],
         'check_username_js' => [
-            SCRIPTS_DIR . 'check.js',
+            SCRIPTS_DIR . 'check_username.js',
         ],
-        'pStrength_js' => [
-            SCRIPTS_DIR . 'pStrength.jquery.js',
-            SCRIPTS_DIR . 'pstrength.js',
+        'check_password_js' => [
+            SCRIPTS_DIR . 'check_password.js',
         ],
         'upload_js' => [
             SCRIPTS_DIR . 'genres_show_hide.js',
@@ -260,6 +263,14 @@ foreach ($styles as $folder) {
         BIN_DIR . 'pu239.css',
     ];
 
+    $css_list['cookieconsent_css'] = [
+        ROOT_DIR . 'node_modules/cookieconsent/src/styles/base.css',
+        ROOT_DIR . 'node_modules/cookieconsent/src/styles/layout.css',
+        ROOT_DIR . 'node_modules/cookieconsent/src/styles/media.css',
+        ROOT_DIR . 'node_modules/cookieconsent/src/styles/animation.css',
+        ROOT_DIR . 'node_modules/cookieconsent/src/styles/themes/classic.css',
+    ];
+
     if ($BLOCKS['global_themechanger_on']) {
         $css_list['css'] = array_merge([
             TEMPLATE_DIR . "{$folder}/themeChanger/css/themeChanger.css",
@@ -275,8 +286,8 @@ foreach ($styles as $folder) {
 
     if ($BLOCKS['latest_torrents_slider_on']) {
         $css_list['css'] = array_merge($css_list['css'], [
-            ROOT_DIR . 'node_modules/flexslider/flexslider.css',
-            TEMPLATE_DIR . "{$folder}/css/flexslider.css",
+            ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.core.css',
+            ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.theme.css',
         ]);
     }
 
@@ -299,11 +310,13 @@ foreach ($styles as $folder) {
         BIN_DIR . 'pu239.css',
         ROOT_DIR . 'node_modules/sceditor/minified/themes/modern.min.css',
         TEMPLATE_DIR . "{$folder}/css/sceditor.css",
+        TEMPLATE_DIR . "{$folder}/css/variables.css",
         TEMPLATE_DIR . "{$folder}/default.css",
         TEMPLATE_DIR . "{$folder}/css/tables.css",
     ];
 
     $css_list['main_css'] = [
+        TEMPLATE_DIR . "{$folder}/css/variables.css",
         TEMPLATE_DIR . "{$folder}/default.css",
         TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
         TEMPLATE_DIR . "{$folder}/custom.css/",
@@ -313,6 +326,7 @@ foreach ($styles as $folder) {
         $css_list = array_merge([
             'chat_css_trans' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+                TEMPLATE_DIR . "{$folder}/css/variables.css",
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
@@ -321,6 +335,7 @@ foreach ($styles as $folder) {
             ],
             'chat_css_uranium' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+                TEMPLATE_DIR . "{$folder}/css/variables.css",
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
@@ -340,14 +355,13 @@ foreach ($styles as $folder) {
 
     $pages = [];
     foreach ($css_list as $key => $css) {
-        if (!empty($css)) {
-            $pages[] = process_css($key, $css);
+        if (!empty($key) && !empty($css)) {
+            $pages[] = process_css($key, $css, $spurpose, $csstmp, $folder, $css_ext);
         }
     }
-
     foreach ($js_list as $key => $js) {
-        if (!empty($js)) {
-            $pages[] = process_js($key, $js);
+        if (!empty($key) && !empty($js)) {
+            $pages[] = process_js($key, $js, $purpose, $jstmp, $folder, $js_ext);
         }
     }
 
@@ -367,13 +381,15 @@ foreach ($argv as $arg) {
 /**
  * @param $key
  * @param $list
+ * @param $purpose
+ * @param $jstmp
+ * @param $folder
+ * @param $js_ext
  *
- * @return array
+ * @return array|null
  */
-function process_js($key, $list)
+function process_js($key, $list, $purpose, $jstmp, $folder, $js_ext)
 {
-    global $jstmp, $purpose, $js_ext, $folder;
-
     if (empty($list)) {
         die("$key array can not be empty\n");
     }
@@ -389,7 +405,7 @@ function process_js($key, $list)
     }
 
     $list = implode(' ', $files);
-    $cmd = ROOT_DIR . "node_modules/uglify-js/bin/uglifyjs $list $purpose -o $jstmp";
+    $cmd = ROOT_DIR . "node_modules/uglify-es/bin/uglifyjs $list $purpose -o $jstmp";
     passthru($cmd);
     if (file_exists($jstmp)) {
         $lkey = str_replace('_js', '', $key);
@@ -401,24 +417,28 @@ function process_js($key, $list)
         chmod(PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}.gz", 0664);
         copy($jstmp, PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}");
         chmod(PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}", 0664);
+
+        return [
+            $key,
+            "js/{$folder}/{$lkey}_{$hash}{$js_ext}",
+        ];
     }
 
-    return [
-        $key,
-        "js/{$folder}/{$lkey}_{$hash}{$js_ext}",
-    ];
+    return null;
 }
 
 /**
  * @param $key
  * @param $list
+ * @param $spurpose
+ * @param $csstmp
+ * @param $folder
+ * @param $css_ext
  *
- * @return array
+ * @return array|null
  */
-function process_css($key, $list)
+function process_css($key, $list, $spurpose, $csstmp, $folder, $css_ext)
 {
-    global $csstmp, $spurpose, $css_ext, $folder;
-
     if (empty($list)) {
         die("$key array can not be empty\n");
     }
@@ -446,22 +466,23 @@ function process_css($key, $list)
         chmod(PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}.gz", 0664);
         copy($csstmp, PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}");
         chmod(PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}", 0664);
-    }
-
-    if ($key === 'sceditor_css') {
         $lkey = str_replace('_css', '', $key);
-        copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");
-        $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
-        make_dir(BIN_DIR . $folder);
-        $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
-        $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.min.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
-        file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);
+        if ($key === 'sceditor_css') {
+            copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");
+            $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
+            make_dir(BIN_DIR . $folder);
+            $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
+            $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.min.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
+            file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);
+        }
+
+        return [
+            $key,
+            "css/{$folder}/{$lkey}_{$hash}{$css_ext}",
+        ];
     }
 
-    return [
-        $key,
-        "css/{$folder}/{$lkey}_{$hash}{$css_ext}",
-    ];
+    return null;
 }
 
 /**
@@ -482,12 +503,13 @@ function write_file($update, $pages)
 {
     $output = '<?php
 
+declare(strict_types = 1);
+
 function get_file_name($file)
 {
     global $site_config;
 
     switch ($file) {';
-
     foreach ($pages as $page) {
         $output .= "
         case '{$page[0]}':

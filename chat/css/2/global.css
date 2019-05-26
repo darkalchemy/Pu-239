@@ -268,9 +268,7 @@ body.ajax-chat {
 }
 
 #content #chatList .bbCodeImage {
-    vertical-align: top;
-    overflow: auto;
-    margin: 5px;
+    vertical-align: middle;
 }
 
 #content #chatList .delete {
@@ -590,3 +588,32 @@ body.ajax-chat {
         top: 35px;
     }
 }
+
+.size_1 {
+    font-size: .51em;
+}
+
+.size_2 {
+    font-size: .67em;
+}
+
+.size_3 {
+    font-size: .83em;
+}
+
+.size_4 {
+    font-size: 1em;
+}
+
+.size_5 {
+    font-size: 1.17em;
+}
+
+.size_6 {
+    font-size: 1.5em;
+}
+
+.size_7 {
+    font-size: 2em;
+}
+

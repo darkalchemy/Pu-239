@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
 global $site_config;
 
 $lang = [
     //edit errors
     'edit_user_error' => 'USER ERROR',
     'edit_no_torrent' => 'No torrent found',
-    'edit_no_permission' => "<h1>Can't edit this torrent</h1><p>You're not the rightful owner, or you're not <a href='login.php?returnto=%s&amp;nowarn=1'>logged in</a> properly.</p>",
+    'edit_no_permission' => "<h1>Can't edit this torrent</h1><p>You're not the rightful owner, or you're not <a href='" . $site_config['paths']['baseurl'] . "/login.php?returnto=%s&amp;nowarn=1'>logged in</a> properly.</p>",
     //edit options
     'edit_poster' => 'Poster',
     'edit_poster1' => 'Minimum Poster Width should be 400 Px , larger sizes will be scaled.',
@@ -16,7 +17,7 @@ $lang = [
     'edit_keep_current' => 'Keep current',
     'edit_update' => 'Update:',
     'edit_description' => 'Description',
-    'edit_tags' => "HTML is not allowed. <a href='tags.php'>Click here</a> for information on available tags.",
+    'edit_tags' => "HTML is not allowed. <a href='{$site_config['paths']['baseurl']}/tags.php'>Click here</a> for information on available tags.",
     'edit_type' => 'Type',
     'edit_visible' => 'Visible',
     'edit_visible_mainpage' => 'Visible on main page',

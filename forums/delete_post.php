@@ -1,10 +1,14 @@
 <?php
 
-global $lang, $CURUSER, $cache;
+declare(strict_types = 1);
 
-$post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
-$sanity_check = (isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 0);
+use Pu239\Cache;
+
+global $container, $lang, $site_config, $CURUSER;
+
+$post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
+$topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
+$sanity_check = isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 0;
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -33,19 +37,20 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
 }
 if ($sanity_check > 0) {
-    if ($delete_for_real) {
+    if ($site_config['forum_config']['delete_for_real']) {
         $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE p.topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (empty($arr['id'])) {
             sql_query('DELETE FROM topics WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         } else {
-            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = (SELECT COUNT(*) FROM posts WHERE topic_id=topics.id)') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = (SELECT COUNT(id) FROM posts WHERE topic_id=topics.id)') or sqlerr(__FILE__, __LINE__);
         }
         sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id=' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM posts WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid=' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
+        $cache = $container->get(Cache::class);
         for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
             $cache->delete('forum_last_post_' . $arr['forum_id'] . '_' . $i);
         }

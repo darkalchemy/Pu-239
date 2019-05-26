@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $user_stuffs, $CURUSER, $user;
+declare(strict_types = 1);
 
 if ($user['browser'] != '') {
     $browser = htmlsafechars($user['browser']);

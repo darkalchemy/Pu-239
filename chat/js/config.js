@@ -70,7 +70,7 @@ var ajaxChatConfig = {
         // Defines if the chat list scrolls automatically to display the latest messages:
         autoScroll: true,
         // The maximum count of messages displayed in the chat list (will be ignored if set to 0):
-        maxMessages: 0,
+        maxMessages: 50,
 
         // Defines if long words are wrapped to avoid vertical scrolling:
         wordWrap: true,
@@ -92,7 +92,7 @@ var ajaxChatConfig = {
         // Defines the audio backend, Flash is not working properly in ubuntu chrome:
         audioBackend: 0,
         // Defines the sound volume (0.0 = mute, 1.0 = max):
-        audioVolume: 0.3,
+        audioVolume: 0.1,
 
         // Defines the sound that is played when normal messages are reveived:
         soundReceive: 'sound_1',
@@ -131,9 +131,16 @@ var ajaxChatConfig = {
         'url',
         'img',
         'chatbot',
-        'level',
+        'center',
         'updown',
         'video',
+        'size_7',
+        'size_6',
+        'size_5',
+        'size_4',
+        'size_3',
+        'size_2',
+        'size_1',
         'user',
         'power_user',
         'vip',

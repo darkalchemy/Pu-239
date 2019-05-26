@@ -1,10 +1,17 @@
 <?php
 
-global $CURUSER, $site_config, $fluent, $cache;
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
+global $CURUSER, $container, $site_config;
 
 if ($CURUSER) {
+    $cache = $container->get(Cache::class);
     $lottery_info = $cache->get('lottery_info_');
     if ($lottery_info === false || is_null($lottery_info)) {
+        $fluent = $container->get(Database::class);
         $lottery_info = $fluent->from('lottery_config')
                                ->fetchPairs('name', 'value');
 
@@ -25,10 +32,10 @@ if ($CURUSER) {
                             Lottery Info
                         </div>
                         <div class='level is-marginless'>
-                            <span>Started at: </span><span>" . get_date($lottery_info['start_date'], 'LONG') . "</span>
+                            <span>Started at: </span><span>" . get_date((int) $lottery_info['start_date'], 'LONG') . "</span>
                         </div>
                         <div class='level is-marginless'>
-                            <span>Ends at:&#160;&#160;&#160;&#160;&#160;&#160;</span><span>" . get_date($lottery_info['end_date'], 'LONG') . "</span>
+                            <span>Ends at:&#160;&#160;&#160;&#160;&#160;&#160;</span><span>" . get_date((int) $lottery_info['end_date'], 'LONG') . "</span>
                         </div>
                         <div class='level is-marginless'>
                             <span>Remaining: </span><span>" . mkprettytime($lottery_info['end_date'] - TIME_NOW) . '</span>

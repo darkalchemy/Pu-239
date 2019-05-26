@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //invite errors
     'invites_error' => 'Error',
@@ -34,5 +36,4 @@ $lang = [
     'invites_create' => 'Create Invite Code',
     'invites_send_code' => 'Send Invite Code',
     'invites_delete1' => 'Delete Invite',
-    'invites_confirm1' => 'Confirmed Account',
 ];

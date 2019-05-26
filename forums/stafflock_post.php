@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $CURUSER;
+declare(strict_types = 1);
 
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -11,6 +11,8 @@ if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
 //=== make sure it's their post or they are staff... this may change
 $res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
+global $CURUSER;
+
 //=== if sysop let them lock the post
 $can_lock = ($CURUSER['class'] >= UC_MAX);
 //=== stop them, they shouldn't be here lol

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //remove banned clients
     'client_clearban_msg1' => 'Currently banned clients',

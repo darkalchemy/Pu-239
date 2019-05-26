@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+global $site_config;
 $lang = [
     'classpromo_error' => 'Error',
     'classpromo_denied' => 'Access Denied!',
     'classpromo_ruffian' => 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.',
     'classpromo_success' => 'Success',
-    'classpromo_success_saved' => "user configuration was saved! Click <a href='staffpanel.php?tool=class_promo'>here to get back</a>",
-    'classpromo_success_reset' => "user configuration was Reset! Click <a href='staffpanel.php?tool=class_promo'>here to get back</a>",
+    'classpromo_success_saved' => "user configuration was saved! Click <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=class_promo'>here to get back</a>",
+    'classpromo_success_reset' => "user configuration was Reset! Click <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=class_promo'>here to get back</a>",
     'classpromo_error_query' => 'There was an error while executing the update query or nothing was updated.',
     'classpromo_err_query1' => 'There was an error while executing the update query or nothing was updated 1.',
     'classpromo_err_query2' => 'There was an error while executing the update query or nothing was updated 2.',

@@ -1,27 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 if (empty($_GET['wantusername'])) {
     die('<div class="margin10 has-text-info">You can\'t post nothing please enter a username!</div>');
 }
 require_once __DIR__ . '/../../include/bittorrent.php';
-dbconn();
-global $site_config;
-
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('takesignup'));
-/**
- * @param $username
- *
- * @return bool
- */
-$is_valid = valid_username($_GET['wantusername'], true);
 
+$is_valid = valid_username($_GET['wantusername'], true);
 if ($is_valid !== true) {
     echo $is_valid;
     die();
 }
 
-$checkname = sqlesc($_GET['wantusername']);
+$checkname = sqlesc(strip_tags($_GET['wantusername']));
 $sql = "SELECT username FROM users WHERE username = $checkname";
 $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);

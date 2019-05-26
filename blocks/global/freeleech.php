@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $lang, $cache;
+declare(strict_types = 1);
+global $CURUSER;
 
 $free = $cache->get('site_events_');
 if ($CURUSER) {
@@ -25,7 +26,7 @@ if ($CURUSER) {
             default:
                 $mode = 0;
         }
-        $username = format_username($free['setby']);
+        $username = format_username((int) $free['setby']);
         $htmlout .= ($free['modifier'] != 0 && $free['expires'] > TIME_NOW ? "
     <li>
         <a href='#'>
@@ -38,7 +39,7 @@ if ($CURUSER) {
                         {$mode}
                     </div>
                     <div class='has-text-centered'>
-                        {$free['title']} {$lang['gl_freeleech_sb']} {$username}<br>" . ($free['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date($free['expires'], 'DATE') . ' (' . mkprettytime($free['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '
+                        {$free['title']} {$lang['gl_freeleech_sb']} {$username}<br>" . ($free['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date((int) $free['expires'], 'DATE') . ' (' . mkprettytime($free['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '
                     </div>
                 </div>
             </div>

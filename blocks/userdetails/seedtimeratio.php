@@ -1,19 +1,27 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $cache, $user;
+declare(strict_types = 1);
 
-$What_Cache = 'share_ratio_';
-$What_Table = 'snatched';
-$What_String = 'id';
-$What_User_String = 'userid';
-$What_Expire = $site_config['expires']['share_ratio'];
-$cache_share_ratio = $cache->get($What_Cache . $id);
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config, $user, $CURUSER;
+
+$cache = $container->get(Cache::class);
+$cache_share_ratio = $cache->get('share_ratio_' . $user['id']);
 if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
-    $sql = sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime>'0' AND $What_User_String = " . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache_share_ratio = mysqli_fetch_assoc($sql);
-    $cache_share_ratio['total_number'] = (int) $cache_share_ratio['total_number'];
-    $cache_share_ratio['seed_time_total'] = (int) $cache_share_ratio['seed_time_total'];
-    $cache->set($What_Cache . $id, $cache_share_ratio, $What_Expire);
+    $fluent = $container->get(Database::class);
+    $sql = $fluent->from('snatched')
+                  ->select(null)
+                  ->select('SUM(seedtime) AS seed_time_total')
+                  ->select('COUNT(id) AS total_number')
+                  ->where('seedtime > 0')
+                  ->where('userid = ?', $user['id'])
+                  ->fetch();
+
+    $cache_share_ratio['total_number'] = (int) $sql['total_number'];
+    $cache_share_ratio['seed_time_total'] = (int) $sql['seed_time_total'];
+    $cache->set('share_ratio_' . $user['id'], $cache_share_ratio, $site_config['expires']['share_ratio']);
 }
 
 switch (true) {

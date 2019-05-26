@@ -1,36 +1,32 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_trivia.php';
-global $session;
-
 $lang = array_merge(load_language('global'), load_language('trivia'));
+global $container;
+
+$gamenum = $qid = 0;
+
 extract($_POST);
-
 header('content-type: application/json');
-if (empty($csrf) || !$session->validateToken($csrf)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
-if (empty($gamenum) || empty($qid) || empty($answer)) {
-    echo json_encode(['fail' => 'invalid']);
-    die();
-}
-$current_user = $session->get('userID');
-if (empty($current_user)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
-
+$auth = $container->get(Auth::class);
+$current_user = $auth->getUserId();
+$fluent = $container->get(Database::class);
 $correct_answer = $fluent->from('triviaq')
                          ->select('canswer')
-                         ->where('qid=?', $qid)
+                         ->where('qid = ?', $qid)
                          ->fetch('canswer');
 
 $user = $fluent->from('triviausers')
-               ->where('user_id=?', $current_user)
-               ->where('qid=?', $qid)
+               ->where('user_id = ?', $current_user)
+               ->where('qid = ?', $qid)
                ->where('gamenum = ?', $gamenum)
                ->fetch();
 
@@ -60,7 +56,7 @@ if (!empty($user)) {
            ->values($values)
            ->execute();
 }
-
+$cache = $container->get(Cache::class);
 $cache->delete('triviaq_');
 $table = trivia_table();
 echo json_encode([

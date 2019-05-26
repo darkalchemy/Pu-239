@@ -1,96 +1,13 @@
 <?php
 
-global $site_config, $lang, $fluent, $CURUSER, $cache;
+declare(strict_types = 1);
 
-$torrents = $cache->get('slider_torrents_');
-if ($torrents === false || is_null($torrents)) {
-    $torrents = $fluent->from('torrents AS t')
-                       ->select(null)
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('c.name AS cat')
-                       ->select('c.image')
-                       ->leftJoin('users AS u ON t.owner = u.id')
-                       ->leftJoin('categories AS c ON t.category = c.id')
-                       ->leftJoin('categories AS p ON c.parent_id=p.id')
-                       ->where('t.imdb_id IS NOT NULL')
-                       ->where('t.imdb_id != ""')
-                       ->where('visible = "yes"')
-                       ->orderBy('t.added DESC')
-                       ->fetchAll();
+use Pu239\Torrent;
 
-    foreach ($torrents as $torrent) {
-        if (!empty($torrent['parent_name'])) {
-            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
-        }
-        $top5torrents[] = $torrent;
-    }
-    $cache->set('slider_torrents_', $torrents, $site_config['expires']['slider_torrents']);
-}
+global $container, $lang, $site_config, $CURUSER;
 
-foreach ($torrents as $torrent) {
-    if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
-        $images = $cache->get('posters_' . $torrent['imdb_id']);
-        if ($images === false || is_null($images)) {
-            $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "poster"')
-                             ->where('imdb_id=?', $torrent['imdb_id'])
-                             ->fetchAll();
-
-            $cache->set('posters_' . $torrent['imdb_id'], $images, 86400);
-        }
-
-        if (!empty($images)) {
-            shuffle($images);
-            $torrent['poster'] = $images[0]['url'];
-        } else {
-            $torrent['poster'] = $site_config['paths']['images_baseurl'] . 'noposter.png';
-        }
-    }
-    if (!empty($torrent['imdb_id'])) {
-        $images = $cache->get('banners_' . $torrent['imdb_id']);
-        if ($images === false || is_null($images)) {
-            $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "banner"')
-                             ->where('imdb_id=?', $torrent['imdb_id'])
-                             ->fetchAll();
-
-            $cache->set('banners_' . $torrent['imdb_id'], $images, 86400);
-        }
-        if (!empty($images)) {
-            shuffle($images);
-            $torrent['banner'] = $images[0]['url'];
-        }
-
-        if (!empty($torrent['banner'])) {
-            $sliding_torrents[] = $torrent;
-        }
-    }
-
-    if (!empty($sliding_torrents) && count($sliding_torrents) >= $site_config['latest']['slider_limit']) {
-        break;
-    }
-}
+$torrent = $container->get(Torrent::class);
+$sliding_torrents = $torrent->get_latest_slider();
 if (!empty($sliding_torrents)) {
     shuffle($sliding_torrents);
     $slider .= "
@@ -101,7 +18,7 @@ if (!empty($sliding_torrents)) {
                 <ul class='slides'>";
     $i = 0;
     foreach ($sliding_torrents as $slider_torrent) {
-        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
+        $banner = $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
         extract($slider_torrent);
         $i = $site_config['latest']['slider_limit'];
 

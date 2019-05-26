@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -7,11 +13,11 @@ require_once INCL_DIR . 'function_torrenttable.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $message_stuffs;
-
 $lang = array_merge($lang, load_language('non_con'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = '';
-//dd($_POST);
+
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
 
@@ -47,7 +53,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $body .= '
             <tr>
-                <td>' . format_username($arr2['userid']) . "</td>
+                <td>' . format_username((int) $arr2['userid']) . "</td>
                 <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$arr2['torrent']}&amp;dllist=1#seeders'>{$arr2['torrent']}</a>";
             if ($arr2['seeder'] === 'yes') {
                 $body .= "<span class='has-text-danger'>*</span>";
@@ -66,10 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$msg) {
         stderr('Error', 'Please Type In Some Text');
     }
+    $fluent = $container->get(Database::class);
     $users = $fluent->from('peers')
-                    ->select(null)
-                    ->select('DISTINCT userid AS userid')
-                    ->where('connectable = "no"');
+        ->select(null)
+        ->select('DISTINCT userid AS userid')
+        ->where('connectable = "no"');
 
     foreach ($users as $user) {
         $values[] = [
@@ -80,16 +87,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'subject' => 'Connectability',
         ];
     }
-
+    $session = $container->get(Session::class);
     if (!empty($values)) {
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($values);
         $values = [
             'user' => $CURUSER['id'],
             'date' => $dt,
         ];
         $fluent->insertInto('notconnectablepmlog')
-               ->values($values)
-               ->execute();
+            ->values($values)
+            ->execute();
         $session->set('is-success', 'PM Sent to all non connectable peers');
     } else {
         $session->set('is-warning', 'No non connectable peers');
@@ -143,11 +151,11 @@ if (isset($_GET['action1']) == '') {
         </tr>";
         $body = '';
         while ($arr2 = mysqli_fetch_assoc($getlog)) {
-            $elapsed = get_date($arr2['date'], '', 0, 1);
+            $elapsed = get_date((int) $arr2['date'], '', 0, 1);
             $body .= '
         <tr>
-            <td>' . format_username($arr2['user']) . '</td>
-            <td>' . get_date($arr2['date'], '') . "</td>
+            <td>' . format_username((int) $arr2['user']) . '</td>
+            <td>' . get_date((int) $arr2['date'], '') . "</td>
             <td>$elapsed</td>
         </tr>";
         }

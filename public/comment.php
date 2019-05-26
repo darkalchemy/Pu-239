@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli;
-
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
+global $container, $CURUSER, $site_config;
+
 flood_limit('comments');
 $action = !empty($_GET['action']) ? htmlsafechars($_GET['action']) : (!empty($_POST['action']) ? htmlsafechars($_POST['action']) : 0);
 $stdhead = [
@@ -22,10 +27,6 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$session->validateToken($_POST['csrf'])) {
-    echo stderr('Error', 'Invalid CSRF');
-    die();
-}
 
 $locale = 'torrent';
 $locale_link = 'details';
@@ -60,6 +61,8 @@ if (isset($_GET['type'])) {
     }
 }
 
+$cache = $container->get(Cache::class);
+$message_stuffs = $container->get(Message::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);

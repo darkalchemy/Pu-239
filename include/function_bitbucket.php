@@ -1,33 +1,33 @@
 <?php
 
+declare(strict_types = 1);
+
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
 /**
  * @param $text
+ * @param $salt
  *
  * @return string
  */
-function encrypt($text)
+function encrypt($text, $salt)
 {
-    global $PICSALT;
-
-    $encrypted = CryptoJSAES::encrypt($text, $PICSALT);
+    $encrypted = CryptoJSAES::encrypt($text, $salt);
 
     return base64_encode($encrypted);
 }
 
 /**
  * @param $text
+ * @param $salt
  *
  * @return string
  */
-function decrypt($text)
+function decrypt($text, $salt)
 {
-    global $PICSALT;
-
     $str = base64_decode($text);
 
-    return CryptoJSAES::decrypt($str, $PICSALT);
+    return CryptoJSAES::decrypt($str, $salt);
 }
 
 /**

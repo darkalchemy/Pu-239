@@ -1,6 +1,7 @@
 <?php
 
-global $site_config, $lang, $user_stuffs, $CURUSER, $user;
+declare(strict_types = 1);
+global $lang, $user, $site_config;
 
 $HTMLOUT .= "
     <tr>

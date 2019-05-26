@@ -1,18 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function newsrss_cleanup($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
+    $fluent = $container->get(Database::class);
     $fluent->deleteFrom('newsrss')
            ->where('added < NOW() - INTERVAL 30 DAY')
            ->execute();

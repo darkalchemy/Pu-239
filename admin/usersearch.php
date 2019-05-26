@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -7,22 +13,24 @@ require_once INCL_DIR . 'function_html.php';
 
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent, $cache;
+$lang = array_merge($lang, load_language('ad_usersearch'));
+global $container, $site_config, $CURUSER;
 
 $search = array_merge($_POST, $_GET);
-$lang = array_merge($lang, load_language('ad_usersearch'));
+$cache = $container->get(Cache::class);
 $oldest = $cache->get('oldest_');
+$fluent = $container->get(Database::class);
 if ($oldest === false || is_null($oldest)) {
     $oldest = $fluent->from('users')
                      ->select(null)
-                     ->select('added')
-                     ->orderBy('added')
+                     ->select('registered')
+                     ->orderBy('registered')
                      ->limit(1)
-                     ->fetch('added');
+                     ->fetch('registered');
     $cache->set('oldest_', $oldest, 0);
 }
-$oldest = get_date($oldest, 'FORM', 1, 0);
-$today = get_date(TIME_NOW, 'FORM', 1, 0);
+$oldest = get_date((int) $oldest, 'FORM', 1, 0);
+$today = get_date((int) TIME_NOW, 'FORM', 1, 0);
 
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 $HTMLOUT .= "
@@ -247,10 +255,13 @@ $body .= "
 $HTMLOUT .= main_table($body) . '
     </form>';
 
+/**
+ * @param $param
+ *
+ * @return bool
+ */
 function is_set_not_empty($param)
 {
-    global $search;
-
     if (isset($search[$param]) && !empty($search[$param])) {
         return true;
     } else {
@@ -258,6 +269,13 @@ function is_set_not_empty($param)
     }
 }
 
+/**
+ * @param      $up
+ * @param      $down
+ * @param bool $color
+ *
+ * @return string
+ */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -274,6 +292,11 @@ function ratios($up, $down, $color = true)
     return $r;
 }
 
+/**
+ * @param $text
+ *
+ * @return bool
+ */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {
@@ -290,6 +313,7 @@ if (!empty($search)) {
         0 => '',
     ];
     if ($names[0] !== '') {
+        $names_inc = [];
         foreach ($names as $name) {
             if (substr($name, 0, 1) == '~') {
                 if ($name == '~') {
@@ -456,6 +480,7 @@ if (!empty($search)) {
     if (is_set_not_empty('co')) {
         $comments = explode(' ', trim($search['co']));
         if ($comments[0] !== '') {
+            $comments_inc = [];
             foreach ($comments as $comment) {
                 if (substr($comment, 0, 1) == '~') {
                     if ($comment == '~') {
@@ -586,9 +611,9 @@ if (!empty($search)) {
         $q1 .= ($q1 ? '&amp;' : '') . "dt=$datetype";
         if ($datetype === 0) {
             $date2 = $date + 86400;
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.added BETWEEN $date AND $date2";
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.registered BETWEEN $date AND $date2";
         } else {
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.added ';
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.registered ';
             if ($datetype === 3) {
                 $date2 = strtotime($search['d2']) + 86400;
                 $q1 .= ($q1 ? '&amp;' : '') . "d2={$search['d2']}";
@@ -687,12 +712,12 @@ if (!empty($search)) {
     $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (empty($where_is) ? '' : " WHERE $where_is ");
     $querypm = 'FROM ' . $from_is . (empty($where_is) ? ' ' : " WHERE $where_is ");
     $announcement_query = 'SELECT u.id FROM ' . $from_is . (empty($where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
-    $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, INET6_NTOA(u.ip) AS ip,
+    $select_is = 'u.id, u.username, u.email, u.status, u.registered, u.last_access,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
-    $count = $arr[0];
+    $count = (int) $arr[0];
     $q1 = isset($q1) ? ($q1 . '&amp;') : '';
     $perpage = 30;
     $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;" . $q1);
@@ -724,7 +749,7 @@ if (!empty($search)) {
             if ($user['ip']) {
                 $count = $fluent->from('bans')
                                 ->select(null)
-                                ->select('COUNT(*) AS count')
+                                ->select('COUNT(id) AS count')
                                 ->where('INET6_NTOA(first) <= ?', $user['ip'])
                                 ->where('INET6_NTOA(last)>= ?', $user['ip'])
                                 ->fetch('count');
@@ -759,12 +784,12 @@ if (!empty($search)) {
             $ids .= (int) $user['id'] . ':';
             $body .= '
         <tr>
-            <td>' . format_username($user['id']) . '</td>
+            <td>' . format_username((int) $user['id']) . '</td>
             <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
             <td>' . $ipstr . '</td>
             <td>' . htmlsafechars($user['email']) . '</td>
-            <td>' . get_date($user['added'], '') . '</td>
-            <td>' . get_date($user['last_access'], '', 0, 1) . '</td>
+            <td>' . get_date((int) $user['registered'], '') . '</td>
+            <td>' . get_date((int) $user['last_access'], '', 0, 1) . '</td>
             <td>' . htmlsafechars($user['status']) . '</td>
             <td>' . htmlsafechars($user['enabled']) . '</td>
             <td>' . ratios($pul, $pdl) . '</td>
@@ -777,13 +802,13 @@ if (!empty($search)) {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagerbottom'];
         }
+        $session = $container->get(Session::class);
         $HTMLOUT .= "
 <br>
 <form method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' accept-charset='utf-8'>
     <div class='has-text-centered margin20'>
         <input name='n_pms' type='hidden' value='" . $count . "'>
         <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>
-        <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
         <button type='submit' class='button is-small' disabled>{$lang['usersearch_create_ann']}</button>
     </div>
 </form>";

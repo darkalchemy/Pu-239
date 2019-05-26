@@ -1,9 +1,14 @@
 <?php
 
-global $CURUSER, $site_config, $user, $fluent;
+declare(strict_types = 1);
+
+use Pu239\Database;
+
+global $container, $lang, $site_config, $CURUSER;
 
 if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= (UC_MIN + 1)) {
     $completed = $count2 = $dlc = '';
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('snatched AS s')
                        ->select('t.name')
                        ->select('t.added AS torrent_added')
@@ -32,7 +37,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                        ->leftJoin('categories AS c ON c.id=t.category')
                        ->leftJoin('categories AS p ON c.parent_id=p.id')
                        ->where('s.finished = "yes"')
-                       ->where('userid=?', $id)
+                       ->where('userid = ?', $id)
                        ->where('t.owner != ?', $id)
                        ->orderBy('s.id DESC')
                        ->fetchAll();
@@ -84,29 +89,29 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             }
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
-                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
+                case $site_config['hnr_config']['torrentage1'] * 86400 > ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_3 - $a['seedtime']) - ($foo * 3 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
+                case $site_config['hnr_config']['torrentage2'] * 86400 > ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_14 - $a['seedtime']) - ($foo * 2 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
+                case $site_config['hnr_config']['torrentage3'] * 86400 <= ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
-                case ($a['st'] - $a['torrent_added']) < 7 * 86400:
+                case 7 * 86400 > ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_3 - $a['seedtime']) - ($foo * 3 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) < 21 * 86400:
+                case 21 * 86400 > ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_14 - $a['seedtime']) - ($foo * 2 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) >= 21 * 86400:
+                case 21 * 86400 <= ($a['st'] - $a['torrent_added']):
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }
@@ -144,7 +149,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             <tr>
                 <td style='padding: 5px'>$caticon</td>
                 <td>
-                    <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a>
+                    <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars((string) $a['name']) . '</b></a>
                     <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . '</td>
                 <td>' . (int) $a['seeders'] . '</td>
                 <td>' . (int) $a['leechers'] . '</td>
@@ -152,8 +157,8 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 ' . ($site_config['site']['ratio_free'] ? '' : '
                 <td>' . mksize($a['downloaded']) . '</td>') . '
                 <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
-                <td>' . get_date($a['complete_date'], 'DATE') . '</td>
-                <td>' . get_date($a['last_action'], 'DATE') . "</td>
+                <td>' . get_date((int) $a['complete_date'], 'DATE') . '</td>
+                <td>' . get_date((int) $a['last_action'], 'DATE') . "</td>
                 <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
             </tr>";
         }

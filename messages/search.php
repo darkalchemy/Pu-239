@@ -1,20 +1,22 @@
 <?php
 
-global $CURUSER, $lang, $site_config;
+declare(strict_types = 1);
+
+global $container, $lang, $CURUSER, $site_config;
 
 $num_result = $and_member = '';
-$keywords = (isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '');
-$member = (isset($_POST['member']) ? htmlsafechars($_POST['member']) : '');
-$all_boxes = (isset($_POST['all_boxes']) ? intval($_POST['all_boxes']) : '');
-$sender_reciever = ($mailbox >= 1 ? 'sender' : 'receiver');
-$what_in_out = ($mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']));
-$location = (isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox);
-$limit = (isset($_POST['limit']) ? intval($_POST['limit']) : 25);
-$as_list_post = (isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2);
-$desc_asc = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
-$subject = (isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '');
-$text = (isset($_POST['text']) ? htmlsafechars($_POST['text']) : '');
-$member_sys = (isset($_POST['system']) ? 'system' : '');
+$keywords = isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '';
+$member = isset($_POST['member']) ? htmlsafechars($_POST['member']) : '';
+$all_boxes = isset($_POST['all_boxes']) ? intval($_POST['all_boxes']) : '';
+$sender_reciever = $mailbox >= 1 ? 'sender' : 'receiver';
+$what_in_out = $mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']);
+$location = isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox;
+$limit = isset($_POST['limit']) ? intval($_POST['limit']) : 25;
+$as_list_post = isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2;
+$desc_asc = isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC';
+$subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
+$text = isset($_POST['text']) ? htmlsafechars($_POST['text']) : '';
+$member_sys = isset($_POST['system']) ? 'system' : '';
 $possible_sort = [
     'added',
     'subject',
@@ -36,14 +38,14 @@ if ($member) {
     }
     //=== if searching by member...
     $and_member = ($mailbox >= 1 ? ' AND sender = ' . sqlesc($arr_userid['id']) : ' AND receiver = ' . sqlesc($arr_userid['id']));
-    $the_username = format_username($arr_userid['id']);
+    $the_username = format_username((int) $arr_userid['id']);
 }
 if ($member_sys) {
     $and_member = ' AND sender = 0 ';
     $the_username = '<span>System</span>';
 }
 
-$res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= $top_links . '
         <h1>' . $lang['pm_search_title'] . '</h1>
@@ -172,9 +174,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         while ($row = mysqli_fetch_assoc($res_search)) {
             $read = $row['unread'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper'>" : "<img src='{$site_config['paths']['images_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper'>";
-            $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
-            $date = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
-            $subject = str_ireplace($keywords, " <span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span> ", htmlsafechars($row['subject']));
+            $sender = $row['sender'] > 0 ? format_username((int) $row['sender']) : 'System';
+            $date = str_replace(', ', '<br>', get_date((int) $row['added'], 'LONG'));
+            $subject = str_ireplace($keywords, " <span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span> ", htmlsafechars((string) $row['subject']));
             $table_body .= "<tr>
                 <td class='w-10 has-text-centered'>$read</td>
                 <td><a href='{$site_config['paths']['baseurl']}/messages.php?id={$row['id']}'>{$subject}</a></td>
@@ -186,10 +188,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $table = main_table($table_body, $table_header);
     } else {
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
-            $date = get_date($row['added'], 'LONG');
+            $sender = $row['sender'] > 0 ? format_username((int) $row['sender']) : 'System';
+            $date = get_date((int) $row['added'], 'LONG');
             $body = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", format_comment($row['msg']));
-            $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));
+            $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars((string) $row['subject']));
             $table .= main_table("
             <tr>
                 <td class='w-10'>{$lang['pm_search_subject']}</td>
@@ -212,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $results = "
-        <h1>{$lang['pm_search_your_for']}" . ($keywords ? '"' . $keywords . '"' : ($member ? $lang['pm_search_member'] . format_username($arr_userid['id']) . $lang['pm_search_pms'] : ($member_sys ? $lang['pm_search_sysmsg'] : ''))) . '</h1>
+        <h1>{$lang['pm_search_your_for']}" . ($keywords ? '"' . $keywords . '"' : ($member ? $lang['pm_search_member'] . format_username((int) $arr_userid['id']) . $lang['pm_search_pms'] : ($member_sys ? $lang['pm_search_sysmsg'] : ''))) . '</h1>
         <h3>' . ($num_result < $limit ? $lang['pm_search_returned'] : $lang['pm_search_show_first']) . ' <span>' . $num_result . '</span>
         ' . $lang['pm_search_match'] . '' . ($num_result === 1 ? '' : $lang['pm_search_matches']) . $lang['pm_search_excl'] . ($num_result === 0 ? $lang['pm_search_better'] : '') . '
         </h3>';

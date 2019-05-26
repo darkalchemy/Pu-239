@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //email invite mod
     'invites_usererror' => 'User Error',
     'invites_deny' => 'Denied',
     'invites_invalidid' => 'Invalid Id',
-    'invites_confirm_invalid' => 'Invalid action - contact staff on irc',
-    'invites_confirm_invalid1' => 'Invalid action - contact staff on irc',
+    'invites_confirm_invalid' => 'Invalid action - contact staff.',
     'invites_notyours' => 'Not your invite to cancel',
     'invites_sorry' => 'Sorry',
     'invites_removed' => 'Your invite privileges have been removed.',
@@ -90,5 +91,4 @@ $lang = [
     'invites_confirm_sorry' => 'Sorry',
     'invites_confirm_currlimit' => 'The current user account limit  has been reached. Inactive accounts are pruned all the time, please check back again later...',
     'invites_confirm_error' => 'Error',
-    'invites_confirm_invalid' => 'Invalid action - contact staff',
 ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'user_mood_log' => 'log in to use this feature!',
     'user_mood_change' => 'Mood Change',

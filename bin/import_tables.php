@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../include/bittorrent.php';
+declare(strict_types = 1);
 
-$host = $site_config['database']['host'];
-$user = $site_config['database']['username'];
-$pass = quotemeta($site_config['database']['password']);
-$db = $site_config['database']['database'];
+require_once __DIR__ . '/../include/app.php';
+global $container;
+
+$pdo = $container->get(PDO::class);
 
 $tables = [
     DATABASE_DIR . 'trivia.sql.gz',
@@ -17,14 +17,26 @@ if (empty($argv[1])) {
     foreach ($tables as $table) {
         if (file_exists($table)) {
             ++$i;
-            exec("gunzip < '$table' | mysql -h $host -u'{$user}' -p'{$pass}' $db");
+            $ext = pathinfo($table, PATHINFO_EXTENSION);
+            if ($ext === 'gz') {
+                $source = file_get_contents('compress.zlib://' . $table);
+            } else {
+                $source = file_get_contents($table);
+            }
+            $pdo->exec($source);
         }
     }
 } else {
     $table = $argv[1];
     if (file_exists($table)) {
         ++$i;
-        exec("gunzip < '$table' | mysql -h $host -u'{$user}' -p'{$pass}' $db");
+        $ext = pathinfo($table, PATHINFO_EXTENSION);
+        if ($ext === 'gz') {
+            $source = file_get_contents('compress.zlib://' . $table);
+        } else {
+            $source = file_get_contents($table);
+        }
+        $pdo->exec($source);
     }
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @param $val
  *
@@ -49,4 +51,17 @@ function get_scheme()
     }
 
     return 'http';
+}
+
+/**
+ * @param $ip
+ *
+ * @return bool
+ */
+function validip($ip)
+{
+    return filter_var($ip, FILTER_VALIDATE_IP, [
+        'flags' => FILTER_FLAG_NO_PRIV_RANGE,
+        FILTER_FLAG_NO_RES_RANGE,
+    ]) ? true : false;
 }

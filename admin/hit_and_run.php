@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -7,10 +9,10 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_hit_and_run'));
-$query = (isset($_GET['really_bad']) ? 'SELECT COUNT(*) FROM snatched LEFT JOIN users ON users.id=snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run>0 AND users.hit_and_run_total>2' : 'SELECT COUNT(*) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run`>0');
+global $site_config;
+
+$query = (isset($_GET['really_bad']) ? 'SELECT COUNT(id) FROM snatched LEFT JOIN users ON users.id=snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run>0 AND users.hit_and_run_total>2' : 'SELECT COUNT(id) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run`>0');
 $HTMLOUT = '';
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -35,7 +37,7 @@ $HTMLOUT .= "
                 </li>
             </ul>
             <h1 class='has-text-centered'>" . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h1>' . ($count > $perpage ? '<p>' . $menu_top . '</p>' : '') . '
-        <table class="table table-bordered table-striped">' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td  class="colhead">' . $lang['hitnrun_avatar'] . '</td>
+        <table class="table table-bordered table-striped">' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td class="colhead">' . $lang['hitnrun_avatar'] . '</td>
         <td class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
         <td class="colhead"><b>' . $lang['hitnrun_torrent'] . '</b></td>
         <td class="colhead"><b>' . $lang['hitnrun_times'] . '</b></td>
@@ -104,8 +106,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>
             ' . $lang['hitnrun_seeders'] . ' ' . (int) $hit_and_run_arr['numseeding'] . '
          </td>
-            <td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, '') . '<br>
-            ' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
+            <td>' . $lang['hitnrun_finished'] . ' ' . get_date((int) $C_Date, '') . '<br>
+            ' . $lang['hitnrun_stopped'] . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
             ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
             **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
             <td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>

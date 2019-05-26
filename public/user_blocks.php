@@ -1,16 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent;
-
 $lang = load_language('global');
+global $container, $site_config, $CURUSER;
+
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
+$session = $container->get(Session::class);
 if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] === 'no') {
     $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
     header('Location: ' . $site_config['paths']['baseurl'] . '/index.php');
@@ -376,12 +383,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (!empty($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $cache = $container->get(Cache::class);
         $cache->delete('blocks_' . $id);
+        $fluent = $container->get(Database::class);
         $opt = $fluent->from('users')
                       ->select(null)
                       ->select('opt1')
                       ->select('opt2')
-                      ->where('id=?', $CURUSER['id'])
+                      ->where('id = ?', $CURUSER['id'])
                       ->fetch();
 
         $cache->update_row('user_' . $CURUSER['id'], [

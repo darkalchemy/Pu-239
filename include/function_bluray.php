@@ -1,20 +1,28 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @return array|bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ *
+ * @return array|bool|mixed
  */
 function get_bluray_info()
 {
-    global $cache, $site_config, $BLOCKS;
+    global $container, $BLOCKS, $site_config;
 
     if (!$BLOCKS['bluray_com_api_on']) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
     $bluray_data = $cache->get('bluray_xml_');
     if ($bluray_data === false || is_null($bluray_data)) {
         $url = 'http://www.blu-ray.com/rss/newreleasesfeed.xml';
@@ -25,11 +33,9 @@ function get_bluray_info()
             $cache->set('bluray_xml_', 'failed', 3600);
         }
     }
-
     if (empty($bluray_data)) {
-        return false;
+        return null;
     }
-
     $pubs = $cache->get('bluray_pubs_');
     if ($pubs === false || is_null($pubs)) {
         $doc = new DOMDocument();
@@ -39,13 +45,21 @@ function get_bluray_info()
         $i = 1000;
         foreach ($items as $item) {
             ++$i;
-            $movie = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+            $movie = empty($item->getElementsByTagName('title')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                ->item(0)->nodeValue;
             $movie = trim(replace_unicode_strings(str_replace('(Blu-rdelete', '', $movie)));
             $movie = trim(replace_unicode_strings(str_replace('(Blu-ray)', '', $movie)));
-            $pubDate = empty($item->getElementsByTagName('pubDate')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')->item(0)->nodeValue;
-            $description = empty($item->getElementsByTagName('description')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')->item(0)->nodeValue;
+            $pubDate = empty($item->getElementsByTagName('pubDate')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')
+                ->item(0)->nodeValue;
+            $description = empty($item->getElementsByTagName('description')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')
+                ->item(0)->nodeValue;
             $description = explode(' | ', strip_tags(str_replace('<br><br>', ' | ', $description)));
-            $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+            $link = empty($item->getElementsByTagName('link')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                ->item(0)->nodeValue;
             $poster_link = '';
             if ($link) {
                 preg_match('#https?://www.blu-ray.com/movies/(.*)/(.*)/#', $link, $match);
@@ -76,6 +90,7 @@ function get_bluray_info()
                 'poster' => $poster,
                 'placeholder' => $placeholder,
                 'imdbid' => $i,
+                'id' => $i,
             ];
         }
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $cache, $mysqli;
-
 $lang = array_merge($lang, load_language('ad_namechanger'));
+global $site_config;
+
 $HTMLOUT = '';
 $mode = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
 if (isset($mode) && $mode == 'change') {
@@ -54,8 +56,7 @@ $body = "
     <tr>
         <td>{$lang['namechanger_new_user']}</td>
         <td><input type='text' name='uname' class='w-100'></td>
-    </tr>
-    <tr>";
+    </tr>";
 $HTMLOUT .= main_table($body) . "
     <div class='has-text-centered'>
         <input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small margin20'>

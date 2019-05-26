@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'phpzip.php';
 check_user_status();
-global $site_config;
-
 $lang = load_language('global');
+global $container;
 
 $action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
 if ($action === 'download') {
@@ -13,31 +16,32 @@ if ($action === 'download') {
     if ($id == 0) {
         stderr($lang['gl_error'], $lang['gl_not_a_valid_id']);
     } else {
-        $res = sql_query('SELECT id, name, filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        $ext = (substr($arr['filename'], -3));
-        $fileName = str_replace([
-                ' ',
-                '.',
-                '-',
-            ], '_', $arr['name']) . '.' . $ext;
-        $file = UPLOADSUB_DIR . $arr['filename'];
-        $fileContent = file_get_contents($file);
-        $newFile = fopen(UPLOADSUB_DIR . $fileName, 'w');
-        @fwrite($newFile, $fileContent);
-        @fclose($newFile);
-        $file = [];
-        $zip = new PHPZip();
-        $file[] = UPLOADSUB_DIR . $fileName;
-        $fName = UPLOADSUB_DIR . str_replace([
-                ' ',
-                '.',
-                '-',
-            ], '_', $arr['name']) . '.zip';
-        $zip->Zip($file, $fName);
-        $zip->forceDownload($fName);
-        @unlink($fName);
-        @unlink(UPLOADSUB_DIR . $fileName);
+        $fluent = $container->get(Database::class);
+        $subtitle = $fluent->from('subtitles')
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('filename')
+            ->where('id = ?', $id)
+            ->fetch();
+        $ext = pathinfo($subtitle['filename'], PATHINFO_EXTENSION);
+        $file_name = str_replace([
+            ' ',
+            '.',
+            '-',
+        ], '_', $subtitle['name']) . '.' . $ext;
+        $content = file_get_contents(UPLOADSUB_DIR . $subtitle['filename']);
+        if (file_put_contents(UPLOADSUB_DIR . $file_name, $content)) {
+            $files = $file_name;
+            $zipfile = UPLOADSUB_DIR . $file_name . '.zip';
+            $zip = $container->get(ZipArchive::class);
+            $zip->open($zipfile, ZipArchive::CREATE);
+            $zip->addFromString($zipfile, $content);
+            $zip->close();
+            $zip->force_download($zipfile);
+            unlink($zipfile);
+            unlink($file_name);
+        }
         sql_query('UPDATE subtitles SET hits = hits + 1 WHERE id = ' . sqlesc($id));
     }
 } else {

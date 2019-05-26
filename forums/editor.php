@@ -1,7 +1,8 @@
 <?php
 
-global $bb_code, $subscribe, $can_edit, $show_edited_by, $topic_desc, $CURUSER;
+declare(strict_types = 1);
 
+$subscribe = empty($subscribe) ? 'no' : $subscribe;
 $bb_code = empty($bb_code) || $bb_code === 'yes' ? 'yes' : 'no';
 $show_edited_by = empty($show_edited_by) ? 'yes' : 'no';
 $can_edit = !empty($can_edit) ? $can_edit : true;
@@ -29,91 +30,91 @@ $HTMLOUT .= main_table('
                 <div class="level-center">
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="smile1"' . ('smile1' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="smile1"' . ($icon === 'smile1' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="grin"' . ('grin' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="grin"' . ($icon === 'grin' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="tongue"' . ('tongue' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="tongue"' . ($icon === 'tongue' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="cry"' . ('cry' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="cry"' . ($icon === 'cry' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="wink"' . ('wink' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="wink"' . ($icon === 'wink' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="rolleyes"' . ('rolleyes' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="rolleyes"' . ($icon === 'rolleyes' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="blink"' . ('blink' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="blink"' . ($icon === 'blink' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="bow"' . ('bow' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="bow"' . ($icon === 'bow' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="clap2"' . ('clap2' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="clap2"' . ($icon === 'clap2' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="hmmm"' . ('hmmm' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="hmmm"' . ($icon === 'hmmm' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="devil"' . ('devil' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="devil"' . ($icon === 'devil' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="angry"' . ('angry' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="angry"' . ($icon === 'angry' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="shit"' . ('shit' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="shit"' . ($icon === 'shit' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="sick"' . ('sick' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="sick"' . ($icon === 'sick' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="tease"' . ('tease' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="tease"' . ($icon === 'tease' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="love"' . ('love' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="love"' . ($icon === 'love' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="ohmy"' . ('ohmy' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="ohmy"' . ($icon === 'ohmy' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="yikes"' . ('yikes' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="yikes"' . ($icon === 'yikes' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="spider"' . ('spider' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="spider"' . ($icon === 'spider' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="wall"' . ('wall' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="wall"' . ($icon === 'wall' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="idea"' . ('idea' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="idea"' . ($icon === 'idea' ? ' checked' : '') . '>
                     </span>
                     <span class="level-center flex-vertical margin10">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" class="tooltipper icon bottom10">
-                        <input type="radio" name="icon" value="question"' . ('question' === $icon ? ' checked' : '') . '>
+                        <input type="radio" name="icon" value="question"' . ($icon === 'question' ? ' checked' : '') . '>
                     </span>
                 </div>
             </td>

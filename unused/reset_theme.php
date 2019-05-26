@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/include/bittorrent.php';
 check_user_status();
 $lang = load_language('global');
-global $CURUSER, $site_config, $cache;
+global $container, $site_config, $CURUSER;
 
+$cache = $container->get(Cache::class);
 $sid = 1;
 if ($sid > 0 && $sid != $CURUSER['id']) {
     sql_query('UPDATE users SET stylesheet = ' . sqlesc($sid) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

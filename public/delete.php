@@ -1,13 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\Session;
+use Pu239\Torrent;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs, $message_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('delete'));
-if (!mkglobal('id')) {
+global $container, $site_config, $CURUSER;
+
+$id = $_GET['id'];
+if (empty($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
 $id = (int) $id;
@@ -15,18 +24,19 @@ if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
 $dt = TIME_NOW;
+$fluent = $container->get(Database::class);
 $row = $fluent->from('torrents AS t')
-              ->select(null)
-              ->select('t.id')
-              ->select('t.info_hash')
-              ->select('t.owner')
-              ->select('t.name')
-              ->select('t.seeders')
-              ->select('t.added')
-              ->select('u.seedbonus')
-              ->leftJoin('users AS u ON u.id=t.owner')
-              ->where('t.id=?', $id)
-              ->fetch();
+    ->select(null)
+    ->select('t.id')
+    ->select('t.info_hash')
+    ->select('t.owner')
+    ->select('t.name')
+    ->select('t.seeders')
+    ->select('t.added')
+    ->select('u.seedbonus')
+    ->leftJoin('users AS u ON u.id=t.owner')
+    ->where('t.id = ?', $id)
+    ->fetch();
 
 if (!$row) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");
@@ -56,7 +66,7 @@ if ($rt == 1) {
     }
     $reasonstr = trim($reason[3]);
 }
-
+$torrent_stuffs = $container->get(Torrent::class);
 $torrent_stuffs->delete_by_id($row['id']);
 $torrent_stuffs->remove_torrent($row['info_hash']);
 
@@ -66,6 +76,7 @@ if ($site_config['bonus']['on']) {
     if ($row['added'] > $dt) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_delete']) . ' WHERE id=' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus']['per_delete']);
+        $cache = $container->get(Cache::class);
         $cache->update_row('user_' . $row['owner'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
@@ -81,9 +92,10 @@ if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON
         'msg' => $msg,
         'subject' => $subject,
     ];
+    $message_stuffs = $container->get(Message::class);
     $message_stuffs->insert($msgs_buffer);
 }
-
+$session = $container->get(Session::class);
 $session->set('is-success', $msg);
 if (!empty($_POST['returnto'])) {
     header('Location: ' . htmlsafechars($_POST['returnto']));

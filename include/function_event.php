@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param int    $modifier
  * @param int    $begin
@@ -7,12 +14,16 @@
  * @param int    $setby
  * @param string $title
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function set_event(int $modifier, int $begin, int $expires, int $setby, string $title)
 {
-    global $cache, $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
     $values = [
         'modifier' => $modifier,
         'begin' => $begin,
@@ -31,11 +42,16 @@ function set_event(int $modifier, int $begin, int $expires, int $setby, string $
  * @param int $expires
  * @param int $new_expires
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function update_event(int $expires, int $new_expires)
 {
-    global $cache, $fluent;
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
 
     $set = [
         'expires' => $new_expires,
@@ -56,14 +72,18 @@ function update_event(int $expires, int $new_expires)
 /**
  * @param bool $all
  *
- * @return array|bool|mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function get_event(bool $all)
 {
-    global $cache, $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
     if (!$all) {
         $free = $cache->get('site_events_');
         if ($free === false || is_null($free)) {

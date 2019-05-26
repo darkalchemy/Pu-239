@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'floodlimit_stderr' => 'Error',
     'floodlimit_success' => 'Success',

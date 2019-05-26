@@ -1,18 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Phpzip;
+use Pu239\Torrent;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_common.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $torrent_stuffs, $user_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('index'));
-$userid = isset($_GET['userid']) ? $_GET['userid'] : $CURUSER['id'];
+global $container, $site_config, $CURUSER;
+
+$userid = isset($_GET['userid']) ? (int) $_GET['userid'] : $CURUSER['id'];
 $yes_no = [
     'yes',
     'no',
 ];
+$user_stuffs = $container->get(User::class);
+$torrent_stuffs = $container->get(Torrent::class);
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $usessl = get_scheme() === 'https' ? 'https' : 'http';
     $user = $user_stuffs->getUserFromId($userid);
@@ -29,14 +37,9 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     if (file_exists($zipfile)) {
         unlink($zipfile);
     }
-    $zip = new ZipArchive();
+    $zip = $container->get(Phpzip::class);
     $zip->open($zipfile, ZipArchive::CREATE);
-
     $announce_url = $site_config['announce_urls'][$usessl][0];
-    if (get_scheme() === 'https') {
-        $announce_url = $site_config['announce_urls'][1];
-    }
-
     foreach ($torrents as $t_file) {
         $fn = TORRENTS_DIR . $t_file['id'] . '.torrent';
         $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
@@ -49,21 +52,8 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
         }
     }
     $zip->close();
-
-    if (file_exists($zipfile)) {
-        header('Content-type: application/zip');
-        header('Content-Disposition: attachment; filename="' . basename($zipfile) . '"');
-        header('Content-Transfer-Encoding: Binary');
-        header('Content-length: ' . filesize($zipfile));
-        header('Pragma: no-cache');
-        header('Expires: 0');
-
-        ob_clean();
-        flush();
-        readfile($zipfile);
-        unlink($zipfile);
-        exit;
-    }
+    $zip->force_download($zipfile);
+    unlink($zipfile);
 } else {
     stderr('Wutt!', 'You do not have the authority to do that.');
 }

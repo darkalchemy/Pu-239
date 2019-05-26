@@ -1,10 +1,17 @@
 <?php
 
-global $site_config, $CURUSER, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $CURUSER, $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 if ($site_config['alerts']['report'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
+        $fluent = $container->get(Database::class);
         $delt_with = $fluent->from('reports')
                             ->select(null)
                             ->select('COUNT(id) AS count')

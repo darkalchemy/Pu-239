@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'testip_error' => 'Error',
     'testip_error1' => 'Bad ip',

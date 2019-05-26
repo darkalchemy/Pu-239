@@ -1,8 +1,11 @@
 <?php
 
-global $lang, $post_stuffs, $mysqli, $CURUSER, $cache, $fluent;
+declare(strict_types = 1);
 
 //=== post  action posted so we know what to do :P
+use Pu239\Cache;
+use Pu239\Post;
+
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));
 //=== add all possible actions here and check them to be sure they are ok
 $valid_staff_actions = [
@@ -26,6 +29,7 @@ $valid_staff_actions = [
 ];
 //=== check posted action, and if no match, kill it
 $staff_action = (in_array($posted_staff_action, $valid_staff_actions) ? $posted_staff_action : 1);
+global $container, $site_config, $CURUSER;
 if ($CURUSER['class'] < UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_no_access_for_you_mr']);
 }
@@ -60,7 +64,7 @@ switch ($staff_action) {
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
-                if ($delete_for_real) {
+                if ($site_config['forum_config']['delete_for_real']) {
                     sql_query('UPDATE posts SET status = "deleted" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 } else {
                     //=== if you just want the damned things deleted
@@ -219,6 +223,7 @@ switch ($staff_action) {
                     'status' => $post_arr['status'],
                     'anonymous' => $post_arr['anonymous'],
                 ];
+                $post_stuffs = $container->get(Post::class);
                 $post_stuffs->insert($values);
                 $count = $count + 1;
                 $post_stuffs->delete($post_to_mess_with, $topic_id);
@@ -289,8 +294,8 @@ switch ($staff_action) {
         }
         $subject = strip_tags(isset($_POST['subject']) ? trim($_POST['subject']) : '');
         $message = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : '');
-        $from = ((isset($_POST['pm_from']) && 0 == $_POST['pm_from']) ? 0 : $CURUSER['id']);
-        if ('' == $subject || '' == $message) {
+        $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 0 : $CURUSER['id']);
+        if ($subject == '' || $message == '') {
             stderr($lang['gl_error'], $lang['fe_you_must_enter_both_a_subj_mes']);
         }
         if (isset($_POST['post_to_mess_with'])) {
@@ -315,7 +320,7 @@ switch ($staff_action) {
         if (!is_valid_id($topic_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
-        sql_query('UPDATE topics SET sticky = "' . ('yes' === $_POST['pinned'] ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET sticky = "' . ($_POST['pinned'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
@@ -326,7 +331,7 @@ switch ($staff_action) {
         if (!is_valid_id($topic_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
-        sql_query('UPDATE topics SET locked = "' . ('yes' === $_POST['locked'] ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET locked = "' . ($_POST['locked'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
@@ -406,7 +411,7 @@ switch ($staff_action) {
         sql_query('DELETE FROM subscriptions WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
-        header('Location: forums.php' . ('yes' == $_POST['status'] ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
+        header('Location: forums.php' . ($_POST['status'] == 'yes' ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
         die();
         break;
     //=== delete topic
@@ -423,7 +428,7 @@ switch ($staff_action) {
 	<input type="submit" name="button" class="top20 button is-small" value="' . $lang['fe_del_topic'] . '">
 	</form>');
         }
-        if ($delete_for_real) {
+        if ($site_config['forum_config']['delete_for_real']) {
             sql_query('UPDATE topics SET status = "deleted" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             header('Location: forums.php');
             die();
@@ -442,6 +447,7 @@ switch ($staff_action) {
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id=' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);
 
+            $cache = $container->get(Cache::class);
             for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
                 $cache->delete('forum_last_post_' . $arr_count['forum_id'] . '_' . $i);
             }

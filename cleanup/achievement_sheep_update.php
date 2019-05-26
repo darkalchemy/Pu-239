@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 /**
  * @param $data
  *
@@ -7,19 +12,16 @@
  */
 function achievement_sheep_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $res = sql_query('SELECT userid, sheepyset FROM usersachiev WHERE sheepyset = 1 AND sheepyach = 0') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'New Achievement Earned!';
         $msg = 'Congratulations, you have just earned the [b]Sheep Fondler[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/sheepfondler.png[/img]';
         $dt = TIME_NOW;
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $points = random_int(1, 3);
             $msgs_buffer[] = [
@@ -35,16 +37,17 @@ function achievement_sheep_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO usersachiev (userid, sheepach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE sheepach = VALUES(sheepach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO usersachiev (userid, sheepyach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE sheepyach = VALUES(sheepyach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Sheep Fondler Completed using $queries queries. Sheep Fondling Achievements awarded to - " . $count . ' Member(s).' . $text);
+        if ($data['clean_log']) {
+            write_log('Achievements Cleanup: Sheep Fondler Completed. Sheep Fondling Achievements awarded to - ' . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievement_buffer, $msgs_buffer, $count);
     }

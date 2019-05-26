@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Message;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $site_config, $cache, $message_stuffs;
-
 $lang = array_merge($lang, load_language('ad_grouppm'));
+global $container, $site_config, $CURUSER;
 
 $stdhead = [
     'css' => [
@@ -31,8 +34,6 @@ $dt = TIME_NOW;
  */
 function classes2name($min, $max)
 {
-    global $sent2classes;
-
     for ($i = $min; $i < $max + 1; ++$i) {
         $sent2classes[] = get_user_class_name($i);
     }
@@ -117,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'subject' => $subject,
                 ];
             }
+            $message_stuffs = $container->get(Message::class);
             $r = $message_stuffs->insert($msgs_buffer);
             $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($msgs_buffer) . ' users' : $lang['grouppm_again'];
         } else {

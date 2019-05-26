@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('achievement_history'));
 $HTMLOUT = '';
 $id = (int) $_GET['id'];
@@ -20,14 +20,16 @@ if (!$arr) {
 }
 $achpoints = (int) $arr['achpoints'];
 $spentpoints = (int) $arr['spentpoints'];
-$res = sql_query('SELECT COUNT(*) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $perpage = 15;
 if (!$count) {
-    stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username($arr['id']) . " {$lang['achievement_history_err3']}");
+    stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username((int) $arr['id']) . " {$lang['achievement_history_err3']}");
 }
 $pager = pager($perpage, $count, "?id=$id&amp;");
+global $CURUSER, $site_config;
+
 if ($id === $CURUSER['id']) {
     $HTMLOUT .= "
     <div class='w-100'>
@@ -49,10 +51,10 @@ if ($id === $CURUSER['id']) {
 }
 $HTMLOUT .= "
     <div class='has-text-centered'>
-        <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username($arr['id']) . "</h1>
+        <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username((int) $arr['id']) . "</h1>
         <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
 if ($id === $CURUSER['id']) {
-    $HTMLOUT .= " <a class='altlink' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>";
+    $HTMLOUT .= " <a class='altlink' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}{$lang['achievement_history_pa']}{$spentpoints}{$lang['achievement_history_ps']}</a>";
 }
 $HTMLOUT .= '</h2>
     </div>';
@@ -72,7 +74,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
                     <tr>
                         <td class='has-text-centered'><img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'></td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
-                        <td>' . get_date($arr['date'], '') . '</td>
+                        <td>' . get_date((int) $arr['date'], '') . '</td>
                     </tr>';
 }
 $HTMLOUT .= main_table($body, $heading) . '

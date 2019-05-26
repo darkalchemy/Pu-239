@@ -1,38 +1,33 @@
 <?php
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
+declare(strict_types = 1);
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
-
-use SlashTrace\SlashTrace;
-use SlashTrace\Sentry\SentryHandler;
-use SlashTrace\EventHandler\DebugHandler;
-
 require_once INCL_DIR . 'function_common.php';
+
+use DI\ContainerBuilder;
+use SlashTrace\SlashTrace;
 
 date_default_timezone_set('UTC');
 
-use Noodlehaus\Config;
-
-$conf = new Config([
-    CONFIG_DIR . 'config.php',
-]);
-$site_config = $conf->all();
-
-require_once INCL_DIR . 'function_password.php';
-$cache = new Pu239\Cache();
-$fluent = new Pu239\Database();
-require_once INCL_DIR . 'site_settings.php';
-
-if (!$site_config['site']['production']) {
-    $slashtrace = new SlashTrace();
-    $slashtrace->addHandler(new DebugHandler());
-    $slashtrace->register();
-} else {
-    if (!empty($site_config['api']['sentry'])) {
-        $handler = new SentryHandler("{$site_config['api']['sentry']}");
-        $slashtrace = new SlashTrace();
-        $slashtrace->addHandler($handler);
-        $slashtrace->register();
-    }
+$production = false;
+$builder = new ContainerBuilder();
+if ($production) {
+    $builder->enableCompilation(DI_CACHE_DIR);
 }
+$builder->addDefinitions(CONFIG_DIR . '/config.php');
+$builder->addDefinitions(CONFIG_DIR . '/emoticons.php');
+$builder->addDefinitions(CONFIG_DIR . '/subtitles.php');
+$builder->addDefinitions(CONFIG_DIR . '/whereis.php');
+$builder->addDefinitions(CONFIG_DIR . '/definitions.php');
+$builder->useAutowiring(true);
+$builder->useAnnotations(false);
+try {
+    $container = $builder->build();
+} catch (Exception $e) {
+    //TODO Logger;
+}
+
+require_once CONFIG_DIR . 'session.php';
+$container->get(SlashTrace::class);

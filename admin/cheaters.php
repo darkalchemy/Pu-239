@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $cache;
-
 $lang = array_merge($lang, load_language('cheaters'));
+global $site_config;
+
 $stdfoot = [
     'js' => [
         get_file_name('cheaters_js'),
@@ -27,7 +29,7 @@ if (isset($_POST['nowarned']) && $_POST['nowarned'] === 'nowarned') {
         $this->cache->deleteMulti($_POST['desact']);
     }
 }
-$res = sql_query('SELECT COUNT(*) FROM cheaters') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM cheaters') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_array($res);
 $count = $row[0];
 $perpage = 15;
@@ -52,7 +54,7 @@ if ($count > 0) {
         $id = $arr['cid'];
         $userid = $arr['userid'];
         $torrname = htmlsafechars(CutName($arr['tname'], 80));
-        $cheater = format_username($userid) . " {$lang['cheaters_hbcc']}<br>
+        $cheater = format_username((int) $userid) . " {$lang['cheaters_hbcc']}<br>
         {$lang['cheaters_torrent']} <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['tid'] . "' title='{$torrname}'>{$torrname}</a><br>
         {$lang['cheaters_upped']} " . mksize((int) $arr['upthis']) . "<br>
         {$lang['cheaters_speed']} " . mksize((int) $arr['rate']) . "/s<br>
@@ -61,11 +63,11 @@ if ($count > 0) {
         {$lang['cheaters_ipa']} " . htmlsafechars($arr['userip']);
 
         $cheaters = "
-        <span class='dt-tooltipper-large' data-tooltip-content='#cheater_{$id}_tooltip'>" . format_username($userid, true, false) . "
+        <div class='dt-tooltipper-large' data-tooltip-content='#cheater_{$id}_tooltip'>" . format_username((int) $userid, true, false) . "
             <div class='tooltip_templates'>
                 <div id='cheater_{$id}_tooltip'>$cheater</div>
             </div>
-        </span>";
+        </div>";
 
         $body .= "
         <tr>
@@ -88,6 +90,6 @@ if ($count > 0) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 } else {
-    stderr('', 'There are not any cheaters');
+    stderr('', 'There are not any cheaters', 'bottom20');
 }
 echo stdhead($lang['cheaters_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

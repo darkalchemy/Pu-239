@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Coin.
@@ -11,23 +14,28 @@ class Coin
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Coin constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
      * @param int $tid
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function get(int $tid)
     {
@@ -37,7 +45,7 @@ class Coin
                                   ->select(null)
                                   ->select('userid')
                                   ->select('points')
-                                  ->where('torrentid=?', $tid)
+                                  ->where('torrentid = ?', $tid)
                                   ->fetch();
 
             $this->cache->set('coin_points_' . $tid, $coins, 0);

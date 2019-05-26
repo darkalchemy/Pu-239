@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'mega_heading' => 'Mega Search',
     'mega_analyze' => 'Analyze text - auto detect IP/Email addresses and search them in the database',

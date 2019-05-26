@@ -1,5 +1,8 @@
-### 12 May, 2019
-fix: a few bugs  
+### 26 May, 2019
+update: replace home spun user auth with php-auth  
+update: all Pu239 namespaced classes now use strict types  
+update: use php-di, i am not sure that this is the correct way to do it, but it is working  
+update: use memory cache form cli scripts  
 
 ### 07 Apr, 2019
 fix: return null fetch()  
@@ -15,7 +18,7 @@ update: catalog.php
 cleanup: adminer plugins  
 fix: adminer  
 update: format_bbcode $images == false hides image instead of leaving bbcode  
-fix: hnr_online  
+fix: online  
 fix: incorrect site_config key  
 fix: missing global bittorrent.php  
 update: initial database missing site_config data  
@@ -1013,7 +1016,7 @@ fix: multiple logins destroying other login remember me tokens
 update: insert/update in 1 query instead of delete/insert set_remember  
 
 ### 19 Aug, 2018  
-fix: undefined index get_date()  
+fix: undefined index get_date((int) )  
 update: add required fields to signup.php, invite_signup.php, requests.php, offers.php  
 fix: null referer when url not wrapped in url tags AJAX Chat  
 update: jquery.validate.js  
@@ -1151,7 +1154,7 @@ fix: left join when no topic forum_posts.php
 ### 29 Jul, 2018  
 add: default banner.jpp  
 add: dbconn() to all cleanup scripts  
-remove: time_adjust and time_offest from site_config  
+remove: time_adjust and time_offset from site_config  
 update: inner join on torrents comments.php  
 fix: when empty array comments.php  
 update: site_config  
@@ -1405,7 +1408,7 @@ fix: forums scroll to post
 ### 22 Jun, 2018  
 fix: image proxy when using width/height  
 add: image proxy in AJAX Chat  
-fix: almost all formating of usernames is format_username()  
+fix: almost all formating of usernames is format_username((int) )  
 remove: preview buttons  
 fix: AJAX Chat not using override_class  
 replace: log viewer to allow reading gzipped files and sqlerr_log files  
@@ -1441,7 +1444,7 @@ remove: redundant parked() check in forums.php
 fix: faq.php output  
 update: ip logging false by default  
 update: all requests for ip, except announce and scrape, use the function getip() to facilitate logging ip true/false  
-fix: calling format_username() with array instead of id  
+fix: calling format_username((int) ) with array instead of id  
 
 ### 12 Jun, 2018  
 fix: friends.php  

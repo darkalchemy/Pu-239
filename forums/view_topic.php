@@ -1,6 +1,12 @@
 <?php
 
-global $lang, $fluent, $CURUSER, $site_config, $user_stuffs, $session;
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+use Pu239\User;
 
 $image = placeholder_image();
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $now_viewing = '';
@@ -11,9 +17,11 @@ if (!is_valid_id($topic_id)) {
 
 $upload_errors_size = isset($_GET['se']) ? intval($_GET['se']) : 0;
 $upload_errors_type = isset($_GET['ee']) ? intval($_GET['ee']) : 0;
+global $container, $site_config, $CURUSER;
 
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
-$where = $CURUSER['class'] < UC_STAFF ? 't.status = "ok" AND ' : $CURUSER['class'] < $min_delete_view_class ? 't.status != "deleted" AND ' : '';
+$where = $CURUSER['class'] < UC_STAFF ? 't.status = "ok" AND ' : $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 't.status != "deleted" AND ' : '';
+$fluent = $container->get(Database::class);
 $arr = $fluent->from('topics AS t')
               ->select(null)
               ->select('t.id AS topic_id')
@@ -36,10 +44,10 @@ $arr = $fluent->from('topics AS t')
               ->select('f.min_class_write')
               ->select('f.parent_forum')
               ->innerJoin('forums AS f ON t.forum_id=f.id')
-              ->where("{$where}t.id=?", $topic_id)
+              ->where("{$where}t.id = ?", $topic_id)
               ->fetch();
 
-if ($CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $min_delete_view_class && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
+if ($CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 
@@ -62,31 +70,31 @@ switch ($status) {
 }
 
 $forum_id = $arr['forum_id'];
-$topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['user_id']);
-$topic_name = htmlsafechars(htmlspecialchars($arr['topic_name'], ENT_QUOTES, 'UTF-8'));
-$topic_desc1 = htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8'));
+$topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username((int) $arr['user_id']);
+$topic_name = htmlsafechars($arr['topic_name']);
+$topic_desc1 = htmlsafechars($arr['topic_desc']);
 
 $members_votes = [];
 if ($arr['poll_id'] > 0) {
     $arr_poll = $fluent->from('forum_poll')
-                       ->where('id=?', $arr['poll_id'])
+                       ->where('id = ?', $arr['poll_id'])
                        ->fetch();
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $query = $fluent->from('forum_poll_votes')
                         ->where('forum_poll_votes.id>0')
-                        ->where('poll_id=?', $arr['poll_id']);
+                        ->where('poll_id = ?', $arr['poll_id']);
         $who_voted = $query ? '<hr>' : 'no votes yet';
         foreach ($query as $arr_poll_voted) {
-            $who_voted .= format_username($arr_poll_voted['user_id']);
+            $who_voted .= format_username((int) $arr_poll_voted['user_id']);
         }
     }
 
     $query = $fluent->from('forum_poll_votes')
                     ->select(null)
                     ->select('option')
-                    ->where('poll_id=?', $arr['poll_id'])
-                    ->where('user_id=?', $CURUSER['id'])
+                    ->where('poll_id = ?', $arr['poll_id'])
+                    ->where('user_id = ?', $CURUSER['id'])
                     ->fetchAll();
 
     $voted = 0;
@@ -103,16 +111,16 @@ if ($arr['poll_id'] > 0) {
     $multi_options = $arr_poll['multi_options'];
     $total_votes = $fluent->from('forum_poll_votes')
                           ->select(null)
-                          ->select('COUNT(*) AS count')
+                          ->select('COUNT(id) AS count')
                           ->where('option < 21')
-                          ->where('poll_id=?', $arr['poll_id'])
+                          ->where('poll_id = ?', $arr['poll_id'])
                           ->fetch('count');
 
     $num_non_votes = $fluent->from('forum_poll_votes')
                             ->select(null)
-                            ->select('COUNT(*) AS count')
+                            ->select('COUNT(id) AS count')
                             ->where('option>20')
-                            ->where('poll_id=?', $arr['poll_id'])
+                            ->where('poll_id = ?', $arr['poll_id'])
                             ->fetch('count');
 
     $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
@@ -130,10 +138,10 @@ if ($arr['poll_id'] > 0) {
                             closed
                         </span>' : ($arr_poll['poll_starts'] > TIME_NOW ? '
                             starts:
-                        </span> ' . get_date($arr_poll['poll_starts'], '') : ($arr_poll['poll_ends'] == 1356048000 ? '
+                        </span> ' . get_date((int) $arr_poll['poll_starts'], '') : ($arr_poll['poll_ends'] == 1356048000 ? '
                         </span>' : ($arr_poll['poll_ends'] > TIME_NOW ? ' 
                             ends:
-                        </span> ' . get_date($arr_poll['poll_ends'], '', 0, 1) : '
+                        </span> ' . get_date((int) $arr_poll['poll_ends'], '', 0, 1) : '
                         </span>')))) . '
 	                </td>
 	                <td colspan="3">' . ($CURUSER['class'] < UC_STAFF ? '' : '
@@ -165,9 +173,9 @@ if ($arr['poll_id'] > 0) {
         if ($voted) {
             $vote_count = $fluent->from('forum_poll_votes')
                                  ->select(null)
-                                 ->select('COUNT(*) AS count')
+                                 ->select('COUNT(id) AS count')
                                  ->where('option = ?', $i)
-                                 ->where('poll_id=?', $arr['poll_id'])
+                                 ->where('poll_id = ?', $arr['poll_id'])
                                  ->fetch('count');
 
             $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
@@ -175,7 +183,7 @@ if ($arr['poll_id'] > 0) {
             $math_image = '
             <tablewidth="200px">
 		        <tr>
-		            <td style="padding: 0px; background-image: url(' . $site_config['paths']['images_baseurl'] . 'forums/vote_img_bg.gif); background-repeat: repeat-x">
+		            <td style="padding: 0; background-image: url(' . $site_config['paths']['images_baseurl'] . '/forums/vote_img_bg.gif); background-repeat: repeat-x">
                         <span class="tooltipper" title="' . $math_text . '">
                             <i class="icon-search icon" aria-hidden="true"></i>
                         </span>
@@ -235,29 +243,29 @@ if (isset($_GET['search'])) {
     $search = htmlsafechars($_GET['search']);
     $topic_name = highlightWords($topic_name, $search);
 }
-$forum_desc = (!empty($arr['topic_desc']) ? '<span>' . htmlsafechars(htmlspecialchars($arr['topic_desc'], ENT_QUOTES, 'UTF-8')) . '</span>' : '');
+$forum_desc = (!empty($arr['topic_desc']) ? '<span>' . htmlsafechars($arr['topic_desc']) . '</span>' : '');
 $locked = ($arr['locked'] === 'yes' ? 'yes' : 'no');
 $sticky = ($arr['sticky'] === 'yes' ? 'yes' : 'no');
 $views = number_format($arr['views']);
 
-$forum_name = htmlsafechars(htmlspecialchars($arr['forum_name'], ENT_QUOTES, 'UTF-8'));
+$forum_name = htmlsafechars($arr['forum_name']);
 
-if (0 != $arr['num_ratings']) {
+if ($arr['num_ratings'] != 0) {
     $rating = round($arr['rating_sum'] / $arr['num_ratings'], 1);
 }
 
 $subscribed = $fluent->from('subscriptions')
                      ->select(null)
                      ->select('id')
-                     ->where('topic_id=?', $topic_id)
-                     ->where('user_id=?', $CURUSER['id'])
+                     ->where('topic_id = ?', $topic_id)
+                     ->where('user_id = ?', $CURUSER['id'])
                      ->fetch('id');
 
 $subscriptions = $subscribed ? "<a href='{$site_config['paths']['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'>{$lang['fe_unsubscribe_from_this_topic']}</a>" : "
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=add_subscription&amp;forum_id={$forum_id}&amp;topic_id={$topic_id}'>{$lang['fe_subscribe_to_this_topic']}</a>";
 
 $fluent->deleteFrom('now_viewing')
-       ->where('user_id=?', $CURUSER['id'])
+       ->where('user_id = ?', $CURUSER['id'])
        ->execute();
 
 $values = [
@@ -269,7 +277,7 @@ $values = [
 $fluent->insertInto('now_viewing')
        ->values($values)
        ->execute();
-
+$cache = $container->get(Cache::class);
 $topic_users_cache = $cache->get('now_viewing_topic_');
 if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = '';
@@ -279,11 +287,11 @@ if ($topic_users_cache === false || is_null($topic_users_cache)) {
                     ->select('now_viewing.user_id')
                     ->select('users.perms')
                     ->innerJoin('users ON now_viewing.user_id=users.id')
-                    ->where('topic_id=?', $topic_id)
+                    ->where('topic_id = ?', $topic_id)
                     ->where('users.perms < ?', bt_options::PERMS_STEALTH);
 
     foreach ($query as $row) {
-        $list[] = format_username($row['user_id']);
+        $list[] = format_username((int) $row['user_id']);
     }
 
     $topicusers = empty($list) ? '' : implode(',&nbsp;&nbsp;', $list);
@@ -301,16 +309,16 @@ if (!empty($topic_users)) {
 }
 
 $set = [
-    'views' => new Envms\FluentPDO\Literal('views + 1'),
+    'views' => new Literal('views + 1'),
 ];
 $fluent->update('topics')
        ->set($set)
-       ->where('id=?', $topic_id)
+       ->where('id = ?', $topic_id)
        ->execute();
 
-$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
-$posts_count = $arr_count[0];
+$posts_count = (int) $arr_count[0];
 $perpage = isset($_GET['perpage']) ? intval($_GET['perpage']) : 15;
 
 $page = 0;
@@ -319,6 +327,7 @@ if (isset($_GET['page']) && $_GET['page'] === 'last') {
 } elseif (isset($_GET['page'])) {
     $page = (int) $_GET['page'];
 }
+$session = $container->get(Session::class);
 if (isset($_GET['s'])) {
     if ($_GET['s'] == 1) {
         $session->set('is-success', $lang['fe_sub_to_topic']);
@@ -334,8 +343,8 @@ $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
 $sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason,
-            INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous
-            FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != "deleted" AND' : '')) . '
+            p.status AS post_status, p.anonymous
+            FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != "deleted" AND' : '')) . '
             topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id ' . $LIMIT;
 
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -361,7 +370,7 @@ if ($arr['user_likes'] > 0) {
         $query = $fluent->from('likes')
                         ->select(null)
                         ->select('user_id')
-                        ->where('topic_id=?', $arr['topic_id']);
+                        ->where('topic_id = ?', $arr['topic_id']);
         foreach ($query as $userid) {
             $user_likes[] = $userid['user_id'];
         }
@@ -369,7 +378,7 @@ if ($arr['user_likes'] > 0) {
     }
     if ($user_likes) {
         foreach ($user_likes as $userid) {
-            $likers[] = format_username($userid);
+            $likers[] = format_username((int) $userid);
         }
         $likes = implode(', ', $likers);
         $count = count($user_likes);
@@ -399,7 +408,7 @@ $like_button = " < div class='level-right margin10'>
                 </div>';
 
 $locked_or_reply_button = $locked === 'yes' ? "
-    <span class='tooltipper' title = '{$lang['fe_this_topic_is_locked']}, you may not post in this thread.'>{$lang['fe_this_topic_is_locked']}" : ($CURUSER['forum_post'] === 'no' ? " < span class='tooltipper' title = 'Your posting rights have been removed. You may not post.'>Disabled</span>" : "
+    <span class='tooltipper' title='{$lang['fe_this_topic_is_locked']}, you may not post in this thread.'>{$lang['fe_this_topic_is_locked']}" : ($CURUSER['forum_post'] === 'no' ? " < span class='tooltipper' title='Your posting rights have been removed. You may not post.'>Disabled</span>" : "
     <a href='{$site_config['paths']['baseurl']}/forums.php?action=post_reply&amp;topic_id={$topic_id}'>Add Reply </a>");
 
 if ($arr['parent_forum'] > 0) {
@@ -407,7 +416,7 @@ if ($arr['parent_forum'] > 0) {
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '<span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
     $parent_forum_name = '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=" &#9658;" title="&#9658;" class="tooltipper emoticon lazy">
-		<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars(htmlspecialchars($parent_forum_arr[0], ENT_QUOTES, 'UTF-8')) . '</a>';
+		<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0]) . '</a>';
 }
 
 $the_top = '
@@ -449,12 +458,13 @@ $HTMLOUT .= $mini_menu . "
             </ul>
         </div>';
 
+$user_stuffs = $container->get(User::class);
 foreach ($posts as $arr) {
-    $usersdata = $user_stuffs->getUserFromId($arr['user_id']);
+    $usersdata = $user_stuffs->getUserFromId((int) $arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ';
-    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars(htmlspecialchars($arr['post_title'], ENT_QUOTES, 'UTF-8')) . '</span>' : '';
+    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title']) . '</span>' : '';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy'>" : '';
     $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, $arr['post_id'], $arr['anonymous']) : '';
     $edited_by = '';
@@ -462,16 +472,16 @@ foreach ($posts as $arr) {
         if ($arr['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             } else {
-                $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username($arr['edited_by']) . ']
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+                $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username((int) $arr['edited_by']) . ']
+				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
         } else {
-            $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' ' . format_username($arr['edited_by']) . '
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+            $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' ' . format_username((int) $arr['edited_by']) . '
+				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
     }
@@ -520,7 +530,7 @@ foreach ($posts as $arr) {
             $query = $fluent->from('likes')
                             ->select(null)
                             ->select('user_id')
-                            ->where('post_id=?', $arr['post_id']);
+                            ->where('post_id = ?', $arr['post_id']);
             foreach ($query as $userid) {
                 $user_likes[] = $userid['user_id'];
             }
@@ -528,7 +538,7 @@ foreach ($posts as $arr) {
         }
         if ($user_likes) {
             foreach ($user_likes as $userid) {
-                $likers[] = format_username($userid);
+                $likers[] = format_username((int) $userid);
             }
             $likes = implode(', ', $likers);
             $count = count($user_likes);
@@ -551,12 +561,6 @@ foreach ($posts as $arr) {
     }
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
     $dlink = "dLink_{$topic_id}_{$post_id}";
-    if (filter_var($usersdata['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-        $ip = "<span class='size_4'>{$usersdata['ip']}</span>";
-    } else {
-        $ip = str_replace(':', ': ', $usersdata['ip']);
-        $ip = "<div class='size_2 text-justify'>$ip</div>";
-    }
 
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
@@ -577,7 +581,7 @@ foreach ($posts as $arr) {
                         <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy">' : get_user_ratio_image($usersdata['uploaded'], ($site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']))) . '
                     </div>
                     <div class="column has-text-centered is-one-quarter">
-                        ' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . '
+                        ' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . '
                     </div>
                     <div class="column has-text-right is-half">
                         <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_quote'] . '</a>
@@ -595,10 +599,9 @@ foreach ($posts as $arr) {
         </tr>
 		<tr>
          <td class="has-text-centered w-15 mw-150">' . get_avatar($usersdata) . '<br>
-			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
+			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
 			<span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
-			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon lazy"></a> ' : '') . (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon lazy"></a> ' : '') . (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon lazy"></a> ' : '') . (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon lazy"></a> ' : '') . (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon lazy"></a> ' : '') . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
-            <div class="bg-06 round5">' . $ip . '</div>
+			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
 			<ul class="level-center">
 			    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
 			</ul>' : '') . "
@@ -626,7 +629,7 @@ foreach ($posts as $arr) {
                     ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy">' : '') . '
                     ') . '
                     <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon lazy"> ' . $lang['vt_send_message'] . "</a>
-                    <span data-id='{$arr['post_id']}' data-type='post' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
+                    <span data-id='{$arr['post_id']}' data-type='post' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$arr['post_id']} left10'>{$att_str}</span>
                 </td>
             </tr>", '', 'top20 h-100');
@@ -634,8 +637,8 @@ foreach ($posts as $arr) {
 }
 
 $fluent->deleteFrom('read_posts')
-       ->where('user_id=?', $CURUSER['id'])
-       ->where('topic_id=?', $topic_id)
+       ->where('user_id = ?', $CURUSER['id'])
+       ->where('topic_id = ?', $topic_id)
        ->execute();
 
 $values = [
@@ -731,7 +734,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         </td>
                         <td>
                             <input type="radio" name="pm_from" value="0" checked> ' . $lang['vt_system'] . '
-                            <input type="radio" name="pm_from" value="1"> ' . format_username($CURUSER['id']) . '
+                            <input type="radio" name="pm_from" value="1"> ' . format_username((int) $CURUSER['id']) . '
                         </td>
                     </tr>', '', 'top20') . '
                 </div>
@@ -887,8 +890,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             <input type="hidden" name="action_2" value="move_to_recycle_bin">
                             <input type="hidden" name="topic_id" value="' . $topic_id . '">
                             <input type="hidden" name="forum_id" value="' . $forum_id . '">
-                            <input type="radio" name="status" value="yes" ' . ('recycled' === $status ? 'checked' : '') . '> Yes
-                            <input type="radio" name="status" value="no" ' . ('recycled' !== $status ? 'checked' : '') . '> No<br>
+                            <input type="radio" name="status" value="yes" ' . ($status === 'recycled' ? 'checked' : '') . '> Yes
+                            <input type="radio" name="status" value="no" ' . ($status !== 'recycled' ? 'checked' : '') . '> No<br>
                             ' . $lang['vt_this_option_will_send_this_thread_to_the_hidden_recycle_bin'] . '<br>
                             ' . $lang['vt_all_subscriptions_to_this_thread_will_be_deleted'] . '
                     </td>
@@ -911,7 +914,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             <input type="submit" name="button" class="button is-small w-100" value="' . $lang['fe_del_topic'] . '">
                         </form>
                     </td>
-                </tr>' . ($CURUSER['class'] < $min_delete_view_class ? '' : '
+                </tr>' . ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? '' : '
                 <tr>
                     <td>
                         <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_undel_topic'] . '" title="' . $lang['fe_undel_topic'] . '" class="tooltipper emoticon lazy">
@@ -932,7 +935,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td class="has-text-centered" colspan="4">
-                        <span class="has-text-danger">*</span>only <span>' . get_user_class_name($min_delete_view_class) . '</span> ' . $lang['vt_and_above_can_see_these_options'] . '
+                        <span class="has-text-danger">*</span>only <span>' . get_user_class_name($site_config['forum_config']['min_delete_view_class']) . '</span> ' . $lang['vt_and_above_can_see_these_options'] . '
                     </td>
                 </tr>');
     $HTMLOUT .= main_table($table) . '

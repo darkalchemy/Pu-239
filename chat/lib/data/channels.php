@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan
@@ -8,6 +10,7 @@
  */
 
 // List containing the custom channels:
+$channels = [];
 $channels = [
     $this->_siteConfig['site']['name'],
     'Support',

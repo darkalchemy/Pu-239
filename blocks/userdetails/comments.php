@@ -1,7 +1,12 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache, $user;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+
+global $container, $site_config, $CURUSER;
+
+$cache = $container->get(Cache::class);
 $usercomments = $cache->get('user_comments_' . $user['id']);
 if ($usercomments === false || is_null($usercomments)) {
     $res = sql_query('SELECT COUNT(id) FROM comments WHERE user = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

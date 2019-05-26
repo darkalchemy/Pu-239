@@ -1,6 +1,7 @@
 <?php
 
-global $site_config, $lang, $user_stuffs, $user;
+declare(strict_types = 1);
+global $user, $site_config, $lang;
 
 /**
  * @param $val
@@ -10,6 +11,7 @@ global $site_config, $lang, $user_stuffs, $user;
 function calctime($val)
 {
     global $lang;
+
     $days = intval($val / 86400);
     $val -= $days * 86400;
     $hours = intval($val / 3600);
@@ -20,7 +22,6 @@ function calctime($val)
     return "&#160;$days {$lang['userdetails_irc_days']}, $hours {$lang['userdetails_irc_hrs']}, $mins {$lang['userdetails_irc_min']}";
 }
 
-//==Irc
 if ($user['onirc'] === 'yes') {
     $ircbonus = (!empty($user['irctotal']) ? number_format($user['irctotal'] / $site_config['irc']['autoclean_interval'], 1) : '0.0');
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_irc_bonus']}</td><td>{$ircbonus}</td></tr>";

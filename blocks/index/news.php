@@ -1,10 +1,17 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config, $CURUSER;
+
+$cache = $container->get(Cache::class);
 $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {
     $dt = TIME_NOW - (86400 * 45);
+    $fluent = $container->get(Database::class);
     $news = $fluent->from('news')
                    ->where('added>?', $dt)
                    ->orderBy('sticky')
@@ -42,19 +49,19 @@ if ($news) {
                     </a>
                 </div>";
         }
-        $username = format_username($array['userid']);
+        $username = format_username((int) $array['userid']);
         if ($array['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF || $array['userid'] === $CURUSER['id']) {
                 $username = get_anonymous_name();
             } else {
-                $username = get_anonymous_name() . ' - ' . format_username($array['userid']);
+                $username = get_anonymous_name() . ' - ' . format_username((int) $array['userid']);
             }
         }
         $site_news .= "
             <div class='bordered{$padding}'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00'>
                     <div class='has-text-primary size_5 padding10 has-text-centered'>" . htmlsafechars($array['title']) . "</div>
-                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
+                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . get_date((int) $array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
                     <div class='has-text-white padding20'>
                         " . format_comment($array['body']) . '
                     </div>

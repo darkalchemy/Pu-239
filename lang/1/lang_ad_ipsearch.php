@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'ipsearch_error' => 'Error',
     'ipsearch_invalid' => 'Invalid IP.',

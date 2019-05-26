@@ -1,13 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+use Pu239\User;
+use Pu239\Userblock;
+use Pu239\Usersachiev;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $cache, $session, $user_stuffs;
+$lang = array_merge($lang, load_language('ad_adduser'));
+global $container, $site_config;
 
+$cache = $container->get(Cache::class);
 $cache->delete('chat_users_list');
 
 $stdfoot = [
@@ -16,12 +26,11 @@ $stdfoot = [
     ],
 ];
 
-$lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $values = [
         'username' => '',
         'email' => '',
-        'passhash' => '',
+        'password' => '',
         'status' => 'confirmed',
         'added' => TIME_NOW,
         'last_access' => TIME_NOW,
@@ -36,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['std_err'], $lang['err_username']);
     }
     if (isset($_POST['password'], $_POST['password2']) && strlen($_POST['password']) > 6 && trim($_POST['password']) == trim($_POST['password2'])) {
-        $values['passhash'] = make_passhash(trim($_POST['password']));
+        $values['password'] = make_passhash(trim($_POST['password']));
     } else {
         stderr($lang['std_err'], $lang['err_password']);
     }
@@ -45,10 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         stderr($lang['std_err'], $lang['err_email']);
     }
-    $user_id = $user_stuffs->add($values);
+    $user_stuffs = $container->get(User::class);
+    $user_id = $user_stuffs->add($values, $lang);
     if ($user_id) {
-        sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
-        sql_query('INSERT INTO user_blocks (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
+        $usersachiev_stuffs = $container->get(Usersachiev::class);
+        $usersachiev_stuffs->add(['userid' => $user_id]);
+        $userblock_stuffs = $container->get(Userblock::class);
+        $userblock_stuffs->add(['userid' => $user_id]);
         $cache->delete('all_users_');
         $cache->set('latestuser_', (int) $user_id, $site_config['expires']['latestuser']);
 
@@ -57,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             autoshout($message);
         }
         if ($user_id === 2) {
+            $session = $container->get(Session::class);
             $session->set('is-success', '[p]Pu-239 Install Complete![/p]');
             header('Location: index.php');
         } else {

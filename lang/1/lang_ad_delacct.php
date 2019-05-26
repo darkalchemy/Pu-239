@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Misc
     'stdhead_delete' => 'Delete account',

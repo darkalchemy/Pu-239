@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Dump to Bzip2 format
  *
@@ -16,6 +16,9 @@ class AdminerDumpBz2
 
     public $fp;
 
+    /**
+     * @return array
+     */
     public function dumpOutput()
     {
         if (!function_exists('bzopen')) {
@@ -25,6 +28,12 @@ class AdminerDumpBz2
         return ['bz2' => 'bzip2'];
     }
 
+    /**
+     * @param $string
+     * @param $state
+     *
+     * @return false|string
+     */
     public function _bz2($string, $state)
     {
         bzwrite($this->fp, $string);
@@ -39,6 +48,10 @@ class AdminerDumpBz2
         return '';
     }
 
+    /**
+     * @param      $identifier
+     * @param bool $multi_table
+     */
     public function dumpHeaders($identifier, $multi_table = false)
     {
         if ($_POST['output'] == 'bz2') {

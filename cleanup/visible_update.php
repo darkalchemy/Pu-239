@@ -1,18 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function visible_update($data)
 {
+    global $container, $site_config;
+
+    $fluent = $container->get(Database::class);
+
     $time_start = microtime(true);
-    global $site_config, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $deadtime_tor = TIME_NOW - $site_config['site']['max_dead_torrent_time'];
     $set = [
         'visible' => 'no',

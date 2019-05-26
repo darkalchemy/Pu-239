@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'namechanger_err' => 'Error',
     'namechanger_missing' => 'UserName or ID missing',

@@ -1,9 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
- * @return string|void
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ *
+ * @return string|void
  */
 function breadcrumbs()
 {
@@ -128,9 +137,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @return bool|string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -164,7 +175,7 @@ function get_secondarypage($lang, $queries, $path)
     }
 
     if (empty($title)) {
-        $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
+        $title = htmlsafechars(ucwords(str_replace('_', ' ', $list[1])));
     }
 
     return "<a href='{$site_config['paths']['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";
@@ -175,9 +186,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @return bool|string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -188,7 +201,7 @@ function get_infopage($lang, $queries, $path)
     }
     $list = explode('=', $queries[1]);
     $ignore1 = [
-        'incldead',
+        'mailsent',
         'topic_id',
         'post_id',
         'id',
@@ -243,7 +256,7 @@ function get_infopage($lang, $queries, $path)
     }
 
     if (empty($title)) {
-        $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
+        $title = htmlsafechars(ucwords(str_replace('_', ' ', $list[1])));
     }
 
     return "<a href='{$site_config['paths']['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}'>{$title}</a>";
@@ -263,6 +276,7 @@ function get_actionpage($lang, $queries, $path)
     $queries_1 = '';
     $list = explode('=', $queries[0]);
     $ignore = [
+        'selector',
         'cats%5B%5D',
         'open',
         'id',
@@ -283,6 +297,7 @@ function get_actionpage($lang, $queries, $path)
         'sp',
         'spf',
         'sr',
+        'st',
         'sort',
     ];
     if (in_array($list[0], $ignore) || $list[1] === 'view_page' || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0]) || preg_match('/\d+/', $list[1])) {
@@ -319,7 +334,7 @@ function get_actionpage($lang, $queries, $path)
         $title = $lang[$list[1]];
     }
     if (empty($title)) {
-        $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
+        $title = htmlsafechars(ucwords(str_replace('_', ' ', $list[1])));
     }
 
     $pages = [
@@ -367,13 +382,15 @@ function get_basepage($lang, $path)
 /**
  * @param $mailbox
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed|string
  */
 function get_mailbox_name($mailbox)
 {
-    global $fluent, $CURUSER;
+    global $container, $CURUSER;
 
     switch ((int) $mailbox) {
         case -2:
@@ -385,13 +402,14 @@ function get_mailbox_name($mailbox)
         case 1:
             return 'Inbox';
         default:
+            $fluent = $container->get(Database::class);
             $name = $fluent->from('pmboxes')
                            ->select(null)
                            ->select('name')
                            ->where('boxnumber = ?', $mailbox)
-                           ->where('userid=?', $CURUSER['id'])
+                           ->where('userid = ?', $CURUSER['id'])
                            ->fetch('name');
 
-            return htmlspecialchars(ucwords($name));
+            return htmlsafechars(ucwords($name));
     }
 }

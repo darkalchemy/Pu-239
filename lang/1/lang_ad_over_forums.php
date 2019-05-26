@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //stderr//stdmsg
     'std_error' => 'Error',

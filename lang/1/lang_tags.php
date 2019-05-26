@@ -1,6 +1,6 @@
 <?php
 
-global $site_config;
+declare(strict_types = 1);
 
 $lang = [
     //TAGS

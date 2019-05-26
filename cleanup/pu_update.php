@@ -1,25 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function pu_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $cache, $message_stuffs, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
-    $prev_class_name = $class_name = 'user';
-    $prev_class = $count = 0;
     $dt = TIME_NOW;
-
+    $fluent = $container->get(Database::class);
     $promos = $fluent->from('class_promo')
                      ->orderBy('id')
                      ->fetchAll();
@@ -55,8 +60,8 @@ function pu_update($data)
                         ->select('modcomment')
                         ->where('class = ?', $prev_class)
                         ->where('enabled = "yes"')
-                        ->where('added < ?', $maxdt)
-                        ->where('uploaded>= ?', $limit)
+                        ->where('registered < ?', $maxdt)
+                        ->where('uploaded >= ?', $limit)
                         ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
                         ->fetchAll();
 
@@ -65,10 +70,11 @@ function pu_update($data)
         if (count($users) > 0) {
             $subject = 'Class Promotion';
             $msg = 'Congratulations, you have been promoted to [b]' . $class_name . "[/b]. :)\n You get one extra invite.\n";
+            $cache = $container->get(Cache::class);
             foreach ($users as $arr) {
                 $ratio = $arr['downloaded'] === 0 ? 'Infinite' : number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $comment = get_date($dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n";
+                $comment = get_date((int) $dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n";
                 $modcomment = $comment . $modcomment;
                 $msgs_buffer[] = [
                     'sender' => 0,
@@ -90,18 +96,19 @@ function pu_update($data)
 
             $count = count($msgs_buffer);
             if ($count > 0) {
+                $message_stuffs = $container->get(Message::class);
                 $message_stuffs->insert($msgs_buffer);
                 $set = [
-                    'invites' => new Envms\FluentPDO\Literal('invites + 1'),
+                    'invites' => new Literal('invites + 1'),
                     'class' => $class_value,
-                    'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+                    'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),
                 ];
                 $fluent->update('users')
                        ->set($set)
                        ->where('class = ?', $prev_class)
                        ->where('enabled = "yes"')
                        ->where('added < ?', $maxdt)
-                       ->where('uploaded>= ?', $limit)
+                       ->where('uploaded >= ?', $limit)
                        ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
                        ->execute();
             }

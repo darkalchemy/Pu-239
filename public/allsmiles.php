@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER;
-
 $lang = load_language('global');
+global $CURUSER, $site_config;
+
 $body_class = 'background-16 h-style-9 text-9 skin-2';
 $htmlout = doc_head() . "
     <meta property='og:title' content='All Smiles'>

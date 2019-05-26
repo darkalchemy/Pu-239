@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 // Forum Standard Errors and Other Stuff found in most forum files.
 $lang = [
     'ep_bb_code' => 'BB code',
@@ -33,11 +35,6 @@ $lang = [
     'fe_click_for_google_talk_gadget' => 'click for google talk gadget',
     'fe_click_to_email' => 'click to email',
     'fe_click_to_go_to_website' => 'click to go to website',
-    'fe_click_to_open_google_talk' => 'click to open google talk',
-    'fe_click_to_open_icq_page' => 'click to open icq page',
-    'fe_click_to_open_yahoo' => 'click to open yahoo',
-    'fe_click_to_search_on_aim' => 'click to search on aim... you will need to have an AIM account!',
-    'fe_click_to_see_msn_details' => 'click to see msn details',
     'fe_close' => 'Close',
     'fe_compose' => 'Compose',
     'fe_currently_viewing_this_topic' => 'Currently viewing this topic',
@@ -53,7 +50,6 @@ $lang = [
     'fe_forums' => 'Forums',
     'fe_forums_main' => 'Main Forums',
     'fe_go_to_the_last_post_in_this_thread' => 'Go to the last post in this thread',
-    'fe_google_talk' => 'Google Talk',
     'fe_i_just_want_to_see_the_results' => 'I just want to see the results',
     'fe_i_wear_a_tinfoil_hat' => 'I wear a tin-foil hat',
     'fe_icon' => 'Icon',
@@ -105,7 +101,7 @@ $lang = [
     'fe_post_history' => 'Post History',
     'fe_post_locked' => 'Post Locked',
     'fe_post_preview' => 'Post Preview',
-    'fe_posted_on' => 'posted on',
+    'fe_posted_on' => 'Posted',
     'fe_posts' => 'Posts',
     'fe_posts_by' => 'Posts by',
     'fe_posts_were_not_merged' => 'Posts were NOT merged!',

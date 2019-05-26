@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_sysoplog'));
+global $site_config;
+
 $HTMLOUT = $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
 if (isset($_GET['search'])) {
@@ -22,7 +24,7 @@ $secs = 30 * 86400;
 sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added>$secs") or sqlerr(__FILE__, __LINE__);
 $res = sql_query("SELECT COUNT(id) FROM infolog $where");
 $row = mysqli_fetch_array($res);
-$count = $row[0];
+$count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=sysoplog&amp;action=sysoplog&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 $HTMLOUT = '';
@@ -62,8 +64,8 @@ if (mysqli_num_rows($res) == 0) {
         }
         $key = array_search($txt, $log_events);
         $color = $colors[$key];
-        $date = get_date($arr['added'], 'DATE');
-        $time = get_date($arr['added'], 'LONG', 0, 1);
+        $date = get_date((int) $arr['added'], 'DATE');
+        $time = get_date((int) $arr['added'], 'LONG', 0, 1);
         $body .= "
         <tr>
             <td style='background-color: $color;'>

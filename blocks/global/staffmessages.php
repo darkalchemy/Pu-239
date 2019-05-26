@@ -1,10 +1,17 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $CURUSER, $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 if ($site_config['alerts']['staffmsg'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
+        $fluent = $container->get(Database::class);
         $answeredby = $fluent->from('staffmessages')
                              ->select(null)
                              ->select('COUNT(id) AS count')

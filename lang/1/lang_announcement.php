@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'annouce_std_head' => 'Announcements',
     'annouce_announcement' => 'Announcement',

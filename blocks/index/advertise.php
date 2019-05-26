@@ -1,6 +1,8 @@
 <?php
 
-global $site_config, $lang;
+declare(strict_types = 1);
+
+global $site_config;
 
 $advertise .= "
     <a id='advertise-hash'></a>

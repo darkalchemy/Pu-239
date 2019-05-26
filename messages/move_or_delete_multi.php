@@ -1,12 +1,19 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache, $message_stuffs;
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
+global $container, $site_config, $CURUSER;
 
 if (empty($_POST['pm'])) {
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $pm_messages = is_array($_POST['pm']) ? $_POST['pm'] : [$_POST['pm']];
+$message_stuffs = $container->get(Message::class);
+$cache = $container->get(Cache::class);
 if (isset($_POST['move'])) {
     $set = [
         'location' => $_POST['boxx'],
@@ -20,6 +27,7 @@ if (isset($_POST['move'])) {
 }
 if (isset($_POST['delete'])) {
     foreach ($pm_messages as $id) {
+        $id = (int) $id;
         $message = $message_stuffs->get_by_id($id);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
             stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');

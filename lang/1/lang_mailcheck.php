@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'mailcheck_notval' => "That's not a valid email address, please try again",
     'mailcheck_sorry' => 'Sorry... but that email address',

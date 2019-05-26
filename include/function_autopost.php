@@ -1,20 +1,34 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+
 /**
  * @param string $subject
  * @param string $body
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|null
  */
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body')
 {
-    global $CURUSER, $site_config, $cache, $fluent, $message_stuffs;
+    global $container, $site_config, $CURUSER;
 
+    $fluent = $container->get(Database::class);
     if (user_exists($site_config['chatbot']['id'])) {
         $topicid = $fluent->from('topics')
                           ->select(null)
                           ->select('id')
-                          ->where('forum_id=?', $site_config['staff_forums'][0])
+                          ->where('forum_id = ?', $site_config['staff_forums'][0])
                           ->where('topic_name = ?', $subject)
                           ->fetch('id');
         if (!$topicid) {
@@ -28,11 +42,11 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
                               ->execute();
 
             $set = [
-                'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
+                'topic_count' => new Literal('topic_count + 1'),
             ];
             $fluent->update('forums')
                    ->set($set)
-                   ->where('id=?', $site_config['staff_forums'][0])
+                   ->where('id = ?', $site_config['staff_forums'][0])
                    ->execute();
         }
 
@@ -52,17 +66,18 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
         ];
         $fluent->update('topics')
                ->set($set)
-               ->where('id=?', $topicid)
+               ->where('id = ?', $topicid)
                ->execute();
 
         $set = [
-            'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
+            'post_count' => new Literal('post_count + 1'),
         ];
         $fluent->update('forums')
                ->set($set)
-               ->where('id=?', $site_config['staff_forums'][0])
+               ->where('id = ?', $site_config['staff_forums'][0])
                ->execute();
 
+        $cache = $container->get(Cache::class);
         $cache->delete('last_posts_' . $CURUSER['class']);
         $cache->delete('forum_posts_' . $CURUSER['id']);
 
@@ -74,6 +89,14 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'subject' => $subject,
             'msg' => $body,
         ];
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($values);
+
+        return [
+            'topicid' => $topicid,
+            'postid' => $postid,
+        ];
     }
+
+    return null;
 }

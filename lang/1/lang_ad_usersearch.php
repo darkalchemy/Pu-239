@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //ers
     'usersearch_error' => 'Error',
@@ -9,7 +11,6 @@ $lang = [
     'usersearch_badmask' => 'Bad subnet mask',
     'usersearch_badratio' => 'Bad ratio',
     'usersearch_badratio2' => 'Two ratios needed for this type of search.',
-    'usersearch_badratio2' => 'Bad second ratio.',
     'usersearch_badup' => 'Bad upload ammount.',
     'usersearch_badup2' => 'Two uploaded amounts needed for this type of search.',
     'usersearch_badup3' => 'Bad second uploaded amount.',
@@ -61,7 +62,6 @@ $lang = [
     'usersearch_any' => '(any)',
     'usersearch_confirmed' => 'confirmed',
     'usersearch_pending' => 'pending',
-    'usersearch_enabled' => 'enabled',
     'usersearch_disabled' => 'disabled',
     'usersearch_on' => 'on',
     'usersearch_before' => 'before',

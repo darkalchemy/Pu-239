@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Mytorrents
     'mytorrents_no_torrents' => 'No torrents',

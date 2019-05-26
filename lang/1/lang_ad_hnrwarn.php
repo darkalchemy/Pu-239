@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'hnrwarn_stderror' => 'Err',
     'hnrwarn_nouser' => "Looks like you didn't select any user!",

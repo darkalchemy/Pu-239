@@ -1,58 +1,15 @@
 <?php
 
+declare(strict_types = 1);
 require_once INCL_DIR . 'function_html.php';
-global $lang, $site_config, $fluent, $cache, $CURUSER;
 
-$comments = $cache->get('latest_comments_');
-if ($comments === false || is_null($comments)) {
-    $comments = [];
-    $torrents = $fluent->from('comments AS c')
-                       ->select(null)
-                       ->select('c.id AS comment_id')
-                       ->select('c.user')
-                       ->select('c.torrent AS id')
-                       ->select('c.added')
-                       ->select('c.text')
-                       ->select('c.anonymous')
-                       ->select('c.user_likes')
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('s.name AS cat')
-                       ->select('s.image')
-                       ->innerJoin('torrents AS t ON t.id=c.torrent')
-                       ->leftJoin('users AS u ON u.id=c.user')
-                       ->leftJoin('categories AS s ON t.category = s.id')
-                       ->leftJoin('categories AS p ON s.parent_id=p.id')
-                       ->where('c.torrent>0')
-                       ->orderBy('c.id DESC')
-                       ->limit(5);
+use Pu239\Comment;
+use Pu239\Image;
+use Pu239\User;
 
-    foreach ($torrents as $torrent) {
-        if (!empty($torrent['parent_name'])) {
-            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
-        }
-        $comments[] = $torrent;
-    }
-
-    $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
-}
-
+global $container, $lang, $site_config, $CURUSER;
+$comment = $container->get(Comment::class);
+$comments = $comment->get_comments();
 $posted_comments .= "
         <a id='latest_comment-hash'></a>
         <div id='latest_comment' class='box'>
@@ -69,22 +26,22 @@ $posted_comments .= "
                     </thead>
                     <tbody>";
 
+$image_stuffs = $container->get(Image::class);
+$user_stuffs = $container->get(User::class);
 foreach ($comments as $comment) {
     $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = $genre = '';
-    $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = $imdb_id = '';
     extract($comment);
     $torrname = htmlsafechars($name);
-    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
+    $user = $anonymous === 'yes' ? 'Anonymous' : format_username((int) $user);
     if (empty($poster) && !empty($imdb_id)) {
-        $poster = find_images($imdb_id);
+        $poster = $image_stuffs->find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
-    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+    $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='' class='tooltip-poster'>";
+    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || (int) $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        global $user_stuffs;
-
-        $users_data = $user_stuffs->getUserFromId($owner);
+        $users_data = $user_stuffs->getUserFromId((int) $owner);
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 
@@ -98,7 +55,7 @@ foreach ($comments as $comment) {
     $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
     $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
-                            <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
+                            <td class='has-text-centered'>" . get_date((int) $added, 'LONG') . "</td>
                             <td class='has-text-centered'>" . number_format($user_likes) . '</td>
                         </tr>';
 }

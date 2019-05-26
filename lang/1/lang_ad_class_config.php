@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'classcfg_success_uglify' => "Run '[sudo] php " . ROOT_DIR . "bin/uglify.php' to make the changes effective",
     'classcfg_error' => 'Error',

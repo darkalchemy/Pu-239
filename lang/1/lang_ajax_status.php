@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'ajaxstatus_err' => 'There was an error, mysql error',
     'ajaxstatus_err1' => 'nothing to update, string empty',

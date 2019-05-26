@@ -1,7 +1,3 @@
-/*
- * @package AJAX_Chat
- */
-
 html {
     height: 100%;
 }
@@ -31,7 +27,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #loginContent #errorContainer {
-    color: #ff3860;
+    color: var(--main-bdr-color);
 }
 
 #errorContainer {
@@ -174,11 +170,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #chatList .chatBotErrorMessage {
-    color: #ff3860;
+    color: var(--main-bdr-color);
 }
 
 #content #chatList .deleteSelected {
-    border-color: #ff3860;
+    border-color: var(--main-bdr-color);
 }
 
 #content #chatList span.dateTime {
@@ -249,15 +245,15 @@ input[type=button]:active {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-top: 1px solid #ff3860;
-    border-bottom: 1px solid #ff3860;
+    border-top: 1px solid var(--main-bdr-color);
+    border-bottom: 1px solid var(--main-bdr-color);
     border-radius: .3125em;
     background: rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    border-left: 1px solid #ff3860;
-    border-right: 1px solid #ff3860;
+    border-left: 1px solid var(--main-bdr-color);
+    border-right: 1px solid var(--main-bdr-color);
     border-radius: .625em;
     background: rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }

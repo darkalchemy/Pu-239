@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** This plugin replaces UNIX timestamps with human-readable dates in your local format.
  * Mouse click on the date field reveals timestamp back.

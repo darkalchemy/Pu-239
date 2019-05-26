@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $lang, $user;
+
 $member_reputation = get_reputation($user, 'users');
 $HTMLOUT .= "
     <tr>

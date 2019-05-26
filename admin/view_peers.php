@@ -1,25 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
+global $container, $site_config;
 
+$fluent = $container->get(Database::class);
 $count = $fluent->from('peers')
                 ->select(null)
-                ->select('COUNT(*) AS count')
+                ->select('COUNT(id) AS count')
                 ->fetch('count');
 
 $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
-    <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
+    <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
 $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -53,7 +57,7 @@ if (mysqli_num_rows($result) != 0) {
         }
         $body .= '
     <tr>
-        <td>' . format_username($row['userid']) . '</td>
+        <td>' . format_username((int) $row['userid']) . '</td>
         <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . htmlsafechars($row['port']) . '</td>
@@ -63,8 +67,8 @@ if (mysqli_num_rows($result) != 0) {
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td>' . get_date($row['started'], 'DATE') . '</td>
-        <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
+        <td>' . get_date((int) $row['started'], 'DATE') . '</td>
+        <td>' . get_date((int) $row['last_action'], 'DATE', 0, 1) . '</td>
         <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
         <td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
@@ -73,7 +77,7 @@ if (mysqli_num_rows($result) != 0) {
 
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stderr('', $lang['wpeers_notfound']);
+    $HTMLOUT .= stderr('', $lang['wpeers_notfound'], 'bottom20');
 }
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];

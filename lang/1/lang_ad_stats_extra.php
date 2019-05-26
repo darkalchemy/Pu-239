@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'stats_ex_jan' => 'January',
     'stats_ex_feb' => 'February',

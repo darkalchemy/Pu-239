@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Email-gateway
     'email_error' => 'ERROR',
@@ -20,7 +22,6 @@ $lang = [
     'email_your_email' => 'Your e-mail',
     'email_subject' => 'Subject',
     'email_message' => 'Message',
-    'email_send' => 'Send',
     'email_note_ip' => 'Note:',
     'email_ip' => ' Your IP-address will be logged and visible to the recipient to prevent abuse.',
     'email_valid' => 'Make sure to supply a valid e-mail address if you expect a reply.',

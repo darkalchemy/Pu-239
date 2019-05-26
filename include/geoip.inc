@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 2 -*- */
 

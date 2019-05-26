@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 global $site_config;
 
 $lang = [
@@ -27,9 +28,9 @@ $lang = [
     'hnr_settings_seed2_1' => 'Seed Time For Torrent Age Group 1 Second Class',
     'hnr_settings_seed2_2' => 'Seed Time For Torrent Age Group 2 Second Class',
     'hnr_settings_seed2_3' => 'Seed Time For Torrent Age Group 3 Second Class',
-    'hnr_settings_seedt3_1' => 'Seed Time For Torrent Age Group 1 Third Class',
-    'hnr_settings_seedt3_2' => 'Seed Time For Torrent Age Group 2 Third Class',
-    'hnr_settings_seedt3_3' => 'Seed Time For Torrent Age Group 3 Third Class',
+    'hnr_settings_seed3_1' => 'Seed Time For Torrent Age Group 1 Third Class',
+    'hnr_settings_seed3_2' => 'Seed Time For Torrent Age Group 2 Third Class',
+    'hnr_settings_seed3_3' => 'Seed Time For Torrent Age Group 3 Third Class',
     'hnr_settings_tallow' => 'Time Allowed Before Mark Of Cain',
     'hnr_settings_allow' => 'Allowed Mark Of Cains',
     'hnr_settings_apply' => 'Apply changes',
@@ -37,4 +38,5 @@ $lang = [
     'hnr_settings_group1' => 'Group 1',
     'hnr_settings_group2' => 'Group 3',
     'hnr_settings_group3' => 'Group 2',
+    'hnr_settings_completed' => 'Are all downloads subject to HnR, including incomplete downloads?',
 ];

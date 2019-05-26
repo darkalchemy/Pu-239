@@ -1,34 +1,43 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function uploadpos_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $cache, $fluent, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $dt = TIME_NOW;
-
+    $fluent = $container->get(Database::class);
     $res = $fluent->from('users')
                   ->select(null)
                   ->select('id')
                   ->select('modcomment')
                   ->where('uploadpos < ?', $dt)
-                  ->where('uploadpos>1');
+                  ->where('uploadpos > 1');
 
     $subject = 'Upload Ban expired.';
     $msg = "Your Upload Ban has timed out and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points again. Cheers!\n";
     $msgs = [];
+    $cache = $container->get(Cache::class);
+    $comment = get_date((int) $dt, 'DATE', 1) . " - Upload Ban Automatically Removed By System.\n";
     foreach ($res as $arr) {
-        $comment = get_date($dt, 'DATE', 1) . " - Upload Ban Automatically Removed By System.\n";
         $modcomment = $comment . $arr['modcomment'];
         $msgs[] = [
             'sender' => 0,
@@ -48,16 +57,17 @@ function uploadpos_update($data)
 
     $count = count($msgs);
     if ($count) {
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($msgs);
         $set = [
             'uploadpos' => 1,
-            'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+            'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),
         ];
 
         $fluent->update('users')
                ->set($set)
                ->where('uploadpos < ?', $dt)
-               ->where('uploadpos>1')
+               ->where('uploadpos > 1')
                ->execute();
     }
 

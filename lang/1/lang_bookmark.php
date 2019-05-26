@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     /******Bookmarks*****/
     'bookmarks_del' => 'Delete Bookmark',

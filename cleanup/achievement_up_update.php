@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 /**
  * @param $data
  *
@@ -7,19 +12,16 @@
  */
 function achievement_up_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
-    $res = sql_query("SELECT u.id, u.numuploads, a.ul FROM users AS u LEFT JOIN usersachiev AS a ON u.id=a.userid WHERE u.enabled = 'yes' AND u.numuploads>= 1") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT u.id, u.numuploads, a.ul FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.enabled = 'yes' AND u.numuploads >= 1") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
         $subject = 'New Achievement Earned!';
         $points = random_int(1, 3);
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $uploads = (int) $arr['numuploads'];
             $lvl = (int) $arr['ul'];
@@ -78,6 +80,7 @@ function achievement_up_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO usersachiev (userid, ul, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE ul = VALUES(ul), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
@@ -86,8 +89,8 @@ function achievement_up_update($data)
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Uploader Completed using $queries queries. Uploader Achievements awarded to - " . $count . ' Member(s).' . $text);
+        if ($data['clean_log']) {
+            write_log('Achievements Cleanup: Uploader Completed. Uploader Achievements awarded to - ' . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);
     }

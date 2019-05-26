@@ -1,15 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+
+/**
+ * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function anime_titles_update($data)
 {
-    $time_start = microtime(true);
-    global $BLOCKS, $fluent, $site_config, $cache;
+    global $container, $site_config, $BLOCKS;
 
+    $time_start = microtime(true);
     set_time_limit(1200);
     if (!$BLOCKS['anime_api_on']) {
         return;
     }
 
+    $cache = $container->get(Cache::class);
     $anime_data = $cache->get('anime_data_');
     if ($anime_data === false || is_null($anime_data)) {
         $url = 'https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json';
@@ -62,16 +78,16 @@ function anime_titles_update($data)
             }
 
             if (!empty($values)) {
-                $count = floor($site_config['database']['query_limit'] / 2 / max(array_map('count', $values)));
+                $count = (int) ($site_config['db']['query_limit'] / 2 / max(array_map('count', $values)));
                 $update = [
-                    'image' => new Envms\FluentPDO\Literal('VALUES(image)'),
-                    'type' => new Envms\FluentPDO\Literal('VALUES(type)'),
-                    'myanimelist_id' => new Envms\FluentPDO\Literal('VALUES(myanimelist_id)'),
-                    'kitsu_id' => new Envms\FluentPDO\Literal('VALUES(kitsu_id)'),
-                    'anidb_id' => new Envms\FluentPDO\Literal('VALUES(anidb_id)'),
-                    'anilist_id' => new Envms\FluentPDO\Literal('VALUES(anilist_id)'),
+                    'image' => new Literal('VALUES(image)'),
+                    'type' => new Literal('VALUES(type)'),
+                    'myanimelist_id' => new Literal('VALUES(myanimelist_id)'),
+                    'kitsu_id' => new Literal('VALUES(kitsu_id)'),
+                    'anidb_id' => new Literal('VALUES(anidb_id)'),
+                    'anilist_id' => new Literal('VALUES(anilist_id)'),
                 ];
-
+                $fluent = $container->get(Database::class);
                 foreach (array_chunk($values, $count) as $t) {
                     $fluent->insertInto('anime_titles', $t)
                            ->onDuplicateKeyUpdate($update)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'staffbox_head' => 'StaffBox',
     'staffbox_class' => "You can't use this!",

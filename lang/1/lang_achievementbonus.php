@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'achbon_std_head' => 'Achievement Random Bonus',
     'achbon_no_ach_bon_pnts' => 'No Achievement Bonus Points',

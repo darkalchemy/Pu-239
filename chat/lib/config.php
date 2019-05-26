@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan
@@ -7,8 +9,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-// import globals
-global $site_config, $CURUSER;
+global $site_config;
 
 // Define AJAX Chat user roles:
 define('AJAX_CHAT_CHATBOT', $site_config['chatbot']['role']);
@@ -24,24 +25,17 @@ $config['js_log'] = get_file_name('chat_log_js');
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:
-$config['dbConnection']['host'] = $site_config['database']['host'];
+$config['dbConnection']['host'] = $site_config['db']['host'];
 // Database username:
-$config['dbConnection']['user'] = $site_config['database']['username'];
+$config['dbConnection']['user'] = $site_config['db']['username'];
 // Database password:
-$config['dbConnection']['pass'] = $site_config['database']['password'];
+$config['dbConnection']['pass'] = $site_config['db']['password'];
 // Database name:
-$config['dbConnection']['name'] = $site_config['database']['database'];
+$config['dbConnection']['name'] = $site_config['db']['database'];
 // Database type:
 $config['dbConnection']['type'] = null;
 // Database link:
 $config['dbConnection']['link'] = null;
-
-// Database table names:
-$config['dbTableNames'] = [];
-$config['dbTableNames']['online'] = 'ajax_chat_online';
-$config['dbTableNames']['messages'] = 'ajax_chat_messages';
-$config['dbTableNames']['bans'] = 'ajax_chat_bans';
-$config['dbTableNames']['invitations'] = 'ajax_chat_invitations';
 
 // Available languages:
 //$config['langAvailable'] = [
@@ -199,13 +193,6 @@ $config['guestUserSuffix'] = ')';
 // Guest userIDs may not be lower than this value (and not higher than privateChannelDiff):
 $config['minGuestUserID'] = 400000000;
 
-// Allow/Disallow users to change their userName (Nickname):
-$config['allowNickChange'] = true;
-// Changed userNames should be distinguished by either a prefix or a suffix or both (no whitespace):
-$config['changedNickPrefix'] = '';
-// Changed userNames should be distinguished by either a prefix or a suffix or both (no whitespace):
-$config['changedNickSuffix'] = '';
-
 // Allow/Disallow registered users to delete their own messages:
 $config['allowUserMessageDelete'] = true;
 
@@ -227,20 +214,16 @@ $config['requestMessagesPriorChannelEnterList'] = null;
 // Max time difference in hours for messages to display on each request:
 $config['requestMessagesTimeDiff'] = 720;
 // Max number of messages to display on each request:
-$config['requestMessagesLimit'] = 200;
+$config['requestMessagesLimit'] = 50;
 
 // Max users in chat (does not affect moderators or admins):
 $config['maxUsersLoggedIn'] = 200;
 // Max userName length:
-$config['userNameMaxLength'] = 40;
+$config['userNameMaxLength'] = 64;
 // Max messageText length:
 $config['messageTextMaxLength'] = 2000;
 // Defines the max number of messages a user may send per minute:
 $config['maxMessageRate'] = 20;
-
-// Defines the default time in minutes a user gets banned if kicked from a moderator without ban minutes parameter:
-// 0 Allows user to ext and return, to reset
-$config['defaultBanTime'] = 1;
 
 // Argument that is given to the handleLogout JavaScript method:
 //$config['logoutData'] = './?logout=true';
@@ -260,7 +243,7 @@ $config['logsFirstYear'] = 2007;
 // Defines if old messages are purged from the database:
 $config['logsPurgeLogs'] = false;
 // Max time difference in days for old messages before they are purged from the database:
-$config['logsPurgeTimeDiff'] = 365;
+$config['logsPurgeTimeDiff'] = 10000;
 
 // Defines if registered users (including moderators) have access to the logs (admins are always granted access):
 $config['logsUserAccess'] = false;

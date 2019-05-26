@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
+$lang = array_merge(load_language('global'), load_language('users'));
 global $site_config;
 
-$lang = array_merge(load_language('global'), load_language('users'));
 $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
 $class = isset($_GET['class']) ? $_GET['class'] : '-';
 $letter = '';
@@ -71,12 +73,12 @@ foreach ($cc as $aa) {
     <div class='tabs is-small is-centered top20'>
         <ul>";
     foreach ($aa as $L) {
-        if (!strcmp($L, $letter)) {
+        if (!strcmp((string) $L, $letter)) {
             $div .= "
-            <li class='is-active'><a>" . strtoupper($L) . '</a></li>';
+            <li class='is-active'><a>" . strtoupper((string) $L) . '</a></li>';
         } else {
             $div .= "
-            <li><a href='users.php?letter=$L'>" . strtoupper($L) . '</a></li>';
+            <li><a href='users.php?letter=$L'>" . strtoupper((string) $L) . '</a></li>';
         }
     }
     $div .= '
@@ -90,9 +92,9 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $perpage = 25;
 $browsemenu = '';
 $pagemenu = '';
-$res = sql_query('SELECT COUNT(*) FROM users WHERE ' . $query1) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query1) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
-$pager = pager($perpage, $arr[0], "{$site_config['paths']['baseurl']}/users.php?$q1&amp;");
+$pager = pager($perpage, (int) $arr[0], "{$site_config['paths']['baseurl']}/users.php?$q1&amp;");
 if ($arr[0] > 0) {
     if ($arr[0] > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -111,9 +113,9 @@ if ($arr[0] > 0) {
         $country = ($row['name'] != null) ? "<img src='{$site_config['paths']['images_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "'>" : '---';
         $body .= '
                 <tr>
-                    <td>' . format_username($row['id']) . '</td>
-                    <td class="has-text-centered">' . get_date($row['added'], '') . '</td>
-                    <td class="has-text-centered">' . get_date($row['last_access'], '') . '</td>
+                    <td>' . format_username((int) $row['id']) . '</td>
+                    <td class="has-text-centered">' . get_date((int) $row['registered'], 'LONG') . '</td>
+                    <td class="has-text-centered">' . get_date((int) $row['last_access'], 'LONG') . '</td>
                     <td class="has-text-centered">' . get_user_class_name($row['class']) . "</td>
                     <td class='has-text-centered'>$country</td>
                 </tr>";

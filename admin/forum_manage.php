@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
-
 $lang = array_merge($lang, load_language('ad_forum_manage'));
+global $site_config, $CURUSER;
 $HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $option_12 = $count = $forums_stuff = '';
 $row = 0;
 //=== defaults:
@@ -90,15 +91,15 @@ switch ($action) {
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">
                     <table class="table table-bordered table-striped">
                     <tr>
-                    <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</td>
+                    <td colspan="2"> ' . $lang['fm_efp_edit'] . ' ' . htmlsafechars($row['name']) . '</td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '"></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name']) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '"></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description']) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -108,7 +109,7 @@ switch ($action) {
             $res = sql_query('SELECT * FROM over_forums');
             while ($arr = mysqli_fetch_array($res)) {
                 $i = (int) $arr['id'];
-                $options .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+                $options .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
             }
             $HTMLOUT .= $options . '</select></td></tr>
                 <tr>
@@ -119,7 +120,7 @@ switch ($action) {
             $res = sql_query('SELECT name, id FROM forums');
             while ($arr = mysqli_fetch_array($res)) {
                 if (is_valid_id($arr['id'])) {
-                    $options_2 .= '<option class="body" value="' . (int) $arr['id'] . '"' . ($parent_forum == $arr['id'] ? ' selected' : '') . '>' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+                    $options_2 .= '<option class="body" value="' . (int) $arr['id'] . '"' . ($parent_forum == $arr['id'] ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
                 }
             }
             $HTMLOUT .= $options_2 . '</select></td></tr>
@@ -150,7 +151,7 @@ switch ($action) {
             $nr = mysqli_num_rows($res);
             $maxclass = $nr + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $options_6 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . htmlsafechars($i) . '</option>';
+                $options_6 .= "<option class='body' value='$i'" . ($row['sort'] == $i ? ' selected' : '') . ">$i</option>";
             }
             $HTMLOUT .= $options_6 . '
                             </select>
@@ -159,7 +160,7 @@ switch ($action) {
                 </table>
             <div class="has-text-centered margin20">
                 <input type="hidden" name="action2" value="edit_forum">
-                <input type="hidden" name="id" value="' . htmlsafechars($id) . '">
+                <input type="hidden" name="id" value="$id">
                 <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '">
             </div>
         </form>';
@@ -181,18 +182,18 @@ if (mysqli_num_rows($res) > 0) {
         $forum_id = (int) $row['forum_id'];
         $res2 = sql_query('SELECT name FROM over_forums WHERE id=' . sqlesc($forum_id));
         $arr2 = mysqli_fetch_assoc($res2);
-        $name = htmlsafechars(htmlspecialchars($arr2['name'], ENT_QUOTES, 'UTF-8'));
+        $name = htmlsafechars($arr2['name']);
         $subforum = (int) $row['parent_forum'];
         if ($subforum) {
             $res3 = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($subforum));
             $arr3 = mysqli_fetch_assoc($res3);
-            $subforum_name = htmlsafechars(htmlspecialchars($arr3['name'], ENT_QUOTES, 'UTF-8'));
+            $subforum_name = htmlsafechars($arr3['name']);
         } else {
             $subforum_name = '';
         }
         $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
-            <span>' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</span></a><br>
-            ' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '</td>
+            <span>' . htmlsafechars($row['name']) . '</span></a><br>
+            ' . htmlsafechars($row['description']) . '</td>
             <td><span>' . $subforum_name . '</span></td>
             <td>' . $name . '</td>
             <td>' . get_user_class_name($row['min_class_read']) . '</td>
@@ -237,7 +238,7 @@ $forum_id = (int) $row['forum_id'];
 $res = sql_query('SELECT * FROM over_forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
-    $option_7 .= '<option class="body" value="' . htmlsafechars(htmlspecialchars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+    $option_7 .= "<option class='body' value='$i'" . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
 }
 $HTMLOUT .= $option_7 . '</select></td></tr>
             <tr>
@@ -249,14 +250,14 @@ $forum_id = (int) $row['forum_id'];
 $res = sql_query('SELECT * FROM forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
-    $option_8 .= '<option class="body" value="' . htmlsafechars(htmlspecialchars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</option>';
+    $option_8 .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
 }
 $HTMLOUT .= $option_8 . '</select></td></tr><tr>
             <td><span>' . $lang['fm_mp_min_r'] . '</span></td>
             <td>
             <select name="min_class_read">';
 for ($i = 0; $i <= $maxclass; ++$i) {
-    $option_9 .= '<option class="body" value="' . htmlsafechars($i) . '">' . get_user_class_name($i) . '</option>';
+    $option_9 .= '<option class="body" value="' . $i . '">' . get_user_class_name($i) . '</option>';
 }
 $HTMLOUT .= $option_9 . '</select></td></tr>
             <tr>
@@ -264,7 +265,7 @@ $HTMLOUT .= $option_9 . '</select></td></tr>
             <td>
             <select name="min_class_write">';
 for ($i = 0; $i <= $maxclass; ++$i) {
-    $option_10 .= '<option class="body" value="' . htmlsafechars($i) . '">' . get_user_class_name($i) . '</option>';
+    $option_10 .= '<option class="body" value="' . $i . '">' . get_user_class_name($i) . '</option>';
 }
 $HTMLOUT .= $option_10 . '</select></td></tr>
             <tr>
@@ -272,7 +273,7 @@ $HTMLOUT .= $option_10 . '</select></td></tr>
             <td>
             <select name="min_class_create">';
 for ($i = 0; $i <= $maxclass; ++$i) {
-    $option_11 .= '<option class="body" value="' . htmlsafechars($i) . '">' . get_user_class_name($i) . '</option>';
+    $option_11 .= '<option class="body" value="' . $i . '">' . get_user_class_name($i) . '</option>';
 }
 $HTMLOUT .= $option_11 . '</select></td></tr>
             <tr>
@@ -283,7 +284,7 @@ $res = sql_query('SELECT sort FROM forums');
 $nr = mysqli_num_rows($res);
 $maxclass = $nr + 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
-    $option_12 .= '<option class="body" value="' . htmlsafechars($i) . '">' . htmlsafechars($i) . '</option>';
+    $option_12 .= '<option class="body" value="' . $i . '">' . $i . '</option>';
 }
 $HTMLOUT .= $option_12 . '
                 </select>

@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $mysqli, $fluent;
+global $container, $CURUSER, $site_config;
 
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $HTMLOUT = $H1_thingie = $count2 = '';
 $count = 0;
+$fluent = $container->get(Database::class);
 if (isset($_GET['remove'])) {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr($lang['watched_stderr'], $lang['watched_stderr1']);
@@ -18,38 +24,42 @@ if (isset($_GET['remove'])) {
     $remove_me_Ive_been_good = isset($_POST['wu']) ? $_POST['wu'] : (isset($_GET['wu']) ? $_GET['wu'] : '');
     $removed_log = '';
     //=== if single delete use
-    if (isset($_GET['wu'])) {
-        if (is_valid_id($remove_me_Ive_been_good)) {
-            //=== get mod comments for member
-            $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
-            $user = mysqli_fetch_assoc($res);
-            $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
-            sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user_' . $remove_me_Ive_been_good, [
-                'watched_user' => 0,
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_cache']);
-            $count = 1;
-            $removed_log = format_username($remove_me_Ive_been_good);
-        }
-    } elseif (!empty($remove_me_Ive_been_good)) {
-        foreach ($remove_me_Ive_been_good as $id) {
-            if (is_valid_id($id)) {
-                //=== get mod comments for member
-                $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    if (!empty($remove_me_Ive_been_good)) {
+        if (!is_array($remove_me_Ive_been_good)) {
+            if (is_valid_id($remove_me_Ive_been_good)) {
+                $res = sql_query('SELECT username, modcomment FROM users WHERE id = ' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
                 $user = mysqli_fetch_assoc($res);
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
-                sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user_' . $id, [
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
+                sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
+                $cache = $container->get(Cache::class);
+                $cache->update_row('user_' . $remove_me_Ive_been_good, [
                     'watched_user' => 0,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $count = (++$count);
-                $removed_log .= format_username($id);
+                $count = 1;
+                $removed_log = format_username((int) $remove_me_Ive_been_good);
+            }
+        } else {
+            foreach ($remove_me_Ive_been_good as $id) {
+                $id = (int) $id;
+                if (is_valid_id($id)) {
+                    //=== get mod comments for member
+                    $res = sql_query('SELECT username, modcomment FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $user = mysqli_fetch_assoc($res);
+                    $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
+                    sql_query('UPDATE users SET watched_user = \'0\', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $cache->update_row('user_' . $id, [
+                        'watched_user' => 0,
+                        'modcomment' => $modcomment,
+                    ], $site_config['expires']['user_cache']);
+                    $count = (++$count);
+                    $removed_log .= format_username((int) $id);
+                }
             }
         }
     }
     //=== Check if members were removed
+    $mysqli = $container->get(Mysqli::class);
     if (mysqli_affected_rows($mysqli) == 0) {
         stderr($lang['watched_stderr'], '' . $lang['watched_stderr2'] . '!');
     } else {
@@ -65,7 +75,7 @@ if (isset($_GET['add'])) {
         $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $user = mysqli_fetch_assoc($res);
         if ($user['watched_user'] > 0) {
-            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . ' ' . $lang['watched_backto'] . ' ' . format_username($user['id']) . ' ' . $lang['watched_profile']);
+            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . ' ' . $lang['watched_backto'] . ' ' . format_username((int) $user['id']) . ' ' . $lang['watched_profile']);
         }
         //== ok they are not watched yet let's add the info part 1
         if ($_GET['add'] && $_GET['add'] == 1) {
@@ -73,7 +83,7 @@ if (isset($_GET['add'])) {
                 <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}' accept-charset='utf-8'>
                     <h2>{$lang['watched_add']}{$user['username']}{$lang['watched_towu']}</h2>
                     <div class='has-text-centered'>
-                        <span><b>{$lang['watched_pleasefil']}" . format_username($member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
+                        <span><b>{$lang['watched_pleasefil']}" . format_username((int) $member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
                     </div>
                     <textarea class='w-100' rows='6' name='reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
                     <input type='submit' class='button is-small' value='{$lang['watched_addtowu']}!'>
@@ -84,7 +94,7 @@ if (isset($_GET['add'])) {
         }
         //=== all is good, let's enter them \o/
         $watched_user_reason = htmlsafechars($_POST['reason']);
-        $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
+        $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment = ' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $member_whos_been_bad, [
             'watched_user' => TIME_NOW,
@@ -95,13 +105,12 @@ if (isset($_GET['add'])) {
     //=== Check if member was added
     if (mysqli_affected_rows($mysqli) > 0) {
         $H1_thingie = '<h1 class="has-text-centered">' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username($member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username((int) $member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
     }
 }
-//=== get number of watched members
 $watched_users = $fluent->from('users')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->where('watched_user != 0')
                         ->fetch('count');
 $watched_users = number_format($watched_users);
@@ -146,11 +155,11 @@ if ($how_many > 0) {
         <p>' . format_comment($arr['watched_user_reason']) . '</p>';
         $HTMLOUT .= '
     <tr>
-        <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="has-text-left">' . format_username($arr['id']) . '</td>
+        <td class="has-text-centered">' . get_date((int) $arr['watched_user'], '') . '</td>
+        <td class="has-text-left">' . format_username((int) $arr['id']) . '</td>
         <td class="has-text-left">' . $the_flip_box . '</td>
         <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($arr['invitedby'])) . '</td>
+        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username((int) $arr['invitedby'])) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '
     </tr>';

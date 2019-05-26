@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $lang, $user;
+declare(strict_types = 1);
+global $CURUSER;
 
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
     $table_data .= '

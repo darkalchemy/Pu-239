@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $session;
-
 if (!$session->get('LoggedIn')) {
-    dbconn();
     get_template();
 } else {
     check_user_status();

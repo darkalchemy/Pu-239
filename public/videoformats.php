@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER;
-
 $lang = array_merge(load_language('global'), load_language('videoformats'));
 $HTMLOUT = "
 <h1 class='has-text-centered'>{$lang['videoformats_body']}</h1>";

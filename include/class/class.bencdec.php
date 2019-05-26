@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
 Author: djGrrr <djgrrr AT p2p-network DOT net>
 Version: 1.2.5

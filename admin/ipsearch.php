@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_ipsearch'));
+global $site_config;
+
 $HTMLOUT = $ip = $mask = '';
 $HTMLOUT .= begin_main_frame();
 $ip = isset($_GET['ip']) ? htmlsafechars(trim($_GET['ip'])) : '';
@@ -70,8 +72,8 @@ if ($ip) {
     $page = isset($_GET['page']) && (int) $_GET['page'];
     $perpage = 20;
     $pager = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
-    if ($order === 'added') {
-        $orderby = 'added DESC';
+    if ($order === 'registered') {
+        $orderby = 'registered DESC';
     } elseif ($order === 'username') {
         $orderby = 'UPPER(username) ASC';
     } elseif ($order === 'email') {
@@ -84,10 +86,10 @@ if ($ip) {
         $orderby = 'access DESC';
     }
     $query1 = "SELECT * FROM (
-          SELECT u.id, u.username, INET6_NTOA(u.ip) AS ip, INET6_NTOA(u.ip) AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          SELECT u.id, u.username, INET6_NTOA(u.ip) AS ip, INET6_NTOA(u.ip) AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           WHERE $where1
-          UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           RIGHT JOIN ips ON u.id=ips.userid
           WHERE $where2
@@ -104,8 +106,8 @@ if ($ip) {
     $HTMLOUT .= "<tr>
       <td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
-        if ($user['added'] == '0') {
-            $user['added'] = '---';
+        if ($user['registered'] == '0') {
+            $user['registered'] = '---';
         }
         if ($user['last_access'] == '0') {
             $user['last_access'] = '---';
@@ -113,7 +115,7 @@ if ($ip) {
         if ($user['last_ip']) {
             $count = $fluent->from('bans')
                             ->select(null)
-                            ->select('COUNT(*) AS count')
+                            ->select('COUNT(id) AS count')
                             ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
                             ->where('INET6_NTOA(last)>= ?', $user['last_ip'])
                             ->fetch('count');
@@ -135,18 +137,18 @@ if ($ip) {
             if ($invitedby == '') {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";
             } else {
-                $invitedby = format_username($invitedby);
+                $invitedby = format_username((int) $invitedby);
             }
         } else {
             $invitedby = '--';
         }
         $HTMLOUT .= '<tr>
-           <td>' . format_username($user['id']) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
+           <td>' . format_username((int) $user['id']) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $user['email'] . '</td><td>' . $ipstr . '</td>
-          <td><div>' . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
-          <td><div><b><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int) $user['id'] . "'>" . htmlsafechars($iphistory) . '</a></b></div></td>
-          <td><div>' . get_date($user['access'], 'DATE', 1, 0) . '</div></td>
-          <td><div>' . get_date($user['added'], 'DATE', 1, 0) . '</div></td>
+          <td><div>' . get_date((int) $user['last_access'], 'DATE', 1, 0) . "</div></td>
+          <td><div><b><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int) $user['id'] . "'>$iphistory</a></b></div></td>
+          <td><div>" . get_date((int) $user['access'], 'DATE', 1, 0) . '</div></td>
+          <td><div>' . get_date((int) $user['registered'], 'DATE', 1, 0) . '</div></td>
           <td><div>' . $invitedby . "</div></td>
           </tr>\n";
     }

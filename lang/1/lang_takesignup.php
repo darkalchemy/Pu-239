@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_html.php';
+global $site_config;
 
 $lang = [
     //takesignup

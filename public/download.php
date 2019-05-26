@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_happyhour.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-dbconn();
-global $site_config, $cache, $user_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('download'));
+global $container, $site_config, $CURUSER;
+
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $user = $user_stuffs->get_user_from_torrent_pass($T_Pass);
     if (!$user) {
         die($lang['download_passkey']);
+    } elseif ($user['enabled'] === 'no') {
+        die("Permission denied, you're account is disabled");
+    } elseif ($user['parked'] === 'yes') {
+        die("Permission denied, you're account is parked");
     }
 } else {
-    global $CURUSER;
-
     check_user_status();
     $user = $CURUSER;
 }
@@ -32,21 +37,21 @@ $res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size F
 $row = mysqli_fetch_assoc($res);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
-    stderr('Err', 'There was an error with the file or with the query, please contact staff');
+    stderr('Err', 'There was an error with the file or with the query, please contact staff', 'bottom20');
 }
 if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !($user['id'] == $row['owner'])) {
-    stderr('Error', 'Your download rights have been disabled.');
+    stderr('Error', 'Your download rights have been disabled.', 'bottom20');
 }
 if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download'])) {
-    stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]");
+    stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]", 'bottom20');
 }
-if ($user['class'] === 0 && ($user['uploaded'] - $user['downloaded']) < $row['size']) {
-    stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]");
+if ($user['class'] === 0 && $row['size'] > ($user['uploaded'] - $user['downloaded'])) {
+    stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]", 'bottom20');
 }
 if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
-    stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
+    stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!', 'bottom20');
 }
-
+$cache = $container->get(Cache::class);
 if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
@@ -74,10 +79,10 @@ if (isset($_GET['slot'])) {
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $user['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
-            stderr('Doh!', 'Freeleech slot already in use.');
+            stderr('Doh!', 'Freeleech slot already in use.', 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Slots.');
+            stderr('Doh!', 'No Slots.', 'bottom20');
         }
         $user['freeslots'] = ($user['freeslots'] - 1);
         sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -90,10 +95,10 @@ if (isset($_GET['slot'])) {
         }
     } /* doubleslot **/ elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            stderr('Doh!', 'Doubleseed slot already in use.');
+            stderr('Doh!', 'Doubleseed slot already in use.', 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Slots.');
+            stderr('Doh!', 'No Slots.', 'bottom20');
         }
         $user['freeslots'] = ($user['freeslots'] - 1);
         sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -105,7 +110,7 @@ if (isset($_GET['slot'])) {
             sql_query('INSERT INTO freeslots (torrentid, userid, doubleup, addedup) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
         }
     } else {
-        stderr('ERROR', 'What\'s up doc?');
+        stderr('ERROR', 'What\'s up doc?', 'bottom20');
     }
     $cache->delete('fllslot_' . $user['id']);
     make_freeslots($user['id'], 'fllslot_');
@@ -128,7 +133,6 @@ $dict['announce'] = $site_config['announce_urls'][$usessl][0] . '?torrent_pass='
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {
-    require_once INCL_DIR . 'phpzip.php';
     $row['name'] = str_replace([
         ' ',
         '.',
@@ -136,17 +140,17 @@ if ($zipuse) {
     ], '_', $row['name']);
     $file_name = TORRENTS_DIR . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
-        $zip = new PHPZip();
-        $files = [
-            $file_name,
-        ];
-        $file_name = TORRENTS_DIR . $row['name'] . '.zip';
-        $zip->Zip($files, $file_name);
-        $zip->forceDownload($file_name);
-        unlink(TORRENTS_DIR . $row['name'] . '.torrent');
-        unlink(TORRENTS_DIR . $row['name'] . '.zip');
+        $files = $file_name;
+        $zipfile = TORRENTS_DIR . $row['name'] . '.zip';
+        $zip = $container->get(ZipArchive::class);
+        $zip->open($zipfile, ZipArchive::CREATE);
+        $zip->addFromString($zipfile, $tor);
+        $zip->close();
+        $zip->force_download($zipfile);
+        unlink($zipfile);
+        unlink($file_name);
     } else {
-        stderr('Error', 'Can\'t create the new file, please contatct staff');
+        stderr('Error', 'Can\'t create the new file, please contact staff', 'bottom20');
     }
 } else {
     if ($text) {

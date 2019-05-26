@@ -1,155 +1,88 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use Delight\Auth\InvalidSelectorTokenPairException;
+use Delight\Auth\ResetDisabledException;
+use Delight\Auth\TokenExpiredException;
+use Delight\Auth\TooManyRequestsException;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
-require_once INCL_DIR . 'function_recaptcha.php';
-
-dbconn();
-global $CURUSER, $site_config, $fluent, $session;
+global $container, $CURUSER;
 
 if (!$CURUSER) {
     get_template();
 }
-$stdfoot = '';
-if (!empty($site_config['recaptcha']['secret'])) {
-    $stdfoot = [
-        'js' => [
-            get_file_name('recaptcha_js'),
-        ],
-    ];
-}
-$lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'));
-
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+$stdfoot = [];
+$lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'), load_language('signup'));
 
 $HTMLOUT = '';
+$auth = $container->get(Auth::class);
+$user = $container->get(User::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!mkglobal('email')) {
-        stderr('Oops', 'Missing form data - You must fill all fields');
+    if (isset($_POST['selector'], $_POST['token'])) {
+        $user->reset_password($lang, $_POST);
+    } else {
+        $email = trim($_POST['email']);
+        $user->create_reset($email, $lang);
     }
-    if (!empty($site_config['recaptcha']['site'])) {
-        $response = !empty($_POST['token']) ? $_POST['token'] : '';
-        $result = verify_recaptcha($response);
-        if ($result !== 'valid') {
-            $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
-            header("Location: {$site_config['paths']['baseurl']}/recover.php");
-            die();
-        }
+} elseif (!empty($_GET)) {
+    try {
+        $auth->canResetPasswordOrThrow($_GET['selector'], $_GET['token']);
+        $stdfoot = array_merge_recursive($stdfoot, [
+            'js' => [
+                get_file_name('check_password_js'),
+            ],
+        ]);
+        $HTMLOUT = "
+    <form method='post' action='{$site_config['paths']['baseurl']}/recover.php' accept-charset='utf-8'>
+        <div class='has-text-centered w-50'>
+            <h2 class='has-text-centered'>{$lang['set_new_password']}</h2>";
+
+        $body = "
+            <div class='bottom20'>
+                <input type='password' id='password' name='password' class='w-100' autocomplete='on' placeholder='{$lang['signup_pass']}' required minlength='8'>
+            </div>
+            <div>
+                <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' placeholder='{$lang['signup_passa']}' required minlength='8'>
+                <input type='hidden' name='selector' value='{$_GET['selector']}'>
+                <input type='hidden' name='token' value='{$_GET['token']}'>
+            </div>
+            <div class='has-text-centered padding10'>
+                <input id='signup_captcha_check' type='submit' value='Signup' class='button is-small top20'>
+            </div>";
+        $HTMLOUT .= main_div($body, '', 'padding20') . '
+        </div>
+    </form>';
+
+        echo stdhead($lang['head_recover']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    } catch (InvalidSelectorTokenPairException $e) {
+        stderr($lang['stderr_errorhead'], 'Invalid token');
+    } catch (TokenExpiredException $e) {
+        stderr($lang['stderr_errorhead'], 'Token expired');
+    } catch (ResetDisabledException $e) {
+        stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+    } catch (TooManyRequestsException $e) {
+        stderr($lang['stderr_errorhead'], 'Too many requests');
     }
-    $email = trim($_POST['email']);
-    if (!validemail($email)) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
-    }
-    $user = $fluent->from('users')
-                   ->where('email = ?', $email)
-                   ->fetch();
-
-    if (!$user || empty($user)) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
-    }
-    $secret = make_password(30);
-    $token = make_passhash($secret);
-    $alt_id = make_password(16);
-    $values = [
-        'email' => $email,
-        'token' => $token,
-        'id' => $alt_id,
-    ];
-    $fluent->insertInto('tokens')
-           ->values($values)
-           ->execute();
-
-    $body = sprintf($lang['email_request'], $email, getip(), $site_config['paths']['baseurl'], $alt_id, $secret, $site_config['site']['name']);
-    $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-         ->addTo($user['email'])
-         ->setReturnPath($site_config['site']['email'])
-         ->setSubject("{$site_config['site']['name']} {$lang['email_subjreset']}")
-         ->setHtmlBody($body);
-
-    $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site']['email']}";
-    $mailer->send($mail);
-
-    stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
-} elseif ($_GET) {
-    $id = isset($_GET['id']) ? $_GET['id'] : 0;
-    $token = isset($_GET['token']) ? $_GET['token'] : '';
-    if (empty($id)) {
-        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
-    }
-    if (!preg_match("/^(?:[\d\w]){60}$/", $token)) {
-        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_key']}");
-    }
-
-    $row = $fluent->from('tokens')
-                  ->select('users.username')
-                  ->select('users.email')
-                  ->select('users.id AS user_id')
-                  ->innerJoin('users ON users.email = tokens.email')
-                  ->where('tokens.id=?', $id)
-                  ->where('created_at>DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
-                  ->fetch();
-
-    if (!password_verify($token, $row['token'])) {
-        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
-        die();
-    }
-
-    $email = $row['email'];
-    $newpassword = make_password(16);
-    $newpasshash = make_passhash($newpassword);
-    $set = [
-        'passhash' => $newpasshash,
-    ];
-    $update = $fluent->update('users')
-                     ->set($set)
-                     ->where('id=?', $row['user_id'])
-                     ->execute();
-    if (!$update || empty($update)) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
-    }
-    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['paths']['baseurl'], $site_config['site']['name']);
-    $mail = new Message();
-    $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-         ->addTo($email)
-         ->setReturnPath($site_config['site']['email'])
-         ->setSubject("{$site_config['site']['name']} {$lang['email_subjdetails']}")
-         ->setHtmlBody($body);
-
-    $mailer = new SendmailMailer();
-    $mailer->commandArgs = "-f{$site_config['site']['email']}";
-    $mailer->send($mail);
-
-    stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
 } else {
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
-            <div class='level-center'>";
-    $HTMLOUT .= main_table("
-                <tr class='no_hover'>
-                    <td class='has-text-centered' colspan='2'>
-                        <h2>{$lang['recover_unamepass']}</h2>
-                        <p>{$lang['recover_form']}</p>
-                    </td>
-                </tr>
-                <tr class='no_hover'>
-                    <td class='rowhead'>{$lang['recover_regdemail']}</td>
-                    <td>
-                        <input type='text' class='w-100' name='email'>
-                        <input type='hidden' id='token' name='token' value=''>
-                    </td>
-                </tr>
-                <tr class='no_hover'>
-                    <td colspan='2'>
-                        <div class='has-text-centered'>
-                            <input id='recover_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($site_config['recaptcha']['site']) ? ' disabled' : '') . '/>
-                        </div>
-                    </td>
-                </tr>', '', '', 'w-50', '') . '
+            <div class='w-50 has-text-centered'>
+                <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>";
+    $HTMLOUT .= main_div("
+                <div class='bottom20'>
+                    <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['recover_regdemail']}' required>
+                </div>
+                <div class='has-text-centered'>
+                    <input type='submit' class='button is-small'>
+                </div>", '', 'padding20') . '
+            </div>
         </form>';
     echo stdhead($lang['head_recover']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

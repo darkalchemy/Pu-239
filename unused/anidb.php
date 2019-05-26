@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+
 $time_start = microtime(true);
 require_once __DIR__ . '/../include/bittorrent.php';
-global $fluent, $site_config;
-
 if (!file_exists(CACHE_DIR . 'anime-titles.dat.gz')) {
     $dat = fetch('http://anidb.net/api/anime-titles.dat.gz');
     file_put_contents(CACHE_DIR . 'anime-titles.dat.gz', $dat);
@@ -42,9 +44,9 @@ foreach ($contents as $line) {
 }
 
 if (!empty($anidb)) {
-    $count = floor($site_config['database']['query_limit'] / 2 / max(array_map('count', $anidb)));
+    $count = floor($site_config['db']['query_limit'] / 2 / max(array_map('count', $anidb)));
     $update = [
-        'title' => new Envms\FluentPDO\Literal('VALUES(title)'),
+        'title' => new Literal('VALUES(title)'),
     ];
 
     foreach (array_chunk($anidb, $count) as $t) {

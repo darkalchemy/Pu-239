@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Searchcloud.
@@ -11,44 +14,50 @@ class Searchcloud
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Searchcloud constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
      * @param array $limit
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get(array $limit)
     {
         $search = $this->fluent->from('searchcloud')
-                               ->select('INET6_NTOA(ip) AS ip')
                                ->orderBy('howmuch DESC')
-                               ->limit("{$limit}")
+                               ->limit($limit['limit'])
+                               ->offset($limit['offset'])
                                ->fetchAll();
 
         return $search;
     }
 
     /**
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_count()
     {
         $search = $this->fluent->from('searchcloud')
-                               ->select('COUNT(*) AS count')
+                               ->select(null)
+                               ->select('COUNT(id) AS count')
                                ->fetch('count');
 
         return $search;
@@ -63,7 +72,7 @@ class Searchcloud
     {
         foreach ($terms as $term) {
             $this->fluent->deleteFrom('searchcloud')
-                         ->where('id=?', $term)
+                         ->where('id = ?', $term)
                          ->execute();
         }
         $this->cache->delete('searchcloud_');

@@ -1,14 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $fluent, $session;
-
 $lang = array_merge($lang, load_language('ad_deathrow'));
+global $container, $site_config, $CURUSER;
 
 $HTMLOUT = '';
 
@@ -34,17 +42,20 @@ function calctime($val)
 /**
  * @param array $tids
  *
- * @return bool|int
- *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return bool|int
  */
 function notify_owner(array $tids)
 {
-    global $fluent, $site_config, $lang, $message_stuffs;
+    global $container, $site_config, $lang;
 
     if (empty($tids)) {
         return false;
     }
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
                        ->select('id')
@@ -70,10 +81,11 @@ function notify_owner(array $tids)
         ];
         $fluent->update('deathrow')
                ->set($set)
-               ->where('tid=?', $torrent['id'])
+               ->where('tid = ?', $torrent['id'])
                ->execute();
     }
     if (!empty($values)) {
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($values);
 
         return count($values);
@@ -84,6 +96,7 @@ function notify_owner(array $tids)
 
 if (!empty($_POST['remove'])) {
     $deleted = notify_owner($_POST['remove']);
+    $session = $container->get(Session::class);
     if ($deleted) {
         $session->set('is-success', $lang['deathrow_owner'] . plural($deleted) . $lang['deathrow_notified']);
     } else {
@@ -101,6 +114,7 @@ $dy_time = TIME_NOW - $y_time;
 $dz_time = TIME_NOW - $z_time;
 
 $dead = $ids = [];
+$fluent = $container->get(Database::class);
 $query1 = $fluent->from('torrents AS t')
                  ->select(null)
                  ->select('t.id')
@@ -190,7 +204,7 @@ $fluent->delete('deathrow')
 
 foreach ($dead as $values) {
     $update = [
-        'reason' => new Envms\FluentPDO\Literal('VALUES(reason)'),
+        'reason' => new Literal('VALUES(reason)'),
     ];
     $fluent->insertInto('deathrow')
            ->values($values)
@@ -200,7 +214,7 @@ foreach ($dead as $values) {
 
 $count = $fluent->from('deathrow')
                 ->select(null)
-                ->select('COUNT(*) AS count')
+                ->select('COUNT(uid) AS count')
                 ->fetch('count');
 
 if ($count) {
@@ -208,7 +222,8 @@ if ($count) {
     $pager = pager($perpage, $count, 'staffpanel.php?tool=deathrow&amp;');
     $torrents = $fluent->from('deathrow')
                        ->orderBy('username')
-                       ->limit($pager['pdo'])
+                       ->limit($pager['pdo']['limit'])
+                       ->offset($pager['pdo']['offset'])
                        ->fetchAll();
 
     $HTMLOUT .= "
@@ -234,11 +249,11 @@ if ($count) {
         $id = (int) $queued['tid'];
         $body .= '
         <tr>' . ($CURUSER['class'] >= UC_STAFF ? '
-            <td>' . format_username($queued['uid']) . '</td>' : "
+            <td>' . format_username((int) $queued['uid']) . '</td>' : "
             <td>{$lang['deathrow_hidden']}</td>") . "
             <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td>
             <td>{$reason}</td>
-            <td>" . get_date($queued['notified'], 'LONG', 0, 1) . "</td>
+            <td>" . get_date((int) $queued['notified'], 'LONG', 0, 1) . "</td>
             <td><input type='checkbox' name='remove[]' value='{$id}' class='tooltipper' title='{$lang['deathrow_delete']}'></td>
         </tr>";
     }

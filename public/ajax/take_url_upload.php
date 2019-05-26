@@ -1,23 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\ImageProxy;
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-global $site_config, $cache, $session, $user_stuffs, $lang;
-
 header('content-type: application/json');
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    echo json_encode(['msg' => $lang['bitbucket_csrf']]);
-    die();
-}
+global $container, $site_config;
 
-$userid = $session->get('userID');
+$session = $container->get(Session::class);
+$userid = (int) $session->get('userID');
 if (empty($userid)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();
 }
+$user_stuffs = $container->get(User::class);
 $username = $user_stuffs->get_item('username', $userid);
 
 $url = $_POST['url'];
@@ -27,7 +30,7 @@ if (!filter_var($url, FILTER_VALIDATE_URL)) {
 }
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
-$image_proxy = new Pu239\ImageProxy();
+
 $SaLt = $site_config['salt']['one'];
 $SaLty = $site_config['salt']['two'];
 $skey = $site_config['salt']['three'];
@@ -35,7 +38,6 @@ $maxsize = $site_config['bucket']['maxsize'];
 $folders = date('Y/m');
 $formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
-$str = str_replace('.', '', $str);
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
 $PICSALT = $SaLt . $username;
@@ -86,6 +88,7 @@ if (!file_exists($path)) {
     echo json_encode(['msg' => $lang['bitbucket_upfail_save']]);
     die();
 }
+$image_proxy = $container->get(ImageProxy::class);
 $image_proxy->optimize_image($path, null, null, false);
 $image = "{$site_config['paths']['baseurl']}/img.php?{$pathlink}";
 

@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs;
-
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
+global $site_config, $CURUSER;
+
 $possible_actions = [
     'viewbug',
     'bugs',
@@ -33,6 +37,7 @@ if ($action === 'viewbug') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
         }
         $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $message_stuffs = $container->get(Message::class);
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
@@ -73,8 +78,8 @@ if ($action === 'viewbug') {
     $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($as)) {
         $title = htmlsafechars($a['title']);
-        $added = get_date($a['added'], '', 0, 1);
-        $addedby = format_username($a['sender']) . '<i>(' . get_user_class_name($a['class']) . ')</i>';
+        $added = get_date((int) $a['added'], '', 0, 1);
+        $addedby = format_username((int) $a['sender']) . '<i>(' . get_user_class_name($a['class']) . ')</i>';
         switch ($a['priority']) {
             case 'low':
                 $priority = "<span style='color: green;'>{$lang['low']}</span>";
@@ -111,7 +116,7 @@ if ($action === 'viewbug') {
                 break;
 
             default:
-                $by = format_username($a['staff']) . ' <i>(' . get_user_class_name($a['stclass']) . ')</i>';
+                $by = format_username((int) $a['staff']) . ' <i>(' . get_user_class_name($a['stclass']) . ')</i>';
                 break;
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
@@ -180,10 +185,10 @@ if ($action === 'viewbug') {
             }
             $HTMLOUT .= "<tr>
           <td><a href='?action=viewbug&amp;id=" . (int) $q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
-          <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
+          <td nowrap='nowrap'>" . get_date((int) $q1['added'], 'TINY') . ' / ' . format_username((int) $q1['sender']) . "</td>
           <td>{$priority}</td>
           <td>{$status}</td>
-      <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . '</td>
+      <td>" . ($q1['status'] != 'na' ? format_username((int) $q1['staff']) : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';

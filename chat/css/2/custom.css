@@ -42,7 +42,6 @@
 }
 
 a {
-    color: #0f0;
     color: var(--main-color);
     text-decoration: none;
 }

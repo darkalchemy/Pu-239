@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $session, $fluent;
-
 $lang = array_merge($lang, load_language('ad_backup'));
+global $container, $CURUSER, $site_config;
+
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 
-$lang = array_merge($lang, load_language('ad_backup'));
 $dt = TIME_NOW;
 $HTMLOUT = '';
 $required_class = UC_MAX;
@@ -28,10 +31,11 @@ if (is_array($required_class)) {
 }
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''));
 
+$fluent = $container->get(Database::class);
 if (empty($mode)) {
     $backups = $fluent->from('dbbackup')
-                      ->orderBy('added DESC')
-                      ->fetchAll();
+        ->orderBy('added DESC')
+        ->fetchAll();
 
     if ($backups) {
         $HTMLOUT .= "
@@ -42,9 +46,9 @@ if (empty($mode)) {
                     <thead>
                         <tr>
                             <th>{$lang['backup_name']}</th>
-                            <th>{$lang['backup_addedon']}</th>
-                            <th>{$lang['backup_addedby']}</th>
-                            <th><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['backup_markall']}'></th>
+                            <th class='has-text-centered'>{$lang['backup_addedon']}</th>
+                            <th class='has-text-centered'>{$lang['backup_addedby']}</th>
+                            <th class='has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['backup_markall']}'></th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -52,17 +56,17 @@ if (empty($mode)) {
             $HTMLOUT .= "
                         <tr>
                             <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=download&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a></td>
-                            <td>' . get_date($arr['added'], 'LONG', 1, 0) . '</td>
-                            <td>';
+                            <td class="has-text-centered">' . get_date((int) $arr['added'], 'LONG', 1, 0) . '</td>
+                            <td class="has-text-centered">';
             if (!empty($arr['userid'])) {
-                $HTMLOUT .= format_username($arr['userid']);
+                $HTMLOUT .= format_username((int) $arr['userid']);
             } else {
                 $HTMLOUT .= '
                                 unknown[' . $arr['userid'] . ']';
             }
             $HTMLOUT .= "
                             </td>
-                            <td>
+                            <td class='has-text-centered'>
                                 <input type='checkbox' name='ids[]' class='tooltipper' title='{$lang['backup_mark']}' value='" . $arr['id'] . "'>
                             </td>
                         </tr>";
@@ -139,12 +143,10 @@ if (empty($mode)) {
     }
     echo stdhead($lang['backup_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($mode === 'backup') {
-    global $site_config;
-
-    $host = $site_config['database']['host'];
-    $user = $site_config['database']['username'];
-    $pass = quotemeta($site_config['database']['password']);
-    $db = $site_config['database']['database'];
+    $host = $site_config['db']['host'];
+    $user = $site_config['db']['username'];
+    $pass = quotemeta($site_config['db']['password']);
+    $db = $site_config['db']['database'];
     $ext = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
     $filepath = BACKUPS_DIR . $ext;
     if ($site_config['backup']['use_gzip']) {
@@ -158,8 +160,8 @@ if (empty($mode)) {
         'userid' => $CURUSER['id'],
     ];
     $fluent->insertInto('dbbackup')
-           ->values($values)
-           ->execute();
+        ->values($values)
+        ->execute();
 
     if ($site_config['backup']['write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
@@ -177,10 +179,10 @@ if (empty($mode)) {
             }
         }
         $files = $fluent->from('dbbackup')
-                        ->select(null)
-                        ->select('name')
-                        ->where('id', $ids)
-                        ->fetchAll();
+            ->select(null)
+            ->select('name')
+            ->where('id', $ids)
+            ->fetchAll();
 
         if ($files) {
             $count = count($files);
@@ -191,8 +193,8 @@ if (empty($mode)) {
                 }
             }
             $fluent->deleteFrom('dbbackup')
-                   ->where('id', $ids)
-                   ->execute();
+                ->where('id', $ids)
+                ->execute();
 
             if ($site_config['backup']['write_to_log']) {
                 write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');

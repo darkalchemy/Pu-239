@@ -1,21 +1,27 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Database;
+use Pu239\Torrent;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function torrents_normalize($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $site_config, $fluent, $torrent_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
                        ->select('id')
@@ -41,13 +47,14 @@ function torrents_normalize($data)
     $bad1 = array_diff($ids, $tids);
     $bad2 = array_diff($tids, $ids);
     $bad = array_merge($bad1, $bad2);
+    $torrent_stuffs = $container->get(Torrent::class);
     $i = 0;
     foreach ($bad as $tid) {
-        $torrent_stuffs->delete_by_id($tid);
+        ++$i;
+        $torrent_stuffs->delete_by_id((int) $tid);
         if (!empty($list[$tid]['info_hash'])) {
             $torrent_stuffs->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
         }
-        ++$i;
     }
 
     $time_end = microtime(true);

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
-use PDOStatement;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class IP.
@@ -12,29 +14,37 @@ class IP
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $user;
+    protected $container;
 
-    public function __construct()
+    /**
+     * IP constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param User               $user
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, User $user, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
+        $this->user = $user;
     }
 
     /**
      * @param int $userid
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get(int $userid)
     {
         $ips = $this->fluent->from('ips')
                             ->select('INET6_NTOA(ip) AS ip')
-                            ->where('userid=?', $userid)
+                            ->where('userid = ?', $userid)
                             ->groupBy('ip')
                             ->groupBy('id')
                             ->fetchAll();
@@ -49,63 +59,19 @@ class IP
      *
      * @throws Exception
      */
-    public function insert_update(array $values, array $update, int $userid)
+    public function insert(array $values, array $update, int $userid)
     {
         $type = $values['type'];
         $ttl = $type === 'announce' ? 60 : 300;
         $ip = $values['ip'];
-        $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . md5(inet_pton($ip)));
+        $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . $ip);
         if ($cached_ip === false || is_null($cached_ip)) {
-            $id = $this->fluent->from('ips')
-                               ->select(null)
-                               ->select('id')
-                               ->where('INET6_NTOA(ip) = ?', $ip)
-                               ->where('userid=?', $userid)
-                               ->where('type = ?', $type)
-                               ->fetch('id');
-
-            if (empty($id)) {
-                $values['ip'] = inet_pton($ip);
-                $this->insert($values, $userid);
-            } else {
-                $this->set($update, $id);
-            }
-            $this->cache->set($type . '_ip_' . $userid . '_' . md5(inet_pton($ip)), inet_pton($ip), $ttl);
+            $values['ip'] = inet_pton($ip);
+            $this->fluent->insertInto('ips', $values)
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
+            $this->cache->set($type . '_ip_' . $userid . '_' . $ip, $ip, $ttl);
         }
-    }
-
-    /**
-     * @param array $values
-     * @param int   $userid
-     *
-     * @throws Exception
-     */
-    public function insert(array $values, int $userid)
-    {
-        $this->fluent->insertInto('ips')
-                     ->values($values)
-                     ->ignore()
-                     ->execute();
-
-        $this->cache->delete('ip_history_' . $userid);
-    }
-
-    /**
-     * @param array $set
-     * @param int   $id
-     *
-     * @return bool|int|PDOStatement
-     *
-     * @throws Exception
-     */
-    public function set(array $set, int $id)
-    {
-        $result = $this->fluent->update('ips')
-                               ->set($set)
-                               ->where('id=?', $id)
-                               ->execute();
-
-        return $result;
     }
 
     /**
@@ -116,7 +82,51 @@ class IP
     public function delete(int $id)
     {
         $this->fluent->delete('ips')
-                     ->where('id=?', $id)
+                     ->where('id = ?', $id)
                      ->execute();
+    }
+
+    /**
+     * @param string $ip
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function getUsersFromIP(string $ip)
+    {
+        $ips = $this->fluent->from('ips AS i')
+                            ->select(null)
+                            ->select('i.type')
+                            ->select('u.id AS userid')
+                            ->select('INET6_NTOA(i.ip) AS ip')
+                            ->innerJoin('users AS u ON i.userid = u.id')
+                            ->where('i.ip = ?', inet_pton($ip))
+                            ->orderBy('u.id')
+                            ->fetchAll();
+
+        $users = [];
+        foreach ($ips as $select) {
+            $user = $this->user->getUserFromId($select['userid']);
+            if (!empty($user)) {
+                $user['ip'] = $ip;
+                $user['type'] = $select['type'];
+                $users[] = $user;
+            }
+        }
+
+        return $users;
+    }
+
+    /**
+     * @param int $timestamp
+     *
+     * @throws Exception
+     */
+    public function delete_by_age(int $timestamp)
+    {
+        $this->fluent->deleteFrom('ips')
+            ->where('last_access < ?', $timestamp)
+            ->execute();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -12,18 +14,22 @@ class Mood
     protected $fluent;
     protected $cache;
 
-    public function __construct()
+    /**
+     * Mood constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     */
+    public function __construct(Cache $cache, Database $fluent)
     {
-        global $cache, $fluent;
-
         $this->fluent = $fluent;
         $this->cache = $cache;
     }
 
     /**
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function get()
     {

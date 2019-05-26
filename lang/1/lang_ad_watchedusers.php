@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'watched_stderr' => 'Error',
     'watched_stderr1' => 'Thou infectious onion-eyed haggard! Only Admin and up can remove members from the list!',

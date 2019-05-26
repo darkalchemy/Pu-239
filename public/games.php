@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('blackjack'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = '';
 if ($CURUSER['class'] < $site_config['allowed']['play']) {
     stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play these games!');
@@ -27,22 +31,22 @@ while ($count = mysqli_fetch_array($res)) {
 }
 
 // Casino
+$fluent = $container->get(Database::class);
 $casino_count = $fluent->from('casino')
                        ->select(null)
-                       ->select('COUNT(*) AS count')
-                       ->where('deposit>0')
+                       ->select('COUNT(userid) AS count')
+                       ->where('deposit > 0')
                        ->where('userid != ?', $CURUSER['id'])
                        ->fetch('count');
 if ($casino_count > 0) {
     $color9 = 'green';
 }
 
-$HTMLOUT = '';
-$HTMLOUT .= "
-            <div class='has-text-centered'>
+$HTMLOUT = "
+            <div class='has-text-centered bottom20'>
                 <h1>{$site_config['site']['name']} Games!</h1>
                 <h3>Welcome To The Casino, Please Select A Game Below To Play.</h3>
-            </div>
+            </div>" . main_div("
             <div class='columns is-multiline is-variable is-0-mobile is-1-tablet is-2-desktop'>
                 <div class='column is-one-third'>
                     <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1'><div class='has-text-centered $color1'>BlackJack 1GB</div>
@@ -89,6 +93,6 @@ $HTMLOUT .= "
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='tooltipper round10 w-100' title='BlackJack 1TB'>
                     </a>
                 </div>
-            </div>";
+            </div>", null, 'padding20');
 
 echo stdhead('Games') . wrapper($HTMLOUT) . stdfoot();

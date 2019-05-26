@@ -1,14 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
- * @return array
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
  */
 function get_styles()
 {
-    global $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('stylesheets')
                     ->select(null)
                     ->select('id')
@@ -26,14 +35,17 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @return array
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
  */
 function get_classes(array $styles, bool $create)
 {
-    global $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $all_classes = [];
     foreach ($styles as $style) {
         $classes = $fluent->from('class_config')
@@ -64,4 +76,68 @@ function get_classes(array $styles, bool $create)
     }
 
     return $all_classes;
+}
+
+/**
+ * @param $group
+ */
+function cleanup($group)
+{
+    global $site_config;
+
+    if (file_exists($site_config['files']['path'])) {
+        chmod_r($site_config['files']['path'], $group);
+        chgrp_r($site_config['files']['path'], $group);
+    }
+}
+
+/**
+ * @param $path
+ * @param $group
+ */
+function chgrp_r($path, $group)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+    $dir = new DirectoryIterator($path);
+    chgrp($path, $group);
+    foreach ($dir as $item) {
+        chgrp($item->getPathname(), $group);
+        if ($item->isDir() && !$item->isDot()) {
+            chgrp_r($item->getPathname(), $group);
+        }
+    }
+}
+
+/**
+ * @param $path
+ * @param $group
+ */
+function chmod_r($path, $group)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+    $dir = new DirectoryIterator($path);
+    foreach ($dir as $item) {
+        chmod($item->getPathname(), 0775);
+        chown($item->getPathname(), $group);
+        if ($item->isDir() && !$item->isDot()) {
+            chmod_r($item->getPathname(), $group);
+        }
+    }
+}
+
+/**
+ * @return string
+ */
+function get_webserver_user()
+{
+    $group = trim(`ps -ef | egrep '(httpd|apache2|apache|nginx)' | grep -v \`whoami\` | grep -v root | head -n1 | awk '{print $1}'`);
+    if (empty($group)) {
+        $group = 'www-data';
+    }
+
+    return $group;
 }

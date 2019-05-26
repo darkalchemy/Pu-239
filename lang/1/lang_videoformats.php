@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //VIDEOFORMATS
     'videoformats_body' => "Downloaded a movie and don't know what CAM/TS/TC/SCR means?",

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -14,27 +16,38 @@ class PollVoter
     protected $site_config;
     protected $user_stuffs;
     protected $poll_stuffs;
+    protected $settings;
 
-    public function __construct()
+    /**
+     * PollVoter constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     * @param User     $user_stuffs
+     * @param Poll     $poll_stuffs
+     * @param Settings $settings
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, User $user_stuffs, Poll $poll_stuffs, Settings $settings)
     {
-        global $fluent, $cache, $site_config, $user_stuffs;
-
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
         $this->user_stuffs = $user_stuffs;
-        $this->poll_stuffs = new Poll();
+        $this->poll_stuffs = $poll_stuffs;
     }
 
     /**
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_count()
     {
         $search = $this->fluent->from('poll_voters')
-                               ->select('COUNT(*) AS count')
+                               ->select('COUNT(vid) AS count')
                                ->fetch('count');
 
         return $search;
@@ -48,7 +61,7 @@ class PollVoter
     public function delete(int $poll_id)
     {
         $this->fluent->deleteFrom('poll_voters')
-                     ->where('poll_id=?', $poll_id)
+                     ->where('poll_id = ?', $poll_id)
                      ->execute();
     }
 
@@ -68,9 +81,9 @@ class PollVoter
     /**
      * @param array $values
      *
-     * @return int
-     *
      * @throws Exception
+     *
+     * @return int
      */
     public function add(array $values)
     {
@@ -97,9 +110,9 @@ class PollVoter
     /**
      * @param int $userid
      *
-     * @return array|bool|mixed
-     *
      * @throws Exception
+     *
+     * @return array|bool|mixed
      */
     public function get_user_poll(int $userid)
     {
@@ -109,15 +122,13 @@ class PollVoter
             if (!empty($poll_data)) {
                 $vote_data = $this->fluent->from('poll_voters')
                                           ->select(null)
-                                          ->select('INET6_NTOA(ip) AS ip')
                                           ->select('user_id')
                                           ->select('vote_date')
-                                          ->where('user_id=?', $userid)
-                                          ->where('poll_id=?', $poll_data['pid'])
-                                          ->limit('1')
+                                          ->where('user_id = ?', $userid)
+                                          ->where('poll_id = ?', $poll_data['pid'])
+                                          ->limit(1)
                                           ->fetch();
 
-                $poll_data['ip'] = $vote_data['ip'];
                 $poll_data['user_id'] = $vote_data['user_id'];
                 $poll_data['vote_date'] = $vote_data['vote_date'];
                 $poll_data['time'] = TIME_NOW;

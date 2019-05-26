@@ -1,20 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
 
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  */
 function karma_update($data)
 {
-    $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $fluent;
+    global $container, $site_config;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $time_start = microtime(true);
     $count = $total = 0;
 
     if ($site_config['bonus']['on']) {
@@ -28,11 +33,12 @@ function karma_update($data)
 
         $sql = "SELECT COUNT(torrent) As tcount, userid, seedbonus, users.username
                 FROM peers
-                LEFT JOIN users ON users.id=userid
+                LEFT JOIN users ON users.id = userid
                 WHERE seeder = 'yes' AND connectable = 'yes'
                 GROUP BY userid, seedbonus, username";
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
+            $cache = $container->get(Cache::class);
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['tcount'] >= $bmt) {
                     $arr['tcount'] = $bmt;
@@ -51,7 +57,7 @@ function karma_update($data)
             $count = count($users_buffer);
 
             if ($count > 0) {
-                $sql = 'INSERT INTO users (id, username, seedbonus, email, ip) VALUES ' . implode(', ', $users_buffer) . ' 
+                $sql = 'INSERT INTO users (id, username, seedbonus) VALUES ' . implode(', ', $users_buffer) . ' 
                         ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus)';
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
             }
@@ -65,7 +71,7 @@ function karma_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Karma Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Karma Cleanup: Completed' . $text);
     }
 }

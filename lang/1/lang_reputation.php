@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $this_rep = '';
 $lang = [
     //info
@@ -17,7 +19,6 @@ $lang = [
     'info_this_post' => 'this post',
     'info_is' => 'is',
     'info_you_have' => 'You have',
-    'info_is' => 'is',
     'info_reputation_points' => 'Reputation Point(s).',
     'info_add_rep' => 'Add To Reputation',
     'info_close_rep' => 'Close Rep',

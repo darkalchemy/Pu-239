@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_repsettings'));
-$rep_set_cache = './cache/rep_settings_cache.php';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+global $site_config;
+
+$rep_set_cache = CACHE_DIR . 'rep_settings_cache.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     unset($_POST['submit']);
     //print_r($_POST);
     rep_cache();
@@ -18,18 +20,18 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
 function rep_cache()
 {
-    global $lang;
+    global $site_config, $lang;
 
-    $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
+    $rep_out = '<' . "?php\n\ndeclare(strict_types=1);\n\nglobal \$CURUSER;\n\n\$GVARS=array(\n";
     foreach ($_POST as $k => $v) {
-        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars(htmlspecialchars($v, ENT_QUOTES, 'UTF-8')) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
     }
     $rep_out .= "\t'g_rep_negative' => true,\n";
     $rep_out .= "\t'g_rep_seeown' => true,\n";
     $rep_out .= "\t'g_rep_use' => \$CURUSER['class']>UC_MIN ? true : false\n";
     $rep_out .= "\n);";
     file_put_contents(CACHE_DIR . 'rep_settings_cache.php', $rep_out);
-    redirect('staffpanel.php?tool=reputation_settings', $lang['repset_updated'], 3);
+    redirect($site_config['paths']['baseurl'] . '/staffpanel.php?tool=reputation_settings', $lang['repset_updated'], 3);
 }
 
 /**
@@ -49,7 +51,6 @@ function get_cache_array()
         'rep_pcpower' => 1000,
         'rep_kppower' => 100,
         'rep_minrep' => 10,
-        'rep_minpost' => 50,
         'rep_maxperday' => 10,
         'rep_repeat' => 20,
         'rep_undefined' => $lang['repset_scale'],
@@ -67,149 +68,137 @@ if (!file_exists($rep_set_cache)) {
         $GVARS = get_cache_array();
     }
 }
-$HTMLOUT = '<div>
-                <table width="100%">
-                   <tr>
-                    <td style="font-size: 12px; vertical-align: middle; font-weight: bold; color: rgb(0, 0, 0);">' . $lang['repset_settings'] . '</td></tr>
 
-                    <tr><td>' . $lang['repset_section'] . '</td>
-                                 </tr>
-                                 </table>
-</div>
-<br>
-<div style="border: 1px solid rgb(0, 0, 0); padding: 5px;">
+$HTMLOUT = "
+    <h1 class='has-text-centered'>{$lang['repset_settings']}</h1>
+    <p class='has-text-centered'>{$lang['repset_section']}</p>
+    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_settings' name='repoptions' method='post' accept-charset='utf-8'>
+    <h2 class='has-text-centered'>{$lang['repset_onoff']}</h2>";
+$body = '
+            <tr>
+                <td>
+                    <b>' . $lang['repset_enable'] . '</b>
+                    <div style="color: lightgray;">' . $lang['repset_setop'] . '</div>
+                </td>
+                <td>
+                    <div style="width: auto;"><#rep_is_online#></div>
+                </td>
+            </tr>
+            <tr><td colspan="2" class="has-text-centered"><div class="padding20 size_6">' . $lang['repset_defaultlvl'] . '</div></td></tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_defaultrep'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_msg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_default" value="<#rep_default#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_defaultphrase'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_msg1'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_undefined" value="<#rep_undefined#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><b>' . $lang['repset_display'] . ' </b><div style="color: lightgrey;">' . $lang['repset_cont'] . ' </div></td>
+                <td><div style="width: auto;"><input name="rep_userrates" value="<#rep_userrates#>" size="30" type="text"></div></td>
+            </tr>
+            <tr><td colspan="2" class="has-text-centered"><div class="padding20 size_6">' . $lang['repset_power'] . '</div></td></tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_admin'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_adminmsg'] . ' < br>' . $lang['repset_adminmsg1'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_adminpower" value="<#rep_adminpower#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_regdate'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_regdatemsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_rdpower" value="<#rep_rdpower#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_post'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_postmsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_pcpower" value="<#rep_pcpower#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_point'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_pointmsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_kppower" value="<#rep_kppower#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr><td colspan="2" class="has-text-centered"><div class="padding20 size_6">' . $lang['repset_userset'] . '</div></td></tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_minpost'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_minpostmsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_minpost" value="<#rep_minpost#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_minrep'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_minrepmsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_minrep" value="<#rep_minrep#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_daily'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_dailymsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_maxperday" value="<#rep_maxperday#>" size="30" type="text"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>' . $lang['repset_userspread'] . ' </b>
+                    <div style="color: lightgrey;">' . $lang['repset_userspreadmsg'] . ' </div>
+                </td>
+                <td>
+                    <div style="width: auto;"><input name="rep_repeat" value="<#rep_repeat#>" size="30" type="text"></div>
+                </td>
+            </tr>';
+$HTMLOUT .= main_table($body) . '
+        <div class="has-text-centered margin20">
+            <input type="submit" name="submit" value="' . $lang['repset_submit'] . '" class="button is-small" tabindex="2" accesskey="s">
+        </div>
+        </form>';
 
-    <form action="staffpanel.php?tool=reputation_settings" name="repoptions" method="post" accept-charset="utf-8">
-
-                <div>' . $lang['repset_onoff'] . '</div>
-                    <div style="padding: 5px; background - color: rgb(30, 30, 30);">
-                            <div style="border: 1px solid rgb(0, 0, 0);">
-
-                            <table width="100 % ">
-                             <tr>
-                             <td width="70 % "><b>' . $lang['repset_enable'] . '</b><div><hr style="color:#A83838;" size="1"></div><div style="color: lightgray;">' . $lang['repset_setop'] . '</div></td>
-
-                             <td width = "23%"><div style = "width: auto;"><#rep_is_online#></div></td>
-                             </tr>
-                  </table>
-                  </div></div>
-
-                  <div>' . $lang['repset_defaultlvl'] . ' </div>
-                 <div style = "padding: 5px; background-color: rgb(30, 30, 30);">
-                        <div>
-                            <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_defaultrep'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_msg'] . ' </div></td>
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_default" value = "<#rep_default#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_defaultphrase'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_msg1'] . ' </div></td>
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_undefined" value = "<#rep_undefined#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                    <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_display'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_cont'] . ' </div></td>
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_userrates" value = "<#rep_userrates#>" size = "30" type = "text"></div></td>
-                             </tr>
-
-                  </table>
-                  </div></div>
-
-                  <div>' . $lang['repset_power'] . ' </div>
-                 <div style = "padding: 5px; background-color: rgb(30, 30, 30);">
-                            <div style = "border: 1px solid rgb(0, 0, 0);">
-
-                            <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_admin'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_adminmsg'] . ' < br>' . $lang['repset_adminmsg1'] . ' </div></td>
-                             <td class="tablerow2" width = "20%"><div style = "width: auto;"><input name = "rep_adminpower" value = "<#rep_adminpower#>" size = "30" type = "text"></div></td>
-
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_regdate'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_regdatemsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_rdpower" value = "<#rep_rdpower#>" size = "30" type = "text">
-
-</div></td>
-                             </tr>
-
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_post'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_postmsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_pcpower" value = "<#rep_pcpower#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_point'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_pointmsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_kppower" value = "<#rep_kppower#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-                  </div></div>
-
-                  <div>' . $lang['repset_userset'] . ' </div>
-                  <div style = "padding: 5px; background-color: rgb(30, 30, 30);">
-                        <div>
-
-                            <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_minpost'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_minpostmsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_minpost" value = "<#rep_minpost#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_minrep'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_minrepmsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_minrep" value = "<#rep_minrep#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_daily'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_dailymsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_maxperday" value = "<#rep_maxperday#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-
-                  <table width = "100%" border = "0">
-                             <tr>
-                             <td width = "70%"><b>' . $lang['repset_userspread'] . ' </b><div><hr style = "color:#A83838;" size = "1"></div><div style = "color: lightgrey;">' . $lang['repset_userspreadmsg'] . ' </div></td>
-
-                             <td width = "20%"><div style = "width: auto;"><input name = "rep_repeat" value = "<#rep_repeat#>" size = "30" type = "text"></div></td>
-                             </tr>
-                  </table>
-                  </div></div>
-
-<input type = "submit" name = "submit" value = "' . $lang['repset_submit'] . '" class="button is-small" tabindex = "2" accesskey = "s">
-</form>
-</div>';
 $HTMLOUT = preg_replace_callback(' |<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['repset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+
 /**
- * @param $matches
+ * @param array $matches
  *
  * @return string
  */
-function template_out($matches)
+function template_out(array $matches)
 {
-    global $GVARS, $lang;
+    global $lang, $GVARS;
+
     if ($matches[1] === 'rep_is_online') {
         return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {

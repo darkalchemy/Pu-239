@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $session, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 extract($_POST);
 
 header('content-type: application/json');
-if (empty($csrf) || !$session->validateToken($csrf)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
+global $container;
 
-$current_user = $session->get('userID');
+$auth = $container->get(Auth::class);
+$current_user = $auth->getUserId();
 if (empty($current_user)) {
     echo json_encode(['fail' => 'csrf']);
     die();
@@ -100,17 +103,21 @@ die();
 /**
  * @param int $userid
  *
- * @return array|bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_uploaded(int $userid)
 {
-    global $fluent, $site_config;
+    global $container;
 
+    $torrents = [];
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('torrents')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(id) AS count')
                     ->where('owner = ?', $userid)
                     ->fetch('count');
 
@@ -138,8 +145,8 @@ function get_uploaded(int $userid)
                        ->select(null)
                        ->select('SUM(uploaded) AS uploaded')
                        ->select('SUM(downloaded) AS downloaded')
-                       ->where('userid=?', $userid)
-                       ->where('torrentid=?', $results['torrentid'])
+                       ->where('userid = ?', $userid)
+                       ->where('torrentid = ?', $results['torrentid'])
                        ->fetch();
 
         $results['uploaded'] = $sums['uploaded'];
@@ -154,18 +161,21 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_seeding(int $userid)
 {
-    global $fluent, $site_config;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('peers')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('userid=?', $userid)
+                    ->select('COUNT(id) AS count')
+                    ->where('userid = ?', $userid)
                     ->where('seeder = "yes"')
                     ->fetch('count');
 
@@ -192,7 +202,7 @@ function get_seeding(int $userid)
                        ->innerJoin('torrents AS t ON z.torrent = t.id')
                        ->leftJoin('categories AS c ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id=p.id')
-                       ->where('z.userid=?', $userid)
+                       ->where('z.userid = ?', $userid)
                        ->where('z.seeder = "yes"')
                        ->orderBy('last_action DESC')
                        ->fetchAll();
@@ -203,18 +213,21 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_leeching(int $userid)
 {
-    global $fluent, $site_config;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('peers')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('userid=?', $userid)
+                    ->select('COUNT(id) AS count')
+                    ->where('userid = ?', $userid)
                     ->where('seeder = "no"')
                     ->fetch('count');
 
@@ -241,7 +254,7 @@ function get_leeching(int $userid)
                        ->innerJoin('torrents ON z.torrent = t.id')
                        ->leftJoin('categories ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id=p.id')
-                       ->where('z.userid=?', $userid)
+                       ->where('z.userid = ?', $userid)
                        ->where('z.seeder = "no"')
                        ->orderBy('last_action DESC')
                        ->fetchAll();
@@ -252,18 +265,21 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_snatched(int $userid)
 {
-    global $fluent, $site_config;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('snatched')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('userid=?', $userid)
+                    ->select('COUNT(id) AS count')
+                    ->where('userid = ?', $userid)
                     ->fetch('count');
 
     if ($count === 0) {
@@ -281,7 +297,7 @@ function get_snatched(int $userid)
                        ->innerJoin('torrents AS t ON snatched.torrentid=t.id')
                        ->leftJoin('categories AS c ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id=p.id')
-                       ->where('snatched.userid=?', $userid)
+                       ->where('snatched.userid = ?', $userid)
                        ->orderBy('last_action DESC')
                        ->fetchAll();
 
@@ -291,18 +307,21 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_snatched_staff(int $userid)
 {
-    global $fluent, $site_config;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('snatched')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
-                    ->where('userid=?', $userid)
+                    ->select('COUNT(id) AS count')
+                    ->where('userid = ?', $userid)
                     ->fetch('count');
 
     if ($count === 0) {
@@ -327,7 +346,7 @@ function get_snatched_staff(int $userid)
                        ->leftJoin('categories AS c ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id=p.id')
                        ->leftJoin('peers AS z ON t.id=z.torrent')
-                       ->where('snatched.userid=?', $userid)
+                       ->where('snatched.userid = ?', $userid)
                        ->orderBy('last_action DESC')
                        ->fetchAll();
 
@@ -447,6 +466,9 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
  * @return string
  */
 function staff_snatchtable(array $torrents, int $userid)
@@ -514,8 +536,8 @@ function staff_snatchtable(array $torrents, int $userid)
                 </td>
                 <td>
                     <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['torrentid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
-                    <span class='has-text-yellow'>{$lang['userdetails_s_started']}" . get_date($arr['start_date'], 0, 1) . "</span><br>
-                    <span class='has-text-orange'>{$lang['userdetails_s_laction']} " . get_date($arr['last_action'], 0, 1) . '</span>' . ($arr['complete_date'] == '0' ? ($arr['owner'] == $id ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date($arr['complete_date'], 0, 1) . '' . ($arr['complete_date'] != '0' ? "<br>
+                    <span class='has-text-yellow'>{$lang['userdetails_s_started']}" . get_date((int) $arr['start_date'], 0, 1) . "</span><br>
+                    <span class='has-text-orange'>{$lang['userdetails_s_laction']} " . get_date((int) $arr['last_action'], 0, 1) . '</span>' . ($arr['complete_date'] == '0' ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date((int) $arr['complete_date'], 0, 1) . '' . ($arr['complete_date'] != '0' ? "<br>
                     <span style='color: silver;'>{$lang['userdetails_s_ttod']}" . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
                     <span style='color: $dlc'>[ {$lang['userdetails_s_dled']} $dl_speed ]</span><br>" : '<br>') . "
                     <span class='has-text-lightblue'>" . ($arr['seedtime'] != '0' ? $lang['userdetails_s_tseed'] . mkprettytime($arr['seedtime']) . " </span>
@@ -546,10 +568,16 @@ function staff_snatchtable(array $torrents, int $userid)
     return $table;
 }
 
+/**
+ * @param $torrent
+ *
+ * @return mixed|string
+ */
 function cat_image($torrent)
 {
     global $site_config;
 
+    $cat = '';
     if (!empty($torrent['parent_name'])) {
         $cat = $torrent['parent_name'] . '::' . $torrent['catname'];
     }
@@ -560,12 +588,3 @@ function cat_image($torrent)
 
     return $catimage;
 }
-
-/*
-    foreach ($torrents as $torrent) {
-        if (!empty($torrent['parent_name'])) {
-            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
-        }
-        $top5torrents[] = $torrent;
-    }
-*/

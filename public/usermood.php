@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
-
-$HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('usermood'));
+global $container, $site_config, $CURUSER;
+$HTMLOUT = '';
+
 if (!isset($CURUSER['id'])) {
     die($lang['user_mood_log']);
 }
@@ -17,6 +21,7 @@ if (isset($_GET['id'])) {
     if (mysqli_num_rows($res_moods)) {
         $rmood = mysqli_fetch_assoc($res_moods);
         sql_query('UPDATE users SET mood = ' . sqlesc($moodid) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $cache = $container->get(Cache::class);
         $cache->update_row('user_' . $CURUSER['id'], [
             'mood' => $moodid,
         ], $site_config['expires']['user_cache']);

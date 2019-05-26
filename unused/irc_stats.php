@@ -1,10 +1,10 @@
 <?php
 
-global $site_config, $mysqli;
+declare(strict_types = 1);
 
 $hash = 'YXBwemZhbg';
 $_hash = isset($_GET['hash']) ? $_GET['hash'] : '';
-$_user = isset($_GET['u']) ? htmlspecialchars($_GET['u']) : '';
+$_user = isset($_GET['u']) ? htmlsafechars($_GET['u']) : '';
 $valid_do = [
     'stats',
     'torrents',
@@ -40,7 +40,6 @@ if (substr($_do, 0, 3) === 'top') {
 //$_hash = "YXBwemZhbg";
 if ($_hash === $hash) {
     require_once __DIR__ . '/include/bittorrent.php';
-    dbconn();
     if (empty($_user) && ($_do === 'stats' || $_do === 'torrents' || $_do === 'irc')) {
         die("Can't find the username");
     }
@@ -48,7 +47,7 @@ if ($_hash === $hash) {
         $q = sql_query('SELECT id, username, last_access, downloaded, uploaded, added, status, warned, disable_reason, warn_reason FROM users WHERE username = ' . sqlesc($_user)) or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         if (mysqli_num_rows($q) == 1) {
             $a = mysqli_fetch_assoc($q);
-            $txt = $a['username'] . ' is ' . ((TIME_NOW - $a['last_access']) < 300 ? 'online' : 'offline') . "\nJoined - " . get_date($a['added'], 'LONG', 0, 1) . "\nLast seen - " . get_date($a['last_access'], 'DATE', 0, 1) . "\nDownloaded - " . mksize($a['downloaded']) . "\nUploaded - " . mksize($a['uploaded']) . "\n";
+            $txt = $a['username'] . ' is ' . ((TIME_NOW - $a['last_access']) < 300 ? 'online' : 'offline') . "\nJoined - " . get_date((int) $a['added'], 'LONG', 0, 1) . "\nLast seen - " . get_date((int) $a['last_access'], 'DATE', 0, 1) . "\nDownloaded - " . mksize($a['downloaded']) . "\nUploaded - " . mksize($a['uploaded']) . "\n";
             if ($a['status'] === 'disabled') {
                 $txt .= 'This user is disabled. Reason ' . $a['disable_reason'] . "\n";
             }

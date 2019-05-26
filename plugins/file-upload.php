@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 //! delete
 
@@ -31,6 +31,14 @@ class AdminerFileUpload
         $this->extensions = $extensions;
     }
 
+    /**
+     * @param $table
+     * @param $field
+     * @param $attrs
+     * @param $value
+     *
+     * @return string
+     */
     public function editInput($table, $field, $attrs, $value)
     {
         if (preg_match('~(.*)_path$~', $field['field'])) {
@@ -38,6 +46,13 @@ class AdminerFileUpload
         }
     }
 
+    /**
+     * @param        $field
+     * @param        $value
+     * @param string $function
+     *
+     * @return bool
+     */
     public function processInput($field, $value, $function = '')
     {
         if (preg_match('~(.*)_path$~', $field['field'], $regs)) {
@@ -56,6 +71,12 @@ class AdminerFileUpload
         }
     }
 
+    /**
+     * @param $val
+     * @param $link
+     * @param $field
+     * @param $original
+     */
     public function selectVal($val, &$link, $field, $original)
     {
         if ($val != '' && preg_match('~(.*)_path$~', $field['field'], $regs)) {

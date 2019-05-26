@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs;
-
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10' : 'owner';
 $reseedid = (int) $_POST['reseedid'];
 $uploader = (int) $_POST['uploader'];
 $name = $_POST['name'];
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    $session->set('is-warning', 'CSRF Token Verification Failed.');
-    header("Refresh: 0; url={$site_config['paths']['baseurl']}/details.php?id=$reseedid");
-}
+global $container, $site_config, $CURUSER;
+
 $dt = TIME_NOW;
 $subject = 'Request reseed!';
 $msg = "@{$CURUSER['username']} asked for a reseed on [url={$site_config['paths']['baseurl']}/details.php?id={$reseedid}][class=has-text-success]{$name}[/class][/url]![br][br]Thank You!";
@@ -38,13 +39,15 @@ if ($pm_what === 'last10') {
 }
 
 if (count($msgs_buffer) > 0) {
+    $message_stuffs = $container->get(Message::class);
     $message_stuffs->insert($msgs_buffer);
-    sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($use_subject ? ', subject' : '') . ' ) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($subject ? ', subject' : '') . ' ) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
     $session->set('is-warning', 'There were no users to PM!');
 }
 sql_query('UPDATE torrents SET last_reseed = ' . $dt . ' WHERE id=' . sqlesc($reseedid)) or sqlerr(__FILE__, __LINE__);
+$cache = $container->get(Cache::class);
 $cache->update_row('torrent_details_' . $reseedid, [
     'last_reseed' => $dt,
 ], $site_config['expires']['torrent_details']);

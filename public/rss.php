@@ -1,23 +1,37 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\User;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
-global $site_config, $user_stuffs, $fluent, $cache;
-
 $torrent_pass = isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '';
+global $container, $site_config;
+
 if (!empty($torrent_pass)) {
     if (strlen($torrent_pass) != 64) {
-        format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey');
+        format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
     } else {
+        $user_stuffs = $container->get(User::class);
         $user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
         if (!$user) {
-            format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey');
+            format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
+        } elseif ($user['enabled'] === 'no') {
+            format_rss("Permission denied, you're account is disabled", null);
+        } elseif ($user['parked'] === 'yes') {
+            format_rss("Permission denied, you're account is parked", null);
         } elseif ($user['downloadpos'] != 1) {
-            format_rss('Your download privileges have been removed.');
+            format_rss('Your download privileges have been removed.', null);
         }
     }
 } else {
-    format_rss("Your link doesn't have a torrent pass");
+    format_rss("Your link doesn't have a torrent pass", null);
 }
 $cats = isset($_GET['cats']) ? $_GET['cats'] : '';
 if ($cats) {
@@ -38,10 +52,12 @@ if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
     $limit = 15;
 }
 
+$cache = $container->get(Cache::class);
 $hash = hash('sha256', json_encode($_POST));
 $cache->delete('rss_query_' . $hash);
 $data = $cache->get('rss_query_' . $hash);
 if ($data === false || is_null($data)) {
+    $fluent = $container->get(Database::class);
     $data = $fluent->from('torrents AS t')
                    ->select(null)
                    ->select('t.id')
@@ -62,7 +78,7 @@ if ($data === false || is_null($data)) {
         $data = $data->where('t.vip = "0"');
     }
     if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
-        $data = $data->where('b.userid=?', $user['id'])
+        $data = $data->where('b.userid = ?', $user['id'])
                      ->innerJoin('bookmarks AS b ON t.id=b.torrentid');
     }
 
@@ -78,11 +94,20 @@ if ($data === false || is_null($data)) {
     }
 }
 
-format_rss($data);
+format_rss($data, $torrent_pass);
 
-function format_rss($data)
+/**
+ * @param             $data
+ * @param string|null $torrent_pass
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function format_rss($data, ?string $torrent_pass)
 {
-    global $site_config, $torrent_pass;
+    global $site_config;
 
     $rssdescr = $site_config['site']['name'] . ' RSS Feed - Please Donate';
     $feed = isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web';
@@ -126,7 +151,7 @@ function format_rss($data)
             $leechers = (int) $a['leechers'];
             $name = htmlsafechars($a['name']);
             $cat = htmlsafechars($a['catname']);
-            $added = get_date($a['added'], 'DATE');
+            $added = get_date((int) $a['added'], 'DATE');
             $descr = htmlsafechars(substr(format_comment_no_bbcode(strip_tags($a['descr'])), 0, 450));
             $date = date(DATE_RSS, $a['added']);
             $link = $site_config['paths']['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . $id . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . $id . '&amp;hit=1');

@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config;
+$lang = load_language('global');
+global $site_config, $CURUSER;
 
 if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
     die();
 }
-$lang = load_language('global');
+
 $htmlout = doc_head() . "
     <meta property='og:title' content='Staff Smiles'>
     <title>Staff Smilies</title>
@@ -28,8 +31,6 @@ $htmlout = doc_head() . "
     <table class='list' width='100%'>";
 $count = 0;
 $ctr = 0;
-global $staff_smilies;
-
 foreach ($staff_smilies as $code => $url) {
     if ($count % 3 == 0) {
         $htmlout .= '

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Block.
@@ -11,15 +14,22 @@ class Block
 {
     protected $fluent;
     protected $cache;
-    protected $site_config;
+    protected $env;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Block constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $site_config, $cache, $fluent;
-
+        $this->container = $c;
+        $this->env = $this->container->get('env');
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
@@ -32,10 +42,10 @@ class Block
         $blocks = $this->cache->get('blocks_' . $userid);
         if ($blocks === false || is_null($blocks)) {
             $blocks = $this->fluent->from('blocks')
-                                   ->where('userid=?', $userid)
+                                   ->where('userid = ?', $userid)
                                    ->fetch();
 
-            $this->cache->set('blocks_' . $userid, $blocks, $this->site_config['expires']['user_blocks']);
+            $this->cache->set('blocks_' . $userid, $blocks, $this->env['expires']['user_blocks']);
         }
     }
 }

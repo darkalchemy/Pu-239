@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $mysqli;
-
 $lang = array_merge($lang, load_language('ad_shitlist'));
+global $site_config, $CURUSER;
+
 $HTMLOUT = $message = $title = '';
 //=== check if action2 is sent (either $_POST or $_GET) if so make sure it's what you want it to be
 $action2 = (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : ''));
@@ -18,6 +22,7 @@ $good_stuff = [
 ];
 $action2 = (($action2 && in_array($action2, $good_stuff, true)) ? $action2 : '');
 //=== action2 switch... do what must be done!
+$cache = $container->get(Cache::class);
 switch ($action2) {
     //=== action2: new
 
@@ -111,7 +116,7 @@ switch ($action2) {
 } //=== end switch
 //=== get stuff ready for page
 $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added AS shit_list_added,
-                  u.username, u.id, u.added, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, u.avatar, u.donor, u.warned, u.enabled, u.suspended, u.last_access, u.offensive_avatar, u.avatar_rights
+                  u.username, u.id, u.registered, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, u.avatar, u.donor, u.warned, u.enabled, u.suspended, u.last_access, u.offensive_avatar, u.avatar_rights
                   FROM shit_list AS s
                   LEFT JOIN users AS u ON s.suspect = u.id
                   WHERE s.userid=' . sqlesc($CURUSER['id']) . '
@@ -140,19 +145,19 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="has-text-centered w-15 mw-150 ' . (($i % 2 == 0) ? 'one' : 'two') . '">' . get_avatar($shit_list) . '<br>
 
-      ' . format_username($shit_list['id']) . '<br>
+      ' . format_username((int) $shit_list['id']) . '<br>
 
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 
       <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
       <a class="altlink" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
-      <b>' . $lang['shitlist_joined'] . '</b> ' . get_date($shit_list['added'], '') . '
-      [ ' . get_date($shit_list['added'], '', 0, 1) . ' ]
-      <b>' . $lang['shitlist_added'] . '</b> ' . get_date($shit_list['shit_list_added'], '') . '
-      [ ' . get_date($shit_list['shit_list_added'], '', 0, 1) . ' ]
-      <b>last seen:</b> ' . get_date($shit_list['last_access'], '') . ' 
-      [ ' . get_date($shit_list['last_access'], '', 0, 1) . ' ]<hr>
+      <b>' . $lang['shitlist_joined'] . '</b> ' . get_date((int) $shit_list['added'], '') . '
+      [ ' . get_date((int) $shit_list['added'], '', 0, 1) . ' ]
+      <b>' . $lang['shitlist_added'] . '</b> ' . get_date((int) $shit_list['shit_list_added'], '') . '
+      [ ' . get_date((int) $shit_list['shit_list_added'], '', 0, 1) . ' ]
+      <b>last seen:</b> ' . get_date((int) $shit_list['last_access'], '') . ' 
+      [ ' . get_date((int) $shit_list['last_access'], '', 0, 1) . ' ]<hr>
       ' . format_comment($shit_list['text']) . '</td>' . (($i % 2 == 0) ? '</tr><tr><td class="colhead" colspan="4"></td></tr>' : '');
         ++$i;
     }

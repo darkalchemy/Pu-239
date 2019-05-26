@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use CouchbaseCluster;
@@ -10,12 +12,14 @@ use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 use MatthiasMullie\Scrapbook\Adapters\Couchbase;
 use MatthiasMullie\Scrapbook\Adapters\Flysystem;
 use MatthiasMullie\Scrapbook\Adapters\Memcached;
+use MatthiasMullie\Scrapbook\Adapters\MemoryStore;
 use MatthiasMullie\Scrapbook\Adapters\Redis;
 use MatthiasMullie\Scrapbook\Buffered\BufferedStore;
 use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
 use MatthiasMullie\Scrapbook\Exception\Exception;
 use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Cache.
@@ -23,21 +27,23 @@ use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 class Cache extends TransactionalStore
 {
     protected $cache;
-    protected $site_config;
+    protected $container;
+    protected $env;
 
     /**
      * Cache constructor.
      *
+     * @param ContainerInterface $c
+     *
      * @throws Exception
      * @throws ServerUnhealthy
      */
-    public function __construct()
+    public function __construct(ContainerInterface $c)
     {
-        global $site_config;
+        $this->container = $c;
+        $this->env = $this->container->get('env');
 
-        $this->site_config = $site_config;
-
-        switch ($this->site_config['cache']['driver']) {
+        switch ($this->env['cache']['driver']) {
             case 'couchbase':
                 $cluster = new CouchbaseCluster('couchbase://localhost');
                 $bucket = $cluster->openBucket('default');
@@ -55,15 +61,7 @@ class Cache extends TransactionalStore
 
             case 'memcached':
                 if (extension_loaded('memcached')) {
-                    $client = new \Memcached();
-                    if (!count($client->getServerList())) {
-                        if (!$this->site_config['memcached']['use_socket']) {
-                            $client->addServer($this->site_config['memcached']['host'], $this->site_config['memcached']['port']);
-                        } else {
-                            $client->addServer($this->site_config['memcached']['socket'], 0);
-                        }
-                    }
-                    $this->cache = new Memcached($client);
+                    $this->cache = $this->container->get(Memcached::class);
                 } else {
                     die('<h1>Error</h1><p>php-memcached is not available</p>');
                 }
@@ -72,26 +70,26 @@ class Cache extends TransactionalStore
 
             case 'redis':
                 if (extension_loaded('redis')) {
-                    $client = new \Redis();
-                    if (!$this->site_config['redis']['use_socket']) {
-                        $client->connect($this->site_config['redis']['host'], $this->site_config['redis']['port']);
-                    } else {
-                        $client->connect($this->site_config['redis']['socket']);
-                    }
-
-                    $client->select($this->site_config['redis']['database']);
-                    $this->cache = new Redis($client);
+                    $this->cache = $this->container->get(Redis::class);
                 } else {
                     die('<h1>Error</h1><p>php-redis is not available</p>');
                 }
                 break;
 
-            default:
-                $adapter = new Local($this->site_config['files']['path'], LOCK_EX);
+            case 'memory':
+                $this->cache = new MemoryStore();
+                break;
+
+            case 'file':
+                $adapter = new Local($this->env['files']['path'], LOCK_EX);
                 $filesystem = new Filesystem($adapter);
                 $this->cache = new Flysystem($filesystem);
+                break;
+
+            default:
+                die('Invalid Adaptor: ' . $this->env['cache']['driver'] . '<br>Valid choices: memory, file, apcu, memcached, redis, couchbase');
         }
-        $this->cache = new PrefixKeys($this->cache, $this->site_config['cache']['prefix']);
+        $this->cache = new PrefixKeys($this->cache, $this->env['cache']['prefix']);
         $this->cache = new BufferedStore($this->cache);
         $this->cache = new TransactionalStore($this->cache);
 
@@ -121,14 +119,17 @@ class Cache extends TransactionalStore
      */
     public function flushDB()
     {
-        if ($this->site_config['cache']['driver'] === 'redis') {
+        if (file_exists($this->env['files']['path'] . 'CompiledContainer.php')) {
+            unlink($this->env['files']['path'] . 'CompiledContainer.php');
+        }
+        if ($this->env['cache']['driver'] === 'redis') {
             $client = new \Redis();
-            if (!$this->site_config['redis']['use_socket']) {
-                $client->connect($this->site_config['redis']['host'], $this->site_config['redis']['port']);
+            if (!$this->env['redis']['use_socket']) {
+                $client->connect($this->env['redis']['host'], $this->env['redis']['port']);
             } else {
-                $client->connect($this->site_config['redis']['socket']);
+                $client->connect($this->env['redis']['socket']);
             }
-            $client->select($this->site_config['redis']['database']);
+            $client->select((int) $this->env['redis']['database']);
 
             return $client->flushDB();
         } else {

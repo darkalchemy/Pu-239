@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'cloudview_success' => 'Success',
     'cloudview_success_del' => 'The obscene terms where successfully deleted!',

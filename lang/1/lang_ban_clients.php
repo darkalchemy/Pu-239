@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //ban clients
     'ban_clients_stderr' => 'Error',

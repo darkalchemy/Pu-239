@@ -1,21 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\Torrent;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  */
 function delete_torrents_update($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $site_config, $cache, $fluent, $torrent_stuffs, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $hours = 2;
     $dt = TIME_NOW - ($hours * 3600);
-    $i = 1;
+    $fluent = $container->get(Database::class);
     $never_seeded = $fluent->from('torrents')
                            ->select(null)
                            ->select('id')
@@ -29,7 +39,6 @@ function delete_torrents_update($data)
 
     $days = 45;
     $dt = TIME_NOW - ($days * 86400);
-    $i = 1;
     $dead = $fluent->from('torrents')
                    ->select(null)
                    ->select('id')
@@ -42,8 +51,9 @@ function delete_torrents_update($data)
 
     $values = [];
     $dt = TIME_NOW;
+    $torrent_stuffs = $container->get(Torrent::class);
     foreach ($never_seeded as $torrent) {
-        $torrent_stuffs->delete_by_id($torrent['id']);
+        $torrent_stuffs->delete_by_id((int) $torrent['id']);
         $torrent_stuffs->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
@@ -59,7 +69,7 @@ function delete_torrents_update($data)
     }
 
     foreach ($dead as $torrent) {
-        $torrent_stuffs->delete_by_id($torrent['id']);
+        $torrent_stuffs->delete_by_id((int) $torrent['id']);
         $torrent_stuffs->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
@@ -76,8 +86,9 @@ function delete_torrents_update($data)
 
     $count = count($values);
     if ($count > 0) {
-        ++$i;
+        $cache = $container->get(Cache::class);
         $cache->delete('torrent_poster_count_');
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($values);
     }
 
@@ -85,7 +96,7 @@ function delete_torrents_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $i > 0) {
-        write_log("Delete Old Torrents Cleanup: Completed using $i queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Delete Old Torrents Cleanup: Completed' . $text);
     }
 }

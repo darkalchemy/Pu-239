@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Chat
     'non_con_sendall' => 'Send All not connectable Users A PM',

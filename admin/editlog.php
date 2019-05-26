@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $session;
-
 $lang = array_merge($lang, load_language('editlog'));
+global $site_config, $CURUSER;
+
 $HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
@@ -18,8 +20,6 @@ if (file_exists($file_data)) {
 $fetch_set = [];
 $i = 0;
 $directories = [ROOT_DIR];
-global $site_config;
-
 $included_extentions = $site_config['coders']['log_allowed_ext'];
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
@@ -75,7 +75,7 @@ unset($last, $data, $fetch_set);
 $HTMLOUT .= "
         <h1 class='has-text-centered top20'>Coder's Log</h1>
         <div class='bordered bottom20'>
-            <div class='alt_bordered bg-00'>
+            <div class='alt_bordered bg-00 padding20'>
                 <div class='has-text-centered'>Tracking " . implode(', ', $site_config['coders']['log_allowed_ext']) . " files only!</div>
                 <div class='has-text-centered'>" . number_format(count($current)) . ' files have been added, modifed or deleted since your last update of the ' . number_format($i) . " files being tracked.</div>
             </div>
@@ -97,7 +97,7 @@ foreach ($current as $x) {
                 <tr>
                     <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date((int) $x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -128,7 +128,7 @@ foreach ($current as $x) {
                 <tr>
                     <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date((int) $x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -159,7 +159,7 @@ foreach ($current as $x) {
                 <tr>
                     <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date((int) $x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;

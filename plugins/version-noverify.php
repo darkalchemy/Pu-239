@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Disable version checker
  *
@@ -10,6 +10,9 @@
  */
 class AdminerVersionNoverify
 {
+    /**
+     * @param $missing
+     */
     public function navigation($missing)
     {
         echo script('verifyVersion = function () {};');

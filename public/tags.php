@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -16,10 +20,12 @@ $lang = array_merge(load_language('global'), load_language('tags'));
  * @param string $example
  * @param string $remarks
  *
- * @return string
- *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function insert_tag(string $name, string $description, string $syntax, string $example, string $remarks)
 {
@@ -64,7 +70,7 @@ $HTMLOUT = "<h1 class='has-text-centered'>BBcode Tags</h1>";
 $HTMLOUT .= main_div("<div class='has-text-centered'>
     {$lang['tags_title']}<br><br>
     <form method='post' action='?' accept-charset='utf-8'>
-    <textarea name='test' cols='60' rows='3'>" . ($test ? htmlspecialchars($test) : '') . "</textarea>
+    <textarea name='test' cols='60' rows='3'>" . ($test ? htmlsafechars($test) : '') . "</textarea>
     <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;'>
     </form>
     </div>", '', 'padding20');

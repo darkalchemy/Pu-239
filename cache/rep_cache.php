@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $reputations = [
     -999999 => 'is infamous around these parts',
     -50 => 'can only hope to improve',

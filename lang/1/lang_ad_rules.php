@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Misc
     'rules_rules' => 'Rules Admin',

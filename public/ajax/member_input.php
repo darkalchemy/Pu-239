@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $mysqli;
-
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
 $valid_actions = [
     'flush_torrents',
@@ -18,10 +21,14 @@ if (empty($_POST)) {
 }
 
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : '');
+global $container, $CURUSER;
+
+$session = $container->get(Session::class);
 if ($action == '') {
     $session->set('is-danger', 'Access Not Allowed');
     header('Location: index.php');
 } else {
+    $cache = $container->get(Cache::class);
     switch ($action) {
         case 'flush_torrents':
             $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
@@ -66,7 +73,7 @@ if ($action == '') {
                     'staff_notes' => $posted_notes,
                 ], $site_config['expires']['user_cache']);
                 //=== add it to the log
-                write_log("{$CURUSER['username']} edited member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$staff_notes_arr['username']}[/url] staff notes. Changes made:<br>Was:<br>" . htmlsafechars($staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars($_POST['new_staff_note']));
+                write_log("{$CURUSER['username']} edited member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$staff_notes_arr['username']}[/url] staff notes. Changes made:<br>Was:<br>" . htmlsafechars((string) $staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars((string) $_POST['new_staff_note']));
             }
             header('Location: userdetails.php?id=' . $id . '&sn=1');
             break;
@@ -98,7 +105,7 @@ if ($action == '') {
                         'watched_user' => 0,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
-                    write_log("{$CURUSER['username']} removed member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$watched_arr['username']}[/url] from watched users. <br>{$watched_arr['username']} had been on the list since " . get_date($watched_arr['watched_user'], 'LONG'));
+                    write_log("{$CURUSER['username']} removed member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$watched_arr['username']}[/url] from watched users. <br>{$watched_arr['username']} had been on the list since " . get_date((int) $watched_arr['watched_user'], 'LONG'));
                 }
                 //=== only change if different
                 if ($_POST['watched_reason'] !== $watched_arr['watched_user_reason']) {
@@ -108,7 +115,7 @@ if ($action == '') {
                         'watched_user_reason' => $posted,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
-                    write_log("{$CURUSER['username']} changed watched user text for: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$watched_arr['username']}[/url] Changes made:<br>Text was:<br>" . htmlsafechars($watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars($_POST['watched_reason']));
+                    write_log("{$CURUSER['username']} changed watched user text for: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$watched_arr['username']}[/url] Changes made:<br>Text was:<br>" . htmlsafechars((string) $watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars((string) $_POST['watched_reason']));
                 }
             }
             header('Location: userdetails.php?id=' . $id . '&wu=1');

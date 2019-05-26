@@ -1,6 +1,13 @@
 <?php
 
-global $lang, $lastseen, $joindate;
-
-$HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_joined']}</td><td width='99%'>{$joindate}</td></tr>
-<tr><td class='rowhead'>{$lang['userdetails_seen']}</td><td>{$lastseen}</td></tr>";
+declare(strict_types = 1);
+global $lastseen, $joindate, $lang;
+$HTMLOUT .= "
+    <tr>
+        <td class='rowhead'>{$lang['userdetails_joined']}</td>
+        <td>{$joindate}</td>
+    </tr>
+    <tr>
+        <td class='rowhead'>{$lang['userdetails_seen']}</td>
+        <td>{$lastseen}</td>
+    </tr>";

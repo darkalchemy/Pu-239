@@ -1,37 +1,46 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function sendpmpos_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $fluent, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $dt = TIME_NOW;
-
+    $fluent = $container->get(Database::class);
     $users = $fluent->from('users')
                     ->select(null)
                     ->select('id')
                     ->select('modcomment')
-                    ->where('sendpmpos>1')
+                    ->where('sendpmpos > 1')
                     ->where('sendpmpos < ?', $dt)
                     ->fetchAll();
 
     $msgs_buffer = $users_buffer = [];
     $count = count($users);
     if ($count > 0) {
+        $comment = get_date((int) $dt, 'DATE', 1) . " - PM ban Removed By System.\n";
         $subject = 'PM ban expired.';
         $msg = "Your PM ban has expired and has been auto-removed by the system.\n";
+        $cache = $container->get(Cache::class);
         foreach ($users as $arr) {
-            $comment = get_date($dt, 'DATE', 1) . " - PM ban Removed By System.\n";
             $modcomment = $comment . $arr['modcomment'];
             $msgs_buffer[] = [
                 'sender' => 0,
@@ -50,14 +59,15 @@ function sendpmpos_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             $set = [
                 'sendpmpos' => 1,
-                'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+                'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),
             ];
             $fluent->update('users')
                    ->set($set)
-                   ->where('sendpmpos>1')
+                   ->where('sendpmpos > 1')
                    ->where('sendpmpos < ?', $dt)
                    ->execute();
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //takeconfirminvite
     'takeconfirminvite_error' => 'Error',

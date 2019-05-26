@@ -1,15 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_fanart.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_details.php';
 require_once INCL_DIR . 'function_html.php';
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Imdb\Config;
 use Imdb\Person;
 use Imdb\Title;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Image;
+use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
@@ -19,17 +27,20 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int|null    $tid
  * @param string|null $poster
  *
- * @return array|bool|mixed
- *
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  * @throws InvalidManipulation
+ * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ *
+ * @return array|bool|mixed
  */
 function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid, ?string $poster)
 {
-    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config, $fluent;
+    global $container, $site_config, $BLOCKS;
 
+    $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
@@ -38,13 +49,9 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
     $imdb_id = str_replace('tt', '', $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
-        $config = new Config();
-        $config->language = $site_config['language']['imdb'];
-        $config->cachedir = IMDB_CACHE_DIR;
-        $config->throwHttpExceptions = 0;
-        $config->default_agent = get_random_useragent();
-
+        $config = $container->get(Config::class);
         $movie = new Title($imdb_id, $config);
+
         if (empty($movie->title())) {
             $cache->set('imdb_' . $imdb_id, 'failed', 86400);
 
@@ -77,7 +84,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'top250' => $movie->top250(),
             'movietype' => $movie->movietype(),
             'storyline' => $movie->storyline(),
-            'updated' => get_date(TIME_NOW, 'LONG', 1, 0),
+            'updated' => get_date((int) TIME_NOW, 'LONG', 1, 0),
         ];
 
         if (count($imdb_data['genres']) > 0) {
@@ -120,6 +127,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             }
         }
 
+        $fluent = $container->get(Database::class);
         if (!empty($persons)) {
             $fluent->insertInto('person')
                    ->values($persons)
@@ -163,6 +171,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         $cache->delete('cast_' . $imdb_id);
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
+
     if ($tid) {
         $set = [];
         if (!empty($imdb_data['newgenre'])) {
@@ -174,9 +183,10 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'year' => $imdb_data['year'],
             'rating' => $imdb_data['rating'],
         ]);
-
+        $torrent_stuffs = $container->get(Torrent::class);
         $torrent_stuffs->update($set, $tid);
     }
+
     if (empty($imdb_data)) {
         $cache->set('imdb_' . $imdb_id, 'failed', 86400);
 
@@ -192,12 +202,12 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'url' => $poster,
             'type' => 'poster',
         ];
+        $image_stuffs = $container->get(Image::class);
         $image_stuffs->insert($values);
     }
     if (empty($poster)) {
         $poster = get_poster($imdbid);
     }
-
     $imdb = [
         'title' => 'Title',
         'mpaa_reason' => 'MPAA',
@@ -279,9 +289,10 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             }
 
             $cast[] = "
-                            <span class='padding5'>
+                        <ul class='right10'>
+                            <li>
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
-                                    <span class='dt-tooltipper-large' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
+                                    <div class='dt-tooltipper-large' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
                                             <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 110) . "' alt='' class='round5'>
                                         </span>
@@ -291,11 +302,11 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 													<div class='columns is-marginless is-paddingless'>
 														<div class='column padding10 is-4'>
                                                             <span>
-                                                                <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' alt='' class='tooltip-poster'>
+                                                                <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' class='tooltip-poster' alt=''>
                                                             </span>
 														</div>
 														<div class='column paddin10 is-8'>
-                                                            <span>
+                                                            <div>
                                                                 <div class='columns is-multiline'>
                                                                     <div class='column padding5 is-4'>
                                                                         <span class='size_4 has-text-primary'>Name:</span>
@@ -310,15 +321,16 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                                                                         <span class='size_4'>{$pp['role']}</span>
                                                                     </div>{$realname}{$birthday}{$died}{$birthplace}{$history}
                                                                 </div>
-                                                            </span>
+                                                            </div>
 														</div>
 													</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </span>
+                                    </div>
                                 </a>
-                            </span>";
+                            </li>
+                        </ul>";
         }
     }
 
@@ -330,13 +342,13 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
-                        <span class='level-left'>
+                        <div class='level-left'>
                             <div class='right5'>{$imdb_data['rating']}</div>
                             <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
-                        </span>";
+                        </div>";
                 } elseif ($boo === 'Year') {
                     $year = 'Search by year: ' . $imdb_data['year'];
                     $imdb_data[$foo] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sys={$imdb_data['year']}&amp;sye={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
@@ -349,20 +361,20 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 }
                 $imdb_info .= "
                     <div class='columns'>
-                        <span class='has-text-primary column is-2 size_5 padding5'>$boo: </span>
-                        <span class='column padding5'>{$imdb_data[$foo]}</span>
+                        <div class='has-text-primary column is-2 size_5 padding5'>$boo: </div>
+                        <div class='column padding5'>{$imdb_data[$foo]}</div>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                    'director',
-                    'writing',
-                    'producer',
-                    'composer',
-                    'cast',
-                    'trailers',
-                ])) {
+                'director',
+                'writing',
+                'producer',
+                'composer',
+                'cast',
+                'trailers',
+            ])) {
                 foreach ($imdb_data[$foo] as $pp) {
                     if ($foo === 'cast' && !empty($cast)) {
-                        $imdb_tmp[] = implode(' ', $cast);
+                        $imdb_tmp[] = "<div class='level-left is-wrapped'>" . implode(' ', $cast) . '</div>';
                         unset($cast);
                     }
                     if ($foo === 'trailers') {
@@ -381,8 +393,8 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             if (!empty($imdb_tmp)) {
                 $imdb_info .= "
                     <div class='columns'>
-                        <span class='has-text-primary column is-2 size_5 padding5'>$boo: </span>
-                        <span class='column padding5'>" . implode(', ', $imdb_tmp) . '</span>
+                        <div class='has-text-primary column is-2 size_5 padding5'>$boo: </div>
+                        <div class='column padding5'>" . implode(', ', $imdb_tmp) . '</div>
                     </div>';
                 unset($imdb_tmp);
             }
@@ -395,7 +407,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         <div class='padding20'>
             <div class='columns bottom20'>
                 <div class='column is-one-third'>
-                    <img src='" . placeholder_image('450') . "' data-src='" . url_proxy($poster, true, 450) . "' alt='' class='lazy round10 img-polaroid'>
+                    <img src='" . url_proxy($poster, true, 450) . "' alt='' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $imdb_info
@@ -416,9 +428,9 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 /**
  * @param $imdb_id
  *
- * @return bool|mixed
- *
  * @throws Exception
+ *
+ * @return bool|mixed
  */
 function get_imdb_title($imdb_id)
 {
@@ -440,14 +452,15 @@ function get_imdb_title($imdb_id)
 /**
  * @param $imdb_id
  *
- * @return bool|string|string[]|null
- *
  * @throws Exception
+ *
+ * @return bool|string|string[]|null
  */
 function get_imdb_info_short($imdb_id)
 {
-    global $BLOCKS, $site_config, $image_stuffs;
+    global $container, $site_config, $BLOCKS;
 
+    $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
@@ -458,24 +471,20 @@ function get_imdb_info_short($imdb_id)
     if (empty($imdb_data)) {
         return false;
     }
-    $poster = $placeholder = '';
-
+    $poster = $imdb_data['poster'];
     if (empty($imdb_data['poster'])) {
-        $poster = getMovieImagesByID($imdbid, 'movieposter');
-        $imdb_data['poster'] = $poster;
+        $poster = getMovieImagesByID($imdbid, true, 'movieposter');
     }
-    if (empty($imdb_data['poster'])) {
+    if (empty($poster)) {
         $tmdbid = get_movie_id($imdbid, 'tmdb_id');
         if (!empty($tmdbid)) {
-            $poster = getMovieImagesByID($tmdbid, 'movieposter');
-            $imdb_data['poster'] = $poster;
+            $poster = getMovieImagesByID((string) $tmdbid, true, 'movieposter');
         }
     }
-    if (!empty($imdb_data['poster'])) {
-        $image = url_proxy($imdb_data['poster'], true, 250);
-        if ($image) {
+    if (!empty($poster) && !is_bool($poster)) {
+        $image = url_proxy((string) $poster, true, 250);
+        if (!empty($image)) {
             $imdb_data['poster'] = $image;
-            $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 250, null, 20);
         }
         $values = [];
         if (!empty($tmdbid)) {
@@ -488,13 +497,19 @@ function get_imdb_info_short($imdb_id)
             'url' => $poster,
             'type' => 'poster',
         ]);
-        $image_stuffs->insert($values);
+        $imdb_short = $cache->get('imdb_short_' . $imdbid);
+        if ($imdb_short === false || is_null($imdb_short)) {
+            $image_stuffs = $container->get(Image::class);
+            $image_stuffs->insert($values);
+            $cache->set('imdb_short_' . $imdbid, 'inserted', 86400);
+        }
     }
-    if (empty($imdb_data['poster'])) {
+
+    if (empty($imdb_data['poster']) || $imdb_data['poster'] === $site_config['paths']['images_baseurl'] . 'proxy/') {
         $poster = $site_config['paths']['images_baseurl'] . 'noposter.png';
         $imdb_data['poster'] = $poster;
-        $imdb_data['placeholder'] = $poster;
     }
+    $imdb_data['placeholder'] = url_proxy($poster, true, 250, null, 20);
     if (!empty($imdb_data['critics'])) {
         $imdb_data['critics'] .= '%';
     } else {
@@ -510,6 +525,7 @@ function get_imdb_info_short($imdb_id)
         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
     }
 
+    $imdb_data['mpaa_reason'] = !empty($imdb_data['mpaa_reason']) ? $imdb_data['mpaa_reason'] : '?';
     $imdb_info = "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
@@ -521,7 +537,7 @@ function get_imdb_info_short($imdb_id)
                                 <span class='padding10 w-40'>
                                     <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
-                                <span class='padding10'>
+                                <div class='padding10'>
                                     <div>
                                         <span class='size_5 right10 has-text-primary has-text-bold'>Title: </span>
                                         <span>" . htmlsafechars($imdb_data['title']) . "</span>
@@ -540,13 +556,13 @@ function get_imdb_info_short($imdb_id)
                                     </div>
                                     <div>
                                         <span class='size_5 right10 has-text-primary'>Votes: </span>
-                                        <span>" . htmlsafechars($imdb_data['vote_count']) . "</span>
+                                        <span>" . (int) $imdb_data['vote_count'] . "</span>
                                     </div>
                                     <div>
                                         <span class='size_5 right10 has-text-primary'>Overview: </span>
                                         <span>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
                                     </div>
-                                </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -554,19 +570,21 @@ function get_imdb_info_short($imdb_id)
             </div>';
 
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
+    file_put_contents('/var/log/nginx/details.log', $imdb_info . PHP_EOL, FILE_APPEND);
 
     return $imdb_info;
 }
 
 /**
- * @return array|bool
- *
  * @throws Exception
+ *
+ * @return array|bool
  */
 function get_upcoming()
 {
-    global $cache, $BLOCKS;
+    global $container, $BLOCKS;
 
+    $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
@@ -627,16 +645,19 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @return bool
- *
- * @throws InvalidManipulation
+ * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ *
+ * @return bool
  */
 function update_torrent_data(string $imdb_id)
 {
-    global $BLOCKS, $fluent, $cache, $site_config;
+    global $container, $site_config, $BLOCKS;
 
+    $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
@@ -653,16 +674,17 @@ function update_torrent_data(string $imdb_id)
         'year' => $imdb_data['year'],
         'rating' => $imdb_data['rating'],
     ]);
+    $fluent = $container->get(Database::class);
     $result = $fluent->update('torrents')
                      ->set($set)
-                     ->where('imdb_id=?', 'tt' . $imdb_id)
+                     ->where('imdb_id = ?', 'tt' . $imdb_id)
                      ->execute();
 
     if ($result) {
         $torrents = $fluent->from('torrents')
                            ->select(null)
                            ->select('id')
-                           ->where('imdb_id=?', 'tt' . $imdb_id)
+                           ->where('imdb_id = ?', 'tt' . $imdb_id)
                            ->fetchAll();
 
         foreach ($torrents as $torrent) {
@@ -676,42 +698,49 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @return array|bool|mixed
- *
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function get_imdb_person($person_id)
 {
-    global $BLOCKS, $cache, $fluent, $site_config;
+    global $container, $site_config, $BLOCKS;
 
+    $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
-
     $imdb_person = $cache->get('imdb_person_' . $person_id);
     if ($imdb_person === false || is_null($imdb_person)) {
+        $fluent = $container->get(Database::class);
         $imdb_person = $fluent->from('person')
-                              ->where('imdb_id=?', $person_id)
-                              ->where('updated + 2592000>?', TIME_NOW)
+                              ->where('imdb_id = ?', $person_id)
+                              ->where('updated + 2592000 > ?', TIME_NOW)
                               ->fetch();
 
         if (!empty($imdb_person)) {
             $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
 
             return $imdb_person;
+        } else {
+            $cache->set('imdb_person_' . $person_id, 'failed', 86400);
         }
-
-        $config = new Config();
-        $config->language = $site_config['language']['imdb'];
-        $config->cachedir = IMDB_CACHE_DIR;
-        $config->throwHttpExceptions = 0;
-        $config->default_agent = get_random_useragent();
-
+        $config = $container->get(Config::class);
         $person = new Person($person_id, $config);
         $imdb_person = [];
         if (!empty($person->name())) {
             $imdb_person['name'] = $person->name();
         } else {
+            $set = [
+                'updated' => TIME_NOW,
+            ];
+            $fluent->update('person')
+                   ->set($set)
+                   ->where('idmb_id = ?', $person_id)
+                   ->execute();
+
             return false;
         }
         if (!empty($person->birthname())) {
@@ -765,14 +794,24 @@ function get_imdb_person($person_id)
     return $imdb_person;
 }
 
-function get_top_movies()
+/**
+ * @param int $count
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|bool|mixed
+ */
+function get_top_movies(int $count)
 {
-    global $cache;
+    global $container;
 
-    $top = $cache->get('imdb_top_movies_');
+    $cache = $container->get(Cache::class);
+    $top = $cache->get('imdb_top_movies_' . $count);
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 100; $i += 50) {
+        for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -783,21 +822,31 @@ function get_top_movies()
             }
         }
         if (!empty($top)) {
-            $cache->set('imdb_top_movies_', $top, 604800);
+            $cache->set('imdb_top_movies_' . $count, $top, 604800);
         }
     }
 
     return $top;
 }
 
-function get_top_tvshows()
+/**
+ * @param int $count
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|bool|mixed
+ */
+function get_top_tvshows(int $count)
 {
-    global $cache;
+    global $container;
 
-    $top = $cache->get('imdb_top_tvshows_');
+    $cache = $container->get(Cache::class);
+    $top = $cache->get('imdb_top_tvshows_' . $count);
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 100; $i += 50) {
+        for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -808,21 +857,31 @@ function get_top_tvshows()
             }
         }
         if (!empty($top)) {
-            $cache->set('imdb_top_tvshows_', $top, 604800);
+            $cache->set('imdb_top_tvshows_' . $count, $top, 604800);
         }
     }
 
     return $top;
 }
 
-function get_top_anime()
+/**
+ * @param int $count
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|bool|mixed
+ */
+function get_top_anime(int $count)
 {
-    global $cache;
+    global $container;
 
-    $top = $cache->get('imdb_top_anime_');
+    $cache = $container->get(Cache::class);
+    $top = $cache->get('imdb_top_anime_' . $count);
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 100; $i += 50) {
+        for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -833,21 +892,31 @@ function get_top_anime()
             }
         }
         if (!empty($top)) {
-            $cache->set('imdb_top_anime_', $top, 604800);
+            $cache->set('imdb_top_anime_' . $count, $top, 604800);
         }
     }
 
     return $top;
 }
 
-function get_oscar_winners()
+/**
+ * @param int $count
+ *
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|bool|mixed
+ */
+function get_oscar_winners(int $count)
 {
-    global $cache;
+    global $container;
 
-    $top = $cache->get('imdb_oscar_winners_');
+    $cache = $container->get(Cache::class);
+    $top = $cache->get('imdb_oscar_winners_' . $count);
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 100; $i += 50) {
+        for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=oscar_winner&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -858,7 +927,7 @@ function get_oscar_winners()
             }
         }
         if (!empty($top)) {
-            $cache->set('imdb_oscar_winners_', $top, 604800);
+            $cache->set('imdb_oscar_winners_' . $count, $top, 604800);
         }
     }
 

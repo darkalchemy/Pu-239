@@ -1,18 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param $dates
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
 function get_tv_by_day($dates)
 {
-    global $cache, $BLOCKS, $site_config;
+    global $container, $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
@@ -45,11 +56,15 @@ function get_tv_by_day($dates)
 /**
  * @param $dates
  *
- * @return array|bool|mixed
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_movies_by_week($dates)
 {
-    global $BLOCKS, $site_config;
+    global $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
@@ -80,16 +95,20 @@ function get_movies_by_week($dates)
 }
 
 /**
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return array|bool|mixed
  */
 function get_movies_in_theaters()
 {
-    global $cache, $BLOCKS, $site_config;
+    global $container, $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
     $tmdb_data = $cache->get('tmdb_movies_in_theaters_');
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
@@ -121,17 +140,22 @@ function get_movies_in_theaters()
 /**
  * @param $count
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return array|bool|mixed
  */
 function get_movies_by_vote_average($count)
 {
-    global $cache, $BLOCKS, $site_config;
+    global $container, $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
     }
 
     $page = $count / 20;
+    $cache = $container->get(Cache::class);
     $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
@@ -166,18 +190,18 @@ function get_movies_by_vote_average($count)
  * @param $imdbid
  * @param $type
  *
- * @return bool|mixed
- *
  * @throws Exception
+ *
+ * @return bool|mixed
  */
 function get_movie_id($imdbid, $type)
 {
-    global $BLOCKS, $fluent, $site_config;
+    global $container, $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
     }
-
+    $fluent = $container->get(Database::class);
     $id = $fluent->from('images')
                  ->select(null)
                  ->select($type)
@@ -218,6 +242,9 @@ function get_movie_id($imdbid, $type)
 
 /**
  * @param $json
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -278,9 +305,9 @@ function dateSort($a, $b)
  * @param $year
  * @param $week
  *
- * @return array
- *
  * @throws Exception
+ *
+ * @return array
  */
 function getStartAndEndDate($year, $week)
 {
@@ -297,11 +324,15 @@ function getStartAndEndDate($year, $week)
 /**
  * @param $tmdbid
  *
- * @return bool
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|null
  */
 function get_imdbid($tmdbid)
 {
-    global $BLOCKS, $site_config;
+    global $site_config, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
@@ -326,15 +357,18 @@ function get_imdbid($tmdbid)
  * @param $tmdb_id
  * @param $imdb_id
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function update_tmdb_id($tmdb_id, $imdb_id)
 {
-    global $fluent;
+    global $container;
 
     $set = [
         'tmdb_id' => $tmdb_id,
     ];
+    $fluent = $container->get(Database::class);
     $fluent->update('images')
            ->set($set)
            ->where('imdb_id = ?', $imdb_id)

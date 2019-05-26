@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
@@ -8,8 +12,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CACHE_DIR . 'timezones.php';
 check_user_status();
-global $CURUSER, $site_config, $session;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -18,9 +20,9 @@ $stdhead = [
 $stdfoot = [
     'js' => [
         get_file_name('sceditor_js'),
-        get_file_name('pStrength_js'),
     ],
 ];
+global $container, $CURUSER, $TZ, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
@@ -69,17 +71,13 @@ $possible_actions = [
     'personal',
     'default',
 ];
+$session = $container->get(Session::class);
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : 'default';
 if (!in_array($action, $possible_actions)) {
     $session->set('is-warning', '[h2]Error! Change a few things up and try submitting again.[/h2]');
 }
 if (isset($_GET['edited'])) {
     $session->set('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
-    if (isset($_GET['mailsent'])) {
-        $session->set('is-success', "[h2]{$lang['usercp_mail_sent']}![/h2]");
-    }
-} elseif (isset($_GET['emailch'])) {
-    $session->set('is-success', "[h2]{$lang['usercp_emailch']}![/h2]");
 }
 
 $avatar = get_avatar($CURUSER);
@@ -100,7 +98,7 @@ $HTMLOUT .= "
                             <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=links'>Links</a></li>
                         </ul>
                     </div>
-                    <h1 class='has-text-centered'>Welcome " . format_username($CURUSER['id']) . "!</h1>
+                    <h1 class='has-text-centered'>Welcome " . format_username((int) $CURUSER['id']) . "!</h1>
                     <div class='level has-text-centered'>";
 if (!empty($avatar)) {
     $HTMLOUT .= "
@@ -131,7 +129,7 @@ if ($action === 'avatar') {
                                     <tr>
                                         <td class='rowhead'>{$lang['usercp_avatar']}</td>
                                         <td>
-                                            <input type='text' name='avatar' class='w-100' value='" . htmlsafechars($CURUSER['avatar']) . "'>
+                                            <input type='text' name='avatar' class='w-100' value='" . htmlsafechars((string) $CURUSER['avatar']) . "'>
                                             <p class='small'>
                                                 Width should be 150px. (Will be resized if necessary)
                                             </p>
@@ -187,9 +185,9 @@ if ($action === 'avatar') {
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] === 'yes' ? 'checked' : '') . ' value="yes"> Yes
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] !== 'yes' ? 'checked' : '') . ' value="no"> No', 1);
     $HTMLOUT .= tr('Signature', '
-                                            <textarea name="signature" class="w-100" rows="4">' . htmlsafechars(htmlspecialchars($CURUSER['signature'], ENT_QUOTES, 'UTF-8')) . '</textarea><br>BBcode can be used', 1);
+                                            <textarea name="signature" class="w-100" rows="4">' . htmlsafechars((string) $CURUSER['signature']) . '</textarea><br>Must be an image url.', 1);
     $HTMLOUT .= tr($lang['usercp_info'], "
-                                            <textarea name='info' class='w-100' rows='4'>" . htmlsafechars(htmlspecialchars($CURUSER['info'], ENT_QUOTES, 'UTF-8')) . "</textarea><br>{$lang['usercp_tags']}", 1);
+                                            <textarea name='info' class='w-100' rows='4'>" . htmlsafechars((string) $CURUSER['info']) . "</textarea><br>{$lang['usercp_tags']}", 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -234,18 +232,11 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk">Google Talk', '
-                                            <input type="text" class="w-100" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '">', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn">MSN ', '
-                                            <input type="text" class="w-100" name="msn"  value="' . htmlsafechars($CURUSER['msn']) . '">', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim">AIM', '
-                                            <input type="text" class="w-100" name="aim"  value="' . htmlsafechars($CURUSER['aim']) . '">', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo">Yahoo ', '
-                                            <input type="text" class="w-100" name="yahoo"  value="' . htmlsafechars($CURUSER['yahoo']) . '">', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq">icq ', '
-                                            <input type="text" class="w-100" name="icq"  value="' . htmlsafechars($CURUSER['icq']) . '">', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px">Website ', '
-                                            <input type="text" class="w-100" name="website"  value="' . htmlsafechars($CURUSER['website']) . '">', 1);
+    $HTMLOUT .= tr('<img width="16" src="' . $site_config['paths']['images_baseurl'] . 'forums/skype.png" alt="Icq" class="tooltipper right10" title="Skype"> Skype ', '
+                                            <input type="text" class="w-100" name="skype"  value="' . htmlsafechars((string) $CURUSER['skype']) . '">
+                                            <p class="top10 bottom10">' . $lang['usercp_skype_share'] . '</p>', 1);
+    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px"> Website ', '
+                                            <input type="text" class="w-100" name="website"  value="' . htmlsafechars((string) $CURUSER['website']) . '">', 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -307,7 +298,7 @@ if ($action === 'avatar') {
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>
                                                 <input type='hidden' name='action' value='links'>
-                                                " . htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "'s Menu
+                                                " . htmlsafechars($CURUSER['username']) . "'s Menu
                                             </th>
                                         </tr>
                                     </thead>
@@ -344,7 +335,7 @@ if ($action === 'avatar') {
                                 <table class='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
-                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "'s Entertainment</th>
+                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($CURUSER['username']) . "'s Entertainment</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -463,49 +454,10 @@ if ($action === 'avatar') {
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] === 'no' ? ' checked' : '') . ' value="no"> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
     $HTMLOUT .= tr($lang['usercp_chpass'], "
-                                        <input type='password' name='chpassword' id='myElement1' class='w-100' data-display='myDisplayElement1' autocomplete='on' minlength='6'> 
-                                        <div id='myDisplayElement1'></div>
-                                        <input type='password' name='passagain' id='myElement2' class='w-100' data-display='myDisplayElement2' autocomplete='on' minlength='6'> 
-                                        <div id='myDisplayElement2'></div>
+                                        <input type='password' name='password' id='password' class='w-100' autocomplete='on' minlength='8'> 
+                                        <input type='password' name='confirm_password' id='confirm_password' class='w-100 top10' autocomplete='on' minlength='8'> 
                                         <p class='top20 bottom10'>You must enter your current password.</p>
                                         <input type='password' name='current_pass' class='w-100' placeholder='Current Password'>", 1);
-    $secretqs = "<option value='0'>{$lang['usercp_none_select']}</option>";
-    $questions = [
-        [
-            'id' => '1',
-            'question' => "{$lang['usercp_q1']}",
-        ],
-        [
-            'id' => '2',
-            'question' => "{$lang['usercp_q2']}",
-        ],
-        [
-            'id' => '3',
-            'question' => "{$lang['usercp_q3']}",
-        ],
-        [
-            'id' => '4',
-            'question' => "{$lang['usercp_q4']}",
-        ],
-        [
-            'id' => '5',
-            'question' => "{$lang['usercp_q5']}",
-        ],
-        [
-            'id' => '6',
-            'question' => "{$lang['usercp_q6']}",
-        ],
-    ];
-    foreach ($questions as $sctq) {
-        $secretqs .= "
-                                            <option value='" . $sctq['id'] . "'" . ($CURUSER['passhint'] == $sctq['id'] ? ' selected' : '') . '>' . $sctq['question'] . '</option>';
-    }
-    $HTMLOUT .= tr($lang['usercp_question'], "
-                                        <select name='changeq'>
-                                            $secretqs
-                                        </select>", 1);
-    $HTMLOUT .= tr($lang['usercp_sec_answer'], "
-                                        <input type='text' name='secretanswer' class='w-100'>", 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -539,7 +491,7 @@ if ($action === 'avatar') {
             $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
             $categories .= "
                                                 <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                                                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
+                                                    <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['paths']['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
                                                             $image
@@ -552,7 +504,7 @@ if ($action === 'avatar') {
     }
 
     $HTMLOUT .= tr($lang['usercp_email_notif'], "
-                                            <input type='checkbox' name='emailnotif'" . (strpos($CURUSER['notifs'], '[email]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
+                                            <input type='checkbox' name='emailnotif'" . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
     $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
     $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes'" . (($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? ' checked' : '') . "> {$lang['usercp_default_clearnewtagmanually']}", 1);
@@ -600,7 +552,7 @@ if ($action === 'avatar') {
                                 <tbody>";
     if ($CURUSER['class'] >= UC_VIP) {
         $HTMLOUT .= tr($lang['usercp_title'], "
-                                                <input type='text' class='w-100' value='" . htmlsafechars($CURUSER['title']) . "' name='title'>", 1);
+                                                <input type='text' class='w-100' value='" . htmlsafechars((string) $CURUSER['title']) . "' name='title'>", 1);
     }
     $HTMLOUT .= tr($lang['usercp_top_perpage'], "
                                             <input type='text' class='w-100' name='topicsperpage' value='{$CURUSER['topicsperpage']}'> {$lang['usercp_default']}", 1);
@@ -630,7 +582,7 @@ if ($action === 'avatar') {
                                                     <input type='radio' name='gender'" . ($CURUSER['gender'] === 'Female' ? ' checked' : '') . " value='Female'> {$lang['usercp_female']}
                                                 </span>
                                                 <span>
-                                                    <input type='radio' name='gender'" . ('N/A' == $CURUSER['gender'] ? ' checked' : '') . " value='N/A'> {$lang['usercp_na']}
+                                                    <input type='radio' name='gender'" . ($CURUSER['gender'] == 'N/A' ? ' checked' : '') . " value='N/A'> {$lang['usercp_na']}
                                                 </span>
                                             </div>", 1);
 
@@ -720,7 +672,7 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
         $HTMLOUT .= tr($lang['usercp_email_notif'], "
-                                            <input type='checkbox' name='pmnotif'" . (strpos($CURUSER['notifs'], '[pm]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_pm']}", 1);
+                                            <input type='checkbox' name='pmnotif'" . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pm]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_pm']}", 1);
         $HTMLOUT .= tr($lang['usercp_accept_pm'], "
                                             <div class='level'>
                                                 <span>
@@ -769,4 +721,4 @@ $HTMLOUT .= '
                 </form>
             </div>';
 
-echo stdhead(htmlsafechars(htmlspecialchars($CURUSER['username'], ENT_QUOTES, 'UTF-8')) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(htmlsafechars($CURUSER['username']) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

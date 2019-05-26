@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('viewnfo'));
 
 $id = (int) $_GET['id'];
+global $CURUSER, $site_config;
 if ($CURUSER['class'] === UC_MIN || !is_valid_id($id)) {
     die();
 }

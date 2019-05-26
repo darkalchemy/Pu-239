@@ -1,37 +1,38 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Image;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_get_images.php';
-require_once INCL_DIR . 'share_images.php';
-global $session;
-
-extract($_POST);
-
+$url = htmlsafechars($_POST['url']);
+$tid = !empty($_POST['tid']) ? (int) strip_tags($_POST['tid']) : null;
+$image = !empty($_POST['image']) ? htmlsafechars($_POST['image']) : null;
 header('content-type: application/json');
-if (empty($csrf) || !$session->validateToken($csrf)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
+global $container;
 
 $imdb = '';
 if (!empty($url)) {
-    preg_match('/(tt[\d]{7})/i', $url, $imdb);
-    $imdb = !empty($imdb[1]) ? $imdb[1] : false;
+    preg_match('/(tt[\d]{7,8})/i', $url, $imdb);
+    $imdb = !empty($imdb[1]) ? $imdb[1] : null;
 }
 
 if (!empty($imdb)) {
-    $tid = !empty($tid) ? $tid : false;
     $banner = $background = null;
     $poster = !empty($image) ? $image : get_image_by_id('movie', $imdb, 'movieposter');
     if (empty($poster)) {
         $poster = get_image_by_id('tmdb_id', $imdb, 'movieposter');
     }
     if (empty($poster)) {
-        $poster = find_images($imdb);
+        $image_stuffs = $container->get(Image::class);
+        $poster = $image_stuffs->find_images($imdb);
+    }
+    if (empty($poster)) {
+        $poster = null;
     }
     $movie_info = get_imdb_info($imdb, true, false, $tid, $poster);
-
     if (!empty($movie_info)) {
         $output = json_encode([
             'content' => $movie_info[0],

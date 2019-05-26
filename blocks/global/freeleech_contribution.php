@@ -1,10 +1,15 @@
 <?php
 
-require_once INCL_DIR . 'function_event.php';
-global $fluent, $site_config, $cache;
+declare(strict_types = 1);
 
+use Pu239\Database;
+
+global $container, $site_config;
+
+require_once INCL_DIR . 'function_event.php';
 $free = get_event(false);
 $freeleech_enabled = $double_upload_enabled = $half_down_enabled = false;
+$freeleech_start_time = $freeleech_end_time = $double_upload_start_time = $double_upload_end_time = $half_down_start_time = $half_down_end_time = 0;
 if (!empty($free) && $free['modifier'] != 0) {
     $begin = $free['begin'];
     $expires = $free['expires'];
@@ -30,6 +35,7 @@ if (!empty($free) && $free['modifier'] != 0) {
     }
 }
 
+$fluent = $container->get(Database::class);
 $freeleech = $cache->get('freeleech_alerts_');
 if ($freeleech === false || is_null($freeleech)) {
     $freeleech = $fluent->from('bonus')
@@ -42,7 +48,7 @@ if ($freeleech === false || is_null($freeleech)) {
     $cache->set('freeleech_alerts_', $freeleech, 0);
 }
 
-$percent_fl = number_format($freeleech['percent'], 2);
+$percent_fl = number_format((float) $freeleech['percent'], 2);
 if ($freeleech['enabled'] === 'yes') {
     switch ($percent_fl) {
         case $percent_fl >= 90:
@@ -84,7 +90,7 @@ if ($doubleupload === false || is_null($doubleupload)) {
     $cache->set('doubleupload_alerts_', $doubleupload, 0);
 }
 
-$percent_du = number_format($doubleupload['percent'], 2);
+$percent_du = number_format((float) $doubleupload['percent'], 2);
 if ($doubleupload['enabled'] === 'yes') {
     switch ($percent_du) {
         case $percent_du >= 90:
@@ -126,7 +132,7 @@ if ($halfdownload === false || is_null($halfdownload)) {
     $cache->set('halfdownload_alerts_', $halfdownload, 0);
 }
 
-$percent_hd = number_format($halfdownload['percent'], 2);
+$percent_hd = number_format((float) $halfdownload['percent'], 2);
 if ($halfdownload['enabled'] === 'yes') {
     switch ($percent_hd) {
         case $percent_hd >= 90:
@@ -192,7 +198,7 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
                         <div class='level is-marginless'>
                             <span>Freeleech</span><span class='left10'> [ ";
         if ($freeleech_enabled) {
-            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
+            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date((int) $freeleech_start_time, 'DATE') . ' - ' . get_date((int) $freeleech_end_time, 'DATE');
         } else {
             $htmlout .= $fstatus;
         }
@@ -205,7 +211,7 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
                         <div class='level is-marginless'>
                             <span>DoubleUpload</span><span class='left10'> [ ";
         if ($double_upload_enabled) {
-            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
+            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date((int) $double_upload_start_time, 'DATE') . ' - ' . get_date((int) $double_upload_end_time, 'DATE');
         } else {
             $htmlout .= $dstatus;
         }
@@ -218,7 +224,7 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
                         <div class='level is-marginless'>
                             <span>Half Download</span><span class='left10'> [ ";
         if ($half_down_enabled) {
-            $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
+            $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date((int) $half_down_start_time, 'DATE') . ' - ' . get_date((int) $half_down_end_time, 'DATE');
         } else {
             $htmlout .= $hstatus;
         }

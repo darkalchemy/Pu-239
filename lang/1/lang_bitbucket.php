@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Userimages
     'bitbucket_dragndrop' => 'Drop images or click here to select images.',
@@ -8,7 +10,7 @@ $lang = [
     'bitbucket_hey' => 'Hey',
     'bitbucket_imagenf' => 'Image not found!',
     'bitbucket_mustbe' => 'Avatar MUST be in jpg, gif or png format. Make sure you include http:// in the URL.',
-    'bitbucket_updated' => 'Updated avatar to ',
+    'bitbucket_updated' => 'Updated avatar to:',
     'bitbucket_tick' => ' Tick this if avatar',
     'bitbucket_upload' => 'Upload',
     'bitbucket_max' => 'Maximum file size: ',

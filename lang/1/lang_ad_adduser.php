@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 global $site_config;
 
 $lang = [

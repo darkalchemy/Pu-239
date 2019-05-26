@@ -1,6 +1,7 @@
 <?php
 
-//Language file to bugs.php by Froggaard :]
+declare(strict_types = 1);
+
 $lang = [
     'header' => 'Bugs',
     //stderr's messages

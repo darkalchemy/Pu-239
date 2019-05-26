@@ -1,9 +1,14 @@
 <?php
 
-global $site_config, $CURUSER, $cache, $user_stuffs;
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\User;
+
+global $container, $CURUSER, $site_config;
 
 if (isset($_POST['gname'])) {
-    $gname = htmlspecialchars($_POST['gname']);
+    $gname = htmlsafechars($_POST['gname']);
     $all_our_games = $site_config['arcade']['games'];
     if (!in_array($gname, $all_our_games)) {
         stderr('Error', 'I smell a fat rat!');
@@ -11,7 +16,7 @@ if (isset($_POST['gname'])) {
 }
 
 if (isset($_POST['levelName'])) {
-    $levelName = htmlspecialchars($_POST['levelName']);
+    $levelName = htmlsafechars($_POST['levelName']);
     $all_levels = [
         'LEVEL: SLUG',
         'LEVEL: WORM',
@@ -22,10 +27,11 @@ if (isset($_POST['levelName'])) {
     }
 }
 
-$score = (isset($_POST['score']) ? intval($_POST['score']) : (isset($_POST['gscore']) ? intval($_POST['gscore']) : 0));
-$level = (isset($_POST['level']) ? intval($_POST['level']) : 1);
+$score = isset($_POST['score']) ? intval($_POST['score']) : (isset($_POST['gscore']) ? intval($_POST['gscore']) : 0);
+$level = isset($_POST['level']) ? intval($_POST['level']) : 1;
 
 $highScore = 0;
+$fluent = $container->get(Database::class);
 $highScore = $fluent->from('flashscores')
                     ->select(null)
                     ->select('score')
@@ -34,18 +40,28 @@ $highScore = $fluent->from('flashscores')
                     ->limit(1)
                     ->fetch('score');
 
-sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES (' . sqlesc($gname) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($level) . ', ' . sqlesc($score) . ')') or sqlerr(__FILE__, __LINE__);
+$values = [
+    'game' => $gname,
+    'user_id' => $CURUSER['id'],
+    'level' => $level,
+    'score' => $score,
+];
+$fluent->insertInto('flashscores')
+       ->values($values)
+       ->execute();
+
 $game_id = array_search($gname, $site_config['arcade']['games']);
 $game = $site_config['arcade']['game_names'][$game_id];
 $link = '[url=' . $site_config['paths']['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
 $classColor = get_user_class_color($CURUSER['class']);
 if ($highScore < $score) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['arcade']['top_score_points']} karma points.";
-    $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - {$site_config['arcade']['top_score_points']} Points for setting a new high score in $game.\n ";
+    $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$site_config['arcade']['top_score_points']} Points for setting a new high score in $game.\n ";
     $set = [
-        'bonuscomment' => new Envms\FluentPDO\Literal("CONCAT(\"$bonuscomment\", bonuscomment)"),
-        'seedbonus' => new Envms\FluentPDO\Literal("seedbonus + {$site_config['arcade']['top_score_points']}"),
+        'bonuscomment' => $bonuscomment . $CURUSER['bonuscomment'],
+        'seedbonus' => $site_config['arcade']['top_score_points'] + $CURUSER['seedbonus'],
     ];
+    $user_stuffs = $container->get(User::class);
     $user_stuffs->update($set, $CURUSER['id']);
 } elseif ($score >= .9 * $highScore) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a whopping " . number_format($score) . '. Excellent! The high score remains ' . number_format($highScore) . '.';
@@ -57,20 +73,46 @@ require_once INCL_DIR . 'function_users.php';
 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
     autoshout($message);
 }
+$max = $fluent->from('flashscores')
+              ->select(null)
+              ->select('MAX(score) AS score')
+              ->select('game')
+              ->groupBy('game');
 
-$res = sql_query('SELECT MAX(score) AS score, game FROM flashscores GROUP BY game') or sqlerr(__FILE__, __LINE__);
-while ($row = $res->fetch_assoc()) {
-    $next = sql_query("SELECT score, game, level, user_id FROM flashscores WHERE game = '" . $row['game'] . "' AND score = " . $row['score']) or sqlerr(__FILE__, __LINE__);
-    while ($score = $next->fetch_assoc()) {
-        $high = sql_query("SELECT score, game, level, user_id FROM highscores WHERE game = '" . $row['game'] . "'") or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($high) > 0) {
-            while ($check = $high->fetch_assoc()) {
+foreach ($max as $row) {
+    $next = $fluent->from('flashscores')
+                   ->where('game = ?', $row['game'])
+                   ->where('score = ?', $row['score']);
+    foreach ($next as $score) {
+        $high = $fluent->from('highscores')
+                       ->where('game = ?', $row['game'])
+                       ->where('score = ?', $row['score'])
+                       ->fetchAll();
+
+        if (!empty($high)) {
+            foreach ($high as $check) {
                 if ($score['game'] === $check['game'] && $score['score'] > $check['score']) {
-                    sql_query('UPDATE highscores SET score = ' . $score['score'] . ', level = ' . $score['level'] . ', user_id=' . $score['user_id'] . " WHERE game = '" . $score['game'] . "'") or sqlerr(__FILE__, __LINE__);
+                    $set = [
+                        'score' => $score['score'],
+                        'level' => $score['level'],
+                        'user_id' => $score['user_id'],
+                    ];
+                    $fluent->update('highscores')
+                           ->set($set)
+                           ->where('game = ?', $score['game'])
+                           ->execute();
                 }
             }
         } else {
-            sql_query('INSERT INTO highscores (score, level, user_id, game) VALUES (' . $score['score'] . ', ' . $score['level'] . ', ' . $score['user_id'] . ", '" . $score['game'] . "')") or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'score' => $score['score'],
+                'level' => $score['level'],
+                'user_id' => $score['user_id'],
+                'game' => $score['game'],
+            ];
+            $fluent->insertInto('highscores')
+                   ->values($values)
+                   ->execute();
         }
     }
 }

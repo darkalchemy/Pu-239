@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'freeusers_wtf' => 'WTF!',
     'freeusers_msg' => 'Freeleech On All Torrents have been removed by ',

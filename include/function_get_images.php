@@ -1,27 +1,37 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 
 /**
- * @param      $media
- * @param      $imdb
- * @param      $type
- * @param null $season
+ * @param string   $media
+ * @param string   $imdb
+ * @param string   $type
+ * @param int|null $season
  *
- * @return bool|mixed
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
- * @throws Exception
+ * @return array|bool|mixed
  */
-function get_image_by_id($media, $imdb, $type, $season = null)
+function get_image_by_id(string $media, string $imdb, string $type, ?int $season = null)
 {
+    $image = '';
     if ($media === 'tv') {
         $image = getTVImagesByTVDb($imdb, $type, $season);
     } elseif ($media === 'movie') {
-        $image = getMovieImagesByID($imdb, $type);
+        $image = getMovieImagesByID($imdb, true, $type);
     } else {
         $tmdbid = get_movie_id($imdb, 'tmdb_id');
-        $image = getMovieImagesByID($tmdbid, $type);
+        if ($tmdbid) {
+            $image = getMovieImagesByID((string) $tmdbid, true, $type);
+        }
     }
 
     return $image;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -12,34 +14,48 @@ class Userblock
     protected $fluent;
     protected $cache;
     protected $site_config;
+    protected $settings;
 
-    public function __construct()
+    /**
+     * Userblock constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     * @param Settings $settings
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, Settings $settings)
     {
-        global $site_config, $cache, $fluent;
-
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
      * @param int $userid
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function get(int $userid)
     {
         $blocks = $this->cache->get('userblocks_' . $userid);
         if ($blocks === false || is_null($blocks)) {
-            $blocks = $this->fluent->from('user_blocks')
-                                   ->select(null)
-                                   ->select('index_page')
-                                   ->select('global_stdhead')
-                                   ->select('userdetails_page')
-                                   ->where('userid=?', $userid)
-                                   ->fetch();
+            while (!$blocks) {
+                $blocks = $this->fluent->from('user_blocks')
+                                       ->select(null)
+                                       ->select('index_page')
+                                       ->select('global_stdhead')
+                                       ->select('userdetails_page')
+                                       ->where('userid = ?', $userid)
+                                       ->fetch();
+                if (!$blocks) {
+                    $this->add(['userid' => $userid]);
+                }
+            }
 
             $this->cache->set('userblocks_' . $userid, $blocks, $this->site_config['expires']['u_status']);
         }

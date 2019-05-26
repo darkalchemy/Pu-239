@@ -1,19 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param $data
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return bool
  */
 function trivia_update($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $fluent, $cache;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
+    $cache = $container->get(Cache::class);
     $count = $cache->get('trivia_questions_count_');
+    $fluent = $container->get(Database::class);
     if ($count === false || is_null($count)) {
         $count = $fluent->from('triviaq')
                         ->select(null)
@@ -66,7 +76,7 @@ function trivia_update($data)
             ];
             $fluent->update('triviaq')
                    ->set($set)
-                   ->where('qid=?', $qid)
+                   ->where('qid = ?', $qid)
                    ->execute();
 
             $values = $fluent->from('triviaq')
@@ -90,19 +100,25 @@ function trivia_update($data)
     if ($data['clean_log']) {
         write_log('Trivia Questions Cleanup completed' . $text);
     }
+
+    return true;
 }
 
 /**
- * @return array|bool|mixed
- *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function get_qids()
 {
-    global $fluent, $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $qids = $cache->get('triviaquestions_');
     if ($qids === false || is_null($qids)) {
+        $fluent = $container->get(Database::class);
         $result = $fluent->from('triviaq')
                          ->select(null)
                          ->select('qid')

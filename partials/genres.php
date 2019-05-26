@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $genres = [
     $lang['upload_movie'],
     $lang['upload_tv'],

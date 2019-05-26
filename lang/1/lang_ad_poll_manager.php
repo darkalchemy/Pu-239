@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //delete_poll
     'poll_dp_usr_err' => 'USER ERROR',

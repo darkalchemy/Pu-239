@@ -1,6 +1,8 @@
 <?php
 
-global $CURUSER, $lang;
+declare(strict_types = 1);
+
+global $CURUSER, $site_config;
 
 if ($CURUSER && $CURUSER['override_class'] != 255) {
     $htmlout .= "

@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+
 /**
  * @param $data
  *
@@ -7,13 +13,9 @@
  */
 function achievement_seedtime_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $seedtime = 604800; // 7days
     $seedtime2 = 1209600; // 14days
     $seedtime3 = 1814400; // 21days
@@ -24,13 +26,14 @@ function achievement_seedtime_update($data)
     $seedtime8 = 10368000; // 120days
     $seedtime9 = 12960000; // 200days
     $seedtime10 = 31536000; //1year
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('snatched AS s')
                     ->select(null)
                     ->select('DISTINCT s.userid')
                     ->select('s.seedtime')
                     ->select('a.dayseed')
-                    ->leftJoin('usersachiev AS a ON s.userid=a.userid')
-                    ->where('seedtime>= ?', $seedtime)
+                    ->leftJoin('usersachiev AS a ON s.userid = a.userid')
+                    ->where('seedtime >= ?', $seedtime)
                     ->groupBy('s.userid')
                     ->groupBy('s.seedtime')
                     ->groupBy('a.dayseed')
@@ -43,6 +46,7 @@ function achievement_seedtime_update($data)
         $subject = 'New Achievement Earned!';
         $points = random_int(1, 3);
         $var1 = 'dayseed';
+        $cache = $container->get(Cache::class);
         foreach ($query as $arr) {
             $timeseeded = $arr['seedtime'];
             $dayseed = $arr['dayseed'];
@@ -111,6 +115,7 @@ function achievement_seedtime_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
@@ -119,8 +124,8 @@ function achievement_seedtime_update($data)
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Seedtime Completed using $queries queries. Seedtime Achievements awarded to - " . $count . ' Member(s).' . $text);
+        if ($data['clean_log']) {
+            write_log('Achievements Cleanup: Seedtime Completed. Seedtime Achievements awarded to - ' . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);
     }

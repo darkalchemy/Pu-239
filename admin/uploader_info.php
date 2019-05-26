@@ -1,45 +1,70 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_upinfo'));
 $HTMLOUT = $count = '';
+global $container, $site_config;
+
+$fluent = $container->get(Database::class);
 $count1 = $fluent->from('torrents')
                  ->select(null)
-                 ->select('COUNT(*) AS count')
+                 ->select('COUNT(id) AS count')
                  ->fetch('count');
 
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=uploader_info&amp;');
-//=== main query
-$res = sql_query('SELECT COUNT(t.id) AS how_many_torrents, t.owner, t.added, u.username, u.uploaded, u.downloaded, u.id, u.donor, u.suspended, u.class, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king
-            FROM torrents AS t LEFT JOIN users AS u ON u.id=t.owner GROUP BY t.owner ORDER BY how_many_torrents DESC ' . $pager['limit']);
+$counted = $fluent->from('torrents AS t')
+                  ->select(null)
+                  ->select('COUNT(t.id) AS how_many_torrents')
+                  ->select('t.owner')//->select('t.added')
+                  ->select('u.class')
+                  ->select('u.uploaded')
+                  ->select('u.downloaded')
+                  ->leftJoin('users AS u ON t.owner = u.id')
+                  ->groupBy('t.owner')//->groupBy('t.added')
+                  ->orderBy('how_many_torrents DESC')
+                  ->limit($pager['pdo']['limit'])
+                  ->offset($pager['pdo']['offset'])
+                  ->fetchAll();
+
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= '<table class="table table-bordered table-striped">
-   <tr><td class="colhead">' . $lang['upinfo_rank'] . '</td><td class="colhead">' . $lang['upinfo_torrent'] . '</td><td class="colhead">' . $lang['upinfo_member'] . '</td><td class="colhead">' . $lang['upinfo_class'] . '</td><td class="colhead">' . $lang['upinfo_ratio'] . '</td><td class="colhead">' . $lang['upinfo_ltupload'] . '</td><td class="colhead">' . $lang['upinfo_sendpm'] . '</td></tr>';
+$heading = '
+    <tr>
+        <th>' . $lang['upinfo_rank'] . '</th>
+        <th>' . $lang['upinfo_torrent'] . '</th>
+        <th>' . $lang['upinfo_member'] . '</th>
+        <th>' . $lang['upinfo_class'] . '</th>
+        <th>' . $lang['upinfo_ratio'] . '</th>
+        <th>' . $lang['upinfo_sendpm'] . '</th>
+    </tr>';
 $i = 0;
-while ($arr = mysqli_fetch_assoc($res)) {
+$body = '';
+foreach ($counted as $arr) {
     ++$i;
     $ratio = member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']);
-    $HTMLOUT .= '<tr>
-<td>' . $i . '</td>
-<td>' . (int) $arr['how_many_torrents'] . '</td>
-<td>' . format_username($arr['id']) . '</td>
-<td>' . get_user_class_name($arr['class']) . '</td>
-<td>' . $ratio . '</td>
-<td>' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
-<td>
-    <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['id'] . '" class="button is-small tooltipper" title="' . $lang['upinfo_sendpm'] . '">' . $lang['upinfo_sendpm'] . '</a></td>
-</tr>';
+    $body .= '
+    <tr>
+        <td>' . $i . '</td>
+        <td>' . (int) $arr['how_many_torrents'] . '</td>
+        <td>' . format_username($arr['owner']) . '</td>
+        <td>' . get_user_class_name($arr['class']) . '</td>
+        <td>' . $ratio . '</td>
+        <td>
+            <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['owner'] . '" class="button is-small tooltipper" title="' . $lang['upinfo_sendpm'] . '">' . $lang['upinfo_sendpm'] . '</a>
+        </td>
+    </tr>';
 }
-$HTMLOUT .= '</table>';
+$HTMLOUT .= main_table($body, $heading);
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }

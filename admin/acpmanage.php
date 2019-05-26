@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -7,8 +11,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent, $cache;
-
 $lang = array_merge($lang, load_language('ad_acp'), load_language('ad_delacct'));
 $stdfoot = [
     'js' => [
@@ -16,6 +18,10 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = '';
+global $container, $CURUSER, $site_config;
+
+$fluent = $container->get(Database::class);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     $ids = $_POST['ids'];
     foreach ($ids as $id) {
@@ -51,28 +57,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
 }
 $disabled = $fluent->from('users')
                    ->select(null)
-                   ->select('COUNT(*) AS count')
+                   ->select('COUNT(id) AS count')
                    ->where('enabled = "no"')
                    ->fetch('count');
 $pending = $fluent->from('users')
                   ->select(null)
-                  ->select('COUNT(*) AS count')
+                  ->select('COUNT(id) AS count')
                   ->where('status = "pending"')
                   ->fetch('count');
 $count = $fluent->from('users')
                 ->select(null)
-                ->select('COUNT(*) AS count')
-                ->whereOr([
-                    'enabled' => 'no',
-                    'status' => 'pending',
-                ])
+                ->select('COUNT(id) AS count')
+                ->where('enabled = "no" OR status = "pending"')
                 ->fetch('count');
 $disabled = number_format($disabled);
 $pending = number_format($pending);
-$count = number_format($count);
+$count = $count;
 $perpage = 25;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
-$res = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
+$res = sql_query("SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
 if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -100,8 +103,8 @@ if (mysqli_num_rows($res) != 0) {
         if ($color) {
             $ratio = "<span style='color: $color;'>$ratio</span>";
         }
-        $added = get_date($arr['added'], 'LONG', 0, 1);
-        $last_access = get_date($arr['last_access'], 'LONG', 0, 1);
+        $added = get_date((int) $arr['registered'], 'LONG', 0, 1);
+        $last_access = get_date((int) $arr['last_access'], 'LONG', 0, 1);
         $class = get_user_class_name($arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
@@ -110,7 +113,7 @@ if (mysqli_num_rows($res) != 0) {
             <td>
                 <input type='checkbox' name='ids[]' value='{$arr['id']}'>
             </td>
-            <td>" . format_username($arr['id']) . "</td>
+            <td>" . format_username((int) $arr['id']) . "</td>
             <td style='white-space: nowrap;'>{$added}</td>
             <td style='white-space: nowrap;'>{$last_access}</td>
             <td>{$class}</td>

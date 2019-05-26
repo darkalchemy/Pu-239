@@ -1,31 +1,42 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param $id
  * @param $what
  *
- * @return bool|string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $fluent, $cache;
+    global $container, $CURUSER;
 
     $return = false;
     if ($id == 0 || !in_array($what, [
-            'topic',
-            'torrent',
-        ])) {
+        'topic',
+        'torrent',
+    ])) {
         return $return;
     }
     $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
+    $cache = $container->get(Cache::class);
     $rating_cache = $cache->get($keys['rating']);
     if ($rating_cache === false || is_null($rating_cache)) {
+        $fluent = $container->get(Database::class);
         $qy1 = $fluent->from('rating')
                       ->select(null)
                       ->select('IFNULL(SUM(rating), 0) AS sum')
-                      ->select('IFNULL(COUNT(*), 0) AS count')
+                      ->select('IFNULL(COUNT(id), 0) AS count')
                       ->where("$what = ?", $id)
                       ->fetch();
 
@@ -102,13 +113,13 @@ function getRate($id, $what)
         $rate = '
                     <div id="rated" class="rating">';
         foreach ([
-                     'five stars',
-                     'four stars',
-                     'three stars',
-                     'two stars',
-                     'one star',
-                 ] as $star) {
-            $rate .= '>☆</span>';
+            'five stars',
+            'four stars',
+            'three stars',
+            'two stars',
+            'one star',
+        ] as $star) {
+            $rate .= '<span>☆</span>';
             --$i;
         }
         $rate .= '</div>';

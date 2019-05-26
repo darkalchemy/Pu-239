@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use PDOStatement;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Message.
@@ -12,32 +15,44 @@ class Message
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $env;
     protected $limit;
+    protected $container;
+    protected $site_config;
 
-    public function __construct()
+    /**
+     * Message constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param Settings           $settings
+     * @param ContainerInterface $c
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, Settings $settings, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
+        $this->env = $this->container->get('env');
+        $this->site_config = $settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->limit = $this->env['db']['query_limit'];
     }
 
     /**
      * @param array $values
      *
-     * @return bool|int
-     *
      * @throws Exception
+     *
+     * @return bool|int
      */
     public function insert(array $values)
     {
         if (empty($values)) {
             return false;
         }
-        $count = floor($this->limit / max(array_map('count', $values)));
+        $count = (int) ($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $result = $this->fluent->insertInto('messages')
                                    ->values($t)
@@ -69,14 +84,14 @@ class Message
      * @param int $id
      * @param int $userid
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function delete(int $id, int $userid)
     {
         $result = $this->fluent->delete('messages')
-                               ->where('id=?', $id)
+                               ->where('id = ?', $id)
                                ->execute();
 
         $this->cache->decrement('inbox_' . $userid);
@@ -87,14 +102,14 @@ class Message
     /**
      * @param int $id
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_by_id(int $id)
     {
         $message = $this->fluent->from('messages')
-                                ->where('id=?', $id)
+                                ->where('id = ?', $id)
                                 ->fetch();
 
         return $message;
@@ -104,15 +119,15 @@ class Message
      * @param array $set
      * @param int   $id
      *
-     * @return bool|int|PDOStatement
-     *
      * @throws Exception
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $id)
     {
         $result = $this->fluent->update('messages')
                                ->set($set)
-                               ->where('id=?', $id)
+                               ->where('id = ?', $id)
                                ->execute();
 
         return $result;
@@ -138,9 +153,9 @@ class Message
      * @param int $userid
      * @param int $location
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function get_count(int $userid, int $location = 1)
     {
@@ -151,7 +166,7 @@ class Message
         if ($pmCount === false || is_null($pmCount)) {
             $pmCount = $this->fluent->from('messages')
                                     ->select(null)
-                                    ->select('COUNT(*) AS count')
+                                    ->select('COUNT(id) AS count')
                                     ->where('receiver = ?', $userid)
                                     ->where('unread = ?', 'yes')
                                     ->where('location = ?', $location)
@@ -167,9 +182,9 @@ class Message
     /**
      * @param int $dt
      *
-     * @return int
-     *
      * @throws Exception
+     *
+     * @return int
      */
     public function delete_old_messages(int $dt)
     {

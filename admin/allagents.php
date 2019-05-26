@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_allagents'));
+global $container;
+
+$fluent = $container->get(Database::class);
 $agents = $fluent->from('peers')
                  ->select(null)
                  ->select('agent')

@@ -1,8 +1,9 @@
 <?php
 
-require_once INCL_DIR . 'function_users.php';
-global $h1_thingie, $lang, $CURUSER;
+declare(strict_types = 1);
+global $CURUSER, $h1_thingie;
 
+require_once INCL_DIR . 'function_users.php';
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 
 if ($mailbox > 1) {
@@ -21,7 +22,7 @@ if ($mailbox > 1) {
 //=== get stuff for the pager
 $res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . sqlesc($CURUSER['id']) . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($CURUSER['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
-$messages = $arr_count[0];
+$messages = (int) $arr_count[0];
 //==== get count from PM boxs & get image & % box full
 $filled = $messages > 0 ? (($messages / $maxbox) * 100) : 0;
 //$filled = (($messages / $maxbox) * 100);
@@ -47,14 +48,12 @@ $HTMLOUT .= "
     $h1_thingie
     $top_links
     <a id='pm'></a>
-        <h3 class='has-text-centered top20'>
-            <span class='size_1'>{$messages} / {$maxbox}</span>
-            <span class='size_5'> {$mailbox_name} </span>
-            <span class='size_1'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
-            <br>
-            <div class='bottom20'>$mailbox_pic</div>
-            " . insertJumpTo($mailbox) . $other_box_info . '
-        </h3>' . ($messages > $perpage ? $menu_top : '') . "
+        <div class='level-center-center'>
+            <span class='size_2'>{$messages} / {$maxbox}</span>
+            <span class='size_7 left20 right20 has-text-weight-bold'>{$mailbox_name}</span>
+            <span class='size_2'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
+         </div>
+        <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox) . $other_box_info . ($messages > $perpage ? $menu_top : '') . "
         <form action='messages.php' method='post' name='checkme' accept-charset='utf-8'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20'>
@@ -113,7 +112,7 @@ if (mysqli_num_rows($res) === 0) {
             }
         }
         $subject = !empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject'];
-        $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row['id']) . $friends;
+        $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username((int) $row['id']) . $friends;
         $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '">';
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = $show_pm_avatar ? get_avatar($row) : '';
@@ -121,8 +120,8 @@ if (mysqli_num_rows($res) === 0) {
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
                     <td><a class="altlink"  href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
-                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($CURUSER['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $CURUSER['id'] ? ' [' . format_username($row['poster']) . ']' : '') . '</td>
-                    <td class="has-text-centered w-15 mw-150">' . get_date($row['added'], '') . '</td>
+                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($CURUSER['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $CURUSER['id'] ? ' [' . format_username((int) $row['poster']) . ']' : '') . '</td>
+                    <td class="has-text-centered w-15 mw-150">' . get_date((int) $row['added'], '') . '</td>
                     <td class="has-text-centered">
                         <input type="checkbox" name="pm[]" value="' . (int) $row['message_id'] . '">
                     </td>
@@ -149,11 +148,9 @@ $show_pm_avatar_drop_down = '
 $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
-            <div class='level-center'>
-                <span>
-                    <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'> " . get_all_boxes($mailbox) . " or
-                    <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
-                </span>
+            <div class='level-center-center'>
+                <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'> " . get_all_boxes($mailbox) . " or
+                <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
             </div>
         </td>
     </tr>

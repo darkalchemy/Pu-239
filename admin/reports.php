@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $session;
-
 $lang = array_merge($lang, load_language('ad_report'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = $delt_link = $type = $count2 = '';
 
 /**
@@ -49,7 +53,7 @@ if (isset($_GET['id'])) {
     }
 }
 if (isset($_GET['type'])) {
-    $type = ($_GET['type'] ? htmlsafechars($_GET['type']) : htmlsafechars($_POST['type']));
+    $type = ($_GET['type'] ? htmlsafechars((string) $_GET['type']) : htmlsafechars((string) $_POST['type']));
     $typesallowed = [
         'User',
         'Comment',
@@ -65,7 +69,7 @@ if (isset($_GET['type'])) {
         stderr("{$lang['reports_error']}", "{$lang['reports_error2']}");
     }
 }
-
+$cache = $container->get(Cache::class);
 if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     if (!is_valid_id($_POST['id'])) {
         stderr("{$lang['reports_error']}", "{$lang['reports_error3']}");
@@ -86,11 +90,11 @@ if ((isset($_GET['delete'])) && ($CURUSER['class'] >= UC_MAX)) {
 
 $res = sql_query('SELECT count(id) FROM reports') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_array($res);
-$count = $row[0];
+$count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;");
-if ($count == '0') {
-    $HTMLOUT .= stderr('', $lang['reports_nice']);
+if ($count === 0) {
+    $HTMLOUT .= stderr('', $lang['reports_nice'], 'bottom20');
 } else {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "
@@ -130,7 +134,7 @@ if ($count == '0') {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username($arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
+            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username((int) $arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled>";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";
@@ -140,7 +144,7 @@ if ($count == '0') {
         if ($arr_info['reporting_type'] != '') {
             switch ($arr_info['reporting_type']) {
                 case 'User':
-                    $link_to_thing = format_username($arr_info['reporting_what']);
+                    $link_to_thing = format_username((int) $arr_info['reporting_what']);
                     break;
 
                 case 'Comment':
@@ -182,7 +186,7 @@ if ($count == '0') {
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username($arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Post':
@@ -194,8 +198,8 @@ if ($count == '0') {
         }
         $body .= '
         <tr>
-            <td>' . get_date($arr_info['added'], 'DATE', 0, 1) . '</td>
-            <td>' . format_username($arr_info['reported_by']) . "</td>
+            <td>' . get_date((int) $arr_info['added'], 'DATE', 0, 1) . '</td>
+            <td>' . format_username((int) $arr_info['reported_by']) . "</td>
             <td>{$link_to_thing}</td>
             <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . '</td>
             <td>' . htmlsafechars($arr_info['reason']) . "</td>
@@ -209,7 +213,7 @@ if ($count == '0') {
         if ($arr_info['how_delt_with']) {
             $HTMLOUT .= "
         <tr>
-            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
             <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>

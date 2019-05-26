@@ -1,18 +1,27 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function backup_update($data)
 {
-    $time_start = microtime(true);
-    global $site_config, $fluent;
+    global $container;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $time_start = microtime(true);
     $dt = TIME_NOW;
     $days = 3;
     $hours = 6 * 3600;
+    $fluent = $container->get(Database::class);
     $files = $fluent->from('dbbackup')
                     ->where('added < ?', $dt - ($days * 86400))
                     ->fetchAll();

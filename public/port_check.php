@@ -1,24 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $CURUSER, $lang;
-
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $stdfoot = [
     'js' => [
         get_file_name('checkport_js'),
     ],
 ];
+global $CURUSER;
 
 if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id($_GET['id'])) {
     $id = (int) $_GET['id'];
 } else {
     $id = $CURUSER['id'];
 }
-$user = format_username($id);
+$user = format_username((int) $id);
 
 $completed = "
     <h1 class='has-text-centered'>$user Port Status</h1>";

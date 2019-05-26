@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config, $mysqli, $fluent;
-
 $lang = load_language('global');
+global $container, $CURUSER, $site_config;
+
 $HTMLOUT = '';
 
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : ''));
@@ -61,17 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date = TIME_NOW;
             $owner = $CURUSER['id'];
             sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
-                    $releasename,
-                    $filename,
-                    $imdb,
-                    $comment,
-                    $langs,
-                    $fps,
-                    $poster,
-                    $cd,
-                    $date,
-                    $owner,
-                ])) . ')') or sqlerr(__FILE__, __LINE__);
+                $releasename,
+                $filename,
+                $imdb,
+                $comment,
+                $langs,
+                $fps,
+                $poster,
+                $cd,
+                $date,
+                $owner,
+            ])) . ')') or sqlerr(__FILE__, __LINE__);
             move_uploaded_file($temp_name, UPLOADSUB_DIR . $filename);
             $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
@@ -151,6 +154,7 @@ if ($mode === 'upload' || $mode === 'edit') {
             <td>
                 <select name='language' class='w-25' required>
                     <option value=''>- Select -</option>";
+    $subs = $container->get('subtitles');
     foreach ($subs as $sub) {
         $body .= "
                     <option value='{$sub['id']}'" . ($mode === 'edit' && $arr['lang'] == $sub['id'] ? ' selected' : '') . ">{$sub['name']}</option>";
@@ -251,7 +255,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         }
         $sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes') ? 'yes' : 'no';
         if ($sure === 'no') {
-            stderr('Sanity check...', 'Your are about to delete subtitile <b>' . htmlsafechars($arr['name']) . "</b> . Click <a href='subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>here</a> if you are sure.", false);
+            stderr('Sanity check...', 'Your are about to delete subtitile <b>' . htmlsafechars($arr['name']) . "</b> . Click <a href='subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>here</a> if you are sure.", null);
         } else {
             sql_query('DELETE FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $file = UPLOADSUB_DIR . $arr['filename'];
@@ -272,7 +276,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         $langs = '<b>Unknown</b>';
         foreach ($subs as $sub) {
             if ($sub['id'] == $arr['lang']) {
-                $langs = "<img src='{$sub['pic']}' alt='{$sub['name']}' class='tooltipper left10' title='{$sub['name']}'>";
+                $langs = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' alt='{$sub['name']}' class='tooltipper left10' title='{$sub['name']}'>";
                 break;
             }
         }
@@ -293,7 +297,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <tr><td>Cd# : <b>' . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</b></td></tr>
         <tr><td>Hits : <b>' . (int) $arr['hits'] . '</b></td></tr>
         <tr>
-            <td>Uploader : ' . format_username($arr['owner']);
+            <td>Uploader : ' . format_username((int) $arr['owner']);
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
             $body .= "
                 <a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "' title='Edit Sub' class='tooltipper'>
@@ -306,7 +310,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         $body .= '
             </td>
         </tr>
-        <tr><td>Added : <b>' . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
+        <tr><td>Added : <b>' . get_date((int) $arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
         $HTMLOUT .= "
         <div class='level-center'>
             $image" . main_table($body) . "
@@ -346,9 +350,10 @@ if ($mode === 'upload' || $mode === 'edit') {
 } else {
     $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
     $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('subtitles')
                     ->select(null)
-                    ->select('COUNT(*) AS count');
+                    ->select('COUNT(id) AS count');
     if ($s && $w === 'name') {
         $count = $count->where('name LIKE ?', "${$s}%");
     } elseif ($s && $w === 'imdb') {
@@ -417,7 +422,7 @@ if ($mode === 'upload' || $mode === 'edit') {
             $langs = '<b>Unknown</b>';
             foreach ($subs as $sub) {
                 if ($sub['id'] == $arr['lang']) {
-                    $langs = "<img src='{$sub['pic']}' alt='{$sub['name']}' class='tooltipper left10' title='{$sub['name']}'>";
+                    $langs = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' alt='{$sub['name']}' class='tooltipper left10' title='{$sub['name']}'>";
                     break;
                 }
             }
@@ -430,7 +435,7 @@ if ($mode === 'upload' || $mode === 'edit') {
                 <img src='{$site_config['paths']['images_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
             </a>
         </td>
-        <td class='has-text-centered'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
+        <td class='has-text-centered'>" . get_date((int) $arr['added'], 'LONG', 0, 1) . "</td>
         <td class='has-text-centered'>" . htmlsafechars($arr['hits']) . "</td>
         <td class='has-text-centered'>" . ($arr['fps'] == 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
         <td class='has-text-centered'>" . ($arr['cds'] == 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
@@ -449,7 +454,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <td></td>';
             }
             $body .= "
-        <td class='has-text-centered'>" . format_username($arr['owner']) . '</td>
+        <td class='has-text-centered'>" . format_username((int) $arr['owner']) . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);

@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
-
 $lang = load_language('global');
+global $container, $CURUSER;
+
 if (empty($_POST)) {
     return null;
 }
@@ -23,7 +27,8 @@ if ($what === 'torrent' && $completecount == 0) {
 }
 
 if ($id > 0 && $rate >= 1 && $rate <= 5) {
-    if (sql_query('INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
+    $cache = $container->get(Cache::class);
+    if (sql_query('INSERT INTO rating(' . $what . ',rating, user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
         $table = ($what === 'torrent' ? 'torrents' : 'topics');
         sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id=' . sqlesc($id));
         $cache->delete('rating_' . $what . '_' . $id . '_' . $CURUSER['id']);
@@ -49,7 +54,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         $qy1 = $fluent->from('rating')
                       ->select(null)
                       ->select('SUM(rating) AS sum')
-                      ->select('COUNT(*) AS count')
+                      ->select('COUNT(id) AS count')
                       ->where("$what = ?", $id)
                       ->fetchAll();
         $qy2 = $fluent->from('rating')

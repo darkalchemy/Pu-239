@@ -1,6 +1,6 @@
 <?php
 
-global $site_config;
+declare(strict_types = 1);
 
 $lang = [
     //upload errors
@@ -61,7 +61,6 @@ $lang = [
     'upload_free_4_weeks' => 'Free for 4 weeks',
     'upload_free_8_weeks' => 'Free for 8 weeks',
     'upload_unlimited' => 'Unlimited',
-    'upload_type' => 'Release Type',
     'upload_subtitles' => 'Subtitles',
     'upload_strip' => 'Strip ASCII',
     'upload_what_this' => 'What is this?',

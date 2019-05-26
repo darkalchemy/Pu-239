@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_index'));
+global $site_config;
 
 /**
  * @param $n
@@ -16,6 +17,7 @@ $lang = array_merge($lang, load_language('ad_index'));
 function is_s($n)
 {
     global $lang;
+
     if ($n == 1) {
         return '';
     } else {
@@ -29,6 +31,7 @@ function is_s($n)
 function uptime()
 {
     global $lang;
+
     $res = '';
     $filename = '/proc/uptime';
     $fd = fopen($filename, 'r');
@@ -108,8 +111,8 @@ function loadavg($return_all = false)
 $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['index_serverload']}</h1>";
 $body = "
-    <div id='load'>
-        <div style='width: 100%; height: 15px; background: url({$site_config['paths']['images_baseurl']}loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
+    <div id='load' class='padding20'>
+        <div style='width: 100%; height: 15px; background: url({$site_config['paths']['images_baseurl']}/loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';
@@ -154,7 +157,7 @@ $body .= "
 
 $HTMLOUT .= main_div($body) . "
     <script>
-        var percent =; $percent;
+        var percent = {$percent};
         var width = document.getElementById('load').offsetWidth;
         width = Math.ceil(width / 100 * percent);
         document.getElementById('load_image').style.width = width + 'px';

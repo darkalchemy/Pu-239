@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @param $id_data
  * @param $id_name
@@ -14,7 +16,7 @@ function StdDecodePeerId($id_data, $id_name)
         if ($id_name === 'BitTornado' || $id_name === 'ABC') {
             if ($c != '-' && ctype_digit($c)) {
                 $version_str .= "$c.";
-            } elseif ('-' != $c && ctype_alpha($c)) {
+            } elseif ($c != '-' && ctype_alpha($c)) {
                 $version_str .= (ord($c) - 55) . '.';
             } else {
                 break;

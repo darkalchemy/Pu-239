@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
@@ -13,10 +15,14 @@ class Poll
     protected $fluent;
     protected $cache;
 
-    public function __construct()
+    /**
+     * Poll constructor.
+     *
+     * @param Cache    $cache
+     * @param Database $fluent
+     */
+    public function __construct(Cache $cache, Database $fluent)
     {
-        global $fluent, $cache;
-
         $this->fluent = $fluent;
         $this->cache = $cache;
     }
@@ -29,7 +35,7 @@ class Poll
     public function delete(int $poll_id)
     {
         $this->fluent->deleteFrom('polls')
-                     ->where('pid=?', $poll_id)
+                     ->where('pid = ?', $poll_id)
                      ->execute();
 
         $this->cache->delete('poll_' . $poll_id);
@@ -40,15 +46,15 @@ class Poll
      * @param array $set
      * @param int   $poll_id
      *
-     * @return bool|int|PDOStatement
-     *
      * @throws Exception
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $poll_id)
     {
         $result = $this->fluent->update('polls')
                                ->set($set)
-                               ->where('pid=?', $poll_id)
+                               ->where('pid = ?', $poll_id)
                                ->execute();
         $this->cache->delete('poll_' . $poll_id);
         $this->cache->delete('polls_');
@@ -59,9 +65,9 @@ class Poll
     /**
      * @param array $values
      *
-     * @return bool|int
-     *
      * @throws Exception
+     *
+     * @return bool|int
      */
     public function insert(array $values)
     {
@@ -77,16 +83,16 @@ class Poll
     /**
      * @param int $poll_id
      *
-     * @return bool|mixed
-     *
      * @throws Exception
+     *
+     * @return bool|mixed
      */
     public function get(int $poll_id)
     {
         $poll = $this->cache->get('poll_' . $poll_id);
         if ($poll === false || is_null($poll)) {
             $poll = $this->fluent->from('polls')
-                                 ->where('pid=?', $poll_id)
+                                 ->where('pid = ?', $poll_id)
                                  ->fetch();
             $this->cache->set('polls_' . $poll_id, $poll, 86400);
         }
@@ -97,9 +103,9 @@ class Poll
     /**
      * @param int $limit
      *
-     * @return array|bool|mixed
-     *
      * @throws Exception
+     *
+     * @return array|bool|mixed
      */
     public function get_all(int $limit = 0)
     {

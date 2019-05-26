@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //reports
     'text_incorrect' => 'Incorrect access',

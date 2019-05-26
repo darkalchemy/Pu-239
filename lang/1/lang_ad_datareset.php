@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'datareset_stderr' => ':w00t:',
     'datareset_stderr1' => 'wtf are your trying to do!?',

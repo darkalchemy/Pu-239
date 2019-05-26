@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $site_config, $cache, $session, $mysqli;
+global $container, $CURUSER;
 
+$session = $container->get(Session::class);
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
@@ -28,21 +34,27 @@ $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 
 /**
- * @return string
+ * @param int  $uid
+ * @param int  $tid
+ * @param bool $ajax
  *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return false|string
  */
-function print_list()
+function print_list(int $uid, int $tid, bool $ajax)
 {
-    global $uid, $tid, $ajax, $site_config;
+    global $site_config;
 
     $target = $ajax ? '_self' : '_parent';
     $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid=' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
-    $list = [];
+    $list = $ids = [];
     $hadTh = false;
     if (mysqli_num_rows($qt) > 0) {
         while ($a = mysqli_fetch_assoc($qt)) {
-            $list[] = format_username($a['userid']);
+            $list[] = format_username((int) $a['userid']);
             $ids[] = (int) $a['userid'];
         }
         $hadTh = in_array($uid, $ids) ? true : false;
@@ -101,7 +113,7 @@ IFRAME;
 
 switch ($do) {
     case 'list':
-        print print_list();
+        print print_list($uid, $tid, $ajax);
         break;
 
     case 'add':
@@ -111,7 +123,7 @@ switch ($do) {
             $arr = $result->fetch_row();
             if ($arr[0] == 0) {
                 if (sql_query('INSERT INTO thanks(userid,torrentid) VALUES(' . sqlesc($uid) . ',' . sqlesc($tid) . ')')) {
-                    echo print_list();
+                    echo print_list($uid, $tid, $ajax);
                 } else {
                     $msg = 'There was an error with the query,contact the staff. Mysql error ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
                     echo $ajax ? json_encode([
@@ -126,6 +138,7 @@ switch ($do) {
             $sql = sql_query('SELECT seedbonus FROM users WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);
             $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus']['per_thanks']);
+            $cache = $container->get(Cache::class);
             $cache->update_row('user_' . $uid, [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);

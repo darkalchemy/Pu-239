@@ -4,7 +4,7 @@
 }
 
 .breadcrumb li a {
-    color: #ff3860;
+    color: var(--main-bdr-color);
 }
 
 .breadcrumb {
@@ -27,7 +27,7 @@
     }
 
     .breadcrumb li a {
-        color: #ff3860;
+        color: var(--main-bdr-color);
         text-decoration: none;
         padding: 15px 0 15px 40px;
         background: hsla(0, 0%, 15%, 1);
@@ -60,7 +60,7 @@
         height: 0;
         border-top: 50px solid transparent;
         border-bottom: 50px solid transparent;
-        border-left: 30px solid #ff3860;
+        border-left: 30px solid var(--main-bdr-color);
         position: absolute;
         top: 50%;
         margin-top: -50px;

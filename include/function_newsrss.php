@@ -1,13 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param array $links
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function foxnews_shout($links = [])
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
     if (!$site_config['newsrss']['foxnews']) {
         return;
@@ -22,6 +31,8 @@ function foxnews_shout($links = [])
 
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
+        $cache = $container->get(Cache::class);
+        $fluent = $container->get(Database::class);
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
             $xml = $cache->get('foxnewsrss_' . $hash);
@@ -56,8 +67,7 @@ function foxnews_shout($links = [])
                 $values = [
                     'link' => $link,
                 ];
-                $query = $fluent->insertInto('newsrss')
-                                ->values($values);
+                $query = $fluent->insertInto('newsrss')->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {
@@ -75,11 +85,13 @@ function foxnews_shout($links = [])
 /**
  * @param array $links
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function tfreak_shout($links = [])
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
     if (!$site_config['newsrss']['tfreak']) {
         return;
@@ -87,6 +99,8 @@ function tfreak_shout($links = [])
     $empty = empty($links);
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
+        $cache = $container->get(Cache::class);
+        $fluent = $container->get(Database::class);
         $xml = $cache->get('tfreaknewsrss_');
         if ($xml === false || is_null($xml)) {
             $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
@@ -119,8 +133,7 @@ function tfreak_shout($links = [])
             $values = [
                 'link' => $link,
             ];
-            $query = $fluent->insertInto('newsrss')
-                            ->values($values);
+            $query = $fluent->insertInto('newsrss')->values($values);
             $newid = $query->execute();
             if ($newid) {
                 if (!$empty || $count === $i++) {
@@ -137,11 +150,13 @@ function tfreak_shout($links = [])
 /**
  * @param array $links
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function github_shout($links = [])
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
     if (!$site_config['newsrss']['github']) {
         return;
@@ -153,6 +168,8 @@ function github_shout($links = [])
     ];
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
         include_once INCL_DIR . 'function_users.php';
+        $cache = $container->get(Cache::class);
+        $fluent = $container->get(Database::class);
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
             $rss = $cache->get('githubcommitrss_' . $hash);
@@ -160,7 +177,11 @@ function github_shout($links = [])
                 $rss = fetch($feed);
                 $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }
+            libxml_use_internal_errors(true);
             $xml = simplexml_load_string($rss);
+            if (!$xml) {
+                continue;
+            }
             if (!empty($xml->entry)) {
                 $items = $xml->entry;
             }
@@ -195,8 +216,7 @@ function github_shout($links = [])
                 $values = [
                     'link' => $link,
                 ];
-                $query = $fluent->insertInto('newsrss')
-                                ->values($values);
+                $query = $fluent->insertInto('newsrss')->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {

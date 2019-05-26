@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'grouppm_nosub' => "Your message doesn't have a subject",
     'grouppm_nomsg' => 'There is not any text in your message!',

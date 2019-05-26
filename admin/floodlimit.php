@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('ad_floodlimit'));
+global $site_config;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $limits = isset($_POST['limit']) && is_array($_POST['limit']) ? $_POST['limit'] : 0;
     foreach ($limits as $class => $limit) {

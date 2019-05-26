@@ -1,8 +1,14 @@
 <?php
 
-global $message_stuffs, $user_stuffs, $CURUSER;
+declare(strict_types = 1);
+
+use Pu239\Message;
+use Pu239\User;
+
+global $container, $CURUSER, $site_config, $lang;
 
 $body = '';
+$message_stuffs = $container->get(Message::class);
 $message = $message_stuffs->get_by_id($pm_id);
 
 if ($message['sender'] == $CURUSER['id'] && $message['sender'] == $CURUSER['id'] || empty($message)) {
@@ -10,6 +16,7 @@ if ($message['sender'] == $CURUSER['id'] && $message['sender'] == $CURUSER['id']
 }
 
 if ($message['sender'] !== $CURUSER['id']) {
+    $user_stuffs = $container->get(User::class);
     $for_username = $user_stuffs->get_item('username', $message['sender']);
     $forwarded_username = ($message['sender'] === 0 ? $lang['pm_forward_system'] : (!$for_username ? $lang['pm_forward_unknow'] : htmlsafechars($for_username)));
 } else {

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //stderr
     'stderr_errorhead' => 'Error',
     'stderr_error1' => 'What the hell are you trying to do? You are already logged in!',
     'stderr_error2' => 'The characters you type must match the characters in the picture. Please try again.',
-    'stderr_error3' => 'You cannot reset your password because you have not yet definied your question/secret aswer!',
+    'stderr_error3' => 'You cannot reset your password because you have not yet defined your question/secret answer!',
     'stderr_error4' => 'You cannot reset your password because your account has not been confirmed!',
     'stderr_error5' => 'This user was not found in the database!',
     'stderr_error6' => 'You must type your secret answer!',
@@ -13,7 +15,7 @@ $lang = [
     'stderr_error8' => 'This user was not found in the database!',
     'stderr_error9' => 'You must type your new password!',
     'stderr_error10' => "The passwords didn't match! Please try again.",
-    'stderr_error11' => 'Sorry, password is too short (min is 6 chars)',
+    'stderr_error11' => 'Sorry, password is too short (min is 8 chars)',
     'stderr_error12' => 'Sorry, password is too long (max is 40 chars)',
     'stderr_error13' => 'Unable to update user data. Please contact an administrator about this error.',
     'stderr_successhead' => 'Success',

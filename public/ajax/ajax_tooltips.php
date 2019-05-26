@@ -1,25 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Peer;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $site_config, $cache, $session;
-
 $lang = array_merge(load_language('global'), load_language('index'));
 
-if (empty($_POST)) {
-    $session->set('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
-    die();
-}
+global $container, $CURUSER, $site_config;
 
 header('Content-Type: application/json');
 if (!empty($CURUSER)) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
-
-    $peer = new Pu239\Peer();
+    $peer = $container->get(Peer::class);
     $seed = $peer->getPeersFromUserId($CURUSER['id']);
 
     if (!empty($seed['conn'])) {
@@ -61,79 +58,79 @@ if (!empty($CURUSER)) {
     $member_reputation = get_reputation($CURUSER);
 
     $StatusBar = "
-    <div class='navbar-start'>{$lang['gl_pstats']}</div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_uclass']}</div>
-        <div>{$usrclass}</div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_rep']}</div>
-        <div>$member_reputation</div>
-    </div>
+    <span class='navbar-start'>{$lang['gl_pstats']}</span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_uclass']}</span>
+        <span>{$usrclass}</span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_rep']}</span>
+        <span>$member_reputation</span>
+    </span>
 
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_invites']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/invite.php'>{$CURUSER['invites']}</a></div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_karma']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format((float) $CURUSER['seedbonus']) . "</a></div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_achpoints']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></div>
-    </div>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_invites']}</span>
+        <span><a href='{$site_config['paths']['baseurl']}/invite.php'>{$CURUSER['invites']}</a></span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_karma']}</span>
+        <span><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_achpoints']}</span>
+        <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></span>
+    </span>
     <br>
-    <div class='navbar-start'>{$lang['gl_tstats']}</div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_shareratio']}</div>
-        <div>" . member_ratio($CURUSER['uploaded'], $site_config['site']['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>
-    </div>';
+    <span class='navbar-start' id='hide_html'>{$lang['gl_tstats']}</span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_shareratio']}</span>
+        <span>" . member_ratio($CURUSER['uploaded'], $site_config['site']['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</span>
+    </span>';
 
     if ($site_config['site']['ratio_free']) {
         $StatusBar .= "
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_uploaded']}</div>
-        <div>$upped</div>
-    </div>";
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_uploaded']}</span>
+        <span>$upped</span>
+    </span>";
     } else {
         $StatusBar .= "
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_uploaded']}</div>
-        <div>$upped</div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_downloaded']}</div>
-        <div>$downed</div>
-    </div>";
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_uploaded']}</span>
+        <span>$upped</span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_downloaded']}</span>
+        <span>$downed</span>
+    </span>";
     }
 
     $got_moods = ($CURUSER['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
     $StatusBar .= "
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_seed_torrents']}</div>
-        <div>{$seed['yes']}</div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_leech_torrents']}</div>
-        <div>{$seed['no']}</div>
-    </div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_connectable']}</div>
-        <div>{$connectable}</div>
-    </div>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_seed_torrents']}</span>
+        <span>{$seed['yes']}</span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_leech_torrents']}</span>
+        <span>{$seed['no']}</span>
+    </span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_connectable']}</span>
+        <span>{$connectable}</span>
+    </span>
     " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_blocks'] === 'yes' ? "
     <br>
-    <div class='navbar-start'>{$lang['gl_userblocks']}</div>
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_myblocks']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
-    </div>
+    <span class='navbar-start'>{$lang['gl_userblocks']}</span>
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_myblocks']}</span>
+        <span><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></span>" : '') . '
+    </span>
     ' . ($CURUSER['class'] >= UC_STAFF || $got_moods ? "
-    <div class='level is-marginless'>
-        <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
-        <div><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
-    </div>';
+    <span class='level is-marginless'>
+        <span class='navbar-start'>{$lang['gl_myunlocks']}</span>
+        <span><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></span>" : '') . '
+    </span>';
 
     echo json_encode($StatusBar);
 } else {

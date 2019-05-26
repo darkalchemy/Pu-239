@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'upinfo_stdhead' => 'Uploader Stats',
     'upinfo_rank' => 'Rank',

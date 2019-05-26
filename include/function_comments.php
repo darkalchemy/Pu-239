@@ -1,22 +1,35 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Mood;
+use Pu239\Session;
+use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @param        $rows
  * @param string $variant
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws Exception
+ *
+ * @return string|null
  */
 function commenttable($rows, $variant = 'torrent')
 {
+    global $container, $CURUSER, $site_config;
+
+    $user_stuffs = $container->get(User::class);
     require_once INCL_DIR . 'function_users.php';
     require_once INCL_DIR . 'function_html.php';
-    global $CURUSER, $site_config, $mood, $cache, $session, $user_stuffs, $fluent;
-
     $lang = load_language('torrenttable_functions');
     $count = 0;
     $variant_options = [
@@ -42,20 +55,24 @@ function commenttable($rows, $variant = 'torrent')
         }
         $usersdata = $user_stuffs->getUserFromId($row['user']);
         $this_text = '';
-        $moodname = (isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral');
-        $moodpic = (isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif');
+        $mood = $container->get(Mood::class);
+        $moods = $mood->get();
+        $moodname = (isset($moods['name'][$usersdata['mood']]) ? htmlsafechars($moods['name'][$usersdata['mood']]) : 'is feeling neutral');
+        $moodpic = (isset($moods['image'][$usersdata['mood']]) ? htmlsafechars($moods['image'][$usersdata['mood']]) : 'noexpression.gif');
         $this_text .= "
-            <div class='bottom20'>
-                <span class='level-left'>#{$row['id']} {$lang['commenttable_by']} ";
+            <div>
+                <span class='level-left padding10'>#{$row['id']} {$lang['commenttable_by']} ";
         $likes = $att_str = '';
         $likers = $user_likes = [];
         if ($row['user_likes'] > 0) {
+            $cache = $container->get(Cache::class);
             $user_likes = $cache->get("{$type}_user_likes_" . $cid);
             if ($user_likes === false || is_null($user_likes)) {
+                $fluent = $container->get(Database::class);
                 $likes = $fluent->from('likes')
                                 ->select(null)
                                 ->select('user_id')
-                                ->where("{$variantc}_id=?", $cid);
+                                ->where("{$variantc}_id = ?", $cid);
                 foreach ($likes as $like) {
                     $user_likes[] = $like['user_id'];
                 }
@@ -63,7 +80,7 @@ function commenttable($rows, $variant = 'torrent')
             }
             if ($user_likes) {
                 foreach ($user_likes as $userid) {
-                    $likers[] = format_username($userid);
+                    $likers[] = format_username((int) $userid);
                 }
                 $likes = implode(', ', $likers);
                 $count = count($user_likes);
@@ -83,15 +100,10 @@ function commenttable($rows, $variant = 'torrent')
         $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
         if (isset($row['user'])) {
             if ($row['anonymous'] === 'yes') {
-                $this_text .= ($CURUSER['class'] >= UC_STAFF ? get_anonymous_name() . ' - Posted by: ' . format_username($row['user']) : get_anonymous_name());
+                $this_text .= ($CURUSER['class'] >= UC_STAFF ? get_anonymous_name() . ' - Posted by: ' . format_username((int) $row['user']) : get_anonymous_name());
             } else {
-                $title = $usersdata['title'];
-                if (empty($title)) {
-                    $title = get_user_class_name($usersdata['class']);
-                } else {
-                    $title = htmlsafechars($title);
-                }
-                $this_text .= "<span class='left5'>" . format_username($row['user']) . '</span>';
+                $title = empty($usersdata['title']) ? get_user_class_name($usersdata['class']) : htmlsafechars($usersdata['title']);
+                $this_text .= "<span class='left5 tooltipper' title='$title'>" . format_username((int) $row['user']) . '</span>';
                 $this_text .= '
                     <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);" class="left5">
                         <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ($row['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!">
@@ -100,16 +112,16 @@ function commenttable($rows, $variant = 'torrent')
         } else {
             $this_text .= '<i>(' . $lang['commenttable_orphaned'] . ')</i></a>';
         }
-        $this_text .= "<span class='left5'>" . get_date($row['added'], '') . '</span>';
+        $this_text .= "<span class='left5'>" . get_date((int) $row['added'], '') . '</span>';
         $row['id'] = (int) $row['id'];
         $tid = !empty($row[$variant]) ? "&amp;tid={$row[$variant]}" : '';
-
+        $session = $container->get(Session::class);
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['paths']['baseurl']}/{$type}.php?action=edit&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
                     <a href='{$site_config['paths']['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['paths']['baseurl']}/{$type}.php?{$delete}&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['paths']['baseurl']}/{$type}.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_view_original']}</a>" : '') . "
-                    <span data-id='{$cid}' data-type='{$variant}' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
+                    <span data-id='{$cid}' data-type='{$variant}' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$cid} left10'>{$att_str}</span>
                 </span>
             </div>";
@@ -119,19 +131,19 @@ function commenttable($rows, $variant = 'torrent')
             $text = "
             <div class='flex-vertical comments h-100'>
                 <div>$text</div>
-                <div class='size_3'>{$lang['commenttable_last_edited_by']} " . format_username($row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date($row['editedat'], 'DATE') . '</div>
+                <div class='size_3'>{$lang['commenttable_last_edited_by']} " . format_username((int) $row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date((int) $row['editedat'], 'DATE') . '</div>
             </div>';
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $htmlout .= main_div("
             <a id='comm{$row['id']}'></a>
             $this_text
-            <div class='columns'>
-                <span class='margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
+            <div class='columns is-marginless'>
+                <span class='round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
                     {$avatar}
                     <div>" . get_reputation($row['user'], 'comments', true, 0, $row['anonymous']) . "</div>
                 </span>
-                <span class='margin10 bg-02 round10 column'>
+                <span class='bg-02 round10 column'>
                     $text
                 </span>
             </div>", $top);

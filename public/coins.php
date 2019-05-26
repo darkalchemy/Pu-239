@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('coins'));
+global $container, $CURUSER, $site_config;
 
 $id = (int) $_GET['id'];
 $points = (int) $_GET['points'];
@@ -14,22 +15,22 @@ if (!is_valid_id($id) || !is_valid_id($points)) {
     die();
 }
 $pointscangive = [
-    '10',
-    '20',
-    '50',
-    '100',
-    '200',
-    '500',
-    '1000',
+    10,
+    20,
+    50,
+    100,
+    200,
+    500,
+    1000,
 ];
 $returnto = "details.php?id=$id";
-
+$session = $container->get(\Pu239\Session::class);
 if (!in_array($points, $pointscangive)) {
     $session->set('is-warning', $lang['coins_you_cant_give_that_amount_of_points']);
     header("Location: $returnto");
     die();
 }
-$sdsa = sql_query('SELECT 1 FROM coins WHERE torrentid=' . sqlesc($id) . ' AND userid =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+$sdsa = sql_query('SELECT 1 FROM coins WHERE torrentid = ' . sqlesc($id) . ' AND userid =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $asdd = mysqli_fetch_assoc($sdsa);
 if ($asdd) {
     $session->set('is-warning', $lang['coins_you_already_gave_points_to_this_torrent']);
@@ -55,7 +56,7 @@ sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($CUR
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = "{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].';
+$msg = "{$lang['coins_you_have_been_given']} $points {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
 $subject = $lang['coins_you_have_been_given_a_gift'];
 $msgs_buffer[] = [
     'sender' => 0,
@@ -68,6 +69,7 @@ $message_stuffs->insert($msgs_buffer);
 $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
 $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);
+$cache = $container->get(\Pu239\Cache::class);
 //==The torrent
 $cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],

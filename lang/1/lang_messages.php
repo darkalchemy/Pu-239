@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Messages
     'messages_error' => 'Error',
@@ -30,7 +32,6 @@ $lang = [
     'messages_system' => 'System',
     'messages_reply' => 'Reply',
     'messages_new' => '(New)',
-    'messages_date' => 'Date',
     'messages_forward' => 'Forward PM',
     'messages_not_moved' => "Messages couldn't be moved! ",
     'messages_not_deleted' => "Messages couldn't be deleted! ",

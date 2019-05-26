@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Details freepoll
     'details_freepoll_vote' => 'Vote',
@@ -9,7 +11,6 @@ $lang = [
     'details_freepoll_mess2' => 'votes required still.',
     'details_freepoll_fvote' => 'Free vote',
     'details_freepoll_sorry' => 'Sorry',
-    'details_freepoll_fvote' => 'Free vote',
     'details_freepoll_mess3' => 'Your ratio is poor, you have to wait an extra',
     'details_freepoll_hours' => 'Hours',
     'details_freepoll_mess4' => 'before voting is allowed!',

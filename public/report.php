@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $session, $CURUSER;
-
 $lang = array_merge(load_language('global'), load_language('report'));
+global $site_config, $CURUSER;
+
 $HTMLOUT = $id_2 = $id_2b = '';
 
 if (!$site_config['staff']['reports']) {
@@ -59,7 +64,9 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     $dt = TIME_NOW;
     sql_query('INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')') or sqlerr(__FILE__, __LINE__);
+    $cache = $container->get(Cache::class);
     $cache->delete('new_report_');
+    $session = $container->get(Session::class);
     $session->set('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
     header("Location: {$site_config['paths']['baseurl']}");
     die();

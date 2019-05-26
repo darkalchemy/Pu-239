@@ -1,21 +1,40 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+use Pu239\User;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 /**
- * @param string $title
- * @param null   $stdhead
+ * @param string|null $title
+ * @param array       $stdhead
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string
- *
- * @throws Exception
  */
-function stdhead($title = '', $stdhead = null)
+function stdhead(?string $title = null, array $stdhead = [])
 {
+    global $container, $site_config, $CURUSER;
+
+    $session = $container->get(Session::class);
     require_once INCL_DIR . 'function_bbcode.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
     require_once INCL_DIR . 'function_html.php';
     require_once 'navbar.php';
-    global $CURUSER, $site_config, $BLOCKS, $session, $fluent;
-
     if (!$site_config['site']['online']) {
         if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
             die('Site is down for maintenance, please check back again later... thanks<br>');
@@ -24,7 +43,8 @@ function stdhead($title = '', $stdhead = null)
         }
     }
     if (!empty($CURUSER) && $CURUSER['enabled'] !== 'yes') {
-        $session->destroy();
+        $user = $container->get(User::class);
+        $user->logout();
     }
     if (empty($title)) {
         $title = $site_config['site']['name'];
@@ -32,16 +52,17 @@ function stdhead($title = '', $stdhead = null)
         $title = $site_config['site']['name'] . ' :: ' . htmlsafechars($title);
     }
     $css_incl = '';
+    $tmp = [
+        'css' => [
+            get_file_name('cookieconsent_css'),
+        ],
+    ];
+    $stdhead = array_merge_recursive($stdhead, $tmp);
+
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
             $css_incl .= "<link rel='stylesheet' href='{$CSS}'>";
         }
-    }
-
-    if (!empty($CURUSER) && $_SERVER['PHP_SELF'] != '/index.php') {
-        $fluent->deleteFrom('ajax_chat_online')
-               ->where('userID = ?', $CURUSER['id'])
-               ->execute();
     }
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
@@ -69,13 +90,6 @@ function stdhead($title = '', $stdhead = null)
         'resetpw.php',
         'recover.php',
     ];
-    if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($site_config['recaptcha']['site'])) {
-        $htmlout .= "
-        <script>
-            var key = '{$site_config['recaptcha']['site']}';
-        </script>
-        <script src='https://www.google.com/recaptcha/api.js?render={$site_config['recaptcha']['site']}'></script>";
-    }
     $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
     $htmlout .= "
 </head>
@@ -90,8 +104,12 @@ function stdhead($title = '', $stdhead = null)
     </script>
     <div id='container'></div>
         <div class='page-wrapper'>";
+    global $BLOCKS;
+
     if ($CURUSER) {
         $htmlout .= navbar();
+        $htmlout .= "
+        <div id='inner-page-wrapper'>";
         if (empty($site_config['banners']['video'])) {
             if (empty($site_config['banners']['image'])) {
                 $banner = "
@@ -174,17 +192,16 @@ function stdhead($title = '', $stdhead = null)
     if ($CURUSER) {
         $htmlout .= breadcrumbs();
     }
-
     if ($BLOCKS['global_flash_messages_on']) {
         foreach ($site_config['site']['notifications'] as $notif) {
             $messages = $session->get($notif);
-            if (($messages = $session->get($notif)) != false) {
+            if (!empty($messages)) {
                 foreach ($messages as $message) {
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                     $htmlout .= "
-                <div class='notification $notif has-text-centered size_6'>
-                    <button class='delete'></button>$message
-                </div>";
+                    <div class='notification $notif has-text-centered size_6'>
+                        <button class='delete'>&nbsp;</button>$message
+                    </div>";
                 }
             }
             $session->unset($notif);
@@ -195,25 +212,31 @@ function stdhead($title = '', $stdhead = null)
 }
 
 /**
- * @param bool $stdfoot
+ * @param array $stdfoot
+ *
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
-function stdfoot($stdfoot = false)
+function stdfoot(array $stdfoot = [])
 {
-    require_once INCL_DIR . 'function_bbcode.php';
-    global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session, $pdo;
+    global $site_config, $starttime, $querytime, $lang, $container, $CURUSER;
+    $cache = $container->get(Cache::class);
+    $session_id = session_id();
+    $query_stats = $cache->get('query_stats_' . $session_id);
 
+    require_once INCL_DIR . 'function_bbcode.php';
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
-    $header = $uptime = $htmlfoot = '';
-    $debug = $site_config['database']['debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? 1 : 0;
-    $queries = !empty($query_stat) ? count($query_stat) : 0;
+    $header = $uptime = $htmlfoot = $now = '';
+    $debug = $site_config['db']['debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? true : false;
+    $queries = !empty($query_stats) ? count($query_stats) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
-
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
         $querytime = $querytime === null ? 0 : $querytime;
-
         if ($site_config['cache']['driver'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
             if ($stats) {
@@ -221,30 +244,18 @@ function stdfoot($stdfoot = false)
                 $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
-            $client = new Redis();
-            if (!$site_config['redis']['use_socket']) {
-                $client->connect($site_config['redis']['host'], $site_config['redis']['port']);
-            } else {
-                $client->connect($site_config['redis']['socket']);
-            }
-            $client->select($site_config['redis']['database']);
+            $client = $container->get(Redis::class);
             $stats = $client->info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
-                preg_match('/keys=(\d+)/', $stats['db' . $site_config['redis']['database']], $keys);
-                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
+                $db = 'db' . $site_config['redis']['database'];
+                preg_match('/keys=(\d+)/', $stats[$db], $keys);
+                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - (float) $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format((float) $keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
         } elseif ($site_config['cache']['driver'] === 'memcached' && extension_loaded('memcached')) {
-            $client = new Memcached();
-            if (!count($client->getServerList())) {
-                if (!$site_config['memcached']['use_socket']) {
-                    $client->addServer($site_config['memcached']['host'], $site_config['memcached']['port']);
-                } else {
-                    $client->addServer($site_config['memcached']['socket'], 0);
-                }
-            }
+            $client = $container->get(Memcached::class);
             $stats = $client->getStats();
-            if (!$site_config['memcached']['socket']) {
+            if (!$site_config['memcached']['use_socket']) {
                 $stats = !empty($stats["{$site_config['memcached']['host']}:{$site_config['memcached']['port']}"]) ? $stats["{$site_config['memcached']['host']}:{$site_config['memcached']['port']}"] : null;
             } else {
                 $stats = !empty($stats["{$site_config['memcached']['socket']}:0"]) ? $stats["{$site_config['memcached']['socket']}:0"] : (!empty($stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"]) ? $stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"] : null);
@@ -256,13 +267,14 @@ function stdfoot($stdfoot = false)
         } elseif ($site_config['cache']['driver'] === 'file') {
             $files_info = GetDirectorySize($site_config['files']['path'], true, true);
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$site_config['files']['path']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
+        } elseif ($site_config['cache']['driver'] === 'memory') {
+            $header = "{$lang['gl_stdfoot_querys_memory']}";
         } elseif ($site_config['cache']['driver'] === 'couchbase') {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }
-
-        if (!empty($query_stat)) {
+        if (!empty($query_stats)) {
             $htmlfoot .= "
-                <div class='portlet'>
+                <div class='portlet top20'>
                     <a id='queries-hash'></a>
                     <div id='queries' class='box'>";
             $heading = "
@@ -272,18 +284,18 @@ function stdfoot($stdfoot = false)
                                 <th>{$lang['gl_stdfoot_qs']}</th>
                             </tr>";
             $body = '';
-            foreach ($query_stat as $key => $value) {
+            foreach ($query_stats as $key => $value) {
                 $querytime += $value['seconds'];
                 $body .= '
                             <tr>
                                 <td>' . ($key + 1) . '</td>
-                                <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='has-text-green tooltipper' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                 <td>
                                     <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                 </td>
                             </tr>';
             }
-
+            $cache->delete('query_stats_' . $session_id);
             $htmlfoot .= main_table($body, $heading) . '
                     </div>
                 </div>';
@@ -294,9 +306,11 @@ function stdfoot($stdfoot = false)
             $cache->set('uptime_', $uptime, 10);
         }
         if ($use_12_hour) {
-            $uptime = time24to12(TIME_NOW, true) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
+            $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
+            $now = time24to12(TIME_NOW, true);
         } else {
-            $uptime = get_date(TIME_NOW, 'WITH_SEC', 1, 1) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
+            $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
+            $now = get_date((int) TIME_NOW, 'WITH_SEC', 1, 0);
         }
     }
     $htmlfoot .= '
@@ -309,6 +323,7 @@ function stdfoot($stdfoot = false)
         if ($CURUSER['class'] >= UC_STAFF) {
             $sql_version = $cache->get('sql_version_');
             if ($sql_version === false || is_null($sql_version)) {
+                $pdo = $container->get(PDO::class);
                 $query = $pdo->query('SELECT VERSION() AS ver');
                 $sql_version = $query->fetch(PDO::FETCH_COLUMN);
                 if (!preg_match('/MariaDB/i', $sql_version)) {
@@ -328,6 +343,7 @@ function stdfoot($stdfoot = false)
                         ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>$uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
+                        <p class='is-marginless'>{$lang['gl_server_time']} {$now}</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['sourcecode']['name']}</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} {$php_version}</p>
                     </div>
@@ -347,6 +363,7 @@ function stdfoot($stdfoot = false)
         }
     }
     $height = !empty($CURUSER['ajaxchat_height']) ? $CURUSER['ajaxchat_height'] . 'px' : '600px';
+    $use_12_hour = $use_12_hour ? 'yes' : 'no';
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
@@ -354,7 +371,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image;
-        var is_12_hour = " . ($use_12_hour ? 1 : 0) . ";
+        var is_12_hour = '{$use_12_hour}';
         var chat_height = '$height';
     </script>";
 
@@ -363,6 +380,7 @@ function stdfoot($stdfoot = false)
     <script src='" . get_file_name('theme_js') . "'></script>
     <script src='" . get_file_name('lightbox_js') . "'></script>
     <script src='" . get_file_name('tooltipster_js') . "'></script>
+    <script src='" . get_file_name('cookieconsent_js') . "'></script>
     <script src='" . get_file_name('vendor_js') . "'></script>
     <script src='" . get_file_name('main_js') . "'></script>";
 
@@ -374,12 +392,9 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= '
-        </div>
     </div>
 </body>
 </html>';
-
-    $session->close();
 
     return $htmlfoot;
 }
@@ -387,11 +402,12 @@ function stdfoot($stdfoot = false)
 /**
  * @param      $heading
  * @param      $text
- * @param null $class
+ * @param null $outer_class
+ * @param null $inner_class
  *
  * @return string
  */
-function stdmsg($heading, $text, $class = null)
+function stdmsg($heading, $text, $outer_class = null, $inner_class = null)
 {
     require_once INCL_DIR . 'function_html.php';
 
@@ -405,40 +421,48 @@ function stdmsg($heading, $text, $class = null)
 
     $htmlout = "<div class='padding20'>$htmlout</div>";
 
-    return main_div($htmlout, $class);
+    return main_div($htmlout, $outer_class, $inner_class);
 }
 
 /**
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
 function StatusBar()
 {
-    global $CURUSER, $session;
+    global $CURUSER;
+
     if (!$CURUSER) {
         return '';
     }
     $StatusBar = $clock = '';
     $color = get_user_class_name($CURUSER['class'], true);
     $StatusBar .= "
-                    <div id='base_usermenu' class='tooltipper-ajax right10 level-item' data-csrf='" . $session->get('csrf_token') . "'>
-                        <span id='clock' class='right10 {$color}'>{$clock}</span>
-                        " . format_username($CURUSER['id'], true, false) . "<i class='icon-down-open size_2 {$color}'></i>
+                    <div id='base_usermenu' class='tooltipper-ajax right20 level-item'>
+                        " . format_username((int) $CURUSER['id'], true, false) . "
+                        <span id='clock' class='left20 {$color}' onclick='hide_by_id()'>{$clock}</span>
                     </div>";
 
     return $StatusBar;
 }
 
 /**
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function platform_menu()
 {
-    global $site_config, $fluent, $CURUSER, $cache, $lang;
+    global $container, $CURUSER, $site_config, $lang;
+
+    $cache = $container->get(Cache::class);
 
     $templates = $cache->get('templates_' . $CURUSER['class']);
     if ($templates === false || is_null($templates)) {
+        $fluent = $container->get(Database::class);
         $templates = $fluent->from('stylesheets')
                             ->orderBy('id')
                             ->where('min_class_to_view <= ?', $CURUSER['class'])
@@ -500,8 +524,7 @@ function platform_menu()
                         </ul>
                     </div>
                     <div class='column is-paddingless middle'>
-                        <ul class='level-right size_3'>{$styles}" . StatusBar() . '
-                        </ul>
+                        <div class='level-right size_3'>" . StatusBar() . $styles . '</div>
                     </div>
                 </div>
             </div>

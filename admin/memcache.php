@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
   +----------------------------------------------------------------------+
   | PHP Version 5                                                        |
@@ -21,14 +23,14 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $session;
-
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 define('DATE_FORMAT', 'Y/m/d H:i:s');
 define('GRAPH_SIZE', 200);
 define('MAX_ITEM_DUMP', 50);
 
 if (extension_loaded('memcached')) {
+    global $site_config;
+
     if (!$site_config['memcached']['use_socket']) {
         $MEMCACHE_SERVERS[] = "{$site_config['memcached']['host']}:{$site_config['memcached']['port']}";
     } else {
@@ -70,7 +72,7 @@ function sendMemcacheCommands($command)
     foreach ($MEMCACHE_SERVERS as $server) {
         $strs = get_host_port_from_server($server);
         $host = $strs[0];
-        $port = $strs[1];
+        $port = (int) $strs[1];
         $result[$server] = sendMemcacheCommand($host, $port, $command);
     }
 
@@ -78,13 +80,13 @@ function sendMemcacheCommands($command)
 }
 
 /**
- * @param $server
- * @param $port
- * @param $command
+ * @param string $server
+ * @param int    $port
+ * @param string $command
  *
  * @return array
  */
-function sendMemcacheCommand($server, $port, $command)
+function sendMemcacheCommand(string $server, int $port, string $command)
 {
     $s = @fsockopen($server, $port);
     if (!$s) {
@@ -134,7 +136,7 @@ function parseMemcacheResults($str)
                 $res[$l[0]][$l[1]]['value'] = $lines[++$i];
             }
         } elseif ($line === 'DELETED' || $line === 'NOT_FOUND' || $line === 'OK') {
-            return $line;
+            return [$line];
         }
     }
 

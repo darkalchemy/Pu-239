@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Peer;
+use Pu239\User;
+
 /**
  * @return mixed
  */
@@ -25,11 +34,13 @@ function get_parked()
  * @param int $channel
  * @param int $ttl
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
-    global $site_config, $fluent;
+    global $site_config;
 
     if (user_exists($site_config['chatbot']['id'])) {
         $values = [
@@ -38,11 +49,13 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
             'userRole' => 100,
             'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip' => inet_pton('127.0.0.1'),
             'text' => $msg,
             'ttl' => $ttl,
         ];
 
+        global $container;
+
+        $fluent = $container->get(Database::class);
         $fluent->insertInto('ajax_chat_messages')
                ->values($values)
                ->execute();
@@ -56,15 +69,18 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $anonymous = false)
 {
-    global $site_config, $user_stuffs;
+    global $container, $site_config;
 
     if (empty($user['username'])) {
+        $user_stuffs = $container->get(User::class);
         $user = $user_stuffs->getUserFromId($user);
     }
 
@@ -91,7 +107,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $ano
             }
         }
         $rep_power = $user['reputation'];
-        $posneg = '';
+        $posneg = $rep_img = $rep_img_2 = '';
         if ($user['reputation'] == 0) {
             $rep_img = 'balance';
             $rep_power = $user['reputation'] * -1;
@@ -138,9 +154,9 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $ano
             for ($i = 0; $i <= $rep_bar; ++$i) {
                 $posneg .= "<span title='Reputation Power $rep_power<br> " . htmlsafechars($user['username']) . " $rep_level' class='tooltipper'>";
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img_2}.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
                 } else {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img}.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
                 }
                 $posneg .= '</span>';
             }
@@ -316,7 +332,10 @@ function get_slr_color($ratio)
 /**
  * @param $ratio_to_check
  *
- * @return string
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string|null
  */
 function ratio_image_machine($ratio_to_check)
 {
@@ -462,17 +481,18 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @return string
- *
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ *
+ * @return string
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
-    global $site_config, $user_stuffs;
+    global $container, $site_config;
 
+    $user_stuffs = $container->get(User::class);
     $users_data = $user_stuffs->getUserFromId($user_id);
-    $peer = new Pu239\Peer();
+    $peer = $container->get(Peer::class);
     $peers = $peer->getPeersFromUserId($user_id);
     $tag = $tag ? '@' : '';
 
@@ -483,19 +503,20 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     }
     $avatar = get_avatar($users_data);
     $tip = $tooltip = '';
+    $uniqueid = uniqid();
     if ($tooltipper) {
         $tip = "
-                <div class='tooltip_templates'>
-                    <div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'>
-                        <div class='right20'>{$avatar}</div>
-                        <div style='min-width: 150px;'>
+                <span class='tooltip_templates'>
+                    <span id='$uniqueid' class='is-flex tooltip'>
+                        <span class='right20'>{$avatar}</span>
+                        <span style='min-width: 150px;'>
                             <span class='level is-marginless'>
                                 <span class='level-left " . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
                                 <span class='level-right " . get_user_class_name($users_data['class'], true) . "'>" . get_user_class_name($users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Last Seen: </span>
-                                <span class='level-right'>" . get_date($users_data['last_access'], (date('Ymd') == date('Ymd', $users_data['last_access']) ? 'TIME' : 'FORM'), 1, 0) . "</span>
+                                <span class='level-right'>" . get_date((int) $users_data['last_access'], (date('Ymd') == date('Ymd', $users_data['last_access']) ? 'TIME' : 'FORM'), 1, 0) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Uploaded: </span>
@@ -507,20 +528,20 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Karma: </span>
-                                <span class='level-right'>" . number_format((float) $users_data['seedbonus']) . "</span>
+                                <span class='level-right'>" . number_format($users_data['seedbonus']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Seeding: </span>
-                                <span class='level-right'>" . number_format((float) $peers['yes']) . "</span>
+                                <span class='level-right'>" . number_format($peers['yes']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Leeching: </span>
-                                <span class='level-right'>" . number_format((float) $peers['no']) . '</span>
+                                <span class='level-right'>" . number_format($peers['no']) . '</span>
                             </span>
-                        </div>
-                    </div>
-                </div>';
-        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
+                        </span>
+                    </span>
+                </span>';
+        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#$uniqueid'";
     } else {
         $tooltip = "class='" . get_user_class_name(($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
@@ -572,11 +593,11 @@ function member_ratio($up, $down)
 {
     switch (true) {
         case $down > 0 && $up > 0:
-            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format((float) $up / (float) $down, 3) . '</span>';
+            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format($up / $down, 3) . '</span>';
             break;
 
         case $down > 0 && $up == 0:
-            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / (float) $down, 3) . '</span>';
+            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / $down, 3) . '</span>';
             break;
 
         case $down == 0 && $up > 0:
@@ -593,7 +614,10 @@ function member_ratio($up, $down)
 /**
  * @param $ratio
  *
- * @return string|void
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string
  */
 function get_user_ratio_image($ratio)
 {
@@ -637,15 +661,18 @@ function get_user_ratio_image($ratio)
 /**
  * @param $avatar
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|string|null
  */
 function get_avatar($avatar)
 {
-    global $CURUSER, $site_config, $user_stuffs;
+    global $container, $CURUSER, $site_config;
 
     if (!isset($avatar['avatar']) && !empty($avatar['user'])) {
+        $user_stuffs = $container->get(User::class);
         $user = $user_stuffs->getUserFromId($avatar['user']);
         $avatar = $user;
         unset($user);
@@ -691,11 +718,15 @@ function blacklist($fo)
 
 /**
  * @param $post_id
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  */
 function clr_forums_cache($post_id)
 {
-    global $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $cache->delete('forum_last_post_' . $post_id . '_' . $uclass);

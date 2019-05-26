@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../include/bittorrent.php';
-dbconn();
+declare(strict_types = 1);
 
+require_once __DIR__ . '/../../include/bittorrent.php';
 if (empty($_POST['uid'])) {
     return false;
 }

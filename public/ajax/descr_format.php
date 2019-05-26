@@ -1,27 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Torrent;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
-global $session, $cache, $torrent_stuffs;
-
 extract($_POST);
 header('content-type: application/json');
-if (empty($csrf) || !$session->validateToken($csrf)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
+global $container;
 
 $tid = is_numeric($tid) ? (int) $tid : '';
 if (!empty($tid)) {
-    $torrent = $torrent_stuffs->get($tid);
-    if (!empty($torrent)) {
-        $descr = $torrent['descr'];
-        if (!preg_match('/\[pre\].*\[\/pre\]/isU', $descr)) {
-            $descr = '[pre]' . $descr . '[/pre]';
-        }
-        $descr = mb_convert_encoding(format_comment($descr), 'UTF-8');
-        $cache->set('torrent_descr_' . $tid, $descr, 86400);
-
+    $torrent_stuffs = $container->get(Torrent::class);
+    $descr = $torrent_stuffs->format_descr($tid);
+    if (!empty($descr)) {
         echo json_encode(['descr' => $descr]);
         die();
     }

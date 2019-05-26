@@ -1,20 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function warned_update($data)
 {
-    $time_start = microtime(true);
-    global $site_config, $cache, $fluent, $message_stuffs;
+    global $container, $site_config;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $fluent = $container->get(Database::class);
+
+    $time_start = microtime(true);
     $dt = TIME_NOW;
 
     $res = $fluent->from('users')
@@ -22,13 +32,13 @@ function warned_update($data)
                   ->select('id')
                   ->select('modcomment')
                   ->where('warned < ?', $dt)
-                  ->where('warned>1');
+                  ->where('warned > 1');
 
     $subject = 'Warning expired.';
     $msg = "Your Warning has timed out and has been auto-removed by the system. Cheers!\n";
     $msgs = [];
+    $comment = get_date((int) $dt, 'DATE', 1) . " - Warning Automatically Removed By System.\n";
     foreach ($res as $arr) {
-        $comment = get_date($dt, 'DATE', 1) . " - Warning Automatically Removed By System.\n";
         $modcomment = $comment . $arr['modcomment'];
         $msgs[] = [
             'sender' => 0,
@@ -38,6 +48,7 @@ function warned_update($data)
             'subject' => $subject,
         ];
 
+        $cache = $container->get(Cache::class);
         $user = $cache->get('user_' . $arr['id']);
         if (!empty($user)) {
             $cache->update_row('user_' . $arr['id'], [
@@ -49,16 +60,17 @@ function warned_update($data)
 
     $count = count($msgs);
     if ($count) {
+        $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($msgs);
         $set = [
             'warned' => 0,
-            'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+            'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),
         ];
 
         $fluent->update('users')
                ->set($set)
                ->where('warned < ?', $dt)
-               ->where('warned>1')
+               ->where('warned > 1')
                ->execute();
     }
 

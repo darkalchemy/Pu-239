@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $CURUSER, $lang, $cache, $message_stuffs, $user_stuffs;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -18,6 +18,8 @@ $stdfoot = [
     ],
 ];
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
+global $site_config;
+
 $h1_thingie = $HTMLOUT = '';
 $good_stuff = [
     'upload_credit',
@@ -32,7 +34,8 @@ if (empty($free_for)) {
     $action = '';
     unset($_POST);
 }
-//=== switch for the actions \\o\o/o//
+global $CURUSER;
+
 switch ($action) {
     case 'upload_credit':
         $GB = isset($_POST['GB']) ? (int) $_POST['GB'] : 0;
@@ -46,7 +49,7 @@ switch ($action) {
             while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
                 $GB_new = $arr_GB['uploaded'] + $GB;
                 $modcomment = $arr_GB['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
                 $msg = "{$lang['bonusmanager_up_addedmsg']}{$bonus_added}{$lang['bonusmanager_up_addedmsg1']}{$site_config['site']['name']}{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}{$GB} {$GB_new}";
                 $pm_values[] = [
                     'sender' => 0,
@@ -84,7 +87,7 @@ switch ($action) {
             while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
                 $karma_new = $arr_karma['seedbonus'] + $karma;
                 $modcomment = $arr_karma['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
                 $pm_values[] = [
                     'sender' => 0,
                     'receiver' => $arr_karma['id'],
@@ -121,7 +124,7 @@ switch ($action) {
             while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
                 $freeslots_new = $arr_freeslots['freeslots'] + $freeslots;
                 $modcomment = $arr_freeslots['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
                 $pm_values[] = [
                     'sender' => 0,
                     'receiver' => $arr_freeslots['id'],
@@ -158,7 +161,7 @@ switch ($action) {
             while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
                 $invites_new = $arr_invites['invites'] + $invites;
                 $modcomment = $arr_invites['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
                 $pm_values[] = [
                     'sender' => 0,
                     'receiver' => $arr_invites['id'],

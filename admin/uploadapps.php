@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent, $cache, $message_stuffs;
-
 $lang = array_merge($lang, load_language('uploadapps'));
+global $container, $site_config, $CURUSER;
+
+$fluent = $container->get(Database::class);
 $possible_actions = [
     'show',
     'viewapp',
@@ -57,7 +63,7 @@ if ($action === 'app' || $action === 'show') {
         </div>
         <h1 class='has-text-centered'>{$lang['uploadapps_applications']}</h1>";
     if ($count == 0) {
-        $HTMLOUT .= main_div($lang['uploadapps_noapps']);
+        $HTMLOUT .= main_div($lang['uploadapps_noapps'], null, 'padding20 has-text-centered');
     } else {
         $HTMLOUT .= "
         <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=takeappdelete' accept-charset='utf-8'>";
@@ -85,13 +91,13 @@ if ($action === 'app' || $action === 'show') {
             } else {
                 $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
             }
-            $membertime = get_date($arr['added'], '', 0, 1);
-            $elapsed = get_date($arr['applied'], '', 0, 1);
+            $membertime = get_date((int) $arr['added'], '', 0, 1);
+            $elapsed = get_date((int) $arr['applied'], '', 0, 1);
             $body .= "
             <tr>
                 <td>{$elapsed}</td>
                 <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=viewapp&amp;id=" . (int) $arr['id'] . "'>{$lang['uploadapps_viewapp']}</a></td>
-                <td>" . format_username($arr['userid']) . "</td>
+                <td>" . format_username((int) $arr['userid']) . "</td>
                 <td>{$membertime}</td>
                 <td>" . get_user_class_name($arr['class']) . '</td>
                 <td>' . mksize($arr['uploaded']) . '</td>
@@ -119,17 +125,17 @@ if ($action === 'viewapp') {
                   ->select('users.added')
                   ->select('users.class')
                   ->leftJoin('users ON uploadapp.userid=users.id')
-                  ->where('uploadapp.id=?', $id)
+                  ->where('uploadapp.id = ?', $id)
                   ->fetch();
 
-    $membertime = get_date($arr['added'], '', 0, 1);
-    $elapsed = get_date($arr['applied'], '', 0, 1);
+    $membertime = get_date((int) $arr['added'], '', 0, 1);
+    $elapsed = get_date((int) $arr['applied'], '', 0, 1);
     $HTMLOUT .= '
     <h1>Uploader application</h1>';
     $table = "
         <tr>
             <td class='w-25'>{$lang['uploadapps_username1']}</td>
-            <td>" . format_username($arr['userid']) . "</a></td>
+            <td>" . format_username((int) $arr['userid']) . "</a></td>
         </tr>
         <tr>
             <td>{$lang['uploadapps_joined']}</td>
@@ -228,6 +234,7 @@ if ($action === 'viewapp') {
         $HTMLOUT .= main_table($table);
     }
 }
+$cache = $container->get(Cache::class);
 if ($action === 'acceptapp') {
     $id = (int) $_POST['id'];
     if (!is_valid_id($id)) {
@@ -239,14 +246,14 @@ if ($action === 'acceptapp') {
                   ->select('uploadapp.id')
                   ->select('users.modcomment')
                   ->leftJoin('users ON uploadapp.userid=users.id')
-                  ->where('uploadapp.id=?', $id)
+                  ->where('uploadapp.id = ?', $id)
                   ->fetch();
 
     $note = htmlsafechars($_POST['note']);
     $subject = $lang['uploadapps_subject'];
     $msg = "{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note";
     $msg1 = "{$lang['uploadapps_msg_user']} [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.";
-    $modcomment = get_date($dt, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
+    $modcomment = get_date((int) $dt, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
     sql_query("UPDATE uploadapp SET status = 'accepted', comment = " . sqlesc($note) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET class = ' . UC_UPLOADER . ', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($arr['uid']) . ' AND class < ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user_' . $arr['uid'], [

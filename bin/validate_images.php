@@ -1,8 +1,14 @@
 <?php
 
-require_once __DIR__ . '/../include/bittorrent.php';
+declare(strict_types = 1);
 
-$image_proxy = new Pu239\ImageProxy();
+use Pu239\ImageProxy;
+
+require_once __DIR__ . '/../include/bittorrent.php';
+global $container, $site_config;
+
+$site_config['cache']['driver'] = 'memory';
+$image_proxy = $container->get(ImageProxy::class);
 $paths = [
     IMAGES_DIR . 'proxy',
 ];

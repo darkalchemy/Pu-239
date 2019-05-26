@@ -1,21 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function mow_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $fluent, $cache;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
+    $fluent = $container->get(Database::class);
     $mow = $fluent->from('torrents')
                   ->select(null)
                   ->select('id')
                   ->select('name')
-                  ->where('times_completed>10')
+                  ->where('times_completed > 10')
                   ->where('category', $site_config['categories']['movie'])
                   ->orderBy('RAND()')
                   ->limit(1)
@@ -27,7 +36,7 @@ function mow_update($data)
             'value_i' => TIME_NOW,
         ];
         if ($data['clean_log']) {
-            write_log('Torrent [' . (int) $arr['id'] . '] [' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
+            write_log('Torrent [' . (int) $mow['id'] . '] [' . htmlentities($mow['name']) . "] was set 'Best Film of the Week' by system");
         }
     } else {
         $set = [
@@ -42,7 +51,7 @@ function mow_update($data)
            ->set($set)
            ->where("avps.arg = 'bestfilmofweek'")
            ->execute();
-
+    $cache = $container->get(Cache::class);
     $cache->delete('motw_');
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

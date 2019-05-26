@@ -1,48 +1,14 @@
 <?php
 
-global $site_config, $lang, $fluent, $CURUSER, $cache;
+declare(strict_types = 1);
 
-$top5torrents = $cache->get('top_torrents_');
-if ($top5torrents === false || is_null($top5torrents)) {
-    $top5torrents = [];
-    $torrents = $fluent->from('torrents AS t')
-                       ->select(null)
-                       ->select('t.id')
-                       ->select('t.added')
-                       ->select('t.seeders')
-                       ->select('t.leechers')
-                       ->select('t.name')
-                       ->select('t.size')
-                       ->select('t.poster')
-                       ->select('t.anonymous')
-                       ->select('t.owner')
-                       ->select('t.imdb_id')
-                       ->select('t.times_completed')
-                       ->select('t.rating')
-                       ->select('t.year')
-                       ->select('t.subs AS subtitles')
-                       ->select('t.newgenre AS genre')
-                       ->select('u.username')
-                       ->select('u.class')
-                       ->select('p.name AS parent_name')
-                       ->select('c.name AS cat')
-                       ->select('c.image')
-                       ->leftJoin('users AS u ON t.owner = u.id')
-                       ->leftJoin('categories AS c ON t.category = c.id')
-                       ->leftJoin('categories AS p ON c.parent_id=p.id')
-                       ->where('visible = "yes"')
-                       ->orderBy('t.seeders + t.leechers DESC')
-                       ->limit($site_config['latest']['torrents_limit']);
+use Pu239\Image;
+use Pu239\Torrent;
 
-    foreach ($torrents as $torrent) {
-        if (!empty($torrent['parent_name'])) {
-            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
-        }
-        $top5torrents[] = $torrent;
-    }
+global $container, $lang, $site_config, $CURUSER;
 
-    $cache->set('top_torrents_', $top5torrents, $site_config['expires']['top_torrents']);
-}
+$torrent = $container->get(Torrent::class);
+$top5torrents = $torrent->get_top();
 
 $torrents_top .= "
     <a id='toptorrents-hash'></a>
@@ -61,12 +27,12 @@ $torrents_top .= "
                     </tr>
                 </thead>
                 <tbody>";
-
+$image_stuffs = $container->get(Image::class);
 foreach ($top5torrents as $top5torrentarr) {
-    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
+    $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
     extract($top5torrentarr);
     if (empty($poster) && !empty($imdb_id)) {
-        $poster = find_images($imdb_id);
+        $poster = $image_stuffs->find_images($imdb_id);
     }
     $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-global $site_config, $cache;
-
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    return false;
-}
+global $container;
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -20,6 +21,7 @@ $hash = 'suggest_torrents_' . hash('sha256', $keyword);
 
 $results = $cache->get($hash);
 if ($results === false || is_null($results)) {
+    $fluent = $container->get(Database::class);
     $results = $fluent->from('torrents')
                       ->select(null)
                       ->select('id')
@@ -29,6 +31,7 @@ if ($results === false || is_null($results)) {
                       ->select('visible')
                       ->where('name LIKE ?', "%$keyword%")
                       ->fetchAll();
+    $cache = $container->get(Cache::class);
     $cache->set($hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
     if (empty($hashes)) {

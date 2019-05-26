@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //cleanup
     'cleanup_stderr' => 'Error',
@@ -16,7 +18,6 @@ $lang = [
     'cleanup_run_now' => 'Run&#160;now',
     'cleanup_panic' => 'Fucking panic now!',
     'cleanup_lock' => ' (Locked)',
-    'cleanup_edit' => 'Edit',
     'cleanup_edit2' => 'Edit Cleanup',
     'cleanup_delete1' => 'Delete',
     'cleanup_delete2' => 'Delete Cleanup',

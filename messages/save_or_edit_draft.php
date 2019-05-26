@@ -1,9 +1,13 @@
 <?php
 
-global $message_stuffs, $CURUSER;
+declare(strict_types = 1);
+
+use Pu239\Message;
+
+global $container, $lang, $CURUSER;
 
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
-
+$message_stuffs = $container->get(Message::class);
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);

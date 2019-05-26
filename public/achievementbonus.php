@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
-global $CURUSER, $site_config, $session, $cache;
-
 $lang = array_merge(load_language('global'), load_language('achievementbonus'));
+global $CURUSER, $site_config;
+
 $id = (int) $CURUSER['id'];
 $min = 1;
 $max = 38;

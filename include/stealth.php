@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
 
 /**
  * @param      $id
  * @param bool $stealth
  *
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function stealth($id, $stealth = true)
 {
-    global $CURUSER, $site_config, $cache;
+    global $container, $site_config, $CURUSER;
 
     $setbits = $clrbits = 0;
     if ($stealth) {
@@ -28,8 +35,9 @@ function stealth($id, $stealth = true)
     $res = sql_query('SELECT username, perms, modcomment FROM users WHERE id=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
-    $modcomment = get_date(TIME_NOW, '', 1) . ' - ' . $display . ' in Stealth Mode thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
+    $modcomment = get_date((int) TIME_NOW, '', 1) . ' - ' . $display . ' in Stealth Mode thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
     sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $id, [
         'perms' => $row['perms'],
         'modcomment' => $modcomment,

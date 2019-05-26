@@ -1,17 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Comment;
+use Pu239\Database;
+use Pu239\Torrent;
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-dbconn();
-global $cache;
+global $container, $site_config;
 
+$cache = $container->get(Cache::class);
 if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('cleanup_check_');
     $cache->delete('tfreak_cron_');
 }
 
 echo "===================================================\n";
-echo get_date(TIME_NOW, 'LONG', 1, 1) . "\n";
+echo get_date((int) TIME_NOW, 'LONG', 1, 0) . "\n";
 
 $cleanup_check = $cache->get('cleanup_check_');
 if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
@@ -20,18 +29,69 @@ if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || i
     echo "Already running.\n";
 }
 
+/**
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function autoclean()
 {
-    global $site_config, $cache, $fluent;
+    global $container, $site_config;
 
+    $cache = $container->get(Cache::class);
     $cache->set('cleanup_check_', 'running', 600);
     $now = TIME_NOW;
+    $fluent = $container->get(Database::class);
+    $torrents = $fluent->from('torrents')
+                       ->select(null)
+                       ->select('id')
+                       ->select('subs');
+    $subs = $container->get('subtitles');
+    foreach ($torrents as $torrent) {
+        $values = [];
+        $tsubs = explode(',', $torrent['subs']);
+        foreach ($tsubs as $tsub) {
+            if (is_numeric($tsub)) {
+                foreach ($subs as $sub) {
+                    if ($sub['id'] == $tsub) {
+                        $values[] = $sub['name'];
+                    }
+                }
+            }
+        }
+        if (!empty($values)) {
+            $set['subs'] = implode('|', $values);
+            $fluent->update('torrents')
+                   ->set($set)
+                   ->where('id = ?', $torrent['id'])
+                   ->execute();
+        }
+    }
     $query = $fluent->from('cleanup')
                     ->where('clean_on = 1')
                     ->where('clean_time < ?', $now)
                     ->orderBy('clean_time ASC')
                     ->orderBy('clean_increment ASC')
                     ->fetchAll();
+
+    if ($site_config['site']['name'] === 'Crafty') {
+        $torrents = $fluent->from('torrents')
+                           ->select(null)
+                           ->select('id')
+                           ->fetchAll();
+        foreach ($torrents as $torrent) {
+            $set = [
+                'last_action' => TIME_NOW,
+                'seeders' => mt_rand(10, 100),
+                'leechers' => mt_rand(3, 50),
+                'visible' => 'yes',
+            ];
+            $fluent->update('torrents')
+                   ->set($set)
+                   ->where('id = ?', $torrent['id'])
+                   ->execute();
+        }
+    }
 
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
@@ -87,4 +147,15 @@ function autoclean()
     } else {
         echo "Newsrss disabled\n";
     }
+
+    $torrent = $container->get(Torrent::class);
+    $torrent->get_latest_scroller();
+    $torrent->get_latest_slider();
+    $torrent->get_staff_picks();
+    $torrent->get_top();
+    $torrent->get_latest();
+    $torrent->get_mow();
+    $torrent->get_plots();
+    $comment = $container->get(Comment::class);
+    $comment->get_comments();
 }

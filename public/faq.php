@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $session;
+global $container, $site_config, $CURUSER;
 
-if (!$session->get('LoggedIn')) {
-    dbconn();
+$auth = $container->get(Auth::class);
+if (!$auth->isLoggedIn()) {
     get_template();
 } else {
     check_user_status();
@@ -121,6 +125,13 @@ if ($CURUSER) {
     $byratio = 0;
     $byul = 0;
 
+    /**
+     * @param      $up
+     * @param      $down
+     * @param bool $color
+     *
+     * @return string
+     */
     function format_ratio($up, $down, $color = true)
     {
         if ($down > 0) {
@@ -140,33 +151,33 @@ if ($CURUSER) {
     if ($CURUSER['class'] < UC_VIP) {
         $gigs = $CURUSER['uploaded'] / (1024 * 1024 * 1024);
         $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
-        if ((0 < $ratio && $ratio < 0.5) || $gigs < 5) {
+        if (($ratio > 0 && $ratio < 0.5) || $gigs < 5) {
             $wait = 48;
-            if (0 < $ratio && $ratio < 0.5) {
+            if ($ratio > 0 && $ratio < 0.5) {
                 $byratio = 1;
             }
             if ($gigs < 5) {
                 $byul = 1;
             }
-        } elseif ((0 < $ratio && $ratio < 0.65) || $gigs < 6.5) {
+        } elseif (($ratio > 0 && $ratio < 0.65) || $gigs < 6.5) {
             $wait = 24;
-            if (0 < $ratio && $ratio < 0.65) {
+            if ($ratio > 0 && $ratio < 0.65) {
                 $byratio = 1;
             }
             if ($gigs < 6.5) {
                 $byul = 1;
             }
-        } elseif ((0 < $ratio && $ratio < 0.8) || $gigs < 8) {
+        } elseif (($ratio > 0 && $ratio < 0.8) || $gigs < 8) {
             $wait = 12;
-            if (0 < $ratio && $ratio < 0.8) {
+            if ($ratio > 0 && $ratio < 0.8) {
                 $byratio = 1;
             }
             if ($gigs < 8) {
                 $byul = 1;
             }
-        } elseif ((0 < $ratio && $ratio < 0.95) || $gigs < 9.5) {
+        } elseif (($ratio > 0 && $ratio < 0.95) || $gigs < 9.5) {
             $wait = 6;
-            if (0 < $ratio && $ratio < 0.95) {
+            if ($ratio > 0 && $ratio < 0.95) {
                 $byratio = 1;
             }
             if ($gigs < 9.5) {

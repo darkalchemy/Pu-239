@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER;
-
 $lang = load_language('global');
+global $site_config, $CURUSER;
+
 if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');
 }
@@ -26,8 +28,6 @@ $htmlout = doc_head() . "
     <table class='list' width='100%'>";
 $count = 0;
 $ctr = 0;
-global $customsmilies;
-
 foreach ($customsmilies as $code => $url) {
     if ($count % 3 == 0) {
         $htmlout .= '

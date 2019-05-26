@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $user_stuffs;
-
 $lang = array_merge($lang, load_language('ad_ipcheck'));
+global $site_config;
+
 $res = sql_query("SELECT count(*) AS dupl, INET6_NTOA(ip) AS ip FROM users WHERE enabled = 'yes' AND ip != '' AND INET6_NTOA(ip) NOT IN ('127.0.0.1', '10.0.0.1', '10.10.10.10') GROUP BY users.ip ORDER BY dupl DESC, ip") or sqlerr(__FILE__, __LINE__);
 
 $heading = "
@@ -41,11 +43,11 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 }
                 $uploaded = mksize($arr['uploaded']);
                 $downloaded = mksize($arr['downloaded']);
-                $added = get_date($arr['added'], 'DATE', 1, 0);
-                $last_access = get_date($arr['last_access'], '', 1, 0);
+                $added = get_date((int) $arr['added'], 'DATE', 1, 0);
+                $last_access = get_date((int) $arr['last_access'], '', 1, 0);
                 $body .= '
                 <tr>
-                    <td>' . format_username($arr['id']) . '</td>
+                    <td>' . format_username((int) $arr['id']) . '</td>
                     <td>' . htmlsafechars($arr['email']) . "</td>
                     <td>$added</td>
                     <td>$last_access</td>" . ($site_config['site']['ratio_free'] ? '' : "

@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_html.php';
 
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Image;
+use Pu239\Torrent;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -12,23 +17,23 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int    $tid
  * @param string $poster
  *
- * @return array|bool
- *
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ *
+ * @return array|bool
  */
 function get_book_info(string $isbn, string $name, int $tid, string $poster)
 {
-    global $site_config, $CURUSER, $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
+    global $container, $BLOCKS, $CURUSER, $site_config;
 
     if (!$BLOCKS['google_books_api_on']) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
+    $torrent_stuffs = $container->get(Torrent::class);
     $api_hits = $cache->get('google_api_hits_');
-    $cache->delete('book_info_' . $tid);
     $ebook = $cache->get('book_info_' . $tid);
     if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
@@ -55,12 +60,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
             $secs = strtotime('tomorrow 00:00:00') - TIME_NOW;
             $cache->increment('google_api_hits_', 1, 0, $secs);
         }
-
-        if (!empty($site_config['api']['google'])) {
-            $books = new GoogleBooks(['key' => $site_config['api']['google']]);
-        } else {
-            $books = new GoogleBooks();
-        }
+        $books = $container->get(GoogleBooks::class);
         if (!empty($isbn) && $isbn != '000000') {
             $book = $books->volumes->byIsbn($isbn);
         } else {
@@ -122,6 +122,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
             if (!empty($ebook['rating'])) {
                 $set['rating'] = $ebook['rating'];
             }
+            $torrent_stuffs = $container->get(Torrent::class);
             $torrent_stuffs->update($set, $tid);
             $cache->set('book_info_' . $tid, $ebook, $site_config['expires']['book_info']);
         }
@@ -216,6 +217,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
             'url' => $poster,
             'type' => 'poster',
         ];
+        $image_stuffs = $container->get(Image::class);
         $image_stuffs->insert($values);
     }
 
@@ -224,7 +226,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         <div class='padding10'>
             <div class='columns'>
                 <div class='column is-3'>
-                    <img alt='' src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
+                    <img alt='' src='" . placeholder_image(250) . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $ebook_info

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'fm_overforum' => 'Over Forums',
     'fm_forummanager' => 'Forum Manager',

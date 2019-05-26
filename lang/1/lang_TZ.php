@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang['time_-12'] = '(UTC - 12:00 hours) Enitwetok, Kwajalien';
 $lang['time_-11'] = '(UTC - 11:00 hours) Midway Island, Samoa';
 $lang['time_-10'] = '(UTC - 10:00 hours) Hawaii';

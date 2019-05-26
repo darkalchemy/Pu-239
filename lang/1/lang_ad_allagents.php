@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'allagents_client' => 'Client',
     'allagents_peerid' => 'Peer ID',

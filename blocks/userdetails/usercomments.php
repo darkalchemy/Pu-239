@@ -1,33 +1,42 @@
 <?php
 
-global $fluent;
+declare(strict_types = 1);
 
+use Pu239\Database;
+
+global $container, $CURUSER, $lang, $user, $id, $site_config;
+
+$fluent = $container->get(Database::class);
 $text = "
     <a id='startcomments'></a>
     <div>
-        <h1 class='has-text-centered'>{$lang['userdetails_comm_left']}" . format_username($id) . "</a></h1>
+        <h1 class='has-text-centered'>{$lang['userdetails_comm_left']}" . format_username((int) $id) . "</a></h1>
         <div class='has-text-centered bottom20'>
             <a href='{$site_config['paths']['baseurl']}/usercomment.php?action=add&amp;userid={$id}' class='button is-small'>Add a comment</a>
         </div>";
-$subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$subrow = mysqli_fetch_array($subres, MYSQLI_NUM);
-$count = $subrow[0];
+$count = $fluent->from('usercomments')
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('userid = ?', $id)
+                ->fetch('count');
+
 if (!$count) {
-    $text .= "
-        <h2>{$lang['userdetails_comm_yet']}</h2>\n";
+    $text .= "<div class='has-text-centered padding20 size_6'>{$lang['userdetails_comm_yet']}</div>";
 } else {
     require_once INCL_DIR . 'function_pager.php';
     $perpage = 5;
-    $pager = pager($perpage, $count, "userdetails.php?id=$id&amp;", [
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}userdetails.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
 
     $res = $fluent->from('usercomments')
                   ->select('id as comment_id')
-                  ->where('userid=?', $id)
+                  ->where('userid = ?', $id)
                   ->orderBy('id DESC')
-                  ->limit($pager['pdo']);
+                  ->limit($pager['pdo']['limit'])
+                  ->offset($pager['pdo']['offset']);
 
+    $allrows = [];
     foreach ($res as $row) {
         $row['anonymous'] = false;
         $allrows[] = $row;

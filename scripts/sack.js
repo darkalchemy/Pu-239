@@ -49,10 +49,10 @@ function sack(file) {
             }
         }
     };
-    this.setVar = function (name, value) {
+    this.setvar = function (name, value) {
         this.vars[name] = Array(value, false);
     };
-    this.encVar = function (name, value, returnvars) {
+    this.encvar = function (name, value, returnvars) {
         if (true == returnvars) {
             return Array(encodeURIComponent(name), encodeURIComponent(value));
         } else {

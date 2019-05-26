@@ -1,10 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../include/bittorrent.php';
-check_user_status();
-global $CURUSER, $session, $fluent;
+declare(strict_types = 1);
 
-$fluent->deleteFrom('ajax_chat_online')
-       ->where('userID = ?', $CURUSER['id'])
-       ->execute();
-$session->destroy();
+use Pu239\User;
+
+require_once __DIR__ . '/../include/bittorrent.php';
+global $container, $site_config;
+
+$user = $container->get(User::class);
+$user->logout();
+header("Location: {$site_config['paths']['baseurl']}/login.php");

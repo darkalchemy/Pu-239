@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 // Copyright 2016 MaxMind, Inc. All Rights Reserved
 
 global $GEOIP_REGION_NAME;

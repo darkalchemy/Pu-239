@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\User;
 
 /**
  * @param $pass
@@ -19,9 +24,9 @@ function make_passhash($pass)
 /**
  * @param int $bytes
  *
- * @return string
- *
  * @throws Exception
+ *
+ * @return string
  */
 function make_password($bytes = 12)
 {
@@ -33,20 +38,23 @@ function make_password($bytes = 12)
  * @param $password
  * @param $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function rehash_password($hash, $password, $userid)
 {
-    global $user_stuffs;
+    global $container;
 
+    $user_stuffs = $container->get(User::class);
     $options = get_options();
     $algo = $options['algo'];
     $options = $options['options'];
 
     if (password_needs_rehash($hash, $algo, $options)) {
         $set = [
-            'passhash' => make_passhash($password),
+            'password' => make_passhash($password),
         ];
         $user_stuffs->update($set, $userid);
     }

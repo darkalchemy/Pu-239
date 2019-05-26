@@ -1,23 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Database;
+use Pu239\User;
 
 /**
  * @param $data
  *
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  */
 function gift_update($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $cache, $user_stuffs, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     if (Christmas()) {
         die();
     }
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('users')
                     ->select(null)
                     ->select('id')
@@ -29,6 +37,7 @@ function gift_update($data)
     ];
     if (!empty($query)) {
         $count = count($query);
+        $user_stuffs = $container->get(User::class);
         foreach ($query as $userid) {
             $user_stuffs->update($set, $userid['id']);
         }

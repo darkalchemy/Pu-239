@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
-
 $lang = load_language('global');
+global $container, $site_config, $CURUSER;
+
 $Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));
 $dayafter = mktime(0, 0, 0, 12, 26, date('Y'));
 $today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
@@ -29,6 +33,7 @@ $sql = sql_query('SELECT seedbonus, invites, freeslots, uploaded FROM users WHER
 $User = mysqli_fetch_assoc($sql);
 if (isset($open) && $open == 1) {
     if ($today >= $Christmasday && $today <= $dayafter) {
+        $cache = $container->get(Cache::class);
         if ($CURUSER['gotgift'] === 'no') {
             if ($gift === 'upload') {
                 sql_query("UPDATE users SET invites=invites+1, uploaded=uploaded+1024*1024*1024*10, freeslots=freeslots+1, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -91,8 +96,8 @@ if (isset($open) && $open == 1) {
         }
     } elseif ($today <= $Christmasday) {
         $timezone_name = timezone_name_from_abbr('', $CURUSER['time_offset'] * 60 * 60, 0);
-        $days = get_date($Christmasday - $today, '', 1, 0, 1);
-        stderr('Be patient!', "You can't open your present until Christmas Day! $days to go.<br>Today : <span>" . get_date(TIME_NOW, 'LONG', 1, 0) . '</span><br>Christmas Day : <span>' . get_date($Christmasday, 'LONG', 1, 0) . " [$timezone_name]</span>", 'bottom20');
+        $days = get_date((int) $Christmasday - $today, '', 1, 0, 1);
+        stderr('Be patient!', "You can't open your present until Christmas Day! $days to go.<br>Today : <span>" . get_date((int) TIME_NOW, 'LONG', 1, 0) . '</span><br>Christmas Day : <span>' . get_date((int) $Christmasday, 'LONG', 1, 0) . " [$timezone_name]</span>", 'bottom20');
     } else {
         stderr('Too late!', "You missed it, you'll have to wait until Christmas comes again!!", 'bottom20');
     }

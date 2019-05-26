@@ -1,20 +1,28 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $text
  *
- * @return bool|int
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|int
  */
 function write_info($text)
 {
-    global $fluent;
-
     $values = [
         'added' => TIME_NOW,
         'txt' => $text,
     ];
+    global $container;
+    $fluent = $container->get(Database::class);
     $id = $fluent->insertInto('infolog')
                  ->values($values)
                  ->execute();

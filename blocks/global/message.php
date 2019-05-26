@@ -1,8 +1,13 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $message_stuffs;
+declare(strict_types = 1);
+
+use Pu239\Message;
+
+global $CURUSER, $container, $lang, $site_config;
 
 if ($site_config['alerts']['message'] && $CURUSER) {
+    $message_stuffs = $container->get(Message::class);
     $unread = $message_stuffs->get_count($CURUSER['id']);
 
     if (!empty($unread)) {

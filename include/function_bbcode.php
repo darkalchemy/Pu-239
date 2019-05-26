@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
-require_once 'emoticons.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 
 /**
  * @param $smilies_set
+ *
+ * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -130,8 +137,6 @@ function format_quotes($s)
  */
 function islocal($link)
 {
-    global $site_config;
-
     $flag = false;
     $limit = 600;
 
@@ -142,7 +147,7 @@ function islocal($link)
             $flag = true;
             $title = preg_replace("/\[img](https?:\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png)))\[\/img\]/i", '<img class="img-responsive" src="\\1" alt="">', $title);
         }
-    } elseif (false !== stristr($link[0], '[url]')) {
+    } elseif (stristr($link[0], '[url]') !== false) {
         $url = $title = trim($link[1]);
     } else {
         $url = $title = trim($link[2]);
@@ -175,14 +180,16 @@ function format_urls($s)
  * @param bool $urls
  * @param bool $images
  *
- * @return mixed|string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ *
+ * @return mixed|string|string[]|null
  */
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
-    global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER, $user_stuffs;
+    global $site_config;
 
     $image = placeholder_image();
     $s = $text;
@@ -193,11 +200,12 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     // to &xxx;), hence all the extra smilies. I created a new :wink: label, removed
     // the ;) one, and replace all genuine ;) by :wink: before escaping the body.
     // (What took us so long? :blush:)- wyz
-    $s = str_replace(';)', ':wink:', $s);
+    //$s = str_replace(';)', ':wink:', $s);
     // fix messed up links
-    $s = str_replace('&amp;', '&', $s);
+    //$s = str_replace('&amp;', '&', $s);
     if ($strip_html) {
-        $s = htmlsafechars($s);
+        $s = strip_tags($s);
+        //$s = htmlsafechars($s);
     }
 
     $bb_code_in = [
@@ -262,6 +270,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[h4\]\s?(.*?)\[\/h4\]/is',
         '/\[class=(.*?)\](.*?)\[\/class\]/is',
         '/\[br\]/is',
+        '/\[ol\](.*?)\[\/ol\]/is',
+        '/\[ul\](.*?)\[\/ul\]/is',
+        '/\[li\](.*?)\[\/li\]/is',
+        '/\[rtl\](.*?)\[\/rtl\]/is',
     ];
 
     $bb_code_out = [
@@ -285,7 +297,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<s>\1</s>',
         '<s>\1</s>',
         '<span class="pre padding20">\1</span>',
-        '<div class="marquee">\1</div>',
+        '<div class="marquee"><span>\1</span></div>',
         '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size_\1">\2</span>',
         '<span style="color: \1;">\2</span>',
@@ -326,6 +338,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<h4>\1</h4>',
         '<span class="\1">\2</span>',
         '<br>',
+        '<ol>\1</ol>',
+        '<ul>\1</ul>',
+        '<li>\1</li>',
+        '<div dir="rtl">\1</div>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
 
@@ -342,17 +358,20 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     }
 
     preg_match_all('/@(.+\b)/imsU', $s, $match);
+    global $container;
+
+    $user_stuffs = $container->get(User::class);
     foreach ($match[1] as $tmp) {
         $userid = $user_stuffs->getUserIdFromName($tmp);
         if ($userid) {
-            $username = format_username($userid, false, true, true);
+            $username = format_username((int) $userid, false, true, true);
             $s = preg_replace("/@$tmp/", $username . ' ', $s);
         }
     }
 
     preg_match_all('/key\s*=\s*(\d{10})/', $s, $match);
     foreach ($match[1] as $tmp) {
-        $s = str_replace($tmp, get_date($tmp, ''), $s);
+        $s = str_replace($tmp, get_date((int) $tmp, ''), $s);
     }
 
     if ($urls) {
@@ -412,32 +431,32 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     }
     // the [you] tag
     if (stripos($s, '[you]') !== false) {
+        global $CURUSER;
+
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[you\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
     }
 
     // the [username] tag
     if (stripos($s, '[username]') !== false) {
+        global $CURUSER;
+
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[username\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[username\]/i", $CURUSER['username'], $s);
     }
 
-    // Maintain spacing
     $s = str_replace('  ', '&#160;&#160;', $s);
-    if (isset($smilies)) {
-        foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
-        }
+    $smilies = $container->get('smilies');
+    foreach ($smilies as $code => $url) {
+        $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
     }
-    if (isset($staff_smilies)) {
-        foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
-        }
+    $staff_smilies = $container->get('staff_smilies');
+    foreach ($staff_smilies as $code => $url) {
+        $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
     }
-    if (isset($customsmilies)) {
-        foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
-        }
+    $custom_smilies = $container->get('custom_smilies');
+    foreach ($custom_smilies as $code => $url) {
+        $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
     }
 
     $s = format_quotes($s);
@@ -449,8 +468,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         "\n",
         '&lt;br&gt;',
     ], '<br>', $s);
-
-    $s = str_replace('http:', 'https:', $s);
 
     return $s;
 }
@@ -497,10 +514,12 @@ function format_code($s)
  * @param      $text
  * @param bool $strip_html
  *
- * @return mixed|string
- *
  * @throws InvalidManipulation
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return mixed|string|string[]|null
  */
 function format_comment_no_bbcode($text, $strip_html = true)
 {
@@ -529,7 +548,6 @@ function user_key_codes($key)
  */
 function dynamic_user_vars($text)
 {
-    global $CURUSER;
     if (!isset($CURUSER)) {
         return $text;
     }
@@ -537,7 +555,7 @@ function dynamic_user_vars($text)
     //$zone = 3600 * -5; // EST
     $tim = TIME_NOW + $zone;
     $cu = $CURUSER;
-    unset($cu['passhash'], $cu['torrent_pass'], $cu['modcomment']);
+    unset($cu['password'], $cu['torrent_pass'], $cu['modcomment']);
     $bbkeys = array_keys($cu);
     $bbkeys[] = 'curdate';
     $bbkeys[] = 'curtime';

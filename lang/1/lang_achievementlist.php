@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'achlst_std_head' => 'Achievements List',
     'achlst_achievement' => 'Achievement',

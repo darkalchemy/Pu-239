@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $user_stuffs;
-
 $lang = array_merge($lang, load_language('ad_invite_tree'));
+global $site_config;
+
 $HTMLOUT = '';
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 if ($id !== 0) {
@@ -78,7 +80,7 @@ if ($id !== 0) {
                                 while ($arr_invited_really_deep = mysqli_fetch_assoc($rez_invited_really_deep)) {
                                     $deeper .= '
                                                     <tr>
-                                                        <td>' . ($arr_invited_really_deep['status'] === 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep['id']) . '<br>' . $arr_invited_really_deep['ip']) . '</td>
+                                                        <td>' . ($arr_invited_really_deep['status'] === 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username((int) $arr_invited_really_deep['id']) . '<br>' . $arr_invited_really_deep['ip']) . '</td>
                                                         <td>' . htmlsafechars($arr_invited_really_deep['email']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['uploaded']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['downloaded']) . '</td>
@@ -95,7 +97,7 @@ if ($id !== 0) {
                         }
                         $deeper .= '
                                     <tr>
-                                        <td>' . ($arr_invited_deeper['status'] === 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper['id']) . '<br>' . $arr_invited_deeper['wip']) . '</td>
+                                        <td>' . ($arr_invited_deeper['status'] === 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username((int) $arr_invited_deeper['id']) . '<br>' . $arr_invited_deeper['wip']) . '</td>
                                         <td>' . htmlsafechars($arr_invited_deeper['email']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['uploaded']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['downloaded']) . '</td>
@@ -112,7 +114,7 @@ if ($id !== 0) {
             }
             $HTMLOUT .= '
                     <tr>
-                        <td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited['id']) . '<br>' . $arr_invited['ip']) . '</td>
+                        <td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username((int) $arr_invited['id']) . '<br>' . $arr_invited['ip']) . '</td>
                         <td>' . htmlsafechars($arr_invited['email']) . '</td>
                         <td>' . mksize($arr_invited['uploaded']) . '</td>
                         <td>' . mksize($arr_invited['downloaded']) . '</td>
@@ -239,8 +241,8 @@ if ($id !== 0) {
                 <td>---</td>';
             $body .= '
             <tr>
-                <td>' . format_username($row['id']) . '</td>
-                <td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
+                <td>' . format_username((int) $row['id']) . '</td>
+                <td>' . get_date((int) $row['added'], '') . '</td><td>' . get_date((int) $row['last_access'], '') . '</td>
                 <td>' . get_user_class_name($row['class']) . '</td>' . $country . '
                 <td>
                     <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">

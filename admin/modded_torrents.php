@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $fluent;
-
 $lang = array_merge($lang, load_language('ad_modded_torrents'));
 $modes = [
     'today',
@@ -30,13 +34,15 @@ $links = "
  * @param      $arr
  * @param bool $empty
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function do_sort($arr, $empty = false)
 {
-    global $lang, $site_config;
+    global $site_config, $lang;
 
     $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
     $ret_html = '';
@@ -48,8 +54,8 @@ function do_sort($arr, $empty = false)
                     <td>
                         <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $res['id'] . "'>" . htmlsafechars($res['name']) . '</a>
                     </td>
-                    <td>' . format_username($res['checked_by']) . '</td>
-                    <td>' . get_date($res['checked_when'], 'LONG') . '</td>
+                    <td>' . format_username((int) $res['checked_by']) . '</td>
+                    <td>' . get_date((int) $res['checked_when'], 'LONG') . '</td>
                 </tr>';
         } else {
             $ret_html .= "
@@ -57,7 +63,7 @@ function do_sort($arr, $empty = false)
                     <td>
                         <a href='{$site_config['paths']['baseurl']}/details.php?id={$res['id']}{$returnto}'>" . htmlsafechars($res['name']) . '</a>
                     </td>
-                    <td>' . get_date($res['added'], 'LONG') . "</td>
+                    <td>' . get_date((int) $res['added'], 'LONG') . "</td>
                     <td>
                         <a href='{$site_config['paths']['baseurl']}/edit.php?id={$res['id']}{$returnto}' class='tooltipper' title='{$lang['mtor_edit']}'>
                             <i class='icon-edit icon'></i>
@@ -69,13 +75,15 @@ function do_sort($arr, $empty = false)
 
     return $ret_html;
 }
+global $container;
 
+$fluent = $container->get(Database::class);
 if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     $mode = (isset($_GET['type']) && in_array($_GET['type'], $modes)) ? $_GET['type'] : stderr($lang['mtor_error'], '' . $lang['mtor_please_try_that_previous_request_again'] . '.');
     if ($mode === 'yesterday') {
         $count = $fluent->from('torrents')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
                         ->where('checked_when>= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
                         ->fetch('count');
@@ -95,7 +103,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
                            ->where('checked_when>= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
                            ->orderBy('checked_when DESC')
-                           ->limit($pager['pdo'])
+                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             if ($data) {
@@ -118,7 +126,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     } elseif ($mode === 'today') {
         $count = $fluent->from('torrents')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->where('checked_when>= UNIX_TIMESTAMP(CURDATE())')
                         ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
                         ->fetch('count');
@@ -138,7 +146,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->where('checked_when>= UNIX_TIMESTAMP(CURDATE())')
                            ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
                            ->orderBy('checked_when DESC')
-                           ->limit($pager['pdo'])
+                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             if ($data) {
@@ -161,7 +169,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     } elseif ($mode === 'unmodded') {
         $count = $fluent->from('torrents')
                         ->select(null)
-                        ->select('COUNT(*) AS count')
+                        ->select('COUNT(id) AS count')
                         ->where('checked_when = 0')
                         ->fetch('count');
 
@@ -190,7 +198,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->select('name')
                            ->select('added')
                            ->where('checked_when = 0')
-                           ->limit($pager['pdo'])
+                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             $HTMLOUT .= main_table(do_sort($data), $heading);

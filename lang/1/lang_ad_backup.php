@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 global $CURUSER;
 
 $lang = [
     'backup_stderr' => 'Error',
     'backup_stderr1' => 'Access denied!',
     'backup_id' => 'Invalid ID',
-    'backup_stdhead' => 'Backup Manager Config Checker',
     'backup_srry' => 'Sorry',
     'backup_unknow' => 'Unknown action!',
     'backup_succes' => 'Success',

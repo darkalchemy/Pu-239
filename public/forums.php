@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_rating.php';
@@ -8,48 +15,36 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_user_options.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+$lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
+global $container, $site_config, $CURUSER;
 
 $image = placeholder_image();
-$lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdhead = [
     'css' => [
-        get_file_name('sceditor_css'),
+        //        get_file_name('sceditor_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
         get_file_name('forums_js'),
-        get_file_name('sceditor_js'),
+        //        get_file_name('sceditor_js'),
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
-if (!$site_config['forums']['online'] && $CURUSER['class'] < UC_STAFF) {
+if (!$site_config['forum_config']['online'] && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
 $HTMLOUT = '';
+$fluent = $container->get(Database::class);
 $fluent->update('users')
-       ->set(['forum_access' => TIME_NOW])
-       ->where('id=?', $CURUSER['id'])
-       ->execute();
+    ->set(['forum_access' => TIME_NOW])
+    ->where('id = ?', $CURUSER['id'])
+    ->execute();
 
-$config_id = 1;
-$config_arr = $fluent->from('forum_config')
-                     ->where('id=?', $config_id)
-                     ->fetch();
-
-$delete_for_real = $config_arr['delete_for_real'] > 0 ? true : false;
-$min_delete_view_class = htmlsafechars($config_arr['min_delete_view_class']);
-$readpost_expiry = $config_arr['readpost_expiry'];
-$min_upload_class = htmlsafechars($config_arr['min_upload_class']);
-$accepted_file_extension = [
-    $config_arr['accepted_file_extension'],
-];
-$accepted_file_types = [
-    $config_arr['accepted_file_types'],
-];
-$max_file_size = intval($config_arr['max_file_size']);
-$upload_folder = ROOT_DIR . htmlsafechars(trim($config_arr['upload_folder']));
+$accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
+$accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
+$max_file_size = intval($site_config['forum_config']['max_file_size']);
+$upload_folder = ROOT_DIR . htmlsafechars(trim($site_config['forum_config']['upload_folder']));
 $posted_action = strip_tags((isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '')));
 if ($CURUSER['class'] >= UC_STAFF) {
     $valid_actions = [
@@ -178,7 +173,7 @@ $legend = main_table("
 	</tr>
 	<tr>
         <td class='has-text-centered'>
-            <i class='icon-search icon' aria-hidden='true' title='{$lang['fm_1st_post_preview']}' class='tooltipper'></i>
+            <i class='icon-search icon tooltipper' aria-hidden='true' title='{$lang['fm_1st_post_preview']}'></i>
         </td>
         <td>{$lang['fm_1st_post_preview']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon lazy'></td>
@@ -200,10 +195,7 @@ for ($i = 2; $i < 21; ++$i) {
     $options .= '<option value="' . $i . '" ' . ($multi_options === $i ? 'selected' : '') . '>' . $i . ' options</option>';
 }
 $more_options = '
-<div id="staff_tools" ' . ((isset($_POST['poll_question']) && '' !== $_POST['poll_question']) ? '' : 'style="display:none"') . '>
-<tablecellspacing="0" cellpadding="5" width="800">
-<tr>
-</tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
+<div id="staff_tools" ' . ((isset($_POST['poll_question']) && $_POST['poll_question'] !== '') ? '' : 'style="display:none"') . '>' . main_table(($CURUSER['class'] < $site_config['forum_config']['min_upload_class'] ? '' : '<tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
@@ -216,7 +208,7 @@ $more_options = '
 <input type="file" size="30" name="attachment[]">
 </div>
 </td>
-</tr>') . ((isset($_GET['action']) && 'new_topic' != $_GET['action']) ? '' : '<tr>
+</tr>') . ((isset($_GET['action']) && $_GET['action'] != 'new_topic') ? '' : '<tr>
 <td></td>
 <td></td>
 <td><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="emoticon lazy">' . $lang['poll_add_poll_to_topic'] . '</span>
@@ -269,7 +261,7 @@ $more_options = '
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
 <td><select name="multi_options"
-<option value="1" ' . (1 === $multi_options ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
+<option value="1" ' . ($multi_options === 1 ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
 ' . $options . '
 </select>' . $lang['fm_allow_members_to_have_more_then_one_selection'] . ' ' . $lang['poll_single_option'] . '}!</td>
 </tr>
@@ -278,12 +270,12 @@ $more_options = '
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
 <td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . '>' . $lang['fm_yes'] . '
 <input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
-</td></tr>') . '
-</table>
+</td></tr>'), '', '', 'padding20') . '
 </div>';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 
 $the_bottom_of_the_page = insert_quick_jump_menu($forum_id) . $legend;
+
 switch ($action) {
     case 'view_forum':
         require_once FORUM_DIR . 'view_forum.php';
@@ -397,24 +389,25 @@ switch ($action) {
 
     case 'forum':
         $query = $fluent->from('over_forums AS ovf')
-                        ->select(null)
-                        ->select('ovf.id AS over_forum_id')
-                        ->select('ovf.name AS over_forum_name')
-                        ->select('ovf.description AS over_forum_description')
-                        ->select('ovf.min_class_view AS over_forum_min_class_view')
-                        ->select('f.id AS real_forum_id')
-                        ->select('f.name')
-                        ->select('f.description')
-                        ->select('f.post_count')
-                        ->select('f.topic_count')
-                        ->select('f.forum_id')
-                        ->select('f.parent_forum')
-                        ->innerJoin('forums AS f ON f.forum_id=ovf.id')
-                        ->where('ovf.min_class_view <= ?', $CURUSER['class'])
-                        ->where('f.min_class_read <= ?', $CURUSER['class'])
-                        ->orderBy('ovf.sort, f.sort')
-                        ->fetchAll();
+            ->select(null)
+            ->select('ovf.id AS over_forum_id')
+            ->select('ovf.name AS over_forum_name')
+            ->select('ovf.description AS over_forum_description')
+            ->select('ovf.min_class_view AS over_forum_min_class_view')
+            ->select('f.id AS real_forum_id')
+            ->select('f.name')
+            ->select('f.description')
+            ->select('f.post_count')
+            ->select('f.topic_count')
+            ->select('f.forum_id')
+            ->select('f.parent_forum')
+            ->innerJoin('forums AS f ON f.forum_id=ovf.id')
+            ->where('ovf.min_class_view <= ?', $CURUSER['class'])
+            ->where('f.min_class_read <= ?', $CURUSER['class'])
+            ->orderBy('ovf.sort, f.sort')
+            ->fetchAll();
 
+        $children = [];
         foreach ($query as $forum) {
             if ($forum['parent_forum'] === 0) {
                 $parents[] = $forum;
@@ -424,6 +417,7 @@ switch ($action) {
         }
         unset($query);
         $i = 0;
+        $updated = [];
         foreach ($children as $child) {
             foreach ($parents as $parent) {
                 ++$i;
@@ -440,41 +434,42 @@ switch ($action) {
 
         $HTMLOUT .= $mini_menu;
         foreach ($updated as $arr_forums) {
-            $body = ($arr_forums['over_forum_id'] !== $over_forum_id ? "
+            $HTMLOUT .= ($arr_forums['over_forum_id'] !== $over_forum_id ? "
                 <h2 class='margin20'>
-	                <a href='{$site_config['paths']['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars(htmlspecialchars($arr_forums['over_forum_description'], ENT_QUOTES, 'UTF-8')) . "' class='tooltipper'>
-	                    <span>" . htmlsafechars(htmlspecialchars($arr_forums['over_forum_name'], ENT_QUOTES, 'UTF-8')) . '</span>
+	                <a href='{$site_config['paths']['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description']) . "' class='tooltipper'>
+	                    <span>" . htmlsafechars($arr_forums['over_forum_name']) . '</span>
 	                </a>
 	            </h2>' : '');
+            $body = '';
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
                 $forum_id = $arr_forums['real_forum_id'];
-                $forum_name = htmlsafechars(htmlspecialchars($arr_forums['name'], ENT_QUOTES, 'UTF-8'));
-                $forum_description = htmlsafechars(htmlspecialchars($arr_forums['description'], ENT_QUOTES, 'UTF-8'));
+                $forum_name = htmlsafechars($arr_forums['name']);
+                $forum_description = htmlsafechars($arr_forums['description']);
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
                 $last_post_arr = $cache->get('forum_last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
                     $query = $fluent->from('topics AS t')
-                                    ->select(null)
-                                    ->select('t.id AS topic_id')
-                                    ->select('t.topic_name')
-                                    ->select('t.last_post')
-                                    ->select('t.anonymous AS tan')
-                                    ->select('p.added')
-                                    ->select('p.anonymous AS pan')
-                                    ->select('p.user_id')
-                                    ->leftJoin('posts AS p ON t.id=p.topic_id');
+                        ->select(null)
+                        ->select('t.id AS topic_id')
+                        ->select('t.topic_name')
+                        ->select('t.last_post')
+                        ->select('t.anonymous AS tan')
+                        ->select('p.added')
+                        ->select('p.anonymous AS pan')
+                        ->select('p.user_id')
+                        ->leftJoin('posts AS p ON t.id=p.topic_id');
                     if ($CURUSER['class'] < UC_STAFF) {
                         $query = $query->where('p.status = "ok"')
-                                       ->where('t.status = "ok"');
-                    } elseif ($CURUSER['class'] < $min_delete_view_class) {
+                            ->where('t.status = "ok"');
+                    } elseif ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class']) {
                         $query = $query->where('t.status != "deleted"')
-                                       ->where('p.status != "deleted"');
+                            ->where('p.status != "deleted"');
                     }
                     $last_post_arr = $query->where('t.forum_id', $arr_forums['children_ids'])
-                                           ->orderBy('p.id DESC')
-                                           ->limit(1)
-                                           ->fetch();
+                        ->orderBy('p.id DESC')
+                        ->limit(1)
+                        ->fetch();
 
                     $cache->set('forum_last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
@@ -486,17 +481,17 @@ switch ($action) {
                         $last_read_post_arr = mysqli_fetch_row($query);
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
-                    $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
+                    $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
 
                     if ($last_post_arr['tan'] === 'yes') {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars(htmlspecialchars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES, 'UTF-8')), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -507,15 +502,15 @@ switch ($action) {
                 if ($child_boards_cache === false || is_null($child_boards_cache)) {
                     $child_boards_cache = [];
                     $query = $fluent->from('forums')
-                                    ->select(null)
-                                    ->select('id')
-                                    ->select('name')
-                                    ->where('parent_forum = ?', $arr_forums['real_forum_id'])
-                                    ->where('min_class_read <= ?', $CURUSER['class'])
-                                    ->orderBy('sort');
+                        ->select(null)
+                        ->select('id')
+                        ->select('name')
+                        ->where('parent_forum = ?', $arr_forums['real_forum_id'])
+                        ->where('min_class_read <= ?', $CURUSER['class'])
+                        ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars(htmlspecialchars($arr['name'], ENT_QUOTES, 'UTF-8')) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name']) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }
@@ -528,11 +523,8 @@ switch ($action) {
                         <td class="w-25">
                             <div class="level">
                                 <span class="level-left">
-                                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title=' . $lang['fm_unlocked'] . ' class="tooltipper emoticon lazy right10">
-                                    ' . bubble('
-                                    <span>
-                                        <a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>
-                                    </span>', '<span>' . $forum_name . '</span>	' . $forum_description) . ($CURUSER['class'] >= UC_ADMINISTRATOR ? '
+                                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" class="tooltipper emoticon lazy right10">
+                                    ' . bubble('<a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>', $forum_description) . ($CURUSER['class'] >= UC_ADMINISTRATOR ? '
                                 </span>
                                 <span class="level-right">
                                     <span class="left10">
@@ -570,11 +562,11 @@ switch ($action) {
             $forumusers = '';
             $forum_users_cache = [];
             $query = $fluent->from('now_viewing')
-                            ->where('users.perms < ?', bt_options::PERMS_STEALTH)
-                            ->innerJoin('users ON now_viewing.user_id=users.id');
+                ->where('users.perms < ?', bt_options::PERMS_STEALTH)
+                ->innerJoin('users ON now_viewing.user_id=users.id');
 
             foreach ($query as $row) {
-                $list[] = format_username($row['user_id']);
+                $list[] = format_username((int) $row['user_id']);
             }
 
             $forumusers = implode(',&nbsp;&nbsp;', $list);
@@ -617,6 +609,9 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
  * @return string|void
  */
 function ratingpic_forums($num)
@@ -636,30 +631,34 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
-    global $CURUSER, $site_config, $cache, $lang, $fluent;
+    global $container, $site_config, $CURUSER, $lang;
 
+    $cache = $container->get(Cache::class);
     $cachename = 'f_insertJumpTo_' . $CURUSER['id'] . ($staff ? '' : '_staff' === false);
     $qjcache = $cache->get($cachename);
     if ($qjcache === false || is_null($qjcache)) {
+        $fluent = $container->get(Database::class);
         $qjcache = $fluent->from('forums')
-                          ->select(null)
-                          ->select('forums.id')
-                          ->select('forums.name')
-                          ->select('forums.parent_forum')
-                          ->select('forums.min_class_read')
-                          ->select('over_forums.name AS overforums_name')
-                          ->select('over_forums.sort')
-                          ->innerJoin('over_forums ON forums.forum_id=over_forums.id')
-                          ->orderBy('over_forums.sort ASC')
-                          ->orderBy('forums.parent_forum ASC')
-                          ->orderBy('forums.sort ASC')
-                          ->fetchAll();
+            ->select(null)
+            ->select('forums.id')
+            ->select('forums.name')
+            ->select('forums.parent_forum')
+            ->select('forums.min_class_read')
+            ->select('over_forums.name AS overforums_name')
+            ->select('over_forums.sort')
+            ->innerJoin('over_forums ON forums.forum_id=over_forums.id')
+            ->orderBy('over_forums.sort ASC')
+            ->orderBy('forums.parent_forum ASC')
+            ->orderBy('forums.sort ASC')
+            ->fetchAll();
         $cache->set($cachename, $qjcache, $site_config['expires']['forum_insertJumpTo']);
     }
 
@@ -669,8 +668,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
         <form method="get" action="' . $site_config['paths']['baseurl'] . '/forums.php" name="jump" accept-charset="utf-8">
             <span>
                 <input type="hidden" name="action" value="view_forum">
-                <select name="forum_id" onchange="if (this.options[this.selectedIndex].value != -1) {
-    forms[\'jump\'].submit()}">
+                <select name="forum_id" onchange="if (this.options[this.selectedIndex].value != -1) {forms[\'jump\'].submit()}">
                     <option class="head" value="0">' . $lang['fm_select_a_forum_to_jump_to'] . '</option>' : '');
 
     foreach ($qjcache as $arr) {
@@ -685,7 +683,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
         }
     }
 
-    $body .= (false === $staff ? '
+    $body .= ($staff === false ? '
                 </select>
             </span>
         </form>

@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session;
-
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
+global $container, $CURUSER, $site_config;
 
+$session = $container->get(Session::class);
 if (!$site_config['bucket']['allowed']) {
     $session->set('is-warning', 'BitBucket has been disabled');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
@@ -22,8 +27,6 @@ $maxsize = $site_config['bucket']['maxsize'];
 $folders = date('Y/m');
 $formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
-$str = str_replace('.', '', $str);
-
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
 $PICSALT = $SaLt . $CURUSER['username'];
@@ -39,7 +42,7 @@ $stdfoot = [
 
 if (isset($_GET['delete'])) {
     $getfile = htmlsafechars($_GET['delete']);
-    $delfile = urldecode(decrypt($getfile));
+    $delfile = urldecode(decrypt($getfile, $PICSALT));
     $delhash = md5($delfile . $USERSALT . $SaLt);
     if ($delhash != $_GET['delhash']) {
         stderr($lang['bitbucket_umm'], "{$lang['bitbucket_wayd']}");
@@ -55,15 +58,9 @@ if (isset($_GET['delete'])) {
 
 if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
     $type = isset($_GET['type']) && $_GET['type'] == 1 ? 1 : 2;
-    $set = ['avatar' => trim($_GET['avatar'])];
-    $fluent->update('users')
-           ->set($set)
-           ->where('id=?', $CURUSER['id'])
-           ->execute();
-
-    $cache->update_row('user_' . $CURUSER['id'], [
-        'avatar' => $_GET['avatar'],
-    ], $site_config['expires']['user_cache']);
+    $update = ['avatar' => trim(strip_tags($_GET['avatar']))];
+    $user_stuffs = $container->get(User::class);
+    $user_stuffs->update($update, $CURUSER['id']);
     header("Location: {$site_config['paths']['baseurl']}/bitbucket.php?images=$type&updated=avatar");
 } elseif (!empty($_GET['avatar']) && $_GET['avatar'] === $CURUSER['avatar']) {
     $session->set('is-warning', 'This is already your avatar!');
@@ -71,9 +68,9 @@ if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
 
 if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', "
-        [h3]{$lang['bitbucket_updated']}[/h3]
-        [class=mw-150 has-text-centered]
-            [img width=250 height=auto]" . url_proxy($CURUSER['avatar'], true, 250) . '[/img]
+        [class=has-text-centered]
+            [h3]{$lang['bitbucket_updated']}[/h3]
+            [img width=150]" . url_proxy($CURUSER['avatar'], true, 150) . '[/img]
         [/class]');
 }
 
@@ -93,7 +90,7 @@ $htmlout .= "
 $htmlout .= main_div("
         <div class='padding20'>
             <h2>Upload from URL</h2>
-            <input type='url' id='image_url' data-csrf='" . $session->get('csrf_token') . "' placeholder='External Image URL' class='w-100 top20 bottom20'>
+            <input type='url' id='image_url' placeholder='External Image URL' class='w-100 top20 bottom20'>
             <span class='button is-small' onclick=\"return grab_url(event)\">Upload</span>
         </div>", 'bottom20');
 
@@ -167,7 +164,7 @@ if (isset($_GET['images'])) {
         foreach ($files as $filename) {
             $filename = basename($filename);
             $filename = $bucketlink2 . $filename;
-            $encryptedfilename = urlencode(encrypt($filename));
+            $encryptedfilename = urlencode(encrypt($filename, $PICSALT));
             $eid = md5($filename);
             $htmlout .= main_div("
             <div class='padding20 round10 bg-00'>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'sysoplog_staff' => 'Staff actions log',
     'sysoplog_search' => 'Search log',

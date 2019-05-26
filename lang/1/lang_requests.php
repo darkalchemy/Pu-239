@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $site_config;
+
 $lang = [
     //Error
     'error_error' => 'Error',
@@ -47,7 +50,7 @@ $lang = [
     'add_must_be' => 'You must be ',
     'add_ratio_above' => ' or above <b>AND</b> have a ratio above <b>',
     'add_make_req' => '</b> to make a request.',
-    'add_faq' => " Please see the <a href='faq.php'><b>FAQ</b></a> for more information on different user classes and what they can do.",
+    'add_faq' => " Please see the <a href='{$site_config['paths']['baseurl']}/faq.php'><b>FAQ</b></a> for more information on different user classes and what they can do.",
     'add_rules' => 'Request Rules',
     'add_rules1' => 'To make a request you must have a ratio of at least',
     'add_rules2' => ' AND have uploaded at least ',
@@ -140,5 +143,4 @@ $lang = [
     'filled_unless' => 'Do <b>NOT</b> follow this link unless you are sure there is a problem.',
     'filled_upl' => ' was just uploaded',
     'filled_voted' => 'The Request you voted for ',
-    'filled_this' => 'Please do not forget to leave thanks where due.',
 ];

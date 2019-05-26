@@ -1,6 +1,5 @@
 function getname() {
-    var filename = document.getElementById('torrent').value;
-    var filename = filename.toString();
+    var filename = document.getElementById('torrent').value.toString();
     var lowcase = filename.toLowerCase();
     var start = lowcase.lastIndexOf('\\');
     if (start == -1) {

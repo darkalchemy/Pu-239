@@ -1,4 +1,4 @@
-var min_length = 2;
+let min_length = 2;
 
 document.onclick = function (event) {
     closechoices(event);
@@ -10,10 +10,10 @@ suggcont.style.display = 'none';
 
 function autosearch(key) {
     if (key != 13) {
-        var el = document.querySelector('#search');
-        var csrf = el.dataset.csrf;
-        var keyword = el.value;
-        var lastChar = keyword.slice(-1);
+        let el = document.querySelector('#search');
+        let csrf = el.dataset.csrf;
+        let keyword = el.value;
+        let lastChar = keyword.slice(-1);
         if (lastChar != ' ' && keyword.length >= min_length) {
             $.ajax({
                 url: './ajax/autocomplete.php',
@@ -41,7 +41,7 @@ function closechoices(event) {
         $('#autocomplete').slideUp('slow', function () {
         });
     }
-    var keyword = $('#search').val();
+    let keyword = $('#search').val();
     if (event.target.id == 'search' && keyword.length >= min_length) {
         $('#autocomplete').slideDown('slow', function () {
         });

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Post.
@@ -11,23 +14,28 @@ class Post
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Post constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
      * @param array $values
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function insert(array $values)
     {
@@ -47,8 +55,8 @@ class Post
     public function delete(int $id, int $topic_id)
     {
         $this->fluent->delete('posts')
-                     ->where('id=?', $id)
-                     ->where('topic_id=?', $topic_id)
+                     ->where('id = ?', $id)
+                     ->where('topic_id = ?', $topic_id)
                      ->execute();
     }
 }

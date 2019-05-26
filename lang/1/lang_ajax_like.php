@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'ajlike_you_been_disabled' => 'You have been Disabled!',
     'ajlike_you_been_banned' => 'You have been Permanently Banned! Please Contact Staff Member',

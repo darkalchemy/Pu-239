@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Exception;
 use Intervention\Image\ImageManager;
 use Spatie\Image\Exceptions\InvalidManipulation;
@@ -20,9 +24,12 @@ class ImageProxy
      * @param int|null $height
      * @param int|null $quality
      *
-     * @return bool|string
-     *
+     * @throws DependencyException
      * @throws InvalidManipulation
+     * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool|string
      */
     public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
@@ -33,19 +40,11 @@ class ImageProxy
         $hash = hash('sha512', $url);
         $path = PROXY_IMAGES_DIR . $hash;
 
-        if (file_exists($path)) {
-            if (!exif_imagetype($path)) {
-                unlink($path);
-            }
+        if (file_exists($path) && !exif_imagetype($path)) {
+            unlink($path);
         }
 
-        if (!file_exists($path)) {
-            if (!$this->store_image($url, $path)) {
-                return false;
-            }
-        }
-
-        if (!file_exists($path)) {
+        if (!file_exists($path) && !$this->store_image($url, $path)) {
             return false;
         }
 
@@ -61,8 +60,12 @@ class ImageProxy
     }
 
     /**
-     * @param $url
-     * @param $path
+     * @param string $url
+     * @param string $path
+     *
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -139,7 +142,7 @@ class ImageProxy
     /**
      * @param $path
      */
-    protected function set_permissions($path)
+    protected function set_permissions(string $path)
     {
         if (file_exists($path) && is_writable($path)) {
             chmod($path, 0775);
@@ -151,13 +154,13 @@ class ImageProxy
      * @param $path
      * @param $quality
      *
-     * @return string
-     *
      * @throws InvalidManipulation
+     *
+     * @return string
      */
-    protected function convert_image(string $url, string $path, ?int $quality)
+    protected function convert_image(string $url, string $path, int $quality)
     {
-        $hash = hash('sha512', $url . '_converted' . (!empty($quality) ? '_' . $quality : ''));
+        $hash = hash('sha512', $url . '_converted_' . $quality);
         $new_path = PROXY_IMAGES_DIR . $hash;
 
         if (!file_exists($path)) {

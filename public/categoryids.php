@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('index'));
 $parents = genrelist(true);
 
@@ -13,15 +15,21 @@ $heading = "
             <th class='has-text-centered w-25'>Cat ID</th>
             <th class='has-text-centered'>Cat Name</th>
             <th class='has-text-centered w-25'>Torrents Uploaded</th>
-        </td>";
+        </tr>";
 $body = '';
+global $container, $site_config;
+
+$fluent = $container->get(Database::class);
+$counts = $fluent->from('torrents')
+                ->select(null)
+                ->select('category')
+                ->select('COUNT(id) AS count')
+                ->groupBy('category')
+                ->fetchPairs('category', 'COUNT(id)');
+
 foreach ($parents as $parent) {
     foreach ($parent['children'] as $child) {
-        $count = $fluent->from('torrents')
-                        ->select(null)
-                        ->select('COUNT(*) AS count')
-                        ->where('category = ?', $child['id'])
-                        ->fetch('count');
+        $count = !empty($counts[$child['id']]) ? $counts[$child['id']] : 0;
         $body .= "
         <tr>
             <td class='has-text-centered'>{$child['id']}</td>

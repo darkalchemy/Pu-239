@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('achievementlist'));
 //$doUpdate = false;
+global $CURUSER, $site_config;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     $clienticon = htmlsafechars(trim($_POST['clienticon']));
     $achievname = htmlsafechars(trim($_POST['achievname']));

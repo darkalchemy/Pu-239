@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_log'));
 $txt = $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
@@ -20,9 +20,9 @@ if (!empty($search)) {
 // delete items older than 1 month
 $secs = TIME_NOW - (30 * 86400);
 sql_query("DELETE FROM sitelog WHERE added < $secs") or sqlerr(__FILE__, __LINE__);
-$resx = sql_query("SELECT COUNT(*) FROM sitelog $where");
+$resx = sql_query("SELECT COUNT(id) FROM sitelog $where");
 $rowx = mysqli_fetch_array($resx, MYSQLI_NUM);
-$count = $rowx[0];
+$count = (int) $rowx[0];
 $perpage = 30;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 $HTMLOUT = '';
@@ -66,7 +66,7 @@ if (mysqli_num_rows($res) == 0) {
         $key = array_search($txt, $log_events);
         $color = $colors[$key];
 
-        $date = get_date($arr['added'], 'LONG', 0, 1);
+        $date = get_date((int) $arr['added'], 'LONG', 0, 1);
 
         $HTMLOUT .= "
                 <tr class='table'>

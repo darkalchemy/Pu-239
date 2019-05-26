@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //my gets
     'my_updated' => 'Profile updated',
@@ -40,8 +42,8 @@ $lang = [
     'my_avatar' => 'Avatar URL',
     'my_no_avatar_allow' => 'Sorry - Avatar changing disabled to your current user class',
     'my_signature' => 'Signature URL',
-    'my_avatar_info' => 'Width should be 150 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="bitbucket.php">bitbucket</a>.',
-    'my_signature_info' => 'Width should be 500 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="bitbucket.php">bitbucket</a>.',
+    'my_avatar_info' => "Width should be 150 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>bitbucket</a>.",
+    'my_signature_info' => "Width should be 500 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>bitbucket</a>.",
     'my_tor_perpage' => 'Torrents per page',
     'my_default' => '(0=use default setting)',
     'my_top_perpage' => 'Topics per page',
@@ -50,7 +52,7 @@ $lang = [
     'my_view_signatures' => 'View signatures',
     'my_low_bw' => '(Low bandwidth users might want to turn this off)',
     'my_info' => 'Info',
-    'my_tags' => 'Displayed on your public page. May contain <a href="tags.php" target="_new">BB codes</a>.',
+    'my_tags' => "Displayed on your public page. May contain <a href='{$site_config['paths']['baseurl']}/tags.php' target='_new'>BB codes</a>.",
     'my_email' => 'Email address',
     'my_email_pass' => 'Please enter your password if changing your email address!',
     'my_note' => '<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.',
@@ -62,7 +64,6 @@ $lang = [
     'my_default_clearnewtagmanually' => '(Check to use - Default value is no!)',
     'my_side' => 'Side Menu',
     'my_side1' => '(Check to turn Side Menu on!)',
-    'my_revert' => 'Revert changes!',
     'my_none_select' => '---- None selected ----',
     'my_q1' => "Mother's birthplace",
     'my_q2' => 'Best childhood friend',

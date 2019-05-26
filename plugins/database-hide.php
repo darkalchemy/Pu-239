@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Hide some databases from the interface - just to improve design, not a security plugin
  *
@@ -20,6 +20,11 @@ class AdminerDatabaseHide
         $this->disabled = array_map('strtolower', $disabled);
     }
 
+    /**
+     * @param bool $flush
+     *
+     * @return array
+     */
     public function databases($flush = true)
     {
         $return = [];

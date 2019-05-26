@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $site_config, $session;
-
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('needseed'));
+global $site_config;
+
 $possible_actions = [
     'leechers',
     'seeders',
@@ -66,7 +68,7 @@ if ($needed === 'leechers') {
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
                 <tr>
-                    <td>' . format_username($arr['id']) . ' (' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td>
+                    <td>' . format_username((int) $arr['id']) . ' (' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td>
                     <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $What_ID . "' title='{$torrname}' class='tooltipper'>{$torrname}</a></td>
                     <td>{$cat}</td>
                     <td>{$peers}</td>

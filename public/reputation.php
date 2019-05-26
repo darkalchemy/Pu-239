@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
-
 $lang = load_language('reputation');
+global $container, $site_config, $CURUSER;
 
 $is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
 
@@ -119,7 +122,7 @@ if (!$is_mod) {
         }
     }
 }
-$r = sql_query('SELECT COUNT(*) FROM posts WHERE user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+$r = sql_query('SELECT COUNT(id) FROM posts WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $a = mysqli_fetch_row($r);
 $CURUSER['posts'] = $a[0];
 
@@ -142,6 +145,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
     sql_query('UPDATE users SET reputation = ' . intval($res['reputation']) . ' WHERE id=' . sqlesc($res['userid'])) or sqlerr(__FILE__, __LINE__);
+    $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $res['userid'], [
         'reputation' => $res['reputation'],
     ], $site_config['expires']['user_cache']);
@@ -168,7 +172,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                         AND r.locale = ' . sqlesc($input['locale']) . '
                                         ORDER BY dateadd DESC') or sqlerr(__FILE__, __LINE__);
         $reasonbits = $rep = '';
-        if (false !== mysqli_num_rows($query1)) {
+        if (mysqli_num_rows($query1) !== false) {
             $total = 0;
             while ($postrep = mysqli_fetch_assoc($query1)) {
                 $total += $postrep['reputation'];
@@ -180,7 +184,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                     $posneg = 'balance';
                 }
                 if ($GVARS['g_rep_seeown']) {
-                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username($postrep['leftby_id']) . '</span>';
+                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username((int) $postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
     <td class='row2'><img src='{$site_config['paths']['images_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
@@ -310,7 +314,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
  */
 function rep_output($msg = '', $html = '')
 {
-    global $closewindow, $lang;
+    global $lang, $closewindow;
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     if ($msg && empty($html)) {
         $html = "
@@ -365,6 +369,7 @@ function rep_output($msg = '', $html = '')
 function fetch_reppower($user = [], $rep = 'pos')
 {
     global $GVARS, $is_mod;
+
     $reppower = '';
 
     if (!$GVARS['g_rep_negative']) {
@@ -385,7 +390,7 @@ function fetch_reppower($user = [], $rep = 'pos')
             $reppower += intval($user['reputation'] / $GVARS['rep_kppower']);
         }
         if ($GVARS['rep_rdpower']) { // time based power
-            $reppower += intval((TIME_NOW - $user['added']) / 86400 / $GVARS['rep_rdpower']);
+            $reppower += intval((TIME_NOW - $user['registered']) / 86400 / $GVARS['rep_rdpower']);
         }
         if ($rep != 'pos') {
             $reppower = intval($reppower / 2);

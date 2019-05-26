@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
-
 $lang = array_merge($lang, load_language('ad_userhits'));
+global $site_config, $CURUSER;
+
 $HTMLOUT = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id) || $CURUSER['id'] != $id && $CURUSER['class'] < UC_STAFF) {
@@ -23,7 +25,7 @@ if (!$count) {
 }
 $res = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $user = mysqli_fetch_assoc($res);
-$HTMLOUT .= "<h1>{$lang['userhits_profile']}" . format_username($id) . "</h1>
+$HTMLOUT .= "<h1>{$lang['userhits_profile']}" . format_username((int) $id) . "</h1>
 <h2>{$lang['userhits_total']}" . htmlsafechars($count) . "{$lang['userhits_views']}</h2>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -39,8 +41,8 @@ $res = sql_query('SELECT uh.*, username, users.id AS uid FROM userhits uh LEFT J
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '
 <tr><td>' . number_format($arr['number']) . '</td>
-<td>' . format_username($arr['uid']) . '</td>
-<td>' . get_date($arr['added'], 'DATE', 0, 1) . "</td>
+<td>' . format_username((int) $arr['uid']) . '</td>
+<td>' . get_date((int) $arr['added'], 'DATE', 0, 1) . "</td>
 </tr>\n";
 }
 $HTMLOUT .= '</table>';

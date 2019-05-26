@@ -1,9 +1,3 @@
-/* Custom CSS - enter css overrides for all styles below */
-
-:root {
-    --main-color: #0f0;
-}
-
 .mentioned {
     color: #5eff00;
     text-shadow: 1px 1px #2c6609;
@@ -42,8 +36,7 @@
 }
 
 a {
-    color: #0f0;
-    color: var(--main-color);
+    color: var(--main-bdr-color);
     text-decoration: none;
 }
 

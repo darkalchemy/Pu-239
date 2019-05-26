@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Download
     'download_user_error' => 'USER ERROR',

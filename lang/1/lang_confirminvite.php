@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //confirminvites
     'confirminvites_error' => 'Error',
@@ -7,7 +9,6 @@ $lang = [
     'confirminvites_user_error' => 'Invite Failed',
     'confirminvites_invalid_id' => 'Invalid User ID.',
     'confirminvites_invalid' => 'Nice try faunzy!',
-    'confirminvites_error' => 'Error',
     'confirminvites_note' => 'Note: You need cookies enabled to sign up or log in.',
     'confirminvites_dusername' => 'Desired username:',
     'confirminvites_password' => 'Pick a password:',

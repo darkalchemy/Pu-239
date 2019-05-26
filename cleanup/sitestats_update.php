@@ -1,19 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function sitestats_update($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $fluent, $cache;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $dt = TIME_NOW - 300;
-
+    $fluent = $container->get(Database::class);
     $users = $fluent->from('users')
                     ->select(null)
                     ->select('status')
@@ -116,7 +123,7 @@ function sitestats_update($data)
         'ratiounconn' => $unconnectables != 0 && $seeders + $leechers != 0 ? $unconnectables / ($seeders + $leechers) : 0,
         'updated' => TIME_NOW,
     ];
-
+    $cache = $container->get(Cache::class);
     $cache->set('site_stats_', $set, 0);
 
     $time_end = microtime(true);

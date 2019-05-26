@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'text_settings' => 'Block Settings',
     'text_block' => 'Block',

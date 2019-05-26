@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Torrent;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $fluent, $torrent_stuffs;
-
 $lang = array_merge($lang, load_language('ad_datareset'));
+global $container, $CURUSER, $site_config;
+
 $HTMLOUT = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,10 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($tid == 0) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
-                       ->select('COUNT(*) AS count')
-                       ->where('id=?', $tid)
+                       ->select('COUNT(id) AS count')
+                       ->where('id = ?', $tid)
                        ->fetch('count');
 
     if (empty($torrents)) {
@@ -38,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   ->select('u.downloaded AS ud')
                   ->leftJoin('users AS u ON u.id=s.userid')
                   ->leftJoin('snatched as s ON s.torrentid=t.id')
-                  ->where('t.id=?', $id);
+                  ->where('t.id = ?', $id);
 
     $pms = $new_download = [];
     foreach ($row as $a) {
@@ -49,13 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $msg .= $lang['datareset_looks'] . htmlsafechars($a['name']) . $lang['datareset_nuked'];
         $msg .= $lang['datareset_down'] . mksize($a['sd']) . $lang['datareset_downbe'] . mksize($newd) . "\n";
         $pms[] = '(0,' . sqlesc($a['uid']) . ',' . TIME_NOW . ',' . sqlesc($msg) . ')';
+        $cache = $container->get(Cache::class);
         $cache->update_row('user_' . $a['uid'], [
             'downloaded' => $new_download,
         ], $site_config['expires']['curuser']);
     }
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . implode(', ', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
     sql_query('INSERT INTO users (id,downloaded) VALUES ' . implode(', ', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
-    $torrent_stuffs->delete_by_id($a['id']);
+    $torrent_stuffs = $container->get(Torrent::class);
+    $torrent_stuffs->delete_by_id((int) $a['id']);
     $torrent_stuffs->remove_torrent($a['info_hash']);
 
     write_log($lang['datareset_torr'] . $tname . $lang['datareset_wdel'] . htmlsafechars($CURUSER['username']) . $lang['datareset_allusr']);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 define('UC_USER', 0);
 define('UC_MIN', 0);
 define('UC_POWER_USER', 1);

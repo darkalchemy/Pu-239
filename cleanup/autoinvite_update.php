@@ -1,34 +1,39 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function autoinvite_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $ratiocheck = 1.0;
     $dt = TIME_NOW;
     $joined = ($dt - 86400 * 90);
-    $res = sql_query('SELECT id, uploaded, invites, downloaded, modcomment FROM users WHERE invites = 1 AND class = ' . UC_MIN . " AND uploaded / downloaded <= $ratiocheck AND enabled = 'yes' AND added < $joined") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, uploaded, invites, downloaded, modcomment FROM users WHERE invites = 1 AND class = ' . UC_MIN . " AND uploaded / downloaded <= $ratiocheck AND enabled = 'yes' AND registered < $joined") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Auto Invites';
         $msg = "Congratulations, your user group met a set out criteria therefore you have been awarded 2 invites  :)\n Please use them carefully. Cheers " . $site_config['site']['name'] . " staff.\n";
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
             $modcomment = $arr['modcomment'];
-            $modcomment = get_date($dt, 'DATE', 1) . ' - Awarded 2 bonus invites by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ") .\n" . $modcomment;
+            $modcomment = get_date((int) $dt, 'DATE', 1) . ' - Awarded 2 bonus invites by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ") .\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = [
                 'sender' => 0,
@@ -46,6 +51,7 @@ function autoinvite_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE invites = invites + VALUES(invites), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
@@ -58,7 +64,7 @@ function autoinvite_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Auto Invites Cleanup: Completed using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('Auto Invites Cleanup: Completed' . $text);
     }
 }

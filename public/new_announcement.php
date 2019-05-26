@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $mysqli, $session;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -18,6 +18,8 @@ $stdfoot = [
     ],
 ];
 $lang = load_language('global');
+global $CURUSER, $site_config;
+
 if ($CURUSER['class'] < UC_MAX) {
     stderr('Error', "You're not authorised");
 }
@@ -34,9 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== Usersearch POST data...
     $n_pms = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
     $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
-    if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-        stderr('Error', 'Invalid CSRF Token');
-    }
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
         stderr('Error', 'Misformed Query');
     }
@@ -100,8 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <input type='submit' name='buttonval' value='Submit' class='button is-small'>
      </td></tr></table>
      <input type='hidden' name='n_pms' value='" . $n_pms . "'>
-    <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "'>
-     <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
+     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "'>
      </form><br><br>
      </div></td></tr></table>";
     if ($body) {
@@ -110,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <tr><td class='has-text-centered'><h2><font class='has-text-white'>Announcement: 
      " . htmlsafechars($subject) . "</font></h2></td></tr>
      <tr><td class='text'>
-     " . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';
+     " . format_comment($body) . '<br><hr>Expires: ' . get_date((int) $newtime, 'DATE') . '';
         $HTMLOUT .= '</td></tr></table>';
     }
 } else { // Shouldn't be here

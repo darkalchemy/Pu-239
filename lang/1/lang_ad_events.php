@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'events_err_load' => 'Error: Events not loaded.',
     'events_err_del' => 'Error Deleting Event: ',

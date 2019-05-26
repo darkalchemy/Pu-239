@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Snatched;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function snatchclean_update($data)
 {
+    global $container;
+
     $time_start = microtime(true);
-    global $snatched_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $days = 90;
     $dt = TIME_NOW - ($days * 86400);
+    $snatched_stuffs = $container->get(Snatched::class);
     $snatched_stuffs->delete_stale($dt);
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'wiki_title' => 'Wiki',
     'wiki_access_denied' => 'Access Denied',

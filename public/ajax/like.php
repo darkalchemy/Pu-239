@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
@@ -20,21 +25,18 @@ comment_like_unlike($fields);
 /**
  * @param $fields
  *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function comment_like_unlike($fields)
 {
-    $lang = array_merge(load_language('global'), load_language('ajax_like'));
-    $id = $csrf = $type = $current = '';
-    extract($_POST);
-    global $CURUSER, $session, $cache, $fluent;
+    global $container, $CURUSER;
 
+    $id = $type = $current = '';
+    extract($_POST);
     $id = (int) $id;
     header('content-type: application/json');
-    if (empty($csrf) || !$session->validateToken($csrf)) {
-        echo json_encode(['label' => 'Invalid CSRF Token']);
-        die();
-    }
     if (!array_key_exists($type, $fields)) {
         echo json_encode(['label' => 'Invalid Data Type']);
         die();
@@ -55,6 +57,8 @@ function comment_like_unlike($fields)
     if ($type === 'topic' || $type === 'post' || $type === 'usercomment') {
         $table = $fields[$type];
     }
+    $cache = $container->get(Cache::class);
+    $fluent = $container->get(Database::class);
     if ($data['count'] == 0 && $current === 'Like') {
         $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -82,10 +86,10 @@ function comment_like_unlike($fields)
     $sql = $fluent->from('likes')
                   ->select(null)
                   ->select('user_id')
-                  ->where("{$type}_id=?", $id)
+                  ->where("{$type}_id = ?", $id)
                   ->where('user_id != ?', $CURUSER['id']);
     foreach ($sql as $row) {
-        $rows[] = format_username($row['user_id']);
+        $rows[] = format_username((int) $row['user_id']);
     }
     if (!empty($rows)) {
         $data['list'] = implode(', ', $rows) . (!empty($data['list']) ? ' and ' . $data['list'] : ' like' . plural(count($rows)) . ' this');

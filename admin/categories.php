@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
-
 $lang = array_merge($lang, load_language('ad_categories'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
@@ -17,31 +23,31 @@ $params['new_cat_id'] = !empty($params['new_cat_id']) ? intval($params['new_cat_
 
 switch ($params['mode']) {
     case 'takemove_cat':
-        move_cat();
+        move_cat($params);
         break;
 
     case 'move_cat':
-        move_cat_form();
+        move_cat_form($params);
         break;
 
     case 'takeadd_cat':
-        add_cat();
+        add_cat($params);
         break;
 
     case 'takedel_cat':
-        delete_cat();
+        delete_cat($params);
         break;
 
     case 'del_cat':
-        delete_cat_form();
+        delete_cat_form($params);
         break;
 
     case 'takeedit_cat':
-        edit_cat();
+        edit_cat($params);
         break;
 
     case 'edit_cat':
-        edit_cat_form();
+        edit_cat_form($params);
         break;
 
     default:
@@ -50,12 +56,15 @@ switch ($params['mode']) {
 }
 
 /**
+ * @param $params
+ *
+ * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function move_cat()
+function move_cat($params)
 {
-    global $site_config, $params, $lang, $cache, $fluent;
+    global $container, $lang, $site_config;
 
     if ((!isset($params['id']) || !is_valid_id($params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -63,10 +72,10 @@ function move_cat()
     if (!is_valid_id($params['new_cat_id']) || ($params['id'] == $params['new_cat_id'])) {
         stderr($lang['categories_error'], $lang['categories_move_error2']);
     }
-
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('categories')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(id) AS count')
                     ->where('id', [
                         $params['id'],
                         $params['new_cat_id'],
@@ -87,6 +96,7 @@ function move_cat()
 
     flush_torrents($params['id']);
     flush_torrents($params['new_cat_id']);
+    $cache = $container->get(Cache::class);
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
@@ -99,13 +109,17 @@ function move_cat()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  * @throws Exception
  */
-function move_cat_form()
+function move_cat_form($params)
 {
-    global $params, $lang, $site_config;
-
+    global $lang, $site_config;
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -123,7 +137,7 @@ function move_cat_form()
     foreach ($cats as $cat) {
         foreach ($cat['children'] as $child) {
             $select .= ($child['id'] != $current_cat['id']) ? "
-                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars(htmlspecialchars($child['name'], ENT_QUOTES, 'UTF-8')) . '</option>' : '';
+                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars($child['name']) . '</option>' : '';
         }
     }
     $select .= '
@@ -132,37 +146,38 @@ function move_cat_form()
         <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
-            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars(htmlspecialchars($current_cat['name'], ENT_QUOTES, 'UTF-8')) . "</h2>
+            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name']) . "</h2>
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
-    $htmlout .= main_div("
+    $body = "
             <div class='w-50 has-text-centered padding20'>
-                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars(htmlspecialchars($current_cat['parent_name'], ENT_QUOTES, 'UTF-8') . '::' . htmlsafechars(htmlspecialchars($current_cat['name'], ENT_QUOTES, 'UTF-8'))) . "</span></p>
+                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
                 <p class='has-text-green level'>{$lang['categories_select_new']} $select</p>
                 <div class='has-text-centered'>
                     <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
                     <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
                 </div>
-            </div>");
-    $htmlout .= '
+            </div>";
+    $htmlout .= main_div($body) . '
         </form>';
 
     echo stdhead($lang['categories_move_stdhead'] . $current_cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
+ * @param $params
+ *
  * @throws Exception
  */
-function add_cat()
+function add_cat($params)
 {
-    global $site_config, $params, $lang, $cache, $fluent;
+    global $container, $site_config, $lang;
 
     foreach ([
-                 'new_cat_name',
-                 'new_cat_desc',
-                 'cat_image',
-                 'parent_id',
-             ] as $x) {
+        'new_cat_name',
+        'new_cat_desc',
+        'cat_image',
+        'parent_id',
+    ] as $x) {
         if (!isset($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_add_error1'] . ': ' . $x);
         }
@@ -176,10 +191,12 @@ function add_cat()
         'image' => $params['cat_image'],
         'parent_id' => $params['parent_id'],
     ];
+    $fluent = $container->get(Database::class);
     $insert = $fluent->insertInto('categories')
                      ->values($values)
                      ->execute();
 
+    $cache = $container->get(Cache::class);
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
@@ -192,18 +209,23 @@ function add_cat()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws Exception
  */
-function delete_cat()
+function delete_cat($params)
 {
-    global $site_config, $params, $lang, $cache, $fluent;
+    global $container, $site_config, $lang;
 
+    $cache = $container->get(Cache::class);
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
+    $fluent = $container->get(Database::class);
     $cat = $fluent->from('categories')
-                  ->where('id=?', $params['id'])
+                  ->where('id = ?', $params['id'])
                   ->fetch();
 
     if (!$cat) {
@@ -211,7 +233,7 @@ function delete_cat()
     }
     $count = $fluent->from('torrents')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(id) AS count')
                     ->where('category = ?', $params['id'])
                     ->fetch('count');
 
@@ -220,7 +242,7 @@ function delete_cat()
     }
 
     $results = $fluent->deleteFrom('categories')
-                      ->where('id =?', $params['id'])
+                      ->where('id  = ?', $params['id'])
                       ->execute();
 
     $cache->delete('genrelist_grouped_');
@@ -235,12 +257,14 @@ function delete_cat()
 }
 
 /**
+ * @param mixed $params
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function delete_cat_form()
+function delete_cat_form($params)
 {
-    global $params, $lang, $site_config, $fluent;
+    global $container, $site_config, $lang;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -250,10 +274,10 @@ function delete_cat_form()
     if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-
+    $fluent = $container->get(Database::class);
     $count = $fluent->from('torrents')
                     ->select(null)
-                    ->select('COUNT(*) AS count')
+                    ->select('COUNT(id) AS count')
                     ->where('category = ?', $params['id'])
                     ->fetch('count');
 
@@ -282,23 +306,26 @@ function delete_cat_form()
 }
 
 /**
+ * @param mixed $params
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function edit_cat()
+function edit_cat($params)
 {
-    global $site_config, $params, $lang, $cache, $fluent;
+    global $container, $site_config, $lang;
 
+    $cache = $container->get(Cache::class);
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     foreach ([
-                 'cat_name',
-                 'cat_desc',
-                 'cat_image',
-                 'parent_id',
-                 'order_id',
-             ] as $x) {
+        'cat_name',
+        'cat_desc',
+        'cat_image',
+        'parent_id',
+        'order_id',
+    ] as $x) {
         if (!isset($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
@@ -313,9 +340,10 @@ function edit_cat()
         'ordered' => $params['order_id'],
         'parent_id' => $params['parent_id'],
     ];
+    $fluent = $container->get(Database::class);
     $update = $fluent->update('categories')
                      ->set($set)
-                     ->where('id=?', $params['id'])
+                     ->where('id = ?', $params['id'])
                      ->execute();
 
     if ($update) {
@@ -334,11 +362,17 @@ function edit_cat()
 }
 
 /**
+ * @param $params
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function edit_cat_form()
+function edit_cat_form($params)
 {
-    global $site_config, $params, $lang;
+    global $site_config, $lang;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -378,7 +412,7 @@ function edit_cat_form()
  */
 function show_categories()
 {
-    global $site_config, $lang;
+    global $lang, $site_config;
 
     $parents = get_parents([]);
     $select = get_images([]);
@@ -439,7 +473,7 @@ function show_categories()
  */
 function build_table(array $data, string $parent_name)
 {
-    global $site_config, $lang;
+    global $lang, $site_config;
 
     $cat_image = !empty($data['image']) && file_exists(IMAGES_DIR . 'caticons/1/' . $data['image']) ? "
             <img src='{$site_config['paths']['images_baseurl']}caticons/1/" . htmlsafechars($data['image']) . "' alt='{$data['id']}'>" : $lang['categories_show_no_image'];
@@ -473,23 +507,27 @@ function build_table(array $data, string $parent_name)
 /**
  * @param array $cat
  *
- * @return string
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function get_parents(array $cat)
 {
-    global $fluent, $lang;
+    global $container, $lang;
 
+    $fluent = $container->get(Database::class);
     $parents = $fluent->from('categories')
-                      ->where('parent_id=0')
+                      ->select('IF (cat_desc IS NULL, "", cat_desc) AS cat_desc')
+                      ->where('parent_id = 0')
                       ->orderBy('ordered')
                       ->fetchAll();
 
     foreach ($parents as $parent) {
-        $parent['name'] = htmlsafechars(htmlspecialchars($parent['name'], ENT_QUOTES, 'UTF-8'));
-        $parent['cat_desc'] = htmlsafechars(htmlspecialchars($parent['cat_desc'], ENT_QUOTES, 'UTF-8'));
-        $parent['image'] = htmlsafechars(htmlspecialchars($parent['image'], ENT_QUOTES, 'UTF-8'));
+        $parent['name'] = htmlsafechars($parent['name']);
+        $parent['cat_desc'] = htmlsafechars($parent['cat_desc']);
+        $parent['image'] = htmlsafechars($parent['image']);
     }
 
     $out = "
@@ -511,12 +549,16 @@ function get_parents(array $cat)
 /**
  * @param bool $redirect
  *
- * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  */
 function reorder_cats(bool $redirect = true)
 {
-    global $site_config, $fluent, $cache;
+    global $container, $site_config;
+
+    $fluent = $container->get(Database::class);
 
     $i = 0;
     $cats = $fluent->from('categories')
@@ -529,11 +571,12 @@ function reorder_cats(bool $redirect = true)
 
         $fluent->update('categories')
                ->set($set)
-               ->where('id=?', $cat['id'])
+               ->where('id = ?', $cat['id'])
                ->execute();
     }
 
     flush_torrents(0);
+    $cache = $container->get(Cache::class);
     $cache->delete('genrelist_grouped_');
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
@@ -547,14 +590,17 @@ function reorder_cats(bool $redirect = true)
 /**
  * @param array $params
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function set_ordered(array $params)
 {
-    global $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $set = [
-        'ordered' => new Envms\FluentPDO\Literal('ordered + 1'),
+        'ordered' => new Literal('ordered + 1'),
     ];
     $fluent->update('categories')
            ->set($set)
@@ -570,16 +616,19 @@ function set_ordered(array $params)
  */
 function get_images(array $cat)
 {
-    global $lang;
+    global $site_config, $lang;
 
     $path = IMAGES_DIR . 'caticons/1/';
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     $files = [];
+
     foreach ($objects as $name => $object) {
         $basename = pathinfo($name, PATHINFO_BASENAME);
-        $files[] = $basename;
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+        if (in_array($ext, $site_config['images']['formats'])) {
+            $files[] = $basename;
+        }
     }
-
     if (is_array($files) && count($files)) {
         natsort($files);
         $select = "
@@ -589,7 +638,7 @@ function get_images(array $cat)
         foreach ($files as $file) {
             $selected = !empty($cat) && $file == $cat['image'] ? ' selected' : '';
             $select .= "
-                    <option value='" . htmlsafechars(htmlspecialchars($file, ENT_QUOTES) . "'{$selected}>" . htmlsafechars(htmlspecialchars($file, ENT_QUOTES, 'UTF-8'))) . '</option>';
+                    <option value='" . htmlsafechars($file) . "'{$selected}>" . htmlsafechars($file) . '</option>';
         }
         $select .= "
                 </select>
@@ -597,7 +646,7 @@ function get_images(array $cat)
             <p class='has-text-danger has-text-centered'>{$lang['categories_edit_info']}</p>";
     } else {
         $select = "
-            <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
+            <p class='has-text-danger has-text-centered'>{$lang['categories_edit_warning']}</p>";
     }
 
     return $select;
@@ -606,28 +655,31 @@ function get_images(array $cat)
 /**
  * @param int $id
  *
- * @return mixed
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function get_cat(int $id)
 {
-    global $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $cat = $fluent->from('categories')
-                  ->where('id=?', $id)
+                  ->where('id = ?', $id)
                   ->fetch();
 
     $current_cat['parent_name'] = $fluent->from('categories')
                                          ->select(null)
                                          ->select('name')
-                                         ->where('id=?', $cat['parent_id'])
+                                         ->where('id = ?', $cat['parent_id'])
                                          ->fetch('name');
 
-    $cat['name'] = htmlsafechars(htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'));
-    $cat['cat_desc'] = htmlsafechars(htmlspecialchars($cat['cat_desc'], ENT_QUOTES, 'UTF-8'));
-    $cat['image'] = htmlsafechars(htmlspecialchars($cat['image'], ENT_QUOTES, 'UTF-8'));
-    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars(htmlspecialchars($cat['parent_name'], ENT_QUOTES, 'UTF-8')) : '';
+    $cat['name'] = htmlsafechars($cat['name']);
+    $cat['cat_desc'] = htmlsafechars($cat['cat_desc']);
+    $cat['image'] = htmlsafechars($cat['image']);
+    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars($cat['parent_name']) : '';
 
     return $cat;
 }
@@ -635,13 +687,16 @@ function get_cat(int $id)
 /**
  * @param int $id
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  */
 function flush_torrents(int $id)
 {
-    global $fluent, $site_config, $cache;
+    global $container, $site_config;
 
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
                        ->select('id');
@@ -655,6 +710,7 @@ function flush_torrents(int $id)
         'category' => $id,
     ];
 
+    $cache = $container->get(Cache::class);
     foreach ($torrents as $torrent) {
         $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
     }

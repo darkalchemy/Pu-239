@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Achievement;
+use Pu239\Cache;
+use Pu239\Message;
+use Pu239\Usersachiev;
+
 /**
  * @param $data
  *
@@ -7,20 +15,16 @@
  */
 function achievement_karma_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs, $usersachiev_stuffs, $achievement_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
-    $res = sql_query("SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id=a.userid WHERE enabled = 'yes' AND u.seedbonus>= 250 AND a.bonus>= 0") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE enabled = 'yes' AND u.seedbonus >= 250 AND a.bonus >= 0") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
         $points = random_int(1, 3);
         $subject = 'New Achievement Earned!';
-        $var1 = 'bonus';
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $seedbonus = (float) $arr['seedbonus'];
             $lvl = (int) $arr['bonus'];
@@ -143,29 +147,32 @@ function achievement_karma_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
 
             $update = [
-                'date' => new Envms\FluentPDO\Literal('VALUES(date)'),
-                'achievement' => new Envms\FluentPDO\Literal('VALUES(achievement)'),
-                'icon' => new Envms\FluentPDO\Literal('VALUES(icon)'),
-                'description' => new Envms\FluentPDO\Literal('VALUES(description)'),
+                'date' => new Literal('VALUES(date)'),
+                'achievement' => new Literal('VALUES(achievement)'),
+                'icon' => new Literal('VALUES(icon)'),
+                'description' => new Literal('VALUES(description)'),
             ];
 
+            $achievement_stuffs = $container->get(Achievement::class);
             $achievement_stuffs->insert($achievements_buffer, $update);
 
             $update = [
-                'bonus' => new Envms\FluentPDO\Literal('VALUES(bonus)'),
-                'achpoints' => new Envms\FluentPDO\Literal('VALUES(achpoints)'),
+                'bonus' => new Literal('VALUES(bonus)'),
+                'achpoints' => new Literal('VALUES(achpoints)'),
             ];
+            $usersachiev_stuffs = $container->get(Usersachiev::class);
             $usersachiev_stuffs->insert($usersachiev_buffer, $update);
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Karma Completed using $queries queries. Karma Achievements awarded to - " . $count . ' Member(s).' . $text);
+        if ($data['clean_log']) {
+            write_log('Achievements Cleanup: Karma Completed. Karma Achievements awarded to - ' . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);
     }

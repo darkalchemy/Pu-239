@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
+use Delight\Auth\Auth;
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_trivia.php';
-global $session;
-
 $lang = array_merge(load_language('global'), load_language('trivia'));
+global $container;
+
 extract($_POST);
 
 header('content-type: application/json');
-if (empty($csrf) || !$session->validateToken($csrf)) {
-    echo json_encode(['fail' => 'csrf']);
-    die();
-}
-$current_user = $session->get('userID');
+$auth = $container->get(Auth::class);
+$current_user = $auth->getUserId();
 if (empty($current_user)) {
     echo json_encode(['fail' => 'csrf']);
     die();
@@ -23,14 +26,16 @@ $table = trivia_table();
 $qid = $table['qid'];
 $gamenum = $table['gamenum'];
 $table = $table['table'];
+$cache = $container->get(Cache::class);
 $data = $cache->get('trivia_current_question_');
 if (empty($data)) {
     echo json_encode(['fail' => 'invalid']);
     die();
 }
+$fluent = $container->get(Database::class);
 $user = $fluent->from('triviausers')
-               ->where('user_id=?', $current_user)
-               ->where('qid=?', $qid)
+               ->where('user_id = ?', $current_user)
+               ->where('qid = ?', $qid)
                ->where('gamenum = ?', $gamenum)
                ->fetch();
 
@@ -64,7 +69,7 @@ if (!empty($data['question'])) {
 foreach ($answers as $answer) {
     if (!empty($data[$answer])) {
         $output .= "
-        <span id='{$answer}' class='size_4 margin10 trivia-pointer bg-00 round5 padding10' data-csrf='" . $session->get('csrf_token') . "' data-answer='{$answer}'  data-qid='{$qid}' data-gamenum='{$gamenum}' onclick=\"process_trivia('$answer')\">" . htmlspecialchars_decode($data[$answer]) . '</span>';
+        <span id='{$answer}' class='size_4 margin10 trivia-pointer bg-00 round5 padding10' data-answer='{$answer}'  data-qid='{$qid}' data-gamenum='{$gamenum}' onclick=\"process_trivia('$answer')\">" . htmlspecialchars_decode($data[$answer]) . '</span>';
     }
 }
 if (!empty($output)) {

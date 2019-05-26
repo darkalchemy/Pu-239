@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'getrss_title' => 'Generate rss link',
     'getrss_cat' => 'Categories',

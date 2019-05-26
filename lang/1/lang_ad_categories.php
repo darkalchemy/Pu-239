@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //categories
     'categories_error' => 'MOD ERROR',

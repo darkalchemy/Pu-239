@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //editlog
     'editlog_new' => 'New files added since last check.',

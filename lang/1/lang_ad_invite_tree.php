@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //errors
     'invite_head' => 'Invite Tree',

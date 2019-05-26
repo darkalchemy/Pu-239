@@ -1,16 +1,15 @@
 $(function () {
     var el = document.querySelector('#thanks_holder');
-    show_thanks(el.dataset.csrf, el.dataset.tid);
+    show_thanks(el.dataset.tid);
 });
 
-function show_thanks(csrf, tid) {
+function show_thanks(tid) {
     var holder = $('#thanks_holder');
     holder.html('Loading ...').fadeIn('slow');
     $.post('./ajax/thanks.php', {
         action: 'list',
         ajax: 1,
         tid: tid,
-        csrf: csrf
     }, function (r) {
         if (r.status) {
             if (!r.hadTh) r.list += '<div class=\'top10 bottom10\'><input type=\'button\' class=\'button is-small\' value=\'Say thanks\' onclick="say_thanks(\'' + csrf + '\', ' + tid + ')" id=\'thanks_button\' /></div>';
@@ -26,7 +25,6 @@ function say_thanks(csrf, tid) {
         action: 'add',
         ajax: 1,
         tid: tid,
-        csrf: csrf
     }, function (r) {
         if (r.status) holder.empty().html(r.list); else alert(r.err);
     }, 'json');

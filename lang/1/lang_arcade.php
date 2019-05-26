@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'arcade_std_head' => 'Old School Arcade',
     'arcade_error' => 'Error!',
@@ -30,7 +32,6 @@ $lang = [
     'arcade_high_sco_award' => 'Highest Score Award',
     'arcade_your_high_score_was' => 'Your high score was',
     'arcade_and_you_ranked' => 'and you ranked',
-    'arcade_stats' => 'Stats',
     'arcade_so_far_you_played' => 'So far, you have played a total of',
     'arcade_games_scoring' => 'games, scoring',
     'arcade_points_in_total' => 'points in total',

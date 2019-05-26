@@ -69,7 +69,7 @@ function poll_draw_main_box() {
         for (var x in poll_multi) {
             if (x == i) {
                 if (poll_multi[x] == 1) {
-                    this_poll_multi = 'checked=\'checked\'';
+                    this_poll_multi = 'checked';
                 }
             }
         }

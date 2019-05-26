@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //failedlogin messages
     'failed_sorry' => 'Sorry',

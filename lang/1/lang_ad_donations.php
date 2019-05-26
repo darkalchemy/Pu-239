@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'donate_err' => 'Error',
     'donate_err1' => 'I smell a rat!',

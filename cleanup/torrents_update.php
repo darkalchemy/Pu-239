@@ -1,17 +1,27 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Database;
+use Pu239\Torrent;
+
 /**
  * @param $data
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  */
 function torrents_update($data)
 {
-    $time_start = microtime(true);
-    global $fluent, $torrent_stuffs;
+    global $container;
 
-    set_time_limit(1200);
-    ignore_user_abort(true);
+    $time_start = microtime(true);
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
                        ->select('id')
@@ -32,6 +42,7 @@ function torrents_update($data)
                        ->select('torrent')
                        ->fetchAll();
 
+    $torrent_stuffs = $container->get(Torrent::class);
     foreach ($torrents as $torrent) {
         $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;
 

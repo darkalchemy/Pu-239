@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'ad_banemail_head' => 'Banned Emails',
     'ad_banemail_log1' => 'Email ban ',

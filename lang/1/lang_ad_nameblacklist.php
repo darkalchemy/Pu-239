@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'name_hmm' => 'Hmm',
     'name_think' => 'I think you forgot the name',

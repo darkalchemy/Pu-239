@@ -1,22 +1,22 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $site_config, $session;
+$lang = array_merge(load_language('global'), load_language('ok'));
+global $site_config, $CURUSER;
 
 if (!$CURUSER) {
     get_template();
 }
-dbconn();
-
-$lang = array_merge(load_language('global'), load_language('ok'));
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
 if ($type === 'signup' && isset($_GET['email'])) {
-    stderr("{$lang['ok_success']}", sprintf((!$site_config['signup']['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars(htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8'))));
+    stderr("{$lang['ok_success']}", sprintf((!$site_config['signup']['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'])));
 } elseif ($type === 'invite' && isset($_GET['email'])) {
-    stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars(htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8'))));
+    stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars($_GET['email'])));
 } elseif ($type === 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {

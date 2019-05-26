@@ -1,6 +1,10 @@
 <?php
 
-global $message_stuffs, $CURUSER;
+declare(strict_types = 1);
+
+use Pu239\Message;
+
+global $container, $lang, $CURUSER;
 
 $subject = $draft = '';
 if (!empty($_POST['buttonval']) && $_POST['buttonval'] === 'Save draft') {
@@ -25,6 +29,7 @@ if (!empty($_POST['buttonval']) && $_POST['buttonval'] === 'Save draft') {
         'saved' => 'yes',
         'unread' => 'no',
     ];
+    $message_stuffs = $container->get(Message::class);
     $new_draft_id = $message_stuffs->insert($msgs_buffer);
     if (!$new_draft_id) {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);

@@ -1,28 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $session;
-
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));
+global $site_config;
+
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
 $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
 
 /**
  * @param $id
  *
- * @return bool
- *
  * @throws Exception
+ *
+ * @return bool
  */
 function validate($id)
 {
     global $lang;
+
     if (!is_valid_id($id)) {
         stderr($lang['failed_sorry'], "{$lang['failed_bad_id']}");
     }
@@ -96,8 +99,8 @@ if (mysqli_num_rows($res) == 0) {
         $body .= "
         <tr>
             <td class='has-text-centered'>{$arr['id']}</td>
-            <td>" . htmlsafechars($arr['ip']) . ' ' . ((int) $arr['uid'] ? format_username($arr['uid']) : '') . "</td>
-            <td class='has-text-centered'>" . get_date($arr['added'], '', 1, 0) . "</td>
+            <td>" . htmlsafechars($arr['ip']) . ' ' . ((int) $arr['uid'] ? format_username((int) $arr['uid']) : '') . "</td>
+            <td class='has-text-centered'>" . get_date((int) $arr['added'], '', 1, 0) . "</td>
             <td class='has-text-centered'>" . (int) $arr['attempts'] . '</td>
             <td>' . ($arr['banned'] === 'yes' ? "
                 <span class='has-text-danger'>{$lang['failed_main_banned']}</span> 

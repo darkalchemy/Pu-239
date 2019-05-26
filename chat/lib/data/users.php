@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan
@@ -9,7 +11,6 @@
 
 // List containing the registered chat users:
 $users = [];
-
 $users = $this->_cache->get('chat_users_list');
 if ($users === false || is_null($users)) {
     $sql = 'SELECT id, class FROM users';

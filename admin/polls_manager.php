@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Poll;
+use Pu239\PollVoter;
+use Pu239\Session;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $site_config;
-
 $stdfoot = [
     'js' => [
         get_file_name('pollsmanager_js'),
@@ -18,15 +25,15 @@ $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 
 switch ($params['mode']) {
     case 'delete':
-        delete_poll();
+        delete_poll($stdfoot);
         break;
 
     case 'edit':
-        edit_poll_form();
+        edit_poll_form($stdfoot);
         break;
 
     case 'new':
-        show_poll_form();
+        show_poll_form($stdfoot);
         break;
 
     case 'poll_new':
@@ -38,16 +45,26 @@ switch ($params['mode']) {
         break;
 
     default:
-        show_poll_archive();
+        show_poll_archive($stdfoot);
         break;
 }
 
-function delete_poll()
+/**
+ * @param $stdfoot
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function delete_poll($stdfoot)
 {
-    global $site_config, $CURUSER, $lang, $pollvoter_stuffs;
+    global $container, $lang, $site_config;
 
-    $poll_stuffs = new Pu239\Poll();
-    $total_votes = 0;
+    $poll_stuffs = $container->get(Poll::class);
+    $pollvoter_stuffs = $container->get(PollVoter::class);
     if (!isset($_GET['pid']) || !is_valid_id($_GET['pid'])) {
         stderr($lang['poll_dp_usr_err'], $lang['poll_dp_no_poll']);
     }
@@ -67,15 +84,20 @@ function delete_poll()
     $poll_stuffs->delete($pid);
     $pollvoter_stuffs->delete($pid);
     $pollvoter_stuffs->delete_users_cache();
-    show_poll_archive();
+    show_poll_archive($stdfoot);
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function update_poll()
 {
-    global $site_config, $CURUSER, $lang, $session, $pollvoter_stuffs;
+    global $container, $lang, $site_config, $CURUSER;
 
-    $poll_stuffs = new Pu239\Poll();
-    $total_votes = 0;
+    $poll_stuffs = $container->get(Poll::class);
+    $pollvoter_stuffs = $container->get(PollVoter::class);
+    $session = $container->get(Session::class);
     if (!isset($_POST['pid']) || !is_valid_id($_POST['pid'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_poll']);
     }
@@ -83,7 +105,7 @@ function update_poll()
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_title']);
     }
-    $poll_title = htmlsafechars(htmlspecialchars(strip_tags($_POST['poll_question']), ENT_QUOTES, 'UTF-8'));
+    $poll_title = htmlsafechars(strip_tags($_POST['poll_question']));
     $poll_data = makepoll();
     $total_votes = isset($poll_data['total_votes']) ? intval($poll_data['total_votes']) : 0;
     unset($poll_data['total_votes']);
@@ -107,15 +129,21 @@ function update_poll()
     header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
+ */
 function insert_new_poll()
 {
-    global $site_config, $CURUSER, $session, $lang, $pollvoter_stuffs;
+    global $container, $lang, $site_config, $CURUSER;
 
-    $poll_stuffs = new Pu239\Poll();
+    $poll_stuffs = $container->get(Poll::class);
+    $pollvoter_stuffs = $container->get(PollVoter::class);
+    $session = $container->get(Session::class);
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
     }
-    $poll_title = htmlsafechars(htmlspecialchars(strip_tags($_POST['poll_question']), ENT_QUOTES, 'UTF-8'));
+    $poll_title = htmlsafechars(strip_tags($_POST['poll_question']));
     $poll_data = makepoll();
     if (!is_array($poll_data) || !count($poll_data)) {
         stderr($lang['poll_inp_sys_err'], $lang['poll_inp_no_data']);
@@ -139,24 +167,39 @@ function insert_new_poll()
     header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
 }
 
-function show_poll_form()
+/**
+ * @param $stdfoot
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ * @throws Exception
+ */
+function show_poll_form($stdfoot)
 {
-    global $site_config, $lang, $stdfoot;
+    global $site_config, $lang;
 
     $poll_box = poll_box($site_config['poll']['max_questions'], $site_config['poll']['max_choices_per_question'], 'poll_new');
     echo stdhead($lang['poll_spf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
 }
 
 /**
- * @return mixed
+ * @param $stdfoot
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  * @throws Exception
+ *
+ * @return mixed
  */
-function edit_poll_form()
+function edit_poll_form($stdfoot)
 {
-    global $site_config, $lang, $stdfoot;
+    global $container, $lang, $site_config;
 
-    $poll_stuffs = new Pu239\Poll();
+    $poll_stuffs = $container->get(Poll::class);
     $poll_questions = '';
     $poll_multi = '';
     $poll_choices = '';
@@ -188,11 +231,21 @@ function edit_poll_form()
     echo stdhead($lang['poll_epf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
 }
 
-function show_poll_archive()
+/**
+ * @param $stdfoot
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function show_poll_archive($stdfoot)
 {
-    global $site_config, $lang, $stdfoot;
+    global $container, $lang, $site_config;
 
-    $poll_stuffs = new Pu239\Poll();
+    $poll_stuffs = $container->get(Poll::class);
     $HTMLOUT = '';
     $polls = $poll_stuffs->get_all();
     if (empty($polls)) {
@@ -222,7 +275,7 @@ function show_poll_archive()
         </tr>";
         $body = '';
         foreach ($polls as $row) {
-            $row['start_date'] = get_date($row['start_date'], 'DATE');
+            $row['start_date'] = get_date((int) $row['start_date'], 'DATE');
             $body .= '
         <tr>
             <td>' . (int) $row['pid'] . '</td>
@@ -230,7 +283,7 @@ function show_poll_archive()
             <td>' . (int) $row['votes'] . '</td>
             <td>' . htmlsafechars($row['start_date']) . '</td>
             <td>
-                ' . format_username($row['starter_id']) . "</a>
+                ' . format_username((int) $row['starter_id']) . "</a>
             </td>
             <td>
                 <div class='level-center'>
@@ -268,34 +321,35 @@ function show_poll_archive()
  */
 function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type = '', $poll_questions = '', $poll_choices = '', $poll_votes = '', $show_open = '', $poll_question = '', $poll_multi = '')
 {
-    global $site_config, $lang;
+    global $lang, $site_config;
 
     $pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
-    $form_type = ($form_type != '' ? $form_type : 'poll_update');
-    $HTMLOUT = ";
-    </script>
-    <h1; class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
-    <form; id='postingform'; action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager'; method='post'; name='inputform'; enctype='multipart/form-data'; accept-charset='utf-8'>
-        <input; type='hidden'; name='mode'; value='$form_type'>
-        <input; type='hidden'; name='pid'; value='$pid'>
+    $form_type = $form_type != '' ? $form_type : 'poll_update';
+    $HTMLOUT = '
+    </script>';
+    $HTMLOUT .= "
+    <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
+    <form id='postingform' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
+        <input type='hidden' name='mode' value='$form_type'>
+        <input type='hidden' name='pid' value='$pid'>
         <div>
-            <fieldset; class='bottom20'>
+            <fieldset class='bottom20'>
                 <legend>{$lang['poll_pb_title']}</legend>
-                <input; type='text'; name='poll_question'; value='$poll_question'; class='w-100 bottom20'>
+                <input type='text' name='poll_question' value='$poll_question' class='w-100 bottom20'>
             </fieldset>
 
-            <fieldset; class='bottom20'>
+            <fieldset class='bottom20'>
                 <legend>{$lang['poll_pb_content']}</legend>
-                <div; id='poll-box-main'; class=''></div>
+                <div id='poll-box-main' class=''></div>
             </fieldset>
 
-            <fieldset; class='bottom20'>
+            <fieldset class='bottom20'>
                 <legend>{$lang['poll_pb_info']}</legend>
-                <div; id='poll-box-stat'; class=''></div>
+                <div id='poll-box-stat' class=''></div>
             </fieldset>
-            <div; class='has-text-centered'>
-                <input; type='submit'; name='submit'; value='{$lang['poll_pb_post']}'; class='button is-small right20'>
-                <a; href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager'; class='button is-small'>{$lang['poll_pb_cancel']}</a>
+            <div class='has-text-centered'>
+                <input type='submit' name='submit' value='{$lang['poll_pb_post']}' class='button is-small right20'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>{$lang['poll_pb_cancel']}</a>
             </div>
         </div>
     </form>";
@@ -309,6 +363,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 function makepoll()
 {
     global $site_config;
+
     $questions = [];
     $choices_count = 0;
     $poll_total_votes = 0;
@@ -317,7 +372,7 @@ function makepoll()
             if (!$q || !$id) {
                 continue;
             }
-            $questions[$id]['question'] = htmlsafechars(htmlspecialchars(strip_tags($q), ENT_QUOTES, 'UTF-8'));
+            $questions[$id]['question'] = htmlsafechars(strip_tags($q));
         }
     }
     if (isset($_POST['multi']) && is_array($_POST['multi']) && count($_POST['multi'])) {
@@ -339,7 +394,7 @@ function makepoll()
             if (!$questions[$question_id]['question']) {
                 continue;
             }
-            $questions[$question_id]['choice'][$choice_id] = htmlsafechars(htmlspecialchars(strip_tags($choice), ENT_QUOTES, 'UTF-8'));
+            $questions[$question_id]['choice'][$choice_id] = htmlsafechars(strip_tags($choice));
             $_POST['votes'] = isset($_POST['votes']) ? $_POST['votes'] : 0;
             $questions[$question_id]['votes'][$choice_id] = intval($_POST['votes'][$question_id . '_' . $choice_id]);
             $poll_total_votes += $questions[$question_id]['votes'][$choice_id];

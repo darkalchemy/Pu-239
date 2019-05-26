@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\User;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-global $session, $user_stuffs, $cache;
-
 header('content-type: application/json');
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    $status = ['data' => 'Invalid CSRF Token'];
-    echo json_encode($status);
-    die();
-}
+global $container;
 
 $term = htmlsafechars(strtolower(strip_tags($_POST['keyword'])));
 if (!empty($term)) {
+    $user_stuffs = $container->get(User::class);
     $users = $user_stuffs->search_by_username($term);
     if (!empty($users)) {
         echo json_encode($users);

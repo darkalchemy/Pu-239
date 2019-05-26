@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //Delete
     'delete_failed' => 'Delete failed!',
@@ -27,7 +29,6 @@ $lang = [
     'delete_unable' => 'Unable to delete the account.',
     'delete_success' => 'Success ',
     'delete_account' => 'The account ',
-    'delete_deleted' => ' was deleted.',
     'delete_username' => 'User Name',
     'delete_delete' => 'Delete',
 ];

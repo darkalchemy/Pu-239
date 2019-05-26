@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan
@@ -7,24 +9,20 @@
  * @link https://blueimp.net/ajax/
  */
 
-use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
-
 /**
  * Class CustomAJAXChat.
  */
 class CustomAJAXChat extends AJAXChat
 {
-    public function initCustomRequestVars()
+    public function __construct()
     {
-        $this->setRequestVar('login', true);
+        parent::__construct();
     }
 
     /**
-     * @return bool
-     *
      * @throws \Envms\FluentPDO\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws ServerUnhealthy
+     *
+     * @return bool
      */
     public function getValidLoginUserData()
     {
@@ -114,12 +112,12 @@ class CustomAJAXChat extends AJAXChat
     }
 
     /**
-     * @return |null
+     * @return array
      */
     public function &getCustomUsers()
     {
         // List containing the registered chat users:
-        $users = null;
+        $users = [];
         require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'users.php';
 
         return $users;
@@ -167,59 +165,5 @@ class CustomAJAXChat extends AJAXChat
         // Channel array structure should be:
         // ChannelName => ChannelID
         return array_flip($channels);
-    }
-
-    // Add custom commands
-
-    /**
-     * @param $text
-     * @param $textParts
-     *
-     * @return bool
-     *
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function parseCustomCommands($text, $textParts)
-    {
-        global $CURUSER, $cache;
-
-        if ($this->getUserRole() >= UC_STAFF) {
-            switch ($textParts[0]) {
-                case '/takeover':
-                    $this->insertChatBotMessage($this->getChannel(), $text);
-
-                    return true;
-                case '/announce':
-                    $this->insertChatBotMessage(0, $text);
-                    $this->insertChatBotMessage(5, $text);
-
-                    $sql = "SELECT id FROM users WHERE enabled = 'yes'";
-                    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                    while ($id = mysqli_fetch_assoc($res)) {
-                        $ids[] = $id;
-                    }
-                    $msgs_buffer = [];
-                    if (!empty($ids)) {
-                        foreach ($ids as $rid) {
-                            $msgs_buffer[] = [
-                                'sender' => 0,
-                                'receiver' => $rid['id'],
-                                'added' => TIME_NOW,
-                                'msg' => str_replace('/announce ', '', $text),
-                                'subject' => 'Site News',
-                                'poster' => $this->getUserID(),
-                            ];
-                        }
-                    }
-                    if (count($msgs_buffer) > 0) {
-                        $this->_message->insert($msgs_buffer);
-                    }
-
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
     }
 }

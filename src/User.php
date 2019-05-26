@@ -1,11 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
+use bt_options;
+use Delight\Auth\AttemptCancelledException;
+use Delight\Auth\Auth;
+use Delight\Auth\AuthError;
+use Delight\Auth\DuplicateUsernameException;
+use Delight\Auth\EmailNotVerifiedException;
+use Delight\Auth\InvalidEmailException;
+use Delight\Auth\InvalidPasswordException;
+use Delight\Auth\InvalidSelectorTokenPairException;
+use Delight\Auth\NotLoggedInException;
+use Delight\Auth\ResetDisabledException;
+use Delight\Auth\TokenExpiredException;
+use Delight\Auth\TooManyRequestsException;
+use Delight\Auth\UserAlreadyExistsException;
+use DI\DependencyException;
+use DI\NotFoundException;
 use Envms\FluentPDO\Exception;
-use MatthiasMullie\Scrapbook\Exception\ServerUnhealthy;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use PDOStatement;
+use Psr\Container\ContainerInterface;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use function urlencode;
 
 /**
  * Class User.
@@ -13,32 +33,49 @@ use PDOStatement;
 class User
 {
     protected $fluent;
-    protected $session;
-    protected $cookies;
     protected $cache;
     protected $site_config;
-    protected $pdo;
-    protected $limit;
+    protected $session;
+    protected $auth;
+    protected $flash;
+    protected $achieve;
+    protected $container;
+    protected $settings;
+    protected $userblock;
 
-    public function __construct()
+    /**
+     * User constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param Auth               $auth
+     * @param Session            $session
+     * @param Settings           $settings
+     * @param Usersachiev        $achieve
+     * @param Userblock          $userblock
+     * @param ContainerInterface $c
+     *
+     * @throws Exception
+     */
+    public function __construct(Cache $cache, Database $fluent, Auth $auth, Session $session, Settings $settings, Usersachiev $achieve, Userblock $userblock, ContainerInterface $c)
     {
-        global $site_config, $session, $cache, $fluent, $pdo;
-
-        $this->fluent = $fluent;
-        $this->session = $session;
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
         $this->cache = $cache;
-        $this->cookies = new Cookie('remember');
-        $this->site_config = $site_config;
-        $this->pdo = $pdo;
-        $this->limit = $this->site_config['database']['query_limit'];
+        $this->fluent = $fluent;
+        $this->auth = $auth;
+        $this->session = $session;
+        $this->achieve = $achieve;
+        $this->container = $c;
+        $this->userblock = $userblock;
     }
 
     /**
      * @param string $username
      *
      * @return bool|mixed
-     *
      * @throws Exception
+     *
      */
     public function getUserIdFromName(string $username)
     {
@@ -58,147 +95,11 @@ class User
     }
 
     /**
-     * @param string $ip
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function getUsersFromIP(string $ip)
-    {
-        $users = $this->fluent->from('users')
-                              ->select(null)
-                              ->select('id')
-                              ->select('last_access')
-                              ->select('added')
-                              ->select('email')
-                              ->select('downloaded')
-                              ->select('uploaded')
-                              ->select('INET6_NTOA(ip) AS ip')
-                              ->where('ip = ?', inet_pton($ip))
-                              ->orderBy('id')
-                              ->fetchAll();
-
-        foreach ($users as $user) {
-            unset($user['hintanswer'], $user['passhash']);
-
-            if ('Male' === $user['gender']) {
-                $user['it'] = 'he';
-            } elseif ('Female' === $user['gender']) {
-                $user['it'] = 'she';
-            } else {
-                $user['it'] = 'it';
-            }
-        }
-
-        return $users;
-    }
-
-    /**
-     * @return int
-     *
-     * @throws Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws ServerUnhealthy
-     * @throws \Exception
-     */
-    public function getUserId()
-    {
-        $id = $this->session->get('userID');
-
-        if (!$id) {
-            $cookie = $this->cookies->getToken();
-            if (!empty($cookie[0]) && !empty($cookie[1]) && !empty($cookie[2])) {
-                $selector = $cookie[0];
-                $validator = $cookie[1];
-                $expires = $cookie[2];
-                $stashed = $this->get_remember($selector);
-                if (!empty($stashed) && hash_equals($stashed['hashedValidator'], hash('sha256', $validator))) {
-                    $id = $stashed['userid'];
-                    $this->session->start();
-                    $this->session->set('userID', $id);
-                    $this->session->set('remembered_by_cookie', true);
-                    $this->refresh_remember($selector, $id, $expires);
-
-                    return (int) $id;
-                }
-            }
-
-            $this->session->destroy();
-        }
-
-        return (int) $id;
-    }
-
-    /**
-     * @param string $selector
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function get_remember(string $selector)
-    {
-        $remember = $this->fluent->from('auth_tokens')
-                                 ->where('selector = ?', $selector)
-                                 ->where('expires>= ?', date('Y-m-d H:i:s', TIME_NOW))
-                                 ->fetch();
-
-        return $remember;
-    }
-
-    /**
-     * @param string $selector
-     * @param int    $userid
-     * @param int    $expires
-     *
-     * @throws \Exception
-     */
-    public function refresh_remember(string $selector, int $userid, int $expires)
-    {
-        $this->fluent->deleteFrom('auth_tokens')
-                     ->where('selector = ?', $selector)
-                     ->execute();
-
-        $this->set_remember($userid, $expires);
-    }
-
-    /**
-     * @param int $userid
-     * @param int $expires
-     *
-     * @throws \Exception
-     */
-    public function set_remember(int $userid, int $expires)
-    {
-        $selector = bin2hex(random_bytes(16));
-        $validator = bin2hex(random_bytes(32));
-        $hashedValidator = hash('sha256', $validator);
-
-        $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
-
-        $this->fluent->deleteFrom('auth_tokens')
-                     ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
-                     ->execute();
-
-        $values = [
-            'selector' => $selector,
-            'hashedValidator' => $hashedValidator,
-            'userid' => $userid,
-            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
-            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
-        ];
-        $this->fluent->insertInto('auth_tokens')
-                     ->values($values)
-                     ->execute();
-    }
-
-    /**
      * @param string $username
      *
      * @return bool|mixed
-     *
      * @throws Exception
+     *
      */
     public function search_by_username(string $username)
     {
@@ -222,42 +123,6 @@ class User
         }
 
         return $users;
-    }
-
-    /**
-     * @param array $set
-     * @param int   $userid
-     * @param bool  $persist
-     *
-     * @return bool|int|PDOStatement
-     *
-     * @throws Exception
-     * @throws UnbegunTransaction
-     */
-    public function update(array $set, int $userid, bool $persist = true)
-    {
-        $result = $this->fluent->update('users')
-                               ->set($set)
-                               ->where('id=?', $userid)
-                               ->execute();
-
-        if ($result && $persist) {
-            $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param int $userid
-     *
-     * @throws Exception
-     */
-    public function delete_remember(int $userid)
-    {
-        $this->fluent->deleteFrom('auth_tokens')
-                     ->where('userid=?', $userid)
-                     ->execute();
     }
 
     /**
@@ -299,27 +164,26 @@ class User
      * @param bool $fresh
      *
      * @return bool|mixed
-     *
      * @throws Exception
+     *
      */
     public function getUserFromId(int $userid, bool $fresh = false)
     {
         $user = $this->cache->get('user_' . $userid);
         if ($fresh || $user === false || is_null($user)) {
             $user = $this->fluent->from('users AS u')
-                                 ->select('INET6_NTOA(u.ip) AS ip')
                                  ->select('u.bjwins - u.bjlosses AS bj')
                                  ->select('c.win - c.lost AS casino')
                                  ->leftJoin('casino AS c ON u.id=c.userid')
-                                 ->where('id=?', $userid)
+                                 ->where('id = ?', $userid)
                                  ->fetch();
 
             if ($user) {
                 unset($user['hintanswer'], $user['passhash']);
 
-                if ('Male' === $user['gender']) {
+                if ($user['gender'] === 'Male') {
                     $user['it'] = 'he';
-                } elseif ('Female' === $user['gender']) {
+                } elseif ($user['gender'] === 'Female') {
                     $user['it'] = 'she';
                 } else {
                     $user['it'] = 'it';
@@ -341,8 +205,8 @@ class User
      * @param int    $userid
      *
      * @return mixed
-     *
      * @throws Exception
+     *
      */
     public function get_item(string $item, int $userid)
     {
@@ -352,48 +216,26 @@ class User
     }
 
     /**
-     * @param string $username
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function get_login(string $username)
-    {
-        $row = $this->fluent->from('users')
-                            ->select(null)
-                            ->select('id')
-                            ->select('INET6_NTOA(ip) AS ip')
-                            ->select('passhash')
-                            ->select('perms')
-                            ->select('enabled')
-                            ->select('status')
-                            ->where('username = ?', $username)
-                            ->fetch();
-
-        return $row;
-    }
-
-    /**
      * @param int    $class
      * @param string $bot
      * @param string $torrent_pass
      * @param string $auth
      *
      * @return mixed
-     *
      * @throws Exception
+     *
      */
     public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
     {
         $userid = $this->fluent->from('users')
                                ->select(null)
                                ->select('id')
-                               ->where('class>= ?', $class)
+                               ->where('class >= ?', $class)
                                ->where('username = ?', $bot)
                                ->where('auth = ?', $auth)
                                ->where('torrent_pass = ?', $torrent_pass)
-                               ->where('uploadpos = 1 AND suspended = "no"')
+                               ->where('uploadpos = 1')
+                               ->where('suspended = "no"')
                                ->fetch('id');
 
         return $userid;
@@ -402,23 +244,110 @@ class User
     /**
      * @param array $values
      *
-     * @return int
+     * @param array $lang
+     *
+     * @return bool|int
+     * @throws DependencyException
+     * @throws Exception
+     * @throws NotFoundException
+     * @throws UnbegunTransaction
+     */
+    public function add(array $values, array $lang)
+    {
+        $userId = false;
+        try {
+            if ($this->site_config['signup']['email_confirm'] === true) {
+                $userId = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']), function ($selector, $token) use ($values, $lang) {
+                    $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+                    $body = str_replace([
+                        '<#SITENAME#>',
+                        '<#USEREMAIL#>',
+                        '<#IP_ADDRESS#>',
+                        '<#REG_LINK#>',
+                    ], [
+                        $this->site_config['site']['name'],
+                        strip_tags($values['email']),
+                        getip(),
+                        $url,
+                    ], $lang['takesignup_email_body']);
+                    send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} {$lang['takesignup_confirm']}", $body, strip_tags($body));
+                    $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
+                });
+            } else {
+                $userId = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']));
+            }
+        } catch (DuplicateUsernameException $e) {
+            $this->session->set('is-warning', 'Username already exists');
+        } catch (InvalidEmailException $e) {
+            $this->session->set('is-warning', 'Invalid email address');
+        } catch (InvalidPasswordException $e) {
+            $this->session->set('is-warning', 'Invalid password');
+        } catch (UserAlreadyExistsException $e) {
+            $this->session->set('is-warning', 'Email already in use');
+        } catch (TooManyRequestsException $e) {
+            $this->session->set('is-warning', 'Too many requests');
+        } catch (AuthError $e) {
+            $this->session->set('is-warning', 'Unknown Error');
+        }
+        if ($userId !== false) {
+            $dt = TIME_NOW;
+            $set = [
+                'free_switch' => $dt + 14 * 86400,
+                'torrent_pass' => bin2hex(random_bytes(32)),
+                'auth' => bin2hex(random_bytes(32)),
+                'apikey' => bin2hex(random_bytes(32)),
+                'stylesheet' => $this->site_config['site']['stylesheet'],
+                'last_access' => $dt,
+            ];
+            if (!empty($values['invitedby'])) {
+                $set['invitedby'] = (int) $values['invitedby'];
+            }
+            $this->update($set, $userId);
+            $this->achieve->add(['userid' => $userId]);
+            $this->userblock->add(['userid' => $userId]);
+
+            $this->cache->deleteMulti([
+                'birthdayusers',
+                'chat_users_list',
+                'is_staff_',
+                'latestuser_',
+            ]);
+            require_once INCL_DIR . 'function_users.php';
+            $this->cache->set('latestuser_', format_username($userId), $this->site_config['expires']['latestuser']);
+            write_log('User account ' . $userId . ' (' . htmlsafechars($values['username']) . ') was created');
+        }
+
+        return $userId;
+    }
+
+    /**
+     * @param array $set
+     * @param int   $userid
+     * @param bool  $persist
+     *
+     * @return bool|int|PDOStatement
+     * @throws UnbegunTransaction
      *
      * @throws Exception
      */
-    public function add(array $values)
+    public function update(array $set, int $userid, bool $persist = true)
     {
-        $id = $this->fluent->insertInto('users')
-                           ->values($values)
-                           ->execute();
+        $result = $this->fluent->update('users')
+                               ->set($set)
+                               ->where('id = ?', $userid)
+                               ->execute();
 
-        return $id;
+        if ($result && $persist) {
+            $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
+        }
+
+        return $result;
     }
 
     /**
      * @return array|PDOStatement
-     *
      * @throws Exception
+     *
      */
     public function get_all_ids()
     {
@@ -435,8 +364,8 @@ class User
      * @param $torrent_pass
      *
      * @return bool|mixed
-     *
      * @throws Exception
+     *
      */
     public function get_user_from_torrent_pass(string $torrent_pass)
     {
@@ -449,15 +378,13 @@ class User
                                    ->select(null)
                                    ->select('id')
                                    ->where('torrent_pass = ?', $torrent_pass)
-                                   ->where("enabled = 'yes'")
-                                   ->fetch();
-            $userid = $userid['id'];
+                                   ->fetch('id');
             $this->cache->set('torrent_pass_' . $torrent_pass, $userid, 86400);
         }
         if (empty($userid)) {
             return false;
         }
-        $user = $this->getUserFromId($userid);
+        $user = $this->getUserFromId((int) $userid);
         if (!$user) {
             return false;
         }
@@ -469,8 +396,8 @@ class User
      * @param int $category
      *
      * @return array
-     *
      * @throws Exception
+     *
      */
     public function get_users_for_notifications(int $category)
     {
@@ -488,5 +415,200 @@ class User
         }
 
         return $notify;
+    }
+
+    /**
+     * @return bool|mixed
+     * @throws Exception
+     *
+     */
+    public function get_latest_user()
+    {
+        $this->cache->delete('latestuser_');
+        $userid = $this->cache->get('latestuser_');
+        if ($userid === false || is_null($userid)) {
+            $userid = $this->fluent->from('users')
+                                   ->select(null)
+                                   ->select('id')
+                                   ->where('status = 0')
+                                   ->where('perms < ?', bt_options::PERMS_STEALTH)
+                                   ->orderBy('id DESC')
+                                   ->fetch('id');
+
+            $this->cache->set('latestuser_', $userid, $this->site_config['expires']['latestuser']);
+        }
+
+        return $userid;
+    }
+
+    /**
+     * @throws Exception
+     * @throws NotLoggedInException
+     * @throws AuthError
+     */
+    public function logout()
+    {
+        if (!empty($this->auth->getUserId())) {
+            $this->fluent->deleteFrom('ajax_chat_online')
+                         ->where('userID = ?', $this->auth->getUserId())
+                         ->execute();
+        }
+
+        $this->auth->logOutEverywhere();
+        $this->auth->destroySession();
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @param int    $remember
+     * @param array  $lang
+     *
+     * @return bool
+     * @throws AuthError
+     *
+     * @throws AttemptCancelledException
+     */
+    public function login(string $email, string $password, int $remember, array $lang)
+    {
+        $duration = null;
+        if ($remember === 1) {
+            $duration = (int) $this->site_config['expires']['remember_me'] * 60 * 60 * 24;
+        }
+
+        try {
+            $this->auth->login($email, $password, $duration);
+
+            return true;
+        } catch (InvalidEmailException $e) {
+            $this->session->set('is-warning', $lang['login_email_pass_incorrect']);
+
+            return false;
+        } catch (InvalidPasswordException $e) {
+            $this->session->set('is-warning', $lang['login_email_pass_incorrect']);
+
+            return false;
+        } catch (EmailNotVerifiedException $e) {
+            $this->session->set('is-warning', $lang['login_not_verified']);
+
+            return false;
+        } catch (TooManyRequestsException $e) {
+            $this->session->set('is-warning', $lang['login_too_many']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param $lang
+     * @param $post
+     *
+     * @throws AuthError
+     * @throws DependencyException
+     * @throws Exception
+     * @throws InvalidManipulation
+     * @throws NotFoundException
+     * @throws NotLoggedInException
+     */
+    public function reset_password($lang, $post)
+    {
+        try {
+            $this->auth->resetPassword($post['selector'], $post['token'], $post['password']);
+
+            stderr($lang['stderr_successhead'], 'Password has been reset');
+        } catch (InvalidSelectorTokenPairException $e) {
+            stderr($lang['stderr_errorhead'], 'Invalid token');
+        } catch (TokenExpiredException $e) {
+            stderr($lang['stderr_errorhead'], 'Token expired');
+        } catch (ResetDisabledException $e) {
+            stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+        } catch (InvalidPasswordException $e) {
+            stderr($lang['stderr_errorhead'], 'Invalid password');
+        } catch (TooManyRequestsException $e) {
+            stderr($lang['stderr_errorhead'], 'Too many requests');
+        }
+    }
+
+    /**
+     * @param $email
+     * @param $lang
+     *
+     * @throws AuthError
+     * @throws DependencyException
+     * @throws Exception
+     * @throws InvalidManipulation
+     * @throws NotFoundException
+     * @throws NotLoggedInException
+     */
+    public function create_reset($email, $lang)
+    {
+        try {
+            $this->auth->forgotPassword($email, function ($selector, $token) {
+                global $lang, $email;
+
+                $body = sprintf($lang['email_request'], $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
+                send_mail($email, "{$this->site_config['site']['name']} {$lang['email_subjreset']}", $body, strip_tags($body));
+            });
+            stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
+        } catch (InvalidEmailException $e) {
+            stderr($lang['stderr_errorhead'], $lang['stderr_invalidemail']);
+        } catch (EmailNotVerifiedException $e) {
+        } catch (ResetDisabledException $e) {
+            stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+        } catch (TooManyRequestsException $e) {
+            stderr($lang['stderr_errorhead'], 'Too many requests');
+        }
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @throws Exception
+     * @throws UnbegunTransaction
+     */
+    public function update_last_access(int $userid)
+    {
+        $user = $this->getUserFromId($userid);
+        if (!empty($user)) {
+            $new_time = TIME_NOW - $user['last_access_numb'];
+            $update_time = 0;
+            if ($new_time < 300) {
+                $update_time = $new_time;
+            }
+            $where = $this->container->get('where');
+            $request = $_SERVER['REQUEST_URI'] === '/' ? '/index.php' : $_SERVER['REQUEST_URI'];
+            if (preg_match('/\/(.*?)\.php/is', $request, $whereis_temp)) {
+                if (isset($where[$whereis_temp[1]])) {
+                    $whereis = sprintf($where[$whereis_temp[1]], $user['username'], htmlsafechars($request));
+                } else {
+                    $whereis = sprintf($where['unknown'], $user['username']);
+                }
+            } else {
+                $whereis = sprintf($where['unknown'], $user['username']);
+            }
+            $this->session->set('last_access', TIME_NOW);
+            if ($user['last_access'] < (TIME_NOW - 90)) {
+                $set = [
+                    'where_is' => $whereis,
+                    'last_access' => TIME_NOW,
+                    'onlinetime' => $user['onlinetime'] + $update_time,
+                    'last_access_numb' => TIME_NOW,
+                ];
+                $this->update($set, $user['id']);
+            }
+        }
+    }
+
+    /**
+     * @param array $values
+     * @param array $update
+     *
+     * @throws Exception
+     */
+    public function insert(array $values, array $update)
+    {
+        $this->fluent->insertInto('users', $values)
+                     ->onDuplicateKeyUpdate($update)
+                     ->execute();
     }
 }

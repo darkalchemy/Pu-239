@@ -1,16 +1,29 @@
 <?php
 
-global $CURUSER, $user_stuffs, $site_config, $lang, $user;
+declare(strict_types = 1);
 
+use Pu239\Database;
+
+global $container, $CURUSER, $lang, $user;
+
+$fluent = $container->get(Database::class);
 if ($CURUSER['id'] != $user['id']) {
     if ($CURUSER['class'] >= UC_STAFF) {
         $showpmbutton = 1;
     } elseif ($user['acceptpms'] === 'yes') {
-        $r = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($user['id']) . ' AND blockid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $showpmbutton = (mysqli_num_rows($r) == 1 ? 0 : 1);
+        $blocked = $fluent->from('blocks')
+                          ->select('id')
+                          ->where('userid = ?', $user['id'])
+                          ->where('blockid = ?', $CURUSER['id'])
+                          ->fetch();
+        $showpmbutton = !empty($blocked) ? false : true;
     } elseif ($user['acceptpms'] === 'friends') {
-        $r = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($user['id']) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $showpmbutton = (mysqli_num_rows($r) == 1 ? 1 : 0);
+        $friend = $fluent->from('friends')
+                         ->select('id')
+                         ->where('userid = ?', $user['id'])
+                         ->where('friendid = ?', $CURUSER['id'])
+                         ->fetch();
+        $showpmbutton = !empty($friend) ? true : false;
     }
 }
 if (isset($showpmbutton)) {

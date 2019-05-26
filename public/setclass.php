@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('setclass'));
+global $container, $site_config, $CURUSER;
+
 $HTMLOUT = '';
 if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
     stderr('Error', 'whats the story?');
@@ -17,7 +22,9 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $set = [
         'override_class' => $newclass,
     ];
+    $user_stuffs = $container->get(User::class);
     $user_stuffs->update($set, $CURUSER['id']);
+    $fluent = $container->get(Database::class);
     $fluent->deleteFrom('ajax_chat_online')
            ->where('userID = ?', $CURUSER['id'])
            ->execute();

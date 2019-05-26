@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Session;
+
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $session, $cache;
-
 $lang = array_merge($lang, load_language('ad_block_settings'));
 
 $list = [
@@ -85,6 +87,9 @@ $list = [
     'anime_api_on',
 ];
 
+global $container, $site_config;
+
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updated = [];
     $filename = CACHE_DIR . 'block_settings_cache.php';
@@ -111,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT = "
-    <form action='./staffpanel.php?tool=block.settings' method='post' accept-charset='utf-8'>
+    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=block.settings' method='post' accept-charset='utf-8'>
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>

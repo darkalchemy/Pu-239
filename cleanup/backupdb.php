@@ -1,16 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param string $no_data
+ *
+ * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
 function tables($no_data = '')
 {
-    global $fluent;
+    global $container;
 
     $tables = $temp = [];
     $no_data = explode('|', $no_data);
+    $fluent = $container->get(Database::class);
     $query = $fluent->getPdo()
                     ->prepare('SHOW TABLES');
     $query->execute();
@@ -30,19 +40,20 @@ function tables($no_data = '')
 
 /**
  * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function backupdb($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $fluent;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
-    $host = $site_config['database']['host'];
-    $user = $site_config['database']['username'];
-    $pass = quotemeta($site_config['database']['password']);
-    $db = $site_config['database']['database'];
+    $host = $site_config['db']['host'];
+    $user = $site_config['db']['username'];
+    $pass = quotemeta($site_config['db']['password']);
+    $db = $site_config['db']['database'];
     $dt = TIME_NOW;
     $bdir = BACKUPS_DIR;
     $filename = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
@@ -54,7 +65,6 @@ function backupdb($data)
         exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ">{$bdir}{$filename}");
     }
 
-    // table backup
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
         if ($table !== 'peers') {
@@ -76,6 +86,7 @@ function backupdb($data)
         'added' => $dt,
         'userid' => $site_config['site']['owner'],
     ];
+    $fluent = $container->get(Database::class);
     $fluent->insertInto('dbbackup')
            ->values($values)
            ->execute();

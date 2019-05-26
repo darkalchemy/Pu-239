@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 /**
  * @param $data
  *
@@ -7,20 +12,17 @@
  */
 function achievement_ftopics_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
-    $res = sql_query('SELECT userid, forumtopics, topicachiev FROM usersachiev WHERE forumtopics>= 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT userid, forumtopics, topicachiev FROM usersachiev WHERE forumtopics >= 1') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
         $subject = 'New Achievement Earned!';
         $points = random_int(1, 3);
         $var1 = 'topicachiev';
+        $cache = $container->get(Cache::class);
         while ($arr = mysqli_fetch_assoc($res)) {
             $topics = (int) $arr['forumtopics'];
             $lvl = (int) $arr['topicachiev'];
@@ -60,6 +62,7 @@ function achievement_ftopics_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
@@ -68,8 +71,8 @@ function achievement_ftopics_update($data)
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Forum Topics Completed using $queries queries. Forum Topics Achievements awarded to - " . $count . ' Member(s).' . $text);
+        if ($data['clean_log']) {
+            write_log('Achievements Cleanup: Forum Topics Completed. Forum Topics Achievements awarded to - ' . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);
     }

@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -8,8 +14,6 @@ check_user_status();
 
 $lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
-global $CURUSER, $fluent, $user_stuffs, $session;
-
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -26,7 +30,8 @@ $stdfoot = [
  */
 function navmenu()
 {
-    global $lang, $site_config;
+    global $site_config, $lang;
+
     $url = $_SERVER['REQUEST_URI'];
     $parsed_url = parse_url($url);
     $action = 'index';
@@ -67,24 +72,32 @@ function navmenu()
 }
 
 /**
- * @return string
+ * @throws NotFoundException
+ * @throws DependencyException
+ *
+ * @return string|void
  */
 function wikimenu()
 {
-    global $lang, $site_config;
+    global $site_config, $lang;
+
     $res2 = sql_query('SELECT name FROM wiki ORDER BY id DESC LIMIT 1');
     $latest = mysqli_fetch_assoc($res2);
     $latestarticle = htmlsafechars($latest['name']);
 
     return main_div("<div class='padding20'>
+            <ul>
             <span class='size_6'>{$lang['wiki_permissions']}:</span>
             <li>{$lang['wiki_read_user']}</li>
             <li>{$lang['wiki_write_user']}</li>
             <li>{$lang['wiki_edit_staff']}/Author</li><br>
             <span class='size_6'>{$lang['wiki_latest_article']}</span>
             <li><a href='{$site_config['paths']['baseurl']}/wiki.php?action=article&amp;name=$latestarticle'> " . htmlsafechars($latest['name']) . '</a></li>
+            </ul>
         </div>');
 }
+
+global $site_config, $CURUSER, $container;
 
 $action = 'article';
 $mode = $name = '';
@@ -98,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $session->set('is-success', 'Wiki article added');
     } elseif (isset($_POST['article-edit'])) {
         $id = (int) $_POST['article-id'];
-        $name = htmlspecialchars(urldecode($_POST['article-name']));
-        $body = htmlspecialchars($_POST['body']);
+        $name = htmlsafechars(urldecode($_POST['article-name']));
+        $body = htmlsafechars($_POST['body']);
         $sql = 'UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser = " . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $session->set('is-success', 'Wiki article edited');
@@ -151,13 +164,13 @@ if ($action === 'article') {
             <div id="wiki-row">';
         while ($wiki = mysqli_fetch_array($res)) {
             if ($wiki['lastedit']) {
-                $edit = '<div class="left10 top20">Last Updated by: ' . format_username($wiki['lastedituser']) . ' - ' . get_date($wiki['lastedit'], 'LONG') . '</div>';
+                $edit = '<div class="left10 top20">Last Updated by: ' . format_username((int) $wiki['lastedituser']) . ' - ' . get_date((int) $wiki['lastedit'], 'LONG') . '</div>';
             }
             $div = '
                     <h1 class="has-text-centered">
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a>
                     </h1>
-                    <div class="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
+                    <div class="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username((int) $wiki['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($wiki['body']) . '</div>
                     </div>' . $edit;
             $div .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
@@ -174,19 +187,19 @@ if ($action === 'article') {
             $res = sql_query("SELECT * FROM wiki WHERE name LIKE '%" . sqlesc_noquote($name) . "%' ORDER BY GREATEST(time, lastedit) DESC LIMIT 25");
         }
         if (mysqli_num_rows($res) > 0) {
-            $HTMLOUT .= navmenu() . "<h2 class='has-text-centered'>Article search results for: <
-    b>" . htmlsafechars($name) . '</b></h2>';
+            $HTMLOUT .= navmenu() . "<h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . '</b></h2>';
             while ($wiki = mysqli_fetch_array($res)) {
                 if ($wiki['userid'] !== 0) {
+                    $user_stuffs = $container->get(User::class);
                     $user = $user_stuffs->getUserFromId($wiki['userid']);
                     $wikiname = $user['username'];
                 }
                 $HTMLOUT .= main_div('
                     <div class="padding20">
                         <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . " </a></h2>
-                        <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
-                        <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                        <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>
+                        <div>{$lang['wiki_added_by']}: " . format_username((int) $wiki['userid']) . '</div>
+                        <div>Added on: ' . get_date((int) $wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
+                        <div>Last Edited on: ' . get_date((int) $wiki['lastedit'], 'LONG') . '</div>
                     </div>' : '</div>'), 'top20');
             }
         } else {
@@ -225,15 +238,16 @@ if ($action === 'sort') {
         <div class='w-100 padding20 round10 bg-02'> ";
         while ($wiki = mysqli_fetch_array($sortres)) {
             if ($wiki['userid'] !== 0) {
+                $user_stuffs = $container->get(User::class);
                 $user = $user_stuffs->getUserFromId($wiki['userid']);
                 $wikiname = $user['username'];
             }
             $div .= '
             <div class="padding20 bottom10 round10 bg-02">
                 <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
-                <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
-                <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : '') . '
+                <div>{$lang['wiki_added_by']}: " . format_username((int) $wiki['userid']) . '</div>
+                <div>Added on: ' . get_date((int) $wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
+                <div>Last Edited on: ' . get_date((int) $wiki['lastedit'], 'LONG') . '</div>' : '') . '
             </div>';
         }
         $div .= '

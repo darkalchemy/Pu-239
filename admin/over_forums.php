@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $mysqli;
-
 $lang = array_merge($lang, load_language('ad_over_forums'));
+global $site_config, $CURUSER;
+
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = "
             <div class='bottom20'>
@@ -88,14 +90,14 @@ switch ($action) {
             <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
         <tr>
-            <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</td>
+            <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name']) . '</td>
           </tr>
             <td><span class="has-text-weight-bold">' . $lang['ad_over_name'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '"></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name']) . '"></td>
           </tr>
           <tr>
             <td><span class="has-text-weight-bold">' . $lang['ad_over_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '"></td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description']) . '"></td>
           </tr>
             <tr>
             <td><span class="has-text-weight-bold">' . $lang['ad_over_minview'] . ' </span></td>
@@ -142,14 +144,14 @@ switch ($action) {
             <tr>
                 <td class="has-text-centered">' . (int) $row['sort'] . '</td>
             <td>
-                <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars(htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8')) . '</a><br>
-                ' . htmlsafechars(htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8')) . '
+                <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
+                ' . htmlsafechars($row['description']) . '
             </td>
             <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
             <td class="has-text-centered">
                 <span class="level-center">
                     <span class="left10">
-                        <a href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . $row['id'] . '">
+                        <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . $row['id'] . '">
                             <i class="icon-edit icon"></i>
                         </a>
                     </span>
@@ -165,7 +167,7 @@ switch ($action) {
         }
         $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= '
-            <form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
+            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
                 <input type="hidden" name="action2" value="add_forum">';
         $body = '
                 <tr>

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Dump to ZIP format
  *
@@ -16,6 +16,9 @@ class AdminerDumpZip
 
     public $data;
 
+    /**
+     * @return array
+     */
     public function dumpOutput()
     {
         if (!class_exists('ZipArchive')) {
@@ -25,6 +28,12 @@ class AdminerDumpZip
         return ['zip' => 'ZIP'];
     }
 
+    /**
+     * @param $string
+     * @param $state
+     *
+     * @return false|string
+     */
     public function _zip($string, $state)
     {
         // ZIP can be created without temporary file by gzcompress - see PEAR File_Archive
@@ -44,6 +53,10 @@ class AdminerDumpZip
         return '';
     }
 
+    /**
+     * @param      $identifier
+     * @param bool $multi_table
+     */
     public function dumpHeaders($identifier, $multi_table = false)
     {
         if ($_POST['output'] == 'zip') {

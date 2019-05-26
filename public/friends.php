@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $message_stuffs, $mysqli;
-
 $lang = array_merge(load_language('global'), load_language('friends'));
+global $container, $site_config, $CURUSER;
+
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 if (!is_valid_id($userid)) {
@@ -17,6 +22,8 @@ if ($userid != $CURUSER['id']) {
 }
 $dt = TIME_NOW;
 //== action == add
+$message_stuffs = $container->get(Message::class);
+$cache = $container->get(Cache::class);
 if ($action === 'add') {
     $targetid = (int) $_GET['targetid'];
     $type = $_GET['type'];
@@ -53,7 +60,7 @@ if ($action === 'add') {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
-        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
+        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", null);
         die();
     }
     if ($type === 'block') {
@@ -82,7 +89,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr('Confirm Friend', "Do you really want to confirm this person? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr('Confirm Friend', "Do you really want to confirm this person? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -119,7 +126,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr("Delete $type Request", "Do you really want to delete this friend request? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr("Delete $type Request", "Do you really want to delete this friend request? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -143,7 +150,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr("Delete $type", "Do you really want to delete a $type? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", false);
+        stderr("Delete $type", "Do you really want to delete a $type? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
     if ($_GET['h'] != $hash) {
         stderr('Error', 'what are you doing?');
@@ -188,7 +195,7 @@ if (mysqli_num_rows($res) == 0) {
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
         }
-        $linktouser = format_username($friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
+        $linktouser = format_username((int) $friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friendp['last_access'], '') : 'Never');
         $confirm = "<br><span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
         $block = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
         $avatar = get_avatar($friendp);
@@ -207,7 +214,7 @@ if (mysqli_num_rows($res) == 0) {
         if ($i % 6 == 0) {
             $friendreqs .= '<tr>';
         }
-        $friendreqs .= '<td>' . format_username($friendreq['id']) . '</td></tr>';
+        $friendreqs .= '<td>' . format_username((int) $friendreq['id']) . '</td></tr>';
         if ($i % 6 == 5) {
             $friendreqs .= '</tr>';
         }
@@ -229,7 +236,7 @@ if (mysqli_num_rows($res) == 0) {
             $title = get_user_class_name($friend['class']);
         }
         $ratio = member_ratio($friend['uploaded'], $site_config['site']['ratio_free'] ? '0' : $friend['downloaded']);
-        $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
+        $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friend['last_access'], '') : 'Never');
         $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
         $avatar = get_avatar($friend);
@@ -245,7 +252,7 @@ if (mysqli_num_rows($res) == 0) {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= '<div>';
         $blocks .= "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>{$lang['friends_delete']}</a></span><br>";
-        $blocks .= '<p>' . format_username($block['id']) . '</p></div><br>';
+        $blocks .= '<p>' . format_username((int) $block['id']) . '</p></div><br>';
     }
 }
 
@@ -258,7 +265,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars(htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8')) . " $country</h1>
+        <h1 class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars($user['username']) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>

@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
-global $session, $mysqli, $CURUSER, $fluent;
-
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
+global $container, $site_config, $CURUSER;
+
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
     $tickets = isset($_POST['tickets']) ? (int) $_POST['tickets'] : '';
@@ -18,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $session->set('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
         $fail = true;
     }
+    $fluent = $container->get(Database::class);
     $user_tickets = $fluent->from('tickets')
                            ->select(null)
-                           ->select('COUNT(*) AS count')
+                           ->select('COUNT(id) AS count')
                            ->where('user = ?', $CURUSER['id'])
                            ->fetch('count');
 
@@ -31,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $session->set('is-warning', 'You need more points to buy the amount of tickets you want');
         $fail = true;
     }
+    $t = [];
     for ($i = 1; $i <= $tickets; ++$i) {
         $t[] = '(' . $CURUSER['id'] . ')';
     }
@@ -38,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query('INSERT INTO tickets(user) VALUES ' . implode(', ', $t))) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id=' . $CURUSER['id']);
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
+            $cache = $container->get(Cache::class);
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
@@ -102,7 +112,7 @@ $body = "
                     <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
                     <li>Purchaseable shows how many tickets you can afford to purchase.</li>
                     <li>You can only buy up to your purchaseable amount.</li>
-                    <li>The competiton will end: <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b></li>
+                    <li>The competiton will end: <b>' . get_date((int) $lottery_config['end_date'], 'LONG') . '</b></li>
                     <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winner(s) who will be picked at random.</li>
                     <li>Winner(s) will get <b>' . number_format($lottery['per_user']) . '</b> added to their seedbonus amount</li>
                     <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';

@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types = 1);
+global $site_config;
+
 $lang = [
     //usercp gets
     'usercp_updated' => 'Profile updated',
@@ -41,8 +44,8 @@ $lang = [
     'usercp_avatar' => 'Avatar URL',
     'usercp_no_avatar_allow' => 'Sorry - Avatar changing disabled to your current user class',
     'usercp_signature' => 'Signature URL',
-    'usercp_avatar_info' => 'Width should be 150 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="bitbucket.php">bitbucket</a>.',
-    'usercp_signature_info' => 'Width should be 500 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="bitbucket.php">bitbucket</a>.',
+    'usercp_avatar_info' => 'Width should be 150 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="' . $site_config['paths']['baseurl'] . '/bitbucket.php">bitbucket</a>.',
+    'usercp_signature_info' => 'Width should be 500 pixels (will be resized if necessary)<br>If you need a host for the picture, try the <a href="' . $site_config['paths']['baseurl'] . '/bitbucket.php">bitbucket</a>.',
     'usercp_tor_perpage' => 'Torrents per page',
     'usercp_default' => '(0 = use default setting)',
     'usercp_default_size' => '100 = 100% font scaling<br>50 = 50% font scaling<br>This overides the default font size.',
@@ -54,7 +57,7 @@ $lang = [
     'usercp_view_signatures' => 'View signatures',
     'usercp_low_bw' => '(Low bandwidth users might want to turn this off)',
     'usercp_info' => 'Info',
-    'usercp_tags' => 'Displayed on your public page. May contain <a href="tags.php" target="_new">BB codes</a>.',
+    'usercp_tags' => 'Displayed on your public page. May contain <a href="' . $site_config['paths']['baseurl'] . '/tags.php" target="_new">BB codes</a>.',
     'usercp_email' => 'Email address',
     'usercp_email_pass' => 'Please enter your password if changing your email address!',
     'usercp_note' => '<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.',
@@ -66,7 +69,6 @@ $lang = [
     'usercp_default_clearnewtagmanually' => '(Check to use - Default value is no!)',
     'usercp_side' => 'Side Menu',
     'usercp_side1' => '(Check to turn Side Menu on!)',
-    'usercp_revert' => 'Revert changes!',
     'usercp_none_select' => '---- None selected ----',
     'usercp_q1' => "Mother's birthplace",
     'usercp_q2' => 'Best childhood friend',
@@ -91,7 +93,7 @@ $lang = [
     'usercp_split' => 'Split Torrents by Days',
     'usercp_cats_sets' => 'Category icon set',
     'usercp_icons' => 'Categories as images',
-    'usercp_language' => 'Language',
     //usercp stdhead
     'usercp_stdhead' => "'s private page",
+    'usercp_skype_share' => 'Click your username, then Share profile, then Copy to clipboard. Then paste the link here.',
 ];

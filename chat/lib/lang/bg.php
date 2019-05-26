@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan

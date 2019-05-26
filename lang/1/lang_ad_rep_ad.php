@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //show_level
     'rep_ad_show_title' => 'User Reputation Manager - Overview',

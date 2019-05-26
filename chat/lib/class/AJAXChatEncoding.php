@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  * @package AJAX_Chat
  * @author Sebastian Tschan
@@ -109,7 +111,7 @@ class AJAXChatEncoding
      *
      * @return string
      */
-    public static function encodeSpecialChars($str)
+    public static function encodeSpecialChars(string $str)
     {
         return strtr($str, self::getSpecialChars());
     }
@@ -149,10 +151,10 @@ class AJAXChatEncoding
         if (function_exists('iconv')) {
             return iconv($charsetFrom, $charsetTo, $str);
         }
-        if (('UTF-8' == $charsetFrom) && ('ISO-8859-1' == $charsetTo)) {
+        if (($charsetFrom == 'UTF-8') && ($charsetTo == 'ISO-8859-1')) {
             return utf8_decode($str);
         }
-        if (('ISO-8859-1' == $charsetFrom) && ('UTF-8' == $charsetTo)) {
+        if (($charsetFrom == 'ISO-8859-1') && ($charsetTo == 'UTF-8')) {
             return utf8_encode($str);
         }
 
@@ -195,7 +197,7 @@ class AJAXChatEncoding
     public static function decodeEntities($str, $encoding = 'UTF-8', $htmlEntitiesMap = null)
     {
         // Due to PHP bug #25670, html_entity_decode does not work with UTF-8 for PHP versions < 5:
-        if (function_exists('html_entity_decode') && version_compare(phpversion(), 5, '>=')) {
+        if (function_exists('html_entity_decode') && version_compare(phpversion(), '5', '>=')) {
             // Replace numeric and literal entities:
             $str = html_entity_decode($str, ENT_QUOTES, $encoding);
             // Replace additional literal HTML entities if an HTML entities map is given:

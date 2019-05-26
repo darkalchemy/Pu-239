@@ -1,8 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once BIN_DIR . 'functions.php';
+global $site_config, $site_config;
 
+if (empty($BLOCKS)) {
+    die('BLOCKS are empty');
+}
+
+$site_config['cache']['driver'] = 'memory';
 $user = null;
 $commands = [
     trim(`logname`),
@@ -14,8 +22,8 @@ while (empty($user)) {
     $user = $commands[$i];
     ++$i;
 }
-
-$group = posix_getgrgid(filegroup(__FILE__))['name'];
+$group = get_webserver_user();
+cleanup($group);
 $paths = [
     ROOT_DIR,
 ];
@@ -45,6 +53,7 @@ $folders = [
     BACKUPS_DIR,
     TORRENTS_DIR,
     USER_TORRENTS_DIR,
+    LOGS_DIR,
     SQLERROR_LOGS_DIR,
     BITBUCKET_DIR,
     ROOT_DIR . '.git',
@@ -64,7 +73,7 @@ $excludes = [
 
 foreach ($folders as $folder) {
     if (file_exists($folder)) {
-        chmod_r($folder);
+        chmod_r($folder, $group);
     }
 }
 
@@ -96,17 +105,16 @@ foreach ($paths as $path) {
 
 foreach ($folders as $folder) {
     if (file_exists($folder)) {
-        chown_r($folder);
+        chown_r($folder, $group);
     }
 }
 
 /**
  * @param $path
+ * @param $group
  */
-function chown_r($path)
+function chown_r($path, $group)
 {
-    global $group;
-
     if (!file_exists($path)) {
         return;
     }
@@ -115,29 +123,10 @@ function chown_r($path)
     foreach ($dir as $item) {
         chown($item->getPathname(), $group);
         if ($item->isDir() && !$item->isDot()) {
-            chown_r($item->getPathname());
+            chown_r($item->getPathname(), $group);
         }
     }
 }
 
-/**
- * @param $path
- */
-function chmod_r($path)
-{
-    global $group;
-
-    if (!file_exists($path)) {
-        return;
-    }
-    $dir = new DirectoryIterator($path);
-    foreach ($dir as $item) {
-        chmod($item->getPathname(), 0775);
-        chown($item->getPathname(), $group);
-        if ($item->isDir() && !$item->isDot()) {
-            chmod_r($item->getPathname());
-        }
-    }
-}
-
+cleanup($group);
 echo "$i files processed\n";

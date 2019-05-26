@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'coins_you_cant_give_that_amount_of_points' => "You can't give that amount of points!!!",
     'coins_you_already_gave_points_to_this_torrent' => 'You already gave points to this torrent.',

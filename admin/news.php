@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $site_config, $cache, $mysqli;
-
 $HTMLOUT = '';
 $stdhead = [
     'css' => [
@@ -21,6 +25,8 @@ $stdfoot = [
     ],
 ];
 $lang = array_merge($lang, load_language('ad_news'));
+global $container, $site_config, $CURUSER;
+
 $possible_modes = [
     'add',
     'delete',
@@ -31,6 +37,8 @@ $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['news_error'], $lang['news_error_ruffian']);
 }
+
+$cache = $container->get(Cache::class);
 if ($mode === 'delete') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
@@ -40,20 +48,10 @@ if ($mode === 'delete') {
     $sure = '';
     $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
     if (!$sure) {
-        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", false);
+        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", null);
     }
     if ($_GET['h'] != $hash) {
         stderr($lang['news_error'], $lang['news_del_what']);
-    }
-    /**
-     * @param $newsid
-     */
-    function deletenewsid($newsid)
-    {
-        global $CURUSER, $cache;
-
-        sql_query('DELETE FROM news WHERE id=' . sqlesc($newsid) . ' AND userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('latest_news_');
     }
 
     $HTMLOUT .= deletenewsid($newsid);
@@ -61,8 +59,7 @@ if ($mode === 'delete') {
     stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
     echo stdhead($lang['news_del_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
     die();
-}
-if ($mode === 'add') {
+} elseif ($mode === 'add') {
     $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
     $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : 'no';
@@ -81,8 +78,7 @@ if ($mode === 'add') {
     $cache->delete('latest_news_');
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     mysqli_affected_rows($mysqli) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
-}
-if ($mode === 'edit') {
+} elseif ($mode === 'edit') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_edit_invalid']);
@@ -163,8 +159,7 @@ if ($mode === 'edit') {
         echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
     }
-}
-if ($mode === 'news') {
+} elseif ($mode === 'news') {
     $res = sql_query('SELECT n.id AS newsid, n.body, n.title, n.userid, n.added, n.anonymous, u.id, u.username, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS n LEFT JOIN users AS u ON u.id=n.userid ORDER BY sticky, added DESC') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
     <div class='portlet'>
@@ -222,10 +217,10 @@ if ($mode === 'news') {
         $newsid = (int) $arr['newsid'];
         $body = $arr['body'];
         $title = $arr['title'];
-        $added = get_date($arr['added'], 'LONG', 0, 1);
-        $by = '<b>' . format_username($arr['userid']) . '</b>';
+        $added = get_date((int) $arr['added'], 'LONG', 0, 1);
+        $by = '<b>' . format_username((int) $arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
-        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['userid']);
+        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username((int) $arr['userid']);
         $HTMLOUT .= main_div("
             <div class='level bg-01 padding20 round5'>
                 <div class='has-text-left'>
@@ -249,3 +244,18 @@ if ($mode === 'news') {
 
 echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();
+
+/**
+ * @param $newsid
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ */
+function deletenewsid($newsid)
+{
+    global $container, $CURUSER;
+
+    $cache = $container->get(Cache::class);
+    sql_query('DELETE FROM news WHERE id=' . sqlesc($newsid) . ' AND userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $cache->delete('latest_news_');
+}

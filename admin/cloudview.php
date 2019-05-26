@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Searchcloud;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -7,10 +12,12 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $site_config, $cache, $searchcloud_stuffs;
-
 $lang = array_merge($lang, load_language('ad_cloudview'));
+global $container, $site_config, $lang;
+
 $HTMLOUT = '';
+$searchcloud_stuffs = $container->get(Searchcloud::class);
+$cache = $container->get(Cache::class);
 if (isset($_POST['delcloud'])) {
     $searchcloud_stuffs->delete($_POST['delcloud']);
     $cache->delete('searchcloud_');
@@ -25,7 +32,7 @@ if ($count > $perpage) {
 }
 $searches = $searchcloud_stuffs->get($pager['pdo']);
 $HTMLOUT .= "
-<form id='checkbox_container' method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview' accept-charset='utf-8'>";
+<form id='checkbox_container' method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cloudview&amp;action=cloudview' accept-charset='utf-8'>";
 $heading = "
     <tr>
         <th>{$lang['cloudview_phrase']}</th>
@@ -54,7 +61,7 @@ if (!empty($body)) {
 
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= main_div('No cloud search terms to preview.');
+    $HTMLOUT .= main_div('No cloud search terms to preview.', null, 'has-text-centered padding20');
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];

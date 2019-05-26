@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /** Include current date and time in export filename
  *
@@ -10,6 +10,11 @@
  */
 class AdminerDumpDate
 {
+    /**
+     * @param $identifier
+     *
+     * @return string|string[]|null
+     */
     public function dumpFilename($identifier)
     {
         $connection = connection();

@@ -1,25 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent;
-
 $lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
+global $container, $CURUSER, $site_config;
+
 $HTMLOUT = '';
+$fluent = $container->get(Database::class);
 $count = $fluent->from('torrents AS t')
                 ->select(null)
-                ->select('COUNT(*) AS count');
+                ->select('COUNT(id) AS count');
 
 $select = $fluent->from('torrents AS t')
                  ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
                  ->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
                  ->select('u.class')
                  ->select('u.username')
-                 ->leftJoin('snatched AS s on s.torrentid=t.id AND s.userid=?', $CURUSER['id'])
+                 ->where('s.userid = ?', $CURUSER['id'])
+                 ->leftJoin('snatched AS s ON t.id = s.torrentid')
                  ->leftJoin('users AS u ON t.owner = u.id');
 
 if (isset($_GET['sort'], $_GET['type'])) {
@@ -54,7 +60,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
             $linkascdesc = 'desc';
             break;
     }
-    $select = $select->orderBy("t.{$column} $ascdecs");
+    $select = $select->orderBy("t.{$column} $ascdesc");
     $pagerlink = 'sort=' . intval($_GET['sort']) . '&amp;type=' . $linkascdesc . '&amp;';
 } else {
     $select = $select->orderBy('t.staff_picks DESC')
@@ -75,7 +81,8 @@ if (!$count) {
         <div class='has-text-centered'>{$lang['mytorrents_no_uploads']}</div>", null, 'padding20');
 } else {
     $pager = pager(20, $count, "{$site_config['paths']['baseurl']}/mytorrents.php?{$pagerlink}");
-    $select = $select->limit($pager['pdo'])
+    $select = $select->limit($pager['pdo']['limit'])
+                     ->offset($pager['pdo']['offset'])
                      ->fetchAll();
     $HTMLOUT .= $pager['pagertop'];
     $HTMLOUT .= torrenttable($select, 'mytorrents');

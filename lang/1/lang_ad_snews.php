@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'text_error' => 'ERROR!',
     'text_no' => 'No news with that id.',

@@ -1,27 +1,33 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Database;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function silvertorrents_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    global $site_config, $fluent, $cache;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
     $dt = TIME_NOW;
-
+    $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
                        ->select(null)
                        ->select('id')
                        ->select('silver')
-                       ->where('silver>1')
+                       ->where('silver > 1')
                        ->where('silver < ?', $dt)
                        ->fetchAll();
 
@@ -32,10 +38,11 @@ function silvertorrents_update($data)
         ];
         $fluent->update('torrents')
                ->set($set)
-               ->where('silver>1')
+               ->where('silver > 1')
                ->where('silver < ?', $dt)
                ->execute();
     }
+    $cache = $container->get(Cache::class);
     foreach ($torrents as $torrent) {
         $details = $cache->get('torrent_details_' . $torrent['id']);
         if (!empty($details)) {

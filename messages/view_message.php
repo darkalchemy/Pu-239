@@ -1,6 +1,10 @@
 <?php
 
-global $h1_thingie, $lang, $user_stuffs, $message_stuffs, $CURUSER;
+declare(strict_types = 1);
+
+use Pu239\User;
+
+global $container, $CURUSER, $h1_thingie, $site_config;
 
 $subject = $friends = '';
 
@@ -11,7 +15,8 @@ $message = mysqli_fetch_assoc($res);
 if (!$message) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
-$arr_user_stuff = $user_stuffs->getUserFromId($message['sender'] === $CURUSER['id'] ? $message['receiver'] : $message['sender']);
+$user_stuffs = $container->get(User::class);
+$arr_user_stuff = $user_stuffs->getUserFromId((int) $message['sender'] === $CURUSER['id'] ? (int) $message['receiver'] : (int) $message['sender']);
 $id = $arr_user_stuff['id'];
 sql_query('UPDATE messages SET unread = "no" WHERE id=' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);
@@ -64,8 +69,8 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' . ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
-                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-danger'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
+                    <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' . ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username((int) $arr_user_stuff['id'])) . "{$friends}
+                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date((int) $message['added'], '') . (((int) $message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-danger'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>
@@ -74,33 +79,19 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <div class='has-text-centered flex flex-justify-center'>
-                        <form action='./messages.php' method='post' accept-charset='utf-8'>
+                    <div class='level-center-center has-text-centered'>
+                        <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$pm_id}'>
                             <input type='hidden' name='action' value='move'>
                             " . get_all_boxes($message['location']) . "
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_move']}'>
+                            <input type='submit' class='button is-small margin10' value='{$lang['pm_viewmsg_move']}'>
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=delete&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_delete']}</a>" . ($message['draft'] === 'no' ? "
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_sdraft']}</a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_reply']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=forward&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_fwd']}</a>") : "
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_dedit']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_duse']}</a>") . "
                         </form>
-                    </div>
-                    <div class='has-text-centered flex flex-center top20'>
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=delete&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}'>
-                        </a>" . ($message['draft'] === 'no' ? "
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}'>
-                        </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}'>
-                        </a>
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=forward&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}'>
-                        </a>") : "
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}'>
-                        </a>
-                        <a href='{$site_config['paths']['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}'>
-                        </a>") . "
                     </div>
                 </td>
             </tr>

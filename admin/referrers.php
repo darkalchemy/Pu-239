@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
-
 $lang = array_merge($lang, load_language('referrers'));
+global $site_config;
+
 $HTMLOUT = '';
 $_GET['page'] = !isset($_GET['page']) ? 0 : (int) $_GET['page'];
 $res = sql_query('SELECT * FROM referrers') or sqlerr(__FILE__, __LINE__);
@@ -50,11 +52,11 @@ if ($count > 0) {
             $body .= '
         <tr>
             <td>' . $i . '</td>
-            <td>' . get_date($data['date'], '') . '</td>
+            <td>' . get_date((int) $data['date'], '') . '</td>
             <td>' . $browser . '</td>
             <td>' . htmlsafechars($data['ip']) . '</td>
-            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username($data['uid']) : $lang['ref_guest']) . "</td>
-            <td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td>
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username((int) $data['uid']) : $lang['ref_guest']) . "</td>
+            <td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], 50)) . "</a></td>
             <td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>
         </tr>";
             $browser = '';

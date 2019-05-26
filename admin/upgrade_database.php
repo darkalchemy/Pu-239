@@ -1,15 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $fluent, $site_config, $cache, $session, $fluent;
-
 $lang = array_merge($lang);
-require_once DATABASE_DIR . 'sql_updates.php';
+global $container, $site_config;
 
+require_once DATABASE_DIR . 'sql_updates.php';
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id']) && !empty($_POST['submit'])) {
         $id = $_POST['id'];
@@ -49,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $code = $e->getCode();
                 $msg = $e->getMessage();
                 if ($code === '42S21') {
-                    $session->set('is-danger', "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                    $session->set('is-danger', "{$msg}[p]\n you should be safe if you ignore this query[/p][p]" . htmlsafechars($sql) . '[/p]');
                 } else {
-                    $session->set('is-danger', "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                    $session->set('is-danger', "{$msg}[p]\n try to run manually:[/p][p]" . htmlsafechars($sql) . '[/p]');
                 }
             }
         } elseif (isset($qid) && $submit === 'Ignore Query') {

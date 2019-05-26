@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'comm_check_success' => 'Success',
     'comm_check_successfully' => 'Comments successfully checked',

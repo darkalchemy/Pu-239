@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //inactive errors
     'inactive_error' => 'Error',

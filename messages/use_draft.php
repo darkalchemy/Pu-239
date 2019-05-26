@@ -1,13 +1,13 @@
 <?php
 
-require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $mysqli;
+declare(strict_types = 1);
 
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+require_once INCL_DIR . 'function_html.php';
 
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 $save_or_edit = (isset($_POST['send']) ? 'send' : (isset($_GET['send']) ? 'send' : $save_or_edit));
+global $contianer, $site_config, $CURUSER, $lang;
+
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);
@@ -89,16 +89,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 </body>
 </html>";
 
-            $mail = new Message();
-            $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-                 ->addTo($arr_receiver['email'])
-                 ->setReturnPath($site_config['site']['email'])
-                 ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
-                 ->setHtmlBody($body);
-
-            $mailer = new SendmailMailer();
-            $mailer->commandArgs = "-f{$site_config['site']['email']}";
-            $mailer->send($mail);
+            send_mail($arr_receiver['email'], "{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}", $body, strip_tags($body));
         }
         if ($returnto) {
             header('Location: ' . $returnto);

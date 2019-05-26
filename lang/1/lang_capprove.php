@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'capp_head' => 'Approve|Disapprove comments',
     'capp_appr' => 'Your not authorized to use this page',

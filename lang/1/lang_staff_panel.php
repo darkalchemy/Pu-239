@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'spanel_header' => 'Staff Panel',
     'spanel_error' => 'Error',

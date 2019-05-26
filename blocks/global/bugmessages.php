@@ -1,10 +1,17 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $CURUSER, $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
+        $fluent = $container->get(Database::class);
         $bugs = $fluent->from('bugs')
                        ->select(null)
                        ->select('COUNT(id) AS count')

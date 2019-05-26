@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('topten'));
+global $site_config;
+
 $HTMLOUT = '';
 /**
  * @param     $result
@@ -14,7 +18,7 @@ $HTMLOUT = '';
  */
 function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 {
-    $i = 0;
+    $got = $i = 0;
     $keys = array_keys(mysqli_fetch_array($result, $numass));
     mysqli_data_seek($result, 0);
     while ($row = mysqli_fetch_array($result, $numass)) {
@@ -228,7 +232,7 @@ if ($counted == '10') {
     $HTMLOUT .= main_div('<h4>Insufficient Downloaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
-$result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - added) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
+$result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - registered) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -257,7 +261,7 @@ if ($counted == '10') {
     $HTMLOUT .= main_div('<h4>Insufficient Uploaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
-$result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - added) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
+$result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - registered) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);

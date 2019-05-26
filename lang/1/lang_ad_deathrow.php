@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'deathrow_days' => 'days',
     'deathrow_hrs' => 'hrs',

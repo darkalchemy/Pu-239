@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_password.php';
@@ -7,21 +9,30 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session, $message_stuffs;
-
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+use Delight\Auth\Auth;
+use Delight\Auth\EmailNotVerifiedException;
+use Delight\Auth\InvalidEmailException;
+use Delight\Auth\NotLoggedInException;
+use Delight\Auth\TooManyRequestsException;
+use Delight\Auth\UserAlreadyExistsException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+use Pu239\Session;
 
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
-
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
 $force_logout = false;
+global $container, $CURUSER, $site_config;
 
-if ($action == 'avatar') {
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
+
+if ($action === 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
     $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
@@ -40,7 +51,7 @@ if ($action == 'avatar') {
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
-    if (!($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
+    if (!empty($avatar) && !($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
         $updateset[] = 'avatar = ' . sqlesc($avatar);
     }
     $updateset[] = 'avatars = ' . sqlesc($avatars);
@@ -79,7 +90,8 @@ if ($action == 'avatar') {
     $user_cache['signatures'] = $signatures;
     $action = 'signature';
 } elseif ($action === 'security') {
-    mkglobal('email:chpassword:passagain:chmailpass:secretanswer:current_pass');
+    $email = $chpassword = $passagain = $chmailpass = $secretanswer = $current_pass = '';
+    extract($_POST);
     if (!empty($chpassword)) {
         if (strlen($chpassword) > 72) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
@@ -99,18 +111,18 @@ if ($action == 'avatar') {
 
         $cur_passhash = $fluent->from('users')
                                ->select(null)
-                               ->select('passhash')
-                               ->where('id=?', $CURUSER['id'])
-                               ->fetch('passhash');
+                               ->select('password')
+                               ->where('id = ?', $CURUSER['id'])
+                               ->fetch('password');
 
         if (!password_verify($current_pass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
 
         $passhash = make_passhash($chpassword);
-        $updateset[] = 'passhash = ' . sqlesc($passhash);
-        $curuser_cache['passhash'] = $passhash;
-        $user_cache['passhash'] = $passhash;
+        $updateset[] = 'password = ' . sqlesc($passhash);
+        $curuser_cache['password'] = $passhash;
+        $user_cache['password'] = $passhash;
         $force_logout = true;
     }
 
@@ -131,9 +143,9 @@ if ($action == 'avatar') {
         }
         $cur_passhash = $fluent->from('users')
                                ->select(null)
-                               ->select('passhash')
-                               ->where('id=?', $CURUSER['id'])
-                               ->fetch('passhash');
+                               ->select('password')
+                               ->where('id = ?', $CURUSER['id'])
+                               ->fetch('password');
 
         if (!password_verify($chmailpass, $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
@@ -184,53 +196,54 @@ if ($action == 'avatar') {
         $user_cache['passhint'] = $changeq;
     }
     if ($changedemail) {
-        $secret = make_password(30);
-        $token = make_passhash($secret);
-        $alt_id = make_password(16);
-        $values = [
-            'email' => $CURUSER['email'],
-            'new_email' => $email,
-            'token' => $token,
-            'id' => $alt_id,
-        ];
-        $fluent->insertInto('tokens')
-               ->values($values)
-               ->execute();
+        $auth = $container->get(Auth::class);
+        $session = $container->get(Session::class);
+        try {
+            if ($auth->reconfirmPassword($_POST['chmailpass'])) {
+                $auth->changeEmail($_POST['email'], function ($selector, $token) {
+                    global $site_config, $lang, $CURUSER, $email;
 
-        $body = str_replace([
-            '<#USERNAME#>',
-            '<#SITENAME#>',
-            '<#USEREMAIL#>',
-            '<#IP_ADDRESS#>',
-            '<#CHANGE_LINK#>',
-        ], [
-            $CURUSER['username'],
-            $site_config['site']['name'],
-            $email,
-            getip(),
-            "{$site_config['paths']['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
-        ], $lang['takeeditcp_email_body']);
-
-        $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-             ->addTo($email)
-             ->setReturnPath($site_config['site']['email'])
-             ->setSubject("{$site_config['site']['name']} {$lang['takeeditcp_confirm']}")
-             ->setHtmlBody($body);
-
-        $mailer = new SendmailMailer();
-        $mailer->commandArgs = "-f{$site_config['site']['email']}";
-        $mailer->send($mail);
-
-        $emailquery = sql_query('SELECT id, username, email FROM users WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $spm = mysqli_fetch_assoc($emailquery);
+                    $url = $site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+                    $body = str_replace([
+                        '<#USERNAME#>',
+                        '<#SITENAME#>',
+                        '<#USEREMAIL#>',
+                        '<#IP_ADDRESS#>',
+                        '<#CHANGE_LINK#>',
+                    ], [
+                        $CURUSER['username'],
+                        $site_config['site']['name'],
+                        $email,
+                        getip(),
+                        $url,
+                    ], $lang['takeeditcp_email_body']);
+                    send_mail($email, "{$site_config['site']['name']} {$lang['takeeditcp_confirm']}", $body, strip_tags($body));
+                });
+                $session->set('is-info', 'The change will take effect as soon as the new email address has been confirmed');
+            } else {
+                stderr('Error', 'We can\'t say if the user is who they claim to be');
+            }
+        } catch (InvalidEmailException $e) {
+            stderr('Error', 'Invalid email address');
+        } catch (UserAlreadyExistsException $e) {
+            stderr('Error', 'Email address already exists');
+        } catch (EmailNotVerifiedException $e) {
+            stderr('Error', 'Account not verified');
+        } catch (NotLoggedInException $e) {
+            stderr('Error', 'Not logged in');
+        } catch (TooManyRequestsException $e) {
+            stderr('Error', 'Too many requests');
+        }
         $dt = TIME_NOW;
-        $subject = sqlesc($lang['takeeditcp_email_alert']);
-        $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
-        $pmstaff = sql_query('SELECT id FROM users WHERE class = ' . UC_ADMINISTRATOR) or sqlerr(__FILE__, __LINE__);
-        while ($arr = mysqli_fetch_assoc($pmstaff)) {
+        $subject = $lang['takeeditcp_email_alert'];
+        $msg = "{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $CURUSER['id'] . '][b]' . htmlsafechars($CURUSER['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($CURUSER['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}";
+        $pmstaff = $fluent->from('users')
+                          ->select(null)
+                          ->select('id')
+                          ->where('class >= ?', UC_ADMINISTRATOR)
+                          ->fetchAll();
+        foreach ($pmstaff as $arr) {
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,
@@ -238,6 +251,7 @@ if ($action == 'avatar') {
             ];
         }
         if (!empty($msgs_buffer)) {
+            $message_stuffs = $container->get(Message::class);
             $message_stuffs->insert($msgs_buffer);
         }
         $urladd .= '&mailsent=1';
@@ -246,7 +260,7 @@ if ($action == 'avatar') {
 } elseif ($action === 'torrents') {
     $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
     $pmnotif = 'no';
-    if (strpos($CURUSER['notifs'], '[pm]') !== false) {
+    if (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pm]') !== false) {
         $pmnotif = 'yes';
     }
     $notifs = ($pmnotif === 'yes' ? '[pm]' : '');
@@ -341,6 +355,7 @@ if ($action == 'avatar') {
         $updateset[] = 'use_12_hour = ' . sqlesc($is_12_hour);
         $curuser_cache['use_12_hour'] = $is_12_hour;
         $user_cache['use_12_hour'] = $is_12_hour;
+        $session = $container->get(Session::class);
         $session->set('use_12_hour', $is_12_hour);
     }
     if (isset($_POST['fontsize']) && ($fontsize = $_POST['fontsize']) != $CURUSER['font_size']) {
@@ -377,30 +392,10 @@ if ($action == 'avatar') {
     }
     $action = 'personal';
 } elseif ($action === 'social') {
-    if (isset($_POST['google_talk']) && ($google_talk = $_POST['google_talk']) != $CURUSER['google_talk']) {
-        $updateset[] = 'google_talk= ' . sqlesc($google_talk);
-        $curuser_cache['google_talk'] = $google_talk;
-        $user_cache['google_talk'] = $google_talk;
-    }
-    if (isset($_POST['msn']) && ($msn = $_POST['msn']) != $CURUSER['msn']) {
-        $updateset[] = 'msn= ' . sqlesc($msn);
-        $curuser_cache['msn'] = $msn;
-        $user_cache['msn'] = $msn;
-    }
-    if (isset($_POST['aim']) && ($aim = $_POST['aim']) != $CURUSER['aim']) {
-        $updateset[] = 'aim= ' . sqlesc($aim);
-        $curuser_cache['aim'] = $aim;
-        $user_cache['aim'] = $aim;
-    }
-    if (isset($_POST['yahoo']) && ($yahoo = $_POST['yahoo']) != $CURUSER['yahoo']) {
-        $updateset[] = 'yahoo= ' . sqlesc($yahoo);
-        $curuser_cache['yahoo'] = $yahoo;
-        $user_cache['yahoo'] = $yahoo;
-    }
-    if (isset($_POST['icq']) && ($icq = $_POST['icq']) != $CURUSER['icq']) {
-        $updateset[] = 'icq= ' . sqlesc($icq);
-        $curuser_cache['icq'] = $icq;
-        $user_cache['icq'] = $icq;
+    if (isset($_POST['skype']) && ($skype = $_POST['skype']) != $CURUSER['skype']) {
+        $updateset[] = 'skype= ' . sqlesc($skype);
+        $curuser_cache['skype'] = $skype;
+        $user_cache['skype'] = $skype;
     }
     if (isset($_POST['website']) && ($website = $_POST['website']) != $CURUSER['website']) {
         $updateset[] = 'website= ' . sqlesc($website);
@@ -447,7 +442,7 @@ if ($action == 'avatar') {
 
     $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
     $emailnotif = 'no';
-    if (strpos($CURUSER['notifs'], '[email]') !== false) {
+    if (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false) {
         $emailnotif = 'yes';
     }
 
@@ -508,11 +503,12 @@ $opt = $fluent->from('users')
               ->select(null)
               ->select('opt1')
               ->select('opt2')
-              ->where('id=?', $CURUSER['id'])
+              ->where('id = ?', $CURUSER['id'])
               ->fetch();
 
 $cache->update_row('user_' . $CURUSER['id'], [
     'opt1' => $opt['opt1'],
     'opt2' => $opt['opt2'],
 ], $site_config['expires']['user_cache']);
-header("Location: {$site_config['paths']['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);
+$edited = $urladd === '&mailsent=1' ? 'action=security&mailsent=1' : "edited=1&action={$action}{$urladd}";
+header("Location: {$site_config['paths']['baseurl']}/usercp.php?{$edited}");

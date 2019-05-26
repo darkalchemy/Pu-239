@@ -1,20 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 
 /**
- * @return array
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
  */
 function trivia_table()
 {
-    global $fluent, $cache;
+    global $container;
 
+    $cache = $container->get(Cache::class);
     $triviaq = $cache->get('triviaq_');
     if ($triviaq === false || is_null($triviaq)) {
+        $fluent = $container->get(Database::class);
         $qid = $fluent->from('triviaq')
                       ->select(null)
                       ->select('qid')
@@ -79,7 +90,7 @@ function trivia_table()
             $percentage = $user['correct'] / ($user['correct'] + $user['incorrect']) * 100;
             $body .= "
         <tr>
-            <td class='w-5'><div class='is-pulled-left'>" . format_username($user['uid']) . "</div></td>
+            <td class='w-5'><div class='is-pulled-left'>" . format_username((int) $user['uid']) . "</div></td>
             <td class='has-text-centered w-5'>" . sprintf('%.2f%%', $percentage) . "</td>
             <td class='has-text-centered w-5'>{$user['correct']}</td>
             <td class='has-text-centered w-5'>{$user['incorrect']}</td>
@@ -133,14 +144,17 @@ function clean_data($data)
 }
 
 /**
- * @return array
- *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
  */
 function trivia_time()
 {
-    global $fluent;
+    global $container;
 
+    $fluent = $container->get(Database::class);
     $round = $game = 0;
     $cleanup = $fluent->from('cleanup')
                       ->select(null)

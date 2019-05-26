@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Session;
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -7,7 +12,8 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_comments.php';
 check_user_status();
-global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session, $mysqli;
+$lang = load_language('global');
+global $container, $site_config, $CURUSER;
 
 $stdhead = [
     'css' => [
@@ -19,10 +25,10 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$lang = load_language('global');
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
+$user_stuffs = $container->get(User::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userid = (int) $_POST['userid'];
@@ -53,7 +59,7 @@ if ($action === 'add') {
         }
     }
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>Add a comment for " . format_username($userid) . "</h1>
+    <h1 class='has-text-centered'>Add a comment for " . format_username((int) $userid) . "</h1>
     <form method='post' action='usercomment.php?action=add' accept-charset='utf-8'>
         <input type='hidden' name='userid' value='$userid'>
         <div>" . BBcode() . "</div>
@@ -108,7 +114,7 @@ if ($action === 'add') {
         die();
     }
     $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-    $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username($arr['userid']) . "</h1>
+    $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username((int) $arr['userid']) . "</h1>
     <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}' accept-charset='utf-8'>
     <input type='hidden' name='returnto' value='{$referer}'>
     <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "'>
@@ -129,7 +135,7 @@ if ($action === 'add') {
         stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-success'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
-                  ->where('id=?', $commentid)
+                  ->where('id = ?', $commentid)
                   ->fetch();
 
     if ($arr) {
@@ -142,6 +148,7 @@ if ($action === 'add') {
     if ($userid && mysqli_affected_rows($mysqli) > 0) {
         sql_query('UPDATE users SET comments = comments - 1 WHERE id=' . sqlesc($userid));
     }
+    $session = $container->get(Session::class);
     $session->set('is-success', 'User Comment has been deleted.');
     if ($_GET['returnto']) {
         header('Location: ' . htmlsafechars($_GET['returnto']));
@@ -158,7 +165,7 @@ if ($action === 'add') {
         stderr('Error', 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments')
-                  ->where('id=?', $commentid)
+                  ->where('id = ?', $commentid)
                   ->fetch();
 
     if (!$arr) {

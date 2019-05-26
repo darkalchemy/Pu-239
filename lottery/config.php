@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 class_check(UC_STAFF);
-global $site_config, $cache, $mysqli;
-
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
+global $site_config;
+
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
-                 'ticket_amount' => 0,
-                 'class_allowed' => 1,
-                 'user_tickets' => 0,
-                 'end_date' => 0,
-             ] as $key => $type) {
+        'ticket_amount' => 0,
+        'class_allowed' => 1,
+        'user_tickets' => 0,
+        'end_date' => 0,
+    ] as $key => $type) {
         if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
             $session->set('is-warning', 'You forgot to fill some data');
         }

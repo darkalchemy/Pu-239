@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'catol_std_head' => 'Catalogue',
     'catol_read_more' => 'Read more',

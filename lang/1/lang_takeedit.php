@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     //takedit
     'takedit_failed' => 'Edit failed!',

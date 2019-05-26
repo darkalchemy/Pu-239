@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Message;
 
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function pu_demote_update($data)
 {
+    global $container, $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
-
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $prev_class = 0;
     $class_name = $prev_class_name = 'user';
 
@@ -49,11 +53,11 @@ function pu_demote_update($data)
         $dt = TIME_NOW;
         if (mysqli_num_rows($res) > 0) {
             $msg = "You have been auto-demoted from [b]{$class_name}[/b] to [b]{$prev_class_name}[/b] because your share ratio has dropped below  $minratio.\n";
-
+            $cache = $container->get(Cache::class);
             while ($arr = mysqli_fetch_assoc($res)) {
                 $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - Demoted To ' . $prev_class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
+                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - Demoted To ' . $prev_class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
                 $modcom = sqlesc($modcomment);
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
                 $msgs_buffer[] = [
@@ -70,6 +74,7 @@ function pu_demote_update($data)
             }
             $count = count($users_buffer);
             if ($count > 0) {
+                $message_stuffs = $container->get(Message::class);
                 $message_stuffs->insert($msgs_buffer);
                 sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
@@ -83,8 +88,8 @@ function pu_demote_update($data)
         $run_time = $time_end - $time_start;
         $text = " Run time: $run_time seconds";
         echo $text . "\n";
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("{$prev_class_name} Updates Cleanup: Completed using $queries queries" . $text);
+        if ($data['clean_log']) {
+            write_log("{$prev_class_name} Updates Cleanup: Completed" . $text);
         }
     }
 }

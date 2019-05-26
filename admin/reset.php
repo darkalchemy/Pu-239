@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $mysqli;
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $username = !empty($_GET['username']) ? $_GET['username'] : '';
     $userid = !empty($_GET['userid']) ? $_GET['userid'] : '';
 }
 $lang = array_merge($lang, load_language('ad_reset'));
+global $CURUSER;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
     $uid = (int) $_POST['uid'];
@@ -21,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_affected_rows($mysqli) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }
-    write_log($lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
-    stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars($username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');
+    write_log($lang['reset_pw_log1'] . htmlsafechars((string) $username) . $lang['reset_pw_log2'] . htmlsafechars((string) $CURUSER['username']));
+    stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars((string) $username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');
 }
 $body = "
     <tr>

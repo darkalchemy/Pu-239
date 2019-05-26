@@ -1,11 +1,18 @@
 <?php
 
-global $site_config, $lang, $fluent, $cache;
+declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Database;
+
+global $container, $lang, $site_config;
+
+$cache = $container->get(Cache::class);
 $birthday = $cache->get('birthdayusers_');
 if ($birthday === false || is_null($birthday)) {
     $birthday = $list = [];
     $current_date = getdate();
+    $fluent = $container->get(Database::class);
     $query = $fluent->from('users')
                     ->select(null)
                     ->select('id')
@@ -22,9 +29,9 @@ if ($birthday === false || is_null($birthday)) {
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
-                $list[] = format_username($row['id'], true, true, false, true);
+                $list[] = format_username((int) $row['id'], true, true, false, true);
             } else {
-                $list[] = format_username($row['id']);
+                $list[] = format_username((int) $row['id']);
             }
         }
         $birthday['birthdayusers'] = implode('&nbsp;&nbsp;', $list);

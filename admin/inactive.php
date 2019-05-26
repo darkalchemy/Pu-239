@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -7,16 +9,12 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $session;
-
 $lang = array_merge($lang, load_language('inactive'));
-
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+global $container, $CURUSER, $site_config;
 
 $HTMLOUT = '';
-$record_mail = true; // set this true or false . If you set this true every time whene you send a mail the time , userid , and the number of mail sent will be recorded
-$days = 30; //number of days of inactivity
+$record_mail = true;
+$days = 30;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
@@ -37,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'disable' && (!empty($_POST['userid']))) {
-        sql_query("UPDATE users SET enabled='no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
+        sql_query("UPDATE users SET enabled = 'no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
         $session->set('is-success', $lang['inactive_disabled']);
     }
 
@@ -47,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         while ($arr = mysqli_fetch_array($res)) {
             $id = (int) $arr['id'];
             $username = htmlsafechars($arr['username']);
-            $added = get_date($arr['added'], 'DATE');
-            $last_access = get_date($arr['last_access'], 'DATE');
+            $added = get_date((int) $arr['added'], 'DATE');
+            $last_access = get_date((int) $arr['last_access'], 'DATE');
             $body = doc_head() . "
     <meta property='og:title' content='{$lang['inactive_youracc']}'>
     <title>{$lang['inactive_youracc']}</title>
@@ -64,17 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 {$lang['inactive_welcomeback']} {$site_config['site']['name']}</p>
 </body>
 </html>";
-
-            $mail = new Message();
-            $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-                 ->addTo($arr['email'])
-                 ->setReturnPath($site_config['site']['email'])
-                 ->setSubject("{$lang['inactive_youracc']}{$site_config['site']['name']}!")
-                 ->setHtmlBody($body);
-
-            $mailer = new SendmailMailer();
-            $mailer->commandArgs = "-f{$site_config['site']['email']}";
-            $mailer->send($mail);
+            send_mail($arr['email'], "{$lang['inactive_youracc']}{$site_config['site']['name']}!", $body, strip_tags($body));
         }
 
         if ($record_mail) {
@@ -95,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $dt = TIME_NOW - ($days * 86400);
 $res = sql_query('SELECT COUNT(id) FROM users WHERE last_access<' . sqlesc($dt) . " AND status = 'confirmed' AND enabled = 'yes' ORDER BY last_access DESC");
 $row = mysqli_fetch_array($res);
-$count = $row[0];
+$count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=inactive&amp;');
 $res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access < ' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
@@ -121,8 +109,9 @@ if ($count_inactive > 0) {
     }
     /*]]>*/
     </script>";
-    $HTMLOUT .= "<div class='row'><div class='col-md-12'>";
-    $HTMLOUT .= '<h1 class="has-text-centered">' . htmlsafechars($count) . "{$lang['inactive_accounts']} " . htmlsafechars($days) . " {$lang['inactive_days']}</h2>
+    $HTMLOUT .= "
+    <div class='row'><div class='col-md-12'>
+    <h1 class='has-text-centered'>$count{$lang['inactive_accounts']} $days {$lang['inactive_days']}</h2>
     <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
@@ -134,10 +123,10 @@ if ($count_inactive > 0) {
     <td class='colhead'>{$lang['inactive_x']}</td></tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
         $ratio = (member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']));
-        $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
+        $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date((int) $arr['last_access'], 'DATE') . '&#160;');
         $class = get_user_class_name($arr['class']);
         $HTMLOUT .= '<tr>
-        <td>' . format_username($arr['id']) . '</td>
+        <td>' . format_username((int) $arr['id']) . '</td>
         <td>' . $class . "</td>
         <td style='max-width:130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a></td>
         <td>' . $ratio . '</td>
@@ -156,7 +145,7 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead' style='color:red;'>{$lang['inactive_lastmail']} " . format_username($date['userid']) . " {$lang['inactive_on']} <b>" . get_date($date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead' style='color:red;'>{$lang['inactive_lastmail']} " . format_username((int) $date['userid']) . " {$lang['inactive_on']} <b>" . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
         }
     }
     $HTMLOUT .= '</table></form>';

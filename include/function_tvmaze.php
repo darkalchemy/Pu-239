@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Cache;
+use Pu239\Image;
+use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_html.php';
@@ -9,14 +16,16 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @return string
- *
  * @throws InvalidManipulation
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string|null
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     global $site_config, $BLOCKS;
-
     if (!$BLOCKS['tvmaze_api_on']) {
         return null;
     }
@@ -86,7 +95,10 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @return string
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return bool|string
  */
 function episode_format($tvmaze_data, $tvmaze_type)
 {
@@ -106,7 +118,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
         if (isset($tvmaze_data[$key])) {
             if ($key === 'timestamp') {
-                $tvmaze_data[$key] = get_date($tvmaze_data[$key], 'WITHOUT_SEC');
+                $tvmaze_data[$key] = get_date((int) $tvmaze_data[$key], 'WITHOUT_SEC');
             }
             $tvmaze_display[$tvmaze_type][$key] = sprintf($value, $tvmaze_data[$key]);
         } else {
@@ -123,19 +135,21 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @return bool|string|null
- *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string|null
  */
 function get_episode($tvmaze_id, $season, $episode, $tid)
 {
-    global $cache, $BLOCKS, $torrent_stuffs;
+    global $container, $BLOCKS;
 
     if (!$BLOCKS['tvmaze_api_on']) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
@@ -157,6 +171,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
         $set = [
             'year' => $episode_info['year'],
         ];
+        $torrent_stuffs = $container->get(Torrent::class);
         $torrent_stuffs->update($set, $tid);
     }
 
@@ -174,21 +189,23 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @param int    $episode
  * @param string $poster
  *
- * @return bool|string
- *
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  * @throws InvalidManipulation
+ * @throws UnbegunTransaction
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ *
+ * @return bool|string
  */
 function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '')
 {
-    global $cache, $site_config, $CURUSER, $BLOCKS, $torrent_stuffs, $image_stuffs;
+    global $container, $site_config, $BLOCKS;
 
     if (!$BLOCKS['tvmaze_api_on'] || empty($tvmaze_id)) {
         return false;
     }
-
+    $cache = $container->get(Cache::class);
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
@@ -211,7 +228,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
 
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
-    $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
+    $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date((int) $airtime, 'WITHOUT_SEC', 0, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
     $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
     if (count($tvmaze_show_data['genres']) > 0) {
         $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
@@ -239,9 +256,11 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
                 'url' => $poster,
                 'type' => 'poster',
             ];
+            $image_stuffs = $container->get(Image::class);
             $image_stuffs->insert($values);
         }
     }
+    $torrent_stuffs = $container->get(Torrent::class);
     $torrent_stuffs->update($set, $tid);
 
     $episode = get_episode($tvmaze_id, $season, $episode, $tid);
@@ -252,7 +271,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
             <div class='padding10'>
                 <div class='columns'>
                     <div class='column is-3'>
-                        <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' alt='' class='lazy round10 img-polaroid'>
+                        <img src='" . placeholder_image(250) . "' data-src='" . url_proxy($poster, true, 250) . "' alt='' class='lazy round10 img-polaroid'>
                     </div>
                     <div class='column'>" . tvmaze_format($tvmaze_show_data, 'show') . $episode . '
                     </div>
@@ -272,17 +291,21 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
 /**
  * @param bool $use_cache
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return bool|mixed
  */
 function get_schedule($use_cache = true)
 {
-    global $cache, $BLOCKS;
-
+    global $container, $BLOCKS;
     if (!$BLOCKS['tvmaze_api_on']) {
         return false;
     }
 
     $url = 'https://api.tvmaze.com/schedule/full';
+    $cache = $container->get(Cache::class);
     $tvmaze_data = $cache->get('tvmaze_schedule_');
 
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {

@@ -46,7 +46,7 @@ function refrClock() {
     if (m < 10) {
         m = '0' + m;
     }
-    if (is_12_hour) {
+    if (is_12_hour === 'yes') {
         if (h > 12) {
             h -= 12;
             am_pm = ' pm';

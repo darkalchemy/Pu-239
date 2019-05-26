@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_onlinetime.php';
-global $site_config, $cache;
-
 $password = 'adlsadladadll'; // same as in staff.tcl;
 $hash = 'adlsadladadll'; // same as in staff.tcl;
 $modclass = '4'; // minumum staff class;
@@ -26,7 +26,6 @@ function calctime($val)
 }
 
 if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']) && $_GET['hash'] == $hash)) {
-    dbconn();
     $seedingbonus = 0;
     $meinvite = $whominvite = [];
     if (isset($_GET['search'])) {
@@ -45,7 +44,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if (isset($_GET['func']) && $_GET['func'] === 'stats') {
                 $ratio = (($arr['downloaded'] > 0) ? ($arr['uploaded'] / $arr['downloaded']) : '0.00');
                 $lastseen = htmlsafechars($arr['last_access']);
-                echo htmlsafechars($arr['username']) . ' - Uploaded: (' . mksize($arr['uploaded']) . ') - Downloaded: (' . mksize($arr['downloaded']) . ') - Ratio: (' . number_format($ratio, 2) . ') - Invites: (' . (int) $arr['invites'] . ') - Joined: (' . get_date($arr['added'], 'DATE', 0, 1) . '' . ') - Online time: (' . time_return($arr['onlinetime']) . ') - Last Seen: (' . get_date($lastseen, 'DATE', 0, 1) . ')';
+                echo htmlsafechars($arr['username']) . ' - Uploaded: (' . mksize($arr['uploaded']) . ') - Downloaded: (' . mksize($arr['downloaded']) . ') - Ratio: (' . number_format($ratio, 2) . ') - Invites: (' . (int) $arr['invites'] . ') - Joined: (' . get_date((int) $arr['added'], 'DATE', 0, 1) . '' . ') - Online time: (' . time_return($arr['onlinetime']) . ') - Last Seen: (' . get_date((int) $lastseen, 'DATE', 0, 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'check') {
                 echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format($arr['seedbonus'], 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'ircbonus') {
@@ -99,7 +98,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } else {
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $newusername = (isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $nsetusername['id'], [
                     'username' => $newname,
@@ -124,22 +123,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         }
         echo $ircusers;
     } elseif (isset($_GET['torrents'])) {
-        $res = sql_query("SELECT COUNT(*) FROM torrents WHERE visible='yes'") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query("SELECT COUNT(id) FROM torrents WHERE visible='yes'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_array($res, MYSQLI_NUM);
         $count = $row[0];
         echo '-' . $count . ' torrents found';
     } elseif (isset($_GET['includedead'])) {
-        $res = sql_query('SELECT COUNT(*) FROM torrents') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_array($res, MYSQLI_NUM);
         $count = $row[0];
         echo '-' . $count . ' torrents found';
     } elseif (isset($_GET['onlydead'])) {
-        $res = sql_query("SELECT COUNT(*) FROM torrents WHERE visible='no'") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query("SELECT COUNT(id) FROM torrents WHERE visible='no'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_array($res, MYSQLI_NUM);
         $count = $row[0];
         echo '-' . $count . ' torrents found';
     } elseif (isset($_GET['noseeds'])) {
-        $res = sql_query("SELECT COUNT(*) FROM torrents WHERE seeders = '0'") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query("SELECT COUNT(id) FROM torrents WHERE seeders = '0'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_array($res, MYSQLI_NUM);
         $count = $row[0];
         echo '-' . $count . ' torrents found';
@@ -455,7 +454,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($upos['uploadpos']) ? htmlsafechars($upos['uploadpos']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET uploadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $upos['id'], [
                     'uploadpos' => $toggle,
@@ -476,7 +475,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($dpos['downloadpos']) ? htmlsafechars($dpos['downloadpos']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET downloadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $dpos['id'], [
                     'downloadpos' => $toggle,
@@ -497,7 +496,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($fpos['forum_post']) ? htmlsafechars($fpos['forum_post']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET forum_post = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $fpos['id'], [
                     'forum_post' => $toggle,
@@ -518,7 +517,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($cpos['chatpost']) ? htmlsafechars($cpos['chatpost']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET chatpost = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $cpos['id'], [
                     'chatpost' => $toggle,
@@ -539,7 +538,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($apos['avatarpos']) ? htmlsafechars($apos['avatarpos']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET avatarpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $apos['id'], [
                     'avatarpos' => $toggle,
@@ -560,7 +559,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($ipos['invite_on']) ? htmlsafechars($ipos['invite_on']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET invite_rights = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $ipos['id'], [
                     'invite_rights' => $toggle,
@@ -581,7 +580,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newpos = (isset($epos['enabled']) ? htmlsafechars($epos['enabled']) : '');
                 $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-                $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
+                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET enabled = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user_' . $epos['id'], [
                     'enabled' => $toggle,
@@ -603,7 +602,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $modd = (isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '');
             $supportfors = (isset($_GET['supportfor']) ? htmlsafechars($_GET['supportfor']) : '');
             $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
-            $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's support changed by ' . $modd . "\n");
+            $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's support changed by ' . $modd . "\n");
             sql_query("UPDATE users SET support = 'yes', supportfor ='$supportfors', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user_' . $support['id'], [
                 'support' => 'yes',

@@ -1,23 +1,39 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 class_check(UC_MAX);
-global $site_config, $lang, $fluent, $session, $cache;
-
 $lang = array_merge($lang, load_language('ad_themes'));
+global $container, $site_config;
+
+$fluent = $container->get(Database::class);
 $HTML = '';
 
+/**
+ * @throws DependencyException
+ * @throws NotFoundException
+ */
 function clear_template_cache()
 {
-    global $cache;
+    global $container;
+
+    $cache = $container->get(Cache::class);
     for ($i = 0; $i <= UC_MAX; ++$i) {
         $cache->delete('templates_' . $i);
     }
 }
 
 if (isset($_GET['act'])) {
+    $session = $container->get(Session::class);
     if (!isset($_GET['act'])) {
         stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
     }
@@ -28,7 +44,7 @@ if (isset($_GET['act'])) {
 
     if ($act === 1) {
         $template = $fluent->from('stylesheets')
-                           ->where('id=?', $id)
+                           ->where('id = ?', $id)
                            ->fetch();
 
         $HTML .= "
@@ -82,11 +98,11 @@ if (isset($_GET['act'])) {
                       ->select(null)
                       ->select('id')
                       ->orderBy('id');
+        $taken = [];
         foreach ($ids as $id) {
+            $taken[] = "<span class='has-text-danger'>{$id['id']}</span>";
             if (file_exists(TEMPLATE_DIR . (int) $id['id'] . '/template.php')) {
                 $taken[] = "<span class='has-text-success'>{$id['id']}</span>";
-            } else {
-                $taken[] = "<span class='has-text-danger'>{$id['id']}</span>";
             }
         }
         $HTML .= "
@@ -145,7 +161,7 @@ if (isset($_GET['act'])) {
         }
 
         $cur = $fluent->from('stylesheets')
-                      ->where('id=?', $tid)
+                      ->where('id = ?', $tid)
                       ->fetch();
 
         if ($id != $cur['id']) {
@@ -162,7 +178,7 @@ if (isset($_GET['act'])) {
         }
         $update = $fluent->update('stylesheets')
                          ->set($set)
-                         ->where('id=?', $tid)
+                         ->where('id = ?', $tid)
                          ->execute();
         if (!$update) {
             $session->set('is-danger', $lang['themes_some_wrong']);
@@ -191,7 +207,7 @@ if (isset($_GET['act'])) {
         }
 
         $fluent->deleteFrom('stylesheets')
-               ->where('id=?', $id)
+               ->where('id = ?', $id)
                ->execute();
 
         $set = [
@@ -286,8 +302,8 @@ if (!isset($_GET['act'])) {
         $body .= "
         <tr>
             <td>$template[id]</td>
-            <td>" . htmlsafechars(htmlspecialchars($template['uri'], ENT_QUOTES, 'UTF-8')) . '</td>
-            <td>' . htmlsafechars(htmlspecialchars($template['name'], ENT_QUOTES, 'UTF-8')) . '</td>
+            <td>" . htmlsafechars($template['uri']) . '</td>
+            <td>' . htmlsafechars($template['name']) . '</td>
             <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b></td>
             <td>' . get_user_class_name($template['min_class_to_view']) . "</td>
             <td>

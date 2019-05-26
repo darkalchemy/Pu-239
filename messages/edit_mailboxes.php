@@ -1,8 +1,18 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache, $h1_thingie, $user_stuffs, $message_stuffs, $fluent;
+declare(strict_types = 1);
+
+use Envms\FluentPDO\Literal;
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\User;
+
+global $container, $CURUSER, $site_config;
 
 $all_my_boxes = $user_cache = $categories = '';
+$user_stuffs = $container->get(User::class);
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
 if (isset($_POST['action2'])) {
     $good_actions = [
         'add',
@@ -59,7 +69,7 @@ if (isset($_POST['action2'])) {
 
         case 'edit_boxes':
             $boxes = $fluent->from('pmboxes')
-                            ->where('userid=?', $CURUSER['id'])
+                            ->where('userid = ?', $CURUSER['id'])
                             ->fetchAll();
 
             if (empty($boxes)) {
@@ -73,7 +83,7 @@ if (isset($_POST['action2'])) {
                     ];
                     $fluent->update('pmboxes')
                            ->set($set)
-                           ->where('id=?', $row['id'])
+                           ->where('id = ?', $row['id'])
                            ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
@@ -85,7 +95,7 @@ if (isset($_POST['action2'])) {
                     ];
                     $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
-                           ->where('id=?', $row['id'])
+                           ->where('id = ?', $row['id'])
                            ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
@@ -127,7 +137,7 @@ if (isset($_POST['action2'])) {
 
             if ($setbits || $clrbits) {
                 $set = [
-                    'opt2' => new Envms\FluentPDO\Literal("(opt2 | {$setbits}) & ~{$clrbits}"),
+                    'opt2' => new Literal("(opt2 | {$setbits}) & ~{$clrbits}"),
                 ];
                 $user_stuffs->update($set, $CURUSER['id'], false);
             }
@@ -148,7 +158,7 @@ if (isset($_POST['action2'])) {
 }
 
 $boxes = $fluent->from('pmboxes')
-                ->where('userid=?', $CURUSER['id'])
+                ->where('userid = ?', $CURUSER['id'])
                 ->orderBy('name ASC')
                 ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
@@ -160,7 +170,7 @@ if (!empty($boxes)) {
                     <tr>
                         <td colspan="2">
                             ' . $lang['pm_edmail_box'] . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
-                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '
+                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . $lang['pm_edmail_contain'] . $messages . $lang['pm_edmail_messages'] . '
                         </td>
                     </tr>';
     }
@@ -212,7 +222,7 @@ if (!empty($category_set)) {
 
             $categories .= "
                 <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>$image
+                    <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>$image
                 </span>";
         } else {
             if ($i++ > 0) {
@@ -303,11 +313,11 @@ $HTMLOUT .= main_table('
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_email_notif'] . '</span></td>
-        <td><input type="checkbox" name="pmnotif"' . (strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
+        <td><input type="checkbox" name="pmnotif"' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
     </tr>
     <tr>
         <td></td>
-        <td><input type="checkbox" name="emailnotif"' . (strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
+        <td><input type="checkbox" name="emailnotif"' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_cats'] . '</span></td>

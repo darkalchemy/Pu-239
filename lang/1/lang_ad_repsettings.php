@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'repset_updated' => 'Reputation Settings Have Been Updated!',
     'repset_scale' => 'is off the scale',

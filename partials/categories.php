@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $grouped = genrelist(true);
 $cats = [];
 $main_div = "
@@ -12,7 +14,9 @@ foreach ($grouped as $cat) {
     $children .= "
             <div id='{$cat['name']}' class='top20 level-center children padding20 bg-02 round10" . (!in_array($cat['id'], $cats) ? ' is_hidden' : '') . "'>";
     foreach ($cat['children'] as $child) {
-        $children .= format_row($child, 'child', $cat['name']);
+        if (is_array($child)) {
+            $children .= format_row($child, 'child', $cat['name']);
+        }
     }
     $children .= '
             </div>';
@@ -23,9 +27,16 @@ $main_div .= "
         </div>";
 $HTMLOUT .= main_div($main_div, 'bottom20');
 
+/**
+ * @param array  $cat
+ * @param string $parent
+ * @param string $cat_name
+ *
+ * @return string
+ */
 function format_row(array $cat, string $parent, string $cat_name)
 {
-    global $site_config, $CURUSER, $cats;
+    global $site_config, $CURUSER;
 
     if ($parent === 'child') {
         $js = '';

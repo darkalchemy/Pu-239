@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $CURUSER, $site_config, $lang, $cache, $user_stuffs, $message_stuffs;
 
-use Nette\Mail\Message;
-use Nette\Mail\SendmailMailer;
+use Pu239\Message;
+use Pu239\User;
 
 $subject = $msg = '';
 flood_limit('messages');
+
+global $container, $CURUSER, $site_config, $lang;
+
+$message_stuffs = $container->get(Message::class);
+$user_stuffs = $container->get(User::class);
 
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $receiver = isset($_POST['receiver']) ? intval($_POST['receiver']) : 0;
@@ -88,16 +94,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 </body>
 </html>";
 
-        $mail = new Message();
-        $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}")
-             ->addTo($arr_receiver['email'])
-             ->setReturnPath($site_config['site']['email'])
-             ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
-             ->setHtmlBody($msg);
-
-        $mailer = new SendmailMailer();
-        $mailer->commandArgs = "-f{$site_config['site']['email']}";
-        @$mailer->send($mail);
+        send_mail($arr_receiver['email'], "{$lang['pm_forwardpm_pmfrom']} $username!", $msg, strip_tags($msg));
     }
     if ($delete != 0) {
         $set = [
@@ -166,7 +163,7 @@ if ($receiver) {
         <input type="hidden" name="returnto" value="' . $returnto . '">
         <input type="hidden" name="replyto" value="' . $replyto . '">
         <input type="hidden" name="receiver" value="' . $receiver . '">
-        <h1>Send ' . $lang['pm_send_msgto'] . format_username($receiver) . '</h1>';
+        <h1>Send ' . $lang['pm_send_msgto'] . format_username((int) $receiver) . '</h1>';
 } else {
     $HTMLOUT .= "
         <input type='hidden' name='returnto' value='$returnto'>
@@ -174,7 +171,7 @@ if ($receiver) {
         <input type='hidden' name='receiver' id='receiver' value=''>
         <h1>
             Send {$lang['pm_send_msgto']}
-            <input type='text' id='user_search' maxlength='64' class='w-50' data-csrf='" . $session->get('csrf_token') . "' placeholder='Begin typing username' onkeyup='usersearch()'>
+            <input type='text' id='user_search' maxlength='64' class='w-50' placeholder='Begin typing username' onkeyup='usersearch()'>
         </h1>";
 }
 $HTMLOUT .= "

@@ -1,103 +1,75 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-dbconn();
-
-global $CURUSER, $site_config;
-
-if (!$CURUSER) {
-    get_template();
-} else {
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
-    die();
-}
-$stdfoot = '';
-if (!empty($site_config['recaptcha']['secret'])) {
-    $stdfoot = [
-        'js' => [
-            get_file_name('recaptcha_js'),
-        ],
-    ];
-}
-
 $lang = array_merge(load_language('global'), load_language('login'));
-$left = $total = '';
 
-function left()
-{
-    global $site_config, $failed_logins;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    global $container, $site_config;
+    $user = $container->get(User::class);
 
-    $ip = getip(true);
-    $count = $failed_logins->get($ip);
-    $left = $site_config['login']['failed'] - $count;
-
-    return $left;
+    if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
+        if (!empty($returnto)) {
+            header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
+        } else {
+            header("Location: {$site_config['paths']['baseurl']}/index.php");
+        }
+        die();
+    } else {
+        unset($_POST);
+    }
 }
+global $site_config;
 
-$HTMLOUT = '';
+get_template();
+$stdfoot = [];
+
 if (!empty($_GET['returnto'])) {
-    $returnto = htmlsafechars($_GET['returnto']);
+    $returnto = urlencode($_GET['returnto']);
 }
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 
-$left = left();
-if ($left !== $site_config['login']['failed']) {
-    if ($left <= 2) {
-        $text = "
-        <span class='has-text-danger'>{$left}</span>";
-    } else {
-        $text = "
-        <span class='has-text-success'>{$left}</span>";
-    }
-
-    $HTMLOUT .= main_div("
-        <div class='padding10'>
-            <h3>
-                {$site_config['login']['failed']} {$lang['login_failed']}
-            </h3>
-            <h3>
-                {$lang['login_failed_1']} $text " . sprintf($lang['login_failed_2'], plural($left)) . '
-            </h3>
-        </div>', 'w-50 has-text-centered bottom20');
-}
-$HTMLOUT .= "
-            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/takelogin.php' accept-charset='utf-8'>
+$HTMLOUT = "
+            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' accept-charset='utf-8'>
                 <div class='level-center'>";
 
 $body = "
                     <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['login_username']}</td>
+                        <td class='rowhead'>{$lang['login_email']}</td>
                         <td>
-                            <input type='text' class='w-100' name='username' autocomplete='on'>" . ($got_ssl ? "
+                            <input type='email' class='w-100' name='email' autocomplete='on' required>" . ($got_ssl ? "
                             <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
                             <input type='hidden' id='token' name='token' value=''>
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['login_password']}</td>
-                        <td><input type='password' class='w-100' name='password' autocomplete='on'></td>
-                    </tr>";
-
-$body .= "
-                    <tr class='no_hover'>
-                        <td colspan='2' class='has-text-centered'>
-                            <span class='has-text-centered margin5'>
-                                <input id='login_captcha_check' type='submit' value='" . (!empty($site_config['recaptcha']['site']) ? 'Verifying reCAPTCHA' : 'Login') . "' class='button is-small'>
-                            </span>";
-
+                        <td>
+                            <input type='password' class='w-100' name='password' autocomplete='on' required>";
 if (isset($returnto)) {
     $body .= "
                             <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "'>";
 }
-$body .= "           </td>
+$body .= "
+                        </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered margin5'>
-                                <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me?
+                                <input id='login' type='submit' value='Login' class='button is-small'>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class='no_hover'>
+                        <td colspan='2' class='has-text-centered'>
+                            <span class='has-text-centered margin5'>
+                                <label for='remember' class='level-item tooltipper' title='{$lang['login_remember_title']}'>{$lang['login_remember']}
                                     <input type='checkbox' name='remember' value='1' id='remember' class='left10'>
                                 </label>
                             </span>
@@ -105,15 +77,14 @@ $body .= "           </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <span class='level is-flex is-wrapped margin5'>
-                                <span class='tab'>{$lang['login_signup']}</span>
-                                <span class='tab'>{$lang['login_forgot']}</span>
-                                <span class='tab'>{$lang['login_forgot_1']}</span>
+                            <span class='level-center is-wrapped margin5'>
+                                <span class='tab'>{$lang['login_signup']}</span>" . ($site_config['mail']['smtp_enable'] ? "
+                                <span class='tab'>{$lang['login_forgot_1']}</span>" : '') . '
                             </span>
                         </td>
-                    </tr>
-                </table>
-            </form>";
+                    </tr>';
+$HTMLOUT .= main_table($body, '', '', 'w-50', '') . '
+            </div>
+        </form>';
 
-$HTMLOUT .= main_table($body, '', '', 'w-50', '');
 echo stdhead("{$lang['login_login_btn']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);

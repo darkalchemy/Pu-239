@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 
 /**
@@ -10,16 +12,17 @@ require_once __DIR__ . '/../include/bittorrent.php';
  */
 function valid_path($root, $input)
 {
-    $fullpath = $root . $input;
+    $fullpath = $root . str_replace('%E2%80%8B', '', $input);
     $fullpath = realpath($fullpath);
-    $root = realpath($root);
-    $rl = strlen($root);
+    if (!empty($fullpath)) {
+        return $fullpath;
+    }
 
-    return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
+    return null;
 }
 
 if (isset($_SERVER['REQUEST_URI'])) {
-    $image = valid_path(BITBUCKET_DIR, substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']) + 1));
+    $image = valid_path(BITBUCKET_DIR, $_SERVER['QUERY_STRING']);
     if (empty($image)) {
         die();
     }

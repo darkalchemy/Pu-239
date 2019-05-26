@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use PDOStatement;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class Ban.
@@ -12,30 +15,35 @@ class Ban
 {
     protected $cache;
     protected $fluent;
-    protected $site_config;
+    protected $container;
 
-    public function __construct()
+    /**
+     * Ban constructor.
+     *
+     * @param Cache              $cache
+     * @param Database           $fluent
+     * @param ContainerInterface $c
+     */
+    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
     {
-        global $fluent, $cache, $site_config;
-
+        $this->container = $c;
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->site_config = $site_config;
     }
 
     /**
      * @param string $ip
      *
-     * @return array|PDOStatement
-     *
      * @throws Exception
+     *
+     * @return array|PDOStatement
      */
     public function get_range(string $ip)
     {
         $bans = $this->fluent->from('bans')
                              ->select('INET6_NTOA(first) AS first')
                              ->select('INET6_NTOA(last) AS last')
-                             ->where('?>= first', inet_pton($ip))
+                             ->where('? >= first', inet_pton($ip))
                              ->where('? <= last', inet_pton($ip))
                              ->fetchAll();
 
@@ -45,16 +53,16 @@ class Ban
     /**
      * @param string $ip
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_count(string $ip)
     {
         $count = $this->fluent->from('bans')
                               ->select(null)
-                              ->select('COUNT(*) AS count')
-                              ->where('?>= first', inet_pton($ip))
+                              ->select('COUNT(id) AS count')
+                              ->where('? >= first', inet_pton($ip))
                               ->where('? <= last', inet_pton($ip))
                               ->fetch('count');
 
@@ -64,9 +72,9 @@ class Ban
     /**
      * @param string $ip
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function check_bans(string $ip)
     {
@@ -80,7 +88,7 @@ class Ban
             $ban = $this->fluent->from('bans')
                                 ->select(null)
                                 ->select('comment')
-                                ->where('?>= first', inet_pton($ip))
+                                ->where('? >= first', inet_pton($ip))
                                 ->where('? <= last', inet_pton($ip))
                                 ->limit(1)
                                 ->fetch('comment');

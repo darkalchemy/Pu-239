@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
 check_user_status();
+$lang = array_merge(load_language('global'), load_language('credits'));
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'), load_language('credits'));
-
 $HTMLOUT = '';
-
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
-
 $act_validation = [
     '',
     'add',
@@ -25,21 +24,6 @@ $id = (isset($_GET['id']) ? (int) $_GET['id'] : '');
 
 if (!in_array($action, $act_validation)) {
     stderr('Error', 'Unknown action.');
-}
-
-/*Check if CutName function exists, if not declare it */
-
-if (!function_exists('CutName')) {
-    /**
-     * @param $txt
-     * @param $len
-     *
-     * @return string
-     */
-    function CutName($txt, $len)
-    {
-        return strlen($txt) > $len ? substr($txt, 0, $len - 4) . '[...]' : $txt;
-    }
 }
 
 if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {

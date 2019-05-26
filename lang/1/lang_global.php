@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $lang = [
     'gl_staff_list' => 'Staff List',
     'gl_database' => 'Database',
@@ -188,12 +190,12 @@ $lang = [
     'gl_stdfoot_opc' => 'OpCache',
     'gl_stdfoot_memcache' => 'Memcache',
     'gl_stdfoot_flush' => 'Flush Cache',
+    'gl_stdfoot_querys_memory' => 'Memory Cache: Nothing cached beyond the current request',
     //statusbar
     'gl_pstats' => ':: Personal Stats',
     'gl_uclass' => 'User Class',
     'gl_rep' => 'Reputation',
     'gl_invites' => 'Invites',
-    'gl_karma' => 'Bonus Points',
     'gl_achpoints' => 'Achievements',
     'gl_tstats' => ':: Torrent Stats',
     'gl_shareratio' => 'Share Ratio',
@@ -233,7 +235,7 @@ $lang = [
     //stdfoot
     'gl_stdfoot_support' => 'Support Forum Click ',
     'gl_stdfoot_here' => 'here',
-    'gl_connectable' => 'Connectable',
     'gl_not_connectable' => 'Not Connectable',
     'gl_na_connectable' => 'N/A',
+    'gl_server_time' => 'Server Time:',
 ];

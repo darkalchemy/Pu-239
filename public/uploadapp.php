@@ -1,16 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
+use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Message;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $CURUSER, $site_config, $fluent, $cache, $message_stuffs;
+global $container, $site_config, $CURUSER;
 
-$CURUSER['class'] = 1;
 $HTMLOUT = '';
 
+$fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
+$message_stuffs = $container->get(Message::class);
 if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
@@ -29,7 +37,7 @@ if (isset($_POST['form']) != 1) {
         $connect = $fluent->from('peers')
                           ->select(null)
                           ->select('connectable')
-                          ->where('userid=?', $CURUSER['id'])
+                          ->where('userid = ?', $CURUSER['id'])
                           ->fetch();
         if (!empty($connect)) {
             $Conn_Y = 'yes';
@@ -51,7 +59,7 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_joined']}</td>
-                    <td>" . get_date($CURUSER['added'], '', 0, 1) . "</td>
+                    <td>" . get_date((int) $CURUSER['added'], '', 0, 1) . "</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
@@ -153,7 +161,7 @@ if (isset($_POST['form']) != 1) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
     $dupe = $fluent->from('uploadapp')
-                   ->where('userid=?', $_POST['userid'])
+                   ->where('userid = ?', $_POST['userid'])
                    ->fetch();
     if (!empty($dupe)) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);

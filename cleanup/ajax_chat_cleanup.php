@@ -1,24 +1,29 @@
 <?php
 
+declare(strict_types = 1);
+
+use DI\DependencyException;
+use DI\NotFoundException;
+
 /**
  * @param $data
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function ajax_chat_cleanup($data)
 {
+    global $site_config;
+
     $time_start = microtime(true);
-    dbconn();
-    global $site_config, $queries;
-
     require_once INCL_DIR . 'function_users.php';
-    set_time_limit(1200);
-    ignore_user_abort(true);
-
     $res = sql_query('SELECT id, channel, ttl, text FROM ajax_chat_messages
-                        WHERE ttl>0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())') or sqlerr(__FILE__, __LINE__);
+                        WHERE ttl > 0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())') or sqlerr(__FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($res)) {
         if (strpos($row['text'], '/delete') === false) {
-            sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ttl, ip, text) VALUES (2, ' . sqlesc($site_config['chatbot']['name']) . ' ,' . sqlesc($site_config['chatbot']['role']) . ', ' . $row['channel'] . ", NOW(), 300, '', '/delete " . $row['id'] . "')") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ttl, text) VALUES (2, ' . sqlesc($site_config['chatbot']['name']) . ' ,' . sqlesc($site_config['chatbot']['role']) . ', ' . $row['channel'] . ", NOW(), 300, '/delete " . $row['id'] . "')") or sqlerr(__FILE__, __LINE__);
         }
         sql_query('DELETE FROM ajax_chat_messages WHERE id=' . $row['id']) or sqlerr(__FILE__, __LINE__);
     }
@@ -29,7 +34,7 @@ function ajax_chat_cleanup($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("AJAX Chat Cleanup: Autoshout posts Deleted using $queries queries" . $text);
+    if ($data['clean_log']) {
+        write_log('AJAX Chat Cleanup: Autoshout posts Deleted' . $text);
     }
 }
