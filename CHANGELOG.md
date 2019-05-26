@@ -1,4 +1,5 @@
 ### 26 May, 2019
+fix: cache php-di  
 fix: mysql socket connection  
 update: replace home spun user auth with php-auth  
 update: all Pu239 namespaced classes now use strict types  

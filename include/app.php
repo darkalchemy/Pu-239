@@ -14,7 +14,7 @@ date_default_timezone_set('UTC');
 $production = false;
 $builder = new ContainerBuilder();
 if ($production) {
-    $builder->enableCompilation(DI_CACHE_DIR);
+    $builder->enableCompilation('/dev/shm/php-di/');
 }
 $builder->addDefinitions(CONFIG_DIR . '/config.php');
 $builder->addDefinitions(CONFIG_DIR . '/emoticons.php');
