@@ -1,4 +1,5 @@
 ### 26 May, 2019
+fix: mysql socket connection  
 update: replace home spun user auth with php-auth  
 update: all Pu239 namespaced classes now use strict types  
 update: use php-di, i am not sure that this is the correct way to do it, but it is working  

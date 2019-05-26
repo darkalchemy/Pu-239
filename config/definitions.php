@@ -113,7 +113,7 @@ return [
     Mysqli::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
         if ($env['db']['use_socket']) {
-            $mysqli = new mysqli($env['db']['host'], $env['db']['username'], $env['db']['password'], $env['db']['database'], null, $env['db']['socket']);
+            $mysqli = new mysqli($env['db']['host'], $env['db']['username'], $env['db']['password'], $env['db']['database'], 0, $env['db']['socket']);
         } else {
             $mysqli = new mysqli($env['db']['host'], $env['db']['username'], $env['db']['password'], $env['db']['database'], $env['db']['port']);
         }
