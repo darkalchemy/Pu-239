@@ -60,7 +60,6 @@ return [
     Image::class => autowire(),
     ImageProxy::class => autowire(),
     IP::class => autowire(),
-    Literal::class => autowire(),
     Message::class => autowire(),
     Mood::class => autowire(),
     Parsedown::class => autowire(),

@@ -11,10 +11,10 @@ use SlashTrace\SlashTrace;
 
 date_default_timezone_set('UTC');
 
-$production = false;
+$production = true;
 $builder = new ContainerBuilder();
 if ($production) {
-    $builder->enableCompilation('/dev/shm/php-di/');
+    $builder->enableCompilation(DI_CACHE_DIR);
 }
 $builder->addDefinitions(CONFIG_DIR . '/config.php');
 $builder->addDefinitions(CONFIG_DIR . '/emoticons.php');
@@ -27,6 +27,7 @@ try {
     $container = $builder->build();
 } catch (Exception $e) {
     //TODO Logger;
+    dd($e);
 }
 
 require_once CONFIG_DIR . 'session.php';
