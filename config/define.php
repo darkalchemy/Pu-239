@@ -36,3 +36,4 @@ define('AJAX_CHAT_PATH', ROOT_DIR . 'chat' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 define('UPLOADSUB_DIR', ROOT_DIR . 'uploadsub' . DIRECTORY_SEPARATOR);
 define('DI_CACHE_DIR', '/dev/shm/php-di/');
+define('PRODUCTION', false);

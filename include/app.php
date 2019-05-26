@@ -11,7 +11,7 @@ use SlashTrace\SlashTrace;
 
 date_default_timezone_set('UTC');
 
-$production = false;
+$production = PRODUCTION;
 $builder = new ContainerBuilder();
 if ($production) {
     $builder->enableCompilation(DI_CACHE_DIR);

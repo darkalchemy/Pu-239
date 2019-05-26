@@ -1,4 +1,5 @@
 ### 26 May, 2019
+update: production status  
 fix: cache php-di  
 fix: mysql socket connection  
 update: replace home spun user auth with php-auth  
