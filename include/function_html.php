@@ -345,10 +345,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @return bool|Image|mixed|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return bool|Image|mixed|string
  */
 function placeholder_image(int $size = 10)
 {
@@ -408,11 +408,11 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @return bool
  * @throws NotFoundException
  * @throws \PHPMailer\PHPMailer\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -439,10 +439,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function validate_invite(int $id, string $code)
 {

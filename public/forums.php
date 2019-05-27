@@ -21,13 +21,13 @@ global $container, $site_config, $CURUSER;
 $image = placeholder_image();
 $stdhead = [
     'css' => [
-        //        get_file_name('sceditor_css'),
+        get_file_name('sceditor_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
         get_file_name('forums_js'),
-        //        get_file_name('sceditor_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
@@ -37,9 +37,9 @@ if (!$site_config['forum_config']['online'] && $CURUSER['class'] < UC_STAFF) {
 $HTMLOUT = '';
 $fluent = $container->get(Database::class);
 $fluent->update('users')
-    ->set(['forum_access' => TIME_NOW])
-    ->where('id = ?', $CURUSER['id'])
-    ->execute();
+       ->set(['forum_access' => TIME_NOW])
+       ->where('id = ?', $CURUSER['id'])
+       ->execute();
 
 $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
 $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
@@ -389,23 +389,23 @@ switch ($action) {
 
     case 'forum':
         $query = $fluent->from('over_forums AS ovf')
-            ->select(null)
-            ->select('ovf.id AS over_forum_id')
-            ->select('ovf.name AS over_forum_name')
-            ->select('ovf.description AS over_forum_description')
-            ->select('ovf.min_class_view AS over_forum_min_class_view')
-            ->select('f.id AS real_forum_id')
-            ->select('f.name')
-            ->select('f.description')
-            ->select('f.post_count')
-            ->select('f.topic_count')
-            ->select('f.forum_id')
-            ->select('f.parent_forum')
-            ->innerJoin('forums AS f ON f.forum_id=ovf.id')
-            ->where('ovf.min_class_view <= ?', $CURUSER['class'])
-            ->where('f.min_class_read <= ?', $CURUSER['class'])
-            ->orderBy('ovf.sort, f.sort')
-            ->fetchAll();
+                        ->select(null)
+                        ->select('ovf.id AS over_forum_id')
+                        ->select('ovf.name AS over_forum_name')
+                        ->select('ovf.description AS over_forum_description')
+                        ->select('ovf.min_class_view AS over_forum_min_class_view')
+                        ->select('f.id AS real_forum_id')
+                        ->select('f.name')
+                        ->select('f.description')
+                        ->select('f.post_count')
+                        ->select('f.topic_count')
+                        ->select('f.forum_id')
+                        ->select('f.parent_forum')
+                        ->innerJoin('forums AS f ON f.forum_id=ovf.id')
+                        ->where('ovf.min_class_view <= ?', $CURUSER['class'])
+                        ->where('f.min_class_read <= ?', $CURUSER['class'])
+                        ->orderBy('ovf.sort, f.sort')
+                        ->fetchAll();
 
         $children = [];
         foreach ($query as $forum) {
@@ -450,26 +450,26 @@ switch ($action) {
                 $last_post_arr = $cache->get('forum_last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
                     $query = $fluent->from('topics AS t')
-                        ->select(null)
-                        ->select('t.id AS topic_id')
-                        ->select('t.topic_name')
-                        ->select('t.last_post')
-                        ->select('t.anonymous AS tan')
-                        ->select('p.added')
-                        ->select('p.anonymous AS pan')
-                        ->select('p.user_id')
-                        ->leftJoin('posts AS p ON t.id=p.topic_id');
+                                    ->select(null)
+                                    ->select('t.id AS topic_id')
+                                    ->select('t.topic_name')
+                                    ->select('t.last_post')
+                                    ->select('t.anonymous AS tan')
+                                    ->select('p.added')
+                                    ->select('p.anonymous AS pan')
+                                    ->select('p.user_id')
+                                    ->leftJoin('posts AS p ON t.id=p.topic_id');
                     if ($CURUSER['class'] < UC_STAFF) {
                         $query = $query->where('p.status = "ok"')
-                            ->where('t.status = "ok"');
+                                       ->where('t.status = "ok"');
                     } elseif ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class']) {
                         $query = $query->where('t.status != "deleted"')
-                            ->where('p.status != "deleted"');
+                                       ->where('p.status != "deleted"');
                     }
                     $last_post_arr = $query->where('t.forum_id', $arr_forums['children_ids'])
-                        ->orderBy('p.id DESC')
-                        ->limit(1)
-                        ->fetch();
+                                           ->orderBy('p.id DESC')
+                                           ->limit(1)
+                                           ->fetch();
 
                     $cache->set('forum_last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
@@ -502,12 +502,12 @@ switch ($action) {
                 if ($child_boards_cache === false || is_null($child_boards_cache)) {
                     $child_boards_cache = [];
                     $query = $fluent->from('forums')
-                        ->select(null)
-                        ->select('id')
-                        ->select('name')
-                        ->where('parent_forum = ?', $arr_forums['real_forum_id'])
-                        ->where('min_class_read <= ?', $CURUSER['class'])
-                        ->orderBy('sort');
+                                    ->select(null)
+                                    ->select('id')
+                                    ->select('name')
+                                    ->where('parent_forum = ?', $arr_forums['real_forum_id'])
+                                    ->where('min_class_read <= ?', $CURUSER['class'])
+                                    ->orderBy('sort');
 
                     foreach ($query as $arr) {
                         $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name']) . '</a>';
@@ -562,8 +562,8 @@ switch ($action) {
             $forumusers = '';
             $forum_users_cache = [];
             $query = $fluent->from('now_viewing')
-                ->where('users.perms < ?', bt_options::PERMS_STEALTH)
-                ->innerJoin('users ON now_viewing.user_id=users.id');
+                            ->where('users.perms < ?', bt_options::PERMS_STEALTH)
+                            ->innerJoin('users ON now_viewing.user_id=users.id');
 
             foreach ($query as $row) {
                 $list[] = format_username((int) $row['user_id']);
@@ -609,8 +609,8 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -631,9 +631,9 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -647,18 +647,18 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     if ($qjcache === false || is_null($qjcache)) {
         $fluent = $container->get(Database::class);
         $qjcache = $fluent->from('forums')
-            ->select(null)
-            ->select('forums.id')
-            ->select('forums.name')
-            ->select('forums.parent_forum')
-            ->select('forums.min_class_read')
-            ->select('over_forums.name AS overforums_name')
-            ->select('over_forums.sort')
-            ->innerJoin('over_forums ON forums.forum_id=over_forums.id')
-            ->orderBy('over_forums.sort ASC')
-            ->orderBy('forums.parent_forum ASC')
-            ->orderBy('forums.sort ASC')
-            ->fetchAll();
+                          ->select(null)
+                          ->select('forums.id')
+                          ->select('forums.name')
+                          ->select('forums.parent_forum')
+                          ->select('forums.min_class_read')
+                          ->select('over_forums.name AS overforums_name')
+                          ->select('over_forums.sort')
+                          ->innerJoin('over_forums ON forums.forum_id=over_forums.id')
+                          ->orderBy('over_forums.sort ASC')
+                          ->orderBy('forums.parent_forum ASC')
+                          ->orderBy('forums.sort ASC')
+                          ->fetchAll();
         $cache->set($cachename, $qjcache, $site_config['expires']['forum_insertJumpTo']);
     }
 

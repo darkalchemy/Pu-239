@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
-use Envms\FluentPDO\Literal;
 use Imdb\Config;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Container\ContainerInterface;
@@ -96,7 +95,7 @@ return [
     }),
     SlashTrace::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
-        if (!$env['site']['production']) {
+        if (!PRODUCTION) {
             $slashtrace = new SlashTrace();
             $slashtrace->addHandler(new DebugHandler());
             $slashtrace->register();

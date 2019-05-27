@@ -6,7 +6,7 @@ global $site_config;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 $database = '';
-if (file_exists(DI_CACHE_DIR) && file_exists(DI_CACHE_DIR . 'CompiledContainer.php')) {
+if (file_exists(DI_CACHE_DIR . 'CompiledContainer.php')) {
     unlink(DI_CACHE_DIR . 'CompiledContainer.php');
 }
 if (!empty($argv[1]) && !is_array($argv[1])) {

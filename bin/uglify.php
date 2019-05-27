@@ -14,7 +14,7 @@ if (empty($BLOCKS)) {
 
 $site_config['cache']['driver'] = 'memory';
 foreach ($argv as $arg) {
-    if (!$site_config['site']['production'] && ($arg === 'update' || $arg === 'all')) {
+    if (!PRODUCTION && ($arg === 'update' || $arg === 'all')) {
         passthru('composer self-update');
         passthru('sudo npm install -g npm');
         passthru('composer update');
@@ -45,7 +45,7 @@ $js_ext = '.js';
 $jstmp = BIN_DIR . 'temp.js';
 $csstmp = BIN_DIR . 'temp.css';
 
-if ($site_config['site']['production']) {
+if (PRODUCTION) {
     $purpose = '--compress --mangle';
     $short = 'Minified';
     $spurpose = '--skip-rebase -O2';
@@ -373,9 +373,12 @@ foreach ($styles as $folder) {
 
 echo "All CSS and Javascript files processed\n";
 foreach ($argv as $arg) {
-    if (!$site_config['site']['production'] && ($arg === 'fix' || $arg === 'all')) {
+    if (!PRODUCTION && ($arg === 'fix' || $arg === 'all')) {
         passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
     }
+}
+if (PRODUCTION) {
+    passthru('sudo rm ' . DI_CACHE_DIR . 'CompiledContainer.php');
 }
 
 /**

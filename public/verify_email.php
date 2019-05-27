@@ -17,7 +17,7 @@ try {
     if ($emails = $auth->confirmEmail($_GET['selector'], $_GET['token'])) {
         $session = $container->get(Session::class);
         if (empty($emails[0])) {
-            $session->set('is-success', "Your email has been confirmed");
+            $session->set('is-success', 'Your email has been confirmed');
         } else {
             $session->set('is-success', "Your email has been changed to {$emails[1]}");
         }
@@ -29,6 +29,5 @@ try {
 } catch (TooManyRequestsException $e) {
     die('Too many requests');
 }
-
 
 header("Refresh: 0; url={$site_config['paths']['baseurl']}/usercp.php?action=security");

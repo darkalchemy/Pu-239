@@ -1,3 +1,7 @@
+### 27 May, 2019
+update: uncomment sceditor in forums  
+remove: production from $env  
+
 ### 26 May, 2019
 update: production status  
 fix: cache php-di  

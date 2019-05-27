@@ -61,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                    ->where('sender = ?', $inviter)
                    ->where('id = ?', $invite_id)
                    ->execute();
-
         }
         $session->unset('signup_variables');
         header("Location: {$site_config['paths']['baseurl']}/login.php");

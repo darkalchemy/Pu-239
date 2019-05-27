@@ -44,7 +44,7 @@ function get_file_name($file)
         case 'userdetails_js':
             return "{$site_config['paths']['baseurl']}/js/1/userdetails_15f714f6.js";
         case 'cookieconsent_js':
-            return "{$site_config['paths']['baseurl']}/js/1/cookieconsent_68ccc5d7.js";
+            return "{$site_config['paths']['baseurl']}/js/1/cookieconsent_a256d5f9.js";
         case 'bookmarks_js':
             return "{$site_config['paths']['baseurl']}/js/1/bookmarks_0673fe80.js";
         case 'iframe_js':

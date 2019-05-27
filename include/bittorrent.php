@@ -35,7 +35,7 @@ require_once CLASS_DIR . 'class_blocks_apis.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 
-if (!$site_config['site']['production']) {
+if (!PRODUCTION) {
     $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
     $site_config['sourcecode']['version'] = $pu239_version->getVersion();
 }
@@ -80,8 +80,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -214,9 +214,9 @@ function userlogin()
 }
 */
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -304,9 +304,9 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -319,8 +319,8 @@ function make_freeslots($userid, $key)
     if ($slot === false || is_null($slot)) {
         $fluent = $container->get(Database::class);
         $slot = $fluent->from('freeslots')
-            ->where('userid = ?', $userid)
-            ->fetchAll();
+                       ->where('userid = ?', $userid)
+                       ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -331,9 +331,9 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -347,13 +347,13 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_grouped_');
         if ($ret === false || is_null($ret)) {
             $parents = $fluent->from('categories')
-                ->where('parent_id=0')
-                ->orderBy('ordered');
+                              ->where('parent_id=0')
+                              ->orderBy('ordered');
             foreach ($parents as $parent) {
                 $children = $fluent->from('categories')
-                    ->where('parent_id = ?', $parent['id'])
-                    ->orderBy('ordered')
-                    ->fetchAll();
+                                   ->where('parent_id = ?', $parent['id'])
+                                   ->orderBy('ordered')
+                                   ->fetchAll();
 
                 $parent['children'] = $children;
                 $ret[] = $parent;
@@ -365,9 +365,9 @@ function genrelist(bool $grouped)
         $ret = $cache->get('genrelist_ordered_');
         if ($ret === false || is_null($ret)) {
             $cats = $fluent->from('categories AS c')
-                ->select('p.name AS parent_name')
-                ->leftJoin('categories AS p ON c.parent_id=p.id')
-                ->orderBy('ordered');
+                           ->select('p.name AS parent_name')
+                           ->leftJoin('categories AS p ON c.parent_id=p.id')
+                           ->orderBy('ordered');
 
             foreach ($cats as $cat) {
                 if (!empty($cat['parent_name'])) {
@@ -595,8 +595,8 @@ function get_time_offset()
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return false|mixed|string
  */
@@ -1008,9 +1008,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1087,9 +1087,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1102,12 +1102,12 @@ function countries()
     if ($countries === false || is_null($countries)) {
         $fluent = $container->get(Database::class);
         $countries = $fluent->from('countries')
-            ->select(null)
-            ->select('id')
-            ->select('name')
-            ->select('flagpic')
-            ->orderBy('name')
-            ->fetchAll();
+                            ->select(null)
+                            ->select('id')
+                            ->select('name')
+                            ->select('flagpic')
+                            ->orderBy('name')
+                            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1327,9 +1327,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1347,8 +1347,8 @@ function get_show_id(string $name)
     if ($id_array === false || is_null($id_array)) {
         $fluent = $container->get(Database::class);
         $items = $fluent->from('tvmaze')
-            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-            ->fetchAll();
+                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+                        ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1370,9 +1370,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1388,8 +1388,8 @@ function get_show_id_by_imdb(string $imdbid)
     if ($id_array === false || is_null($id_array)) {
         $fluent = $container->get(Database::class);
         $id_array = $fluent->from('tvmaze')
-            ->where('imdb_id = ?', $imdbid)
-            ->fetch();
+                           ->where('imdb_id = ?', $imdbid)
+                           ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1406,8 +1406,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return false|mixed|string
  */
@@ -1472,9 +1472,9 @@ function formatQuery($query)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1506,9 +1506,9 @@ function insert_update_ip()
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -1541,7 +1541,7 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
                 $contents = $res->getBody()
-                    ->getContents();
+                                ->getContents();
                 if (!$fresh) {
                     $cache->set($key, $contents, $expires);
                 }
@@ -1561,9 +1561,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param $details
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1578,11 +1578,11 @@ function get_body_image($details)
         $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                ->select(null)
-                ->select('url')
-                ->where('type = "background"')
-                ->where('imdb_id = ?', $torrent['imdb_id'])
-                ->fetchAll();
+                             ->select(null)
+                             ->select('url')
+                             ->where('type = "background"')
+                             ->where('imdb_id = ?', $torrent['imdb_id'])
+                             ->fetchAll();
             if (!empty($images)) {
                 $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
             } else {
@@ -1601,9 +1601,9 @@ function get_body_image($details)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->where('type = "background"');
+                          ->select(null)
+                          ->select('url')
+                          ->where('type = "background"');
 
         $backgrounds = [];
         foreach ($results as $background) {
@@ -1631,9 +1631,9 @@ function get_body_image($details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */
@@ -1647,11 +1647,11 @@ function get_random_useragent()
     if ($browsers === false || is_null($browsers)) {
         $fluent = $container->get(Database::class);
         $results = $fluent->from('users')
-            ->select(null)
-            ->select('DISTINCT browser AS browser')
-            ->where('browser IS NOT null')
-            ->limit(100)
-            ->fetchAll();
+                          ->select(null)
+                          ->select('DISTINCT browser AS browser')
+                          ->where('browser IS NOT null')
+                          ->limit(100)
+                          ->fetchAll();
         $browsers = [];
         if (empty($results)) {
             $browsers = [

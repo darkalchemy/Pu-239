@@ -506,7 +506,7 @@ function platform_menu()
             <div class='platform-wrapper'>
                 <div class='columns is-marginless'>
                     <div class='column is-paddingless middle'>
-                        <ul class='level-left size_3'>" . (!$site_config['site']['production'] ? "
+                        <ul class='level-left size_3'>" . (!PRODUCTION ? "
                             <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
                         </ul>
                     </div>
