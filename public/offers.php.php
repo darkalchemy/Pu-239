@@ -359,7 +359,7 @@ switch ($action) {
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
-                $category_drop_down .= " < option value = '{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+                $category_drop_down .= " <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '

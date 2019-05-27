@@ -1,4 +1,5 @@
 ### 27 May, 2019
+fix: offers and requests  
 fix: forums  
 fix: editlog  
 update: uncomment sceditor in forums  

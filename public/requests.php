@@ -33,8 +33,8 @@ $HTMLOUT = $count2 = '';
 if ($CURUSER['class'] < (UC_MIN + 1)) {
     stderr('Error!', 'Sorry, you need to rank up!');
 }
-$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$comment_id = (isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0));
+$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
+$comment_id = isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0);
 if (isset($_GET['comment_id']) && $comment_id === 0) {
     $comment_id = $_GET['comment_id'];
 } elseif (isset($_POST['comment_id']) && $comment_id === 0) {
@@ -180,9 +180,6 @@ switch ($action) {
                            ->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
-        if (empty($requests)) {
-            stderr('Error!', 'Sorry, there are no current requests!', 'bottom20');
-        }
         $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
         $heading = '
         <tr>
@@ -232,7 +229,6 @@ switch ($action) {
 
         $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
         $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $arr['cat']) . "' title='" . htmlsafechars((string) $arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $arr['cat']);
-
         if (!empty($arr['link'])) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
@@ -253,7 +249,7 @@ switch ($action) {
                     <input type="hidden" name="vote" value="1">
                     <input type="submit" class="button is-small" value="vote yes!">
                     </form> ~ you will be notified when this request is filled.';
-            $vote_no = '<form method="post" action="' . $site_config['paths']['baseurl'] . ' / requests.php" accept-charset="utf-8">
+            $vote_no = '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php" accept-charset="utf-8">
                     <input type="hidden" name="action" value="vote">
                     <input type="hidden" name="id" value="' . $id . '">
                     <input type="hidden" name="vote" value="2">
@@ -274,7 +270,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500)) . '" alt="image"></td>
+  <td>' . $caticon . '</td>
   </tr>
   <tr>
   <td>description:</td>
@@ -326,7 +322,7 @@ switch ($action) {
             </div>';
         $count = (int) $arr['comments'];
         if (!$count) {
-            $HTMLOUT .= main_div('<h2>No comments yet</h2>', 'top20 has-text-centered');
+            $HTMLOUT .= main_div('No comments yet', 'top20 has-text-centered', 'padding20');
         } else {
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -362,7 +358,7 @@ switch ($action) {
         $cats = genrelist(true);
         foreach ($cats as $cat) {
             foreach ($cat['children'] as $row) {
-                $category_drop_down .= " < option value = '{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+                $category_drop_down .= "<option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
             }
         }
         $category_drop_down .= '
@@ -394,7 +390,7 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Request</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="' . $site_config['paths']['baseurl'] . ' / requests.php?action=add_new_request" accept-charset="utf-8">
+    <form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_new_request" accept-charset="utf-8">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
@@ -617,7 +613,7 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '
-    <form method="post" action="' . $site_config['paths']['baseurl'] . ' / requests.php?action=add_comment" accept-charset="utf-8">
+    <form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_comment" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
@@ -802,7 +798,6 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        die();
+        stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 }
