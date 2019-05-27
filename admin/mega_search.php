@@ -245,7 +245,7 @@ if (isset($_POST['msg_to_analyze'])) {
             $similar_emails .= "<tr><td><h1>{$lang['mega_email_using']} $tested_email_like </h1>";
             $number = 1;
             foreach ($users as $arr) {
-                $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span class="has-color-lime has-text-weight-bold">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level - left">&nbsp;' . format_username((int) $arr['id']) . '</span></div></td></tr>';
+                $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span class="has-color-lime has-text-weight-bold">' . $email . '</span>', $arr['email']) . ' ' . $lang['mega_used_by'] . '<span class="level-left">&nbsp;' . format_username((int) $arr['id']) . '</span></div></td></tr>';
             }
         }
     }

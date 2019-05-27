@@ -375,7 +375,7 @@ $table_body = '
                         <span>' . $lang['sea_search_in'] . ':</span>
                     </td>
                     <td>
-                        <div class="level - left is-flex">
+                        <div class="level-left is-flex">
                             <input type="radio" id="search_title" name="search_what" value="title"' . ($search_what === 'title' ? ' checked' : '') . '>
                             <label for="search_title" class="left5">Title(s)</label>
                             <input type="radio" id="search_body" name="search_what" value="body"' . ($search_what === 'body' ? ' checked' : '') . ' class="left10">
@@ -414,7 +414,7 @@ $table_body = '
                         <span>' . $lang['sea_sort_by'] . ':</span>
                     </td>
                     <td>' . $sort_by_drop_down . '
-                        <div class="level - left is-flex top10">
+                        <div class="level-left is-flex top10">
                             <input type="radio" id="asc_asc" name="asc_desc" value="ASC"' . ($asc_desc === 'ASC' ? ' checked' : '') . '>
                             <label for="asc_asc" class="left5">' . $lang['sea_ascending'] . '</label>
                             <input type="radio" id="asc_desc" name="asc_desc" value="DESC"' . ($asc_desc === 'DESC' ? ' checked' : '') . ' class="left10">

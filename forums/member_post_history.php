@@ -56,7 +56,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			</form>
 		</div>';
     $aa = range('0', '9');
-    $bb = range('a', 'z');
+    $bb = range('A', 'Z');
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $next = '
@@ -70,9 +70,9 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             </div>
             <div class="tabs is-centered is-small padtop10">
                 <ul>' : '';
-        $active = !empty($_GET['letter']) && $_GET['letter'] === strtoupper($L) ? " class='active'" : '';
-        $next .= " < li>
-						<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{$active}>" . strtoupper($L) . '</a>
+        $active = !empty($_GET['letter']) && $_GET['letter'] === $L ? " class='active'" : '';
+        $next .= " <li>
+						<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history&amp;letter=" . $L . "'{$active}>" . $L . '</a>
 					</li>';
         ++$count;
     }
@@ -81,21 +81,19 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
                 </ul>
             </div>
         </div>';
-
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
-    $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
+    $count = ($arr_count[0] > 0 ? (int) $arr_count[0] : 0);
     $link = $site_config['paths']['baseurl'] . "/forums.php?action=member_post_history&amp;letter={$letter}&amp;";
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
     $menu_bottom = $pager['pagerbottom'];
     $LIMIT = $pager['limit'];
-
     $HTMLOUT .= ($count > $perpage ? $menu_top : '');
     if ($arr_count[0] > 0) {
-        $res = sql_query('SELECT u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.added, u.last_access, u.perms, c.name, c.flagpic FROM users AS u FORCE INDEX (username) LEFT JOIN countries AS c ON u.country=c.id WHERE ' . $query . ' ORDER BY u.username ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.registered, u.last_access, u.perms, c.name, c.flagpic FROM users AS u FORCE INDEX (username) LEFT JOIN countries AS c ON u.country=c.id WHERE ' . $query . ' ORDER BY u.username ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
         $heading = '
 			<tr>
 				<th>' . $lang['fmp_member'] . '</th>
@@ -111,7 +109,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             $body .= '
 			<tr>
 				<td>' . format_username((int) $row['id']) . '</td>
-				<td>' . get_date((int) $row['added'], '') . '</td>
+				<td>' . get_date((int) $row['registered'], '') . '</td>
 				<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $row['last_access'], '') : 'Never') . '</td>
 				<td>' . get_user_class_name($row['class']) . '</td>
 				<td>' . $country . '</td>
@@ -126,7 +124,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     }
     $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
 } else {
-    $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id LEFT JOIN forums AS f ON f.id=t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
+    $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
     $count = $arr_count[0];
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
@@ -138,8 +136,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $menu_bottom = $pager['pagerbottom'];
     $LIMIT = $pager['limit'];
 
-    $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id LEFT JOIN forums AS f ON f.id=t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
-    if ($count == 0) {
+    $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id LEFT JOIN forums AS f ON f.id=t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
+    if ($count === 0) {
         stderr($lang['gl_sorry'], (!empty($member_id) ? format_username((int) $member_id) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
     }
     $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username((int) $member_id) . '</h1>

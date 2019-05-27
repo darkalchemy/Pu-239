@@ -1,4 +1,5 @@
 ### 27 May, 2019
+fix: forums  
 fix: editlog  
 update: uncomment sceditor in forums  
 remove: production from $env  

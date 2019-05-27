@@ -112,7 +112,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 		<td>
     		<a class='altlink' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . htmlsafechars($forums_arr['forum_name']) . "</a><p class='top10'>" . htmlsafechars($forums_arr['forum_description']) . $child_boards . $now_viewing . '</p>
         </td>
-        <td>' . number_format($forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format($forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
+        <td>' . number_format((int) $forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format((int) $forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
         <td>
 		    <span>{$last_post}</span>
         </td>

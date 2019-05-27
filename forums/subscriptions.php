@@ -2,24 +2,29 @@
 
 declare(strict_types = 1);
 
-global $site_config, $CURUSER;
+use Pu239\Database;
+
+global $container, $site_config, $CURUSER;
 
 $posts = $lppostid = $topicpoll = $rpic = $body = '';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username((int) $CURUSER['id']) . '</h1>';
-$res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = $row[0];
+$fluent = $container->get(Database::class);
+$count = $fluent->from('subscriptions')
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('user_id = ?', $CURUSER['id'])
+                ->fetch('count');
 if ($count === 0) {
     $HTMLOUT .= main_div("
         <h1 class='has-text-centered'>{$lang['sub_no_subscript_found']}!</h1>
         <p>{$lang['sub_you_have_yet_sub_forums']} {$lang['sub_subscrib_to_forum']} {$lang['sub_no_subscript_found_msg1']}.</p>
 		<p>{$lang['sub_to_be_notified_via_pm']} <a class='altlink has-text-success' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
-		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", 'bottom20');
+		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", '', 'padding20');
 
     return;
 }
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-$perpage = (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20);
+$perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
 $link = $site_config['paths']['baseurl'] . '/forums.php?action=subscriptions&amp;' . (isset($_GET['perpage']) ? "perpage={$perpage}$&amp;" : '');
 $pager = pager($perpage, $count, $link);
 $menu_top = $pager['pagertop'];
