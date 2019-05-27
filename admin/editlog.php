@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
@@ -40,6 +42,7 @@ foreach ($directories as $path) {
 }
 if (!$exist || (isset($_POST['update']) && ($_POST['update'] === 'Update'))) {
     $data = serialize($fetch_set);
+    $session = $container->get(Session::class);
     if (file_put_contents($file_data, $data)) {
         $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");
     } else {
