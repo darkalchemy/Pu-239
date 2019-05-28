@@ -29,7 +29,7 @@ $query = $fluent->from('users')
                 ->select('countries.flagpic')
                 ->select('countries.name as flagname')
                 ->leftJoin('countries ON countries.id=users.country')
-                ->where('users.statu = "confirmed" AND (users.class >= ? OR users.support = "yes")', UC_STAFF)
+                ->where('users.status = 0 AND (users.class >= ? OR users.support = "yes")', UC_STAFF)
                 ->orderBy('class DESC')
                 ->orderBy('username');
 
@@ -70,11 +70,12 @@ function DoStaff($staff_array, $staffclass)
                     <tr>';
         $flagpic = !empty($staff['flagpic']) ? "{$site_config['paths']['images_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
+        $flag = !empty($flagpic) ? "<img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'>" : '';
         $body .= '
                         <td>' . format_username((int) $staff['id']) . "</td>
                         <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>" . "
                         <td><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='Personal Message'></i></a></td>" . "
-                        <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'></td>
+                        <td>$flag</td>
                     </tr>";
     }
 

@@ -35,7 +35,7 @@ global $CURUSER, $site_config;
 $maxbox = 100 * ($CURUSER['class'] + 1);
 $maxboxes = 5 * ($CURUSER['class'] + 1);
 
-$returnto = !empty($_GET['returnto']) ? $_GET['returnto'] : !empty($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
+$returnto = !empty($_GET['returnto']) ? $_GET['returnto'] : (!empty($_POST['returnto']) ? $_POST['returnto'] : '/index.php');
 $possible_actions = [
     'view_mailbox',
     'use_draft',

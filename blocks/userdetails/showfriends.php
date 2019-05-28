@@ -19,6 +19,8 @@ if ($users_friends === false || is_null($users_friends)) {
                       ->select('friendid AS uid')
                       ->select('userid')
                       ->select('username')
+                      ->select('last_access')
+                      ->select('perms')
                       ->innerJoin('users ON users.id = friendid')
                       ->where('userid = ?', $id)
                       ->orderBy('username')

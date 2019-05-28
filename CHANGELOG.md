@@ -1,4 +1,5 @@
 ### 28 May, 2019
+fix: strict issues  
 fix: forum attachments  
 
 ### 27 May, 2019

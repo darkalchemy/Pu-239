@@ -191,7 +191,7 @@ if ($action === 'article') {
             while ($wiki = mysqli_fetch_array($res)) {
                 if ($wiki['userid'] !== 0) {
                     $user_stuffs = $container->get(User::class);
-                    $user = $user_stuffs->getUserFromId($wiki['userid']);
+                    $user = $user_stuffs->getUserFromId((int) $wiki['userid']);
                     $wikiname = $user['username'];
                 }
                 $HTMLOUT .= main_div('
