@@ -1,4 +1,5 @@
 ### 27 May, 2019
+add: missing LOGS_DIR  
 fix: offers and requests  
 fix: forums  
 fix: editlog  
