@@ -72,7 +72,7 @@ if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_C
 function htmlsafechars(string $txt, bool $strip = true)
 {
     $txt = $strip ? strip_tags($txt) : $txt;
-    $txt = htmlspecialchars($txt, ENT_QUOTES, 'UTF-8');
+    $txt = htmlspecialchars(trim($txt), ENT_QUOTES, 'UTF-8');
 
     return $txt;
 }

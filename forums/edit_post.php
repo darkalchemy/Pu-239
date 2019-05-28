@@ -100,50 +100,22 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if ($can_edit) {
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
-    if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
-        foreach ($_FILES['attachment']['name'] as $key => $name) {
-            if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
-                $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
-                $extension_error = $size_error = 0;
-                $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                $name = basename($name, '.' . $file_extension);
-                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
-                switch (true) {
-                    case $size > $max_file_size:
-                        $size_error = ($size_error + 1);
-                        break;
-
-                    case !in_array($file_extension, $accepted_file_extension):
-                        $extension_error = ($extension_error + 1);
-                        break;
-
-                    case !in_array($type, $accepted_file_types):
-                        $extension_error = ($extension_error + 1);
-                        break;
-
-                    default:
-                        $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ($file_extension === '.zip' ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
-                        chmod($upload_to, 0777);
-                }
-            }
-        }
+    $extension_error = $size_error = 0;
+    if (!empty($_FILES)) {
+        require_once FORUM_DIR . 'attachment.php';
+        $uploaded = upload_attachments($post_id);
+        $extension_error = $uploaded[0];
+        $size_error = $uploaded[1];
     }
     if (isset($_POST['attachment_to_delete'])) {
         $_POST['attachment_to_delete'] = (isset($_POST['attachment_to_delete']) ? $_POST['attachment_to_delete'] : '');
         $attachment_to_delete = [];
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);
-            //=== get attachment info
-            $attachments_res = sql_query('SELECT file FROM attachments WHERE id=' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
+            $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
             $attachments_arr = mysqli_fetch_array($attachments_res);
-            //=== delete the file
             unlink($upload_folder . $attachments_arr['file']);
-            //=== delete them from the DB
-            sql_query('DELETE FROM attachments WHERE id=' . sqlesc($attachment_to_delete) . ' AND post_id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         }
     }
     if ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] !== $arr_post['user_id']) {

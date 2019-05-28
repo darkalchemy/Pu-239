@@ -41,10 +41,6 @@ $fluent->update('users')
        ->where('id = ?', $CURUSER['id'])
        ->execute();
 
-$accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
-$accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
-$max_file_size = intval($site_config['forum_config']['max_file_size']);
-$upload_folder = ROOT_DIR . htmlsafechars(trim($site_config['forum_config']['upload_folder']));
 $posted_action = strip_tags((isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '')));
 if ($CURUSER['class'] >= UC_STAFF) {
     $valid_actions = [
@@ -200,8 +196,8 @@ $more_options = '
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
 <input type="file" size="30" name="attachment[]"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy">
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy"><br>
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy tootlipper" title="Zip Files">
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy tooltipper" title="Rar Failes"><br>
 <div id="attach_more" style="display:none">
 <input type="file" size="30" name="attachment[]"><br>
 <input type="file" size="30" name="attachment[]"><br>

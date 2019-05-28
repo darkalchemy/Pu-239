@@ -7,7 +7,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 flood_limit('forums');
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$forum_id = isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0);
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -16,26 +16,22 @@ global $container, $CURUSER, $site_config;
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
-$extension_error = $size_error = '';
-
-$topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : '');
-$topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : '');
-
-$post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
-$icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
-$body = isset($_POST['body']) ? $_POST['body'] : '';
-$bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] == 'yes' ? 'yes' : 'no';
-$anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no';
-
-$poll_question = strip_tags(isset($_POST['poll_question']) ? trim($_POST['poll_question']) : '');
-$poll_answers = strip_tags(isset($_POST['poll_answers']) ? trim($_POST['poll_answers']) : '');
+$topic_name = isset($_POST['topic_name']) ? htmlsafechars($_POST['topic_name']) : '';
+$topic_desc = isset($_POST['topic_desc']) ? htmlsafechars($_POST['topic_desc']) : '';
+$post_title = isset($_POST['post_title']) ? htmlsafechars($_POST['post_title']) : '';
+$icon = isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : '';
+$body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
+$bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'no';
+$anonymous = isset($_POST['anonymous']) && !empty($_POST['anonymous']) ? 'yes' : 'no';
+$poll_question = isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '';
+$poll_answers = isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '';
 $poll_ends = isset($_POST['poll_ends']) ? (($_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400)) : '';
 $poll_starts = isset($_POST['poll_starts']) ? (($_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400)) : '';
 $poll_starts = $poll_starts > ((int) $poll_ends + 1) ? TIME_NOW : $poll_starts;
 $change_vote = isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
 $subscribe = isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes' ? 'yes' : 'no';
 $fluent = $container->get(Database::class);
-if (isset($_POST['button']) && $_POST['button'] === 'Post') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
@@ -98,7 +94,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     $post_id = $fluent->insertInto('posts')
                       ->values($values)
                       ->execute();
-
+    $post_id = (int) $post_id;
     $set = [
         'forumtopics' => new Literal('forumtopics + 1'),
     ];
@@ -150,51 +146,6 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         ]);
     }
 
-    if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
-        foreach ($_FILES['attachment']['name'] as $key => $name) {
-            if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
-                $extension_error = $size_error = 0;
-                $name = str_replace(' ', '_', $name);
-                $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
-                $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
-                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
-                $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                switch (true) {
-                    case $size > $max_file_size:
-                        $size_error = ($size_error + 1);
-                        break;
-
-                    case !in_array($file_extension, $accepted_file_types):
-                        $extension_error = ($extension_error + 1);
-                        break;
-
-                    case !in_array($type, $accepted_file_types):
-                        $extension_error = ($extension_error + 1);
-                        break;
-
-                    default:
-                        $name = substr($name, 0, -strlen($file_extension));
-                        $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        $values = [
-                            'post_id' => $post_id,
-                            'user_id' => $CURUSER['id'],
-                            'file' => $name . '(id-' . $post_id . ')' . $file_extension,
-                            'file_name' => $name,
-                            'added' => TIME_NOW,
-                            'extension' => ltrim($file_extension, '.'),
-                            'size' => $size,
-                        ];
-                        $fluent->insertInto('attachments')
-                               ->values($values)
-                               ->execute();
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
-                        chmod($upload_to, 0777);
-                }
-            }
-        }
-    }
     if ($subscribe === 'yes') {
         $values = [
             'user_id' => $CURUSER['id'],
@@ -204,6 +155,15 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                ->values($values)
                ->execute();
     }
+
+    $extension_error = $size_error = 0;
+    if (!empty($_FILES)) {
+        require_once FORUM_DIR . 'attachment.php';
+        $uploaded = upload_attachments($post_id);
+        $extension_error = $uploaded[0];
+        $size_error = $uploaded[1];
+    }
+
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error !== 0 ? '&ee=' . $extension_error : '') . ($size_error !== 0 ? '&se=' . $size_error : ''));
     die();
 }

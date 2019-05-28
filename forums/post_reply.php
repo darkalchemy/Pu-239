@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Post;
 
 flood_limit('forums');
-$page = $colour = $arr_quote = $extension_error = $size_error = '';
+$page = $colour = $arr_quote = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -99,40 +99,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
             sql_query("INSERT INTO messages (sender, subject, receiver, added, msg) VALUES(0, '" . $lang['pr_new_post_in_subscribed_thread'] . "!', " . sqlesc($row['user_id']) . ", '" . TIME_NOW . "', " . sqlesc($msg) . ')') or sqlerr(__FILE__, __LINE__);
         }
     }
-    //=== stuff for file uploads
-    if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
-        foreach ($_FILES['attachment']['name'] as $key => $name) {
-            if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
-                $extension_error = $size_error = 0;
-                $name = str_replace(' ', '_', $name);
-                $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
-                $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
-                $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
-                switch (true) {
-                    case $size > $max_file_size:
-                        $size_error = ($size_error + 1);
-                        break;
 
-                    case !in_array($file_extension, $accepted_file_extension):
-                        $extension_error = $extension_error + 1;
-                        break;
-
-                    case !in_array($type, $accepted_file_types):
-                        $extension_error = $extension_error + 1;
-                        break;
-
-                    default:
-                        $name = substr($name, 0, -strlen($file_extension));
-                        $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ($file_extension === '.zip' ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
-                        chmod($upload_to, 0777);
-                }
-            }
-        }
+    $extension_error = $size_error = 0;
+    if (!empty($_FILES)) {
+        require_once FORUM_DIR . 'attachment.php';
+        $uploaded = upload_attachments($post_id);
+        $extension_error = $uploaded[0];
+        $size_error = $uploaded[1];
     }
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=last#' . $post_id);
     die();

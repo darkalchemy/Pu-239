@@ -1,3 +1,6 @@
+### 28 May, 2019
+fix: forum attachments  
+
 ### 27 May, 2019
 add: missing LOGS_DIR  
 fix: offers and requests  
