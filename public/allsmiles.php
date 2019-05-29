@@ -7,7 +7,7 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = load_language('global');
-global $CURUSER, $site_config;
+global $ontainer, $CURUSER, $site_config;
 
 $body_class = 'background-16 h-style-9 text-9 skin-2';
 $htmlout = doc_head() . "
@@ -33,6 +33,7 @@ $htmlout = doc_head() . "
 
 $count = 0;
 $list1 = $list2 = $list3 = '';
+$smilies = $container->get('smilies');
 foreach ($smilies as $code => $url) {
     $list1 .= "
         <span class='margin10 mw-50 is-flex'>
@@ -43,6 +44,7 @@ foreach ($smilies as $code => $url) {
             </span>
         </span>";
 }
+$customsmilies = $container->get('custom_smilies');
 foreach ($customsmilies as $code => $url) {
     $list2 .= "
         <span class='margin10 mw-50 is-flex'>
@@ -54,6 +56,7 @@ foreach ($customsmilies as $code => $url) {
         </span>";
 }
 if ($CURUSER['class'] >= UC_STAFF) {
+    $staff_smilies = $container->get('staff_smilies');
     foreach ($staff_smilies as $code => $url) {
         $list3 .= "
         <span class='margin10 mw-50 is-flex'>

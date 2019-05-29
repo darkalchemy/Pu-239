@@ -1,4 +1,5 @@
 ### 28 May, 2019
+fix: allsmiles.php  
 fix: strict issues  
 fix: forum attachments  
 
