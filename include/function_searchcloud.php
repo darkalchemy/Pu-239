@@ -158,8 +158,8 @@ function cloud()
                 'ss',
             ], $values['column']);
             $cloud_tags[] = "
-                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['paths']['baseurl']}/browse.php?{$column}=" . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
-                                <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>
+                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['paths']['baseurl']}/browse.php?{$column}=" . urlencode((string) $tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars((string) $tag) . "\"</div><br>has been searched for {$count} times.'>
+                                <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes((string) $tag)) . '</span>
                             </a>';
         }
         $cloud_html = implode("\n", $cloud_tags) . "\n";

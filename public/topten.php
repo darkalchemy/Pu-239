@@ -18,7 +18,8 @@ $HTMLOUT = '';
  */
 function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 {
-    $got = $i = 0;
+    $i = 0;
+    $got = [];
     $keys = array_keys(mysqli_fetch_array($result, $numass));
     mysqli_data_seek($result, 0);
     while ($row = mysqli_fetch_array($result, $numass)) {

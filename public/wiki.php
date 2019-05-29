@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use Pu239\Session;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -103,6 +104,7 @@ $action = 'article';
 $mode = $name = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $session = $container->get(Session::class);
     if (isset($_POST['article-add'])) {
         $name = htmlsafechars(urldecode($_POST['article-name']));
         $body = htmlsafechars($_POST['body']);
