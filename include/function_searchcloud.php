@@ -12,11 +12,11 @@ use Pu239\Searchcloud;
 /**
  * @param int $limit
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool|mixed
+ * @throws \Envms\FluentPDO\Exception
  */
 function searchcloud($limit = 100)
 {
@@ -77,7 +77,6 @@ function searchcloud_insert($word, $column)
 
     $cache = $container->get(Cache::class);
     $searchcloud = searchcloud();
-    $ip = getip();
     $howmuch = 1;
     $add = true;
     if (!empty($searchcloud)) {
@@ -115,11 +114,11 @@ function searchcloud_insert($word, $column)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
+ * @return string
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return string
+ * @throws \Envms\FluentPDO\Exception
  */
 function cloud()
 {
@@ -145,7 +144,7 @@ function cloud()
         foreach ($tags as $tag => $values) {
             $count = $values['howmuch'];
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
-            $color = random_color(100, 200);
+            $color = random_color();
             $column = str_replace([
                 'name',
                 'descr',

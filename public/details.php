@@ -564,7 +564,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
         <form name='comment' method='post' action='{$site_config['paths']['baseurl']}/comment.php' accept-charset='utf-8'>
             <input type='hidden' name='action' value='add'>
             <input type='hidden' name='tid' value='{$torrent['id']}'>
-            " . BBcode(null, null, 200) . "
+            " . BBcode('', '', 200) . "
             <div class='has-text-centered'>
                 <input class='button is-small margin20' type='submit' value='Submit'>
             </div>

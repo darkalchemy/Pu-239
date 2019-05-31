@@ -121,7 +121,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     }
     $receiver = '';
     $body = "{$lang['non_con_body']}";
-    $HTMLOUT .= main_div(BBcode($body, null, 250) . "
+    $HTMLOUT .= main_div(BBcode($body, '', 250) . "
             <div class='has-text-centered'>
                 <input type='submit' value='Send' class='button is-small'>
             </div>") . '
