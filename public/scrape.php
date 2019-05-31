@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 if (empty($_SERVER['QUERY_STRING'])) {

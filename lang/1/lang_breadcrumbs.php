@@ -217,6 +217,7 @@ $lang = [
     'snatched_torrents' => 'Torrents Snatches',
     'social' => 'Social Settings',
     'sort' => 'Sort',
+    'staff_actions' => 'Staff Actions',
     'staff_config' => 'Allowed Staff Arrays',
     'stats' => 'Tracker Stats',
     'stats_extra' => 'Extra Stats',
