@@ -61,10 +61,10 @@ function debug_pdo()
 /**
  * @param $query
  *
- * @return bool|mysqli_result
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return bool|mysqli_result
  */
 function sql_query($query)
 {
@@ -88,10 +88,10 @@ function sql_query($query)
 /**
  * @param $x
  *
- * @return int|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return int|string
  */
 function sqlesc($x)
 {
@@ -112,10 +112,10 @@ function sqlesc($x)
 /**
  * @param $x
  *
- * @return int|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return int|string
  */
 function sqlesc_noquote($x)
 {

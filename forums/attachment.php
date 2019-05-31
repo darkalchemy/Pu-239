@@ -27,10 +27,9 @@ function upload_attachments(int $post_id)
             if (!empty($name)) {
                 $size = intval($_FILES['attachment']['size'][$key]);
                 $type = $_FILES['attachment']['type'][$key];
-                $name = str_replace(' ', '_', $name);
                 $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
                 $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);
-                $file_name = preg_replace('#[^\.a-zA-Z0-9_-]#', '', pathinfo($name, PATHINFO_FILENAME));
+                $file_name = preg_replace('#[^\s\[\]\.a-zA-Z0-9_-]#', '', pathinfo($name, PATHINFO_FILENAME));
                 $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 switch (true) {
                     case $size > $max_file_size:

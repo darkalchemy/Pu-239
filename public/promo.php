@@ -132,8 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                     </div>
                 </td>
             </tr>";
-    $HTMLOUT .= main_table($body) . "
-                </form>";
+    $HTMLOUT .= main_table($body) . '
+                </form>';
     echo stdhead('Add Promo Link') . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($do === 'accounts') {
@@ -224,8 +224,8 @@ if (empty($_POST)) {
         foreach ($r as $ar) {
             $active = $ar['max_users'] === $ar['accounts_made'] || $ar['added'] + (86400 * $ar['days_valid']) < TIME_NOW ? false : true;
             $body .= '
-            <tr class="tooltipper"' . (!$active ? ' title="This promo has ended"' : '') . ">
-                <td>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['paths']['baseurl'] . '/signup.php?promo=' . $ar['link']) . "' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' class='w-100'></td>
+            <tr class="tooltipper"' . (!$active ? ' title="This promo has ended"' : '') . '>
+                <td>' . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['paths']['baseurl'] . '/signup.php?promo=' . $ar['link']) . "' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' class='w-100'></td>
                 <td class='has-text-centered'>" . get_date($ar['added'], 'LONG') . "</td>
                 <td class='has-text-centered'>" . get_date($ar['added'] + (86400 * $ar['days_valid']), 'LONG', 1, 0) . "</td>
                 <td class='has-text-centered'>" . $ar['max_users'] . "</td>

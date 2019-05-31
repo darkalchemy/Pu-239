@@ -570,7 +570,6 @@ function get_imdb_info_short($imdb_id)
             </div>';
 
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
-    file_put_contents('/var/log/nginx/details.log', $imdb_info . PHP_EOL, FILE_APPEND);
 
     return $imdb_info;
 }

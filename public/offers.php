@@ -189,7 +189,6 @@ switch ($action) {
             <th>Comm</th>
             <th>Votes</th>
             <th>Offered By</th>
-            <th>Filled</th>
         </tr>';
         $body = '';
         foreach ($offers as $offer) {
@@ -204,7 +203,6 @@ switch ($action) {
             <td>yes: ' . number_format($offer['vote_yes_count']) . '<br>
             no: ' . number_format($offer['vote_no_count']) . '</td>
             <td>' . format_username((int) $offer['offered_by_user_id']) . '</td>
-            <td>' . ($offer['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $offer['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
         </tr>';
         }
         $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no offers</div>');

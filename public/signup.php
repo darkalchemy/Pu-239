@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'seedbonus' => $valid['bonus_karma'],
                     'invite' => $valid['bonus_invites'],
-                    'uploaded' => $valid['bonus_upload'],
+                    'uploaded' => $valid['bonus_upload'] * 1073741824,
                 ];
                 $user->update($set, $userid);
             }

@@ -345,10 +345,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @return bool|Image|mixed|string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|Image|mixed|string
  */
 function placeholder_image(int $size = 10)
 {
@@ -408,11 +408,11 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @return bool
  * @throws \PHPMailer\PHPMailer\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -439,11 +439,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @return mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return mixed
  */
 function validate_invite(int $id, string $code)
 {
@@ -463,13 +463,13 @@ function validate_invite(int $id, string $code)
 
 /**
  * @param string $code
- *
  * @param bool   $full
  *
- * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function validate_promo(string $code, bool $full)
 {
@@ -486,7 +486,9 @@ function validate_promo(string $code, bool $full)
         if ($full) {
             return $valid;
         }
+
         return $valid['link'];
     }
+
     return $valid;
 }

@@ -275,11 +275,11 @@ function cleanup_take_edit($params)
     global $lang;
 
     foreach ([
-                 'cid',
-                 'clean_increment',
-                 'clean_log',
-                 'clean_on',
-             ] as $x) {
+        'cid',
+        'clean_increment',
+        'clean_log',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'cid' || $x === 'clean_increment') {
             $opts = [
@@ -302,11 +302,11 @@ function cleanup_take_edit($params)
     }
     unset($opts);
     foreach ([
-                 'clean_title',
-                 'clean_desc',
-                 'clean_file',
-                 'function_name',
-             ] as $x) {
+        'clean_title',
+        'clean_desc',
+        'clean_file',
+        'function_name',
+    ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -401,10 +401,10 @@ function cleanup_take_new($params)
 
     $mysqli = $container->get(Mysqli::class);
     foreach ([
-                 'clean_increment',
-                 'clean_log',
-                 'clean_on',
-             ] as $x) {
+        'clean_increment',
+        'clean_log',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'clean_increment') {
             $opts = [
@@ -427,11 +427,11 @@ function cleanup_take_new($params)
     }
     unset($opts);
     foreach ([
-                 'clean_title',
-                 'clean_desc',
-                 'clean_file',
-                 'function_name',
-             ] as $x) {
+        'clean_title',
+        'clean_desc',
+        'clean_file',
+        'function_name',
+    ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -503,9 +503,9 @@ function cleanup_take_unlock($params)
 
     $mysqli = $container->get(Mysqli::class);
     foreach ([
-                 'cid',
-                 'clean_on',
-             ] as $x) {
+        'cid',
+        'clean_on',
+    ] as $x) {
         unset($opts);
         if ($x === 'cid') {
             $opts = [

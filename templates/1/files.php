@@ -8,19 +8,19 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_7efa6a40.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_53889918.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ee513988.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_69a725eb.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_6c7f7586.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_8dea8a5e.css";
         case 'vendor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/vendor_c1f664ae.css";
+            return "{$site_config['paths']['baseurl']}/css/1/vendor_68ac7831.css";
         case 'cookieconsent_css':
-            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_71be02eb.css";
+            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_1b6e5918.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_cb926b15.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_fc466e60.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_6ee1c171.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_07ebb4b8.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_a3d7bf35.js";
         case 'vendor_js':
@@ -54,7 +54,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['paths']['baseurl']}/js/1/theme_ef7bc285.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_8abd8468.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_abd0371d.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

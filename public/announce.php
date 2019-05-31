@@ -323,7 +323,6 @@ if (!isset($self)) {
 }
 $snatches = $container->get(Snatched::class);
 $snatched = $snatches->get_snatched($userid, $torrent['id']);
-file_put_contents('/var/log/nginx/announce.log', 'snatched: ' . json_encode($snatched) . PHP_EOL, FILE_APPEND);
 $snatched_values['torrentid'] = $torrent['id'];
 $snatched_values['userid'] = $userid;
 $snatched_values['uploaded'] = $uploaded;

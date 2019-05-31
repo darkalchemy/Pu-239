@@ -8,19 +8,19 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/2/chat_trans_a222c519.css";
+            return "{$site_config['paths']['baseurl']}/css/2/chat_trans_e3168f56.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/2/chat_uranium_632a9dca.css";
+            return "{$site_config['paths']['baseurl']}/css/2/chat_uranium_91a73767.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/2/css_56431219.css";
+            return "{$site_config['paths']['baseurl']}/css/2/css_ba009503.css";
         case 'vendor_css':
-            return "{$site_config['paths']['baseurl']}/css/2/vendor_c1f664ae.css";
+            return "{$site_config['paths']['baseurl']}/css/2/vendor_68ac7831.css";
         case 'cookieconsent_css':
-            return "{$site_config['paths']['baseurl']}/css/2/cookieconsent_71be02eb.css";
+            return "{$site_config['paths']['baseurl']}/css/2/cookieconsent_1b6e5918.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/2/sceditor_57163bd8.css";
+            return "{$site_config['paths']['baseurl']}/css/2/sceditor_028232cf.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/2/main_81237a6d.css";
+            return "{$site_config['paths']['baseurl']}/css/2/main_90eb34ac.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/2/main_a3d7bf35.js";
         case 'vendor_js':
@@ -54,7 +54,7 @@ function get_file_name($file)
         case '':
             return "{$site_config['paths']['baseurl']}/";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/2/sceditor_b1468e60.js";
+            return "{$site_config['paths']['baseurl']}/js/2/sceditor_4447bd04.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/2/cheaters_88e84984.js";
         case 'user_search_js':

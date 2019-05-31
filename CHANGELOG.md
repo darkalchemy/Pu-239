@@ -1,4 +1,5 @@
 ### 31 May, 2019
+add: forum quick reply  
 fix: strict issues  
 
 ### 28 May, 2019

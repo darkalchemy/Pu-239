@@ -11,6 +11,7 @@ global $CURUSER, $site_config;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
+stderr('Error', 'This page is not complete.');
 $dt = TIME_NOW;
 $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
@@ -18,7 +19,6 @@ $res = sql_query('
         LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
         WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-dd($row);
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] = 0;
     $row['curr_ann_last_check'] = 0;

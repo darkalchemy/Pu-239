@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types = 1);
+require_once FORUM_DIR . 'quick_reply.php';
 
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
@@ -940,5 +941,5 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>');
     $HTMLOUT .= main_table($table) . '
         </form>
-    </div>';
+    </div>' . quick_reply($topic_id);
 }

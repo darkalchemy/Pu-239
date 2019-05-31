@@ -45,24 +45,28 @@ function smilies_frame($smilies_set)
 
 /**
  * @param string $body
- * @param null   $class
+ * @param string $class
  * @param int    $height
  *
  * @return string
  */
-function BBcode($body = null, $class = null, $height = 600)
+function BBcode(string $body = '', string $class = 'w-100', int $height = 600)
 {
     global $site_config;
 
     if (!$site_config['site']['BBcode']) {
         $textarea = "
-            <textarea name='text' rows='10' class='w-100'></textarea>";
+            <div class='$class'>
+                <textarea name='text' rows='10'></textarea>
+            </div>";
 
         return $textarea;
     }
 
     $bbcode = "
-            <textarea name='body' id='bbcode-editor' class='w-100 $class' style='height: {$height}px;'>$body</textarea>";
+            <div class='$class has-text-centered'>
+                <textarea name='body' id='bbcode-editor' style='height: {$height}px;'>$body</textarea>
+            </div>";
 
     return $bbcode;
 }

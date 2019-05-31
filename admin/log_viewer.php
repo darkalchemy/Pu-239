@@ -13,7 +13,7 @@ global $site_config;
 
 $HTMLOUT = '';
 $count = 0;
-$perpage = 25;
+$perpage = 50;
 $state = 'div';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['delete'] === 'Delete') {
