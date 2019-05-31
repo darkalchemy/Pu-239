@@ -1,4 +1,5 @@
 ### 31 May, 2019
+fix: class_config.php  
 fix: post_reply.php  
 remove: postcss-font-family-system-ui  
 add: forum quick reply  

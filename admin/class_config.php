@@ -7,15 +7,17 @@ use DI\NotFoundException;
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Session;
 
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
-global $CURUSER, $site_config;
+global $container, $CURUSER, $site_config;
 
 $style = get_stylesheet();
+$session = $container->get(Session::class);
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
