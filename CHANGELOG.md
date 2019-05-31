@@ -1,4 +1,5 @@
 ### 31 May, 2019
+fix: userdetails.php  
 fix: BBcode null issues  
 update: scrape.php  
 fix: delete/recycle forum post  

@@ -21,6 +21,8 @@ if ($users_friends === false || is_null($users_friends)) {
                       ->select('username')
                       ->select('last_access')
                       ->select('perms')
+                      ->select('uploaded')
+                      ->select('downloaded')
                       ->innerJoin('users ON users.id = friendid')
                       ->where('userid = ?', $id)
                       ->orderBy('username')
@@ -37,9 +39,7 @@ if (!empty($users_friends) && count($users_friends) > 0) {
         foreach ($users_friends as $a) {
             $avatar = get_avatar($a);
             $status = "<img style='vertical-align: middle;' src='{$site_config['paths']['images_baseurl']}" . ($a['last_access'] > $dt && $a['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt=''>";
-            $user_stuff = $a;
-            $user_stuff['id'] = (int) $a['id'];
-            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username((int) $user_stuff['id']) . '<br>' . ($CURUSER['class'] >= UC_STAFF ? '' . htmlsafechars($a['ip']) . '' : '') . "</td><td style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : "<td style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td style='padding: 1px'>" . member_ratio($a['uploaded'], $site_config['site']['ratio_free'] ? '0' : $a['downloaded']) . "</td><td style='padding: 1px'>" . $status . "</td></tr>\n";
+            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username((int) $a['uid']) . "<br></td><td style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : "<td style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td style='padding: 1px'>" . member_ratio($a['uploaded'], $site_config['site']['ratio_free'] ? '0' : $a['downloaded']) . "</td><td style='padding: 1px'>" . $status . "</td></tr>\n";
         }
         $user_friends .= '</table>';
         $HTMLOUT .= "

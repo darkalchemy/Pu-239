@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 extract($_POST);
-
 header('content-type: application/json');
 global $container;
 
@@ -23,6 +22,7 @@ if (empty($current_user)) {
     die();
 }
 $isStaff = in_array($current_user, $site_config['is_staff']);
+$uid = (int) $uid;
 $hasAccess = $current_user === $uid || $isStaff ? true : false;
 
 if ($type === 'torrents' && $hasAccess) {
@@ -557,7 +557,7 @@ function staff_snatchtable(array $torrents, int $userid)
                     <span class='has-text-lightgreen'><b>{$lang['userdetails_s_seeding']}</b></span>" : "
                     <span class='has-text-danger'><b>{$lang['userdetails_s_nseeding']}</b></span>") . '
                 </td>
-                <td>' . htmlsafechars($arr['agent']) . '<br>IP: ' . $arr['ip'] . "<br>{$lang['userdetails_s_port']}" . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? "<b>{$lang['userdetails_s_conn']}</b> 
+                <td>' . (!empty($arr['agent']) ? htmlsafechars($arr['agent']) : '') . '<br>IP: ' . $arr['ip'] . "<br>{$lang['userdetails_s_port']}" . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? "<b>{$lang['userdetails_s_conn']}</b> 
                     <span class='has-text-lightgreen'>{$lang['userdetails_yes']}</span>" : "<b>{$lang['userdetails_s_conn']}</b>
                     <span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . '
                 </td>
