@@ -1,5 +1,7 @@
 In no particular order  
 
+fix: promo.php what does it do?  
+fix: usersearch.php (ip search)  
 update forced_logout_ to new user system  
 find and update all users "Pending"  
 finish replacing homespun user create/delete/etc  

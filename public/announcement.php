@@ -18,7 +18,7 @@ $res = sql_query('
         LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
         WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-
+dd($row);
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] = 0;
     $row['curr_ann_last_check'] = 0;

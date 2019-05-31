@@ -50,7 +50,6 @@ table {
 .table > thead > tr > th {
     font-weight: 700;
     color: #fff;
-    vertical-align: bottom;
 }
 
 .table > tbody:first-child > tr:first-child > td,

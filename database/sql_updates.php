@@ -2800,4 +2800,11 @@ KEY `expires` (`expires`)
         'query' => 'DELETE FROM `site_config` WHERE `parent` = "database" AND `name` = "debug";',
         'flush' => true,
     ],
+    [
+        'id' => 1559244111,
+        'info' => 'Update link',
+        'date' => '30 May, 2019',
+        'query' => 'ALTER TABLE `promo` MODIFY `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL',
+        'flush' => false,
+    ],
 ];

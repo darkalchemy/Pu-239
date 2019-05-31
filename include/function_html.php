@@ -345,10 +345,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
+ * @return bool|Image|mixed|string
  * @throws DependencyException
  *
- * @return bool|Image|mixed|string
+ * @throws NotFoundException
  */
 function placeholder_image(int $size = 10)
 {
@@ -408,11 +408,11 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @throws NotFoundException
+ * @return bool
  * @throws \PHPMailer\PHPMailer\Exception
  * @throws DependencyException
  *
- * @return bool
+ * @throws NotFoundException
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -439,11 +439,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws DependencyException
+ * @return mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return mixed
+ * @throws DependencyException
  */
 function validate_invite(int $id, string $code)
 {
@@ -459,4 +459,34 @@ function validate_invite(int $id, string $code)
                     ->fetch('email');
 
     return $email;
+}
+
+/**
+ * @param string $code
+ *
+ * @param bool   $full
+ *
+ * @return mixed
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function validate_promo(string $code, bool $full)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $valid = $fluent->from('promo')
+                    ->where('link = ?', htmlsafechars($code))
+                    ->where('UNIX_TIMESTAMP(NOW()) < added + (days_valid * 86400)')
+                    ->where('accounts_made < max_users')
+                    ->fetch();
+
+    if (!empty($full)) {
+        if ($full) {
+            return $valid;
+        }
+        return $valid['link'];
+    }
+    return $valid;
 }

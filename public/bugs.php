@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
 use Pu239\Message;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -11,7 +12,7 @@ require_once INCL_DIR . 'function_pager.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $possible_actions = [
     'viewbug',
@@ -136,11 +137,13 @@ if ($action === 'viewbug') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");
     }
-    $search_count = sql_query('SELECT COUNT(id) FROM bugs') or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_array($search_count);
-    $count = $row[0];
+    $fluent = $container->get(Database::class);
+    $count = $fluent->from('bugs')
+                    ->select(null)
+                    ->select('COUNT(id) AS count')
+                    ->fetch('count');
     $perpage = 10;
-    $pager = pager($perpage, $count, 'bugs.php?action=bugs&amp;');
+    $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/bugs.php?action=bugs&amp;');
     $res = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $r = sql_query("SELECT * FROM bugs WHERE status = 'na'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {

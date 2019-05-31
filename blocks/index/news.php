@@ -13,7 +13,7 @@ if ($news === false || is_null($news)) {
     $dt = TIME_NOW - (86400 * 45);
     $fluent = $container->get(Database::class);
     $news = $fluent->from('news')
-                   ->where('added>?', $dt)
+                   ->where('(added > ? AND sticky = "no") OR sticky = "yes"', $dt)
                    ->orderBy('sticky')
                    ->orderBy('added DESC')
                    ->limit(10)

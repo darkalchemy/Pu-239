@@ -2,281 +2,140 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('signup'));
-global $CURUSER, $site_config;
+global $contianer, $CURUSER, $site_config;
 
 if (!$CURUSER) {
     get_template();
 }
 $HTMLOUT = '';
-
+$fluent = $container->get(Database::class);
+$session = $container->get(Session::class);
 $do = isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : '');
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0');
 $link = isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : '');
 $sure = isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
-    $promoname = (isset($_POST['promoname']) ? $_POST['promoname'] : '');
+    $promoname = isset($_POST['promoname']) ? $_POST['promoname'] : '';
     if (empty($promoname)) {
         stderr('Error', 'No name for the promo');
     }
-    $days_valid = (isset($_POST['days_valid']) ? (int) $_POST['days_valid'] : 0);
-    if ($days_valid == 0) {
+    $days_valid = isset($_POST['days_valid']) ? (int) $_POST['days_valid'] : 0;
+    if ($days_valid === 0) {
         stderr('Error', "Link will be valid for 0 days ? I don't think so!");
     }
-    $max_users = (isset($_POST['max_users']) ? (int) $_POST['max_users'] : 0);
-    if ($max_users == 0) {
+    $max_users = isset($_POST['max_users']) ? (int) $_POST['max_users'] : 0;
+    if ($max_users === 0) {
         stderr('Error', 'Max users cant be 0 i think you missed that!');
     }
-    $bonus_upload = (isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0);
-    $bonus_invites = (isset($_POST['bonus_invites']) ? (int) $_POST['bonus_invites'] : 0);
-    $bonus_karma = (isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0);
-    if ($bonus_upload == 0 && $bonus_invites == 0 && $bonus_karma == 0) {
-        stderr('Error', 'No gift for the new users ?! :w00t: give them some gifts :D');
+    $bonus_upload = isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0;
+    $bonus_invites = isset($_POST['bonus_invites']) ? (int) $_POST['bonus_invites'] : 0;
+    $bonus_karma = isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0;
+    if ($bonus_upload === 0 && $bonus_invites === 0 && $bonus_karma === 0) {
+        stderr('Error', 'No gift for the new users? Give them some gifts :D');
     }
-    $link = md5('promo_link' . TIME_NOW);
-    $q = sql_query('INSERT INTO promo (name,added,days_valid,max_users,link,creator,bonus_upload,bonus_invites,bonus_karma) VALUES (' . implode(',', array_map('sqlesc', [
-        $promoname,
-        TIME_NOW,
-        $days_valid,
-        $max_users,
-        $link,
-        $CURUSER['id'],
-        $bonus_upload,
-        $bonus_invites,
-        $bonus_karma,
-    ])) . ') ') or sqlerr(__FILE__, __LINE__);
-    if (!$q) {
+    $token = make_password(32);
+    $values = [
+        'name' => $promoname,
+        'added' => TIME_NOW,
+        'days_valid' => $days_valid,
+        'max_users' => $max_users,
+        'link' => $token,
+        'creator' => $CURUSER['id'],
+        'bonus_upload' => $bonus_upload,
+        'bonus_invites' => $bonus_invites,
+        'bonus_karma' => $bonus_karma,
+    ];
+    $promo_id = $fluent->insertInto('promo')
+                       ->values($values)
+                       ->execute();
+    if (empty($promo_id)) {
         stderr('Error', 'Something wrong happened, please retry');
     } else {
-        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['paths']['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" class="button is-small" value="Back to Promos"></a>');
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'signup') {
-    $r_check = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($r_check) == 0) {
-        stderr('Error', 'The link your using is not a valid link');
-    } else {
-        $ar_check = mysqli_fetch_assoc($r_check);
-        if ($ar_check['max_users'] == $ar_check['accounts_made']) {
-            stderr('Error', 'Sorry account limit (' . $ar_check['max_users'] . ') on this link has been reached ');
-        }
-        if (($ar_check['added'] + (86400 * $ar_check['days_valid'])) < TIME_NOW) {
-            stderr('Error', 'This link was valid only till ' . date('d/M-Y', ($ar_check['added'] + (86400 * $ar_check['days_valid']))));
-        }
-        //==Some variables for the new user :)
-        $username = (isset($_POST['username']) ? $_POST['username'] : '');
-        if (empty($username)) {
-            stderr('Error', 'You must pick a an username');
-        }
-        if (strlen($username) < 4 || strlen($username) > 12) {
-            stderr('Error', 'Your username is to long or to short (min 4 char , max 12 char)');
-        }
-        $password = (isset($_POST['password']) ? $_POST['password'] : '');
-        $passwordagain = (isset($_POST['passwordagain']) ? $_POST['passwordagain'] : '');
-        if (empty($password) || empty($passwordagain)) {
-            stderr('Error', 'You have to type your passwords twice');
-        }
-        if ($password != $passwordagain) {
-            stderr('Error', "The passwords didn't match! Must've typoed. Try again.");
-        }
-        if (strlen($password) < 6) {
-            stderr('Error', 'Password must be min 6 char');
-        }
-        $email = (isset($_POST['mail']) ? $_POST['mail'] : '');
-        if (empty($email)) {
-            stderr('Error', 'No email adress, you forgot about that?');
-        }
-        if (!validemail($email)) {
-            stderr('Error', "That dosen't look like an email adress");
-        }
-        //==Check if username or password already exists
-        $var_check = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($username) . ' OR email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($var_check) == 1) {
-            stderr('Error', 'Username or password already exists');
-        }
-        $passhash = make_passhash($password);
-        $passhint = (isset($_POST['passhint']) ? $_POST['passhint'] : '');
-        if (empty($passhint)) {
-            stderr('Error', 'No password hint question, you forgot about that?');
-        }
-        $hintanswer = (isset($_POST['hintanswer']) ? $_POST['hintanswer'] : '');
-        if (empty($hintanswer)) {
-            stderr('Error', 'No password hint answer, you forgot about that?');
-        }
-
-        $wanthintanswer = make_passhash($hintanswer);
-
-        $res = sql_query('INSERT INTO users(username, password, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
-            $username,
-            $passhash,
-            $email,
-            TIME_NOW,
-            ($ar_check['bonus_upload'] * 1073741824),
-            $ar_check['bonus_invites'],
-            $ar_check['bonus_karma'],
-            $passhint,
-            $wanthintanswer,
-        ])) . ') ') or sqlerr(__FILE__, __LINE__);
-        if ($res) {
-            //==Updating promo table
-            $userid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-            $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
-            sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id=' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
-            //==Email part :)
-            $subject = $site_config['site']['name'] . ' user registration confirmation';
-            $message = 'Hi!
-                        You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$site_config['site']['name']}
-                            
-                        To confirm your account click the link below
-                        {$site_config['paths']['baseurl']}/confirm.php?id=" . (int) $userid . "
-
-                        Welcome and enjoy your stay 
-                        Staff at {$site_config['site']['name']}";
-            $headers = 'From: ' . $site_config['site']['email'] . "\r\n" . 'Reply-To:' . $site_config['site']['email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-            $mail = @mail($email, $subject, $message, $headers);
-
-            //==New member pm
-            $added = TIME_NOW;
-            $subject = sqlesc('Welcome');
-            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site']['name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site']['name']} staff.\n");
-            sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
-            //==End new member pm
-            write_log('User account ' . (int) $id . ' (' . htmlsafechars($username) . ') was created');
-            if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
-                $message = "Welcome New {$site_config['site']['name']} Member : - " . htmlsafechars($username) . '';
-                autoshout($message);
-            }
-
-            stderr('Success!', 'Account was created! and an email was sent to <b>' . htmlsafechars($email) . '</b>, you can use your account once you confirm the email!');
-        } else {
-            stderr('Error', 'Something odd happned please retry');
-        }
+        $session->set('is-success', 'The promo link [b]' . htmlsafechars($promoname) . '[/b] was added!');
+        unset($_POST);
     }
 } elseif ($do === 'delete' && $id > 0) {
-    $r = sql_query('SELECT name FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
+    $r = $fluent->from('promo')
+                ->select(null)
+                ->select('name')
+                ->where('id = ?', $id)
+                ->fetch('name');
+
     if ($sure === 'no') {
-        $a = mysqli_fetch_assoc($r);
-        stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($a['name']) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $id . '&amp;sure=yes">here</a>');
+        stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($r) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $id . '&amp;sure=yes"><span class="has-text-danger">here</span></a>');
     } elseif ($sure === 'yes') {
-        if (sql_query('DELETE FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__)) {
-            header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-            stderr('Success', 'Promo was deleted!');
+        $deleted = $fluent->deleteFrom('promo')
+                          ->where('id = ?', $id)
+                          ->execute();
+        if (!empty($deleted)) {
+            $session->set('is-success', 'Promo was deleted!');
         } else {
-            stderr('Error', 'Odd things happned!Contact your coder!');
+            $session->set('is-warning', 'Odd things happned!Contact your coder!');
         }
     }
 } elseif ($do === 'addpromo') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
-    $HTMLOUT .= begin_frame('Add Promo Link', true);
-    $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'  accept-charset='utf-8'>
-                    <table width='50%' class='has-text-centered' style='border-collapse:collapse;'>
-                      <tr>
-                        <td nowrap='nowrap' class='has-text-right' colspan='1'>Promo Name</td>
-                        <td class='has-text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60'></td>
-                      </tr>
-                      <tr>
-                      <td nowrap='nowrap' class='has-text-right'>Days valid</td>
-                        <td class='has-text-left' width='100%' colspan='1'><input type='text' name='days_valid' size='15'></td>
-                        <td nowrap='nowrap' class='has-text-right'>Max users</td>
-                        <td class='has-text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15'></td>
-                      </tr>
-                      <tr>
-                        <td class='has-text-right' rowspan='3'>Bonuses</td>
-                      </tr>
-                      <tr>
-                        <td class='has-text-centered'>Upload</td>
-                        <td class='has-text-centered'>Invites</td>
-                        <td class='has-text-centered'>Karma</td>
-                      </tr>
-                      <tr>
-                        <td class='has-text-centered'><input type='text' name='bonus_upload' size='15'></td>
-                        <td class='has-text-centered'><input type='text' name='bonus_invites' size='15'></td>
-                        <td class='has-text-centered'><input type='text' name='bonus_karma' size='15'></td>
-                      </tr>
-                      <tr><td class='has-text-centered' colspan='4'><input type='hidden' value='addpromo' name='do'><input type='submit' value='Add Promo!' class='button is-small'></td></tr>
-                    </table>
+    $HTMLOUT .= '
+        <h1 class="has-text-centered">Add Promo Link</h1>
+        <form action="' . $_SERVER['PHP_SELF'] . '" method="post"  accept-charset="utf-8">';
+    $body = "
+            <tr>
+                <td class='has-text-right'>Promo Name</td>
+                <td class='has-text-left' colspan='3'>
+                    <input type='text' name='promoname' class='w-100' required>
+                </td>
+            </tr>
+            <tr>
+                <td class='has-text-right'>Days valid</td>
+                <td class='has-text-left'>
+                    <input type='number' name='days_valid' class='w-100' min='1' required>
+                </td>
+                <td class='has-text-right'>Max users</td>
+                <td class='has-text-left'>
+                    <input type='number' name='max_users' class='w-100' min='1' required>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='has-text-right' colspan='1' rowspan='2'>Bonuses</td>
+                <td class='has-text-centered'>Upload</td>
+                <td class='has-text-centered'>Invites</td>
+                <td class='has-text-centered'>Karma</td>
+            </tr>
+            <tr>
+                <td class='has-text-centered'>
+                    <input type='number' name='bonus_upload' class='w-100' placeholder='How many Gigabytes?' min='1' required>
+                </td>
+                <td class='has-text-centered'>
+                    <input type='number' name='bonus_invites' class='w-100' min='1' required>
+                </td>
+                <td class='has-text-centered'>
+                    <input number='text' name='bonus_karma' class='w-100' min='1' required>
+                </td>
+            </tr>
+            <tr>
+                <td class='has-text-centered' colspan='4'>
+                    <input type='hidden' value='addpromo' name='do'>
+                    <div class='padding10'>
+                        <input type='submit' value='Add Promo!' class='button is-small'>
+                    </div>
+                </td>
+            </tr>";
+    $HTMLOUT .= main_table($body) . "
                 </form>";
-    $HTMLOUT .= end_frame();
     echo stdhead('Add Promo Link') . wrapper($HTMLOUT) . stdfoot();
-} elseif ($do === 'signup') {
-    if (empty($link)) {
-        stderr('Error', 'There is no link found! Please check the link');
-    } else {
-        $r_promo = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($r_promo) == 0) {
-            stderr('Error', 'There is no promo with that link ');
-        } else {
-            $ar = mysqli_fetch_assoc($r_promo);
-            if ($ar['max_users'] == $ar['accounts_made']) {
-                stderr('Error', 'Sorry account limit (' . $ar['max_users'] . ') on this link has been reached ');
-            }
-            if (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW) {
-                stderr('Error', 'This link was valid only till ' . date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid']))));
-            }
-            $HTMLOUT .= begin_frame();
-
-            $passhint = '';
-            $questions = [
-                [
-                    'id' => '1',
-                    'question' => "{$lang['signup_q1']}",
-                ],
-                [
-                    'id' => '2',
-                    'question' => "{$lang['signup_q2']}",
-                ],
-                [
-                    'id' => '3',
-                    'question' => "{$lang['signup_q3']}",
-                ],
-                [
-                    'id' => '4',
-                    'question' => "{$lang['signup_q4']}",
-                ],
-                [
-                    'id' => '5',
-                    'question' => "{$lang['signup_q5']}",
-                ],
-                [
-                    'id' => '6',
-                    'question' => "{$lang['signup_q6']}",
-                ],
-            ];
-            foreach ($questions as $sph) {
-                $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
-            }
-
-            $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' accept-charset='utf-8'>
-                          <table width='50%' class='has-text-centered'  style='border-collapse: collapse;'>
-                          <tr><td class='colhead' class='has-text-centered' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
-                          <tr><td nowrap='nowrap' class='has-text-right'>Bonuses</td>
-                              <td class='has-text-left' width='100%'>
-                                " . ($ar['bonus_upload'] > 0 ? '<b>upload</b>:&#160;' . mksize($ar['bonus_upload'] * 1073741824) . '<br>' : '') . '
-                                ' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&#160;' . ((int) $ar['bonus_invites']) . '<br>' : '') . '
-                                ' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&#160;' . ((int) $ar['bonus_karma']) . '<br>' : '') . "
-                                </td></tr>
-                                <tr>
-                              <td nowrap='nowrap' class='has-text-right'>Username</td>
-                              <td class='has-text-left' width='100%'><input type='text' size='40' name='username'></td>
-                            </tr>
-                            <tr><td nowrap='nowrap' class='has-text-right'>Password</td><td class='has-text-left' width='100%'><input type='password' name='password' size='40'></td></tr>
-                            <tr><td nowrap='nowrap' class='has-text-right'>Password again</td><td class='has-text-left' width='100%'><input type='password' name='passwordagain' size='40'></td></tr>
-                            <tr><td nowrap='nowrap' class='has-text-right'>Email</td><td class='has-text-left' width='100%'><input type='text' name='mail' size='40'/></td></tr>
-                            <tr><td class='has-text-right' class='rowhead'>{$lang['signup_select']}</td><td class='has-text-left'><select name='passhint'>\n$passhint\n</select></td></tr>
-                            <tr><td class='has-text-right' class='rowhead'>{$lang['signup_enter']}</td><td class='has-text-left'><input type='text' size='40'  name='hintanswer'><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
-                            <tr><td colspan='2' class='colhead' class='has-text-centered'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' class='button is-small'></td></tr>
-                          </table> 
-                        </form>";
-            $HTMLOUT .= end_frame();
-            echo stdhead('Signup for promo :' . htmlsafechars($ar['name']) . '') . wrapper($HTMLOUT) . stdfoot();
-        }
-    }
+    die();
 } elseif ($do === 'accounts') {
     if ($id == 0) {
         die("Can't find id");
@@ -328,58 +187,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             die('Something odd happend');
         }
     }
-} else {
+}
+
+if (empty($_POST)) {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
-    $r = sql_query('SELECT p.*,u.username FROM promo AS p LEFT JOIN users AS u ON p.creator=u.id ORDER BY p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($r) == 0) {
+    $r = $fluent->from('promo')
+                ->fetchAll();
+    if (empty($r)) {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>', 'bottom20');
     } else {
-        $HTMLOUT .= begin_frame('Current Promos&#160;<a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo"><span class="size_3">- Add promo</span></a>', true);
-        $HTMLOUT .= "<script>
-        /*<![CDATA[*/
-        function link(id)
-        {
-            wind = window.open('promo.php?do=accounts&id='+id,' ','height=300,width=320,resizable=yes,scrollbars=yes,toolbar=no,menubar=no');
-            wind.focus();
-         }
-         /*]]>*/
-        </script>";
-        $HTMLOUT .= "<table class='has-text-centered' width='100%' style='border-collapse: collapse;'>
-            <tr>
-                <td class='has-text-left' width='100%' rowspan='2'>Promo</td>
-                <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added</td>
-                <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Valid Till</td>
-                <td class='has-text-centered' nowrap='nowrap' colspan='2'>Users</td>
-                <td class='has-text-centered' nowrap='nowrap' colspan='3'>Bonuses</td>
-                <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added by</td>       
-                <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Remove</td>       
+        $HTMLOUT .= '
+                <div class="has-text-centered bottom20"> 
+                    <h1>Current Promos</h1>
+                    <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo"><span class="size_3">Add promo</span></a>
+                </div>';
+        $heading = "
+            <tr class='has-text-centered'>
+                <th class='has-text-centered' rowspan='2'>Promo</th>
+                <th class='has-text-centered' rowspan='2'>Added</th>
+                <th class='has-text-centered' rowspan='2'>Valid Till</th>
+                <th class='has-text-centered' colspan='2'>Users</th>
+                <th class='has-text-centered' colspan='3'>Bonuses</th>
+                <th class='has-text-centered' rowspan='2'>Added by</th>       
+                <th class='has-text-centered' rowspan='2'>Remove</th>       
             </tr>
             <tr>
-                <td class='has-text-centered' nowrap='nowrap'>max</td>
-                <td class='has-text-centered' nowrap='nowrap'>till now</td>
-                <td class='has-text-centered' nowrap='nowrap'>upload</td>
-                <td class='has-text-centered' nowrap='nowrap'>invites</td>
-                <td class='has-text-centered' nowrap='nowrap'>karma</td>       
+                <th class='has-text-centered'>max</th>
+                <th class='has-text-centered'>till now</th>
+                <th class='has-text-centered'>upload</th>
+                <th class='has-text-centered'>invites</th>
+                <th class='has-text-centered'>karma</th>
             </tr>";
-        while ($ar = mysqli_fetch_assoc($r)) {
-            $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
-            $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-                <td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['paths']['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();'></td>
-                <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', (int) $ar['added'])) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['max_users']) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int) $ar['id'] . ')">' . (int) $ar['accounts_made'] . '</a>' : 0) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_invites']) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_karma']) . "</td>
-                <td nowrap='nowrap' class='has-text-centered'>" . format_username((int) $ar['creator']) . "</a></td>
-                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['paths']['images_baseurl']}del.png' alt='Drop'></a></td>
+        $body = '';
+        foreach ($r as $ar) {
+            $active = $ar['max_users'] === $ar['accounts_made'] || $ar['added'] + (86400 * $ar['days_valid']) < TIME_NOW ? false : true;
+            $body .= '
+            <tr class="tooltipper"' . (!$active ? ' title="This promo has ended"' : '') . ">
+                <td>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['paths']['baseurl'] . '/signup.php?promo=' . $ar['link']) . "' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' class='w-100'></td>
+                <td class='has-text-centered'>" . get_date($ar['added'], 'LONG') . "</td>
+                <td class='has-text-centered'>" . get_date($ar['added'] + (86400 * $ar['days_valid']), 'LONG', 1, 0) . "</td>
+                <td class='has-text-centered'>" . $ar['max_users'] . "</td>
+                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . $ar['id'] . ')">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
+                <td class='has-text-centered'>" . mksize($ar['bonus_upload'] * 1073741824) . "</td>
+                <td class='has-text-centered'>" . number_format($ar['bonus_invites']) . "</td>
+                <td class='has-text-centered'>" . number_format($ar['bonus_karma']) . "</td>
+                <td class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
+                <td class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $ar['id'] . "'><i class='icon-trash-empty icon has-text-danger'></i></a></td>
             </tr>";
         }
-        $HTMLOUT .= '</table>';
-        $HTMLOUT .= end_frame();
+        $HTMLOUT .= main_table($body, $heading);
         echo stdhead('Current Promos') . wrapper($HTMLOUT) . stdfoot();
     }
 }

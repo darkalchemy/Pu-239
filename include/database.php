@@ -61,10 +61,10 @@ function debug_pdo()
 /**
  * @param $query
  *
- * @throws DependencyException
+ * @return bool|mysqli_result
  * @throws NotFoundException
  *
- * @return bool|mysqli_result
+ * @throws DependencyException
  */
 function sql_query($query)
 {
@@ -88,17 +88,18 @@ function sql_query($query)
 /**
  * @param $x
  *
- * @throws DependencyException
+ * @return int|string
  * @throws NotFoundException
  *
- * @return int|string
+ * @throws DependencyException
  */
 function sqlesc($x)
 {
     if (is_integer($x)) {
         return (int) $x;
-    }
-    if (is_bool($x)) {
+    } elseif (is_float($x)) {
+        return (float) $x;
+    } elseif (is_bool($x)) {
         dd($x);
     }
     global $container;
@@ -111,10 +112,10 @@ function sqlesc($x)
 /**
  * @param $x
  *
- * @throws DependencyException
+ * @return int|string
  * @throws NotFoundException
  *
- * @return int|string
+ * @throws DependencyException
  */
 function sqlesc_noquote($x)
 {

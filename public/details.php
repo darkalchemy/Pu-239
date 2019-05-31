@@ -499,7 +499,7 @@ if ($moderator) {
 
     $returnto = '';
     if (!empty($_GET['returnto'])) {
-        $returnto = '&amp;returnto=' . urlencode(htmlsafechars((string) $_GET['returnto']));
+        $returnto = '&amp;returnto=' . urlencode($_GET['returnto']);
     }
     if (!empty($torrent['checked_by'])) {
         $checked_by = $torrent['checked_by'];

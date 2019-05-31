@@ -75,6 +75,7 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/promo.php'>{$lang['gl_promo']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
                                 <li><a href='{$site_config['paths']['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>

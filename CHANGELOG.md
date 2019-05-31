@@ -1,3 +1,6 @@
+### 31 May, 2019
+fix: strict issues  
+
 ### 28 May, 2019
 fix: allsmiles.php  
 fix: strict issues  

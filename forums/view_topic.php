@@ -496,7 +496,7 @@ foreach ($posts as $arr) {
         $attachments = '<table width="100%"cellspacing="0" cellpadding="5"><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
         while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
             $attachments .= '<span>' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="tooltipper emoticon lazy"> ' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="tooltipper emoticon lazy"> ') . ' 
-					<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">
+					<a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">
 					' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span>';
         }
         $attachments .= '</td></tr></table>';

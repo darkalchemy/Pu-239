@@ -212,9 +212,7 @@ foreach ($valid_search as $search) {
             ], $search);
             searchcloud_insert($cleaned, $column);
         }
-        if ($search != 'srs' && $search != 'sre') {
-            $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
-        }
+        $addparam .= "{$search}=" . urlencode((string) $cleaned) . '&amp;';
         if ($search === 'sn') {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
@@ -228,24 +226,22 @@ foreach ($valid_search as $search) {
             $count = $count->where('u.username = ?', $cleaned);
             $select = $select->where('u.username = ?', $cleaned);
         } elseif ($search === 'sys') {
-            $count = $count->where('t.year>= ?', (int) $cleaned);
-            $select = $select->where('t.year>= ?', (int) $cleaned);
+            $count = $count->where('t.year >= ?', (int) $cleaned);
+            $select = $select->where('t.year >= ?', (int) $cleaned);
         } elseif ($search === 'sye') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned);
         } elseif ($search === 'srs') {
-            $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
-            $count = $count->where('t.rating>= ?', (float) $_GET['srs']);
-            $select = $select->where('t.rating>= ?', (float) $_GET['srs']);
+            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
+            $select = $select->where('t.rating >= ?', (float) $_GET['srs']);
         } elseif ($search === 'sre') {
-            $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
             $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
             $select = $select->where('t.rating <= ?', (float) $_GET['sre']);
         } elseif ($search === 'si') {
             $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
             if (!empty($match[1])) {
-                $count = $count->where('t.imdb_id=?', $match[1]);
-                $select = $select->where('t.imdb_id=?', $cleaned);
+                $count = $count->where('t.imdb_id = ?', $match[1]);
+                $select = $select->where('t.imdb_id = ?', $cleaned);
             }
         } elseif ($search === 'ss') {
             $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
@@ -288,7 +284,7 @@ if (!empty($title)) {
 $count = $count->fetch('count');
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
-    $torrentsperpage = 15;
+    $torrentsperpage = 20;
 }
 if ($count > 0) {
     if ($addparam != '') {

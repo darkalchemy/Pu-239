@@ -32,6 +32,7 @@ $lang = [
     'gl_torrent' => 'Torrent',
     'gl_torrents' => 'Torrents',
     'gl_movies' => 'Movies',
+    'gl_promo' => 'Site Promotions',
     'gl_newtor' => 'New Torrents Today',
     'gl_nseeds' => 'Need Seeds',
     'gl_home' => 'Home',

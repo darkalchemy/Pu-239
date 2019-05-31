@@ -12,13 +12,13 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ee513988.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_1f368518.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_6c7f7586.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_c1f664ae.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_71be02eb.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_0b1ea832.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_cb926b15.css";
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_6ee1c171.css";
         case 'main_js':
@@ -54,7 +54,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['paths']['baseurl']}/js/1/theme_ef7bc285.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_ab44e8df.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_8abd8468.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

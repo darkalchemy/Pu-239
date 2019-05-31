@@ -194,6 +194,7 @@ function cleanup_show_edit()
 {
     global $lang;
 
+    global $params;
     if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id($params['cid'])) {
         cleanup_show_main();
         exit;
@@ -213,8 +214,9 @@ function cleanup_show_edit()
     $logno = !$row['clean_log'] ? 'checked' : '';
     $cleanon = $row['clean_on'] ? 'checked' : '';
     $cleanoff = !$row['clean_on'] ? 'checked' : '';
-    $htmlout = "<h2>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>
-    <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
+    $htmlout = "
+    <h2 class='has-text-centered'>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>" . main_div("
+    <div class='padding20 w-50'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takeedit'>
     <input type='hidden' name='cid' value='{$row['clean_id']}'>
@@ -256,7 +258,7 @@ function cleanup_show_edit()
         <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='history.back()'>
     </div>
     </form>
-    </div>";
+    </div>", '', 'level-center');
     echo stdhead($lang['cleanup_show_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
@@ -273,11 +275,11 @@ function cleanup_take_edit($params)
     global $lang;
 
     foreach ([
-        'cid',
-        'clean_increment',
-        'clean_log',
-        'clean_on',
-    ] as $x) {
+                 'cid',
+                 'clean_increment',
+                 'clean_log',
+                 'clean_on',
+             ] as $x) {
         unset($opts);
         if ($x === 'cid' || $x === 'clean_increment') {
             $opts = [
@@ -300,11 +302,11 @@ function cleanup_take_edit($params)
     }
     unset($opts);
     foreach ([
-        'clean_title',
-        'clean_desc',
-        'clean_file',
-        'function_name',
-    ] as $x) {
+                 'clean_title',
+                 'clean_desc',
+                 'clean_file',
+                 'function_name',
+             ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -399,10 +401,10 @@ function cleanup_take_new($params)
 
     $mysqli = $container->get(Mysqli::class);
     foreach ([
-        'clean_increment',
-        'clean_log',
-        'clean_on',
-    ] as $x) {
+                 'clean_increment',
+                 'clean_log',
+                 'clean_on',
+             ] as $x) {
         unset($opts);
         if ($x === 'clean_increment') {
             $opts = [
@@ -425,11 +427,11 @@ function cleanup_take_new($params)
     }
     unset($opts);
     foreach ([
-        'clean_title',
-        'clean_desc',
-        'clean_file',
-        'function_name',
-    ] as $x) {
+                 'clean_title',
+                 'clean_desc',
+                 'clean_file',
+                 'function_name',
+             ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
@@ -501,9 +503,9 @@ function cleanup_take_unlock($params)
 
     $mysqli = $container->get(Mysqli::class);
     foreach ([
-        'cid',
-        'clean_on',
-    ] as $x) {
+                 'cid',
+                 'clean_on',
+             ] as $x) {
         unset($opts);
         if ($x === 'cid') {
             $opts = [
