@@ -194,10 +194,10 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -423,18 +423,18 @@ function StatusBar()
     $StatusBar = $clock = '';
     $color = get_user_class_name($CURUSER['class'], true);
     $StatusBar .= "
-                    <div id='base_usermenu' class='tooltipper-ajax right20 level-item'>
-                        " . format_username((int) $CURUSER['id'], true, false) . "
-                        <span id='clock' class='left20 {$color}' onclick='hide_by_id()'>{$clock}</span>
+                    <div id='base_usermenu' class='right20 level-item'>
+                        <div class='tooltipper-ajax'>" . format_username((int) $CURUSER['id'], true, false) . "</div>
+                        <div id='clock' class='left20 {$color} tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
                     </div>";
 
     return $StatusBar;
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
