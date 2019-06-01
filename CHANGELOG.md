@@ -1,4 +1,5 @@
 ### 31 May, 2019
+update: move sentry api key to config.php  
 fix: userdetails.php  
 fix: BBcode null issues  
 update: scrape.php  

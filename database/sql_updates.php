@@ -2807,4 +2807,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `promo` MODIFY `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL',
         'flush' => false,
     ],
+    [
+        'id' => 1559347356,
+        'info' => 'Move Sentry API to config.php',
+        'date' => '31 May, 2019',
+        'query' => 'DELETE FROM `site_config` WHERE `parent` = "api" AND `name` = "sentry";',
+        'flush' => true,
+    ],
 ];

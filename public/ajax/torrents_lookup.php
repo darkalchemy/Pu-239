@@ -103,9 +103,9 @@ die();
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -161,9 +161,9 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -213,9 +213,9 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -265,9 +265,9 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -307,9 +307,9 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -466,8 +466,8 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */

@@ -12,11 +12,11 @@ use Pu239\Searchcloud;
 /**
  * @param int $limit
  *
- * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function searchcloud($limit = 100)
 {
@@ -114,11 +114,11 @@ function searchcloud_insert($word, $column)
 }
 
 /**
- * @return string
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function cloud()
 {

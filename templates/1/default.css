@@ -8,7 +8,7 @@ html {
 
 body {
     font: 85%/1.5 system-ui;
-    color: #fff;
+    color: var(--default-text-color);
     line-height: 125%;
     margin: auto;
     padding: 0;

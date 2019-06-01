@@ -83,5 +83,8 @@ return [
         'language' => [
             'imdb' => 'en-US',
         ],
+        'api' => [
+            'sentry' => '',
+        ],
     ],
 ];
