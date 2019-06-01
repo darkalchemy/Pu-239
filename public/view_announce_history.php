@@ -2,16 +2,20 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('announce_history'));
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
+stderr('Error', 'This page is not completed.');
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 $HTMLOUT = "<h2><span class='size_6'>{$lang['annhistory_ann']}</span></h2>";
+$fluent = $container->get(Database::class);
 $query1 = sprintf('SELECT m.main_id, m.subject, m.body
             FROM announcement_main AS m 
             LEFT JOIN announcement_process AS p ON m.main_id=p.main_id AND p.user_id=%s 
