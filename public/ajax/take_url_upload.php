@@ -2,9 +2,8 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Pu239\ImageProxy;
-use Pu239\Session;
-use Pu239\User;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -14,15 +13,13 @@ require_once INCL_DIR . 'function_bitbucket.php';
 header('content-type: application/json');
 global $container, $site_config;
 
-$session = $container->get(Session::class);
-$userid = (int) $session->get('userID');
+$auth = $container->get(Auth::class);
+$userid = $auth->getUserId();
 if (empty($userid)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();
 }
-$user_stuffs = $container->get(User::class);
-$username = $user_stuffs->get_item('username', $userid);
-
+$username = $auth->getUsername();
 $url = $_POST['url'];
 if (!filter_var($url, FILTER_VALIDATE_URL)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_url']]);

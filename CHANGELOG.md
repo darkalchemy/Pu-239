@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+fix: bitbuckup upload  
 update: database files  
 fix: various strict issues  
 fix: set image permissions to user:group  
