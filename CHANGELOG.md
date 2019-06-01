@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+update: allowed attachments file types  
 disable: search by ip  
 fix: bitbuckup upload  
 update: database files  

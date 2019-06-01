@@ -2821,4 +2821,11 @@ KEY `expires` (`expires`)
         'query' => 'DELETE FROM `stylesheets` WHERE `id` = 2',
         'flush' => true,
     ],
+    [
+        'id' => 1559409435,
+        'info' => 'Update file types for attachments',
+        'date' => '01 Jun, 2019',
+        'query' => 'UPDATE `forum_config` SET `accepted_file_types` = "application/zip|application/x-zip|application/x-zip-compressed|application/rar|application/x-rar|application/x-rar-compressed" WHERE `accepted_file_types` = "application/zip|application/x-zip|application/application/rar|application/x-rar"',
+        'flush' => true,
+    ],
 ];
