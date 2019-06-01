@@ -400,6 +400,7 @@ if (!empty($search)) {
         $q1 .= ($q1 ? '&amp;' : '') . 'c=' . ($class + 2);
     }
     // IP
+    /*
     if (is_set_not_empty('ip')) {
         $ip = trim($search['ip']);
         $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
@@ -431,6 +432,7 @@ if (!empty($search)) {
         }
         $q1 .= ($q1 ? '&amp;' : '') . "ip=$ip";
     }
+    */
     // ratio
     if (is_set_not_empty('r')) {
         $ratio = trim($search['r']);
@@ -685,13 +687,14 @@ if (!empty($search)) {
         $warned = (int) $search['w'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
         if ($warned === 1) {
-            $where_is .= " u.warned>= '1'";
+            $where_is .= ' u.warned >= 1';
         } else {
-            $where_is .= " u.warned = '0'";
+            $where_is .= ' u.warned = 0';
         }
         $q1 .= ($q1 ? '&amp;' : '') . "w=$warned";
     }
     // disabled IP
+    /*
     $disabled = isset($search['dip']) ? (int) $search['dip'] : '';
     if (!empty($disabled)) {
         $distinct = 'DISTINCT ';
@@ -699,6 +702,7 @@ if (!empty($search)) {
         $where_is .= ((!empty($where_is)) ? ' AND ' : '') . "u2.enabled = 'no'";
         $q1 .= ($q1 ? '&amp;' : '') . "dip=$disabled";
     }
+    */
     // active
     $active = isset($search['ac']) ? $search['ac'] : '';
     if ($active === 1) {
@@ -746,7 +750,7 @@ if (!empty($search)) {
         </tr>";
         $body = $ids = '';
         while ($user = mysqli_fetch_array($res)) {
-            if ($user['ip']) {
+            if (!empty($user['ip'])) {
                 $count = $fluent->from('bans')
                                 ->select(null)
                                 ->select('COUNT(id) AS count')

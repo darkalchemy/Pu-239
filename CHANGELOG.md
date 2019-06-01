@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+disable: search by ip  
 fix: bitbuckup upload  
 update: database files  
 fix: various strict issues  
