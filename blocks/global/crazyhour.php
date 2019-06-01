@@ -94,7 +94,7 @@ function crazyhour()
                     <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
                         {$lang['gl_crazy_']}
                     </div>
-                    <div class='has-text-centered has-text-white'>
+                    <div class='has-text-centered is-primary'>
                         {$lang['gl_crazy_message4']}<br>
                         {$lang['gl_crazy_message5']}<br>
                         {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . "<br>{$lang['gl_crazy_at']} " . get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1) . '

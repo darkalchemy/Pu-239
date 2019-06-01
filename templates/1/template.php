@@ -491,7 +491,7 @@ function platform_menu()
                 <div class='columns is-marginless'>
                     <div class='column is-paddingless middle'>
                         <ul class='level-left size_3'>" . (!PRODUCTION ? "
-                            <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
+                            <li class='left10 has-text-primary is-primary'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
                         </ul>
                     </div>
                     <div class='column is-paddingless middle searchbar'>

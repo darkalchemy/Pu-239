@@ -144,7 +144,7 @@ foreach ($select as $torrent) {
                         <div class='column'>
                             <div class='has-text-left'>$name ({$year})</div>
                             $rating
-                            <div><span class='has-text-primary'>Peers:</span><span class='has-text-white'> {$seeders} / {$leechers}</span></div>" . implode("\n", $people) . '
+                            <div><span class='has-text-primary'>Peers:</span><span class='is-primary'> {$seeders} / {$leechers}</span></div>" . implode("\n", $people) . '
                         </div>
                     </div>
                 </div>';

@@ -248,7 +248,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                     </fieldset><br>";
         }
         $html .= "
-                                    <div class='has-text-white has-text-weight-bold has-text-centered formsubtitle'>{$rep_points}</div>
+                                    <div class='is-primary has-text-weight-bold has-text-centered formsubtitle'>{$rep_points}</div>
                                 </div>
                             </td>
                         </tr>";

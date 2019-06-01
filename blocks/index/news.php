@@ -62,7 +62,7 @@ if ($news) {
                 <div id='{$array['id']}' class='header alt_bordered bg-00'>
                     <div class='has-text-primary size_5 padding10 has-text-centered'>" . htmlsafechars($array['title']) . "</div>
                     <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . get_date((int) $array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
-                    <div class='has-text-white padding20'>
+                    <div class='is-primary padding20'>
                         " . format_comment($array['body']) . '
                     </div>
                 </div>
@@ -71,7 +71,7 @@ if ($news) {
 } else {
     $site_news .= main_div("
                     <div class='bg-02 round5 padding20'>
-                        <div class='has-text-white level-center-center'>
+                        <div class='is-primary level-center-center'>
                             " . format_comment($lang['index_news_not']) . '
                         </div>
                     </div>');

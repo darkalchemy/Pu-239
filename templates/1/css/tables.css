@@ -14,7 +14,7 @@ table {
 .table {
     width: calc(100% - 2px);
     background-color: transparent;
-    color: #fff;
+    color: var(--default-text-color);
     margin-bottom: 0;
     border-collapse: collapse;
     border-spacing: 0;
@@ -49,7 +49,7 @@ table {
 
 .table > thead > tr > th {
     font-weight: 700;
-    color: #fff;
+    color: var(--default-text-color);
 }
 
 .table > tbody:first-child > tr:first-child > td,
@@ -100,8 +100,8 @@ table {
     border-bottom-right-radius: .625em;
 }
 
-.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background),
-.table-striped > thead > tr:nth-child(even) > th:not(.card-background) {
+.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background .is-warning),
+.table-striped > thead > tr:nth-child(even) > th:not(.card-background .is-warning) {
     background-color: rgba(0, 0, 0, .4);
 }
 

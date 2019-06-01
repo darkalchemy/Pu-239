@@ -15,7 +15,7 @@ if ($site_config['bonus']['happy_hour'] && !empty($CURUSER)) {
                     <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
                         {$lang['gl_happyhour']}
                     </div>
-                    <div class='has-text-centered has-text-white'>
+                    <div class='has-text-centered is-primary'>
                         {$lang['gl_happyhour1']}<br>" . ((happyCheck('check') == 255) ? "
                         {$lang['gl_happyhour2']}" : "
                         {$lang['gl_happyhour3']}") . "<br>

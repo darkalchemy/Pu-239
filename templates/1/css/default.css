@@ -216,7 +216,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #fff;
+    color: var(--default-text-color);
     font-weight: 400;
 }
 
@@ -496,7 +496,7 @@ select,
 textarea {
     color: #000;
     background-color: #fff;
-    border: 1px solid #fff;
+    border: 1px solid var(--main-bdr-color);
     padding: 5px;
     border-radius: .3125em;
 }
@@ -779,7 +779,7 @@ textarea {
 
 .back-to-top {
     text-decoration: none;
-    color: #fff;
+    color: rgba(255, 255, 255, .6);
     background-color: rgba(0, 0, 0, .4);
     position: fixed;
     bottom: .625em;
@@ -794,7 +794,7 @@ textarea {
 
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
-    color: #fff;
+    color: var(--default-text-color);
     border: 1px solid var(--main-bdr-color);
 }
 
@@ -842,7 +842,7 @@ textarea {
 .slideThree::before {
     content: 'ON';
     margin-left: 5px;
-    color: #00bf00;
+    color: #0f0;
     left: 10px;
 }
 
@@ -940,7 +940,7 @@ textarea {
 }
 
 .tabs a {
-    color: #fff;
+    color: var(--default-text-color);
     border-radius: .3125em;
     border-bottom: 1px solid transparent;
     margin-bottom: 0;
@@ -1087,9 +1087,9 @@ option.head {
 }
 
 .droppable {
-    color: #fff;
+    color: var(--default-text-color);
     padding: 50px 0;
-    border: 1px dashed white;
+    border: 1px dashed var(--main-bdr-color);
     border-radius: .625em;
 }
 
@@ -1143,7 +1143,7 @@ body.background-16 {
     font-family: "Lucida Console", Monaco, monospace;
     font-size: .9em !important;
     line-height: 1.1em;
-    border: 1px solid #fff;
+    border: 1px solid var(--main-bdr-color);
     background-color: rgba(0, 0, 0, .1);
     box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
     border-radius: .625em;
@@ -1165,7 +1165,7 @@ body.background-16 {
 }
 
 .quote {
-    border: 1px solid #fff;
+    border: 1px solid var(--default-text-color);
     padding: 1.25em;
     background-color: rgba(0, 0, 0, .1);
     border-radius: .625em;

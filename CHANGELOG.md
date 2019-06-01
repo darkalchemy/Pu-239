@@ -1,4 +1,6 @@
 ### 01 Jun, 2019
+fix: site_settings.php bg color  
+update: make default text to one css variable  
 update: iCarousel to use default border color  
 update: images_update.php  
 fix: thanks  
