@@ -1,4 +1,7 @@
 ### 31 May, 2019
+fix: snatched.php  
+fix: peerlist.php  
+add: has-default-text-color  
 update: default text color  
 remove: dd() usage  
 remove: echo php-di error  

@@ -28,9 +28,14 @@ $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr('Error', 'It appears that there is no torrent with that id.');
 }
-$res = sql_query('SELECT COUNT(id) FROM snatched WHERE complete_date !=0 AND torrentid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = $row[0];
+$fluent = $container->get(\Pu239\Database::class);
+$count = $fluent->from('snatched')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('complete_date != 0')
+    ->where('torrentid = ?', $id)
+    ->fetch('count');
+
 $perpage = 15;
 $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {

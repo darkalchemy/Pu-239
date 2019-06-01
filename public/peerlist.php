@@ -28,7 +28,7 @@ $HTMLOUT = '';
 function dltable($name, $arr, $torrent)
 {
     global $site_config, $CURUSER, $lang;
-
+    
     if (!count($arr)) {
         return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>");
     }
@@ -175,7 +175,7 @@ function seed_sort($a, $b)
 usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
-$HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $row);
-$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $row);
+    <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($torrent['name']) . '</a></h1>';
+$HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $torrent);
+$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $torrent);
 echo stdhead($lang['peerslist_stdhead']) . wrapper($HTMLOUT) . stdfoot();
