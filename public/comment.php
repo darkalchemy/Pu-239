@@ -3,7 +3,9 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Message;
+use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -63,6 +65,7 @@ if (isset($_GET['type'])) {
 
 $cache = $container->get(Cache::class);
 $message_stuffs = $container->get(Message::class);
+$session = $container->get(Session::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
@@ -82,14 +85,24 @@ if ($action === 'add') {
         $arr['anonymous'] = (isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no');
         $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
         if ($CURUSER['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
-            $anon = "'yes'";
+            $anon = 'yes';
         } else {
-            $anon = "'no'";
+            $anon = 'no';
         }
+        $values = [
+            'user' => $CURUSER['id'],
+            'torrent' => $id,
+            'added' => TIME_NOW,
+            'text' => $body,
+            'ori_text' => $body,
+            'anonymous' => $anon,
+        ];
+        $fluent = $container->get(Database::class);
+        $newid = $fluent->insertInto('comments')
+                        ->values($values)
+                        ->execute();
 
-        sql_query("INSERT INTO comments (user, $locale, added, text, ori_text, anonymous) VALUES (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($body) . ", $anon)");
-        $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-        sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
         if ($site_config['bonus']['on']) {
             sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

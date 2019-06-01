@@ -23,11 +23,6 @@ if (!isset($CURUSER)) {
     die();
 }
 
-if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
-    echo 'CSRF Verification failed.';
-    die();
-}
-
 $uid = (int) $CURUSER['id'];
 $tid = isset($_POST['tid']) ? (int) $_POST['tid'] : (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');

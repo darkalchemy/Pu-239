@@ -1,4 +1,7 @@
 ### 01 Jun, 2019
+fix: thanks  
+fix: comments  
+fix: report  
 remove: set cache type as memory update_db.php  
 update: allowed attachments file types  
 disable: search by ip  

@@ -3,16 +3,28 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_report'));
 global $container, $site_config, $CURUSER;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $HTMLOUT = $delt_link = $type = $count2 = '';
 
 /**
@@ -74,7 +86,7 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     if (!is_valid_id($_POST['id'])) {
         stderr("{$lang['reports_error']}", "{$lang['reports_error3']}");
     }
-    $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['how_delt_with']);
+    $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['body']);
     $when_delt_with = 'when_delt_with = ' . sqlesc(TIME_NOW);
     sql_query("UPDATE reports SET delt_with = 1, $how_delt_with, $when_delt_with , who_delt_with_it =" . sqlesc($CURUSER['id']) . ' WHERE delt_with!=1 AND id =' . sqlesc($_POST['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
@@ -85,6 +97,7 @@ $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['reports_active']}</h1>";
 if ((isset($_GET['delete'])) && ($CURUSER['class'] >= UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
+    $session = $container->get(Session::class);
     $session->set('is-success', $lang['reports_deleted']);
 }
 
@@ -203,11 +216,11 @@ if ($count === 0) {
             <td>' . format_username((int) $arr_info['reported_by']) . "</td>
             <td>{$link_to_thing}</td>
             <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . '</td>
-            <td>' . htmlsafechars($arr_info['reason']) . "</td>
+            <td>' . $arr_info['reason'] . "</td>
             <td>{$dealtwith} {$delt_link}</td>
             <td>{$checkbox}</td>" . ($CURUSER['class'] >= UC_MAX ? "
             <td><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
-                    <span class='has-text-danger'>{$lang['reports_delete']}</span>
+                    <i class='icon-trash-empty tooltipper has-text-danger' title='{$lang['reports_delete']}' aria-hidden='true'></i>
                 </a>
             </td>" : '') . '
         </tr>';
@@ -224,11 +237,10 @@ if ($count === 0) {
     $HTMLOUT .= main_table($body, $header);
     $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
 }
-if ($count > '0') {
-    $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']} [ {$lang['reports_req']} ]
-    <textarea name='how_delt_with' class='w-100' rows='5'></textarea>
-    <input type='submit' class='button is-small' value='{$lang['reports_confirm']}'>
-    </form>", 'top20');
+if ($count > 0) {
+    $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']}" . BBcode('', 'top20', 200) . "
+    <input type='submit' class='button is-small margin20' value='{$lang['reports_confirm']}'>
+    </form>", 'top20 has-text-centered', 'padding20');
 }
-echo stdhead($lang['reports_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['reports_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();

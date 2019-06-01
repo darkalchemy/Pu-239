@@ -70,7 +70,7 @@ $set = [
 ];
 $fluent->update('torrents')
        ->set($set)
-       ->where('id = ?, $id')
+       ->where('id = ?', $id)
        ->execute();
 
 $cache->delete('latest_comments_');

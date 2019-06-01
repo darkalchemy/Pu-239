@@ -122,6 +122,7 @@ $lang = [
     'cleanup_manager' => 'Cleanup Manager',
     'clear_chat' => 'Clear Chat Messages',
     'cloudview' => 'Manage Search Cloud',
+    'Comment' => 'Report a Comment',
     'comments' => 'View Comments',
     'config' => 'Config',
     'create_invite' => 'Create Invite',
