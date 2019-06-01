@@ -1,4 +1,5 @@
 ### 31 May, 2019
+update: default text color  
 remove: dd() usage  
 remove: echo php-di error  
 revert: default PRODUCTION status  
