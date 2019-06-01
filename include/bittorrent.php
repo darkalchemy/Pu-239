@@ -1673,7 +1673,7 @@ function get_random_useragent()
 }
 
 if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {
-    dd('Error', 'Please run php bin/uglify.php to generate the required files');
+    die('Error', 'Please run php bin/uglify.php to generate the required files');
 }
 
 require_once TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php';

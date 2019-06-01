@@ -99,8 +99,6 @@ function sqlesc($x)
         return (int) $x;
     } elseif (is_float($x)) {
         return (float) $x;
-    } elseif (is_bool($x)) {
-        dd($x);
     }
     global $container;
 
