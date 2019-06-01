@@ -12,7 +12,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_5671f39b.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_94c7f649.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_716cca1d.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_17b78eea.css";
         case 'cookieconsent_css':
@@ -80,7 +80,7 @@ function get_file_name($file)
         case 'dragndrop_js':
             return "{$site_config['paths']['baseurl']}/js/1/dragndrop_5647940a.js";
         case 'details_js':
-            return "{$site_config['paths']['baseurl']}/js/1/details_43ed1838.js";
+            return "{$site_config['paths']['baseurl']}/js/1/details_ad3135c4.js";
         case 'forums_js':
             return "{$site_config['paths']['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

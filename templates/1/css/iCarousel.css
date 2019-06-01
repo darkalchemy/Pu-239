@@ -40,7 +40,7 @@ a.iCarouselNav {
 
 #iCarousel-preloader {
     border-radius: .3125em;
-    border: 1px solid rgba(0, 0, 0, .6);
+    border: 1px solid var(--main-bdr-color);
     padding: 1px;
     width: 150px;
     height: 3px;
@@ -80,7 +80,7 @@ a.iCarouselNav {
 
 #icarousel .slide img {
     border-radius: .625em;
-    border: 1px solid #faebd7;
+    border: 1px solid var(--main-bdr-color);
 }
 
 .carousel-container {
