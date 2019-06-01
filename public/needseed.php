@@ -32,10 +32,10 @@ if ($needed === 'leechers') {
         <div class='padding20'>
             <ul class='tabs'>
                 <li>
-                    <a href='#' class='active altlink'>{$lang['needseed_sin']}</a>
+                    <a href='#' class='active is-link'>{$lang['needseed_sin']}</a>
                 </li>
                 <li>
-                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders' class='altlink'>{$lang['needseed_tns']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders' class='is-link'>{$lang['needseed_tns']}</a>
                 </li>
             </ul>
         </div>";
@@ -84,10 +84,10 @@ if ($needed === 'leechers') {
         <div class='padding20'>
             <ul class='tabs'>
                 <li>
-                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=leechers'  class='altlink'>{$lang['needseed_sin']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=leechers'  class='is-link'>{$lang['needseed_sin']}</a>
                 </li>
                 <li>
-                    <a href='#' class='active altlink'>{$lang['needseed_tns']}</a>
+                    <a href='#' class='active is-link'>{$lang['needseed_tns']}</a>
                 </li>
             </ul>
         </div>";

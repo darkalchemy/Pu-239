@@ -56,12 +56,12 @@ $folders = [
     LOGS_DIR,
     SQLERROR_LOGS_DIR,
     BITBUCKET_DIR,
+    UPLOADSUB_DIR,
     ROOT_DIR . '.git',
     ROOT_DIR . 'dir_list/',
     ROOT_DIR . 'uploads/',
-    ROOT_DIR . 'uploadsub/',
     CHAT_DIR . 'js/',
-    PUBLIC_DIR . 'images/proxy/',
+    IMAGES_DIR,
 ];
 
 $folders = array_merge($dirs, $folders);
@@ -118,10 +118,17 @@ function chown_r($path, $group)
     if (!file_exists($path)) {
         return;
     }
+    $user_group = false;
+    if ($path === IMAGES_DIR || $path === CACHE_DIR) {
+        $user_group = true;
+    }
     $dir = new DirectoryIterator($path);
     chown($path, $group);
     foreach ($dir as $item) {
         chown($item->getPathname(), $group);
+        if ($user_group) {
+            chgrp($item->getPathname(), $group);
+        }
         if ($item->isDir() && !$item->isDot()) {
             chown_r($item->getPathname(), $group);
         }

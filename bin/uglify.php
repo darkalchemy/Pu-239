@@ -159,13 +159,6 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'navbar_show.js',
     ];
 
-    if ($BLOCKS['global_themechanger_on']) {
-        $js_list['theme_js'] = [
-            TEMPLATE_DIR . "{$folder}/themeChanger/js/colorpicker.js",
-            TEMPLATE_DIR . "{$folder}/themeChanger/js/themeChanger.js",
-        ];
-    }
-
     $js_list['sceditor_js'] = [
         ROOT_DIR . 'node_modules/sceditor/minified/jquery.sceditor.bbcode.min.js',
         ROOT_DIR . 'node_modules/sceditor/src/icons/material.js',
@@ -271,13 +264,6 @@ foreach ($styles as $folder) {
         ROOT_DIR . 'node_modules/cookieconsent/src/styles/themes/classic.css',
     ];
 
-    if ($BLOCKS['global_themechanger_on']) {
-        $css_list['css'] = array_merge([
-            TEMPLATE_DIR . "{$folder}/themeChanger/css/themeChanger.css",
-            TEMPLATE_DIR . "{$folder}/themeChanger/css/colorpicker.css",
-        ], $css_list['css']);
-    }
-
     if ($BLOCKS['latest_torrents_scroll_on']) {
         $css_list['css'] = array_merge($css_list['css'], [
             TEMPLATE_DIR . "{$folder}/css/iCarousel.css",
@@ -310,14 +296,14 @@ foreach ($styles as $folder) {
         BIN_DIR . 'pu239.css',
         ROOT_DIR . 'node_modules/sceditor/minified/themes/modern.min.css',
         TEMPLATE_DIR . "{$folder}/css/sceditor.css",
-        TEMPLATE_DIR . "{$folder}/css/variables.css",
-        TEMPLATE_DIR . "{$folder}/default.css",
+        TEMPLATE_DIR . "{$folder}/variables.css",
+        TEMPLATE_DIR . "{$folder}/css/default.css",
         TEMPLATE_DIR . "{$folder}/css/tables.css",
     ];
 
     $css_list['main_css'] = [
-        TEMPLATE_DIR . "{$folder}/css/variables.css",
-        TEMPLATE_DIR . "{$folder}/default.css",
+        TEMPLATE_DIR . "{$folder}/variables.css",
+        TEMPLATE_DIR . "{$folder}/css/default.css",
         TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
         TEMPLATE_DIR . "{$folder}/custom.css/",
     ];
@@ -326,7 +312,7 @@ foreach ($styles as $folder) {
         $css_list = array_merge([
             'chat_css_trans' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                TEMPLATE_DIR . "{$folder}/css/variables.css",
+                TEMPLATE_DIR . "{$folder}/variables.css",
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
                 CHAT_DIR . "css/{$folder}/custom.css",
@@ -335,7 +321,7 @@ foreach ($styles as $folder) {
             ],
             'chat_css_uranium' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                TEMPLATE_DIR . "{$folder}/css/variables.css",
+                TEMPLATE_DIR . "{$folder}/variables.css",
                 CHAT_DIR . "css/{$folder}/global.css",
                 CHAT_DIR . "css/{$folder}/fonts.css",
                 CHAT_DIR . "css/{$folder}/custom.css",

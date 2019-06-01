@@ -15,7 +15,7 @@ $lang = array_merge(load_language('global'), load_language('links'));
  */
 function add_link($url, $title, $description = '')
 {
-    $text = "<a class='altlink' href=$url>$title</a>";
+    $text = "<a class='is-link' href=$url>$title</a>";
     if ($description) {
         $text = "$text - $description";
     }

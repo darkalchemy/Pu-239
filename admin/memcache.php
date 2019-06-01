@@ -376,13 +376,13 @@ function menu_entry($ob, $title)
 
     if ($ob == $_GET['op']) {
         return "
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a class='active' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
     }
 
     return "
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
 }
@@ -398,12 +398,12 @@ function getMenu()
         <ul class='level-center bg-06'>";
     if ($_GET['op'] != 4) {
         $menu .= "
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}'>Refresh Data</a>
             </li>";
     } else {
         $menu .= "
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;op=2'>Back</a>
             </li>";
     }

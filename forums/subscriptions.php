@@ -18,7 +18,7 @@ if ($count === 0) {
     $HTMLOUT .= main_div("
         <h1 class='has-text-centered'>{$lang['sub_no_subscript_found']}!</h1>
         <p>{$lang['sub_you_have_yet_sub_forums']} {$lang['sub_subscrib_to_forum']} {$lang['sub_no_subscript_found_msg1']}.</p>
-		<p>{$lang['sub_to_be_notified_via_pm']} <a class='altlink has-text-success' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
+		<p>{$lang['sub_to_be_notified_via_pm']} <a class='is-link has-text-success' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
 		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", '', 'padding20');
 
     return;
@@ -65,11 +65,11 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
         case $total_pages > 11:
             $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['paths']['images_baseurl'] . 'forums/multipage.gif" class="icon tooltipper" alt="+" title="+">';
             for ($i = 1; $i < 5; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= ' ... ';
             for ($i = ($total_pages - 2); $i <= $total_pages; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= '</span>';
             break;
@@ -77,14 +77,14 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
         case $total_pages < 11:
             $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['paths']['images_baseurl'] . 'forums/multipage.gif" class="icon tooltipper" alt="+" title="+">';
             for ($i = 1; $i < $total_pages; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= '</span>';
             break;
     }
     $new = ($topic_arr['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
     $topicpic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name']) . '</a> ' . $multi_pages;
+    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name']) . '</a> ' . $multi_pages;
     $body .= '<tr>
 		<td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
 		<td>' . $icon . '</td>
@@ -97,7 +97,7 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		<td>' . number_format($topic_arr['post_count']) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>
 		<td><span style="white-space:nowrap;">' . get_date((int) $topic_arr['added'], '') . '</span><br>by&nbsp;' . $last_post_username . '</td>
-		<td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '">
+		<td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '">
 		<img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post"></a></td>
 		<td><input type="checkbox" name="remove[]" value="' . (int) $topic_arr['subscribed_id'] . '"></td>
 		</tr>';

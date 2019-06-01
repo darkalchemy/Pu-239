@@ -177,7 +177,7 @@ $forum_name = $fluent->from('forums')
 $section_name = htmlsafechars($forum_name);
 
 $HTMLOUT .= '
-    <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
+    <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
     <form method="post" action="' . $site_config['paths']['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';

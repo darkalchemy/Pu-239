@@ -294,7 +294,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
     return "
     <div class='bg-02 round5 padding10'>
         <div>
-            <div class='has-text-white size_6 padding10'>
+            <div class='is-primary size_6 padding10'>
                 {$question}
             </div>
         </div>

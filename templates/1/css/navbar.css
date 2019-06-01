@@ -56,10 +56,8 @@ header#navbar .nav_container ul > li > ul {
     margin: 0;
     pointer-events: none;
     flex-direction: column;
-    opacity: 0;
     -webkit-perspective: 1000px;
     perspective: 1000px;
-    min-width: inherit;
     width: 200px;
 }
 
@@ -80,20 +78,14 @@ header#navbar .nav_container ul > li > ul > li > a {
 }
 
 li:hover ul.hov {
-    -webkit-animation-duration: .25s;
     animation-duration: .25s;
-    -webkit-animation-delay: .25s;
     animation-delay: .25s;
 }
 
 li:hover ul.hov li {
-    -webkit-animation-direction: normal;
     animation-direction: normal;
-    -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1;
-    -webkit-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
-    -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
 }
 
@@ -119,13 +111,11 @@ header#navbar .nav_container ul > li > ul a:hover {
 }
 
 #hamburger > span {
-    background: #fff;
     display: block;
     width: 100%;
     height: 3px;
     position: relative;
     margin-top: 3px;
-    color: #fff;
     transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -150,24 +140,31 @@ header#navbar .nav_container ul > li > ul a:hover {
     position: absolute;
     left: 50%;
     margin-left: -3px;
-    -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
 }
 
 #close > span::after {
-    -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
 
 #close:hover > span,
 #close:hover > span::after {
     background: #ccc;
+
 }
 
 #hamburger:hover > span,
 #hamburger:hover > span::after,
 #hamburger:hover > span::before {
     background: rgba(250, 250, 250, .5);
+}
+
+.ddFade {
+    border-left: 1px solid var(--main-bdr-color);
+    border-right: 1px solid var(--main-bdr-color);
+    border-bottom: 1px solid var(--main-bdr-color);
+    border-bottom-left-radius: .3125em;
+    border-bottom-right-radius: .3125em;
 }
 
 @media only screen and (max-width: 768px) {
@@ -182,14 +179,12 @@ header#navbar .nav_container ul > li > ul a:hover {
     #hamburger {
         display: block;
         transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        -webkit-transform: translateY(0);
         transform: translateY(0);
         z-index: 1;
     }
 
     #close {
         transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        -webkit-transform: translateX(50px);
         transform: translateX(50px);
         display: block;
         z-index: 1;
@@ -211,7 +206,7 @@ header#navbar .nav_container ul > li > ul a:hover {
     }
 
     header#navbar ul > li {
-        border-bottom: 1px solid #555;
+        border-bottom: none;
         padding: 0;
     }
 
@@ -273,12 +268,10 @@ header#navbar .nav_container ul > li > ul a:hover {
     }
 
     header#navbar.showNav #hamburger {
-        -webkit-transform: translateX(50px);
         transform: translateX(50px);
     }
 
     header#navbar.showNav #close {
-        -webkit-transform: translateX(0);
         transform: translateX(0);
     }
 
@@ -297,9 +290,8 @@ header#navbar .nav_container ul > li > ul a:hover {
     header#navbar .nav_container ul > li > ul > li {
         border: none !important;
         opacity: 1 !important;
-        -webkit-transform: translate(0, 0) rotate(0) !important;
         transform: translate(0, 0) rotate(0) !important;
-        -webkit-animation: initial !important;
+        animation: initial !important;
     }
 
     header#navbar .nav_container ul > li > ul .ico:hover,
@@ -308,7 +300,6 @@ header#navbar .nav_container ul > li > ul a:hover {
     header#navbar .nav_container ul > li:hover a {
         background-color: transparent;
         border-bottom: none;
-        color: #fff;
     }
 
     header#navbar ul > li > a:hover {

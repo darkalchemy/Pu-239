@@ -35,10 +35,10 @@ $today = get_date((int) TIME_NOW, 'FORM', 1, 0);
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>
             </li>
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>
             </li>
         </ul>

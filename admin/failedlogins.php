@@ -105,9 +105,9 @@ if (mysqli_num_rows($res) == 0) {
             <td>' . ($arr['banned'] === 'yes' ? "
                 <span class='has-text-danger'>{$lang['failed_main_banned']}</span> 
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
-                    <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>
+                    <span class='is-success'>[{$lang['failed_main_remban']}]</span>
                 </a>" : "
-                <span class='has-text-green'>{$lang['failed_main_noban']}</span> 
+                <span class='is-success'>{$lang['failed_main_noban']}</span> 
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int) $arr['id'] . "'>
                     <span class='has-text-danger'>[{$lang['failed_main_ban']}]</span>
                 </a>") . "  

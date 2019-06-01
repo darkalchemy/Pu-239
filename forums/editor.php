@@ -161,7 +161,7 @@ $HTMLOUT .= main_table('
             <td class="is-paddingless">' . BBcode($body) . ' 
 				<div class="level-center margin20">
 					<span class="level-center">
-						<a class="altlink flipper" title="' . $lang['fm_additional_options'] . '" id="staff_tools_open">
+						<a class="is-link flipper" title="' . $lang['fm_additional_options'] . '" id="staff_tools_open">
 							<i class="icon-up-open size_2" aria-hidden="true"></i>' . $lang['fm_additional_options'] . '
 						</a>
 					</span>

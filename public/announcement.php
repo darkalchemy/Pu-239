@@ -101,7 +101,7 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
             <div class='tabular-row'>
                 <div class='tabular-cell'><b><span class='has-text-danger'>{$lang['annouce_announcement']}: " . htmlsafechars($ann_subject) . "</span></b></div>
             </div>
-            <span class='has-text-blue'>" . format_comment($ann_body) . "</span>
+            <span class='is-blue'>" . format_comment($ann_body) . "</span>
             {$lang['annouce_click']} <a href='{$site_config['paths']['baseurl']}/clear_announcement.php'>
             <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.
         </div>

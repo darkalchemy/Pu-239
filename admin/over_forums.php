@@ -13,10 +13,10 @@ $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['ad_over_configure']}</a>
                     </li>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>{$lang['ad_over_manager']}</a>
                     </li>
                 </ul>
@@ -144,7 +144,7 @@ switch ($action) {
             <tr>
                 <td class="has-text-centered">' . (int) $row['sort'] . '</td>
             <td>
-                <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
+                <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
                 ' . htmlsafechars($row['description']) . '
             </td>
             <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>

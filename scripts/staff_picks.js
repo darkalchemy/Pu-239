@@ -21,12 +21,12 @@ $('.staff_pick').on('click', function () {
                 $(this).html('?');
                 $(this).tooltipster('content', 'Unknown failure. Try refreshing the page.');
             } else if (data['staff_pick'] > 0) {
-                $(this).html('<i class=\'icon-star-empty icon has-text-red\'></i>');
+                $(this).html('<i class=\'icon-star-empty icon has-text-danger\'></i>');
                 $(this).tooltipster('content', 'Remove from Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
                 el.innerHTML = '<img src=\'./images/staff_pick.png\' class=\'tooltipper emoticon is-2x\' alt=\'Staff Pick!\' title=\'Staff Pick!\'>';
             } else {
-                $(this).html('<i class=\'icon-star-empty icon has-text-lime\'></i>');
+                $(this).html('<i class=\'icon-star-empty icon has-text-success\'></i>');
                 $(this).tooltipster('content', 'Add to Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
                 el.innerHTML = '';

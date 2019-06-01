@@ -99,11 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             <tr>
                 <td class='has-text-right'>Days valid</td>
                 <td class='has-text-left'>
-                    <input type='number' name='days_valid' class='w-100' min='1' required>
+                    <input type='number' name='days_valid' class='w-100' min='1' value='1' required>
                 </td>
                 <td class='has-text-right'>Max users</td>
                 <td class='has-text-left'>
-                    <input type='number' name='max_users' class='w-100' min='1' required>
+                    <input type='number' name='max_users' class='w-100' min='10' value='10' required>
                 </td>
             </tr>
 
@@ -115,13 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             </tr>
             <tr>
                 <td class='has-text-centered'>
-                    <input type='number' name='bonus_upload' class='w-100' placeholder='How many Gigabytes?' min='1' required>
+                    <input type='number' name='bonus_upload' class='w-100' placeholder='How many Gigabytes?' min='10' value='10' required>
                 </td>
                 <td class='has-text-centered'>
-                    <input type='number' name='bonus_invites' class='w-100' min='1' required>
+                    <input type='number' name='bonus_invites' class='w-100' min='1' value='1' required>
                 </td>
                 <td class='has-text-centered'>
-                    <input number='text' name='bonus_karma' class='w-100' min='1' required>
+                    <input type='number' name='bonus_karma' class='w-100' min='1000' value='1000' required>
                 </td>
             </tr>
             <tr>

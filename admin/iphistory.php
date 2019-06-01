@@ -55,7 +55,7 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['iphistory_usedby']}" . format_username((int) $id) . "</h1>
         <p class='has-text-centered'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</p>
         <p class='has-text-centered'>
-            <span class='has-text-blue'>{$lang['iphistory_single']}</span> - <span class='has-text-danger'>{$lang['iphistory_banned']}</span> - <span class='has-text-success'>{$lang['iphistory_dupe']}</span>
+            <span class='is-blue'>{$lang['iphistory_single']}</span> - <span class='has-text-danger'>{$lang['iphistory_banned']}</span> - <span class='has-text-success'>{$lang['iphistory_dupe']}</span>
         </p>";
 
 $heading = "
@@ -114,12 +114,12 @@ foreach ($resip as $iphistory) {
     $count = $ban_stuffs->get_count($iphistory['ip']);
     if ($count === 0) {
         if ($ipcount > 1) {
-            $ipshow = "<b><a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span></a></b>';
+            $ipshow = "<b><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span></a></b>';
         } else {
-            $ipshow = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='has-text-blue'>" . htmlsafechars($iphistory['ip']) . ' </span></b></a>';
+            $ipshow = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='is-blue'>" . htmlsafechars($iphistory['ip']) . ' </span></b></a>';
         }
     } else {
-        $ipshow = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-danger'><b>" . htmlsafechars($iphistory['ip']) . ' </b></span></a>';
+        $ipshow = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-danger'><b>" . htmlsafechars($iphistory['ip']) . ' </b></span></a>';
     }
     // User IP listed for GeoIP tracing
     $gi = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);
@@ -151,7 +151,7 @@ foreach ($resip as $iphistory) {
             <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
         </tr>";
     } else {
-        $seedbox = "<a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='has-text-green'><b>{$lang['iphistory_yes']}</b></span></a>";
+        $seedbox = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='is-success'><b>{$lang['iphistory_yes']}</b></span></a>";
         $body .= "
         <tr>
             <td>{$lang['iphistory_browse']}" . get_date((int) $lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date((int) $lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date((int) $lastannounce, '') . "</td>

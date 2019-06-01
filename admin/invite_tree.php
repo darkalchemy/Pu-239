@@ -18,10 +18,10 @@ if ($id !== 0) {
     $HTMLOUT .= '
     <div class="bottom20">
         <ul class="level-center bg-06">' . ($arr_user['invitedby'] == 0 ? '
-            <li class="margin10"><a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '" class="altlink tooltipper">' . $lang['invite_up'] . '</a></li>' : '
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="altlink tooltipper">' . $lang['invite_up'] . '</a></li>') . '
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' " class="altlink tooltipper">' . $lang['invite_expand_tree'] . '</a></li>
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '" class="altlink tooltipper">' . $lang['invite_expand_more'] . '</a></li>
+            <li class="margin10"><a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '" class="is-link tooltipper">' . $lang['invite_up'] . '</a></li>' : '
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="is-link tooltipper">' . $lang['invite_up'] . '</a></li>') . '
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' " class="is-link tooltipper">' . $lang['invite_expand_tree'] . '</a></li>
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '" class="is-link tooltipper">' . $lang['invite_expand_more'] . '</a></li>
         </ul>
     </div>
     <h1 class="has-text-centered">' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>

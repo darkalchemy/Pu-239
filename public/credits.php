@@ -178,9 +178,9 @@ if (empty($credits)) {
 
         $body .= "
     <tr>
-        <td><a target='_blank' class='altlink' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
+        <td><a target='_blank' class='is-link' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
         if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-            $body .= "&#160;<a class='altlink_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='altlink_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
+            $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
         }
 
         $body .= "<br><font class='small'>" . htmlsafechars($descr) . '</font></td>

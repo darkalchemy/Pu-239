@@ -58,7 +58,7 @@ if ($action === 'app' || $action === 'show') {
     $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
-                <li class='altlink margin10'>$hide</li>
+                <li class='is-link margin10'>$hide</li>
             </ul>
         </div>
         <h1 class='has-text-centered'>{$lang['uploadapps_applications']}</h1>";

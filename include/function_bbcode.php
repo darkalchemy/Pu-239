@@ -291,7 +291,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<em>\1</em>',
         '<u>\1</u>',
         '<p>\1</p>',
-        '<a class="altlink" href="mailto:\1">\1</a>',
+        '<a class="is-link" href="mailto:\1">\1</a>',
         '<div style="text-align: \1;">\2</div>',
         '<div class="has-text-centered">\1</div>',
         '<div class="has-text-left">\1</div>',

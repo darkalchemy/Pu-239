@@ -119,7 +119,7 @@ if (mysqli_num_rows($res) === 0) {
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
-                    <td><a class="altlink"  href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
+                    <td><a class="is-link"  href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
                     <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($CURUSER['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $CURUSER['id'] ? ' [' . format_username((int) $row['poster']) . ']' : '') . '</td>
                     <td class="has-text-centered w-15 mw-150">' . get_date((int) $row['added'], '') . '</td>
                     <td class="has-text-centered">

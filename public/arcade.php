@@ -19,7 +19,7 @@ $HTMLOUT = "
                 <h1>{$site_config['site']['name']} Old School Arcade!</h1>
                 <span>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</span>
                 <div class='level-center top10'>
-                    <a class='altlink' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
+                    <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </div>
             </div>";
 

@@ -37,7 +37,6 @@ $BLOCKS = [
     'global_bug_message_on' => 1,
     'global_freeleech_contribution_on' => 1,
     'global_staff_menu_on' => 1,
-    'global_themechanger_on' => 1,
     'global_flash_messages_on' => 1,
     'userdetails_showfriends_on' => 1,
     'userdetails_flush_on' => 1,

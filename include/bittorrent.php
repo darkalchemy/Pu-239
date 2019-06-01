@@ -1133,7 +1133,7 @@ function bubble($link, $text, $title = false)
             <span id='$id'>";
     if ($title) {
         $bubble .= "
-                <span class='size_6 has-text-green has-text-centered bottom20'>
+                <span class='size_6 is-success has-text-centered bottom20'>
                     $title
                 </span>";
     }

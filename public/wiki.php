@@ -45,8 +45,8 @@ function navmenu()
     <div id="wiki-navigation">
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php" class="' . ($action === 'index' ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_index'] . '</a></li>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=add" class="' . ($action === 'add' ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_add'] . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php" class="' . ($action === 'index' ? 'active ' : '') . 'is-link margin10">' . $lang['wiki_index'] . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=add" class="' . ($action === 'add' ? 'active ' : '') . 'is-link margin10">' . $lang['wiki_add'] . '</a></li>
             </ul>
         </div>';
     $div = '

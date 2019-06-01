@@ -91,34 +91,34 @@ if (empty($mode)) {
                             <tr>
                                 <td>{$lang['backup_gzip']}</td>
                                 <td>{$lang['backup_optional']}</td>
-                                <td class='rowhead'>" . ($site_config['backup']['use_gzip'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td class='rowhead'>" . ($site_config['backup']['use_gzip'] ? "<div class='has-text-centered has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_gzippath']}</td>
                                 <td>{$site_config['backup']['gzip_path']}</td>
-                                <td>" . (is_file($site_config['backup']['gzip_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_file($site_config['backup']['gzip_path']) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
                                 <td>" . BACKUPS_DIR . '</td>
-                                <td>' . (is_dir(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>' . (is_dir(BACKUPS_DIR) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_readfolder']}</td>
-                                <td>" . (is_readable(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_readable(BACKUPS_DIR) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writable']}</td>
-                                <td>" . (is_writable(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_writable(BACKUPS_DIR) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
                                 <td>{$site_config['backup']['mysqldump_path']}</td>
-                                <td>" . (is_file($site_config['backup']['mysqldump_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_file($site_config['backup']['mysqldump_path']) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
-                                <td>" . ($site_config['backup']['write_to_log'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . '</td>
+                                <td>" . ($site_config['backup']['write_to_log'] ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . '</td>
                             </tr>
                         </tbody>
                     </table>

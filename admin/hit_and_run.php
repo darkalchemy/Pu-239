@@ -29,10 +29,10 @@ $query_2 = (isset($_GET['really_bad']) ? "SELECT s.torrentid, s.userid, s.hit_an
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
             <ul class='level-center bg-06'>
-                <li class='altlink margin10'>
+                <li class='is-link margin10'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run'>{$lang['hitnrun_show_current']}</a>
                 </li>
-                <li class='altlink margin10'>
+                <li class='is-link margin10'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them'>{$lang['hitnrun_show_disabled']}</a>
                 </li>
             </ul>
@@ -100,9 +100,9 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             $users = $hit_and_run_arr;
             $users['id'] = (int) $Uid_ID;
             $HTMLOUT .= '<tr><td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
-            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
+            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
 </td>
-            <td><a class="altlink" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
+            <td><a class="is-link" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
             ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>
             ' . $lang['hitnrun_seeders'] . ' ' . (int) $hit_and_run_arr['numseeding'] . '
          </td>
@@ -115,7 +115,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_ratio'] . '<span style="color: "' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</span><br>
             ' . $lang['hitnrun_site_ratio'] . '<span style="color: "' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
             <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . $lang['hitnrun_send'] . '"></a><br>
-            <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . $lang['hitnrun_shit'] . '"></a></td></tr>';
+            <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . $lang['hitnrun_shit'] . '"></a></td></tr>';
         }
     }
 }

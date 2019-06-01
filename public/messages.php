@@ -80,11 +80,11 @@ if (!in_array($order_by, $good_order_by)) {
 $top_links = '
     <div class="bottom20">
         <ul class="level-center bg-06">
-            <li class="altlink margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=search">' . $lang['pm_search'] . '</a></li>
-            <li class="altlink margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
-            <li class="altlink margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
-            <li class="altlink margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
-            <li class="altlink margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=search">' . $lang['pm_search'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
         </ul>
     </div>';
 

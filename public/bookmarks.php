@@ -250,7 +250,7 @@ $htmlout .= '
         <h1>' . $lang['bookmarks_my'] . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/sharemarks.php?id=' . $userid . '" class="altlink">' . $lang['bookmarks_my_share'] . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/sharemarks.php?id=' . $userid . '" class="is-link">' . $lang['bookmarks_my_share'] . '</a></li>
             </ul>
         </div>
     </div>';

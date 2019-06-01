@@ -315,7 +315,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
 function rep_output($msg = '', $html = '')
 {
     global $lang, $closewindow;
-    $body_class = 'background-16 h-style-9 text-9 skin-2';
+    $body_class = 'background-16 skin-2';
     if ($msg && empty($html)) {
         $html = "
         <tr>

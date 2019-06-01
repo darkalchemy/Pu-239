@@ -84,8 +84,6 @@ $lang = [
     'block_staff_menu_set' => 'Enable Staff Menu in Navbar',
     'block_flash_messages' => 'Flash Messages',
     'block_flash_messages_set' => 'Enable Flash Messages on page refresh',
-    'block_themechanger' => 'Theme Changer',
-    'block_themechanger_set' => 'Enable Theme Changer',
     ///Userdetails Display Settings////
     'block_userdetails' => 'Userdetails Display Settings',
     'block_login_link' => 'Quick Login Link?',

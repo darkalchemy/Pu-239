@@ -45,7 +45,6 @@ $list = [
     'global_bug_message_on',
     'global_freeleech_contribution_on',
     'global_staff_menu_on',
-    'global_themechanger_on',
     'global_flash_messages_on',
     'userdetails_flush_on',
     'userdetails_joined_on',
@@ -398,13 +397,6 @@ $contents[] = "
                                 <#global_staff_menu_on#>
                             </div>
                             <div class='w-100'>{$lang['block_staff_menu_set']}</div>";
-
-$contents[] = "
-                            <div class='w-100'>{$lang['block_themechanger']}</div>
-                            <div class='slideThree'>
-                                <#global_themechanger_on#>
-                            </div>
-                            <div class='w-100'>{$lang['block_themechanger_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_flash_messages']}</div>

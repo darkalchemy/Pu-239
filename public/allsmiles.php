@@ -9,7 +9,7 @@ check_user_status();
 $lang = load_language('global');
 global $ontainer, $CURUSER, $site_config;
 
-$body_class = 'background-16 h-style-9 text-9 skin-2';
+$body_class = 'background-16 skin-2';
 $htmlout = doc_head() . "
     <meta property='og:title' content='All Smiles'>
     <title>All Smilies</title>

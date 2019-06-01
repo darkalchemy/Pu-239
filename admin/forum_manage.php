@@ -24,10 +24,10 @@ $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_clas
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['fm_overforum']}</a>
                     </li>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['fm_configure']}</a>
                     </li>
                 </ul>
@@ -191,7 +191,7 @@ if (mysqli_num_rows($res) > 0) {
         } else {
             $subforum_name = '';
         }
-        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
+        $HTMLOUT .= '<tr><td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
             <span>' . htmlsafechars($row['name']) . '</span></a><br>
             ' . htmlsafechars($row['description']) . '</td>
             <td><span>' . $subforum_name . '</span></td>

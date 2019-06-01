@@ -52,19 +52,19 @@ switch ($action) {
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id($arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
-                stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $arr_poll['poll_closed'] === 'yes': //=== poll closed
-                stderr($lang['gl_error'], '' . $lang['poll_poll_is_closed_you_cannot_vote'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_poll_is_closed_you_cannot_vote'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $arr_poll['poll_starts'] > TIME_NOW: //=== poll hasn't started yet
-                stderr($lang['gl_error'], '' . $lang['poll_poll_hasnt_started_yet'] . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_poll_hasnt_started_yet'] . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $vote_count > 0 && $arr_poll['change_vote'] === 'no': //=== already voted and change vote set to no
-                stderr($lang['gl_error'], '' . $lang['poll_you_have_already_voted'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_you_have_already_voted'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $CURUSER['class'] < $arr_poll['min_class_read']: //=== shouldn't be here!
@@ -72,11 +72,11 @@ switch ($action) {
                 break;
 
             case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes': //=== not alowed to post
-                stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>');
+                stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
 
             case $arr_poll['locked'] === 'yes': //=== topic locked
-                stderr($lang['gl_error'], '' . $lang['fe_this_topic_is_locked'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>');
+                stderr($lang['gl_error'], '' . $lang['fe_this_topic_is_locked'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
         }
         //=== ok, all is good, lets enter the vote(s) into the DB
@@ -104,7 +104,7 @@ switch ($action) {
             }
             //=== did it work?
             if ($success != 1) {
-                stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'counted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'counted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
             }
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
@@ -124,19 +124,19 @@ switch ($action) {
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id($arr_poll['poll_id']): //=== no poll
-                stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $arr_poll['poll_closed'] === 'yes': //=== poll closed
-                stderr($lang['gl_error'], '' . $lang['poll_poll_is_closed_you_cannot_vote'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_poll_is_closed_you_cannot_vote'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $arr_poll['poll_starts'] > TIME_NOW: //=== poll hasn't started yet
-                stderr($lang['gl_error'], '' . $lang['poll_poll_hasnt_started_yet'] . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_poll_hasnt_started_yet'] . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $arr_poll['change_vote'] === 'no': //===  vote set to no changes
-                stderr($lang['gl_error'], '' . $lang['poll_you_have_already_voted'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+                stderr($lang['gl_error'], '' . $lang['poll_you_have_already_voted'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
             case $CURUSER['class'] < $arr_poll['min_class_read']: //=== shouldn't be here!
@@ -144,11 +144,11 @@ switch ($action) {
                 break;
 
             case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes': //=== not alowed to vote
-                stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>');
+                stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
 
             case $arr_poll['locked'] === 'yes': //=== topic locked
-                stderr($lang['gl_error'], '' . $lang['fe_this_topic_is_locked'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>');
+                stderr($lang['gl_error'], '' . $lang['fe_this_topic_is_locked'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
         }
         //=== ok all is well, let then change their votes :)
@@ -166,10 +166,10 @@ switch ($action) {
         $poll_id = (int) $arr_poll['poll_id'];
         $user_id = (int) $arr_poll['user_id'];
         if (is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['poll_there_can_only_be_one_poll_per_topic'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+            stderr($lang['gl_error'], '' . $lang['poll_there_can_only_be_one_poll_per_topic'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         if ($user_id != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
-            stderr($lang['gl_error'], '' . $lang['poll_only_the_topic_owner_or_staff_can_start_a_poll'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+            stderr($lang['gl_error'], '' . $lang['poll_only_the_topic_owner_or_staff_can_start_a_poll'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         //=== enter it into the DB \o/
         if (isset($_POST['add_the_poll']) && $_POST['add_the_poll'] == 1) {
@@ -216,7 +216,7 @@ switch ($action) {
         $HTMLOUT .= '<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
-		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name']) . '</a>"</h1>
+		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="is-link" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name']) . '</a>"</h1>
 	<form action="forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_add">
@@ -302,7 +302,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . ' </a>.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== delete the poll
             sql_query('DELETE FROM forum_poll WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -314,7 +314,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'deleted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . ' </a>.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'deleted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
         header('Location: forums . php?action=view_topic & topic_id=' . $topic_id);
@@ -331,7 +331,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . ' </a>.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== delete the votes
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -339,7 +339,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'reset') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . ' </a>.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'reset') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
         header('Location: forums . php?action=view_topic & topic_id=' . $topic_id);
@@ -356,7 +356,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . ' </a>.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
             //=== close the poll
             sql_query('UPDATE forum_poll SET `poll_closed` = \'yes\', poll_ends = ' . TIME_NOW . ' WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -364,7 +364,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'closed') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'closed') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
@@ -382,7 +382,7 @@ switch ($action) {
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
-            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+            stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
             //=== open the poll
             sql_query('UPDATE forum_poll SET `poll_closed` = \'no\', poll_ends = \'1356048000\' WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -390,7 +390,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'opened') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
+            stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'opened') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
@@ -464,7 +464,7 @@ switch ($action) {
 	<table class="main" width="750px"cellspacing="0" cellpadding="0">
 	<tr>
 		<td class="embedded">
-		<h1>' . $lang['poll_edit_poll_in'] . ' <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name']) . ' </a>"</h1>
+		<h1>' . $lang['poll_edit_poll_in'] . ' <a class="is-link" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name']) . ' </a>"</h1>
 		<input type="hidden" name="topic_id" value="' . $topic_id . '">
 		<input type="hidden" name="action_2" value="poll_edit">
 		<input type="hidden" name="do_poll_edit" value="1">

@@ -201,19 +201,19 @@ foreach ($html as $key => $value) {
 }
 $htmlout = "
     <ul class='level-center bg-06 bottom10'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_overview'>MySQL Overview</a>
         </li>
     </ul>";

@@ -58,10 +58,10 @@ if ($count > $perpage) {
 
 $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a>
         </li>
     </ul>
@@ -83,7 +83,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     <tr>
         <td>{$arr['id']}</td>
         <td>" . format_username((int) $arr['id']) . "</td>
-        <td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . "</a></td>
+        <td><a class='is-link' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . "</a></td>
         <td><span class='size_3'>" . get_date((int) $arr['added'], 'DATE') . '</span></td>
         <td>';
     $donoruntil = (int) $arr['donoruntil'];
@@ -97,7 +97,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td><b>&#36;' . htmlsafechars($arr['donated']) . '</td>
         <td><b>&#36;' . htmlsafechars($arr['total_donated']) . "</td>
         <td>
-            <a class='altlink' href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
+            <a class='is-link' href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
         </td>
     </tr>";
 }

@@ -183,7 +183,7 @@ if (!empty($boxes)) {
                         <td colspan="2"><span>' . $lang['pm_edmail_note'] . '</span>
                         <ul>
                             <li>' . $lang['pm_edmail_if1'] . '</li>
-                            <li>' . $lang['pm_edmail_if2'] . '<a class="altlink" href="messages.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
+                            <li>' . $lang['pm_edmail_if2'] . '<a class="is-link" href="messages.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -321,7 +321,7 @@ $HTMLOUT .= main_table('
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_cats'] . '</span></td>
-        <td><a class="altlink"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
+        <td><a class="is-link"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
         <div id="defcat" class="is_hidden">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
     </tr>
     <tr>

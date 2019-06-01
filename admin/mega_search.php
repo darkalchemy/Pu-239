@@ -91,7 +91,7 @@ if (!empty($user_names)) {
                 <td>' . format_username((int) $arr['id']) . '</td>
                 <td>' . htmlsafechars((string) $arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper has-text-blue" title="added">' . get_date((int) $arr['registered'], '') . '</span><br>
+                    <span class="tooltipper is-blue" title="added">' . get_date((int) $arr['registered'], '') . '</span><br>
                     <span class="tooltipper has-text-success" title="last access">' . get_date((int) $arr['last_access'], '') . '</span>
                 </td>
                 <td>
@@ -117,13 +117,13 @@ if (!empty($user_names)) {
     }
     if (!empty($failed)) {
         $body .= "<tr>
-                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . '</span></td>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='is-blue'>" . implode(', ', $failed) . '</span></td>
             </tr>';
     }
     if (empty($body)) {
         $body = "
             <tr>
-                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . '</span></td>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='is-blue'>" . implode(', ', $searched_users) . '</span></td>
             </tr>';
     }
     $heading = " 
@@ -181,7 +181,7 @@ if (isset($_POST['msg_to_analyze'])) {
                 <td><div class="level-left">' . format_username((int) $arr['id']) . '</div></td>
                 <td>' . htmlsafechars((string) $arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper has-text-blue" title="added">' . get_date((int) $arr['registered'], '') . '</span><br>
+                    <span class="tooltipper is-blue" title="added">' . get_date((int) $arr['registered'], '') . '</span><br>
                     <span class="tooltipper has-text-success" title="last access">' . get_date((int) $arr['last_access'], '') . '</span>
                 </td>
                 <td>
@@ -208,7 +208,7 @@ if (isset($_POST['msg_to_analyze'])) {
         $body .= "<tr>
                 <td colspan='7'>
                     <span class='size_4 has-text-danger text-shadow'>Email" . plural(count($failed)) . " Not Found: </span>
-                    <span class='has-text-blue'>" . implode(', ', $failed) . '</span>
+                    <span class='is-blue'>" . implode(', ', $failed) . '</span>
                 </td>
             </tr>';
     }

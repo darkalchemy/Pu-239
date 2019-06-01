@@ -105,7 +105,7 @@ if (isset($_GET['add'])) {
     //=== Check if member was added
     if (mysqli_affected_rows($mysqli) > 0) {
         $H1_thingie = '<h1 class="has-text-centered">' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username((int) $member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username((int) $member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="is-link">' . $lang['watched_users_list'] . '</a>.');
     }
 }
 $watched_users = $fluent->from('users')

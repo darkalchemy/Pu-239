@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
 use Pu239\Session;
 use Pu239\User;
 
@@ -12,7 +13,7 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_comments.php';
 check_user_status();
-$lang = load_language('global');
+$lang = array_merge(load_language('global'), load_language('comment'));
 global $container, $site_config, $CURUSER;
 
 $stdhead = [
@@ -28,6 +29,7 @@ $stdfoot = [
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
+$fluent = $container->get(Database::class);
 $user_stuffs = $container->get(User::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -43,9 +45,25 @@ if ($action === 'add') {
         if (!$body) {
             stderr('Error', 'Comment body cannot be empty!');
         }
-        sql_query('INSERT INTO usercomments (user, userid, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($userid) . ", '" . TIME_NOW . "', " . sqlesc($body) . ',' . sqlesc($body) . ')');
-        $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-        sql_query('UPDATE users SET comments = comments + 1 WHERE id =' . sqlesc($userid));
+        $values = [
+            'user' => $CURUSER['id'],
+            'userid' => $userid,
+            'added' => TIME_NOW,
+            'text' => $body,
+            'ori_text' => $body,
+        ];
+        $newid = $fluent->insertInto('usercomments')
+                        ->values($values)
+                        ->execute();
+        $count = $fluent->from('usercomments')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->where('userid = ?', $userid)
+                        ->fetch('count');
+        $set = [
+            'comments' => $count,
+        ];
+        $user_stuffs->update($set, $userid);
         header("Refresh: 0; url=userdetails.php?id=$userid&viewcomm=$newid#comm$newid");
         die();
     } else {
@@ -82,17 +100,19 @@ if ($action === 'add') {
     die();
 } elseif ($action === 'edit') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $userid = (int) $_POST['userid'];
         $commentid = (int) $_POST['cid'];
     } else {
-        $userid = (int) $_GET['userid'];
         $commentid = (int) $_GET['cid'];
     }
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }
-    $res = sql_query('SELECT c.*, u.username, u.id FROM usercomments AS c LEFT JOIN users AS u ON c.userid=u.id WHERE c.id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res);
+    $arr = $fluent->from('usercomments AS c')
+                  ->select('u.username')
+                  ->select('u.id')
+                  ->leftJoin('users AS u ON c.userid = u.id')
+                  ->where('c.id = ?', $commentid)
+                  ->fetch();
     if (!$arr) {
         stderr('Error', 'Invalid ID.');
     }
@@ -105,7 +125,15 @@ if ($action === 'add') {
         if ($body == '') {
             stderr('Error', 'Comment body cannot be empty!');
         }
-        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = ' . sqlesc(TIME_NOW) . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        $set = [
+            'text' => $body,
+            'editedat' => TIME_NOW,
+            'editedby' => $CURUSER['id'],
+        ];
+        $fluent->update('usercomments')
+               ->set($set)
+               ->where('id = ?', $commentid)
+               ->execute();
         if ($returnto) {
             header("Location: $returnto");
         } else {
@@ -114,10 +142,11 @@ if ($action === 'add') {
         die();
     }
     $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-    $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username((int) $arr['userid']) . "</h1>
+    $HTMLOUT .= '
+    <h1 class="has-text-centered">Edit comment for ' . format_username((int) $arr['userid']) . "</h1>
     <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}' accept-charset='utf-8'>
     <input type='hidden' name='returnto' value='{$referer}'>
-    <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "'>
+    <input type='hidden' name='cid' value='" . (int) $commentid . "'>
     <textarea name='body' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . "</textarea>
     <div class='has-text-centered margin20'>
         <input type='submit' class='button is-small' value='Do it!'>
@@ -144,9 +173,20 @@ if ($action === 'add') {
     if ($arr['id'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
-    sql_query('DELETE FROM usercomments WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-    if ($userid && mysqli_affected_rows($mysqli) > 0) {
-        sql_query('UPDATE users SET comments = comments - 1 WHERE id=' . sqlesc($userid));
+    $deleted = $fluent->deleteFrom('usercomments')
+                      ->where('id = ?', $commentid)
+                      ->execute();
+
+    if ($userid && $deleted) {
+        $count = $fluent->from('usercomments')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->where('userid = ?', $userid)
+                        ->fetch('count');
+        $set = [
+            'comments' => $count,
+        ];
+        $user_stuffs->update($set, $userid);
     }
     $session = $container->get(Session::class);
     $session->set('is-success', 'User Comment has been deleted.');

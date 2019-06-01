@@ -71,10 +71,10 @@ $bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded m
 $top_menu = '
     <div>
         <ul class="level-center bg-06 bottom20">
-            <li class="altlink margin10">
+            <li class="is-link margin10">
                 <a href="' . $site_config['paths']['baseurl'] . '/offers.php">View Offers</a>
             </li>
-            <li class="altlink margin10">
+            <li class="is-link margin10">
                 <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=add_new_offer">New Offer</a>
             </li>
         </ul>
@@ -197,7 +197,7 @@ switch ($action) {
             $body .= '
         <tr>
             <td>' . $caticon . '</td>
-            <td><a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $offer['id'] . '">' . htmlsafechars((string) $offer['offer_name']) . '</a></td>
+            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $offer['id'] . '">' . htmlsafechars((string) $offer['offer_name']) . '</a></td>
             <td>' . get_date((int) $offer['added'], 'LONG') . '</td>
             <td>' . number_format($offer['comments']) . '</td>
             <td>yes: ' . number_format($offer['vote_yes_count']) . '<br>
@@ -281,7 +281,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>link:</td>
-  <td><a class="altlink" href="' . htmlsafechars((string) $arr['link']) . '"  target="_blank">' . htmlsafechars($arr['link']) . '</a></td>
+  <td><a class="is-link" href="' . htmlsafechars((string) $arr['link']) . '"  target="_blank">' . htmlsafechars($arr['link']) . '</a></td>
   </tr>
     <tr>
         <td>IMDb</td>
@@ -299,7 +299,7 @@ switch ($action) {
   ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
-  <td><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
+  <td><a class="is-link" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
   </tr>' : '') . '
   <tr>
   <td>Report Offer</td>
@@ -308,7 +308,7 @@ switch ($action) {
         <div class="has-text-centered margin20">
             <input type="submit" class="button is-small" value="Report This Offer">
         </div>
-        For breaking the <a class="altlink" href="rules . php">rules</a>
+        For breaking the <a class="is-link" href="rules . php">rules</a>
     </form>
     </td>
   </tr>
@@ -396,7 +396,7 @@ switch ($action) {
     <td colspan="2"><h1>Making a Offer</h1></td>
     </tr>
     <tr>
-    <td colspan="2">Before you make an offer, <a class="altlink" href="browse.php">Search</a>
+    <td colspan="2">Before you make an offer, <a class="is-link" href="browse.php">Search</a>
     to be sure it has not yet been offered, offered, or uploaded!<br><br>Be sure to fill in all fields!
     <div class="has-text-centered error size_6 margin20"><span></span></div>
     </td>
@@ -471,7 +471,7 @@ switch ($action) {
         }
         if (!isset($_GET['do_it'])) {
             stderr('Sanity check...', 'Are you sure you would like to delete the offer <b>"' . htmlsafechars($exists['offer_name']) . '"</b>? If so click
-        <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_offer&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
+        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_offer&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('offers')
                    ->where('id = ?', $id)
@@ -756,7 +756,7 @@ switch ($action) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_comment&amp;id=' . (int) $arr['offer'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
+            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_comment&amp;id=' . (int) $arr['offer'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
         } else {
             $fluent->deleteFrom('comments')
                    ->where('id = ?', $comment_id)

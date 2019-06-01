@@ -8,7 +8,7 @@ $lang = [
     'fastdelete_error_id' => 'Invalid ID',
     'fastdelete_no_acc' => 'Sorry yer no tall enough',
     'fastdelete_sure' => 'Security Check',
-    'fastdelete_sure_msg' => "Are you sure you want to delete this torrent?<br>Click <a href='{$site_config['paths']['baseurl']}/fastdelete.php?id={$_GET['id']}&sure=1%s' class='altlink'>here</a> if you are",
+    'fastdelete_sure_msg' => "Are you sure you want to delete this torrent?<br>Click <a href='{$site_config['paths']['baseurl']}/fastdelete.php?id={$_GET['id']}&sure=1%s' class='is-link'>here</a> if you are",
     'fastdelete_msg_first' => 'Your upload',
     'fastdelete_msg_last' => 'has been deleted by',
     'fastdelete_log_first' => 'Torrent',

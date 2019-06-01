@@ -506,7 +506,7 @@ switch ($action) {
                                     ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name']) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link">' . htmlsafechars($arr['name']) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }

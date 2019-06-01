@@ -30,10 +30,10 @@ if (isset($_POST['do_it'])) {
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['forum_config_over']}</a>
                     </li>
-                    <li class='altlink margin10'>
+                    <li class='is-link margin10'>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>{$lang['forum_config_manager']}</a>
                     </li>
                 </ul>

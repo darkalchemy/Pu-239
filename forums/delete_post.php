@@ -34,7 +34,7 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_cant_del_1st_post_staff']);
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
+    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
 }
 if ($sanity_check > 0) {
     if ($site_config['forum_config']['delete_for_real']) {
@@ -61,5 +61,5 @@ if ($sanity_check > 0) {
     die();
 } else {
     stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
-	<a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
+	<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
 }

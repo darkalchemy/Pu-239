@@ -185,9 +185,9 @@ function torrenttable($res, $variant = 'index')
         if ($row['to_go'] == -1) {
             $to_go = '<div class="has-text-danger tooltipper" title="Never Snatched">--</div>';
         } elseif ($row['to_go'] == 1) {
-            $to_go = "<div class='has-text-lime tooltipper' title='Download Complete'>100%</div>";
+            $to_go = "<div class='has-text-success tooltipper' title='Download Complete'>100%</div>";
         } else {
-            $to_go = "<div class='has-text-yellow tooltipper' title='Download In Progress'>" . number_format($row['to_go'], 1) . '%</div>';
+            $to_go = "<div class='is-warning tooltipper' title='Download In Progress'>" . number_format($row['to_go'], 1) . '%</div>';
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
@@ -248,7 +248,7 @@ function torrenttable($res, $variant = 'index')
             <td>
                 <div class='level-wide'>
                     <div>
-                        <a class='crap altlink' href='{$site_config['paths']['baseurl']}/details.php?";
+                        <a class='crap is-link' href='{$site_config['paths']['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }

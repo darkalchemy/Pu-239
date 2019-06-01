@@ -220,7 +220,7 @@ $htmlout .= '
         <h1>Sharemarks for ' . format_username((int) $userid) . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="is-link">My Bookmarks</a></li>
             </ul>
         </div>
     </div>';

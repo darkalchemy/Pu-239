@@ -57,7 +57,7 @@ if (textarea) {
             + '#c00,#f03,#f06,#f09,#f0c,#f0f,#c0f,#c0c,#c09,#c06,#c03,#c00,#aaa|#f30,#f33,#f36,#f39,#f3c,#f3f,#c3f,#c3c,#c39,#c36,#c33,#c30,#bbb|'
             + '#f60,#f63,#f66,#f69,#f6c,#f6f,#c6f,#c6c,#c69,#c66,#c63,#c60,#ccc|#f90,#f93,#f96,#f99,#f9c,#f9f,#c9f,#c9c,#c99,#c96,#c93,#c90,#ddd|'
             + '#fc0,#fc3,#fc6,#fc9,#fcc,#fcf,#ccf,#ccc,#cc9,#cc6,#cc3,#cc0,#eee|#ff0,#ff3,#ff6,#ff9,#ffc,#fff,#cff,#cfc,#cf9,#cf6,#cf3,#cf0,#fff',
-        fonts: 'Acme,Andale Mono,Arial,Arial Black,Baloo Bhaijaan,Bitstream Vera Sans,Comic Sans MS,Courier,Courier New,Encode Sans Condensed,Georgia,Helvetica,Impact,Lobster,Mono,Nova Square,Open Sans,Oswald,PT Sans Narrow,Sans-serif,Serif,Times,Times New Roman,Trebuchet MS,Verdana',
+        fonts: 'Andale Mono,Arial,Arial Black,Bitstream Vera Sans,Comic Sans MS,Courier,Courier New,Georgia,Helvetica,Impact,Mono,Sans-serif,Serif,Times,Times New Roman,Trebuchet MS,Verdana',
         icons: 'monocons',
         emoticonsRoot: 'images/smilies/',
         emoticons: {

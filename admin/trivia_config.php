@@ -136,7 +136,7 @@ foreach ($questions as $question) {
     $body = "
         <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=trivia_config' method='post' accept-charset='utf-8'>
             <input type='hidden' name='id' value='{$question['qid']}'>
-            <h2 class='has-text-centered'>#{$question['qid']}: <span class='has-text-weight-bold has-text-yellow'>{$question['question']}</span></h2>
+            <h2 class='has-text-centered'>#{$question['qid']}: <span class='has-text-weight-bold is-warning'>{$question['question']}</span></h2>
             <p class='level-center-center'><input name='canswer1' type='checkbox'" . ($question['canswer'] === 'answer1' ? ' checked' : '') . " class='right5'><input name='answer1' type='text' class='w-75' value='{$question['answer1']}'></p>
             <p class='level-center-center'><input name='canswer2' type='checkbox'" . ($question['canswer'] === 'answer2' ? ' checked' : '') . " class='right5'><input name='answer2' type='text' class='w-75' value='{$question['answer2']}'></p>
             <p class='level-center-center'><input name='canswer3' type='checkbox'" . ($question['canswer'] === 'answer3' ? ' checked' : '') . " class='right5'><input name='answer3' type='text' class='w-75' value='{$question['answer3']}'></p>

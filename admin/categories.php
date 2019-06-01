@@ -151,7 +151,7 @@ function move_cat_form($params)
     $body = "
             <div class='w-50 has-text-centered padding20'>
                 <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
-                <p class='has-text-green level'>{$lang['categories_select_new']} $select</p>
+                <p class='is-success level'>{$lang['categories_select_new']} $select</p>
                 <div class='has-text-centered'>
                     <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
                     <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
@@ -393,10 +393,10 @@ function edit_cat_form($params)
     $htmlout .= main_div("
             <div class='w-100 has-text-centered padding20'>
                 <h2>{$lang['categories_show_edit2']}</h2>
-                <p class='has-text-green level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='{$cat['name']}'></p>
+                <p class='is-success level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='{$cat['name']}'></p>
                 $parents
-                <p class='has-text-green level'>{$lang['categories_edit_order_id']}<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}'></p>
-                <p class='has-text-green level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
+                <p class='is-success level'>{$lang['categories_edit_order_id']}<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}'></p>
+                <p class='is-success level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
                 $select
                 <input type='submit' class='button is-small right10' value='{$lang['categories_edit_edit']}'>
                 <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
@@ -422,12 +422,12 @@ function show_categories()
             <input type='hidden' name='mode' value='takeadd_cat'>
             <div class='has-text-centered padding20'>
                 <h2>{$lang['categories_show_make']}</h2>
-                <p class='has-text-green level'>
+                <p class='is-success level'>
                     {$lang['categories_edit_name']}
                     <input type='text' name='new_cat_name' class='w-75' maxlength='50'>
                 </p>
                 $parents
-                <p class='has-text-green level'>
+                <p class='is-success level'>
                     {$lang['categories_del_description']}
                     <textarea class='w-75' rows='5' name='new_cat_desc'></textarea>
                 </p>
@@ -531,7 +531,7 @@ function get_parents(array $cat)
     }
 
     $out = "
-            <p class='has-text-green level'>{$lang['categories_select_parent']}
+            <p class='is-success level'>{$lang['categories_select_parent']}
                 <select class='w-75' name='parent_id'>
                     <option value='0'>{$lang['categories_select_parent']}</option>";
     foreach ($parents as $parent) {
@@ -632,7 +632,7 @@ function get_images(array $cat)
     if (is_array($files) && count($files)) {
         natsort($files);
         $select = "
-            <p class='has-text-green level'>{$lang['categories_edit_select_new']}
+            <p class='is-success level'>{$lang['categories_edit_select_new']}
                 <select class='w-75' name='cat_image'>
                     <option value='0'>{$lang['categories_edit_select']}</option>";
         foreach ($files as $file) {

@@ -1,3 +1,10 @@
+### 01 Jun, 2019
+fix: set image permissions to user:group  
+update: userdetails.php  
+remove: template 2  
+remove: google fonts  
+remove: themeChanger  
+
 ### 31 May, 2019
 fix: snatched.php  
 fix: peerlist.php  

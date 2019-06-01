@@ -150,49 +150,49 @@ if ($count === 0) {
                 case 'Comment':
                     $res_who2 = sql_query('SELECT comments.user, users.username, torrents.id FROM comments, users, torrents WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_who2['id'] . '&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_who2['id'] . '&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Request_Comment':
                     $res_who2 = sql_query('SELECT comments.request, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_who2['request'] . '&amp;req_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_who2['request'] . '&amp;req_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Offer_Comment':
                     $res_who2 = sql_query('SELECT comments.offer, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_who2['offer'] . '&amp;off_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_who2['offer'] . '&amp;off_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Request':
                     $res_who2 = sql_query('SELECT request_name FROM requests WHERE id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . htmlsafechars($arr_who2['request_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . htmlsafechars($arr_who2['request_name']) . '</b></a>';
                     break;
 
                 case 'Offer':
                     $res_who2 = sql_query('SELECT offer_name FROM offers WHERE id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . htmlsafechars($arr_who2['offer_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . htmlsafechars($arr_who2['offer_name']) . '</b></a>';
                     break;
 
                 case 'Torrent':
                     $res_who2 = sql_query('SELECT name FROM torrents WHERE id =' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Post':
                     $res_who2 = sql_query('SELECT topic_name FROM topics WHERE id =' . sqlesc($arr_info['2nd_value']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='altlink' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . (int) $arr_info['2nd_value'] . '&amp;page=last#' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['topic_name']) . '</b></a>';
+                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . (int) $arr_info['2nd_value'] . '&amp;page=last#' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['topic_name']) . '</b></a>';
                     break;
             }
         }
@@ -205,7 +205,7 @@ if ($count === 0) {
             <td>' . htmlsafechars($arr_info['reason']) . "</td>
             <td>{$dealtwith} {$delt_link}</td>
             <td>{$checkbox}</td>" . ($CURUSER['class'] >= UC_MAX ? "
-            <td><a class='altlink' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
+            <td><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
                     <span class='has-text-danger'>{$lang['reports_delete']}</span>
                 </a>
             </td>" : '') . '

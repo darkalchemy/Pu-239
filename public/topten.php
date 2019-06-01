@@ -41,9 +41,9 @@ $imgstartbar = '<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chbh=a&
 $imgstartpie = '<img src="https://chart.googleapis.com/chart?cht=p3&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9&amp;chf=bg,s,000000';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php' title='Top 10 Users'>Users</a></li>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=t' title='Top 10 Torrents'>Torrents</a></li>
-            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
+            <li class='margin10'><a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/topten.php' title='Top 10 Users'>Users</a></li>
+            <li class='margin10'><a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=t' title='Top 10 Torrents'>Torrents</a></li>
+            <li class='margin10'><a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
         </ul>";
 if (isset($_GET['view']) && $_GET['view'] === 't') {
     $view = strip_tags(isset($_GET['t']));

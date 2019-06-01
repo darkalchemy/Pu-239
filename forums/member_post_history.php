@@ -114,7 +114,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				<td>' . get_user_class_name($row['class']) . '</td>
 				<td>' . $country . '</td>
 				<td>
-					<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a>
+					<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="is-link">' . $lang['fe_post_history'] . '</a>
 				</td>
 			</tr>';
         }
@@ -200,16 +200,16 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
                 if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                     $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . '
 				 at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars((string) $arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 } else {
                     $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username((int) $arr['edited_by']) . ']
 				 at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars((string) $arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 }
             } else {
                 $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['fe_last_edited_by'] . ' ' . format_username((int) $arr['edited_by']) . '
 				 at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars((string) $arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
             //==
         }
@@ -220,15 +220,15 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         <table class="table table-bordered table-striped">
         <tr>
 		<td colspan="3">' . $lang['fe_forum'] . ':
-		<a class="altlink" href="forums . php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		<a class="is-link" href="forums . php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
 		<span style="color: white;font-weight: bold;">' . htmlsafechars((string) $arr['forum_name']) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-		' . $lang['fe_topic'] . ': <a class="altlink" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		' . $lang['fe_topic'] . ': <a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
 		<span style="color: white;font-weight: bold;">' . htmlsafechars((string) $arr['topic_name']) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
 		<td class="forum_head" width="100"><a id="' . $post_id . '"></a></td>
 		<td class="forum_head"><span style="white - space:nowrap;">' . $post_icon . '
-		<a class="altlink" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
+		<a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
 		' . $post_title . ' </a>&nbsp;&nbsp;' . $post_status_image . ' & nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span></td>
 		<td class="forum_head"><span style="white-space:nowrap;">
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt = "' . $lang['fe_top'] . '" class="emoticon"></a>

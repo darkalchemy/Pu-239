@@ -52,22 +52,22 @@ $percent_fl = number_format((float) $freeleech['percent'], 2);
 if ($freeleech['enabled'] === 'yes') {
     switch ($percent_fl) {
         case $percent_fl >= 90:
-            $font_color_fl = "<span class='has-text-green'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='is-success'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 80:
-            $font_color_fl = "<span class='has-text-lightgreen'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='is-lightgreen'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 70:
-            $font_color_fl = "<span class='has-text-jade'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='is-jade'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 50:
-            $font_color_fl = "<span class='has-text-turquoise'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='is-turquoise'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 40:
             $font_color_fl = "<span class='has-text-lghtblue'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 30:
-            $font_color_fl = "<span class='has-text-gold'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='is-gold'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 20:
             $font_color_fl = "<span class='has-text-oragne'> {$percent_fl}%</span>";
@@ -94,22 +94,22 @@ $percent_du = number_format((float) $doubleupload['percent'], 2);
 if ($doubleupload['enabled'] === 'yes') {
     switch ($percent_du) {
         case $percent_du >= 90:
-            $font_color_du = "<span class='has-text-green'> {$percent_du}%</span>";
+            $font_color_du = "<span class='is-success'> {$percent_du}%</span>";
             break;
         case $percent_du >= 80:
-            $font_color_du = "<span class='has-text-lightgreen'> {$percent_du}%</span>";
+            $font_color_du = "<span class='is-lightgreen'> {$percent_du}%</span>";
             break;
         case $percent_du >= 70:
-            $font_color_du = "<span class='has-text-jade'> {$percent_du}%</span>";
+            $font_color_du = "<span class='is-jade'> {$percent_du}%</span>";
             break;
         case $percent_du >= 50:
-            $font_color_du = "<span class='has-text-turquoise'> {$percent_du}%</span>";
+            $font_color_du = "<span class='is-turquoise'> {$percent_du}%</span>";
             break;
         case $percent_du >= 40:
             $font_color_du = "<span class='has-text-lghtblue'> {$percent_du}%</span>";
             break;
         case $percent_du >= 30:
-            $font_color_du = "<span class='has-text-gold'> {$percent_du}%</span>";
+            $font_color_du = "<span class='is-gold'> {$percent_du}%</span>";
             break;
         case $percent_du >= 20:
             $font_color_du = "<span class='has-text-oragne'> {$percent_du}%</span>";
@@ -136,22 +136,22 @@ $percent_hd = number_format((float) $halfdownload['percent'], 2);
 if ($halfdownload['enabled'] === 'yes') {
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = "<span class='has-text-green'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='is-success'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 80:
-            $font_color_hd = "<span class='has-text-lightgreen'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='is-lightgreen'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 70:
-            $font_color_hd = "<span class='has-text-jade'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='is-jade'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 50:
-            $font_color_hd = "<span class='has-text-turquoise'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='is-turquoise'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 40:
             $font_color_hd = "<span class='has-text-lghtblue'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 30:
-            $font_color_hd = "<span class='has-text-gold'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='is-gold'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 20:
             $font_color_hd = "<span class='has-text-oragne'> {$percent_hd}%</span>";
@@ -164,21 +164,21 @@ if ($halfdownload['enabled'] === 'yes') {
 
 if ($freeleech['enabled'] === 'yes') {
     if ($freeleech_enabled) {
-        $fstatus = "<span class='has-text-green'> ON </span>";
+        $fstatus = "<span class='is-success'> ON </span>";
     } else {
         $fstatus = $font_color_fl . '';
     }
 }
 if ($doubleupload['enabled'] === 'yes') {
     if ($double_upload_enabled) {
-        $dstatus = "<span class='has-text-green'> ON </span>";
+        $dstatus = "<span class='is-success'> ON </span>";
     } else {
         $dstatus = $font_color_du . '';
     }
 }
 if ($halfdownload['enabled'] === 'yes') {
     if ($half_down_enabled) {
-        $hstatus = "<span class='has-text-green'> ON </span>";
+        $hstatus = "<span class='is-success'> ON </span>";
     } else {
         $hstatus = $font_color_hd . '';
     }

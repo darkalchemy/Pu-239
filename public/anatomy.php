@@ -19,8 +19,8 @@ $HTMLOUT = main_div("
 </p>
 <p class='text-black'>
     GET /announce.php?<span class='has-text-lghtblue'>info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F</span>&amp;<span class='has-text-oragne'>peer_id=S588-----gqQ8TqDeqaY</span>&amp;
-    <span class='has-text-success'>port=6882</span>&amp;<span class='has-text-yellow'>uploaded=0</span>&amp;<span class='has-text-lightgreen'>downloaded=0</span>&amp;<span class='has-text-jade'>left=753690875</span>&amp;
-    <span class='has-text-turquoise'>event=started</span>
+    <span class='has-text-success'>port=6882</span>&amp;<span class='is-warning'>uploaded=0</span>&amp;<span class='is-lightgreen'>downloaded=0</span>&amp;<span class='is-jade'>left=753690875</span>&amp;
+    <span class='is-turquoise'>event=started</span>
 </p>
 
 Let's dissect this:
@@ -34,16 +34,16 @@ Let's dissect this:
     <li class='has-text-success'>
         port just tells the tracker which port the client will listen to for incoming connections
     </li>
-    <li class='has-text-yellow'>
+    <li class='is-warning'>
         uploaded=0; (this and the following are the relevant ones, and are self-explanatory)
     </li>
-    <li class='has-text-lightgreen'>
+    <li class='is-lightgreen'>
         downloaded=0
     </li>
-    <li class='has-text-jade'>
+    <li class='is-jade'>
         left=753690875 (how much left)
     </li>
-    <li class='has-text-turquoise'>
+    <li class='is-turquoise'>
         event=started (telling the tracker that the client has just started).
     </li>
 </ul>
@@ -56,16 +56,16 @@ Let's dissect this:
 </p>
 <p class='text-black'>
     GET /announce.php?info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F&amp;peer_id=S588-----gqQ8TqDeqaY&amp;port=6882&amp;
-    <span class='has-text-yellow'>uploaded=67960832</span>&amp;<span class='has-text-green'>downloaded=40828928</span>&amp;left=715417851&amp;<span class='has-text-turquoise'>numwant=0</span>
+    <span class='is-warning'>uploaded=67960832</span>&amp;<span class='is-success'>downloaded=40828928</span>&amp;left=715417851&amp;<span class='is-turquoise'>numwant=0</span>
 </p>
 <ul class='disc left20'>
-    <li class='has-text-turquoise'>
+    <li class='is-turquoise'>
         numwant=0 is how the client tells the tracker how many new peers it wants, in this case 0.
     </li>
-    <li class='has-text-yellow'>
+    <li class='is-warning'>
         uploaded=67960832 approximately 68MB uploaded
     </li>
-    <li class='has-text-lightgreen'>
+    <li class='is-lightgreen'>
         downloaded=40828928 approximately 40MB downloaded 
     </li>
 </ul>
@@ -77,14 +77,14 @@ Let's dissect this:
     Finally, when the client was closed it sent:
 </p>
 <p class='text-black'>
-    GET /announce.php?info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F&amp;peer_id=S588-----gqQ8TqDeqaY&amp;port=6882&amp;uploaded=754384896&amp;downloaded=754215163&amp;<span class='has-text-jade'>left=0&amp;numwant=0&amp;
-    <span class='has-text-turquoise'>event=completed</span>
+    GET /announce.php?info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F&amp;peer_id=S588-----gqQ8TqDeqaY&amp;port=6882&amp;uploaded=754384896&amp;downloaded=754215163&amp;<span class='is-jade'>left=0&amp;numwant=0&amp;
+    <span class='is-turquoise'>event=completed</span>
 </p>
 <p>
-    Notice the all-important <span class='has-text-turquoise'>'event=completed'</span>. It is at this stage that the torrent will be removed from the user's profile. If for some reason (tracker down, lost connection, bad client, crash, ...) this last GET doesn't reach the tracker and this torrent will still be seen in the user profile until some tracker timeout occurs. It should be stressed that this message will be sent only when closing the client properly, not when the download is finished. (The tracker will start listing a torrent as 'currently seeding' after it receives a GET with <span class='has-text-jade'>left=0</span>).
+    Notice the all-important <span class='is-turquoise'>'event=completed'</span>. It is at this stage that the torrent will be removed from the user's profile. If for some reason (tracker down, lost connection, bad client, crash, ...) this last GET doesn't reach the tracker and this torrent will still be seen in the user profile until some tracker timeout occurs. It should be stressed that this message will be sent only when closing the client properly, not when the download is finished. (The tracker will start listing a torrent as 'currently seeding' after it receives a GET with <span class='is-jade'>left=0</span>).
 </p>
 <p>
-    There's a further message that causes the torrent to be removed from the user's profile, namely <span class='has-text-turquoise'>'event=stopped'</span>. This is usually sent when stopping in the middle of a download, e.g. by pressing 'Cancel'.
+    There's a further message that causes the torrent to be removed from the user's profile, namely <span class='is-turquoise'>'event=stopped'</span>. This is usually sent when stopping in the middle of a download, e.g. by pressing 'Cancel'.
 </p>
 <p>
     One last note: some clients have a pause/resume option. This will not send any message to the server. Do not use it as a way of updating stats more often, it just doesn't work.

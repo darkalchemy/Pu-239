@@ -149,7 +149,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             <tr>
                 <td style='padding: 5px'>$caticon</td>
                 <td>
-                    <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars((string) $a['name']) . '</b></a>
+                    <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars((string) $a['name']) . '</b></a>
                     <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . '</td>
                 <td>' . (int) $a['seeders'] . '</td>
                 <td>' . (int) $a['leechers'] . '</td>
@@ -173,7 +173,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>
                 <a id='completed-torrents-hash'></a>
                 <fieldset id='completed-torrents' class='header'>
-                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Completed Torrents</legend>
+                    <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i>View Completed Torrents</legend>
                     $completed
                 </fieldset>
                 </td>

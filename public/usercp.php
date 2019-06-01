@@ -86,16 +86,16 @@ $HTMLOUT .= "
                 <form method='post' action='takeeditcp.php' accept-charset='utf-8'>
                     <div class='bottom20'>
                         <ul class='level-center bg-06'>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=signature'>Signature</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>PM's</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=security'>Security</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=api'>API</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=personal'>Personal</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=social'>Social</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=location'>Location</a></li>
-                            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=links'>Links</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=signature'>Signature</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>PM's</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=security'>Security</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=api'>API</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=personal'>Personal</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=social'>Social</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=location'>Location</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=links'>Links</a></li>
                         </ul>
                     </div>
                     <h1 class='has-text-centered'>Welcome " . format_username((int) $CURUSER['id']) . "!</h1>

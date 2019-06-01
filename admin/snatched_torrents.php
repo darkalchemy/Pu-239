@@ -58,7 +58,7 @@ function get_snatched_color($st)
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<span class='has-text-green'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
+        return "<span class='is-success'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 0) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));

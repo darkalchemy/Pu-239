@@ -112,7 +112,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     }
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
-                            <a class='altlink' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>
+                            <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <div class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>

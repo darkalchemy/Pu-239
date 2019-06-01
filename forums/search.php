@@ -193,7 +193,7 @@ if ($search || $author_id) {
                             <span class="has-text-weight-bold">' . $lang['fe_post'] . ': </span>
                         </div>
                         <div class="column">
-                            <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . (empty($post_title) ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a>
+                            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . (empty($post_title) ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a>
                         </div>
                     </div>
                     <div class="columns">
@@ -210,7 +210,7 @@ if ($search || $author_id) {
                         </div>
                         <div class="column">
                             ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
-                                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '
+                                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '
                         </div>' . (!empty($rpic) ? '
                         <div class="column is-1">
                             ' . $rpic . '
@@ -225,7 +225,7 @@ if ($search || $author_id) {
                 </div>
             </td>
             <td>
-                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
                 ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars((string) $arr['forum_desc']) . '</span>' : '') . '
             </td>
             <td>' . number_format($posts - 1) . '</td>
@@ -255,16 +255,16 @@ if ($search || $author_id) {
                     $edited_by = '';
                     if ($arr['edit_date'] > 0) {
                         $edited_username = $user_stuffs->get_item('username', $arr['edited_by']);
-                        $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
+                        $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
                     }
                     $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
                     $table_body = '
         <tr>
             <td colspan="3">in:
-                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
                     <span>' . htmlsafechars($arr['forum_name']) . '</span>
                 </a> in:
-                <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
                     <span>' . $topic_title . '</span>
                 </a>
             </td>
@@ -275,7 +275,7 @@ if ($search || $author_id) {
             </td>
             <td>
                 <span style="white-space:nowrap;">' . $post_icon . '
-                    <a class="altlink tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
+                    <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
                     </a>
                     <span class="left20">' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
                 </span>
@@ -326,7 +326,7 @@ foreach ($forums as $arr_forums) {
                     <td class="has-no-border">
                         <div class="is-flex level-left">
                             <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox"' . ($selected_forums ? ' checked' : '') . ' value="1">
-                            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink tooltipper left10" title="' . htmlsafechars($arr_forums['description']) . '">' . htmlsafechars($arr_forums['name']) . '
+                            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="is-link tooltipper left10" title="' . htmlsafechars($arr_forums['description']) . '">' . htmlsafechars($arr_forums['name']) . '
                             </a>
                         </div>
                     </td>

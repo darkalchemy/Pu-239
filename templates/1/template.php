@@ -16,6 +16,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param string|null $title
  * @param array       $stdhead
  *
+ * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
@@ -24,7 +25,6 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  *
- * @return string
  */
 function stdhead(?string $title = null, array $stdhead = [])
 {
@@ -64,7 +64,6 @@ function stdhead(?string $title = null, array $stdhead = [])
             $css_incl .= "<link rel='stylesheet' href='{$CSS}'>";
         }
     }
-    $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
@@ -79,29 +78,10 @@ function stdhead(?string $title = null, array $stdhead = [])
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     {$css_incl}
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>";
-
-    $captcha = [
-        'login.php',
-        'takelogin.php',
-        'signup.php',
-        'takesignup.php',
-        'invite_signup.php',
-        'take_invite_signup.php',
-        'resetpw.php',
-        'recover.php',
-    ];
-    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
     $htmlout .= "
 </head>
-<body class='{$body_class}'>
+<body class='background-16 skin-2'>
     <div id='body-overlay'>
-    <script>
-        var theme = localStorage.getItem('theme');
-        if (theme) {
-            document.body.className = theme;
-        }
-        document.body.style.fontSize = '{$font_size}%';
-    </script>
     <div id='container'></div>
         <div class='page-wrapper'>";
     global $BLOCKS;
@@ -214,12 +194,12 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws NotFoundException
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  *
- * @return string
+ * @throws NotFoundException
  */
 function stdfoot(array $stdfoot = [])
 {
@@ -289,7 +269,7 @@ function stdfoot(array $stdfoot = [])
                 $body .= '
                             <tr>
                                 <td>' . ($key + 1) . '</td>
-                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='has-text-green tooltipper' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                 <td>
                                     <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                 </td>
@@ -391,10 +371,14 @@ function stdfoot(array $stdfoot = [])
         }
     }
 
-    $htmlfoot .= '
+    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
+    $htmlfoot .= "
+    <script>
+        document.body.style.fontSize = '{$font_size}%';
+    </script>
     </div>
 </body>
-</html>';
+</html>";
 
     return $htmlfoot;
 }
@@ -425,9 +409,9 @@ function stdmsg($heading, $text, $outer_class = null, $inner_class = null)
 }
 
 /**
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
  */
 function StatusBar()
 {
@@ -448,11 +432,11 @@ function StatusBar()
 }
 
 /**
- * @throws NotFoundException
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function platform_menu()
 {

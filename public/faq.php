@@ -100,7 +100,7 @@ $HTMLOUT .= main_div("
                         <div id='answer_2_text'>
                                 {$lang['faq_userinfo_body']}
                                 {$lang['faq_promotion_header']}
-                                {$lang['faq_promotion_body']} <a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.</p>
+                                {$lang['faq_promotion_body']} <a class='is-link' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.</p>
                             </div>
                         </div>", 'top20');
 
@@ -187,7 +187,7 @@ if ($CURUSER) {
             $wait = 0;
         }
     }
-    $next_para .= "{$lang['faq_in']}<a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
+    $next_para .= "{$lang['faq_in']}<a class='is-link' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
     if (isset($wait)) {
         $byboth = $byratio && $byul;
         $next_para .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])) . '.)');

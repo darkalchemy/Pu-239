@@ -253,6 +253,7 @@ $lang = [
     'view_my_posts' => 'View My Posts',
     'view_message' => 'View Message',
     'view_peers' => 'View Peers',
+    'vieworiginal' => 'View Original',
     'viewtickets' => 'View Tickets',
     'view_topic' => 'View Topic',
     'view_unread_posts' => 'View Unread Forum Posts',

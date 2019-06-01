@@ -28,7 +28,7 @@ $HTMLOUT = '';
 function dltable($name, $arr, $torrent)
 {
     global $site_config, $CURUSER, $lang;
-    
+
     if (!count($arr)) {
         return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>");
     }

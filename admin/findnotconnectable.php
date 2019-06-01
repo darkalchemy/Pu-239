@@ -23,10 +23,10 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
 
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
     </ul>
@@ -106,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>
@@ -132,10 +132,10 @@ if (isset($_GET['action1']) == '') {
     $getlog = sql_query('SELECT * FROM `notconnectablepmlog` ORDER BY date DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>

@@ -54,7 +54,7 @@ $HTMLOUT .= "
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username((int) $arr['id']) . "</h1>
         <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
 if ($id === $CURUSER['id']) {
-    $HTMLOUT .= " <a class='altlink' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}{$lang['achievement_history_pa']}{$spentpoints}{$lang['achievement_history_ps']}</a>";
+    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}{$lang['achievement_history_pa']}{$spentpoints}{$lang['achievement_history_ps']}</a>";
 }
 $HTMLOUT .= '</h2>
     </div>';

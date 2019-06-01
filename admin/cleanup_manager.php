@@ -130,8 +130,8 @@ function cleanup_show_main()
     $pager = pager($perpage, $count1, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
         <ul class='level-center bg-06'>
-            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
-            <li class='altlink margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
+            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
+            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
         </ul>
         <h1 class='has-text-centered top20'>{$lang['cleanup_head']}</h1>" . ($count1 > $perpage ? $pager['pagertop'] : '') . "
         <table class='table table-bordered table-striped bottom20'>

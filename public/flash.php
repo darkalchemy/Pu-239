@@ -40,10 +40,10 @@ $HTMLOUT = '';
 $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
-                <li class='altlink margin10'>
+                <li class='is-link margin10'>
                     <a href='{$site_config['paths']['baseurl']}/arcade.php'>Arcade</a>
                 </li>
-                <li class='altlink margin10'>
+                <li class='is-link margin10'>
                     <a href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </li>
             </ul>

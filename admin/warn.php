@@ -116,7 +116,7 @@ $g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (
 $count = mysqli_num_rows($g);
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
-            <li class='altlink margin10'>
+            <li class='is-link margin10'>
                 $link
             </li>
         </ul>

@@ -338,7 +338,7 @@ if (isset($_GET['exchange'])) {
 
         case 'reputation':
             if ($User['class'] === UC_MIN || $User['reputation'] >= 5000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $rep = $reputation + $res_points['menge'];
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 100 rep points.\n " . $bonuscomment;
@@ -354,7 +354,7 @@ if (isset($_GET['exchange'])) {
 
         case 'immunity':
             if ($User['class'] === UC_MIN || $User['reputation'] < 3000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 years immunity status.\n " . $bonuscomment;
             $immunity = (86400 * 30 + TIME_NOW);
@@ -371,7 +371,7 @@ if (isset($_GET['exchange'])) {
         case 'userblocks':
             $reputation = $User['reputation'];
             if ($User['class'] === UC_MIN || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user blocks access.\n " . $bonuscomment;
             $set = [
@@ -387,7 +387,7 @@ if (isset($_GET['exchange'])) {
         case 'userunlock':
             $reputation = $User['reputation'];
             if ($User['class'] === UC_MIN || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user unlocks access.\n " . $bonuscomment;
             $setbits = $clrbits = 0;
@@ -527,7 +527,7 @@ if (isset($_GET['exchange'])) {
 
         case 'pirate':
             if ($User['pirate'] != 0 or $User['king'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 2 weeks Pirate + freeleech Status.\n " . $bonuscomment;
             $pirate = (86400 * 14 + TIME_NOW);
@@ -617,7 +617,7 @@ if (isset($_GET['exchange'])) {
 
         case 'king':
             if ($User['king'] != 0 or $User['pirate'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month King + freeleech Status.\n " . $bonuscomment;
             $king = (86400 * 30 + TIME_NOW);
@@ -638,7 +638,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -707,7 +707,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -776,7 +776,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int) $_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0) {
-                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . $donation . ' <br> Bonus: ' . $bonus . ' <br> Donation: ' . $donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -846,13 +846,13 @@ if (isset($_GET['exchange'])) {
                                         LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $arr_snatched = mysqli_fetch_assoc($res_snatched);
             if ($arr_snatched['size'] > 6442450944) {
-                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['name'] == '') {
-                stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "No torrent with that ID!<br>Back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['uploaded'] >= $arr_snatched['downloaded']) {
-                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             sql_query('UPDATE snatched
                         SET uploaded = ' . sqlesc($arr_snatched['downloaded']) . '
@@ -878,7 +878,7 @@ if (isset($_GET['exchange'])) {
                                     WHERE id=' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
             $arr_free = mysqli_fetch_assoc($res_free);
             if ($arr_free['name'] == '') {
-                stderr('Error', 'No torrent with that ID!<br><br>Back to your <a class="altlink" href="karma_bonus.php">Karma Points</a> page.');
+                stderr('Error', 'No torrent with that ID!<br><br>Back to your <a class="is-link" href="karma_bonus.php">Karma Points</a> page.');
             }
             $free_time = (7 * 86400 + TIME_NOW);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . ' Points to Reanimate torrent: ' . $arr_free['name'] . ".\n " . $bonuscomment;
@@ -903,7 +903,7 @@ if (isset($_GET['exchange'])) {
 
         case 'class':
             if ($User['class'] > UC_VIP) {
-                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $vip_until = (86400 * 28 + TIME_NOW);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month VIP Status.\n " . $bonuscomment;
@@ -923,7 +923,7 @@ if (isset($_GET['exchange'])) {
 
         case 'warning':
             if ($User['warned'] == 0) {
-                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='altlink' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='is-link' href='{$site_config['paths']['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for removing warning.\n " . $bonuscomment;
             $res_warning = sql_query('SELECT modcomment

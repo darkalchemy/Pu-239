@@ -19,13 +19,13 @@ $modes = [
 $HTMLOUT = '';
 $links = "
     <ul class='level-center bg-06'>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday'>" . $lang['mtor_modded_yesterday'] . "</a>
         </li>
-        <li class='altlink margin10'>
+        <li class='is-link margin10'>
             <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded'>" . $lang['mtor_all_unmodded_torrents'] . '</a>
         </li>
     </ul>';

@@ -24,7 +24,7 @@ if ($site_config['alerts']['report'] && $CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
-            <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
+            <span class='button tag has-text-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
                 " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
             </span>
             <div class='tooltip_templates'>

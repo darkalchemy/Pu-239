@@ -48,7 +48,7 @@ foreach ($customsmilies as $code => $url) {
 $htmlout .= "
     </table><br>
     <div class='has-text-centered'>
-        <a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a>
+        <a class='is-link' href='javascript: window.close()'><b>[ Close window ]</b></a>
     </div>
 </body>
 </html>";
