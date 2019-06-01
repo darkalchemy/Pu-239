@@ -69,6 +69,7 @@ function images_update()
     get_upcoming();
     get_movies_in_theaters();
     get_bluray_info();
+    get_schedule();
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
