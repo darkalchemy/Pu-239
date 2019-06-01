@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+update: database files  
 fix: various strict issues  
 fix: set image permissions to user:group  
 update: userdetails.php  

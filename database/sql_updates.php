@@ -2790,14 +2790,14 @@ KEY `expires` (`expires`)
         'id' => 1559093701,
         'info' => 'Update userid',
         'date' => '28 May, 2019',
-        'query' => 'UPDATE `wiki` SET `userid` = 1 WHERE `id` = 1;',
+        'query' => 'UPDATE `wiki` SET `userid` = 1 WHERE `id` = 1',
         'flush' => false,
     ],
     [
         'id' => 1559093702,
         'info' => 'Remove debug',
         'date' => '28 May, 2019',
-        'query' => 'DELETE FROM `site_config` WHERE `parent` = "database" AND `name` = "debug";',
+        'query' => 'DELETE FROM `site_config` WHERE `parent` = "database" AND `name` = "debug"',
         'flush' => true,
     ],
     [
@@ -2811,7 +2811,14 @@ KEY `expires` (`expires`)
         'id' => 1559347356,
         'info' => 'Move Sentry API to config.php',
         'date' => '31 May, 2019',
-        'query' => 'DELETE FROM `site_config` WHERE `parent` = "api" AND `name` = "sentry";',
+        'query' => 'DELETE FROM `site_config` WHERE `parent` = "api" AND `name` = "sentry"',
+        'flush' => true,
+    ],
+    [
+        'id' => 1559402783,
+        'info' => 'Delete template 2',
+        'date' => '01 Jun, 2019',
+        'query' => 'DELETE FROM `stylesheets` WHERE `id` = 2',
         'flush' => true,
     ],
 ];
