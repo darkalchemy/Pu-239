@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+remove: set cache type as memory update_db.php  
 update: allowed attachments file types  
 disable: search by ip  
 fix: bitbuckup upload  

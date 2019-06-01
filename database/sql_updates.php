@@ -2828,4 +2828,11 @@ KEY `expires` (`expires`)
         'query' => 'UPDATE `forum_config` SET `accepted_file_types` = "application/zip|application/x-zip|application/x-zip-compressed|application/rar|application/x-rar|application/x-rar-compressed" WHERE `accepted_file_types` = "application/zip|application/x-zip|application/application/rar|application/x-rar"',
         'flush' => true,
     ],
+    [
+        'id' => 1559409436,
+        'info' => 'Update file types for attachments',
+        'date' => '01 Jun, 2019',
+        'query' => 'UPDATE `forum_config` SET `accepted_file_types` = "application/zip|application/x-zip|application/x-zip-compressed|application/rar|application/x-rar|application/x-rar-compressed|application/octet-stream|multipart/x-zip" WHERE `accepted_file_types` = "application/zip|application/x-zip|application/x-zip-compressed|application/rar|application/x-rar|application/x-rar-compressed"',
+        'flush' => true,
+    ],
 ];

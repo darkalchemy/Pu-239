@@ -16,7 +16,6 @@ $settings = $container->get(Settings::class);
 $site_config = $settings->get_settings();
 
 require_once DATABASE_DIR . 'sql_updates.php';
-$site_config['cache']['driver'] = 'memory';
 if (!empty($argv[1]) && !empty($argv[2])) {
     update_database($argv, $sql_updates, $site_config);
 } else {
@@ -49,15 +48,15 @@ function update_database($argv, $sql_updates, $site_config)
         $comment = [];
         try {
             $query = $fluent->getPdo()
-                ->prepare($sql);
+                            ->prepare($sql);
             $query->execute();
             $values = [
                 'id' => $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
 
             if ($flush) {
                 $cache->flushDB();
@@ -88,8 +87,8 @@ function update_database($argv, $sql_updates, $site_config)
             'query' => $sql,
         ];
         $fluent->insertInto('database_updates')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
     echo "\n\n======================================================================\n\n";
     get_updates($argv, $sql_updates);
@@ -110,10 +109,10 @@ function get_updates($argv, $sql_updates)
     $fluent = $container->get(Database::class);
 
     $results = $fluent->from('database_updates')
-        ->select(null)
-        ->select('id')
-        ->select('added')
-        ->fetchPairs('id', 'added');
+                      ->select(null)
+                      ->select('id')
+                      ->select('added')
+                      ->fetchPairs('id', 'added');
 
     foreach ($sql_updates as $update) {
         if (array_key_exists($update['id'], $results)) {
