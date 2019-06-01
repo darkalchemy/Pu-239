@@ -32,23 +32,23 @@ $HTMLOUT = $where = $where1 = '';
 if ($action === 'app' || $action === 'show') {
     if ($action === 'show') {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
-        $res = $fluent->from('uploadapp')
-                      ->select('users.uploaded')
-                      ->select('users.downloaded')
-                      ->select('users.added')
-                      ->select('users.class')
-                      ->leftJoin('users ON uploadapp.userid=users.id')
-                      ->where('status = "pending"')
+        $res = $fluent->from('uploadapp AS a')
+                      ->select('u.uploaded')
+                      ->select('u.downloaded')
+                      ->select('u.registered')
+                      ->select('u.class')
+                      ->leftJoin('users AS u ON a.userid = u.id')
+                      ->where('a.status = "pending"')
                       ->fetchAll();
     } else {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>";
-        $res = $fluent->from('uploadapp')
-                      ->select('users.uploaded')
-                      ->select('users.downloaded')
-                      ->select('users.added')
-                      ->select('users.class')
-                      ->leftJoin('users ON uploadapp.userid=users.id')
-                      ->where('uploadapp.status = "pending"')
+        $res = $fluent->from('uploadapp AS a')
+                      ->select('u.uploaded')
+                      ->select('u.downloaded')
+                      ->select('u.registered')
+                      ->select('u.class')
+                      ->leftJoin('users AS u ON a.userid = u.id')
+                      ->where('a.status = "pending"')
                       ->fetchAll();
     }
 
@@ -91,7 +91,7 @@ if ($action === 'app' || $action === 'show') {
             } else {
                 $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
             }
-            $membertime = get_date((int) $arr['added'], '', 0, 1);
+            $membertime = get_date((int) $arr['registered'], '', 0, 1);
             $elapsed = get_date((int) $arr['applied'], '', 0, 1);
             $body .= "
             <tr>
@@ -119,16 +119,16 @@ if ($action === 'app' || $action === 'show') {
 
 if ($action === 'viewapp') {
     $id = (int) $_GET['id'];
-    $arr = $fluent->from('uploadapp')
-                  ->select('users.uploaded')
-                  ->select('users.downloaded')
-                  ->select('users.added')
-                  ->select('users.class')
-                  ->leftJoin('users ON uploadapp.userid=users.id')
-                  ->where('uploadapp.id = ?', $id)
+    $arr = $fluent->from('uploadapp AS a')
+                  ->select('u.uploaded')
+                  ->select('u.downloaded')
+                  ->select('u.registered')
+                  ->select('u.class')
+                  ->leftJoin('users AS u ON a.userid = u.id')
+                  ->where('a.id = ?', $id)
                   ->fetch();
 
-    $membertime = get_date((int) $arr['added'], '', 0, 1);
+    $membertime = get_date((int) $arr['registered'], '', 0, 1);
     $elapsed = get_date((int) $arr['applied'], '', 0, 1);
     $HTMLOUT .= '
     <h1>Uploader application</h1>';
@@ -268,7 +268,7 @@ if ($action === 'acceptapp') {
         'msg' => $msg,
         'subject' => $subject,
     ];
-    $subres = sql_query('SELECT id FROM users WHERE class>= ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
+    $subres = sql_query('SELECT id FROM users WHERE class >= ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
     while ($subarr = mysqli_fetch_assoc($subres)) {
         $msgs_buffer[] = [
             'sender' => 0,

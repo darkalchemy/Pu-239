@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'deluser' && (!empty($_POST['userid']))) {
-        $res = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
+        $res = sql_query('SELECT id, email, modcomment, username, registered, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
         while ($arr = mysqli_fetch_array($res)) {
             $userid = (int) $arr['id'];
@@ -40,12 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'mail' && (!empty($_POST['userid']))) {
-        $res = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
+        $res = sql_query('SELECT id, email, modcomment, username, registered, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
         while ($arr = mysqli_fetch_array($res)) {
             $id = (int) $arr['id'];
             $username = htmlsafechars($arr['username']);
-            $added = get_date((int) $arr['added'], 'DATE');
+            $added = get_date((int) $arr['registered'], 'DATE');
             $last_access = get_date((int) $arr['last_access'], 'DATE');
             $body = doc_head() . "
     <meta property='og:title' content='{$lang['inactive_youracc']}'>
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 {$lang['inactive_welcomeback']} {$site_config['site']['name']}</p>
 </body>
 </html>";
-            send_mail($arr['email'], "{$lang['inactive_youracc']}{$site_config['site']['name']}!", $body, strip_tags($body));
+            $mail = send_mail($arr['email'], "{$lang['inactive_youracc']}{$site_config['site']['name']}!", $body, strip_tags($body));
         }
 
         if ($record_mail) {

@@ -122,6 +122,7 @@ if ($count === 0) {
         } else {
             $solved_in_wtf = $arr_info['when_delt_with'] - $arr_info['added'];
             $solved_in = '&#160;[' . round_time($solved_in_wtf) . ']';
+            $solved_color = 'purple';
             if ($solved_in_wtf > 4 * 3600) {
                 $solved_color = 'red';
             } elseif ($solved_in_wtf > 2 * 3600) {
@@ -132,7 +133,7 @@ if ($count === 0) {
         }
 
         if ($arr_info['delt_with']) {
-            $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
+            $res_who = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
             $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username((int) $arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled>";

@@ -126,8 +126,8 @@ function show_views(array $inbound, array $month_names)
     $count = $fluent->from('topics AS t')
                     ->select(null)
                     ->select('t.forum_id')
-                    ->where('t.added>= ?', $from_time)
-                    ->where('t.added <= ?', $to_time)
+                    ->where('t.registered >= ?', $from_time)
+                    ->where('t.registered <= ?', $to_time)
                     ->groupBy('t.forum_id')
                     ->fetchAll();
 
@@ -143,11 +143,12 @@ function show_views(array $inbound, array $month_names)
                     ->select('t.forum_id')
                     ->select('f.name AS result_name')
                     ->leftJoin('forums AS f ON t.forum_id=f.id')
-                    ->where('t.added>= ?', $from_time)
-                    ->where('t.added <= ?', $to_time)
+                    ->where('t.registered >= ?', $from_time)
+                    ->where('t.registered <= ?', $to_time)
                     ->groupBy('t.forum_id')
                     ->orderBy("result_count $sort_by, t.forum_id")
-                    ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
+                    ->limit($pager['pdo']['limit'])
+                    ->offset($pager['pdo']['offset'])
                     ->fetchAll();
 
     $running_total = 0;
@@ -241,7 +242,7 @@ function result_screen(string $mode, array $inbound, array $month_names)
     if ($mode === 'reg') {
         $table = $lang['stats_ex_registr'];
         $sql_table = 'users';
-        $sql_field = 'added';
+        $sql_field = 'registered';
         $page_detail = $lang['stats_ex_rdetails'];
     } elseif ($mode === 'topic') {
         $table = $lang['stats_ex_newtopicst'];
@@ -316,7 +317,8 @@ function result_screen(string $mode, array $inbound, array $month_names)
                     ->where("$sql_field <= $to_time")
                     ->groupBy('result_time')
                     ->orderBy("result_maxdate $sort_by")
-                    ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
+                    ->limit($pager['pdo']['limit'])
+                    ->offset($pager['pdo']['offset'])
                     ->fetchAll();
 
     $running_total = 0;
@@ -440,10 +442,10 @@ function main_screen($mode)
         $fluent = $container->get(Database::class);
         $oldest = $fluent->from('users')
                          ->select(null)
-                         ->select('added')
-                         ->orderBy('added')
+                         ->select('registered')
+                         ->orderBy('registered')
                          ->limit(1)
-                         ->fetch('added');
+                         ->fetch('registered');
         $cache->set('oldest_', $oldest, 0);
     }
     $old_date = get_date((int) $oldest, 'FORM', 1, 0);

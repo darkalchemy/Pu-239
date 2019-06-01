@@ -42,7 +42,6 @@ class Settings
         $config = array_merge_recursive($env, $this->get_staff(), $this->get_staff_forums(), $this->get_site_config(), $this->get_hnr(), $this->get_forum_config(), $this->get_badwords());
         $config['site']['badwords'] = array_merge($config['badwords'], $config['site']['bad_words']);
         unset($config['badwords'], $config['site']['bad_words']);
-        //ksort($config);
         $this->recursive_ksort($config);
 
         return $config;

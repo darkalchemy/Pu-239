@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+fix: various strict issues  
 fix: set image permissions to user:group  
 update: userdetails.php  
 remove: template 2  

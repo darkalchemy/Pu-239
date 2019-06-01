@@ -104,11 +104,11 @@ die();
 /**
  * @param int $userid
  *
- * @return array|bool
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_uploaded(int $userid)
 {
@@ -158,7 +158,6 @@ function get_uploaded(int $userid)
             $cache->set("sums_{$userid}_{$results['torrentid']}", $sums, 300);
         }
         $torrents[] = $sums;
-
     }
 
     return $torrents;
@@ -167,11 +166,11 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_seeding(int $userid)
 {
@@ -219,11 +218,11 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_leeching(int $userid)
 {
@@ -271,11 +270,11 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_snatched(int $userid)
 {
@@ -313,11 +312,11 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @return array|bool
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_snatched_staff(int $userid)
 {
@@ -472,10 +471,10 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @return string
+ * @throws NotFoundException
  * @throws DependencyException
  *
- * @throws NotFoundException
+ * @return string
  */
 function staff_snatchtable(array $torrents, int $userid)
 {

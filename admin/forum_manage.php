@@ -2,12 +2,14 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_forum_manage'));
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 $HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $option_12 = $count = $forums_stuff = '';
 $row = 0;
 //=== defaults:
@@ -176,21 +178,20 @@ $HTMLOUT .= $main_links . '<table class="table table-bordered table-striped">
         <td>' . $lang['fm_mp_write'] . '</td>
         <td>' . $lang['fm_mp_create'] . '</td>
         <td>' . $lang['fm_mp_modify'] . '</td></tr>';
-$res = sql_query('SELECT * FROM forums ORDER BY forum_id ASC');
-if (mysqli_num_rows($res) > 0) {
-    while ($row = mysqli_fetch_array($res)) {
-        $forum_id = (int) $row['forum_id'];
-        $res2 = sql_query('SELECT name FROM over_forums WHERE id=' . sqlesc($forum_id));
-        $arr2 = mysqli_fetch_assoc($res2);
-        $name = htmlsafechars($arr2['name']);
-        $subforum = (int) $row['parent_forum'];
-        if ($subforum) {
-            $res3 = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($subforum));
-            $arr3 = mysqli_fetch_assoc($res3);
-            $subforum_name = htmlsafechars($arr3['name']);
-        } else {
-            $subforum_name = '';
-        }
+$fluent = $container->get(Database::class);
+$forums = $fluent->from('forums AS f')
+                 ->select('o.name AS parent_name')
+                 ->select('s.name AS subforum_name')
+                 ->leftJoin('over_forums AS o ON f.forum_id = o.id')
+                 ->leftJoin('forums AS s ON f.parent_forum = s.id')
+                 ->orderBy('f.forum_id')
+                 ->fetchAll();
+if (!empty($forums)) {
+    foreach ($forums as $row) {
+        $forum_id = $row['forum_id'];
+        $name = !empty($row['parent_name']) ? htmlsafechars($row['parent_name']) : '';
+        $subforum = $row['parent_forum'];
+        $subforum_name = !empty($row['subforum_name']) ? htmlsafechars($row['subforum_name']) : '';
         $HTMLOUT .= '<tr><td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $row['id'] . '">
             <span>' . htmlsafechars($row['name']) . '</span></a><br>
             ' . htmlsafechars($row['description']) . '</td>

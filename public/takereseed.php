@@ -41,7 +41,6 @@ if ($pm_what === 'last10') {
 if (count($msgs_buffer) > 0) {
     $message_stuffs = $container->get(Message::class);
     $message_stuffs->insert($msgs_buffer);
-    sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($subject ? ', subject' : '') . ' ) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
     $session->set('is-warning', 'There were no users to PM!');

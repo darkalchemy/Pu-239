@@ -15,28 +15,27 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('delete'));
 global $container, $site_config, $CURUSER;
 
-$id = $_GET['id'];
-if (empty($id)) {
+if (empty($_GET['id']) && empty($_POST['id'])) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
-$id = (int) $id;
+$id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
 $dt = TIME_NOW;
 $fluent = $container->get(Database::class);
 $row = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.info_hash')
-    ->select('t.owner')
-    ->select('t.name')
-    ->select('t.seeders')
-    ->select('t.added')
-    ->select('u.seedbonus')
-    ->leftJoin('users AS u ON u.id=t.owner')
-    ->where('t.id = ?', $id)
-    ->fetch();
+              ->select(null)
+              ->select('t.id')
+              ->select('t.info_hash')
+              ->select('t.owner')
+              ->select('t.name')
+              ->select('t.seeders')
+              ->select('t.added')
+              ->select('u.seedbonus')
+              ->leftJoin('users AS u ON u.id=t.owner')
+              ->where('t.id = ?', $id)
+              ->fetch();
 
 if (!$row) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");

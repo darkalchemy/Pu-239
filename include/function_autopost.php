@@ -13,9 +13,9 @@ use Pu239\Message;
  * @param string $subject
  * @param string $body
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|null
  */
@@ -55,7 +55,6 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'user_id' => $site_config['chatbot']['id'],
             'added' => TIME_NOW,
             'body' => $body,
-            'ip' => inet_pton(getip()),
         ];
         $postid = $fluent->insertInto('posts')
                          ->values($values)

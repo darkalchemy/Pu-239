@@ -37,7 +37,6 @@ $heading = "
     <tr>
         <th>{$lang['cloudview_phrase']}</th>
         <th>{$lang['cloudview_hits']}</th>
-        <th>{$lang['cloudview_ip']}</th>
         <th><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['cloudview_del']}'></th>
     </tr>";
 $body = '';
@@ -47,7 +46,7 @@ foreach ($searches as $arr) {
     <tr>
         <td>$search_phrase</td>
         <td>{$arr['howmuch']}</td>
-        <td>{$arr['ip']}</td>
+     
         <td><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int) $arr['id'] . "'></td>
     </tr>";
 }

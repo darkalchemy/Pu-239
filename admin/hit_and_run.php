@@ -81,22 +81,22 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             }
             switch (true) {
                 case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
-                    $minus_ratio = ($days_3 - $torrent_needed_seed_time);
+                    $minus_ratio = $days_3 - $torrent_needed_seed_time;
                     break;
 
                 case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
-                    $minus_ratio = ($days_14 - $torrent_needed_seed_time);
+                    $minus_ratio = $days_14 - $torrent_needed_seed_time;
                     break;
 
                 case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
-                    $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
+                    $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
                     break;
 
                 default:
-                    $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
+                    $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
             }
-            $minus_ratio = (preg_match('/-/i', $minus_ratio) ? 0 : $minus_ratio);
-            $color = ($minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen');
+            $minus_ratio = $minus_ratio < 0 ? 0 : $minus_ratio;
+            $color = $minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen';
             $users = $hit_and_run_arr;
             $users['id'] = (int) $Uid_ID;
             $HTMLOUT .= '<tr><td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
