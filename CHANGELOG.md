@@ -1,4 +1,5 @@
 ### 31 May, 2019
+remove: echo php-di error  
 revert: default PRODUCTION status  
 update: move sentry api key to config.php  
 fix: userdetails.php  

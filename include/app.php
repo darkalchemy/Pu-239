@@ -27,7 +27,6 @@ try {
     $container = $builder->build();
 } catch (Exception $e) {
     //TODO Logger;
-    dd($e);
 }
 
 require_once CONFIG_DIR . 'session.php';
