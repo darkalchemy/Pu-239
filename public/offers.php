@@ -373,8 +373,8 @@ switch ($action) {
                 'link' => $link,
             ];
             $new_offer_id = $fluent->insertInto('offers')
-                                     ->values($values)
-                                     ->execute();
+                                   ->values($values)
+                                   ->execute();
 
             $color = get_user_class_name($CURUSER['class'], true);
             $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url ={$site_config['paths']['baseurl']}/offers.php?action=offer_details & id ={$new_offer_id}]{$offer_name}[/url]";

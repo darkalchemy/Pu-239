@@ -46,7 +46,7 @@ $HTMLOUT .= "
             <li class='margin10'><a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
         </ul>";
 if (isset($_GET['view']) && $_GET['view'] === 't') {
-    $view = strip_tags(isset($_GET['t']));
+    $view = isset($_GET['t']) ? strip_tags($_GET['t']) : '';
     // Top Torrents
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Active Torrents</h2></div>";
     $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
@@ -110,7 +110,7 @@ if (isset($_GET['view']) && $_GET['view'] === 't') {
     die();
 }
 if (isset($_GET['view']) && $_GET['view'] === 'c') {
-    $view = strip_tags(isset($_GET['c']));
+    $view = isset($_GET['c']) ? strip_tags($_GET['c']) : '';
     // Top Countries
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (users)</h2></div>";
     $result = sql_query('SELECT name, flagpic, COUNT(users.country) AS num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT 10');
