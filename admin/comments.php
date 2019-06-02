@@ -104,7 +104,7 @@ switch ($view) {
 
     case 'search':
         $HTMLOUT = "
-        <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=comments&amp;view=results' accept-charset='utf-8'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=comments&amp;view=results' accept-charset='utf-8'>
             <h1 class='has-text-centered'>{$lang['text_search']}</h1>" . $nav;
 
         $body = "

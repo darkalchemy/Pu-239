@@ -20,5 +20,5 @@ if ($check_it_arr['last_post_read'] > 0) {
     $cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
     $cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 }
-header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=view_unread_posts');
+header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_unread_posts');
 die();

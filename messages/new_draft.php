@@ -34,7 +34,7 @@ if (!empty($_POST['buttonval']) && $_POST['buttonval'] === 'Save draft') {
     if (!$new_draft_id) {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);
     }
-    header('Location: messages.php?action=view_message&new_draft=1&id=' . $new_draft_id);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_message&new_draft=1&id=' . $new_draft_id);
     die();
 }
 

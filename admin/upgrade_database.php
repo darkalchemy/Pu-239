@@ -110,7 +110,7 @@ if (file_exists(DATABASE_DIR)) {
         }
 
         $button = "
-                <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=upgrade_database' method='post' accept-charset='utf-8'>
+                <form action='{$_SERVER['PHP_SELF']}?tool=upgrade_database' method='post' accept-charset='utf-8'>
                     <div class='level-center'>
                         <span class='margin10'>
                             <input type='hidden' name='id' value={$update['id']}>

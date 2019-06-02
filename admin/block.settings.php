@@ -110,12 +110,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_POST, $block_out, $block_set_cache);
     $cache->delete('site_blocks_');
     sleep(3);
-    header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=block.settings');
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=block.settings');
     die();
 }
 
 $HTMLOUT = "
-    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=block.settings' method='post' accept-charset='utf-8'>
+    <form action='{$_SERVER['PHP_SELF']}?tool=block.settings' method='post' accept-charset='utf-8'>
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>

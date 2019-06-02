@@ -126,7 +126,7 @@ function update_poll()
         $msg = $lang['poll_up_worked'];
     }
     $session->set('is-info', $msg);
-    header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
+    header("Location: {$_SERVER['PHP_SELF']}?tool=polls_manager&action=polls_manager");
 }
 
 /**
@@ -164,7 +164,7 @@ function insert_new_poll()
         $msg = $lang['poll_inp_worked'];
     }
     $session->set('is-info', $msg);
-    header("Location:  {$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
+    header("Location: {$_SERVER['PHP_SELF']}?tool=polls_manager&action=polls_manager");
 }
 
 /**
@@ -329,7 +329,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
     </script>';
     $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
-    <form id='postingform' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
+    <form id='postingform' action='{$_SERVER['PHP_SELF']}?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='mode' value='$form_type'>
         <input type='hidden' name='pid' value='$pid'>
         <div>

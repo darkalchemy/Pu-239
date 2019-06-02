@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types = 1);
-global $CURUSER, $h1_thingie;
+global $CURUSER;
 
 require_once INCL_DIR . 'function_users.php';
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
@@ -45,7 +45,6 @@ $res = sql_query('SELECT m.id AS message_id, m.poster, m.sender, m.receiver, m.a
 //echo stdhead(htmlsafechars($mailbox_name));
 //=== let's make the table
 $HTMLOUT .= "
-    $h1_thingie
     $top_links
     <a id='pm'></a>
         <div class='level-center-center'>

@@ -130,7 +130,7 @@ $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user,
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $HTMLOUT .= '
-        <form action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" accept-charset="utf-8">
+        <form action="' . $_SERVER['PHP_SELF'] . '?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" accept-charset="utf-8">
         <h1 class="has-text-centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
     <table class="table table-bordered table-striped">';
     $HTMLOUT .= '

@@ -73,7 +73,6 @@ while ($list = mysqli_fetch_assoc($sql)) {
     $staff_tools[$item] = $item;
 }
 ksort($staff_tools);
-
 $fluent = $container->get(Database::class);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
@@ -340,13 +339,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $add_button = "
                 <ul class='level-center bg-06'>
                     <li class='margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
                     </li>
                 </ul>";
         }
@@ -418,10 +417,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $body .= "
                         <td>
                             <div class='level-center'>
-                                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
+                                <a href='{$_SERVER['PHP_SELF']}?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
                                     <i class='icon-edit icon'></i>
                                 </a>
-                                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
+                                <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
                                     <i class='icon-trash-empty icon has-text-danger'></i>
                                 </a>
                             </div>

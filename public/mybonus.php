@@ -546,7 +546,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message_stuffs = $container->get(Message::class);
         $message_stuffs->insert($msgs_buffer);
     }
-    header("Location: {$site_config['paths']['baseurl']}/mybonus.php");
+    header("Location: {$_SERVER['PHP_SELF']}");
     die();
 }
 

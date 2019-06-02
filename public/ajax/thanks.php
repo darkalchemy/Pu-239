@@ -13,13 +13,13 @@ global $container, $CURUSER;
 $session = $container->get(Session::class);
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
 if (!isset($CURUSER)) {
     $session->set('is-warning', "You can't add a thank you on your own torrent");
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 

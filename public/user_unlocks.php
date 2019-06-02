@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cache->update_row('user_' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
-    header('Location: ' . $site_config['paths']['baseurl'] . '/user_unlocks.php');
+    header('Location: ' . $_SERVER['PHP_SELF']);
     die();
 }
 $checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');

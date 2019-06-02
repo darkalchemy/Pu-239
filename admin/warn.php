@@ -126,7 +126,7 @@ if ($count == 0) {
 } else {
     global $site_config;
 
-    $HTMLOUT .= "<form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=warn&amp;action=warn' method='post' accept-charset='utf-8'>";
+    $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=warn&amp;action=warn' method='post' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['warn_user']}</th>

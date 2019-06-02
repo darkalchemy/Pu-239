@@ -39,7 +39,7 @@ if (empty($mode)) {
 
     if ($backups) {
         $HTMLOUT .= "
-            <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete' accept-charset='utf-8'>
+            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=delete' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='delete'>
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
@@ -55,7 +55,7 @@ if (empty($mode)) {
         foreach ($backups as $arr) {
             $HTMLOUT .= "
                         <tr>
-                            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=download&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a></td>
+                            <td><a href='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=download&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a></td>
                             <td class="has-text-centered">' . get_date((int) $arr['added'], 'LONG', 1, 0) . '</td>
                             <td class="has-text-centered">';
             if (!empty($arr['userid'])) {
@@ -76,7 +76,7 @@ if (empty($mode)) {
                     </tbody>
                 </table>
                 <div class='has-text-centered top20 bottom20 level-center flex-center'>
-                    <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <a class='button is-small' href='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
                     <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm('{$lang['backup_confirm']}');\">
                 </div>
             </form>
@@ -129,7 +129,7 @@ if (empty($mode)) {
                 <div class='padding20 has-text-centered'>
                     {$lang['backup_nofound']}
                     <div class='top20'>
-                        <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                        <a class='button is-small' href='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
                     </div>
                 </div>");
     }
@@ -166,7 +166,7 @@ if (empty($mode)) {
     if ($site_config['backup']['write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
-    header('Location: staffpanel.php?tool=backup');
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=backup');
     die();
 } elseif ($mode === 'delete') {
     $ids = (isset($_POST['ids']) ? $_POST['ids'] : (isset($_GET['id']) ? [
@@ -206,7 +206,7 @@ if (empty($mode)) {
     } else {
         $location = 'noselection';
     }
-    header('Location: staffpanel.php?tool=backup&mode=' . $location);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=backup&mode=' . $location);
     die();
 } else {
     stderr($lang['backup_srry'], $lang['backup_unknow']);

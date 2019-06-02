@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr("{$lang['ad_banemail_error']}", "{$lang['ad_banemail_missing']}");
     }
     sql_query('INSERT INTO bannedemails (added, addedby, comment, email) VALUES(' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($comment) . ', ' . sqlesc($email) . ')') or sqlerr(__FILE__, __LINE__);
-    header('Location: staffpanel.php?tool=bannedemails');
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=bannedemails');
     die();
 }
 $HTMLOUT .= "

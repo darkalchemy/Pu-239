@@ -137,7 +137,7 @@ if ($action === 'add') {
         if ($returnto) {
             header("Location: $returnto");
         } else {
-            header("Location: {$site_config['paths']['baseurl']}/userdetails.php?id={$userid}#comments");
+            header("Location: {$_SERVER['PHP_SELF']}?id={$userid}#comments");
         }
         die();
     }
@@ -193,7 +193,7 @@ if ($action === 'add') {
     if ($_GET['returnto']) {
         header('Location: ' . htmlsafechars($_GET['returnto']));
     } else {
-        header("Location: {$site_config['paths']['baseurl']}/userdetails.php?id={$userid}#comments");
+        header("Location: {$_SERVER['PHP_SELF']}?id={$userid}#comments");
     }
     die();
 } elseif ($action === 'vieworiginal') {

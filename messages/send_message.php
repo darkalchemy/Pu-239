@@ -119,7 +119,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if ($returnto) {
         header('Location: ' . $returnto);
     } else {
-        header('Location: messages.php?action=view_mailbox&sent=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&sent=1');
     }
     die();
 }

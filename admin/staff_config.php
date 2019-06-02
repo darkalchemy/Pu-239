@@ -16,4 +16,4 @@ $cache = $container->get(Cache::class);
 $cache->delete('is_staff_');
 $session = $container->get(Session::class);
 $session->set('is-success', 'Staff List Updated');
-header("Location: {$site_config['paths']['baseurl']}/staffpanel.php");
+header("Location: {$_SERVER['PHP_SELF']}");

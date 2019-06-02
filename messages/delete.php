@@ -29,5 +29,5 @@ if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['i
     $message_stuffs->update($set, $pm_id);
 }
 
-header("Location: {$site_config['paths']['baseurl']}/messages.php?action=view_mailbox&deleted=1");
+header("Location: {$_SERVER['PHP_SELF']}?action=view_mailbox&deleted=1");
 die();

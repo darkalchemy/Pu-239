@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     stderr($lang['datareset_stderr'], $lang['datareset_pls']);
 } else {
     $form = "
-    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=datareset&amp;action=datareset' method='post' accept-charset='utf-8'>
+    <form action='{$_SERVER['PHP_SELF']}?tool=datareset&amp;action=datareset' method='post' accept-charset='utf-8'>
     <div class='has-text-centered'>
         <h1>{$lang['datareset_reset']}</h1>
         <label for='tid'>{$lang['datareset_tid']}</label>

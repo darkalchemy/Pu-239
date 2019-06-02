@@ -72,7 +72,7 @@ if (!file_exists($rep_set_cache)) {
 $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['repset_settings']}</h1>
     <p class='has-text-centered'>{$lang['repset_section']}</p>
-    <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_settings' name='repoptions' method='post' accept-charset='utf-8'>
+    <form action='{$_SERVER['PHP_SELF']}?tool=reputation_settings' name='repoptions' method='post' accept-charset='utf-8'>
     <h2 class='has-text-centered'>{$lang['repset_onoff']}</h2>";
 $body = '
             <tr>

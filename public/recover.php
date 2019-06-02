@@ -19,8 +19,7 @@ if (!$CURUSER) {
     get_template();
 }
 $stdfoot = [];
-$lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'), load_language('signup'));
-
+$lang = array_merge(load_language('global'), load_language('recover'), load_language('signup'));
 $HTMLOUT = '';
 $auth = $container->get(Auth::class);
 $user = $container->get(User::class);

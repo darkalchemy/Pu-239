@@ -55,20 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $torrent = $torrent_stuffs->get($_POST['tid']);
         if (!$torrent) {
             $session->set('is-danger', 'No torrent with that ID!');
-            header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
+            header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
         $snatched_stuffs = $container->get(Snatched::class);
         $snatched = $snatched_stuffs->get_snatched($_POST['userid'], $_POST['tid']);
         if (!$snatched || $snatched['id'] != $_POST['sid']) {
             $session->set('is-danger', 'No snatched torrent with that ID!');
-            header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
+            header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
         if (!empty($_POST['seed'])) {
             if ($cost > $bp) {
                 $session->set('is-danger', 'You do not have enough bonus points!');
-                header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
+                header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
             $set = [
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bytes = $downloaded - $snatched['uploaded'];
             if ($diff < $bytes) {
                 $session->set('is-danger', 'You do not have enough upload credit!');
-                header("Location: {$site_config['paths']['baseurl']}/hnrs.php");
+                header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
             $set = [

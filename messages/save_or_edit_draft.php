@@ -42,7 +42,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
     if (!$result) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
-    header('Location: messages.php?action=view_mailbox&box=-2&new_draft=1');
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&box=-2&new_draft=1');
     die();
 }
 

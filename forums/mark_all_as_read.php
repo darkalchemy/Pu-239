@@ -22,5 +22,5 @@ while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
     }
 }
 
-header('Location: forums.php?m=1');
+header('Location: ' . $_SERVER['PHP_SELF'] . '?m=1');
 die();

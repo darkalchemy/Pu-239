@@ -44,17 +44,17 @@ $session = $container->get(Session::class);
 if ($user_data['class'] < $site_config['allowed']['upload'] || $user_data['uploadpos'] != 1 || $user_data['suspended'] === 'yes') {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if (empty($body) || empty($type) || empty($name)) {
     $session->set('is-warning', $lang['takeupload_no_formdata']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if ((bool) empty($_FILES['file'])) {
     $session->set('is-warning', $lang['takeupload_no_formdata']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 
@@ -69,7 +69,7 @@ $f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
     $session->set('is-warning', $lang['takeupload_no_filename']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 
@@ -105,23 +105,23 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
     if ($nfofile['name'] == '') {
         $session->set('is-warning', $lang['takeupload_no_nfo']);
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     if ($nfofile['size'] == 0) {
         $session->set('is-warning', $lang['takeupload_0_byte']);
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     if ($nfofile['size'] > $site_config['site']['nfo_size']) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     $nfofilename = $nfofile['tmp_name'];
     if (@!is_uploaded_file($nfofilename)) {
         $session->set('is-warning', $lang['takeupload_nfo_failed']);
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     $nfo_content = str_ireplace([
@@ -167,7 +167,7 @@ if (!$descr) {
         $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
     } else {
         $session->set('is-warning', $lang['takeupload_no_descr']);
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
 }
@@ -175,7 +175,7 @@ $description = strip_tags(!empty($description) ? trim($description) : '');
 $catid = (int) $type;
 if (!is_valid_id($catid)) {
     $session->set('is-warning', $lang['takeupload_no_cat']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $request = (((!empty($request) && is_valid_id($request)) ? intval($request) : 0));
@@ -198,7 +198,7 @@ $tags = strip_tags(!empty($tags) ? trim($tags) : '');
 
 if (!validfilename($fname)) {
     $session->set('is-warning', $lang['takeupload_invalid']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 
@@ -213,7 +213,7 @@ if (empty($isbn)) {
 
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
     $session->set('is-warning', $lang['takeupload_not_torrent']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $shortfname = $torrent = $matches[1];
@@ -223,18 +223,18 @@ if (!empty($name)) {
 $tmpname = $f['tmp_name'];
 if (!is_uploaded_file($tmpname)) {
     $session->set('is-warning', $lang['takeupload_eek']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if (!filesize($tmpname)) {
     $session->set('is-warning', $lang['takeupload_no_file']);
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $dict = bencdec::decode_file($tmpname, $site_config['site']['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
 if ($dict === false) {
     $session->set('is-warning', 'What did you upload? This is not a bencoded file!');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if (!empty($dict['announce-list'])) {
@@ -243,7 +243,7 @@ if (!empty($dict['announce-list'])) {
 $dict['info']['private'] = 1;
 if ((bool) empty($dict['info'])) {
     $session->set('is-warning', 'invalid torrent, info dictionary does not exist');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $info = &$dict['info'];
@@ -257,22 +257,22 @@ $count = $fluent->from('torrents')
 
 if ($count > 0) {
     $session->set('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if (bencdec::get_type($info) != 'dictionary') {
     $session->set('is-warning', 'invalid torrent, info is not a dictionary');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if ((bool) empty($info['name']) || (bool) empty($info['piece length']) || (bool) empty($info['pieces'])) {
     $session->set('is-warning', 'invalid torrent, missing parts of the info dictionary');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if (bencdec::get_type($info['name']) != 'string' || bencdec::get_type($info['piece length']) != 'integer' || bencdec::get_type($info['pieces']) != 'string') {
     $session->set('is-warning', 'invalid torrent, invalid types in info dictionary');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $dname = $info['name'];
@@ -280,19 +280,19 @@ $plen = $info['piece length'];
 $pieces_len = strlen($info['pieces']);
 if ($pieces_len % 20 != 0) {
     $session->set('is-warning', 'invalid pieces');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 if ($plen % 4096) {
     $session->set('is-warning', 'piece size is not mod(4096), invalid torrent.');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 $filelist = [];
 if (!empty($info['length'])) {
     if (bencdec::get_type($info['length']) != 'integer') {
         $session->set('is-warning', 'length must be an integer');
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     $totallen = $info['length'];
@@ -303,30 +303,30 @@ if (!empty($info['length'])) {
 } else {
     if ((bool) empty($info['files'])) {
         $session->set('is-warning', 'missing both length and files');
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {{$_SERVER['HTTP_REFERER']}");
         die();
     }
     if (bencdec::get_type($info['files']) != 'list') {
         $session->set('is-warning', 'invalid files, not a list');
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     $flist = &$info['files'];
     if (!count($flist)) {
         $session->set('is-warning', 'no files');
-        header("Location: {$site_config['paths']['baseurl']}/upload.php");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
     $totallen = 0;
     foreach ($flist as $fn) {
         if ((bool) empty($fn['length']) || (bool) empty($fn['path'])) {
             $session->set('is-warning', 'file info not found');
-            header("Location: {$site_config['paths']['baseurl']}/upload.php");
+            header("Location: {$_SERVER['HTTP_REFERER']}");
             die();
         }
         if (bencdec::get_type($fn['length']) != 'integer' || bencdec::get_type($fn['path']) != 'list') {
             $session->set('is-warning', 'invalid file info');
-            header("Location: {$site_config['paths']['baseurl']}/upload.php");
+            header("Location: {$_SERVER['HTTP_REFERER']}");
             die();
         }
         $ll = $fn['length'];
@@ -336,14 +336,14 @@ if (!empty($info['length'])) {
         foreach ($ff as $ffe) {
             if (bencdec::get_type($ffe) != 'string') {
                 $session->set('is-warning', 'filename type error');
-                header("Location: {$site_config['paths']['baseurl']}/upload.php");
+                header("Location: {$_SERVER['HTTP_REFERER']}");
                 die();
             }
             $ffa[] = $ffe;
         }
         if (!count($ffa)) {
             $session->set('is-warning', 'filename error');
-            header("Location: {$site_config['paths']['baseurl']}/upload.php");
+            header("Location: {$_SERVER['HTTP_REFERER']}");
             die();
         }
         $ffe = implode('/', $ffa);
@@ -358,7 +358,7 @@ $num_pieces = $pieces_len / 20;
 $expected_pieces = (int) ceil($totallen / $plen);
 if ($num_pieces != $expected_pieces) {
     $session->set('is-warning', 'total file size and number of pieces do not match');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 
@@ -414,7 +414,7 @@ $id = $torrent_stuffs->add($values);
 
 if (!$id) {
     $session->set('is-warning', 'upload failed');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 
@@ -457,7 +457,7 @@ sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($fil
 $dir = TORRENTS_DIR . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
     $session->set('is-warning', 'Could not properly encode file');
-    header("Location: {$site_config['paths']['baseurl']}/upload.php");
+    header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
 @unlink($tmpname);

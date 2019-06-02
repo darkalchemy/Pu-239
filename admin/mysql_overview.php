@@ -23,7 +23,7 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
         $query = $fluent->getPdo()
                         ->prepare($sql);
         $query->execute();
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=mysql_overview&action=mysql_overview");
         exit;
     }
 }

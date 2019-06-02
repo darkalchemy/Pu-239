@@ -33,7 +33,7 @@ if (isset($_POST['action2'])) {
                 'pms_per_page' => $change_pm_number,
             ];
             $user_stuffs->update($set, $CURUSER['id']);
-            header('Location: messages.php?action=edit_mailboxes&pm=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes&pm=1');
             die();
 
         case 'add':
@@ -63,7 +63,7 @@ if (isset($_POST['action2'])) {
                 ++$box;
                 $worked = '&boxes=1';
             }
-            header('Location: messages.php?action=edit_mailboxes' . $worked);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes' . $worked);
             die();
             break;
 
@@ -102,7 +102,7 @@ if (isset($_POST['action2'])) {
                     $deleted = '&box_delete=1';
                 }
             }
-            header('Location: messages.php?action=edit_mailboxes' . $deleted . $worked);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes' . $deleted . $worked);
             die();
             break;
 
@@ -152,7 +152,7 @@ if (isset($_POST['action2'])) {
             $user_stuffs->update($set, $CURUSER['id']);
             $user_stuffs->getUserFromId($CURUSER['id'], true);
             $worked = '&pms=1';
-            header('Location: messages.php?action=edit_mailboxes' . $worked);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes' . $worked);
             die();
     }
 }
@@ -234,7 +234,7 @@ if (!empty($category_set)) {
         }
     }
 }
-$HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
+$HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="add">

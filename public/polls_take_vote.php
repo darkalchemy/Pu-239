@@ -114,4 +114,4 @@ if (!$_POST['nullvote']) {
         stderr('ERROR', 'Could not update records');
     }
 }
-header("location: {$site_config['paths']['baseurl']}/index.php#poll");
+header("location: {$site_config['paths']['baseurl']}/#poll");

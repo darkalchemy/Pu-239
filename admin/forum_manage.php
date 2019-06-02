@@ -50,17 +50,17 @@ $forum_stuffs = $container->get(Forum::class);
 switch ($action) {
     case 'delete':
         if (!$id) {
-            header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
             die();
         }
         $forum_stuffs->delete($id);
-        header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
 
     case 'edit_forum':
         if (!$name && !$desc && !$id) {
-            header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
             die();
         }
         $set = [
@@ -74,13 +74,13 @@ switch ($action) {
             'min_class_create' => $min_class_create,
         ];
         $forum_stuffs->update($set, $id);
-        header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
 
     case 'add_forum':
         if (!$name && !$desc) {
-            header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
             die();
         }
         $values = [
@@ -94,7 +94,7 @@ switch ($action) {
             'forum_id' => $over_forums,
         ];
         $forum_stuffs->add($values);
-        header('Location: ' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&action=forum_manage');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
 
@@ -102,7 +102,7 @@ switch ($action) {
         $forum = $forum_stuffs->get_forum($id);
         if (!empty($forum)) {
             $HTMLOUT .= $main_links . '
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
             $body = "
                     <tr>
                         <td colspan='2'>{$lang['fm_efp_edit']} " . htmlsafechars($forum['name']) . "</td>
@@ -264,7 +264,7 @@ foreach ($forums as $row) {
 }
 
 $HTMLOUT .= main_table($body, $heading) . '<br><br>
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
 $body = '
             <tr>
                 <td colspan="2">' . $lang['fm_mp_make'] . '</td>

@@ -17,4 +17,4 @@ if ($sid > 0 && $sid != $CURUSER['id']) {
 $cache->update_row('user_' . $CURUSER['id'], [
     'stylesheet' => $sid,
 ], $site_config['expires']['user_cache']);
-header("Location: {$site_config['paths']['baseurl']}/index.php");
+header("Location: {$site_config['paths']['baseurl']}");

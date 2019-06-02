@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\User;
 
-global $container, $CURUSER, $h1_thingie, $site_config;
+global $container, $CURUSER, $site_config;
 
 $subject = $friends = '';
 
@@ -56,8 +56,7 @@ if ($message['location'] > 1) {
 }
 
 $HTMLOUT .= "
-    <div class='portlet'>
-        $h1_thingie" . ($message['draft'] === 'yes' ? "
+    <div class='portlet'>" . ($message['draft'] === 'yes' ? "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "
         $top_links

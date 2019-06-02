@@ -67,7 +67,7 @@ if ($action === 'viewbug') {
             sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('bug_mess_');
         }
-        header("location: bugs.php?action=viewbug&id={$id}");
+        header("location: {$_SERVER['PHP_SELF']}?action=viewbug&id={$id}");
     }
     $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
     if (!$id || !is_valid_id($id)) {
@@ -198,7 +198,7 @@ if ($action === 'viewbug') {
         $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
     } else {
         $session->set('is-warning', $lang['no_bugs']);
-        header('Location: index.php');
+        header('Location: ' . $site_config['paths']['baseurl']);
         die();
     }
 } elseif ($action === 'add') {

@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($user_id === 2) {
             $session = $container->get(Session::class);
             $session->set('is-success', '[p]Pu-239 Install Complete![/p]');
-            header('Location: index.php');
+            header('Location: ' . $site_config['paths']['baseurl']);
         } else {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
         }

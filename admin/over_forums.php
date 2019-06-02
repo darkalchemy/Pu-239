@@ -48,7 +48,7 @@ switch ($action) {
             stderr($lang['std_error'], $lang['std_error_id']);
         }
         sql_query('DELETE FROM over_forums WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        header('Location: staffpanel.php?tool=over_forums');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
     //=== edit forum
@@ -62,7 +62,7 @@ switch ($action) {
             stderr($lang['std_error'], $lang['std_error_select_another']);
         }
         sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        header('Location: staffpanel.php?tool=over_forums');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
     //=== add forum
@@ -76,7 +76,7 @@ switch ($action) {
             stderr($lang['std_error'], $lang['std_error_select_another']);
         }
         sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')') or sqlerr(__FILE__, __LINE__);
-        header('Location: staffpanel.php?tool=over_forums');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
     //=== edit over forum stuff
@@ -167,7 +167,7 @@ switch ($action) {
         }
         $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= '
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
                 <input type="hidden" name="action2" value="add_forum">';
         $body = '
                 <tr>

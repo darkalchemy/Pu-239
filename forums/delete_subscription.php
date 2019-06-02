@@ -8,7 +8,7 @@ global $site_config, $CURUSER;
 if ($topic_id > 0) {
     sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     //=== ok, all done here, send them back! \o/
-    header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . '&s=0');
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id . '&s=0');
     die();
 }
 if (isset($_POST['remove'])) {
@@ -25,5 +25,5 @@ if (isset($_POST['remove'])) {
         stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
     }
 }
-header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=subscriptions');
+header('Location: ' . $_SERVER['PHP_SELF'] . '?action=subscriptions');
 die();

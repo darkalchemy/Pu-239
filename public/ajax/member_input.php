@@ -16,7 +16,7 @@ $valid_actions = [
 ];
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
@@ -26,7 +26,7 @@ global $container, $CURUSER;
 $session = $container->get(Session::class);
 if ($action == '') {
     $session->set('is-danger', 'Access Not Allowed');
-    header('Location: index.php');
+    header('Location: ' . $site_config['paths']['baseurl']);
 } else {
     $cache = $container->get(Cache::class);
     switch ($action) {
@@ -75,7 +75,7 @@ if ($action == '') {
                 //=== add it to the log
                 write_log("{$CURUSER['username']} edited member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$staff_notes_arr['username']}[/url] staff notes. Changes made:<br>Was:<br>" . htmlsafechars((string) $staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars((string) $_POST['new_staff_note']));
             }
-            header('Location: userdetails.php?id=' . $id . '&sn=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $id . '&sn=1');
             break;
 
         case 'watched_user':
@@ -118,7 +118,7 @@ if ($action == '') {
                     write_log("{$CURUSER['username']} changed watched user text for: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$watched_arr['username']}[/url] Changes made:<br>Text was:<br>" . htmlsafechars((string) $watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars((string) $_POST['watched_reason']));
                 }
             }
-            header('Location: userdetails.php?id=' . $id . '&wu=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $id . '&wu=1');
             break;
     }
 }

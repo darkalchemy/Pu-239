@@ -92,7 +92,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     ];
 }
 
-$action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
+$action = in_array($posted_action, $valid_actions) ? $posted_action : 'forum';
 if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
     $HTMLOUT .= "
     <script>
@@ -397,7 +397,7 @@ switch ($action) {
                         ->select('f.topic_count')
                         ->select('f.forum_id')
                         ->select('f.parent_forum')
-                        ->innerJoin('forums AS f ON f.forum_id=ovf.id')
+                        ->innerJoin('forums AS f ON f.forum_id = ovf.id')
                         ->where('ovf.min_class_view <= ?', $CURUSER['class'])
                         ->where('f.min_class_read <= ?', $CURUSER['class'])
                         ->orderBy('ovf.sort, f.sort')
@@ -414,9 +414,9 @@ switch ($action) {
         unset($query);
         $i = 0;
         $updated = [];
-        foreach ($children as $child) {
-            foreach ($parents as $parent) {
-                ++$i;
+        foreach ($parents as $parent) {
+            $parent['children_ids'] = [];
+            foreach ($children as $child) {
                 $parent['children_ids'][] = $parent['real_forum_id'];
                 if ($parent['real_forum_id'] === $child['parent_forum']) {
                     $original = $parent;
@@ -424,15 +424,15 @@ switch ($action) {
                     $parent['topic_count'] += $child['topic_count'];
                     $parent['children_ids'][] = $child['real_forum_id'];
                 }
-                $updated[] = $parent;
             }
+            $updated[] = $parent;
         }
 
         $HTMLOUT .= $mini_menu;
         foreach ($updated as $arr_forums) {
             $HTMLOUT .= ($arr_forums['over_forum_id'] !== $over_forum_id ? "
                 <h2 class='margin20'>
-	                <a href='{$site_config['paths']['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description']) . "' class='tooltipper'>
+	                <a href='{$_SERVER['PHP_SELF']}?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description']) . "' class='tooltipper'>
 	                    <span>" . htmlsafechars($arr_forums['over_forum_name']) . '</span>
 	                </a>
 	            </h2>' : '');
@@ -605,8 +605,8 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -627,9 +627,9 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

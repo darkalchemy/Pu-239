@@ -42,7 +42,7 @@ if ($type === 'signup' && isset($_GET['email'])) {
     check_user_status();
     if (isset($CURUSER)) {
         $session->set('is-info', $lang['ok_signup_confirm']);
-        header("Location: {$site_config['paths']['baseurl']}/index.php");
+        header("Location: {$site_config['paths']['baseurl']}");
         die();
     } else {
         $HTMLOUT .= stdhead("{$lang['ok_signup_confirm']}");

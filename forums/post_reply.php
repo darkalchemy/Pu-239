@@ -107,7 +107,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         $extension_error = $uploaded[0];
         $size_error = $uploaded[1];
     }
-    header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=last#' . $post_id);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=last#' . $post_id);
     die();
 }
 

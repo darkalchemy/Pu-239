@@ -106,7 +106,7 @@ function show_level(array $input)
                 </span>
             </a>
         </div>";
-    $html .= "<form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
                 <input name='mode' value='doupdate' type='hidden'>";
     $heading = "
         <tr>
@@ -339,7 +339,7 @@ function view_list(array $now_date, array $input, int $time_offset)
     $title = $lang['rep_ad_view_title'];
     $html = "<h2>{$lang['rep_ad_view_view']}</h2>";
     $html .= "<p>{$lang['rep_ad_view_page']}</p>";
-    $html .= "<form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad' name='list_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='list_form' method='post' accept-charset='utf-8'>
                 <input name='mode' value='list' type='hidden'>
                 <input name='dolist' value='1' type='hidden'>";
     $html .= '<table>';

@@ -19,5 +19,5 @@ $fluent->deleteFrom('ajax_chat_online')
        ->where('userID = ?', $CURUSER['id'])
        ->execute();
 
-header("Location: {$site_config['paths']['baseurl']}/index.php");
+header("Location: {$site_config['paths']['baseurl']}");
 die();

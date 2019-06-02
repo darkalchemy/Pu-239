@@ -101,7 +101,7 @@ function move_cat($params)
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     } else {
         stderr($lang['categories_error'], $lang['categories_move_error4']);
@@ -143,7 +143,7 @@ function move_cat_form($params)
     $select .= '
             </select>';
     $htmlout = "
-        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
             <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name']) . "</h2>
@@ -203,7 +203,7 @@ function add_cat($params)
     if (!$insert) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     }
 }
@@ -249,7 +249,7 @@ function delete_cat($params)
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if ($results) {
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     } else {
         stderr($lang['categories_error'], $lang['categories_del_error1']);
@@ -286,7 +286,7 @@ function delete_cat_form($params)
     }
 
     $htmlout = "
-        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takedel_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -353,10 +353,10 @@ function edit_cat($params)
         $cache->delete('genrelist_grouped_');
         $cache->delete('genrelist_ordered_');
         $cache->delete('categories');
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     } else {
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     }
 }
@@ -387,7 +387,7 @@ function edit_cat_form($params)
     $parents = get_parents($cat);
     $select = get_images($cat);
     $htmlout = "
-        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takeedit_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -582,7 +582,7 @@ function reorder_cats(bool $redirect = true)
     $cache->delete('categories');
 
     if ($redirect) {
-        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=categories");
+        header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     }
 }

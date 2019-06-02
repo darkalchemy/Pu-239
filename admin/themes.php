@@ -48,7 +48,7 @@ if (isset($_GET['act'])) {
                            ->fetch();
 
         $HTML .= "
-        <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=themes&amp;action=themes&amp;act=4' method='post' accept-charset='utf-8'>
             <input type='hidden' value='{$template['id']}' name='tid'>
             <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
@@ -198,11 +198,11 @@ if (isset($_GET['act'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
         if (!isset($_GET['sure'])) {
-            header('Location: staffpanel.php?tool=themes');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=themes');
             die();
         }
         if (isset($_GET['sure']) && $_GET['sure'] != 1) {
-            header('Location: staffpanel.php?tool=themes');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=themes');
             die();
         }
 
@@ -278,7 +278,7 @@ if (isset($_GET['act'])) {
 
         clear_template_cache();
         $session->set('is-success', $lang['themes_msg3']);
-        header('Location: staffpanel.php?tool=themes&action=themes');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=themes&action=themes');
         die();
     }
 }

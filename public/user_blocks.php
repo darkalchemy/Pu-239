@@ -400,7 +400,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
-        header('Location: ' . $site_config['paths']['baseurl'] . '/user_blocks.php');
+        header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     }
 }

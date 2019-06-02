@@ -112,7 +112,7 @@ switch ($action) {
                ->where('id = ?', $id)
                ->execute();
 
-        header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . sqlesc($id));
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . sqlesc($id));
         die();
         break;
 
@@ -152,7 +152,7 @@ switch ($action) {
                    ->set($set)
                    ->where('id = ?', $id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&voted=1&id=' . sqlesc($id));
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&voted=1&id=' . sqlesc($id));
             die();
         }
         break;
@@ -380,7 +380,7 @@ switch ($action) {
             $color = get_user_class_name($CURUSER['class'], true);
             $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url ={$site_config['paths']['baseurl']}/requests.php?action=request_details & id ={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&new=1&id=' . $new_request_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&new=1&id=' . $new_request_id);
             die();
         }
         $stdfoot['js'] = array_merge($stdfoot['js'], [
@@ -480,7 +480,7 @@ switch ($action) {
                    ->where('request = ?', $id)
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?request_deleted=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?request_deleted=1');
             die();
         }
         echo stdhead('Delete Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
@@ -607,7 +607,7 @@ switch ($action) {
             $fluent->update('requests')
                    ->set($set)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -677,7 +677,7 @@ switch ($action) {
                    ->set($set)
                    ->where('id = ?', $comment_id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
@@ -736,7 +736,7 @@ switch ($action) {
                ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
-        header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '#comm' . $comment_id);
         die();
         break;
 
@@ -769,7 +769,7 @@ switch ($action) {
                    ->where('id = ?', $arr['request'])
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&comment_deleted=1');
             die();
         }
         break;

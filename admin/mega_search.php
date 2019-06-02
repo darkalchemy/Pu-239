@@ -23,7 +23,7 @@ $HTMLOUT .= '
 $HTMLOUT .= main_div('
         <div class="has-text-centered size_4 is-primary top10 bottom10">' . $lang['mega_analyze'] . '</div>
         <div class="bg-00 round10 padding20">
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
                 <div class="has-text-centered top20">
@@ -33,7 +33,7 @@ $HTMLOUT .= main_div('
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20 ">
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '">
                 <div class="has-text-centered top20">
@@ -43,7 +43,7 @@ $HTMLOUT .= main_div('
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20">
-            <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search" accept-charset="utf-8">
+            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
 <<<<<<< HEAD
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>

@@ -109,7 +109,7 @@ switch ($action) {
                ->where('id=?', $id)
                ->execute();
 
-        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . sqlesc($id));
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . sqlesc($id));
         die();
         break;
 
@@ -149,7 +149,7 @@ switch ($action) {
                    ->set($set)
                    ->where('id=?', $id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&voted=1&id=' . sqlesc($id));
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&voted=1&id=' . sqlesc($id));
             die();
         }
         break;
@@ -382,7 +382,7 @@ switch ($action) {
             $msg = "[{
         $color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url ={$site_config['paths']['baseurl']}/offers.php?action=offer_details & id ={$new_offer_id}]{$offer_name}[/url]";
             autoshout($msg);
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&new=1&id=' . $new_offer_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&new=1&id=' . $new_offer_id);
             die();
         }
         $stdfoot['js'] = array_merge($stdfoot['js'], [
@@ -482,7 +482,7 @@ switch ($action) {
                    ->where('offer = ?', $id)
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?offer_deleted=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?offer_deleted=1');
             die();
         }
         echo stdhead('Delete offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
@@ -609,7 +609,7 @@ switch ($action) {
             $fluent->update('offers')
                    ->set($set)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -679,7 +679,7 @@ switch ($action) {
                    ->set($set)
                    ->where('id=?', $comment_id)
                    ->execute();
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
@@ -738,7 +738,7 @@ switch ($action) {
                ->execute();
 
         $session->set('is-success', 'Comment Edited Successfully.');
-        header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '#comm' . $comment_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . $id . '#comm' . $comment_id);
         die();
         break;
 
@@ -771,7 +771,7 @@ switch ($action) {
                    ->where('id=?', $arr['offer'])
                    ->execute();
 
-            header('Location: ' . $site_config['paths']['baseurl'] . '/offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . $id . '&comment_deleted=1');
             die();
         }
         break;

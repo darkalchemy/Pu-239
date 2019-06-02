@@ -46,7 +46,7 @@ $HTMLOUT .= "
 
 $HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
 $HTMLOUT .= "
-    <form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch' accept-charset='utf-8'>";
+    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=usersearch' accept-charset='utf-8'>";
 $body = "
         <tr>
             <td class='w-1'>{$lang['usersearch_name']}</td>

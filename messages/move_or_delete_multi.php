@@ -22,7 +22,7 @@ if (isset($_POST['move'])) {
         $message_stuffs->update($set, $pm_message);
     }
     $cache->delete('inbox_' . $CURUSER['id']);
-    header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&multi_move=1&box=' . $mailbox);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&multi_move=1&box=' . $mailbox);
     die();
 }
 if (isset($_POST['delete'])) {
@@ -53,11 +53,11 @@ if (isset($_POST['delete'])) {
         stderr($lang['pm_error'], $lang['pm_delete_err_multi']);
     }
     if (isset($_POST['returnto'])) {
-        header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php?action=' . $_POST['returnto'] . '&multi_delete=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=' . $_POST['returnto'] . '&multi_delete=1');
     } elseif (isset($_POST['draft_section'])) {
-        header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php?action=viewdrafts&multi_delete=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=viewdrafts&multi_delete=1');
     } else {
-        header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&multi_delete=1&box=' . $mailbox);
     }
     die();
 }

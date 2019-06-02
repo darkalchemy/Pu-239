@@ -57,7 +57,7 @@ if ($sanity_check > 0) {
     } else {
         sql_query('UPDATE posts SET status = \'deleted\'  WHERE id=' . sqlesc($post_id) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
-    header('Location: ' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
     stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 

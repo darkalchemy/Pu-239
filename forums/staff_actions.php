@@ -83,7 +83,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         }
         break;
@@ -103,7 +103,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_trash']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         }
         break;
@@ -147,7 +147,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_topic_not_split']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $new_topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $new_topic_id);
             die();
         }
         break;
@@ -185,7 +185,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_posts_were_not_merged']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_merge_with);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_to_merge_with);
             die();
         }
         break;
@@ -242,7 +242,7 @@ switch ($staff_action) {
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id=' . sqlesc($topic_to_append_to)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id=' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_append_to);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_to_append_to);
             die();
         }
         break;
@@ -262,7 +262,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_sent_to_recy']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         }
         break;
@@ -282,7 +282,7 @@ switch ($staff_action) {
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_recy']);
             }
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         }
         break;
@@ -311,7 +311,7 @@ switch ($staff_action) {
                 $count = $count + 1;
             }
         }
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . '&count=' . $count);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id . '&count=' . $count);
         die();
         break;
     //=== Set '.$lang['fe_pinned'].'
@@ -322,7 +322,7 @@ switch ($staff_action) {
         }
         sql_query('UPDATE topics SET sticky = "' . ($_POST['pinned'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //=== Set Locked
@@ -333,7 +333,7 @@ switch ($staff_action) {
         }
         sql_query('UPDATE topics SET locked = "' . ($_POST['locked'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //=== move topic
@@ -348,7 +348,7 @@ switch ($staff_action) {
         }
         sql_query('UPDATE topics SET forum_id=' . sqlesc($forum_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //=== rename topic
@@ -360,7 +360,7 @@ switch ($staff_action) {
         }
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($new_topic_name) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //===  change topic desc
@@ -369,7 +369,7 @@ switch ($staff_action) {
         $new_topic_desc = strip_tags((isset($_POST['new_topic_desc']) ? trim($_POST['new_topic_desc']) : ''));
         sql_query('UPDATE topics SET topic_desc = ' . sqlesc($new_topic_desc) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //=== '.$lang['vt_merge'].' topic
@@ -400,7 +400,7 @@ switch ($staff_action) {
         }
         //=== delete the old topic
         sql_query('DELETE FROM topics WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_merge_with);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_to_merge_with);
         die();
         break;
     //=== move to recylebin
@@ -411,7 +411,7 @@ switch ($staff_action) {
         sql_query('DELETE FROM subscriptions WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
-        header('Location: forums.php' . ($_POST['status'] == 'yes' ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
+        header('Location: ' . $_SERVER['PHP_SELF'] . ($_POST['status'] == 'yes' ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
         die();
         break;
     //=== delete topic
@@ -430,7 +430,7 @@ switch ($staff_action) {
         }
         if ($site_config['forum_config']['delete_for_real']) {
             sql_query('UPDATE topics SET status = "deleted" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-            header('Location: forums.php');
+            header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
             //=== if you just want the damned things deleted
@@ -451,7 +451,7 @@ switch ($staff_action) {
             for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
                 $cache->delete('forum_last_post_' . $arr_count['forum_id'] . '_' . $i);
             }
-            header('Location: forums.php');
+            header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }
         break;
@@ -465,7 +465,7 @@ switch ($staff_action) {
         //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
         sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($arr_count[0]) . ', topic_count = topic_count + 1 WHERE id=' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
 } //=== ends switch

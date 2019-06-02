@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($returnto)) {
             header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
         } else {
-            header("Location: {$site_config['paths']['baseurl']}/index.php");
+            header("Location: {$site_config['paths']['baseurl']}");
         }
         die();
     } else {

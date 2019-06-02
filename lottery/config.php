@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             autoshout($msg);
         }
         $session->set('is-success', 'Lottery configuration was saved!');
-        header("Location: {$site_config['paths']['baseurl']}/lottery.php");
+        header("Location: {$_SERVER['PHP_SELF']}");
         die();
     } else {
         $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));

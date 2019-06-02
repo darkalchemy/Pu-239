@@ -82,8 +82,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -216,9 +216,9 @@ function userlogin()
 }
 */
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -306,9 +306,9 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -333,9 +333,9 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -597,8 +597,8 @@ function get_time_offset()
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -775,15 +775,20 @@ function load_language($file = '')
 {
     $site_lang = get_language();
     $lang = [];
-    if (file_exists(LANG_DIR . "{$site_lang}/lang_{$file}.php")) {
-        include_once LANG_DIR . "{$site_lang}/lang_{$file}.php";
-    } elseif (file_exists(LANG_DIR . "1/lang_{$file}.php")) {
-        include_once LANG_DIR . "1/lang_{$file}.php";
-    } else {
-        stderr('System Error', "Can't find language file specified(user or site)");
+    $path = LANG_DIR . "{$site_lang}/lang_{$file}.php";
+    if (file_exists($path)) {
+        require_once $path;
+
+        return $lang;
+    }
+    $path = LANG_DIR . "1/lang_{$file}.php";
+    if (file_exists($path)) {
+        require_once $path;
+
+        return $lang;
     }
 
-    return $lang;
+    stderr('System Error', "Can't find language file specified(user or site)");
 }
 
 /**
@@ -1010,9 +1015,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1089,9 +1094,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1329,9 +1334,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1372,9 +1377,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1408,8 +1413,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1474,9 +1479,9 @@ function formatQuery($query)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1508,9 +1513,9 @@ function insert_update_ip()
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -1563,9 +1568,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param $details
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1633,9 +1638,9 @@ function get_body_image($details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

@@ -1,4 +1,8 @@
 ### 02 Jun, 2019
+fix: not showing forums when no child board exists  
+fix: missing $h1_thingie messages  
+fix: recover.php  
+replace: explicit url with php self in header()  
 update: mybonus.php  
 
 ### 01 Jun, 2019

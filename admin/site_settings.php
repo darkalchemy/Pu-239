@@ -183,7 +183,7 @@ foreach ($keys as $key) {
     $i = 0;
     $key = empty($key) ? 'null' : $key;
     $body = "
-                <form action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=site_settings' method='post' accept-charset='utf-8'>";
+                <form action='{$_SERVER['PHP_SELF']}?tool=site_settings' method='post' accept-charset='utf-8'>";
 
     foreach ($settings as $row) {
         if ($row['parent'] === $key) {

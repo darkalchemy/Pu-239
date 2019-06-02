@@ -99,5 +99,5 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
 
     send_mail($to_user['email'], "{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}", $body, strip_tags($body));
 }
-header('Location: messages.php?action=view_mailbox&forwarded=1');
+header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&forwarded=1');
 die();

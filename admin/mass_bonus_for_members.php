@@ -71,7 +71,7 @@ switch ($action) {
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
-        header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=1');
         die();
         break;
 
@@ -108,7 +108,7 @@ switch ($action) {
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
-        header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=1');
         die();
         break;
 
@@ -145,7 +145,7 @@ switch ($action) {
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
-        header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=1');
         die();
         break;
 
@@ -182,7 +182,7 @@ switch ($action) {
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
-        header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=1');
         die();
         break;
 
@@ -212,7 +212,7 @@ switch ($action) {
             }
             unset($pm_values, $count);
         }
-        header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=1');
         die();
         break;
 }
@@ -313,7 +313,7 @@ $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $la
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
 $HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site']['name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '
-    <form name="inputform" method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data" accept-charset="utf-8">';
+    <form name="inputform" method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data" accept-charset="utf-8">';
 $body = '
         <tr>
             <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 check_user_status();
 if (empty($CURUSER) || $CURUSER['class'] < UC_MAX) {
     $session->set('is-warning', 'You do not have access to view that page');
-    header("Location: {$site_config['paths']['baseurl']}/index.php");
+    header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 

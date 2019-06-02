@@ -99,9 +99,9 @@ if (isset($_GET['change_pm_number'])) {
         'pms_per_page' => $change_pm_number,
     ], $site_config['expires']['user_cache']);
     if (isset($_GET['edit_mail_boxes'])) {
-        header('Location: messages.php?action=edit_mailboxes&pm=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes&pm=1');
     } else {
-        header('Location: messages.php?action=view_mailbox&pm=1&box=' . $mailbox);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&pm=1&box=' . $mailbox);
     }
     die();
 }
@@ -129,9 +129,9 @@ if (isset($_GET['show_pm_avatar'])) {
     ], $site_config['expires']['user_cache']);
 
     if (isset($_GET['edit_mail_boxes'])) {
-        header('Location: messages.php?action=edit_mailboxes&avatar=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes&avatar=1');
     } else {
-        header('Location: messages.php?action=view_mailbox&avatar=1&box=' . $mailbox);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&avatar=1&box=' . $mailbox);
     }
     die();
 }

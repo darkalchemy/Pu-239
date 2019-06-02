@@ -86,7 +86,7 @@ switch ($action) {
         if (in_array('666', $post_vote)) {
             sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
             //=== all went well, send them back!
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         } else {
             //=== if single vote (not array)
@@ -107,7 +107,7 @@ switch ($action) {
                 stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'counted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
             }
             //=== all went well, send them back!
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         } //=== end of else
         break; //=== end casting a vote(s)
@@ -154,7 +154,7 @@ switch ($action) {
         //=== ok all is well, let then change their votes :)
         sql_query('DELETE FROM forum_poll_votes WHERE poll_id=' . sqlesc($arr_poll['poll_id']) . ' AND user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         //=== all went well, send them back!
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break;
     //=== adding a poll ============================================================================================//
@@ -205,7 +205,7 @@ switch ($action) {
                 stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'added') . '.');
             }
             //=== all went well, send them back!
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         } //=== end of posting poll to DB
         //=== ok looks like they can be here
@@ -317,7 +317,7 @@ switch ($action) {
             stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'deleted') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums . php?action=view_topic & topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic & topic_id=' . $topic_id);
         die();
         break; //=== end delete poll
     //=== reseting a poll ============================================================================================//
@@ -342,7 +342,7 @@ switch ($action) {
             stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'reset') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums . php?action=view_topic & topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic & topic_id=' . $topic_id);
         die();
         break; //=== end reset poll
     //=== closing a poll ============================================================================================//
@@ -367,7 +367,7 @@ switch ($action) {
             stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'closed') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break; //=== end of poll close
     //=== opening a poll  (either after it was closed, or timed out) ===============================================================================//
@@ -393,7 +393,7 @@ switch ($action) {
             stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'opened') . '!. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         }
         //=== all went well, send them back!
-        header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
         die();
         break; //=== end of open poll
     //=== edit a poll ============================================================================================//
@@ -439,7 +439,7 @@ switch ($action) {
             //=== delete the votes
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== send them back!
-            header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         } //=== end of posting poll to DB
         //=== get poll stuff to edit

@@ -18,7 +18,7 @@ $dt = TIME_NOW;
 $session = $container->get(Session::class);
 if ($CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', $lang['staffbox_class']);
-    header('Location: index.php');
+    header('Location: ' . $site_config['paths']['baseurl']);
     die();
 }
 $valid_do = [
@@ -166,7 +166,7 @@ switch ($do) {
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
         if (!$count_msgs) {
             $session->set('is-warning', $lang['staffbox_no_msgs']);
-            header('Location: index.php');
+            header('Location: ' . $site_config['paths']['baseurl']);
             die();
         } else {
             $HTMLOUT .= "

@@ -16,5 +16,5 @@ if (!$result) {
 }
 $cache = $container->get(Cache::class);
 $cache->delete('inbox_' . $CURUSER['id']);
-header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&singlemove=1&box=' . $mailbox);
+header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&singlemove=1&box=' . $mailbox);
 die();
