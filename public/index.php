@@ -18,9 +18,6 @@ require_once INCL_DIR . 'function_torrent_hover.php';
 check_user_status();
 $stdfoot = [
     'js' => [
-        get_file_name('scroller_js'),
-        get_file_name('glider_js'),
-        get_file_name('trivia_js'),
         get_file_name('parallax_js'),
     ],
 ];
@@ -50,9 +47,9 @@ if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     $HTMLOUT .= "
 <script>
     window.addEventListener('load', function(){
-        var headerHeight = $('#navbar').outerHeight() + 10;
-        var target = '#poll';
-        var scrollToPosition = $(target).offset().top - headerHeight;
+        let headerHeight = $('#navbar').outerHeight() + 10;
+        let target = '#poll';
+        let scrollToPosition = $(target).offset().top - headerHeight;
         $('html, body').animate({
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');
@@ -60,7 +57,9 @@ if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     });
 </script>";
 }
-
+$staff_columns = [
+    //'glide',
+];
 $above_columns = [
     'glide',
 ];
@@ -97,16 +96,27 @@ $right_column = [
 $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $glide = $ajaxchat = '';
 $tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
-$remove_columns = [];
+$remove_columns = $CURUSER['class'] < UC_STAFF ? $staff_columns : [];
 $torrent_stuffs = $container->get(Torrent::class);
+$available_columns = array_diff($available_columns, $remove_columns);
 
 if (in_array('glide', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
+    $stdfoot = array_merge_recursive($stdfoot, [
+        'js' => [
+            get_file_name('glider_js'),
+        ],
+    ]);
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_glide.php';
 } else {
     $remove_columns[] = 'glide';
 }
 
 if (in_array('ajaxchat', $available_columns) && $CURUSER['blocks']['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
+    $stdfoot = array_merge_recursive($stdfoot, [
+        'js' => [
+            get_file_name('trivia_js'),
+        ],
+    ]);
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
 } else {
     $remove_columns[] = 'ajaxchat';
@@ -179,6 +189,11 @@ if (in_array('christmas_gift', $available_columns) && Christmas() && $CURUSER['b
 }
 
 if (in_array('torrents_scroller', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
+    $stdfoot = array_merge_recursive($stdfoot, [
+        'js' => [
+            get_file_name('scroller_js'),
+        ],
+    ]);
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
 } else {
     $remove_columns[] = 'torrents_scroller';

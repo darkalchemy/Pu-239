@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+update: allow index page blocks to be shown as staff only blocks  
 add: tooltip for show background  
 fix: site_settings.php bg color  
 update: make default text to one css variable  
