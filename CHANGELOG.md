@@ -1,4 +1,5 @@
 ### 01 Jun, 2019
+fix: offers.php requests.php autoshout  
 fix: lottery  
 update: allow index page blocks to be shown as staff only blocks  
 add: tooltip for show background  
