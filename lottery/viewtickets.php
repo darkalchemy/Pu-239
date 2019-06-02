@@ -39,8 +39,8 @@ if (!mysqli_num_rows($qs)) {
         $body .= '
     <tr>
         <td>' . format_username((int) $ar['id']) . '</a></td>
-        <td>' . number_format($ar['tickets']) . '</td>
-        <td>' . number_format($ar['seedbonus']) . '</td>
+        <td>' . number_format((int) $ar['tickets']) . '</td>
+        <td>' . number_format((int) $ar['seedbonus']) . '</td>
     </tr>';
     }
     $html .= main_table($body, $header);

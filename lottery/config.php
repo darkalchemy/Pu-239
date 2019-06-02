@@ -2,17 +2,20 @@
 
 declare(strict_types = 1);
 
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 class_check(UC_STAFF);
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
-global $site_config;
+global $container, $site_config;
 
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
         'ticket_amount' => 0,
@@ -24,21 +27,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $session->set('is-warning', 'You forgot to fill some data');
         }
     }
+    //dd($lottery_config, $_POST);
     if (!empty($lottery_config)) {
         foreach ($lottery_config as $c_name => $c_value) {
-            if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-                $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? implode('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
-                if ($_POST['c_name'] === 'prize_fund') {
-                    $fund = number_format($_POST['c_value']);
-                } elseif ($_POST['c_name'] === 'ticket_amount') {
-                    $cost = number_format($_POST['c_value']);
-                } elseif ($_POST['c_name'] === 'ticket_amount_type') {
-                    $type = ucfirst($_POST['c_value']);
+            if (isset($_POST[$c_name])) {
+                if ($_POST[$c_name] != $c_value) {
+                    $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? implode('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
+                }
+                if ($c_name === 'prize_fund') {
+                    $fund = number_format((int) $_POST[$c_name]);
+                } elseif ($c_name === 'ticket_amount') {
+                    $cost = number_format((int) $_POST[$c_name]);
+                } elseif ($c_name === 'ticket_amount_type') {
+                    $type = ucfirst($_POST[$c_name]);
                 }
             }
         }
     }
-    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
+
+    if (!empty($update) && sql_query('INSERT INTO lottery_config(name,value) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
         if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
             $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
@@ -77,11 +84,11 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Prize Fund</td>
-                        <td><input type='text' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100' required></td>
+                        <td><input type='number' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Ticket Amount</td>
-                        <td><input type='text' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100' required></td>
+                        <td><input type='number' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Ticket Amount Type</td>
@@ -93,7 +100,7 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Amount Of Tickets Allowed</td>
-                        <td><input type='text' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100' required></td>
+                        <td><input type='number' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Classes Allowed</td>
@@ -101,7 +108,7 @@ if (!empty($lottery_config)) {
         for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
             $table .= "
                         <label for='c{$i}'>
-                            <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]'> " . get_user_class_name($i) . '
+                            <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]' checked> " . get_user_class_name($i) . '
                         </label>';
         }
         $table .= "
@@ -109,7 +116,7 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Total Winners</td>
-                        <td><input type='text' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100' required></td>
+                        <td><input type='number' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Start Date</td>
@@ -127,9 +134,8 @@ if (!empty($lottery_config)) {
                     <tr>
                         <td>Run Length</td>
                         <td>
-                            <select name='end_date' class='w-100'>
-                                <option value='0'>------</option>";
-        for ($i = 1; $i <= 7; ++$i) {
+                            <select name='end_date' class='w-100'>";
+        for ($i = 7; $i >= 1; --$i) {
             $table .= "
                                 <option value='" . (TIME_NOW + (84600 * $i)) . "'>{$i} days</option>";
         }

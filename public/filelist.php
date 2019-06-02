@@ -2,22 +2,27 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('filelist'));
-global $site_config;
+global $container, $site_config;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
     stderr('USER ERROR', 'Bad id');
 }
-$res = sql_query('SELECT COUNT(id) FROM files  WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 
-$row = mysqli_fetch_row($res);
-$count = $row[0];
+$fluent = $container->get(Database::class);
+$count = $fluent->from('files')
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('torrent = ?', $id)
+                ->fetch('count');
 $perpage = 50;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/filelist.php?id=$id&amp;");
 $HTMLOUT = '';
@@ -25,7 +30,11 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 
-$subres = sql_query('SELECT * FROM files WHERE torrent = ' . sqlesc($id) . " ORDER BY id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+$files = $fluent->from('files')
+                ->where('torrent = ?', $id)
+                ->orderBy('id')
+                ->limit($pager['pdo']['limit'])
+                ->offset($pager['pdo']['offset']);
 
 $header = "
             <tr>
@@ -34,7 +43,7 @@ $header = "
                 <th class='has-text-right w-10'>{$lang['filelist_size']}</th>
             </tr>";
 $body = '';
-while ($subrow = mysqli_fetch_assoc($subres)) {
+foreach ($files as $subrow) {
     $ext = pathinfo($subrow['filename'], PATHINFO_EXTENSION);
     $ext = !empty($ext) ? $ext : 'Unknown';
     if (!file_exists(IMAGES_DIR . "icons/{$ext}.png")) {

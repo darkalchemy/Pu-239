@@ -114,7 +114,9 @@ $peers = $fluent->from('peers AS p')
                 ->select('p.last_action AS la')
                 ->select('p.userid')
                 ->select('p.peer_id')
+                ->select('u.username')
                 ->innerJoin('torrents AS t ON t.id = p.torrent')
+                ->innerJoin('users AS u ON u.id = p.userid')
                 ->where('p.torrent = ?', $id)
                 ->fetchAll();
 
