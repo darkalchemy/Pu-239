@@ -36,7 +36,7 @@ switch ($list) {
         $pubs = get_bluray_info();
         if (is_array($pubs)) {
             $div = "
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
             foreach ($pubs as $data) {
                 $div .= generate_html($data);
             }
@@ -98,7 +98,7 @@ switch ($list) {
 
                 $div = "
         <h1 class='has-text-centered'>TVMaze TV Today</h1>
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
                 foreach ($body as $data) {
                     $div .= generate_html($data);
                 }
@@ -162,7 +162,7 @@ switch ($list) {
             }
 
             $div = "
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
             foreach ($body as $data) {
                 $div .= generate_html($data);
             }
@@ -207,7 +207,7 @@ switch ($list) {
             }
 
             $div = "
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
             foreach ($body as $data) {
                 $div .= generate_html($data);
             }
@@ -252,7 +252,7 @@ switch ($list) {
             }
 
             $div = "
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
             foreach ($body as $data) {
                 $div .= generate_html($data);
             }
@@ -278,7 +278,7 @@ switch ($list) {
         <h1 class='has-text-centered'>IMDb Upcoming Movies $key</h1>";
 
                 $body .= "
-        <div class='level-center'>";
+        <div class='masonry padding20'>";
                 foreach ($imdb as $item) {
                     $movie = get_imdb_info_short($item);
                     if (!empty($movie)) {
@@ -306,7 +306,7 @@ echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
 function generate_html(array $data)
 {
     $html = "
-     <div class='padding10 round10 bg-00 margin10'>
+     <div class='masonry-item-clean padding10 bg-04 round10'>
         <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
             <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
             <div class='has-text-centered top10'>{$data['title']}</div>";

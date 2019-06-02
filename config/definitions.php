@@ -17,6 +17,7 @@ use Pu239\Coin;
 use Pu239\Comment;
 use Pu239\Database;
 use Pu239\FailedLogin;
+use Pu239\Forum;
 use Pu239\HappyLog;
 use Pu239\Image;
 use Pu239\ImageProxy;
@@ -55,6 +56,7 @@ return [
     Comment::class => autowire(),
     Database::class => autowire(),
     FailedLogin::class => autowire(),
+    Forum::class => autowire(),
     HappyLog::class => autowire(),
     Image::class => autowire(),
     ImageProxy::class => autowire(),

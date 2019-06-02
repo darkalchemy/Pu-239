@@ -339,6 +339,8 @@ class User
 
         if ($result && $persist) {
             $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
+        } else {
+            $this->cache->delete('user_' . $userid);
         }
 
         return $result;

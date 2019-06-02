@@ -527,7 +527,7 @@ function get_imdb_info_short($imdb_id)
 
     $imdb_data['mpaa_reason'] = !empty($imdb_data['mpaa_reason']) ? $imdb_data['mpaa_reason'] : '?';
     $imdb_info = "
-            <div class='padding10 round10 bg-00 margin10'>
+            <div class='masonry-item-clean padding10 bg-04 round10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
                     <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$imdb_data['title']}</div>

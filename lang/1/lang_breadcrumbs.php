@@ -47,6 +47,7 @@ $lang = [
     'messages.php' => 'Messages',
     'movies.php' => 'Movies',
     'mybonus.php' => 'Karma Store',
+    'mybonus_new.php' => 'Karma Store',
     'mytorrents.php' => 'My Torrents',
     'needseed.php' => 'Need Seeds',
     'new_announcement.php' => 'New Announcement',

@@ -11,16 +11,19 @@ use Envms\FluentPDO\Exception;
  */
 class Bonuslog
 {
+    protected $cache;
     protected $fluent;
 
     /**
-     * Bonuslog constructor.
+     * Ban constructor.
      *
+     * @param Cache    $cache
      * @param Database $fluent
      */
-    public function __construct(Database $fluent)
+    public function __construct(Cache $cache, Database $fluent)
     {
         $this->fluent = $fluent;
+        $this->cache = $cache;
     }
 
     /**
@@ -33,5 +36,11 @@ class Bonuslog
         $this->fluent->insertInto('bonuslog')
                      ->values($values)
                      ->execute();
+
+        $this->cache->deleteMulti([
+            'top_donators1_',
+            'top_donators2_',
+            'top_donators3_',
+        ]);
     }
 }

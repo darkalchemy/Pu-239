@@ -37,22 +37,27 @@ class Snatched
      */
     public function get_snatched(int $userid, int $tid)
     {
+        $this->cache->delete("snatches_{$userid}_{$tid}");
         $snatches = $this->cache->get("snatches_{$userid}_{$tid}");
         if ($snatches === false || is_null($snatches)) {
-            $snatches = $this->fluent->from('snatched')
+            $snatches = $this->fluent->from('snatched AS a')
                                      ->select(null)
-                                     ->select('id')
-                                     ->select('seedtime')
-                                     ->select('leechtime')
-                                     ->select('uploaded')
-                                     ->select('downloaded')
-                                     ->select('real_uploaded')
-                                     ->select('real_downloaded')
-                                     ->select('finished')
-                                     ->select('timesann')
-                                     ->select('start_date AS start_snatch')
-                                     ->where('torrentid = ?', $tid)
-                                     ->where('userid = ?', $userid)
+                                     ->select('a.id')
+                                     ->select('a.torrentid')
+                                     ->select('a.seedtime')
+                                     ->select('a.leechtime')
+                                     ->select('a.uploaded')
+                                     ->select('a.downloaded')
+                                     ->select('a.real_uploaded')
+                                     ->select('a.real_downloaded')
+                                     ->select('a.finished')
+                                     ->select('a.timesann')
+                                     ->select('a.start_date AS start_snatch')
+                                     ->select('t.size')
+                                     ->select('t.name')
+                                     ->leftJoin('torrents AS t ON a.torrentid = t.id')
+                                     ->where('a.torrentid = ?', $tid)
+                                     ->where('a.userid = ?', $userid)
                                      ->fetch();
             if (!empty($snatches)) {
                 $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
