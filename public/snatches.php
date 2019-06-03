@@ -30,11 +30,11 @@ if (!$arr) {
 }
 $fluent = $container->get(\Pu239\Database::class);
 $count = $fluent->from('snatched')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('complete_date != 0')
-    ->where('torrentid = ?', $id)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('complete_date != 0')
+                ->where('torrentid = ?', $id)
+                ->fetch('count');
 
 $perpage = 15;
 $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
@@ -42,7 +42,7 @@ if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
 $HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
-$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h3>\n";
+$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($count === 1 ? '' : 'es') . "</h3>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

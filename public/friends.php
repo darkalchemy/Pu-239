@@ -10,7 +10,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('friends'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER, $mysqli;
 
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';

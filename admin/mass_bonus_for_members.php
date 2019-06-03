@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use Pu239\Message;
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -18,8 +21,11 @@ $stdfoot = [
     ],
 ];
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
-global $site_config;
+global $container, $site_config;
 
+$user_stuffs = $container->get(User::class);
+$message_stuffs = $container->get(Message::class);
+$dt = TIME_NOW;
 $h1_thingie = $HTMLOUT = '';
 $good_stuff = [
     'upload_credit',
@@ -28,6 +34,7 @@ $good_stuff = [
     'invite',
     'pm',
 ];
+
 $action = !empty($_POST['bonus_options_1']) && in_array($_POST['bonus_options_1'], $good_stuff) ? $_POST['bonus_options_1'] : '';
 $free_for = !empty($_POST['free_for_classes']) && is_array($_POST['free_for_classes']) ? '(' . implode(', ', $_POST['free_for_classes']) . ')' : '';
 if (empty($free_for)) {
@@ -39,22 +46,21 @@ global $CURUSER;
 switch ($action) {
     case 'upload_credit':
         $GB = isset($_POST['GB']) ? (int) $_POST['GB'] : 0;
-        if ($GB < 1073741824 || $GB > 53687091200) { //=== forgot to enter GB or wrong numbers
+        if ($GB < 1073741824 || $GB > 53687091200) {
             stderr($lang['bonusmanager_up_err'], $lang['bonusmanager_up_err1']);
         }
-        $bonus_added = ($GB / 1073741824);
+        $bonus_added = $GB / 1073741824;
         $res_GB = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_GB) > 0) {
             while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
                 $GB_new = $arr_GB['uploaded'] + $GB;
                 $modcomment = $arr_GB['modcomment'];
-                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
                 $msg = "{$lang['bonusmanager_up_addedmsg']}{$bonus_added}{$lang['bonusmanager_up_addedmsg1']}{$site_config['site']['name']}{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}{$GB} {$GB_new}";
                 $pm_values[] = [
-                    'sender' => 0,
-                    'receiver' => $arr_GB['id'],
-                    'added' => TIME_NOW,
+                    'receiver' => (int) $arr_GB['id'],
+                    'added' => $dt,
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_up_added'],
                 ];
@@ -62,7 +68,7 @@ switch ($action) {
                     'uploaded' => $GB_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, $arr_GB['id']);
+                $user_stuffs->update($set, (int) $arr_GB['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
@@ -77,7 +83,7 @@ switch ($action) {
 
     case 'karma':
         $karma = isset($_POST['karma']) ? (int) $_POST['karma'] : 0;
-        if ($karma < 100 || $karma > 5000) { //=== forgot to enter karma or wrong numbers
+        if ($karma < 100 || $karma > 5000) {
             stderr($lang['bonusmanager_karma_err'], $lang['bonusmanager_karma_err1']);
         }
         $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
@@ -87,11 +93,10 @@ switch ($action) {
             while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
                 $karma_new = $arr_karma['seedbonus'] + $karma;
                 $modcomment = $arr_karma['modcomment'];
-                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
                 $pm_values[] = [
-                    'sender' => 0,
-                    'receiver' => $arr_karma['id'],
-                    'added' => TIME_NOW,
+                    'receiver' => (int) $arr_karma['id'],
+                    'added' => $dt,
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_karma_added'],
                 ];
@@ -99,7 +104,7 @@ switch ($action) {
                     'seedbonus' => $karma_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, $arr_karma['id']);
+                $user_stuffs->update($set, (int) $arr_karma['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
@@ -114,7 +119,7 @@ switch ($action) {
 
     case 'freeslots':
         $freeslots = isset($_POST['freeslots']) ? (int) $_POST['freeslots'] : 0;
-        if ($freeslots < 1 || $freeslots > 50) { //=== forgot to enter freeslots or wrong numbers
+        if ($freeslots < 1 || $freeslots > 50) {
             stderr($lang['bonusmanager_freeslots_err'], $lang['bonusmanager_freeslots_err1']);
         }
         $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
@@ -124,11 +129,10 @@ switch ($action) {
             while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
                 $freeslots_new = $arr_freeslots['freeslots'] + $freeslots;
                 $modcomment = $arr_freeslots['modcomment'];
-                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
                 $pm_values[] = [
-                    'sender' => 0,
-                    'receiver' => $arr_freeslots['id'],
-                    'added' => TIME_NOW,
+                    'receiver' => (int) $arr_freeslots['id'],
+                    'added' => $dt,
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_freeslots_added'],
                 ];
@@ -136,7 +140,7 @@ switch ($action) {
                     'freeslots' => $freeslots_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, $arr_freeslots['id']);
+                $user_stuffs->update($set, (int) $arr_freeslots['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
@@ -151,7 +155,7 @@ switch ($action) {
 
     case 'invite':
         $invites = isset($_POST['invites']) ? (int) $_POST['invites'] : 0;
-        if ($invites < 1 || $invites > 50) { //=== forgot to enter invites or wrong numbers
+        if ($invites < 1 || $invites > 50) {
             stderr($lang['bonusmanager_invite_err'], $lang['bonusmanager_invite_err1']);
         }
         $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND invite_on = "yes" AND class IN ' . $free_for);
@@ -161,11 +165,10 @@ switch ($action) {
             while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
                 $invites_new = $arr_invites['invites'] + $invites;
                 $modcomment = $arr_invites['modcomment'];
-                $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
                 $pm_values[] = [
-                    'sender' => 0,
-                    'receiver' => $arr_invites['id'],
-                    'added' => TIME_NOW,
+                    'receiver' => (int) $arr_invites['id'],
+                    'added' => $dt,
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_invite_added'],
                 ];
@@ -173,7 +176,7 @@ switch ($action) {
                     'invites' => $invites_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, $arr_invites['id']);
+                $user_stuffs->update($set, (int) $arr_invites['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
@@ -198,9 +201,8 @@ switch ($action) {
         if (mysqli_num_rows($res_pms) > 0) {
             while ($arr_pms = mysqli_fetch_assoc($res_pms)) {
                 $pm_values[] = [
-                    'sender' => 0,
-                    'receiver' => $arr_pms['id'],
-                    'added' => TIME_NOW,
+                    'receiver' => (int) $arr_pms['id'],
+                    'added' => $dt,
                     'msg' => htmlsafechars($_POST['body']),
                     'subject' => htmlsafechars($_POST['subject']),
                 ];
@@ -275,26 +277,24 @@ while ($i <= 50) {
     $i = ($i < 10 ? $i = $i + 1 : $i = $i + 5);
 }
 $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
-//== pms \0/ (*)(*)
+
 $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['bonusmanager_pm_masspm'];
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '
-            <form name="compose" method="post" action="mass_bonus_for_members.php" accept-charset="utf-8">
-            <input type="hidden" name="pm" value="pm">
-                <tablestyle="max - width: 800px;">
                     <tr>
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
                     <tr>
                         <td><span class="has-text-weight-bold">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                        <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
+                        <td>
+                            <input type="hidden" name="pm" value="pm">
+                            <input name="subject" type="text" class="w-100" value="' . $subject . '">
+                        </td>
                     </tr>
                     <tr>
                         <td><span class="has-text-weight-bold">' . $lang['bonusmanager_pm_body'] . '</span></td>
                         <td class="is-paddingless">' . BBcode($body) . '</td>
-                    </tr>
-                </table>
-            </form>';
+                    </tr>';
 $drop_down = '
         <select name="bonus_options_1" id="bonus_options_1">
         <option value="">' . $lang['bonusmanager_select'] . '</option>
@@ -319,29 +319,30 @@ $body = '
             <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
         </tr>
         <tr>
-            <td width="160px"><span class="has-text-weight-bold">' . $lang['bonusmanager_bonus_type'] . '</span></td>
-            <td>' . $drop_down . '
-                <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '<hr></div>
-                <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '<hr></div>
-                <div id="div_freeslots" class="select_me"><br>' . $free_leech_slot_drop_down . '<hr></div>
-                <div id="div_invite" class="select_me"><br>' . $invites_drop_down . '<hr></div>
-                <div id="div_pm" class="select_me"><br>' . $pm_drop_down . '<hr></div>
-            </td>
-        </tr>
-        <tr>
             <td><span class="has-text-weight-bold">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
             <td>
                 <div>' . $all_classes_check_boxes . '</div>
             </td>
         </tr>
         <tr>
-            <td></td>
-            <td>' . $lang['bonusmanager_note'] . '<br></td>
+            <td class="w-25"><span class="has-text-weight-bold">' . $lang['bonusmanager_bonus_type'] . '</span></td>
+            <td>' . $drop_down . '
+                <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '</div>
+                <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '</div>
+                <div id="div_freeslots" class="select_me"><br>' . $free_leech_slot_drop_down . '</div>
+                <div id="div_invite" class="select_me"><br>' . $invites_drop_down . '</div>
+                <div id="div_pm" class="select_me"><br>' . $pm_drop_down . '</div>
+            </td>
         </tr>
         <tr>
-            <td colspan="2" class="has-text-centered">
-            <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"></td>
+            <td colspan="2">
+                <div class="has-text-centered margin20">' . $lang['bonusmanager_note'] . '</div>
+                <div class="has-text-centered margin20">
+                    <input type="submit" class="button is-small" value="' . $lang['bonusmanager_doit'] . '">
+                </div>
+            </td>
         </tr>';
 $HTMLOUT .= main_table($body) . '
     </form>';
+
 echo stdhead($lang['bonusmanager_h1_upload'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

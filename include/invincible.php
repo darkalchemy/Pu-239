@@ -43,17 +43,16 @@ function invincible($id, $invincible = true, $bypass_bans = true)
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 
                  WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
-    $res = sql_query('SELECT username, torrent_pass, INET6_NTOA(ip), perms, modcomment FROM users 
-                     WHERE id=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT username, torrent_pass, perms, modcomment FROM users 
+                     WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
-    sql_query('DELETE FROM `ips` WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM `ips` WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache = $container->get(Cache::class);
     $cache->delete('ip_history_' . $id);
     $cache->delete('u_passkey_' . $row['torrent_pass']);
     $modcomment = get_date((int) TIME_NOW, '', 1) . ' - ' . $display . ' invincible thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
     $set = [
-        'ip' => inet_pton($ip),
         'modcomment' => $modcomment,
         'perms' => $row['perms'],
     ];

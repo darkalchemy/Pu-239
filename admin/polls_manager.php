@@ -189,13 +189,13 @@ function show_poll_form($stdfoot)
 /**
  * @param $stdfoot
  *
- * @return mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
- *
  * @throws DependencyException
+ *
+ * @return mixed
  */
 function edit_poll_form($stdfoot)
 {
@@ -206,7 +206,7 @@ function edit_poll_form($stdfoot)
     $poll_multi = '';
     $poll_choices = '';
     $poll_votes = '';
-    $poll_data = $poll_stuffs->get($_GET['pid']);
+    $poll_data = $poll_stuffs->get((int) $_GET['pid']);
     if (empty($poll_data)) {
         return $lang['poll_epf_no_poll'];
     }

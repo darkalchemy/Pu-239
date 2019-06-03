@@ -1,4 +1,7 @@
 ### 02 Jun, 2019
+fix: mass_bonus_for_members.php polls_manager.php invincible.php  
+fix: bugs.php friends.php mybonus.php recover.php snatches.php  
+fix: staffbox.php userdetails.php  
 update: breadcrumbs  
 fix: polls  
 fix: not showing forums when no child board exists  

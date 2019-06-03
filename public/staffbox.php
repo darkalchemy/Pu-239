@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -157,6 +158,7 @@ switch ($do) {
         break;
 
     default:
+        $fluent = $container->get(Database::class);
         $count_msgs = $fluent->from('staffmessages')
                              ->select(null)
                              ->select('COUNT(id) AS count')

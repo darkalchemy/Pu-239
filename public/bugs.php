@@ -19,7 +19,7 @@ $possible_actions = [
     'bugs',
     'add',
 ];
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : ''));
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
 if (!in_array($action, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
@@ -55,7 +55,9 @@ if ($action === 'viewbug') {
                     $uq = '';
                     break;
             }
-            sql_query($uq) or sqlerr(__FILE__, __LINE__);
+            if (!empty($uq)) {
+                sql_query($uq) or sqlerr(__FILE__, __LINE__);
+            }
             $msgs_buffer[] = [
                 'sender' => 0,
                 'receiver' => $q1['sender'],
@@ -67,7 +69,7 @@ if ($action === 'viewbug') {
             sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('bug_mess_');
         }
-        header("location: {$_SERVER['PHP_SELF']}?action=viewbug&id={$id}");
+        header("location: {$_SERVER['PHP_SELF']}?action=bugs");
     }
     $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
     if (!$id || !is_valid_id($id)) {
@@ -132,7 +134,7 @@ if ($action === 'viewbug') {
             $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";
         }
     }
-    $HTMLOUT .= "</table></form><a href='bugs.php?action=bugs'>{$lang['go_back']}</a>\n";
+    $HTMLOUT .= "</table></form><div class='has-text-centered margin20'><a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a></div>\n";
 } elseif ($action === 'bugs') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");

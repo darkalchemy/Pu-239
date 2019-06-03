@@ -24,6 +24,7 @@ $stdfoot = [
 use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Mood;
+use Pu239\Session;
 use Pu239\User;
 
 global $container, $lang, $site_config, $CURUSER;
@@ -196,7 +197,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <img class='tooltipper right5' src='{$site_config['paths']['images_baseurl']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit'>
             </a></li>";
     } elseif ($CURUSER['id'] != $user['id']) {
-        $shitty_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
+        $shitty_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to='{$_SERVER['PHP_SELF']}?id={$id}'>
                 {$lang['userdetails_shit3']}
             </a></li>";
     }
@@ -225,19 +226,20 @@ $HTMLOUT .= "
         $shitty_link
         $friend_links
         $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
 
 $stealth = $cache->get('display_stealth_' . $user['id']);
 if ($stealth) {
+    $session = $container->get(Session::class);
     $session->set('is-info', htmlsafechars((string) $user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-            <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
-            <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['paths']['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . "
+            <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
+            <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . "
             <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$id}'>Reset Password</a></li>
         </ul>
     </div>";
@@ -460,7 +462,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "
         <input type='hidden' name='action' value='edituser'>
         <input type='hidden' name='userid' value='$id'>
-        <input type='hidden' name='returnto' value='userdetails.php?id=$id'>
+        <input type='hidden' name='returnto' value='{$_SERVER['PHP_SELF']}?id=$id'>
         <table class='table table-bordered table-striped seven'>
         <tr>
             <td class='rowhead'>{$lang['userdetails_title']}</td><td colspan='3' class='has-text-left'>
