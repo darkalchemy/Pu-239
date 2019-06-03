@@ -1,3 +1,7 @@
+### 03 Jun, 2019
+fix: casino.php  
+update: breadcrumbs  
+
 ### 02 Jun, 2019
 fix: mass_bonus_for_members.php polls_manager.php invincible.php  
 fix: bugs.php friends.php mybonus.php recover.php snatches.php  

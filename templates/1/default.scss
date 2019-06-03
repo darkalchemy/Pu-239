@@ -20,5 +20,6 @@ $link: #0f0;
 $link-active: $jade;
 $link-hover: #fff;
 $body-color: $primary;
+$warning: #ff048d;
 $custom-colors: ('lightgreen': ($lightgreen, $lightgreen-invert), 'jade': ($jade, $jade-invert), 'turquoise': ($turquoise, $turquoise-invert), 'blue': ($blue, $blue-invert), 'lightblue': ($lightblue, $lightblue-invert), 'gold': ($gold, $gold-invert));
 $colors: mergeColorMaps($colors, $custom-colors);
