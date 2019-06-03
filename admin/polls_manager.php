@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Poll;
@@ -55,8 +57,8 @@ switch ($params['mode']) {
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws \Delight\Auth\AuthError
- * @throws \Delight\Auth\NotLoggedInException
+ * @throws AuthError
+ * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  */
 function delete_poll($stdfoot)
@@ -93,7 +95,7 @@ function delete_poll($stdfoot)
  */
 function update_poll()
 {
-    global $container, $lang, $site_config, $CURUSER;
+    global $container, $lang, $CURUSER;
 
     $poll_stuffs = $container->get(Poll::class);
     $pollvoter_stuffs = $container->get(PollVoter::class);
@@ -135,7 +137,7 @@ function update_poll()
  */
 function insert_new_poll()
 {
-    global $container, $lang, $site_config, $CURUSER;
+    global $container, $lang, $CURUSER;
 
     $poll_stuffs = $container->get(Poll::class);
     $pollvoter_stuffs = $container->get(PollVoter::class);
@@ -187,13 +189,13 @@ function show_poll_form($stdfoot)
 /**
  * @param $stdfoot
  *
- * @throws DependencyException
+ * @return mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
  *
- * @return mixed
+ * @throws DependencyException
  */
 function edit_poll_form($stdfoot)
 {
@@ -237,8 +239,8 @@ function edit_poll_form($stdfoot)
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws \Delight\Auth\AuthError
- * @throws \Delight\Auth\NotLoggedInException
+ * @throws AuthError
+ * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  */
 function show_poll_archive($stdfoot)
@@ -325,9 +327,34 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 
     $pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
     $form_type = $form_type != '' ? $form_type : 'poll_update';
-    $HTMLOUT = '
-    </script>';
-    $HTMLOUT .= "
+    $HTMLOUT = "
+    <script>
+        var showfullonload = parseInt(\"{$show_open}\");
+
+        // Questions
+        var poll_questions = {{$poll_questions}};
+        var poll_choices = {{$poll_choices}};
+        var poll_votes = {{$poll_votes}};
+        var poll_multi = {{$poll_multi}};
+
+        // Setting elements
+        var max_poll_questions = parseInt(\"{$max_poll_questions}\");
+        var max_poll_choices = parseInt(\"{$max_poll_choices}\");
+
+        // HTML elements
+        var html_add_question = \"<a href='#' title='{$lang['poll_pb_add_q']}' onclick='return poll_add_question()' class='button is-small bottom20'>{$lang['poll_pb_add_q']}</a>\";
+        var html_add_choice = \"<li><a href='#' title='{$lang['poll_pb_add_c']}' onclick='return poll_add_choice(\"+'\"'+'<%1>'+'\"'+\")' class='button is-small bottom20'>{$lang['poll_pb_add_c']}</a></li>\";
+        var html_question_box = \"<input type='text' id='question_<%1>' name='question[<%1>]' class='input w-100 bottom20' value='<%2>'> <a href='#' class='button is-small bottom20' onclick='return poll_remove_question(\"+'\"'+'<%1>'+'\"'+\")'>{$lang['poll_pb_remove_q']}</a><br><input class='checkbox bottom20' type='checkbox' id='multi_<%1>' name='multi[<%1>]' value='1' <%3>><span>{$lang['poll_pb_multiple']}</span>\";
+        var html_votes_box = \"<input type='text' id='votes_<%1>_<%2>' name='votes[<%1>_<%2>]' class='input w-10 bottom20 right10' value='<%3>'>\";
+        var html_choice_box = \"<li><input type='text' id='choice_<%1>_<%2>' name='choice[<%1>_<%2>]' class='input w-20 bottom20 right10' value='<%3>'><%4> <a href='#' class='button is-small bottom20' onclick='return poll_remove_choice(\"+'\"'+'<%1>_<%2>'+'\"'+\")'>{$lang['poll_pb_rem_choice']}</a></li>\";
+        var html_choice_wrap = \"<ol class='left20'><%1></ol>\";
+        var html_question_wrap = \"<div><%1></div>\";
+        var html_stat_wrap = \"<br><div><%1></div>\";
+
+        // Lang elements
+        var js_lang_confirm = \"{$lang['poll_pb_confirm']}\";
+        var poll_stat_lang = \"{$lang['poll_pb_allowed']} <%1> {$lang['poll_pb_more']} <%2>  {$lang['poll_pb_choices']}\";
+    </script>
     <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
     <form id='postingform' action='{$_SERVER['PHP_SELF']}?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='mode' value='$form_type'>

@@ -1,4 +1,5 @@
 ### 02 Jun, 2019
+fix: polls  
 fix: not showing forums when no child board exists  
 fix: missing $h1_thingie messages  
 fix: recover.php  

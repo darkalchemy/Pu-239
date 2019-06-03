@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\PollVoter;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -32,6 +33,7 @@ if (!empty($poll_data['user_id'])) {
     stderr('ERROR', 'You have already voted!');
 }
 $_POST['nullvote'] = isset($_POST['nullvote']) ? $_POST['nullvote'] : 0;
+$pollvoter_stuffs = $container->get(PollVoter::class);
 if (!$_POST['nullvote']) {
     if (is_array($_POST['choice']) && count($_POST['choice'])) {
         foreach ($_POST['choice'] as $question_id => $choice_id) {
@@ -55,7 +57,6 @@ if (!$_POST['nullvote']) {
     }
     $values = [
         'user_id' => $CURUSER['id'],
-        'ip' => inet_pton(getip()),
         'poll_id' => $poll_data['pid'],
         'vote_date' => TIME_NOW,
     ];
@@ -76,7 +77,6 @@ if (!$_POST['nullvote']) {
     $cache = $container->get(Cache::class);
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $votes,
-        'ip' => $CURUSER['ip'],
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
         'choices' => $choices,
@@ -97,7 +97,6 @@ if (!$_POST['nullvote']) {
 } else {
     $values = [
         'user_id' => $CURUSER['id'],
-        'ip' => inet_pton(getip()),
         'poll_id' => $poll_data['pid'],
         'vote_date' => TIME_NOW,
     ];
@@ -105,7 +104,6 @@ if (!$_POST['nullvote']) {
     $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $votes,
-        'ip' => $CURUSER['ip'],
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
