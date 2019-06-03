@@ -147,6 +147,10 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'cookieconsent.js',
     ];
 
+    $js_list['mass_bonus_js'] = [
+        SCRIPTS_DIR . 'mass_bonus.js',
+    ];
+
     $js_list['bookmarks_js'] = [
         SCRIPTS_DIR . 'bookmarks.js',
     ];

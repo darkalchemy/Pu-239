@@ -1,4 +1,5 @@
 ### 03 Jun, 2019
+update: mass_bonus_for_members.php  
 fix: casino.php  
 update: breadcrumbs  
 

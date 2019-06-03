@@ -1199,6 +1199,10 @@ ul li ul li {
     animation: marquee 15s linear infinite;
 }
 
+.select_me {
+    display: none;
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(100%);

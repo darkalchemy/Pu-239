@@ -17,6 +17,7 @@ $stdhead = [
 ];
 $stdfoot = [
     'js' => [
+        get_file_name('mass_bonus_js'),
         get_file_name('sceditor_js'),
     ],
 ];
@@ -225,7 +226,7 @@ for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '
         <div>
             <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked>
-            <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span>
+            <span style="font-weight: bold;color: #' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span>
         </div>';
 }
 $all_classes_check_boxes .= '
@@ -281,6 +282,7 @@ $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
 $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['bonusmanager_pm_masspm'];
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '
+                <table class="w-100">
                     <tr>
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
@@ -293,8 +295,9 @@ $pm_drop_down = '
                     </tr>
                     <tr>
                         <td><span class="has-text-weight-bold">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                        <td class="is-paddingless">' . BBcode($body) . '</td>
-                    </tr>';
+                        <td class="is-paddingless">' . BBcode($body, '', 300) . '</td>
+                    </tr>
+                </table>';
 $drop_down = '
         <select name="bonus_options_1" id="bonus_options_1">
         <option value="">' . $lang['bonusmanager_select'] . '</option>

@@ -131,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $set = [
                     'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
+                    'free_switch' => $user['free_switch'] === 0 ? $dt + 30 * 86400 : $user['free_switch'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month King Status.\n" . $user['bonuscomment'],
                 ];

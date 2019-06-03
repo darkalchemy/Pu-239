@@ -1,5 +1,9 @@
 In no particular order  
 
+finish: casino.php rewrite  
+finish: mybonus.php update donations  
+
+
 fix: promo.php what does it do?  
 fix: usersearch.php (ip search)  
 update forced_logout_ to new user system  

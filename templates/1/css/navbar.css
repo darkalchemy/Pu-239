@@ -217,7 +217,6 @@ header#navbar .nav_container ul > li > ul a:hover {
     header#navbar ul > li > a {
         text-align: left;
         padding: 10px 0;
-        color: #ccc;
         width: 100%;
         margin: 0 auto;
         border-bottom: none;
