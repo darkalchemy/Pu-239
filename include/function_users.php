@@ -8,6 +8,7 @@ use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Peer;
 use Pu239\User;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @return mixed
@@ -69,11 +70,11 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
+ * @throws DependencyException
  */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $anonymous = false)
 {
@@ -332,10 +333,10 @@ function get_slr_color($ratio)
 /**
  * @param $ratio_to_check
  *
- * @throws DependencyException
+ * @return string|null
  * @throws NotFoundException
  *
- * @return string|null
+ * @throws DependencyException
  */
 function ratio_image_machine($ratio_to_check)
 {
@@ -481,10 +482,10 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return string
  * @throws Exception
  *
- * @return string
+ * @throws \Envms\FluentPDO\Exception
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
@@ -614,10 +615,10 @@ function member_ratio($up, $down)
 /**
  * @param $ratio
  *
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  *
- * @return string
+ * @throws DependencyException
  */
 function get_user_ratio_image($ratio)
 {
@@ -661,11 +662,11 @@ function get_user_ratio_image($ratio)
 /**
  * @param $avatar
  *
+ * @return bool|mixed|string|null
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
- * @return bool|mixed|string|null
+ * @throws InvalidManipulation
  */
 function get_avatar($avatar)
 {
@@ -680,7 +681,9 @@ function get_avatar($avatar)
 
     $avatar['anonymous'] = !empty($avatar['anonymous']) ? $avatar['anonymous'] : 'no';
     $avatar['offensive_avatar'] = !empty($avatar['offensive_avatar']) ? $avatar['offensive_avatar'] : 'no';
-
+    if (!empty($avatar['avatar']) && !preg_match('#' . $site_config['paths']['baseurl'] . '#', $avatar['avatar'])) {
+        $avatar['avatar'] = url_proxy($avatar['avatar'], true, 150);
+    }
     if ($CURUSER['avatars'] === 'yes') {
         if ($avatar['anonymous'] === 'yes') {
             $avatar = "{$site_config['paths']['images_baseurl']}anonymous_1.jpg";
@@ -689,6 +692,7 @@ function get_avatar($avatar)
         } elseif (empty($avatar['avatar'])) {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150'>";
         } else {
+            dd($avatar['avatar']);
             $avatar = "<img src='" . htmlsafechars($avatar['avatar']) . "' alt='avatar' class='avatar mw-150'>";
         }
 

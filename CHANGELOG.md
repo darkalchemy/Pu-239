@@ -1,4 +1,5 @@
 ### 04 Jun, 2019
+fix: get_avatar() not proxying external images  
 fix: snatches.php  
 fix: send_message.php  
 fix: browse.php  
