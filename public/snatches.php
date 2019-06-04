@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -28,7 +29,7 @@ $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr('Error', 'It appears that there is no torrent with that id.');
 }
-$fluent = $container->get(\Pu239\Database::class);
+$fluent = $container->get(Database::class);
 $count = $fluent->from('snatched')
                 ->select(null)
                 ->select('COUNT(id) AS count')
@@ -42,7 +43,7 @@ if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
 $HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
-$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($count === 1 ? '' : 'es') . "</h3>\n";
+$HTMLOUT .= "<h3 class='has-text-centered'>Currently $count snatch" . ($count === 1 ? '' : 'es') . "</h3>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
