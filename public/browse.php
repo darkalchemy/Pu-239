@@ -132,8 +132,8 @@ if ($selected === 1) {
 }
 
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
-    $count = $count->where('t.free>= 1');
-    $select = $select->where('t.freee>= 1');
+    $count = $count->where('t.free >= 1');
+    $select = $select->where('t.free >= 1');
     $addparam .= 'only_free=1&amp;';
 }
 if (isset($_GET['vip'])) {

@@ -32,6 +32,7 @@ $valid_do = [
 $do = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : (isset($_POST['do']) && in_array($_POST['do'], $valid_do) ? $_POST['do'] : '');
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array($_POST['id']) ? array_map('intval', $_POST['id']) : 0);
 $message = isset($_POST['message']) && !empty($_POST['message']) ? htmlsafechars($_POST['message']) : '';
+$subject = isset($_POST['subject']) && !empty($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
 $reply = isset($_POST['reply']) && $_POST['reply'] == 1 ? true : false;
 $HTMLOUT = '';
 $cache = $container->get(Cache::class);

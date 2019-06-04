@@ -348,18 +348,21 @@ if ($mode === 'upload' || $mode === 'edit') {
         echo stdhead('Preview') . wrapper($HTMLOUT) . stdfoot();
     }
 } else {
-    $s = (isset($_GET['s']) ? htmlsafechars($_GET['s']) : '');
-    $w = (isset($_GET['w']) ? htmlsafechars($_GET['w']) : '');
+    $s = isset($_GET['s']) ? htmlsafechars($_GET['s']) : '';
+    $w = isset($_GET['w']) ? htmlsafechars($_GET['w']) : '';
     $fluent = $container->get(Database::class);
     $count = $fluent->from('subtitles')
                     ->select(null)
                     ->select('COUNT(id) AS count');
     if ($s && $w === 'name') {
-        $count = $count->where('name LIKE ?', "%{$s}%");
+        $count = $count->where('name LIKE ?', '%%' . $s . '%');
+        $where = "WHERE name LIKE '%%{$s}%'";
     } elseif ($s && $w === 'imdb') {
-        $count = $count->where('imdb LIKE ?', "%{$s}%");
+        $count = $count->where('imdb LIKE ?', '%%' . $s . '%');
+        $where = "WHERE imdb LIKE '%%{$s}%'";
     } elseif ($s && $w === 'comment') {
-        $count = $count->where('comment LIKE ?', "%{$s}%");
+        $count = $count->where('comment LIKE ?', '%%' . $s . '%');
+        $where = "WHERE comment LIKE '%%{$s}%'";
     } else {
         $where = '';
     }
@@ -371,7 +374,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     }
     $perpage = 15;
     $pager = pager($perpage, $count, 'subtitles.php?' . $link);
-    $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner = u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
     <ul class='bg-06 level-center'>
         <li class='margin10'><a href='subtitles.php?mode=upload'>Upload a Subtitle</a></li>

@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         if (sql_query($sql)) {
             $cache->delete('staff_mess_');
-            header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
             $session->set('is-success', $lang['contactstaff_success_msg']);
+            header('Location: ' . $site_config['paths']['baseurl']);
         } else {
             $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
         }

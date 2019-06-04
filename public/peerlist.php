@@ -53,7 +53,7 @@ function dltable($name, $arr, $torrent)
         $body .= '
         <tr>';
         if ($e['username']) {
-            if ((($e['tanonymous'] === 'yes' && $e['owner'] == $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
+            if ((($e['tanonymous'] === 'yes' && $e['owner'] === $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
                 $username = get_anonymous_name();
                 $body .= "
             <td><b>$username</b></td>";
@@ -99,6 +99,7 @@ $seeders = [];
 $fluent = $container->get(Database::class);
 $peers = $fluent->from('peers AS p')
                 ->select('t.anonymous AS tanonymous')
+                ->select('t.owner')
                 ->select('p.seeder')
                 ->select('p.finishedat')
                 ->select('p.downloadoffset')
@@ -115,6 +116,8 @@ $peers = $fluent->from('peers AS p')
                 ->select('p.userid')
                 ->select('p.peer_id')
                 ->select('u.username')
+                ->select('u.anonymous')
+                ->select('u.paranoia')
                 ->innerJoin('torrents AS t ON t.id = p.torrent')
                 ->innerJoin('users AS u ON u.id = p.userid')
                 ->where('p.torrent = ?', $id)

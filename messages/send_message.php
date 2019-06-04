@@ -44,7 +44,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     }
 
     if ($CURUSER['class'] < UC_STAFF) {
-        $should_i_send_this = ($arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : '')));
+        $should_i_send_this = $arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : ''));
         switch ($should_i_send_this) {
             case 'yes':
                 $r = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($receiver) . ' AND blockid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -79,7 +79,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'urgent' => $urgent,
     ];
     $message_stuffs->insert($msgs_buffer);
-    if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
+    if (!empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
         $msg = doc_head() . "

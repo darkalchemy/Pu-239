@@ -1,3 +1,11 @@
+### 04 Jun, 2019
+fix: send_message.php  
+fix: browse.php  
+fix: contactstaff.php  
+fix: peerlist.php  
+fix: staffbox.php  
+fix: subtitles.php  
+
 ### 03 Jun, 2019
 update: global messages  
 fix: incorrect index name  
