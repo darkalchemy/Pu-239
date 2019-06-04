@@ -41,6 +41,8 @@ class Bonuslog
             'top_donators1_',
             'top_donators2_',
             'top_donators3_',
+            'freeleech_alerts_',
+            'bonus_points_',
         ]);
     }
 }

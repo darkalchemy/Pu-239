@@ -1,7 +1,6 @@
 In no particular order  
 
 finish: casino.php rewrite  
-finish: mybonus.php update donations  
 
 
 fix: promo.php what does it do?  

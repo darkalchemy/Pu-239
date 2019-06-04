@@ -2,7 +2,9 @@
     var iCarousel;
     iCarousel = function (el, slides, options) {
         var ic = this;
-        ic.el = el, ic.slides = slides, ic.options = options;
+        ic.el = el;
+        ic.slides = slides;
+        ic.options = options;
         ic.defs = {
             degree: 0,
             total: slides.length,
@@ -19,7 +21,9 @@
             topSpace: options.slidesTopSpace,
             lock: false,
             easing: 'ease-in-out',
-            time: options.pauseTime
+            time: options.pauseTime,
+            timerColor: '#0f0',
+            timerBarStrokeColor: '#0f0',
         };
         ic.disableSelection(el[0]);
         slides.each(function (i) {

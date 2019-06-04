@@ -2884,4 +2884,11 @@ KEY `expires` (`expires`)
         'query' => 'UPDATE `bonus` SET `art` = "halfdownload" WHERE `id` = 13',
         'flush' => false,
     ],
+    [
+        'id' => 1559607789,
+        'info' => 'Add staff_blocks to site_config',
+        'date' => '03 Jun 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site', 'staff_blocks', 'array', '', 'Array of index page blocks visible only to the staff')",
+        'flush' => 'site_settings_',
+    ],
 ];

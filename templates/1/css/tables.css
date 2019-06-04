@@ -100,10 +100,8 @@ table {
     border-bottom-right-radius: .625em;
 }
 
-/*.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background .is-warning),
-.table-striped > thead > tr:nth-child(even) > th:not(.card-background .is-warning) {*/
-.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background),
-.table-striped > thead > tr:nth-child(even) > th:not(.card-background) {
+.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background):not(.has-text-warning),
+.table-striped > thead > tr:nth-child(even) > th:not(.card-background):not(.has-text-warning) {
     background-color: rgba(0, 0, 0, .4);
 }
 

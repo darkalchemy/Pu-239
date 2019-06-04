@@ -53,9 +53,9 @@ if (PRODUCTION) {
     $js_ext = '.min.js';
 }
 exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
-
 foreach ($styles as $folder) {
     echo "Processing Template: {$folder}\n";
+    get_default_border($folder);
     $update = TEMPLATE_DIR . "{$folder}/files.php";
     $dirs = [
         PUBLIC_DIR . "js/{$folder}/",
@@ -515,4 +515,18 @@ function get_file_name($file)
 }';
 
     file_put_contents($update, $output . PHP_EOL);
+}
+
+function get_default_border($folder)
+{
+    $contents = file_get_contents(TEMPLATE_DIR . "{$folder}/variables.css");
+    preg_match('#--main-bdr-color: (.*);#', $contents, $match);
+    if (!empty($match[1])) {
+        passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'icarousel.js');
+        passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'icarousel.js');
+    }
+    preg_match('#--default-text-color: (.*);#', $contents, $match);
+    if (!empty($match[1])) {
+        passthru("sed -i \"s/primary:.*$/primary: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+    }
 }

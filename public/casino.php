@@ -281,7 +281,6 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             stderr($lang['gl_sorry'], "<h2>{$lang['casino_you_are']} " . htmlsafechars(mksize(($nobits - $user['uploaded']))) . " {$lang['casino_short_of_making_that_bet']}!</h2>&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($rand > 50000) {
-            // Current user WINS
             sql_query('UPDATE users SET uploaded = uploaded + ' . sqlesc($tbet['amount']) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE casino SET deposit = deposit - ' . sqlesc($tbet['amount']) . ', trys = trys + 1, lost = lost + ' . sqlesc($tbet['amount']) . ' WHERE userid=' . sqlesc($tbet['userid'])) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE casino SET win = win + ' . sqlesc($tbet['amount']) . ', trys = trys + 1 WHERE userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

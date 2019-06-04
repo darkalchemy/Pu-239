@@ -49,10 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_POST);
     $option = isset($post['option']) ? (int) $post['option'] : 0;
     $art = isset($post['art']) ? $post['art'] : '';
-    $menge = isset($post['menge']) ? (int) $post['menge'] : 0;
-    $pointspool = isset($post['pointspool']) ? (int) $post['pointspool'] : 0;
-    $minpoints = isset($post['minpoints']) ? (int) $post['minpoints'] : 0;
-    $points = isset($post['points']) ? (int) $post['points'] : 0;
     $donate = isset($post['donate']) ? (int) $post['donate'] : 0;
     $torrent_id = isset($post['torrent_id']) ? (int) $post['torrent_id'] : 0;
     $username = isset($post['username']) ? htmlsafechars(trim($post['username'])) : '';
@@ -98,12 +94,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $donate,
                 ];
                 if ($user_stuffs->update($set, $user['id'])) {
-                    $values = [
-                        'donation' => $donate,
-                        'type' => $options[$option]['art'],
-                        'added_at' => $dt,
-                        'user_id' => $user['id'],
-                    ];
+                    if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
+                        $end = 86400 * 3 + $dt;
+                        $message = 'FreeLeech [ON]';
+                        set_event(1, $dt, $end, $User['id'], $message);
+                        $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
+                        $values = [
+                            'donation' => $excess,
+                            'type' => $options[$option]['art'],
+                            'added_at' => $dt,
+                            'user_id' => $user['id'],
+                        ];
+                    } else {
+                        $values = [
+                            'donation' => $donate,
+                            'type' => $options[$option]['art'],
+                            'added_at' => $dt,
+                            'user_id' => $user['id'],
+                        ];
+                    }
                     $bonuslog->insert($values);
                     $session->set('is-success', ':woot: You donated ' . number_format($donate) . " Karma to the [b]{$options[$option]['bonusname']}[/b] fund");
                 } else {
@@ -240,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'receiver' => $user['id'],
                         'added' => $dt,
                         'subject' => $pm['subject_thief'],
-                        'msg' => sprintf($pm['message_thief'], $user['username'], implode("\n", $robbed_users), $new_rep, $points),
+                        'msg' => sprintf($pm['message_thief'], $user['username'], implode("\n", $robbed_users), $new_rep, $options[$option]['points']),
                     ];
                     $set = [
                         'reputation' => $new_rep,
@@ -310,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $snatched_stuffs->update($set, $torrent_id, $user['id']);
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $points . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars((string) $snatched['name']) . ' ' . $torrent_id . ', ' . $difference . " bytes added.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars((string) $snatched['name']) . ' ' . $torrent_id . ', ' . $difference . " bytes added.\n " . $user['bonuscomment'],
                 ];
                 if ($user_stuffs->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma. Please keep on your best behaviour from now on.');
@@ -362,7 +371,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'opt2' => new Literal('((opt2 | ' . $setbits . ') & ~' . $clrbits . ')'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $points . " Points for user unlocks access.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for user unlocks access.\n " . $user['bonuscomment'],
                 ];
                 if ($user_stuffs->update($set, $user['id'], false)) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
@@ -484,7 +493,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'freeslots' => $user['freeslots'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $points . " Points for freeslots.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for freeslots.\n " . $user['bonuscomment'],
                 ];
                 if ($user_stuffs->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['menge']} Freeslots[/b] for {$options[$option]['points']} Karma");
@@ -503,7 +512,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'title' => $title,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $points . " Points for custom title. Old title was {$user['title']} new title is " . $title . ".\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for custom title. Old title was {$user['title']} new title is " . $title . ".\n " . $user['bonuscomment'],
                 ];
                 if ($user_stuffs->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');

@@ -458,8 +458,8 @@ $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
 if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
-    $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?tool=modtask' accept-charset='utf-8'>";
     $HTMLOUT .= "
+    <form method='post' action='./staffpanel.php?tool=modtask' accept-charset='utf-8'>
         <input type='hidden' name='action' value='edituser'>
         <input type='hidden' name='userid' value='$id'>
         <input type='hidden' name='returnto' value='{$_SERVER['PHP_SELF']}?id=$id'>

@@ -1,4 +1,11 @@
 ### 03 Jun, 2019
+update: uglify.php to change $primary to default text color  
+update: uglify.php to change icarousel timer color to default border color  
+move: staff_columns array to staffpanel->site_config  
+fix: subtitles.php  
+fix: over_forums.php  
+fix: userdetails.pho  
+update: mybonus.php  
 update: mass_bonus_for_members.php  
 fix: casino.php  
 update: breadcrumbs  

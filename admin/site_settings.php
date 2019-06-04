@@ -256,7 +256,7 @@ foreach ($keys as $key) {
                     </div>
                 </td>
             </tr>" . (!empty($row['parent']) ? "
-            <tr><td colspan='6' class='is-warning has-text-weight-bold has-text-centered'>Usage: \$site_config['{$row['parent']}']['{$row['name']}']</td></tr>
+            <tr><td colspan='6' class='has-text-warning has-text-weight-bold has-text-centered'>Usage: \$site_config['{$row['parent']}']['{$row['name']}']</td></tr>
             <tr><td colspan='6'></td></tr>" : '');
         }
     }

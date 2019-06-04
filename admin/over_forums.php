@@ -23,15 +23,13 @@ $main_links = "
             </div>
             <h1 class='has-text-centered'>{$lang['ad_over_forum']}</h1>";
 
-$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
 $maxclass = $CURUSER['class'];
-$name = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
-$desc = strip_tags(isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '');
-$sort = (isset($_POST['sort']) ? intval($_POST['sort']) : 0);
-$min_class_view = (isset($_POST['min_class_view']) ? intval($_POST['min_class_view']) : 0);
-//=== post / get action posted so we know what to do :P
-$posted_action = (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : ''));
-//=== add all possible actions here and check them to be sure they are ok
+$name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : '';
+$desc = isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '';
+$sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
+$min_class_view = isset($_POST['min_class_view']) ? intval($_POST['min_class_view']) : 0;
+$posted_action = isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : '');
 $valid_actions = [
     'delete',
     'edit_forum',
@@ -39,60 +37,86 @@ $valid_actions = [
     'edit_forum_page',
 ];
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
-//=== here we go with all the possibilities \\o\o/o//
-switch ($action) {
-    //=== delete over forum
 
+switch ($action) {
     case 'delete':
         if (!$id) {
             stderr($lang['std_error'], $lang['std_error_id']);
         }
-        sql_query('DELETE FROM over_forums WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $fluent->deleteFrom('over_forums')
+               ->where('id = ?', $id)
+               ->execute();
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
-    //=== edit forum
 
     case 'edit_forum':
         if (!$name && !$desc && !$id) {
             stderr($lang['std_error'], $lang['std_error_form']);
         }
-        $res = sql_query('SELECT sort FROM over_forums WHERE name != ' . sqlesc($name) . ' AND sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
+        $count = $fluent->from('over_forums')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->where('name != ?', $name)
+                        ->where('sort = ?', $sort)
+                        ->fetch('count');
+        if ($count > 0) {
             stderr($lang['std_error'], $lang['std_error_select_another']);
         }
-        sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $set = [
+            'sort' => $sort,
+            'name' => $name,
+            'description' => $desc,
+            'min_class_view' => $min_class_view,
+        ];
+        $fluent->update('over_forums')
+               ->set($set)
+               ->where('id = ?', $id)
+               ->execute();
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
-    //=== add forum
 
     case 'add_forum':
         if (!$name && !$desc) {
             stderr($lang['std_error'], $lang['std_error_form']);
         }
-        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
+        $count = $fluent->from('over_forums')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->where('sort = ?', $sort)
+                        ->fetch('count');
+        if ($count > 0) {
             stderr($lang['std_error'], $lang['std_error_select_another']);
         }
-        sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')') or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'sort' => $sort,
+            'name' => $name,
+            'description' => $desc,
+            'min_class_view' => $min_class_view,
+        ];
+        $fluent->insertInto('over_forums')
+               ->values($values)
+               ->execute();
+
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=over_forums');
         die();
         break;
-    //=== edit over forum stuff
 
     case 'edit_forum_page':
-        $res = sql_query('SELECT * FROM over_forums WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_array($res);
-            $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
+        $row = $fluent->from('over_forums')
+                      ->where('id = ?', $id)
+                      ->fetch();
+        if (!empty($row)) {
+            $HTMLOUT .= $main_links . '
+            <form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums" accept-charset="utf-8">
             <input type="hidden" name="action2" value="edit_forum">
             <input type="hidden" name="id" value="' . $id . '">
-        <table class="table table-bordered table-striped">
-        <tr>
-            <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name']) . '</td>
-          </tr>
-            <td><span class="has-text-weight-bold">' . $lang['ad_over_name'] . '</span></td>
+            <table class="table table-bordered table-striped">
+            <tr>
+                <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name']) . '</td>
+            </tr>
+                <td><span class="has-text-weight-bold">' . $lang['ad_over_name'] . '</span></td>
             <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name']) . '"></td>
           </tr>
           <tr>
@@ -110,9 +134,12 @@ switch ($action) {
             <td><span class="has-text-weight-bold">' . $lang['ad_over_sort'] . '</span></td>
             <td>
             <select name="sort">';
-            $res = mysqli_query($mysqli, 'SELECT sort FROM over_forums');
-            $nr = mysqli_num_rows($res);
-            $maxclass = $nr + 1;
+            $count = $fluent->from('over_forums')
+                            ->select(null)
+                            ->select('COUNT(id) AS count')
+                            ->fetch('count');
+
+            $maxclass = $count + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $sorted .= '<option class="body" value="' . $i . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . $i . '</option>';
             }
@@ -125,7 +152,6 @@ switch ($action) {
         </table></form>';
         }
         break;
-    //=== over forum stuff
 
     case 'forum':
         $HTMLOUT .= $main_links;
@@ -136,15 +162,17 @@ switch ($action) {
                 <th class="has-text-centered">' . $lang['ad_over_minview1'] . '</th>
                 <th class="has-text-centered">' . $lang['ad_over_modify'] . '</th>
             </tr>';
-        $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
+        $query = $fluent->from('over_forums')
+                        ->orderBy('sort')
+                        ->fetchAll();
+        if (!empty($query)) {
             $body = '';
-            while ($row = mysqli_fetch_array($res)) {
+            foreach ($query as $row) {
                 $body .= '
             <tr>
                 <td class="has-text-centered">' . (int) $row['sort'] . '</td>
             <td>
-                <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int) $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
+                <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
                 ' . htmlsafechars($row['description']) . '
             </td>
             <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
@@ -197,9 +225,12 @@ switch ($action) {
                     <td><span>' . $lang['ad_over_sort'] . '</span></td>
                     <td>
                         <select name="sort">';
-        $res = sql_query('SELECT sort FROM over_forums') or sqlerr(__FILE__, __LINE__);
-        $nr = mysqli_num_rows($res);
-        $maxclass = $nr + 1;
+        $count = $fluent->from('over_forums')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->fetch('count');
+
+        $maxclass = $count + 1;
         for ($i = 0; $i <= $maxclass; ++$i) {
             $sorted .= '
                             <option class="body" value="' . $i . '">' . $i . '</option>';

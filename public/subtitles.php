@@ -355,11 +355,11 @@ if ($mode === 'upload' || $mode === 'edit') {
                     ->select(null)
                     ->select('COUNT(id) AS count');
     if ($s && $w === 'name') {
-        $count = $count->where('name LIKE ?', "${$s}%");
+        $count = $count->where('name LIKE ?', "%{$s}%");
     } elseif ($s && $w === 'imdb') {
-        $count = $count->where('imdb LIKE ?', "${$s}%");
+        $count = $count->where('imdb LIKE ?', "%{$s}%");
     } elseif ($s && $w === 'comment') {
-        $count = $count->where('comment LIKE ?', "${$s}%");
+        $count = $count->where('comment LIKE ?', "%{$s}%");
     } else {
         $where = '';
     }
