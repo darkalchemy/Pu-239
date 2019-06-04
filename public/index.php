@@ -93,7 +93,7 @@ $right_column = [
 $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $glide = $ajaxchat = '';
 $tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
-$remove_columns = $CURUSER['class'] < UC_STAFF ? $site_config['site']['staff_columns'] : [];
+$remove_columns = $CURUSER['class'] < UC_STAFF ? $site_config['site']['staff_blocks'] : [];
 $torrent_stuffs = $container->get(Torrent::class);
 $available_columns = array_diff($available_columns, $remove_columns);
 

@@ -1,4 +1,5 @@
 ### 03 Jun, 2019
+fix: incorrect index name  
 update: uglify.php to change $primary to default text color  
 update: uglify.php to change icarousel timer color to default border color  
 move: staff_columns array to staffpanel->site_config  
