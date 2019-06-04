@@ -1,4 +1,5 @@
 ### 03 Jun, 2019
+update: global messages  
 fix: incorrect index name  
 update: uglify.php to change $primary to default text color  
 update: uglify.php to change icarousel timer color to default border color  

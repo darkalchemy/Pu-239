@@ -24,7 +24,7 @@ if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/bugs.php?action=bugs'>
-            <span class='button tag has-text-warning dt-tooltipper-small' data-tooltip-content='#bugmessage_tooltip'>
+            <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#bugmessage_tooltip'>
                 {$lang['gl_bug_alert']}
             </span>
             <div class='tooltip_templates'>
