@@ -1,4 +1,5 @@
 ### 05 Jun, 2019
+move: browserslist from ackage.json to .browserslistrc 
 fix: strict issues  
 
 ### 04 Jun, 2019
