@@ -327,9 +327,11 @@ $(function () {
     }
 });
 
-var vidWidth = $('.object-fit-video').width();
-$('.object-fit-video').height(vidWidth * .184);
-$('.object-fit-video').css('visibility', 'visible');
+
+var ojvid = $('.object-fit-video');
+var vidWidth = ojvid.width();
+ojvid.height(vidWidth * .184);
+ojvid.css('visibility', 'visible');
 
 document.addEventListener('DOMContentLoaded', function () {
     yall({

@@ -586,66 +586,18 @@ if ($action === 'avatar') {
                                                 </span>
                                             </div>", 1);
 
-    $day = $month = $year = '';
-    $birthday = $CURUSER['birthday'];
-    $birthday = date('Y-m-d', strtotime($birthday));
-    list($year1, $month1, $day1) = explode('-', $birthday);
-    if ($CURUSER['birthday'] === '1970-01-01') {
-        $year .= "
-                                            <select name='year' class='w-25 bottom10'>
-                                                <option value='0000'>--</option>";
-        $i = '1920';
-        while ($i <= (date('Y', TIME_NOW) - 13)) {
-            $year .= "
-                                                <option value='{$i}'>{$i}</option>";
-            ++$i;
-        }
-        $year .= '
-                                            </select>';
-        $birthmonths = [
-            '01' => 'January',
-            '02' => 'Febuary',
-            '03' => 'March',
-            '04' => 'April',
-            '05' => 'May',
-            '06' => 'June',
-            '07' => 'July',
-            '08' => 'August',
-            '09' => 'September',
-            '10' => 'October',
-            '11' => 'November',
-            '12' => 'December',
-        ];
-        $month = "
-                                            <select name='month' class='w-25 bottom10'>
-                                                <option value='00'>--</option>";
-        foreach ($birthmonths as $month_no => $show_month) {
-            $month .= "
-                                                <option value='{$month_no}'>{$show_month}</option>";
-        }
-        $month .= '
-                                            </select>';
-        $day .= "
-                                            <select name='day' class='w-25 bottom10'>
-                                                <option value='00'>--</option>";
-        $i = 1;
-        while ($i <= 31) {
-            if ($i < 10) {
-                $day .= "
-                                                <option value='0{$i}'>0{$i}</option>";
-            } else {
-                $day .= "
-                                                <option value='{$i}''>{$i}</option>";
-            }
-            ++$i;
-        }
-        $day .= '
-                                            </select>';
-        $HTMLOUT .= tr('Birthday', "
-                                            <div class='level'>
-                                                {$year}{$month}{$day}
-                                            </div>", 1);
+    if ($CURUSER['birthday'] === '1970-01-01' || empty($CURUSER['birthday'])) {
+        $time = strtotime('-100 year', time());
+        $min = date('Y-m-d', $time);
+        $time = strtotime('-18 year', time());
+        $max = date('Y-m-d', $time);
+        $birthday = "
+                                            <input type='date' id='birthday' name='birthday' class='w-100' min='$min' max='$max'>";
+    } else {
+        $birthday = $CURUSER['birthday'];
     }
+    $HTMLOUT .= tr('Birthday', $birthday, 1);
+
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>

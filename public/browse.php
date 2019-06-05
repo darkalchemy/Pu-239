@@ -32,7 +32,7 @@ $count = $fluent->from('torrents AS t')
                 ->select('COUNT(t.id) AS count');
 
 $select = $fluent->from('torrents AS t')
-                 ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating")
+                 ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
                  ->select('u.username')
                  ->select('u.class')
                  ->leftJoin('users AS u ON t.owner = u.id');
@@ -303,7 +303,6 @@ if ($count > 0) {
                      ->offset($pager['pdo']['offset'])
                      ->fetchAll();
 }
-
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
 }

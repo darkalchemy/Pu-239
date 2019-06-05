@@ -257,7 +257,7 @@ class User
         $userId = false;
         try {
             if ($this->site_config['signup']['email_confirm'] === true) {
-                $userId = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']), function ($selector, $token) use ($values, $lang) {
+                $userId = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
                     $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
                         '<#SITENAME#>',
@@ -307,7 +307,7 @@ class User
             $this->userblock->add(['userid' => $userId]);
 
             $this->cache->deleteMulti([
-                'birthdayusers',
+                'birthdayusers_',
                 'chat_users_list',
                 'is_staff_',
                 'latestuser_',
@@ -545,9 +545,7 @@ class User
     public function create_reset($email, $lang)
     {
         try {
-            $this->auth->forgotPassword($email, function ($selector, $token) {
-                global $lang, $email;
-
+            $this->auth->forgotPassword($email, function ($selector, $token) use ($email, $lang) {
                 $body = sprintf($lang['email_request'], $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
                 send_mail($email, "{$this->site_config['site']['name']} {$lang['email_subjreset']}", $body, strip_tags($body));
             });

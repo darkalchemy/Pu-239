@@ -11,197 +11,180 @@ var _extends = Object.assign || function (target) {
     }
     return target;
 };
+/* exported yall */
 
 /**
- * yall.js version 2.0.1
+ * yall.js version 2.2.0
  * Yet Another Lazy loader
  **/
 
-var yallLoad = function yallLoad(element, env) {
-    if (element.tagName === 'IMG') {
-        var parentElement = element.parentNode;
+// The eponymous function
+window.yall = function (userOptions) {
+    "use strict";
 
-        if (parentElement.tagName === 'PICTURE') {
-            [].slice.call(parentElement.querySelectorAll('source')).forEach(function (source) {
-                for (var dataAttribute in source.dataset) {
-                    if (env.acceptedDataAttributes.indexOf('data-' + dataAttribute) !== -1) {
-                        source.setAttribute(dataAttribute, source.dataset[dataAttribute]);
-                        source.removeAttribute('data-' + dataAttribute);
-                    }
-                }
-            });
+    // This function handles the lazy loading of elements. It's kicked off by the
+    // scroll handlers/intersection observers further down.
+    let yallLoad = function (element) {
+        // Lazy load <img> elements
+        if (element.tagName === "IMG") {
+            let parentElement = element.parentNode;
+
+            // Is the parent element a <picture>?
+            if (parentElement.tagName === "PICTURE") {
+                [].slice.call(parentElement.querySelectorAll("source")).forEach(source => yallFlipDataAttrs(source));
+            }
+
+            yallFlipDataAttrs(element);
         }
 
-        var newImageElement = new Image();
+        // Lazy load <video> elements
+        if (element.tagName === "VIDEO") {
+            [].slice.call(element.querySelectorAll("source")).forEach(source => yallFlipDataAttrs(source));
 
-        if (typeof element.dataset.srcset !== 'undefined') {
-            newImageElement.srcset = element.dataset.srcset;
-        }
+            // We didn't need this before, but with the addition of lazy loading
+            // `poster` images, we need to run the flip attributes function on the
+            // video element itself so we can trigger lazy loading behavior on those.
+            yallFlipDataAttrs(element);
 
-        newImageElement.src = element.dataset.src;
-
-        if (env.asyncDecodeSupport === true) {
-            newImageElement.decode().then(function () {
-                for (var i = 0; i < element.attributes.length; i++) {
-                    var attrName = element.attributes[i].name;
-                    var attrValue = element.attributes[i].value;
-
-                    if (env.ignoredImgAttributes.indexOf(attrName) === -1) {
-                        newImageElement.setAttribute(attrName, attrValue);
-                    }
-                }
-
-                element.replaceWith(newImageElement);
-            });
-        } else {
-            for (var dataAttribute in element.dataset) {
-                if (env.acceptedDataAttributes.indexOf('data-' + dataAttribute) !== -1) {
-                    element.setAttribute(dataAttribute, element.dataset[dataAttribute]);
-                    element.removeAttribute('data-' + dataAttribute);
-                }
+            if (element.autoplay === true) {
+                element.load();
             }
         }
-    }
 
-    if (element.tagName === 'VIDEO') {
-        [].slice.call(element.querySelectorAll('source')).forEach(function (source) {
-            for (var _dataAttribute in source.dataset) {
-                if (env.acceptedDataAttributes.indexOf('data-' + _dataAttribute) !== -1) {
-                    source.setAttribute(_dataAttribute, source.dataset[_dataAttribute]);
-                    source.removeAttribute('data-' + _dataAttribute);
-                }
-            }
-        });
+        // Lazy load <iframe> elements
+        if (element.tagName === "IFRAME") {
+            element.src = element.dataset.src;
+            element.removeAttribute("data-src");
+        }
 
-        element.load();
-    }
-
-    if (element.tagName === 'IFRAME') {
-        element.src = element.dataset.src;
-        element.removeAttribute('data-src');
-    }
-};
-
-var yall = function yall(userOptions) {
-    var env = {
-        intersectionObserverSupport: 'IntersectionObserver' in window && 'IntersectionObserverEntry' in window && 'intersectionRatio' in window.IntersectionObserverEntry.prototype,
-        mutationObserverSupport: 'MutationObserver' in window,
-        idleCallbackSupport: 'requestIdleCallback' in window,
-        asyncDecodeSupport: 'decode' in new Image(),
-        ignoredImgAttributes: ['data-src', 'data-srcset', 'src', 'srcset'],
-        acceptedDataAttributes: ['data-src', 'data-sizes', 'data-media', 'data-srcset'],
-        eventsToBind: [[document, 'scroll'], [document, 'touchmove'], [window, 'resize'], [window, 'orientationchange']]
+        // Lazy load CSS background images
+        if (element.classList.contains(options.lazyBackgroundClass)) {
+            element.classList.remove(options.lazyBackgroundClass);
+            element.classList.add(options.lazyBackgroundLoaded);
+        }
     };
 
-    var options = _extends({
-        lazyClass: 'lazy',
+    // Added because there was a number of patterns like this peppered throughout
+    // the code. This just flips all the data- attrs on an element (after checking
+    // to make sure the data attr is in a whitelist to avoid changing *all* of them)
+    let yallFlipDataAttrs = function (element) {
+        for (let dataAttribute in element.dataset) {
+            if (env.acceptedDataAttributes.indexOf(`data-${dataAttribute}`) !== -1) {
+                element.setAttribute(dataAttribute, element.dataset[dataAttribute]);
+                element.removeAttribute(`data-${dataAttribute}`);
+            }
+        }
+    };
+
+    // When intersection observer is unavailable, this function is bound to scroll
+    // (and other) event handlers to load images the "old" way.
+    let yallBack = function () {
+        let active = false;
+
+        if (active === false && lazyElements.length > 0) {
+            active = true;
+
+            setTimeout(() => {
+                lazyElements.forEach(lazyElement => {
+                    if (lazyElement.getBoundingClientRect().top <= (window.innerHeight + options.threshold) && lazyElement.getBoundingClientRect().bottom >= -(options.threshold) && getComputedStyle(lazyElement).display !== "none") {
+                        if (options.idlyLoad === true && env.idleCallbackSupport === true) {
+                            requestIdleCallback(() => {
+                                yallLoad(lazyElement);
+                            }, idleCallbackOptions);
+                        } else {
+                            yallLoad(lazyElement);
+                        }
+
+                        lazyElement.classList.remove(options.lazyClass);
+                        lazyElements = lazyElements.filter(element => element !== lazyElement);
+                    }
+                });
+
+                active = false;
+
+                if (lazyElements.length === 0 && options.observeChanges === false) {
+                    env.eventsToBind.forEach(eventPair => eventPair[0].removeEventListener(eventPair[1], yallBack));
+                }
+            }, options.throttleTime);
+        }
+    };
+
+    const env = {
+        intersectionObserverSupport: "IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype,
+        mutationObserverSupport: "MutationObserver" in window,
+        idleCallbackSupport: "requestIdleCallback" in window,
+        ignoredImgAttributes: ["data-src", "data-sizes", "data-media", "data-srcset", "src", "srcset"],
+        acceptedDataAttributes: ["data-src", "data-sizes", "data-media", "data-srcset", "data-poster"],
+        eventsToBind: [
+            [document, "scroll"],
+            [document, "touchmove"],
+            [window, "resize"],
+            [window, "orientationchange"]
+        ]
+    };
+
+    const options = {
+        lazyClass: "lazy",
+        lazyBackgroundClass: "lazy-bg",
+        lazyBackgroundLoaded: "lazy-bg-loaded",
         throttleTime: 200,
         idlyLoad: false,
         idleLoadTimeout: 100,
         threshold: 200,
         observeChanges: false,
-        observeRootSelector: 'body',
+        observeRootSelector: "body",
         mutationObserverOptions: {
             childList: true
-        }
-    }, userOptions);
-    var selectorString = 'img.' + options.lazyClass + ',video.' + options.lazyClass + ',iframe.' + options.lazyClass;
-    var idleCallbackOptions = {
+        },
+        ...userOptions
+    };
+    const selectorString = `img.${options.lazyClass},video.${options.lazyClass},iframe.${options.lazyClass},.${options.lazyBackgroundClass}`;
+    const idleCallbackOptions = {
         timeout: options.idleLoadTimeout
     };
 
-    var lazyElements = [].slice.call(document.querySelectorAll(selectorString));
+    let lazyElements = [].slice.call(document.querySelectorAll(selectorString));
 
     if (env.intersectionObserverSupport === true) {
-        var intersectionListener = new IntersectionObserver(function (entries, observer) {
-            entries.forEach(function (entry) {
-                var element = entry.target;
+        var intersectionListener = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting === true || entry.intersectionRatio > 0) {
+                    let element = entry.target;
 
-                if (entry.isIntersecting === true) {
                     if (options.idlyLoad === true && env.idleCallbackSupport === true) {
-                        requestIdleCallback(function () {
-                            yallLoad(element, env);
-                        }, idleCallbackOptions);
+                        requestIdleCallback(() => yallLoad(element), idleCallbackOptions);
                     } else {
-                        yallLoad(element, env);
+                        yallLoad(element);
                     }
 
                     element.classList.remove(options.lazyClass);
                     observer.unobserve(element);
-
-                    lazyElements = lazyElements.filter(function (lazyElement) {
-                        return lazyElement !== element;
-                    });
+                    lazyElements = lazyElements.filter(lazyElement => lazyElement !== element);
                 }
             });
         }, {
-            rootMargin: options.threshold + 'px 0%'
+            rootMargin: `${options.threshold}px 0%`
         });
 
-        lazyElements.forEach(function (lazyElement) {
-            return intersectionListener.observe(lazyElement);
-        });
+        lazyElements.forEach(lazyElement => intersectionListener.observe(lazyElement));
     } else {
-        var yallBack = function yallBack() {
-            var active = false;
-
-            if (active === false && lazyElements.length > 0) {
-                active = true;
-
-                setTimeout(function () {
-                    lazyElements.forEach(function (lazyElement) {
-                        if (lazyElement.getBoundingClientRect().top <= window.innerHeight + options.threshold && lazyElement.getBoundingClientRect().bottom >= -options.threshold && getComputedStyle(lazyElement).display !== 'none') {
-                            if (options.idlyLoad === true && env.idleCallbackSupport === true) {
-                                requestIdleCallback(function () {
-                                    yallLoad(lazyElement, env);
-                                }, idleCallbackOptions);
-                            } else {
-                                yallLoad(lazyElement, env);
-                            }
-
-                            lazyElement.classList.remove(options.lazyClass);
-
-                            lazyElements = lazyElements.filter(function (element) {
-                                return element !== lazyElement;
-                            });
-                        }
-                    });
-
-                    active = false;
-
-                    if (lazyElements.length === 0 && options.observeChanges === false) {
-                        env.eventsToBind.forEach(function (eventPair) {
-                            return eventPair[0].removeEventListener(eventPair[1], yallBack);
-                        });
-                    }
-                }, options.throttleTime);
-            }
-        };
-
-        env.eventsToBind.forEach(function (eventPair) {
-            return eventPair[0].addEventListener(eventPair[1], yallBack);
-        });
-
+        env.eventsToBind.forEach(eventPair => eventPair[0].addEventListener(eventPair[1], yallBack));
         yallBack();
     }
 
     if (env.mutationObserverSupport === true && options.observeChanges === true) {
-        var mutationListener = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
-                [].slice.call(document.querySelectorAll(selectorString)).forEach(function (newElement) {
-                    if (lazyElements.indexOf(newElement) === -1) {
-                        lazyElements.push(newElement);
+        new MutationObserver(mutations => mutations.forEach(() => {
+            [].slice.call(document.querySelectorAll(selectorString)).forEach(newElement => {
+                if (lazyElements.indexOf(newElement) === -1) {
+                    lazyElements.push(newElement);
 
-                        if (env.intersectionObserverSupport === true) {
-                            intersectionListener.observe(newElement);
-                        } else {
-                            yallBack();
-                        }
+                    if (env.intersectionObserverSupport === true) {
+                        intersectionListener.observe(newElement);
+                    } else {
+                        yallBack();
                     }
-                });
+                }
             });
-        });
-
-        mutationListener.observe(document.querySelector(options.observeRootSelector), options.mutationObserverOptions);
+        })).observe(document.querySelector(options.observeRootSelector), options.mutationObserverOptions);
     }
-};
+}

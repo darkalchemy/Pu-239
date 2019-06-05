@@ -25,7 +25,7 @@ if ($birthday === false || is_null($birthday)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many']);
+        $birthday['birthdayusers_'] = format_comment($lang['index_blocks_too_many']);
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
@@ -34,9 +34,9 @@ if ($birthday === false || is_null($birthday)) {
                 $list[] = format_username((int) $row['id']);
             }
         }
-        $birthday['birthdayusers'] = implode('&nbsp;&nbsp;', $list);
+        $birthday['birthdayusers_'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
-        $birthday['birthdayusers'] = $lang['index_birthday_no'];
+        $birthday['birthdayusers_'] = $lang['index_birthday_no'];
     }
 
     $birthday['count'] = number_format($count);

@@ -1,3 +1,6 @@
+### 05 Jun, 2019
+fix: strict issues  
+
 ### 04 Jun, 2019
 fix: inactive.php  
 fix: modtask.php  

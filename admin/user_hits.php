@@ -2,20 +2,22 @@
 
 declare(strict_types = 1);
 
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_userhits'));
-global $site_config, $CURUSER;
-
+global $container, $site_config, $CURUSER;
+stderr('Error', 'This page is not in use atm');
 $HTMLOUT = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id) || $CURUSER['id'] != $id && $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-$res = sql_query('SELECT COUNT(id) FROM userhits WHERE hitid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM userhits WHERE hitid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $perpage = 15;
@@ -23,6 +25,8 @@ $pager = pager($perpage, $count, "staffpanel.php?tool=user_hits&amp;id=$id&amp;"
 if (!$count) {
     stderr($lang['userhits_stderr'], $lang['userhits_stderr1']);
 }
+$user_stuffs = $container->get(User::class);
+$user = $user_stuffs->getUserFromId($id);
 $res = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $user = mysqli_fetch_assoc($res);
 $HTMLOUT .= "<h1>{$lang['userhits_profile']}" . format_username((int) $id) . "</h1>

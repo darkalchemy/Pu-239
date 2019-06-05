@@ -791,7 +791,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                    // loser $CURUSER
+                // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = $lang['bj_blackjack_results'];
                     $won_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_beat_10']);
@@ -1089,10 +1089,10 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @return array|bool|mixed|null
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed|null
  */
 function getCardData($cardid)
 {
@@ -1115,9 +1115,9 @@ function getCardData($cardid)
  * @param      $gameid
  * @param bool $deal
  *
- * @return mixed
  * @throws Exception
  *
+ * @return mixed
  */
 function getCard($cardcount, $gameid, $deal = false)
 {
@@ -1236,9 +1236,9 @@ function output($blackjack, $HTMLOUT, $debugout)
 }
 
 /**
- * @return array
  * @throws Exception
  *
+ * @return array
  */
 function shuffle_decks()
 {

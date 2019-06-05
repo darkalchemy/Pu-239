@@ -63,7 +63,7 @@ function getRate($id, $what)
         }
     }
 
-    $completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $CURUSER['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
+    $completeres = sql_query('SELECT * FROM snatched WHERE complete_date != 0 AND userid = ' . $CURUSER['id'] . ' AND torrentid = ' . $id) or sqlerr(__FILE__, __LINE__);
     $completecount = mysqli_num_rows($completeres);
     if ($rating_cache['rated']) {
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
@@ -135,15 +135,4 @@ function getRate($id, $what)
     }
 
     return $return;
-}
-
-/**
- * @param $rate_sum
- * @param $rate_count
- *
- * @return string
- */
-function showRate($rate_sum, $rate_count)
-{
-    return '<ul class="star-rating"><li class="current-rating">.</li></ul>';
 }

@@ -38,9 +38,9 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -187,7 +187,7 @@ function torrenttable($res, $variant = 'index')
         } elseif ($row['to_go'] == 1) {
             $to_go = "<div class='has-text-success tooltipper' title='Download Complete'>100%</div>";
         } else {
-            $to_go = "<div class='is-warning tooltipper' title='Download In Progress'>" . number_format($row['to_go'], 1) . '%</div>';
+            $to_go = "<div class='is-warning tooltipper' title='Download In Progress'>" . number_format((int) $row['to_go'], 1) . '%</div>';
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);

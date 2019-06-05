@@ -22,9 +22,9 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_c53dc517.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_a3d7bf35.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_59601e02.js";
         case 'vendor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/vendor_dcc85e11.js";
+            return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
             return "{$site_config['paths']['baseurl']}/js/1/jquery_21c3cb84.js";
         case 'chat_main_js':

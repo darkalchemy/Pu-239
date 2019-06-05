@@ -369,26 +369,11 @@ if ($action === 'avatar') {
         $user_cache['gender'] = $gender;
     }
     if ($CURUSER['birthday'] === '1970-01-01') {
-        $year = isset($_POST['year']) ? (int) $_POST['year'] : 0;
-        $month = isset($_POST['month']) ? (int) $_POST['month'] : 0;
-        $day = isset($_POST['day']) ? (int) $_POST['day'] : 0;
-        $birthday = date("$year.$month.$day");
-        if ($year === '0000') {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_year']);
-        }
-        if ($month === '00') {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_month']);
-        }
-        if ($day === '00') {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_day']);
-        }
-        if (!checkdate($month, $day, $year)) {
-            stderr($lang['takeeditcp_err'], "<br><div id='error'><span style='color: red' size='+1;'>{$lang['takeeditcp_birth_not']}</span></div><br>");
-        }
+        $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : 0;
         $updateset[] = 'birthday = ' . sqlesc($birthday);
         $curuser_cache['birthday'] = $birthday;
         $user_cache['birthday'] = $birthday;
-        $cache->delete('birthdayusers');
+        $cache->delete('birthdayusers_');
     }
     $action = 'personal';
 } elseif ($action === 'social') {
