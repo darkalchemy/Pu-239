@@ -44,6 +44,10 @@ body {
     background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent) rgba(0, 0, 0, .1);
 }
 
+a {
+    text-decoration: none;
+}
+
 .rating {
     unicode-bidi: bidi-override;
     direction: rtl;
@@ -602,8 +606,8 @@ textarea {
     border-radius: .3125em;
 }
 
-.notification a:link {
-    text-decoration: none;
+.notification .is-link {
+    color: #ff3860;
 }
 
 .has-no-border {

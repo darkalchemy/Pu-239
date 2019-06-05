@@ -4,12 +4,12 @@
 }
 
 a {
-    color: var(--main-bdr-color);
+    color: var(--default-link-color);
     text-decoration: none;
 }
 
 a:hover {
-    color: #005580;
+    color: var(--default-link-hover-color);
     text-decoration: none;
 }
 

@@ -1,5 +1,6 @@
 :root {
     --main-bdr-color: #8e13ff;
     --default-text-color: #add8e6;
+    --default-link-color: #fcffc2;
+    --default-link-hover-color: #fff;
 }
-

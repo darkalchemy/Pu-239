@@ -52,7 +52,7 @@ if (PRODUCTION) {
     $css_ext = '.min.css';
     $js_ext = '.min.js';
 }
-exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
+
 foreach ($styles as $folder) {
     echo "Processing Template: {$folder}\n";
     get_default_border($folder);
@@ -529,4 +529,14 @@ function get_default_border($folder)
     if (!empty($match[1])) {
         passthru("sed -i \"s/primary:.*$/primary: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
     }
+    preg_match('#--default-link-color: (.*);#', $contents, $match);
+    if (!empty($match[1])) {
+        passthru("sed -i \"s/link:.*$/link: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+    }
+    preg_match('#--default-link-hover-color: (.*);#', $contents, $match);
+    if (!empty($match[1])) {
+        passthru("sed -i \"s/link-hover:.*$/link-hover: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+    }
+    unlink(BIN_DIR . 'pu239.css');
+    exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 }
