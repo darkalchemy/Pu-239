@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
+use Pu239\Message;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -83,6 +84,7 @@ if (isset($_POST['ddown']) && $_POST['ddown'] === 'ddown') {
     $update_ddown = "ddown = 'yes'";
 }
 
+$message_stuffs = $container->get(Message::class);
 $cards_history = $dealer_cards_history = $deadcards = [];
 $sql = 'SELECT b.*, u.username, u.class, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id=b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY b.date ASC LIMIT 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -789,7 +791,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                // loser $CURUSER
+                    // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = $lang['bj_blackjack_results'];
                     $won_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_beat_10']);
@@ -1087,10 +1089,10 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @throws DependencyException
+ * @return array|bool|mixed|null
  * @throws NotFoundException
  *
- * @return array|bool|mixed|null
+ * @throws DependencyException
  */
 function getCardData($cardid)
 {
@@ -1113,9 +1115,9 @@ function getCardData($cardid)
  * @param      $gameid
  * @param bool $deal
  *
+ * @return mixed
  * @throws Exception
  *
- * @return mixed
  */
 function getCard($cardcount, $gameid, $deal = false)
 {
@@ -1234,9 +1236,9 @@ function output($blackjack, $HTMLOUT, $debugout)
 }
 
 /**
+ * @return array
  * @throws Exception
  *
- * @return array
  */
 function shuffle_decks()
 {

@@ -2,12 +2,16 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('topten'));
-global $site_config;
+global $container, $site_config;
+
+$fluent = $container->get(Database::class);
 
 $HTMLOUT = '';
 /**
@@ -113,10 +117,20 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
     $view = isset($_GET['c']) ? strip_tags($_GET['c']) : '';
     // Top Countries
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (users)</h2></div>";
-    $result = sql_query('SELECT name, flagpic, COUNT(users.country) AS num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT 10');
-    $counted = mysqli_num_rows($result);
+    $arr = $fluent->from('countries AS c')
+                  ->select(null)
+                  ->select('c.name')
+                  ->select('c.flagpic')
+                  ->select('COUNT(u.country) AS num')
+                  ->leftJoin('users AS u ON c.id = u.country')
+                  ->groupBy('c.name')
+                  ->groupBy('c.flagpic')
+                  ->orderBy('num')
+                  ->limit(10)
+                  ->fetchAll();
+
+    $counted = !empty($arr) ? count($arr) : 0;
     if ($counted == '10') {
-        $arr = mysql_fetch_rowsarr($result);
         $name1 = $arr[0]['name'];
         $num1 = $arr[0]['num'];
         $name2 = $arr[1]['name'];
@@ -142,8 +156,19 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
         $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (total uploaded)</h2></div>";
-    $result = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT 10");
-    $counted = mysqli_num_rows($result);
+    $result = $fluent->from('countries AS c')
+                     ->select(null)
+                     ->select('c.name')
+                     ->select('c.flagpic')
+                     ->select('sum(u.uploaded) AS ul')
+                     ->where('u.enabled = "yes"')
+                     ->leftJoin('users AS u ON c.id = u.country')
+                     ->groupBy('c.name')
+                     ->groupBy('c.flagpic')
+                     ->orderBy('ul')
+                     ->limit(10)
+                     ->fetchAll();
+    $counted = !empty($result) ? count($result) : 0;
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
         $name1 = $arr[0]['name'];

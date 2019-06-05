@@ -1,4 +1,11 @@
 ### 04 Jun, 2019
+fix: inactive.php  
+fix: modtask.php  
+fix: freestuffs.php  
+fix: blackjack.php  
+add: missing minus.gif  
+fix: topten.php  
+fix: userdetails.php  
 fix: get_avatar() not proxying external images  
 fix: snatches.php  
 fix: send_message.php  

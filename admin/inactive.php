@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -15,6 +17,7 @@ global $container, $CURUSER, $site_config;
 $HTMLOUT = '';
 $record_mail = true;
 $days = 30;
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {

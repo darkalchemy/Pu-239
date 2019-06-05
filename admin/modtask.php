@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         ];
         $cache->delete('totalfunds_');
         $fluent->insertInto('funds')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
         $update = [
             'donated' => $donated,
             'total_donated' => $user['total_donated'] + $donated,
@@ -113,8 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             }
         }
     }
-    if (isset($post['donorlengthadd']) && (($donorlengthadd = (int) $post['donorlengthadd']) !== $user['donorlengthadd'])) {
+    if (isset($post['donorlengthadd']) && is_int($post['donorlengthadd'])) {
         $donoruntil = $user['donoruntil'];
+        $donorlengthadd = $post['donorlengthadd'];
         $dur = $donorlengthadd . $lang['modtask_donor_week'] . ($donorlengthadd > 1 ? $lang['modtask_donor_weeks'] : '');
         $msg = $lang['modtask_donor_dear'] . htmlsafechars($user['username']) . "{$lang['modtask_donor_msg2']} $dur {$lang['modtask_donor_msg3']}" . $username;
         $subject = $lang['modtask_donor_subject_again'];
@@ -155,8 +156,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $update['enabled'] = $enabled;
         $useredit[] = $lang['modtask_enabled_disabled'] . $enabled;
         $fluent->deleteFrom('ajax_chat_online')
-            ->where('userID = ?', $userid)
-            ->execute();
+               ->where('userID = ?', $userid)
+               ->execute();
         $cache->set('forced_logout_' . $userid, $dt, 2591999);
     }
     if (isset($post['downloadpos']) && ($downloadpos = (int) $post['downloadpos'])) {

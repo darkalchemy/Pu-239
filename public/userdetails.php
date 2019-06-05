@@ -591,7 +591,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
         $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
-                <td class='has-text-left' width='20%'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
+                <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
         if ($free_switch) {
             if ($user['free_switch'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -897,7 +897,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <td class='rowhead'>{$lang['userdetails_addupload']}</td>
          <td class='has-text-centered'>
         <div class='level'>
-            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick='togglepic('{$site_config['paths']['baseurl']}', 'uppic','upchange')'>
+            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick=\"togglepic('{$site_config['paths']['baseurl']}', 'uppic','upchange')\">
             <input type='text' name='amountup' class='w-75'>
         </div>
          </td>
@@ -912,7 +912,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <td class='rowhead'>{$lang['userdetails_adddownload']}</td>
          <td class='has-text-centered'>
         <div class='level'>
-            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick='togglepic('{$site_config['paths']['baseurl']}','downpic','downchange')'>
+            <img src='{$site_config['paths']['images_baseurl']}plus.gif' alt='{$lang['userdetails_change_ratio']}' class='tooltipper' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick=\"togglepic('{$site_config['paths']['baseurl']}','downpic','downchange')\">
             <input type='text' name='amountdown' class='w-75'>
         </div>
          </td>
