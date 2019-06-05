@@ -1,4 +1,5 @@
 ### 05 Jun, 2019
+add: missing autoshout on new user  
 move: browserslist from ackage.json to .browserslistrc 
 fix: strict issues  
 

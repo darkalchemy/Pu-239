@@ -41,7 +41,7 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     }
     if ($setbits || $clrbits) {
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 
-                 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     $res = sql_query('SELECT username, torrent_pass, perms, modcomment FROM users 
                      WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);

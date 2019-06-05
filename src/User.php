@@ -312,7 +312,12 @@ class User
                 'is_staff_',
                 'latestuser_',
             ]);
-            require_once INCL_DIR . 'function_users.php';
+            if ($userId > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
+                require_once INCL_DIR . 'function_users.php';
+                $message = "Welcome New {$this->site_config['site']['name']} Member: [user]" . htmlsafechars($values['username']) . '[/user]';
+                autoshout($message);
+            }
+
             $this->cache->set('latestuser_', format_username($userId), $this->site_config['expires']['latestuser']);
             write_log('User account ' . $userId . ' (' . htmlsafechars($values['username']) . ') was created');
         }
