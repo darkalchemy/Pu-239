@@ -522,8 +522,8 @@ function get_default_border($folder)
     $contents = file_get_contents(TEMPLATE_DIR . "{$folder}/variables.css");
     preg_match('#--main-bdr-color: (.*);#', $contents, $match);
     if (!empty($match[1])) {
-        passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'icarousel.js');
-        passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'icarousel.js');
+        passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+        passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
     }
     preg_match('#--default-text-color: (.*);#', $contents, $match);
     if (!empty($match[1])) {
