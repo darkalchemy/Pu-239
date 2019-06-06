@@ -1,4 +1,5 @@
 ### 05 Jun, 2019
+update: css  
 fix: populate changes everywhere when change variables.css  
 fix: set color to defaul border icarousel  
 add: missing autoshout on new user  

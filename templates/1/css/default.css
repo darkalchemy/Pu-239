@@ -45,7 +45,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .rating {
@@ -606,8 +606,8 @@ textarea {
     border-radius: .3125em;
 }
 
-.notification .is-link {
-    color: #ff3860;
+.notification.is-link {
+    color: #ff3860 !important;
 }
 
 .has-no-border {
