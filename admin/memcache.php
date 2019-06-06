@@ -19,6 +19,9 @@ declare(strict_types = 1);
   | Author:  Harun Yayli <harunyayli at gmail.com>                       |
   +----------------------------------------------------------------------+
  */
+
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
@@ -432,6 +435,9 @@ if (isset($_GET['singleout']) && $_GET['singleout'] >= 0 && $_GET['singleout'] <
 }
 
 if (isset($_GET['IMG'])) {
+    global $container;
+
+    $session = $container->get(Session::class);
     $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
     /**

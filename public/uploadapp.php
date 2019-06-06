@@ -59,7 +59,7 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_joined']}</td>
-                    <td>" . get_date((int) $CURUSER['added'], '', 0, 1) . "</td>
+                    <td>" . get_date((int) $CURUSER['registered'], '', 0, 1) . "</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
@@ -193,14 +193,14 @@ if (isset($_POST['form']) != 1) {
         $subres = $fluent->from('users')
                          ->select(null)
                          ->select('id')
-                         ->where('class>= ?', UC_STAFF)
+                         ->where('class >= ?', UC_STAFF)
                          ->fetchAll();
 
         foreach ($subres as $arr) {
             $msgs_buffer[] = [
                 'sender' => 0,
                 'receiver' => $arr['id'],
-                'added' => TIME_NOW,
+                'added' => $dt,
                 'msg' => $msg,
                 'subject' => $subject,
                 'poster' => 0,

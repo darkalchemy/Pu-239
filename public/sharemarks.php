@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Database;
-use Pu239\Session;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -28,11 +27,11 @@ $htmlout = '';
  * @param        $userid
  * @param string $variant
  *
- * @throws NotFoundException
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function sharetable($res, $userid, $variant = 'index')
 {
@@ -131,7 +130,6 @@ function sharetable($res, $userid, $variant = 'index')
                       ->where('userid = ?', $userid)
                       ->fetch();
 
-        $session = $container->get(Session::class);
         $bookmarked = (empty($bms) ? "
                             <span data-tid='{$id}' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                                 <i class='icon-ok icon'></i>

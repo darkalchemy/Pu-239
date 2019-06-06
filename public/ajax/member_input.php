@@ -14,16 +14,16 @@ $valid_actions = [
     'staff_notes',
     'watched_user',
 ];
+
+$action = in_array($posted_action, $valid_actions) ? $posted_action : '';
+global $container, $CURUSER;
+
+$session = $container->get(Session::class);
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
-
-$action = (in_array($posted_action, $valid_actions) ? $posted_action : '');
-global $container, $CURUSER;
-
-$session = $container->get(Session::class);
 if ($action == '') {
     $session->set('is-danger', 'Access Not Allowed');
     header('Location: ' . $site_config['paths']['baseurl']);

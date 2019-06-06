@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Pu239\Session;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -10,17 +12,18 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));
-global $site_config;
+global $container, $site_config;
 
+$session = $container->get(Session::class);
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
 $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
 
 /**
  * @param $id
  *
+ * @return bool
  * @throws Exception
  *
- * @return bool
  */
 function validate($id)
 {

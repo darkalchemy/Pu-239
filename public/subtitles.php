@@ -64,17 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date = TIME_NOW;
             $owner = $CURUSER['id'];
             sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
-                $releasename,
-                $filename,
-                $imdb,
-                $comment,
-                $langs,
-                $fps,
-                $poster,
-                $cd,
-                $date,
-                $owner,
-            ])) . ')') or sqlerr(__FILE__, __LINE__);
+                    $releasename,
+                    $filename,
+                    $imdb,
+                    $comment,
+                    $langs,
+                    $fps,
+                    $poster,
+                    $cd,
+                    $date,
+                    $owner,
+                ])) . ')') or sqlerr(__FILE__, __LINE__);
             move_uploaded_file($temp_name, UPLOADSUB_DIR . $filename);
             $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");

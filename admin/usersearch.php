@@ -806,7 +806,6 @@ if (!empty($search)) {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagerbottom'];
         }
-        $session = $container->get(Session::class);
         $HTMLOUT .= "
 <br>
 <form method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' accept-charset='utf-8'>

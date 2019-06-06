@@ -1,3 +1,6 @@
+### 06 Jun, 2019
+fix: missing $session  
+
 ### 05 Jun, 2019
 update: css  
 fix: populate changes everywhere when change variables.css  

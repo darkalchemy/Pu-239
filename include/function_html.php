@@ -345,10 +345,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
+ * @return bool|Image|mixed|string
  * @throws DependencyException
  *
- * @return bool|Image|mixed|string
+ * @throws NotFoundException
  */
 function placeholder_image(int $size = 10)
 {
@@ -408,11 +408,11 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @throws DependencyException
+ * @return bool
  * @throws NotFoundException
  * @throws \PHPMailer\PHPMailer\Exception
  *
- * @return bool
+ * @throws DependencyException
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -439,11 +439,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return mixed
+ * @throws \Envms\FluentPDO\Exception
  */
 function validate_invite(int $id, string $code)
 {
@@ -465,11 +465,11 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws NotFoundException
+ * @return mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return mixed
+ * @throws NotFoundException
  */
 function validate_promo(string $code, bool $full)
 {
@@ -482,7 +482,7 @@ function validate_promo(string $code, bool $full)
                     ->where('accounts_made < max_users')
                     ->fetch();
 
-    if (!empty($full)) {
+    if (!empty($valid)) {
         if ($full) {
             return $valid;
         }

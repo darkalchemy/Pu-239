@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Database;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -13,15 +14,16 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_bans'));
 global $container, $CURUSER, $site_config;
 
+$session = $container->get(Session::class);
 $fluent = $container->get(Database::class);
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if ($remove > 0) {
     $res = $fluent->from('bans')
-        ->select(null)
-        ->select('INET6_NTOA(first) AS first')
-        ->select('INET6_NTOA(last) AS last')
-        ->where('id = ?', $remove)
-        ->fetch();
+                  ->select(null)
+                  ->select('INET6_NTOA(first) AS first')
+                  ->select('INET6_NTOA(last) AS last')
+                  ->where('id = ?', $remove)
+                  ->fetch();
 
     if (!$res) {
         stderr($lang['stderr_error'], $lang['stderr_error1']);
@@ -31,8 +33,8 @@ if ($remove > 0) {
     }
     if (is_valid_id($remove)) {
         $fluent->deleteFrom('bans')
-            ->where('id = ?', $remove)
-            ->execute();
+               ->where('id = ?', $remove)
+               ->execute();
         $removed = sprintf($lang['text_banremoved'], $remove);
         write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
         $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
@@ -63,17 +65,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     ];
 
     $fluent->insertInto('bans')
-        ->values('values')
-        ->execute();
+           ->values('values')
+           ->execute();
 
     $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }
 
 $res = $fluent->from('bans')
-    ->select('INET6_NTOA(first) AS first')
-    ->select('INET6_NTOA(last) AS last')
-    ->orderBy('added DESC');
+              ->select('INET6_NTOA(first) AS first')
+              ->select('INET6_NTOA(last) AS last')
+              ->orderBy('added DESC');
 
 foreach ($res as $arr) {
     $bans[] = $arr;
