@@ -14,7 +14,6 @@ if (empty($BLOCKS)) {
 $CURUSER['id'] = 99;
 $topic_id = 103;
 $post_id = 990;
-dd('INSERT INTO `read_posts` (`user_id` ,`topic_id` ,`last_post_read`) VALUES (' . $CURUSER['id'] . ', ' . $topic_id . ', ' . $post_id . ')');
 
 $site_config['cache']['driver'] = 'memory';
 foreach ($argv as $arg) {
