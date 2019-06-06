@@ -2891,4 +2891,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site', 'staff_blocks', 'array', '', 'Array of index page blocks visible only to the staff')",
         'flush' => 'site_settings_',
     ],
+    [
+        'id' => 1559862615,
+        'info' => 'Modify column length',
+        'date' => '06 Jun 2019',
+        'query' => 'ALTER TABLE `subtitles` MODIFY COLUMN `imdb` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'flush' => false,
+    ],
 ];

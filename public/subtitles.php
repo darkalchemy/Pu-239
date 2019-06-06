@@ -16,6 +16,8 @@ $HTMLOUT = '';
 
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : ''));
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
+$fluent = $container->get(Database::class);
+$subs = $container->get('subtitles');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'upload' || $action === 'edit') {
         $langs = isset($_POST['language']) ? htmlsafechars($_POST['language']) : '';
@@ -38,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment = isset($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
         $poster = isset($_POST['poster']) ? htmlsafechars($_POST['poster']) : '';
         $fps = isset($_POST['fps']) ? htmlsafechars($_POST['fps']) : '';
-        $cd = isset($_POST['cd']) ? htmlsafechars($_POST['cd']) : '';
+        $cd = isset($_POST['cd']) ? (int) $_POST['cd'] : '';
         if ($action === 'upload') {
             $file = $_FILES['sub'];
             if (!isset($file)) {
@@ -57,26 +59,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'vtt',
             ];
             if (!in_array($ext, $allowed)) {
-                stderr('Upload failed', 'File not allowed only .srt , .sub , .vtt or .txt  files');
+                stderr('Upload failed', 'File not allowed only .srt , .sub , .vtt or .txt files');
             }
-            $new_name = md5(TIME_NOW);
+            $new_name = md5((string) TIME_NOW);
             $filename = "$new_name.$ext";
             $date = TIME_NOW;
             $owner = $CURUSER['id'];
-            sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
-                    $releasename,
-                    $filename,
-                    $imdb,
-                    $comment,
-                    $langs,
-                    $fps,
-                    $poster,
-                    $cd,
-                    $date,
-                    $owner,
-                ])) . ')') or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'name' => $releasename,
+                'filename' => $filename,
+                'imdb' => $imdb,
+                'comment' => $comment,
+                'lang' => $langs,
+                'fps' => $fps,
+                'poster' => $poster,
+                'cds' => $cd,
+                'added' => $date,
+                'owner' => $owner,
+            ];
+            $id = $fluent->insertInto('subtitles')
+                         ->values($values)
+                         ->execute();
             move_uploaded_file($temp_name, UPLOADSUB_DIR . $filename);
-            $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
         }
         if ($action === 'edit') {
@@ -84,9 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($id == 0) {
                 stderr('Err', 'Not a valid id');
             } else {
-                $res = sql_query('SELECT * FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $arr = mysqli_fetch_assoc($res);
-                if (mysqli_num_rows($res) == 0) {
+                $arr = $fluent->from('subtitles')
+                              ->where('id = ?', $id)
+                              ->fetch();
+                if (empty($arr)) {
                     stderr('Sorry', 'There is no subtitle with that id');
                 }
                 if ($CURUSER['id'] != $arr['owner'] && $CURUSER['class'] < UC_STAFF) {
@@ -94,28 +99,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $updateset = [];
                 if ($arr['name'] != $releasename) {
-                    $updateset[] = 'name = ' . sqlesc($releasename);
+                    $updateset['name'] = $releasename;
                 }
                 if ($arr['imdb'] != $imdb) {
-                    $updateset[] = 'imdb = ' . sqlesc($imdb);
+                    $updateset['imdb'] = $imdb;
                 }
                 if ($arr['lang'] != $langs) {
-                    $updateset[] = 'lang = ' . sqlesc($langs);
+                    $updateset['lang'] = $langs;
                 }
                 if ($arr['poster'] != $poster) {
-                    $updateset[] = 'poster = ' . sqlesc($poster);
+                    $updateset['poster'] = $poster;
                 }
                 if ($arr['fps'] != $fps) {
-                    $updateset[] = 'fps = ' . sqlesc($fps);
+                    $updateset['fps'] = $fps;
                 }
                 if ($arr['cds'] != $cd) {
-                    $updateset[] = 'cds = ' . sqlesc($cd);
+                    $updateset['cds'] = $cd;
                 }
                 if ($arr['comment'] != $comment) {
-                    $updateset[] = 'comment = ' . sqlesc($comment);
+                    $updateset['comment'] = $comment;
                 }
                 if (count($updateset) > 0) {
-                    sql_query('UPDATE subtitles SET ' . implode(', ', $updateset) . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $fluent->update('subtitle')
+                           ->set($updateset)
+                           ->where('id = ?', $id)
+                           ->execute();
                 }
                 header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
             }
@@ -129,9 +137,10 @@ if ($mode === 'upload' || $mode === 'edit') {
         if ($id == 0) {
             stderr('Err', 'Not a valid id');
         } else {
-            $res = sql_query('SELECT id, name, imdb, poster, fps, comment, cds, lang FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $arr = mysqli_fetch_assoc($res);
-            if (mysqli_num_rows($res) == 0) {
+            $arr = $fluent->from('subtitles')
+                          ->where('id = ?', $id)
+                          ->fetch();
+            if (empty($arr)) {
                 stderr('Sorry', 'There is no subtitle with that id');
             }
         }
@@ -154,7 +163,6 @@ if ($mode === 'upload' || $mode === 'edit') {
             <td>
                 <select name='language' class='w-25' required>
                     <option value=''>- Select -</option>";
-    $subs = $container->get('subtitles');
     foreach ($subs as $sub) {
         $body .= "
                     <option value='{$sub['id']}'" . ($mode === 'edit' && $arr['lang'] == $sub['id'] ? ' selected' : '') . ">{$sub['name']}</option>";
@@ -235,7 +243,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         $body .= "
                 <input type='submit' value='Edit it' class='button is-small'>
                 <input type='hidden' name='action' value='edit'>
-                <input type='hidden' name='id' value='" . (int) $arr['id'] . "'>";
+                <input type='hidden' name='id' value='" . $arr['id'] . "'>";
     }
     $body .= '
             </td>
@@ -248,16 +256,19 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($id == 0) {
         stderr('Err', 'Not a valid id');
     } else {
-        $res = sql_query('SELECT id, name, filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (mysqli_num_rows($res) == 0) {
+        $arr = $fluent->from('subtitles')
+                      ->where('id = ?', $id)
+                      ->fetch();
+        if (empty($arr)) {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         $sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes') ? 'yes' : 'no';
         if ($sure === 'no') {
             stderr('Sanity check...', 'Your are about to delete subtitile <b>' . htmlsafechars($arr['name']) . "</b> . Click <a href='subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>here</a> if you are sure.", null);
         } else {
-            sql_query('DELETE FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $fluent->deleteFrom('subtitles')
+                   ->where('id = ?', $id)
+                   ->execute();
             $file = UPLOADSUB_DIR . $arr['filename'];
             @unlink($file);
             header('Refresh: 0; url=subtitles.php');
@@ -268,9 +279,10 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($id == 0) {
         stderr('Err', 'Not a valid id');
     } else {
-        $res = sql_query('SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id  WHERE s.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (mysqli_num_rows($res) == 0) {
+        $arr = $fluent->from('subtitles AS s')
+                      ->where('s.id = ?', $id)
+                      ->fetch();
+        if (empty($arr)) {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         $langs = '<b>Unknown</b>';
@@ -294,30 +306,30 @@ if ($mode === 'upload' || $mode === 'edit') {
         }
         $body .= '
         <tr><td>FPS : <b>' . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . '</b></td></tr>
-        <tr><td>Cd# : <b>' . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</b></td></tr>
-        <tr><td>Hits : <b>' . (int) $arr['hits'] . '</b></td></tr>
+        <tr><td>Cd# : <b>' . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</b></td></tr>
+        <tr><td>Hits : <b>' . $arr['hits'] . '</b></td></tr>
         <tr>
-            <td>Uploader : ' . format_username((int) $arr['owner']);
+            <td>Uploader : ' . format_username($arr['owner']);
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
             $body .= "
-                <a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "' title='Edit Sub' class='tooltipper'>
+                <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>
                     <i class='icon icon-edit' aria-hidden='true'></i>
                 </a>
-                <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "' title='Delete Sub' class='tooltipper'>
+                <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='Delete Sub' class='tooltipper'>
                     <i class='icon icon-trash-empty has-text-danger' aria-hidden='true'></i>
                 </a>";
         }
         $body .= '
             </td>
         </tr>
-        <tr><td>Added : <b>' . get_date((int) $arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
+        <tr><td>Added : <b>' . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
         $HTMLOUT .= "
         <div class='level-center'>
             $image" . main_table($body) . "
         </div>
         <div class='level-center-center'>
             <form action='downloadsub.php' method='post' accept-charset='utf-8'>
-                <input type='hidden' name='sid' value='" . (int) $arr['id'] . "'>
+                <input type='hidden' name='sid' value='" . $arr['id'] . "'>
                 <input type='submit' value='Download' class='button is-small margin20'>
                 <input type='hidden' name='action' value='download'>
             </form>
@@ -330,57 +342,59 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($id == 0) {
         stderr('Err', 'Not a valid id');
     } else {
-        $res = sql_query('SELECT id, name,filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        if (mysqli_num_rows($res) == 0) {
+        $arr = $fluent->from('subtitles')
+                      ->where('id = ?', $id)
+                      ->fetch();
+        if (empty($arr)) {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         $file = UPLOADSUB_DIR . $arr['filename'];
-        $fileContent = file_get_contents($file);
+        $content = file_get_contents($file);
+        $fileContent = substr(strip_tags($content), 0, 1000);
         $title = htmlsafechars($arr['name']);
         $HTMLOUT = "
     <ul class='bg-06 level-center'>
         <li class='margin10'><a href='subtitles.php?mode=details&amp;id={$id}'>Return to Details</a></li>
     </ul>
-    <h1 class='has-text-centered'>Subtitle preview</h1>" . main_div("
-    <div class='pre padding20'>" . substr(htmlsafechars($fileContent), 0, 1000) . '</div>');
-
-        echo stdhead('Preview') . wrapper($HTMLOUT) . stdfoot();
+    <h1 class='has-text-centered'>Subtitle Preview</h1>" . main_div("
+    <div class='pre padding20'>" . $fileContent . '</div>');
+        echo stdhead('Preview: ' . $title) . wrapper($HTMLOUT) . stdfoot();
     }
 } else {
     $s = isset($_GET['s']) ? htmlsafechars($_GET['s']) : '';
     $w = isset($_GET['w']) ? htmlsafechars($_GET['w']) : '';
-    $fluent = $container->get(Database::class);
     $count = $fluent->from('subtitles')
                     ->select(null)
                     ->select('COUNT(id) AS count');
+    $select = $fluent->from('subtitles AS s');
     if ($s && $w === 'name') {
-        $count = $count->where('name LIKE ?', '%%' . $s . '%');
-        $where = "WHERE name LIKE '%%{$s}%'";
+        $count = $count->where('name LIKE ?', '%' . $s . '%');
+        $select = $select->where('s.name LIKE ?', '%' . $s . '%');
     } elseif ($s && $w === 'imdb') {
-        $count = $count->where('imdb LIKE ?', '%%' . $s . '%');
-        $where = "WHERE imdb LIKE '%%{$s}%'";
+        $count = $count->where('imdb LIKE ?', '%' . $s . '%');
+        $select = $select->where('s.imdb LIKE ?', '%' . $s . '%');
     } elseif ($s && $w === 'comment') {
-        $count = $count->where('comment LIKE ?', '%%' . $s . '%');
-        $where = "WHERE comment LIKE '%%{$s}%'";
-    } else {
-        $where = '';
+        $count = $count->where('comment LIKE ?', '%' . $s . '%');
+        $select = $select->where('s.comment LIKE ?', '%' . $s . '%');
     }
     $link = ($s && $w ? "s=$s&amp;w=$w&amp;" : '');
     $count = $count->fetch('count');
-
-    if ($count == 0 && !$s && !$w) {
-        stdmsg('', 'There is no subtitle, go <a href="subtitles.php?mode=upload">here</a> and start uploading.', false);
+    $title = empty($s) ? 'Search' : "Search result for <i>'" . htmlsafechars($s) . "'</i>";
+    if ($count === 0 && !$s && !$w) {
+        stdmsg('', 'There is no subtitle, go <a href="subtitles.php?mode=upload">here</a> and start uploading.');
     }
     $perpage = 15;
     $pager = pager($perpage, $count, 'subtitles.php?' . $link);
-    $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner = u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $select = $select->orderBy('s.added')
+                     ->limit($pager['pdo']['limit'])
+                     ->offset($pager['pdo']['offset'])
+                     ->fetchAll();
     $HTMLOUT .= "
     <ul class='bg-06 level-center'>
         <li class='margin10'><a href='subtitles.php?mode=upload'>Upload a Subtitle</a></li>
     </ul>
     <div class='has-text-centered'>
-        <h1>Search</h1>";
+        <h1>$title</h1>";
     $body = "
         <form action='subtitles.php' method='get' accept-charset='utf-8'>
             <div class='has-text-centered'>
@@ -395,13 +409,16 @@ if ($mode === 'upload' || $mode === 'edit') {
                 <input type='submit' value='Search' class='button is-small margin20'>
             </div>
         </form>";
-    if ($s) {
+
+    if ($count === 0) {
         $body .= "
-        <div class='top20 bg-00 padding20 round10>Search result for <i>'{$s}'</i><br>" . (mysqli_num_rows($res) == 0 ? 'Nothing found! Try again with a refined search string.' : '') . '</div>';
+        <div class='has-text-centered padding20'>
+            Nothing found! Try again with a refined search string.
+        </div>";
     }
     $HTMLOUT .= '
     </div>' . main_div($body);
-    if (mysqli_num_rows($res) > 0) {
+    if ($count > 0) {
         $HTMLOUT .= "
     <div class='top20'></div>";
         if ($count > $perpage) {
@@ -421,7 +438,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     </tr>';
 
         $body = '';
-        while ($arr = mysqli_fetch_assoc($res)) {
+        foreach ($select as $arr) {
             $langs = '<b>Unknown</b>';
             foreach ($subs as $sub) {
                 if ($sub['id'] == $arr['lang']) {
@@ -432,23 +449,23 @@ if ($mode === 'upload' || $mode === 'edit') {
             $body .= "
     <tr>
         <td class='has-text-centered'>{$langs}</td>
-        <td><a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=details&amp;id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+        <td><a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=details&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
         <td class='has-text-centered'>
             <a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'>
                 <img src='{$site_config['paths']['images_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
             </a>
         </td>
-        <td class='has-text-centered'>" . get_date((int) $arr['added'], 'LONG', 0, 1) . "</td>
-        <td class='has-text-centered'>" . htmlsafechars($arr['hits']) . "</td>
-        <td class='has-text-centered'>" . ($arr['fps'] == 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
-        <td class='has-text-centered'>" . ($arr['cds'] == 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
+        <td class='has-text-centered'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
+        <td class='has-text-centered'>" . $arr['hits'] . "</td>
+        <td class='has-text-centered'>" . ($arr['fps'] === 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
+        <td class='has-text-centered'>" . ($arr['cds'] === 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</td>';
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
                 $body .= "
         <td class='has-text-centered'>
-            <a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "' title='Edit Sub' class='tooltipper'>
+            <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>
                 <i class='icon icon-edit' aria-hidden='true'></i>
             </a>
-            <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "' title='Delete Sub' class='tooltipper'>
+            <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='Delete Sub' class='tooltipper'>
                 <i class='icon icon-trash-empty has-text-danger' aria-hidden='true'></i>
             </a>
         </td>";
@@ -457,7 +474,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <td></td>';
             }
             $body .= "
-        <td class='has-text-centered'>" . format_username((int) $arr['owner']) . '</td>
+        <td class='has-text-centered'>" . format_username($arr['owner']) . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         50,
         100,
     ];
-    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
+    $count = isset($_POST['count']) && in_array((int) $_POST['count'], $counts) ? (int) $_POST['count'] : 15;
     $rsslink = "{$site_config['paths']['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
     $HTMLOUT = "
         <div class='portlet has-text-centered w-100'>

@@ -7,12 +7,12 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws NotFoundException
+ * @return string|void
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
  *
- * @return string|void
+ * @throws NotFoundException
  */
 function breadcrumbs()
 {
@@ -137,11 +137,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
+ * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool|string
+ * @throws NotFoundException
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -186,11 +186,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
+ * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool|string
+ * @throws NotFoundException
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -299,6 +299,8 @@ function get_actionpage($lang, $queries, $path)
         'sr',
         'st',
         'sort',
+        's',
+        'w',
     ];
     if (in_array($list[0], $ignore) || $list[1] === 'view_page' || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0]) || preg_match('/\d+/', $list[1])) {
         return false;
@@ -382,11 +384,11 @@ function get_basepage($lang, $path)
 /**
  * @param $mailbox
  *
- * @throws NotFoundException
+ * @return mixed|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return mixed|string
+ * @throws NotFoundException
  */
 function get_mailbox_name($mailbox)
 {
