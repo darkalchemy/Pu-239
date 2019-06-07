@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -16,6 +17,7 @@ global $container, $site_config;
 require_once DATABASE_DIR . 'sql_updates.php';
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
+$session = $session->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id']) && !empty($_POST['submit'])) {
         $id = $_POST['id'];

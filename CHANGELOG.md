@@ -1,4 +1,5 @@
 ### 06 Jun, 2019
+fix: upgrade_database.php  
 fix: download.php  
 fix: getrss.php  
 fix: subtitles.php  
