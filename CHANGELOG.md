@@ -1,4 +1,5 @@
 ### 06 Jun, 2019
+fix: download.php  
 fix: getrss.php  
 fix: subtitles.php  
 fix: missing $session  

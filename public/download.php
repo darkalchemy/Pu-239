@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -12,6 +13,7 @@ require_once CLASS_DIR . 'class.bencdec.php';
 $lang = array_merge(load_language('global'), load_language('download'));
 global $container, $site_config, $CURUSER;
 
+$user_stuffs = $container->get(User::class);
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $user = $user_stuffs->get_user_from_torrent_pass($T_Pass);
@@ -33,7 +35,7 @@ $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
     stderr($lang['download_user_error'], $lang['download_no_id']);
 }
-$res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {

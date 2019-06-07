@@ -16,6 +16,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param string|null $title
  * @param array       $stdhead
  *
+ * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
@@ -24,7 +25,6 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  *
- * @return string
  */
 function stdhead(?string $title = null, array $stdhead = [])
 {
@@ -194,12 +194,12 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws DependencyException
+ * @return string
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
+ * @throws DependencyException
  */
 function stdfoot(array $stdfoot = [])
 {
@@ -409,9 +409,9 @@ function stdmsg($heading, $text, $outer_class = null, $inner_class = null)
 }
 
 /**
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
  */
 function StatusBar()
 {
@@ -432,11 +432,11 @@ function StatusBar()
 }
 
 /**
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
+ * @throws DependencyException
  */
 function platform_menu()
 {
