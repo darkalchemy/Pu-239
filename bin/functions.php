@@ -7,11 +7,11 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_styles()
 {
@@ -35,11 +35,11 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_classes(array $styles, bool $create)
 {
@@ -134,10 +134,37 @@ function chmod_r($path, $group)
  */
 function get_webserver_user()
 {
-    $group = trim(`ps -ef | egrep '(httpd|apache2|apache|nginx)' | grep -v \`whoami\` | grep -v root | head -n1 | awk '{print $1}'`);
+    if (php_sapi_name() == 'cli') {
+        $group = trim(`ps -ef | egrep '(httpd|apache2|apache|nginx)' | grep -v \`whoami\` | grep -v root | head -n1 | awk '{print $1}'`);
+    } else {
+        $group = posix_getpwuid(posix_geteuid());
+        $group = $group['name'];
+    }
     if (empty($group)) {
         $group = 'www-data';
     }
 
     return $group;
+}
+
+/**
+ * @return mixed|null
+ */
+function get_username()
+{
+    if (php_sapi_name() == 'cli') {
+        $user = null;
+        $commands = [
+            trim(`logname`),
+            trim(`who | awk '{print $1}'`),
+            trim(exec('echo $SUDO_USER')),
+        ];
+        $i = 0;
+        while (empty($user)) {
+            $user = $commands[$i];
+            ++$i;
+        }
+        return $user;
+    }
+    return get_webserver_user();
 }

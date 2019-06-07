@@ -11,17 +11,7 @@ if (empty($BLOCKS)) {
 }
 
 $site_config['cache']['driver'] = 'memory';
-$user = null;
-$commands = [
-    trim(`logname`),
-    trim(`who | awk '{print $1}'`),
-    trim(exec('echo $SUDO_USER')),
-];
-$i = 0;
-while (empty($user)) {
-    $user = $commands[$i];
-    ++$i;
-}
+$user = get_webserver_user();
 $group = get_webserver_user();
 cleanup($group);
 $paths = [

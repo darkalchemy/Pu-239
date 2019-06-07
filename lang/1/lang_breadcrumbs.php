@@ -249,6 +249,7 @@ $lang = [
     'trivia_config' => 'Trivia Config',
     'tv' => 'TMDb TV List',
     'tvmaze' => 'TVMaze TV List',
+    'uglify' => 'Uglify',
     'unmodded' => 'UnModded Torrents',
     'upgrade_database' => 'Update Database',
     'upcoming' => 'Upcoming Movies',

@@ -2,8 +2,11 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -17,8 +20,11 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
+ * @throws AuthError
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  */
 function run_uglify($argv = [])
@@ -89,15 +95,14 @@ function run_uglify($argv = [])
             make_dir($dir);
             $files = glob($dir . '/*');
             foreach ($files as $file) {
-                if (is_file($file)) {
-                    unlink($file);
-                }
+                can_delete($file, true);
             }
         }
 
         copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
-        passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
-
+        if (can_delete(BIN_DIR . 'lightbox.css', false)) {
+            passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
+        }
         $js_list = [];
         $js_list['jquery_js'] = $js_list['vendor_js'] = $js_list['main_js'] = [];
         if ($BLOCKS['ajaxchat_on']) {
@@ -378,9 +383,9 @@ function run_uglify($argv = [])
             }
         }
 
-        unlink($csstmp);
-        unlink($jstmp);
-        unlink(BIN_DIR . 'lightbox.css');
+        can_delete($csstmp, true);
+        can_delete($jstmp, true);
+        can_delete(BIN_DIR . 'lightbox.css', true);
         write_file($update, $pages);
     }
 
@@ -546,23 +551,72 @@ function get_file_name($file)
 function get_default_border($folder)
 {
     $contents = file_get_contents(TEMPLATE_DIR . "{$folder}/variables.css");
-    preg_match('#--main-bdr-color: (.*);#', $contents, $match);
-    if (!empty($match[1])) {
-        passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
-        passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+
+    if (can_delete(SCRIPTS_DIR . 'replaced.js', false)) {
+        preg_match('#--main-bdr-color: (.*);#', $contents, $match);
+        if (!empty($match[1])) {
+            passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+            passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+        }
     }
-    preg_match('#--default-text-color: (.*);#', $contents, $match);
-    if (!empty($match[1])) {
-        passthru("sed -i \"s/primary:.*$/primary: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+    if (can_delete(TEMPLATE_DIR . "{$folder}/default.scss", false)) {
+        preg_match('#--default-text-color: (.*);#', $contents, $match);
+        if (!empty($match[1])) {
+            passthru("sed -i \"s/primary:.*$/primary: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+        }
+        preg_match('#--default-link-color: (.*);#', $contents, $match);
+        if (!empty($match[1])) {
+            passthru("sed -i \"s/link:.*$/link: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+        }
+
+        preg_match('#--default-link-hover-color: (.*);#', $contents, $match);
+        if (!empty($match[1])) {
+            passthru("sed -i \"s/link-hover:.*$/link-hover: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+        }
     }
-    preg_match('#--default-link-color: (.*);#', $contents, $match);
-    if (!empty($match[1])) {
-        passthru("sed -i \"s/link:.*$/link: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
-    }
-    preg_match('#--default-link-hover-color: (.*);#', $contents, $match);
-    if (!empty($match[1])) {
-        passthru("sed -i \"s/link-hover:.*$/link-hover: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
-    }
-    unlink(BIN_DIR . 'pu239.css');
+    can_delete(BIN_DIR . 'pu239.css', true);
     exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
+}
+
+
+/**
+ * @param string $file
+ * @param bool   $delete
+ *
+ * @return bool
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ */
+function can_delete(string $file, bool $delete)
+{
+    if (is_file($file)) {
+        if (is_writable(dirname($file))) {
+            if ($delete) {
+                unlink($file);
+                return true;
+            } else {
+                return true;
+            }
+        } else {
+            $br = php_sapi_name() == 'cli' ? "\n" : '<br>';
+            $user = get_username();
+            $group = get_webserver_user();
+            $user_group = php_sapi_name() == 'cli' ? "{$user}:{$group}" : "{$group}:{$group}";
+            if ($delete) {
+                $msg = "{$br}Unable to delete file:{$file}.{$br}Please check your permissions.{$br}sudo chown -R $user_group .{$br}sudo php bin/set_perms.php\n";
+            } else {
+                $msg = "{$br}Unable to modify file:{$file}.{$br}Please check your permissions.{$br}sudo chown -R $user_group .{$br}sudo php bin/set_perms.php\n";
+            }
+            if (php_sapi_name() == 'cli') {
+                die($msg);
+            } else {
+                stderr('Error', $msg);
+            }
+        }
+    }
+    return false;
 }
