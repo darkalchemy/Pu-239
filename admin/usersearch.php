@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
-use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';

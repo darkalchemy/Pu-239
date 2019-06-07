@@ -44,6 +44,7 @@ $lang = [
     'spanel_cancel' => 'Cancel',
     'spanel_add_a_new_pg' => 'Add a new page',
     'spanel_flush_cache' => 'Flush Cache',
+    'spanel_uglify' => 'Uglify',
     'spanel_clear_chat' => 'Clear Chat',
     'spanel_clear_chat_caution' => 'CAUTION: This DELETES all messages in AJAX Chat!',
     'spanel_options' => 'Options',

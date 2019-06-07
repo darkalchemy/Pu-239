@@ -17,7 +17,7 @@ global $container, $site_config;
 require_once DATABASE_DIR . 'sql_updates.php';
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
-$session = $session->get(Session::class);
+$session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id']) && !empty($_POST['submit'])) {
         $id = $_POST['id'];

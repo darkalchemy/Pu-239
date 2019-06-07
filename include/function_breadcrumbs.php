@@ -7,12 +7,12 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @return string|void
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return string|void
  */
 function breadcrumbs()
 {
@@ -137,11 +137,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|string
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -186,11 +186,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|string
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -384,11 +384,11 @@ function get_basepage($lang, $path)
 /**
  * @param $mailbox
  *
- * @return mixed|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return mixed|string
  */
 function get_mailbox_name($mailbox)
 {

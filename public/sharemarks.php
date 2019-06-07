@@ -27,11 +27,11 @@ $htmlout = '';
  * @param        $userid
  * @param string $variant
  *
- * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return string
  */
 function sharetable($res, $userid, $variant = 'index')
 {

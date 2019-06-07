@@ -2,376 +2,399 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once BIN_DIR . 'functions.php';
-global $site_config, $site_config;
 
-if (empty($BLOCKS)) {
-    die('BLOCKS are empty');
+if (php_sapi_name() == 'cli') {
+    run_uglify($argv);
 }
-$CURUSER['id'] = 99;
-$topic_id = 103;
-$post_id = 990;
 
-$site_config['cache']['driver'] = 'memory';
-foreach ($argv as $arg) {
-    if (!PRODUCTION && ($arg === 'update' || $arg === 'all')) {
-        passthru('composer self-update');
-        passthru('sudo npm install -g npm');
-        passthru('composer update');
-        passthru('npm update');
-    } elseif ($arg === 'classes') {
-        echo "Creating classes\n";
-        $styles = get_styles();
-        $classes = get_classes($styles, true);
-        die();
+/**
+ * @param array $argv
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function run_uglify($argv = [])
+{
+    global $site_config, $BLOCKS;
+
+    if (empty($BLOCKS)) {
+        die('BLOCKS are empty');
     }
-}
 
-$styles = get_styles();
-$classes = get_classes($styles, false);
-
-foreach ($styles as $style) {
-    make_dir(CACHE_DIR . $style);
-    make_dir(TEMPLATE_DIR . $style);
-    make_dir(CHAT_DIR . 'css' . DIRECTORY_SEPARATOR . $style);
-    write_class_files($style);
-}
-
-$purpose = '--beautify';
-$short = 'Beautified';
-$spurpose = '-O2 --skip-rebase --format beautify';
-$css_ext = '.css';
-$js_ext = '.js';
-$jstmp = BIN_DIR . 'temp.js';
-$csstmp = BIN_DIR . 'temp.css';
-
-if (PRODUCTION) {
-    $purpose = '--compress --mangle';
-    $short = 'Minified';
-    $spurpose = '--skip-rebase -O2';
-    $css_ext = '.min.css';
-    $js_ext = '.min.js';
-}
-
-foreach ($styles as $folder) {
-    echo "Processing Template: {$folder}\n";
-    get_default_border($folder);
-    $update = TEMPLATE_DIR . "{$folder}/files.php";
-    $dirs = [
-        PUBLIC_DIR . "js/{$folder}/",
-        PUBLIC_DIR . "css/{$folder}/",
-    ];
-
-    foreach ($dirs as $dir) {
-        make_dir($dir);
-        $files = glob($dir . '/*');
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
+    if (php_sapi_name() == 'cli') {
+        $site_config['cache']['driver'] = 'memory';
+    }
+    foreach ($argv as $arg) {
+        if (!PRODUCTION && ($arg === 'update' || $arg === 'all')) {
+            passthru('composer self-update');
+            passthru('sudo npm install -g npm');
+            passthru('composer update');
+            passthru('npm update');
+        } elseif ($arg === 'classes') {
+            if (php_sapi_name() == 'cli') {
+                echo "Creating classes\n";
             }
+            $styles = get_styles();
+            $classes = get_classes($styles, true);
+            die();
         }
     }
 
-    copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
-    passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
+    $styles = get_styles();
+    $classes = get_classes($styles, false);
 
-    $js_list = [];
-    $js_list['jquery_js'] = $js_list['vendor_js'] = $js_list['main_js'] = [];
-    if ($BLOCKS['ajaxchat_on']) {
+    foreach ($styles as $style) {
+        make_dir(CACHE_DIR . $style);
+        make_dir(TEMPLATE_DIR . $style);
+        make_dir(CHAT_DIR . 'css' . DIRECTORY_SEPARATOR . $style);
+        write_class_files($style);
+    }
+
+    $purpose = '--beautify';
+    $short = 'Beautified';
+    $spurpose = '-O2 --skip-rebase --format beautify';
+    $css_ext = '.css';
+    $js_ext = '.js';
+    $jstmp = BIN_DIR . 'temp.js';
+    $csstmp = BIN_DIR . 'temp.css';
+
+    if (PRODUCTION) {
+        $purpose = '--compress --mangle';
+        $short = 'Minified';
+        $spurpose = '--skip-rebase -O2';
+        $css_ext = '.min.css';
+        $js_ext = '.min.js';
+    }
+
+    foreach ($styles as $folder) {
+        if (php_sapi_name() == 'cli') {
+            echo "Processing Template: {$folder}\n";
+        }
+        get_default_border($folder);
+        $update = TEMPLATE_DIR . "{$folder}/files.php";
+        $dirs = [
+            PUBLIC_DIR . "js/{$folder}/",
+            PUBLIC_DIR . "css/{$folder}/",
+        ];
+
+        foreach ($dirs as $dir) {
+            make_dir($dir);
+            $files = glob($dir . '/*');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        }
+
+        copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
+        passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
+
+        $js_list = [];
+        $js_list['jquery_js'] = $js_list['vendor_js'] = $js_list['main_js'] = [];
+        if ($BLOCKS['ajaxchat_on']) {
+            $js_list = array_merge($js_list, [
+                'chat_main_js' => [
+                    CHAT_DIR . 'js/chat.js',
+                    CHAT_DIR . 'js/custom.js',
+                    CHAT_DIR . 'js/classes.js',
+                ],
+                'chat_js' => [
+                    CHAT_DIR . 'js/lang/en.js',
+                    CHAT_DIR . 'js/config.js',
+                    SCRIPTS_DIR . 'ajaxchat.js',
+                    SCRIPTS_DIR . 'popup.js',
+                ],
+                'chat_log_js' => [
+                    CHAT_DIR . 'js/logs.js',
+                    CHAT_DIR . 'js/lang/en.js',
+                    CHAT_DIR . 'js/config.js',
+                ],
+            ]);
+        }
+
+        $js_list['categories_js'] = [
+            SCRIPTS_DIR . 'categories.js',
+        ];
+
+        $js_list['browse_js'] = [
+            SCRIPTS_DIR . 'autocomplete.js',
+        ];
+
+        if ($BLOCKS['staff_picks_on']) {
+            $js_list['browse_js'] = array_merge($js_list['browse_js'], [
+                SCRIPTS_DIR . 'staff_picks.js',
+            ]);
+        }
+
+        if ($BLOCKS['latest_torrents_scroll_on']) {
+            $js_list['scroller_js'] = [
+                ROOT_DIR . 'node_modules/raphael/raphael.js',
+                SCRIPTS_DIR . 'icarousel.js',
+            ];
+        }
+
+        if ($BLOCKS['latest_torrents_slider_on']) {
+            $js_list['glider_js'] = [
+                ROOT_DIR . 'node_modules/@glidejs/glide/dist/glide.js',
+                SCRIPTS_DIR . 'glide.js',
+            ];
+        }
+
+        $js_list['userdetails_js'] = [
+            SCRIPTS_DIR . 'jquery.tabcontrol.js',
+            SCRIPTS_DIR . 'flip_box.js',
+            SCRIPTS_DIR . 'user_torrents.js',
+        ];
+
+        if ($BLOCKS['userdetails_flush_on']) {
+            $js_list['userdetails_js'] = array_merge($js_list['userdetails_js'], [
+                SCRIPTS_DIR . 'flush_torrents.js',
+            ]);
+        }
+
+        $js_list['jquery_js'] = [
+            ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
+        ];
+
+        $js_list['cookieconsent_js'] = [
+            ROOT_DIR . 'node_modules/cookieconsent/src/cookieconsent.js',
+            SCRIPTS_DIR . 'cookieconsent.js',
+        ];
+
+        $js_list['mass_bonus_js'] = [
+            SCRIPTS_DIR . 'mass_bonus.js',
+        ];
+
+        $js_list['bookmarks_js'] = [
+            SCRIPTS_DIR . 'bookmarks.js',
+        ];
+
+        $js_list['iframe_js'] = [
+            SCRIPTS_DIR . 'resize_iframe.js',
+        ];
+
+        $js_list['navbar_show_js'] = [
+            SCRIPTS_DIR . 'navbar_show.js',
+        ];
+
+        $js_list['sceditor_js'] = [
+            ROOT_DIR . 'node_modules/sceditor/minified/jquery.sceditor.bbcode.min.js',
+            ROOT_DIR . 'node_modules/sceditor/src/icons/material.js',
+            ROOT_DIR . 'node_modules/sceditor/src/plugins/autoyoutube.js',
+            BIN_DIR . "{$folder}/sceditor.js",
+        ];
+
+        $js_list['cheaters_js'] = [
+            SCRIPTS_DIR . 'cheaters.js',
+        ];
+
+        $js_list['user_search_js'] = [
+            SCRIPTS_DIR . 'usersearch.js',
+        ];
+
+        $js_list['lightbox_js'] = [
+            ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
+            SCRIPTS_DIR . 'lightbox.js',
+        ];
+
+        $js_list['tooltipster_js'] = [
+            ROOT_DIR . 'node_modules/tooltipster/dist/js/tooltipster.bundle.js',
+            SCRIPTS_DIR . 'tooltipster.js',
+        ];
+
+        $js_list['vendor_js'] = [
+            SCRIPTS_DIR . 'yall.js',
+            SCRIPTS_DIR . 'popup.js',
+        ];
+
+        $js_list['site_config_js'] = [
+            SCRIPTS_DIR . 'site_config.js',
+        ];
+
+        $js_list['main_js'] = [
+            SCRIPTS_DIR . 'copy_to_clipboard.js',
+            SCRIPTS_DIR . 'flipper.js',
+            SCRIPTS_DIR . 'replaced.js',
+            SCRIPTS_DIR . 'hide_html.js',
+        ];
+
         $js_list = array_merge($js_list, [
-            'chat_main_js' => [
-                CHAT_DIR . 'js/chat.js',
-                CHAT_DIR . 'js/custom.js',
-                CHAT_DIR . 'js/classes.js',
+            'checkport_js' => [
+                SCRIPTS_DIR . 'checkports.js',
             ],
-            'chat_js' => [
-                CHAT_DIR . 'js/lang/en.js',
-                CHAT_DIR . 'js/config.js',
-                SCRIPTS_DIR . 'ajaxchat.js',
-                SCRIPTS_DIR . 'popup.js',
+            'check_username_js' => [
+                SCRIPTS_DIR . 'check_username.js',
             ],
-            'chat_log_js' => [
-                CHAT_DIR . 'js/logs.js',
-                CHAT_DIR . 'js/lang/en.js',
-                CHAT_DIR . 'js/config.js',
+            'check_password_js' => [
+                SCRIPTS_DIR . 'check_password.js',
+            ],
+            'upload_js' => [
+                SCRIPTS_DIR . 'genres_show_hide.js',
+                SCRIPTS_DIR . 'getname.js',
+                SCRIPTS_DIR . 'imdb.js',
+                SCRIPTS_DIR . 'isbn.js',
+                SCRIPTS_DIR . 'upload.js',
+            ],
+            'request_js' => [
+                SCRIPTS_DIR . 'imdb.js',
+            ],
+            'parallax_js' => [
+                SCRIPTS_DIR . 'parallax.js',
+            ],
+            'acp_js' => [
+                SCRIPTS_DIR . 'acp.js',
+            ],
+            'dragndrop_js' => [
+                SCRIPTS_DIR . 'dragndrop.js',
+                SCRIPTS_DIR . 'upload_image_from_url.js',
+            ],
+            'details_js' => [
+                SCRIPTS_DIR . 'descr.js',
+                SCRIPTS_DIR . 'jquery.thanks.js',
+                SCRIPTS_DIR . 'imdb.js',
+                SCRIPTS_DIR . 'isbn.js',
+                SCRIPTS_DIR . 'tvmaze.js',
+            ],
+            'forums_js' => [
+                SCRIPTS_DIR . 'jquery.trilemma.js',
+                SCRIPTS_DIR . 'forums.js',
+            ],
+            'pollsmanager_js' => [
+                SCRIPTS_DIR . 'polls.js',
+            ],
+            'trivia_js' => [
+                SCRIPTS_DIR . 'trivia.js',
             ],
         ]);
-    }
 
-    $js_list['categories_js'] = [
-        SCRIPTS_DIR . 'categories.js',
-    ];
-
-    $js_list['browse_js'] = [
-        SCRIPTS_DIR . 'autocomplete.js',
-    ];
-
-    if ($BLOCKS['staff_picks_on']) {
-        $js_list['browse_js'] = array_merge($js_list['browse_js'], [
-            SCRIPTS_DIR . 'staff_picks.js',
-        ]);
-    }
-
-    if ($BLOCKS['latest_torrents_scroll_on']) {
-        $js_list['scroller_js'] = [
-            ROOT_DIR . 'node_modules/raphael/raphael.js',
-            SCRIPTS_DIR . 'icarousel.js',
+        $css_list = [];
+        $css_list['css'] = [];
+        $css_list['vendor_css'] = [
+            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+            BIN_DIR . 'pu239.css',
         ];
-    }
 
-    if ($BLOCKS['latest_torrents_slider_on']) {
-        $js_list['glider_js'] = [
-            ROOT_DIR . 'node_modules/@glidejs/glide/dist/glide.js',
-            SCRIPTS_DIR . 'glide.js',
+        $css_list['cookieconsent_css'] = [
+            ROOT_DIR . 'node_modules/cookieconsent/src/styles/base.css',
+            ROOT_DIR . 'node_modules/cookieconsent/src/styles/layout.css',
+            ROOT_DIR . 'node_modules/cookieconsent/src/styles/media.css',
+            ROOT_DIR . 'node_modules/cookieconsent/src/styles/animation.css',
+            ROOT_DIR . 'node_modules/cookieconsent/src/styles/themes/classic.css',
         ];
-    }
 
-    $js_list['userdetails_js'] = [
-        SCRIPTS_DIR . 'jquery.tabcontrol.js',
-        SCRIPTS_DIR . 'flip_box.js',
-        SCRIPTS_DIR . 'user_torrents.js',
-    ];
+        if ($BLOCKS['latest_torrents_scroll_on']) {
+            $css_list['css'] = array_merge($css_list['css'], [
+                TEMPLATE_DIR . "{$folder}/css/iCarousel.css",
+            ]);
+        }
 
-    if ($BLOCKS['userdetails_flush_on']) {
-        $js_list['userdetails_js'] = array_merge($js_list['userdetails_js'], [
-            SCRIPTS_DIR . 'flush_torrents.js',
-        ]);
-    }
+        if ($BLOCKS['latest_torrents_slider_on']) {
+            $css_list['css'] = array_merge($css_list['css'], [
+                ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.core.css',
+                ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.theme.css',
+            ]);
+        }
 
-    $js_list['jquery_js'] = [
-        ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
-    ];
-
-    $js_list['cookieconsent_js'] = [
-        ROOT_DIR . 'node_modules/cookieconsent/src/cookieconsent.js',
-        SCRIPTS_DIR . 'cookieconsent.js',
-    ];
-
-    $js_list['mass_bonus_js'] = [
-        SCRIPTS_DIR . 'mass_bonus.js',
-    ];
-
-    $js_list['bookmarks_js'] = [
-        SCRIPTS_DIR . 'bookmarks.js',
-    ];
-
-    $js_list['iframe_js'] = [
-        SCRIPTS_DIR . 'resize_iframe.js',
-    ];
-
-    $js_list['navbar_show_js'] = [
-        SCRIPTS_DIR . 'navbar_show.js',
-    ];
-
-    $js_list['sceditor_js'] = [
-        ROOT_DIR . 'node_modules/sceditor/minified/jquery.sceditor.bbcode.min.js',
-        ROOT_DIR . 'node_modules/sceditor/src/icons/material.js',
-        ROOT_DIR . 'node_modules/sceditor/src/plugins/autoyoutube.js',
-        BIN_DIR . "{$folder}/sceditor.js",
-    ];
-
-    $js_list['cheaters_js'] = [
-        SCRIPTS_DIR . 'cheaters.js',
-    ];
-
-    $js_list['user_search_js'] = [
-        SCRIPTS_DIR . 'usersearch.js',
-    ];
-
-    $js_list['lightbox_js'] = [
-        ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
-        SCRIPTS_DIR . 'lightbox.js',
-    ];
-
-    $js_list['tooltipster_js'] = [
-        ROOT_DIR . 'node_modules/tooltipster/dist/js/tooltipster.bundle.js',
-        SCRIPTS_DIR . 'tooltipster.js',
-    ];
-
-    $js_list['vendor_js'] = [
-        SCRIPTS_DIR . 'yall.js',
-        SCRIPTS_DIR . 'popup.js',
-    ];
-
-    $js_list['site_config_js'] = [
-        SCRIPTS_DIR . 'site_config.js',
-    ];
-
-    $js_list['main_js'] = [
-        SCRIPTS_DIR . 'copy_to_clipboard.js',
-        SCRIPTS_DIR . 'flipper.js',
-        SCRIPTS_DIR . 'replaced.js',
-        SCRIPTS_DIR . 'hide_html.js',
-    ];
-
-    $js_list = array_merge($js_list, [
-        'checkport_js' => [
-            SCRIPTS_DIR . 'checkports.js',
-        ],
-        'check_username_js' => [
-            SCRIPTS_DIR . 'check_username.js',
-        ],
-        'check_password_js' => [
-            SCRIPTS_DIR . 'check_password.js',
-        ],
-        'upload_js' => [
-            SCRIPTS_DIR . 'genres_show_hide.js',
-            SCRIPTS_DIR . 'getname.js',
-            SCRIPTS_DIR . 'imdb.js',
-            SCRIPTS_DIR . 'isbn.js',
-            SCRIPTS_DIR . 'upload.js',
-        ],
-        'request_js' => [
-            SCRIPTS_DIR . 'imdb.js',
-        ],
-        'parallax_js' => [
-            SCRIPTS_DIR . 'parallax.js',
-        ],
-        'acp_js' => [
-            SCRIPTS_DIR . 'acp.js',
-        ],
-        'dragndrop_js' => [
-            SCRIPTS_DIR . 'dragndrop.js',
-            SCRIPTS_DIR . 'upload_image_from_url.js',
-        ],
-        'details_js' => [
-            SCRIPTS_DIR . 'descr.js',
-            SCRIPTS_DIR . 'jquery.thanks.js',
-            SCRIPTS_DIR . 'imdb.js',
-            SCRIPTS_DIR . 'isbn.js',
-            SCRIPTS_DIR . 'tvmaze.js',
-        ],
-        'forums_js' => [
-            SCRIPTS_DIR . 'jquery.trilemma.js',
-            SCRIPTS_DIR . 'forums.js',
-        ],
-        'pollsmanager_js' => [
-            SCRIPTS_DIR . 'polls.js',
-        ],
-        'trivia_js' => [
-            SCRIPTS_DIR . 'trivia.js',
-        ],
-    ]);
-
-    $css_list = [];
-    $css_list['css'] = [];
-    $css_list['vendor_css'] = [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        BIN_DIR . 'pu239.css',
-    ];
-
-    $css_list['cookieconsent_css'] = [
-        ROOT_DIR . 'node_modules/cookieconsent/src/styles/base.css',
-        ROOT_DIR . 'node_modules/cookieconsent/src/styles/layout.css',
-        ROOT_DIR . 'node_modules/cookieconsent/src/styles/media.css',
-        ROOT_DIR . 'node_modules/cookieconsent/src/styles/animation.css',
-        ROOT_DIR . 'node_modules/cookieconsent/src/styles/themes/classic.css',
-    ];
-
-    if ($BLOCKS['latest_torrents_scroll_on']) {
         $css_list['css'] = array_merge($css_list['css'], [
-            TEMPLATE_DIR . "{$folder}/css/iCarousel.css",
+            TEMPLATE_DIR . "{$folder}/css/fonts.css",
+            TEMPLATE_DIR . "{$folder}/css/fontello.css",
+            TEMPLATE_DIR . "{$folder}/css/navbar.css",
+            TEMPLATE_DIR . "{$folder}/css/tables.css",
+            TEMPLATE_DIR . "{$folder}/css/cards.css",
+            ROOT_DIR . 'node_modules/tooltipster/dist/css/tooltipster.bundle.css',
+            ROOT_DIR . 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css',
+            TEMPLATE_DIR . "{$folder}/css/tooltipster.css",
+            TEMPLATE_DIR . "{$folder}/css/classcolors.css",
+            TEMPLATE_DIR . "{$folder}/css/skins.css",
+            BIN_DIR . 'lightbox.css',
         ]);
-    }
 
-    if ($BLOCKS['latest_torrents_slider_on']) {
-        $css_list['css'] = array_merge($css_list['css'], [
-            ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.core.css',
-            ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.theme.css',
-        ]);
-    }
+        $css_list['sceditor_css'] = [
+            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+            BIN_DIR . 'pu239.css',
+            ROOT_DIR . 'node_modules/sceditor/minified/themes/modern.min.css',
+            TEMPLATE_DIR . "{$folder}/css/sceditor.css",
+            TEMPLATE_DIR . "{$folder}/variables.css",
+            TEMPLATE_DIR . "{$folder}/css/default.css",
+            TEMPLATE_DIR . "{$folder}/css/tables.css",
+        ];
 
-    $css_list['css'] = array_merge($css_list['css'], [
-        TEMPLATE_DIR . "{$folder}/css/fonts.css",
-        TEMPLATE_DIR . "{$folder}/css/fontello.css",
-        TEMPLATE_DIR . "{$folder}/css/navbar.css",
-        TEMPLATE_DIR . "{$folder}/css/tables.css",
-        TEMPLATE_DIR . "{$folder}/css/cards.css",
-        ROOT_DIR . 'node_modules/tooltipster/dist/css/tooltipster.bundle.css',
-        ROOT_DIR . 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css',
-        TEMPLATE_DIR . "{$folder}/css/tooltipster.css",
-        TEMPLATE_DIR . "{$folder}/css/classcolors.css",
-        TEMPLATE_DIR . "{$folder}/css/skins.css",
-        BIN_DIR . 'lightbox.css',
-    ]);
+        $css_list['main_css'] = [
+            TEMPLATE_DIR . "{$folder}/variables.css",
+            TEMPLATE_DIR . "{$folder}/css/default.css",
+            TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
+            TEMPLATE_DIR . "{$folder}/custom.css/",
+        ];
 
-    $css_list['sceditor_css'] = [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        BIN_DIR . 'pu239.css',
-        ROOT_DIR . 'node_modules/sceditor/minified/themes/modern.min.css',
-        TEMPLATE_DIR . "{$folder}/css/sceditor.css",
-        TEMPLATE_DIR . "{$folder}/variables.css",
-        TEMPLATE_DIR . "{$folder}/css/default.css",
-        TEMPLATE_DIR . "{$folder}/css/tables.css",
-    ];
-
-    $css_list['main_css'] = [
-        TEMPLATE_DIR . "{$folder}/variables.css",
-        TEMPLATE_DIR . "{$folder}/css/default.css",
-        TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
-        TEMPLATE_DIR . "{$folder}/custom.css/",
-    ];
-
-    if ($BLOCKS['ajaxchat_on']) {
-        $css_list = array_merge([
-            'chat_css_trans' => [
-                ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                TEMPLATE_DIR . "{$folder}/variables.css",
-                CHAT_DIR . "css/{$folder}/global.css",
-                CHAT_DIR . "css/{$folder}/fonts.css",
-                CHAT_DIR . "css/{$folder}/custom.css",
-                CHAT_DIR . "css/{$folder}/classcolors.css",
-                CHAT_DIR . "css/{$folder}/default.css",
-            ],
-            'chat_css_uranium' => [
-                ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                TEMPLATE_DIR . "{$folder}/variables.css",
-                CHAT_DIR . "css/{$folder}/global.css",
-                CHAT_DIR . "css/{$folder}/fonts.css",
-                CHAT_DIR . "css/{$folder}/custom.css",
-                CHAT_DIR . "css/{$folder}/classcolors.css",
-                CHAT_DIR . "css/{$folder}/Uranium.css",
-            ],
-        ], $css_list);
-    }
-    $css_files = [];
-    foreach ($css_list as $key => $css) {
-        foreach ($css as $file) {
-            if (!in_array($file, $css_files)) {
-                $css_files[] = $file;
+        if ($BLOCKS['ajaxchat_on']) {
+            $css_list = array_merge([
+                'chat_css_trans' => [
+                    ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+                    TEMPLATE_DIR . "{$folder}/variables.css",
+                    CHAT_DIR . "css/{$folder}/global.css",
+                    CHAT_DIR . "css/{$folder}/fonts.css",
+                    CHAT_DIR . "css/{$folder}/custom.css",
+                    CHAT_DIR . "css/{$folder}/classcolors.css",
+                    CHAT_DIR . "css/{$folder}/default.css",
+                ],
+                'chat_css_uranium' => [
+                    ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+                    TEMPLATE_DIR . "{$folder}/variables.css",
+                    CHAT_DIR . "css/{$folder}/global.css",
+                    CHAT_DIR . "css/{$folder}/fonts.css",
+                    CHAT_DIR . "css/{$folder}/custom.css",
+                    CHAT_DIR . "css/{$folder}/classcolors.css",
+                    CHAT_DIR . "css/{$folder}/Uranium.css",
+                ],
+            ], $css_list);
+        }
+        $css_files = [];
+        foreach ($css_list as $key => $css) {
+            foreach ($css as $file) {
+                if (!in_array($file, $css_files)) {
+                    $css_files[] = $file;
+                }
             }
         }
+
+        $pages = [];
+        foreach ($css_list as $key => $css) {
+            if (!empty($key) && !empty($css)) {
+                $pages[] = process_css($key, $css, $spurpose, $csstmp, $folder, $css_ext);
+            }
+        }
+        foreach ($js_list as $key => $js) {
+            if (!empty($key) && !empty($js)) {
+                $pages[] = process_js($key, $js, $purpose, $jstmp, $folder, $js_ext);
+            }
+        }
+
+        unlink($csstmp);
+        unlink($jstmp);
+        unlink(BIN_DIR . 'lightbox.css');
+        write_file($update, $pages);
     }
 
-    $pages = [];
-    foreach ($css_list as $key => $css) {
-        if (!empty($key) && !empty($css)) {
-            $pages[] = process_css($key, $css, $spurpose, $csstmp, $folder, $css_ext);
+    if (php_sapi_name() == 'cli') {
+        echo "All CSS and Javascript files processed\n";
+    }
+    foreach ($argv as $arg) {
+        if (!PRODUCTION && ($arg === 'fix' || $arg === 'all')) {
+            passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
         }
     }
-    foreach ($js_list as $key => $js) {
-        if (!empty($key) && !empty($js)) {
-            $pages[] = process_js($key, $js, $purpose, $jstmp, $folder, $js_ext);
-        }
+    if (PRODUCTION) {
+        passthru('sudo rm ' . DI_CACHE_DIR . 'CompiledContainer.php');
     }
-
-    unlink($csstmp);
-    unlink($jstmp);
-    unlink(BIN_DIR . 'lightbox.css');
-    write_file($update, $pages);
-}
-
-echo "All CSS and Javascript files processed\n";
-foreach ($argv as $arg) {
-    if (!PRODUCTION && ($arg === 'fix' || $arg === 'all')) {
-        passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
-    }
-}
-if (PRODUCTION) {
-    passthru('sudo rm ' . DI_CACHE_DIR . 'CompiledContainer.php');
 }
 
 /**

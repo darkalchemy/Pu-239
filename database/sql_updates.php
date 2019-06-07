@@ -2898,4 +2898,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `subtitles` MODIFY COLUMN `imdb` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
     ],
+    [
+        'id' => 1559862617,
+        'info' => 'Alter index',
+        'date' => '06 Jun 2019',
+        'query' => 'ALTER TABLE `class_config` DROP INDEX `value_name_template`, ADD UNIQUE INDEX `name_template` (`name`, `template`)',
+        'flush' => false,
+    ],
 ];

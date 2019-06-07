@@ -11,6 +11,7 @@ use Pu239\Session;
 
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
+require_once BIN_DIR . 'uglify.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
@@ -34,7 +35,10 @@ $possible_modes = [
     'remove',
     '',
 ];
-$mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
+$mode = isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '';
+if (isset($_POST['remove'])) {
+    $mode = 'remove';
+}
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
@@ -97,8 +101,6 @@ function update_forum_classes(int $value, string $direction)
                ->where('min_delete_view_class>0')
                ->execute();
     }
-    $cache = $container->get(Cache::class);
-    $cache->delete('staff_forums_');
 }
 
 $fluent = $container->get(Database::class);
@@ -111,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $edited = false;
         if (!empty($class_config)) {
             foreach ($class_config as $current_name => $value) {
-                $current_value = $value['value']; // $key is like UC_USER etc....
+                $current_value = $value['value'];
                 $current_classname = strtoupper($value['classname']);
                 $current_classcolor = strtoupper($value['classcolor']);
                 $current_classcolor = str_replace('#', '', "$current_classcolor");
@@ -141,17 +143,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if ($edited) {
-            $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
+            $session->set('is-success', "{$lang['classcfg_success_save']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query1']);
         }
-        $cache->deleteMulti([
-            'class_config_' . $style,
-            'badwords_',
-        ]);
         unset($_POST);
     } elseif ($mode === 'add') {
-        if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
+        if (!empty($_POST['name']) && isset($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
             $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
             $value = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
             $r_name = isset($_POST['cname']) ? htmlsafechars($_POST['cname']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
@@ -159,55 +157,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $color = str_replace('#', '', "$color");
             $pic = isset($_POST['pic']) ? htmlsafechars($_POST['pic']) : '';
 
-            $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
+            $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ") or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_array($res)) {
                 $old_max = $arr['value'];
                 $new_max = $arr['value'] + 1;
-                sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'");
+                sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'") or sqlerr(__FILE__, __LINE__);
             }
-            $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
+            $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_array($res)) {
                 if ($value <= $arr['value']) {
                     $new_staff = $arr['value'] + 1;
-                    sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'");
+                    sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
                 }
             }
             $i = $old_max;
             while ($i >= $value) {
-                sql_query("UPDATE class_config SET value = value +1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
+                sql_query("UPDATE class_config SET value = value +1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')") or sqlerr(__FILE__, __LINE__);
                 --$i;
             }
 
             if ($value > UC_MAX) {
-                sql_query("UPDATE users SET class = class +1 where class = $old_max");
-                $result = sql_query('SELECT id, class FROM users');
-                $result = sql_query('SELECT id, class FROM users');
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $row1 = [];
-                    $row1[] = $row;
-                    foreach ($row1 as $row2) {
-                        $cache->update_row('user_' . $row2['id'], [
-                            'class' => $row2['class'],
-                        ], $site_config['expires']['user_cache']);
-                    }
-                }
+                sql_query("UPDATE users SET class = class +1 where class = $old_max") or sqlerr(__FILE__, __LINE__);
             } else {
                 $i = $old_max;
                 while ($i >= $value) {
-                    sql_query("UPDATE users SET class = class + 1 where class = $i");
-                    sql_query("UPDATE staffpanel SET av_class = av_class + 1 where av_class = $i");
+                    sql_query("UPDATE users SET class = class + 1 where class = $i") or sqlerr(__FILE__, __LINE__);
+                    sql_query("UPDATE staffpanel SET av_class = av_class + 1 where av_class = $i") or sqlerr(__FILE__, __LINE__);
                     --$i;
-                }
-
-                $result = sql_query('SELECT id, class FROM users');
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $row1 = [];
-                    $row1[] = $row;
-                    foreach ($row1 as $row2) {
-                        $cache->update_row('user_' . $row2['id'], [
-                            'class' => $row2['class'],
-                        ], $site_config['expires']['user_cache']);
-                    }
                 }
             }
             $stylesheets = $fluent->from('stylesheets')
@@ -231,58 +207,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_class_files($stylesheet['id']);
             }
             if ($class_id) {
-                $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
+                $session->set('is-success', "{$lang['classcfg_success_save']}");
             } else {
                 $session->set('is-warning', $lang['classcfg_error_query2']);
             }
-            unset($_POST);
-            $cache->deleteMulti([
-                'class_config_' . $style,
-                'badwords_',
-            ]);
             update_forum_classes($value, 'increment');
-            $cache->delete('is_staff_');
+            unset($_POST);
         }
     } elseif ($mode === 'remove') {
         $value = 0;
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
-        $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
+        $res = sql_query("SELECT value from class_config WHERE name = '$name' ") or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_array($res)) {
-            $value = $arr['value'];
+            $value = (int) $arr['value'];
         }
-        $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
+        $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ") or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_array($res)) {
             $old_max = $arr['value'];
             $new_max = $arr['value'] - 1;
-            sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'");
+            sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'") or sqlerr(__FILE__, __LINE__);
         }
         $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
         while ($arr = mysqli_fetch_array($res)) {
             if ($value <= $arr['value']) {
                 $new_staff = $arr['value'] - 1;
-                sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'");
+                sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
             }
         }
         $i = $value;
         while ($i <= $old_max) {
-            sql_query("UPDATE class_config SET value = value -1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
+            sql_query("UPDATE class_config SET value = value - 1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')") or sqlerr(__FILE__, __LINE__);
             ++$i;
         }
         $i = $value;
         while ($i <= $old_max) {
-            sql_query("UPDATE users SET class = class -1 where class = $i");
-            sql_query("UPDATE staffpanel SET av_class = av_class -1 where av_class = $i");
+            sql_query("UPDATE users SET class = class - 1 where class = $i") or sqlerr(__FILE__, __LINE__);
+            sql_query("UPDATE staffpanel SET av_class = av_class - 1 where av_class = $i") or sqlerr(__FILE__, __LINE__);
             ++$i;
-        }
-        $result = sql_query('SELECT id, class FROM users');
-        while ($row = mysqli_fetch_assoc($result)) {
-            $row1 = [];
-            $row1[] = $row;
-            foreach ($row1 as $row2) {
-                $cache->update_row('user_' . $row2['id'], [
-                    'class' => $row2['class'],
-                ], $site_config['expires']['user_cache']);
-            }
         }
         $deleted = $fluent->deleteFrom('class_config')
                           ->where('name = ?', $name)
@@ -297,17 +258,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($deleted) {
-            $session->set('is-success', "{$lang['classcfg_success_reset']}\n\n{$lang['classcfg_success_uglify']}");
+            $session->set('is-success', "{$lang['classcfg_success_reset']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
-        $cache->deleteMulti([
-            'class_config_' . $style,
-            'badwords_',
-        ]);
         update_forum_classes($value, 'decrement');
         unset($_POST);
     }
+    run_uglify();
+    $cache->flushDB();
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=class_config');
+    die();
 }
 $HTMLOUT .= "
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
@@ -355,7 +316,7 @@ if (!empty($primary_classes)) {
                                 <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "'>
                             </td>
                             <td class='has-text-centered'>
-                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "'>
+                                <input class='w-100' type='color' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "'>
                             </td>
                             <td class='has-text-centered'>
                                 <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "'>
@@ -425,7 +386,7 @@ $HTMLOUT .= "
                         <td><input class='w-100 tooltipper' type='text' name='name' value='' placeholder='UC_OWNER' title='All class names must begin with UC_'></td>
                         <td><input class='w-100' type='text' name='value' value=''></td>
                         <td><input class='w-100 tooltipper' type='text' name='cname' value='' placeholder='OWNER' title='All class reference names must be same as class name without UC_'></td>
-                        <td><input class='w-100' type='text' name='color' value='#ff0000'></td>
+                        <td><input class='w-100' type='color' name='color' value='#ff0000'></td>
                         <td><input class='w-100' type='text' name='pic' value=''></td>
                     </tr>
                     <tr>

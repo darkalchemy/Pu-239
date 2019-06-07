@@ -21,9 +21,9 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
 /**
  * @param $id
  *
- * @return bool
  * @throws Exception
  *
+ * @return bool
  */
 function validate($id)
 {

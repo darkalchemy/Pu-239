@@ -10,6 +10,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
+require_once BIN_DIR . 'uglify.php';
 check_user_status();
 $stdhead = [
     'css' => [
@@ -106,6 +107,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
     } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
+        $cache->flushDB();
+        $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
+    } elseif (($action === 'uglify' && $CURUSER['class'] >= UC_SYSOP)) {
+        run_uglify();
+        $session->set('is-success', 'You ugllified your css/js files');
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
@@ -343,6 +351,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     </li>
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                    </li>
+                    <li class='margin10'>
+                        <a href='{$_SERVER['PHP_SELF']}?action=uglify' class='tooltipper' title='{$lang['spanel_uglify']}'>{$lang['spanel_uglify']}</a>
                     </li>
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>

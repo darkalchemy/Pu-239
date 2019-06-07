@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 $lang = [
-    'classcfg_success_uglify' => "Run '[sudo] php " . ROOT_DIR . "bin/uglify.php' to make the changes effective",
+    'classcfg_success_uglify' => "Run 'php " . ROOT_DIR . "bin/uglify.php' to make the changes effective - BEFORE opening any other page!",
     'classcfg_error' => 'Error',
     'classcfg_denied' => 'Access Denied!',
     'classcfg_error1' => 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.',
