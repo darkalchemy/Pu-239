@@ -81,7 +81,7 @@ return [
     Usersachiev::class => autowire(),
     Auth::class => DI\factory(function (ContainerInterface $c) {
         $pdo = $c->get(PDO::class);
-        $auth = new Auth($pdo, '10.0.0.1', null, false);
+        $auth = new Auth($pdo, '10.0.0.1', null, PRODUCTION);
 
         return $auth;
     }),

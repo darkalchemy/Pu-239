@@ -255,6 +255,7 @@ $lang = [
     'upload' => 'Upload',
     'uploadapps' => 'Uploader Applications',
     'uploader_info' => 'Top Uploaders',
+    'user_hits' => 'User Views',
     'usersearch' => 'Search Users',
     'view' => 'Viewing',
     'view_app' => 'View Application',

@@ -12,10 +12,14 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 global $container, $site_config;
 
+$session = $container->get(Session::class);
 $auth = $container->get(Auth::class);
+if ($auth->isLoggedIn()) {
+    $auth->logOutEverywhere();
+    $auth->destroySession();
+}
 try {
     if ($emails = $auth->confirmEmail($_GET['selector'], $_GET['token'])) {
-        $session = $container->get(Session::class);
         if (empty($emails[0])) {
             $session->set('is-success', 'Your email has been confirmed');
         } else {

@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Database;
 use Pu239\Message;
@@ -13,9 +14,16 @@ require_once INCL_DIR . 'function_html.php';
 $lang = array_merge(load_language('global'), load_language('signup'), load_language('takesignup'));
 global $container, $site_config;
 
-$title = 'Signup';
+$title = 'Join ' . $site_config['site']['name'];
 get_template();
 $session = $container->get(Session::class);
+$fluent = $container->get(Database::class);
+$auth = $container->get(Auth::class);
+if ($auth->isLoggedIn()) {
+    $auth->logOutEverywhere();
+    $auth->destroySession();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session->set('signup_variables', serialize($_POST));
     $post = $_POST;
@@ -76,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'receiver' => $userid,
                 'status' => 'Confirmed',
             ];
-            $fluent = $container->get(Database::class);
             $fluent->update('invite_codes')
                    ->set($set)
                    ->where('sender = ?', $inviter)
@@ -94,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($_GET['promo'])) {
         $valid = validate_promo($_GET['promo'], false);
         if (!empty($valid)) {
-            $title .= ' by Promotion';
+            $title .= ' using a Site Promotion';
             $promo = "
                 <input type='hidden' name='token' value='{$valid}'>";
         }
@@ -102,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $invite_id = !empty($_GET['id']) ? (int) $_GET['id'] : null;
     $invite_code = !empty($_GET['code']) ? htmlsafechars($_GET['code']) : null;
     if (!empty($invite_id) && !empty($invite_code)) {
-        $title .= ' by Invite';
+        $title .= ' using an Invite';
         $email = validate_invite($invite_id, $invite_code);
         $invite = "
             <input type='hidden' name='invite_id' value='$invite_id'>
@@ -137,10 +144,18 @@ $HTMLOUT = "
         <div class='level-center'>";
 
 $disabled = !empty($email) ? 'disabled' : 'required';
+if (!empty($email)) {
+    $email_form = "<input type='hidden' name='email' class='w-100' value='{$email}'>{$email}";
+} else {
+    $email_form = "<input type='email' name='email' class='w-100' autocomplete='on'>" . ($site_config['signup']['email_confirm'] ? "
+                    <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
+
+}
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
 $body = "
             <tr>
                 <td colspan='2'>
+                    <h1 class='has-text-centered'>$title</h1>
                     <p class='has-text-centered padding10 '>{$lang['signup_cookies']}</p>
                 </td>
             </tr>
@@ -166,8 +181,7 @@ $body = "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_email']}</td>
                 <td>
-                    <input type='email' name='email' class='w-100' value='{$email}' autocomplete='on' $disabled>" . ($site_config['signup']['email_confirm'] ? "
-                    <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '') . "
+                    $email_form
                 </td>
             </tr>
             <tr class='no_hover'>

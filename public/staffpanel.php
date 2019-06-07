@@ -61,6 +61,7 @@ $staff_tools = [
     'ipsearch' => 'ipsearch',
     'shit_list' => 'shit_list',
     'invite_tree' => 'invite_tree',
+    'user_hits' => 'user_hits',
 ];
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);

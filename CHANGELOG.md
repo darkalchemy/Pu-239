@@ -1,4 +1,5 @@
 ### 06 Jun, 2019
+fix: signup.php  
 update: auto run uglify when changing class config  
 update: allow UC_SYSOP to run uglify from staffpanel  
 fix: upgrade_database.php  
