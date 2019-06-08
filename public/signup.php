@@ -149,7 +149,6 @@ if (!empty($email)) {
 } else {
     $email_form = "<input type='email' name='email' class='w-100' autocomplete='on'>" . ($site_config['signup']['email_confirm'] ? "
                     <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
-
 }
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
 $body = "

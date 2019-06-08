@@ -986,7 +986,11 @@ function check_user_status()
         $GLOBALS['CURUSER'] = $users_data;
         get_template();
     } else {
-        header("Location: {$site_config['paths']['baseurl']}/login.php");
+        $returnto = '';
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            $returnto = '?returnto=' . urlencode($_SERVER['REQUEST_URI']);
+        }
+        header("Location: {$site_config['paths']['baseurl']}/login.php" . $returnto);
         die();
     }
 }

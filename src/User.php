@@ -254,6 +254,7 @@ class User
      */
     public function add(array $values, array $lang)
     {
+        dd($values);
         $userId = false;
         try {
             if ($this->site_config['signup']['email_confirm'] === true) {
@@ -310,7 +311,6 @@ class User
                 'birthdayusers_',
                 'chat_users_list',
                 'is_staff_',
-                'latestuser_',
             ]);
             if ($userId > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
                 require_once INCL_DIR . 'function_users.php';

@@ -1,23 +1,25 @@
 @import "../../node_modules/bulma/sass/utilities/initial-variables.sass";
 
 $primary: #add8e6;
+$green: #00ff00;
 $lightgreen: #90ee90;
 $jade: #2cc48a;
 $turquoise: #40e0d0;
-$blue: #00f;
+$blue: #0033ff;
 $lightblue: #209cee;
-$gold: #ffd700;
+$gold: #ffff00;
 $link: #fcffc2;
 $link-active: $jade;
 $link-hover: #fff;
 $body-color: $primary;
-$warning: #ff048d;
-$info: #ffff00;
+$warning: #ff0099;
+$info: #e6fb04;
 
 @import "../../node_modules/bulma/sass/utilities/functions.sass";
 @import "../../node_modules/bulma/sass/utilities/derived-variables.sass";
 
 $primary-invert: findColorInvert($primary);
+$green-invert: findColorInvert($green);
 $lightgreen-invert: findColorInvert($lightgreen);
 $jade-invert: findColorInvert($jade);
 $turquoise-invert: findColorInvert($turquoise);
@@ -27,5 +29,5 @@ $gold-invert: findColorInvert($gold);
 $warning-invert: findColorInvert($warning);
 $info-invert: findColorInvert($info);
 
-$custom-colors: ('lightgreen': ($lightgreen, $lightgreen-invert), 'jade': ($jade, $jade-invert), 'turquoise': ($turquoise, $turquoise-invert), 'blue': ($blue, $blue-invert), 'lightblue': ($lightblue, $lightblue-invert), 'gold': ($gold, $gold-invert));
+$custom-colors: ('green': ($green, $green-invert), 'lightgreen': ($lightgreen, $lightgreen-invert), 'jade': ($jade, $jade-invert), 'turquoise': ($turquoise, $turquoise-invert), 'blue': ($blue, $blue-invert), 'lightblue': ($lightblue, $lightblue-invert), 'gold': ($gold, $gold-invert));
 $colors: mergeColorMaps($colors, $custom-colors);

@@ -606,6 +606,8 @@ textarea {
     border-radius: .3125em;
 }
 
+
+.notification.is-info,
 .notification.is-link {
     color: #ff3860 !important;
 }
@@ -1312,8 +1314,8 @@ ul li ul li {
         width: 100%
     }
 
-    .flex-grid .col:not(:last-child) {
-        margin-bottom: 1.25em;
+    ul.buttons li:not(:last-child) {
+        margin-bottom: .6125em;
     }
 }
 

@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $container->get(User::class);
 
     if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
-        if (!empty($returnto)) {
-            header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
+        if (!empty($_POST['returnto'])) {
+            header("Location: {$site_config['paths']['baseurl']}" . urldecode($_POST['returnto']));
         } else {
             header("Location: {$site_config['paths']['baseurl']}");
         }
@@ -28,9 +28,10 @@ global $site_config;
 
 get_template();
 $stdfoot = [];
-
-if (!empty($_GET['returnto'])) {
-    $returnto = urlencode($_GET['returnto']);
+$return_to = '';
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto'])) {
+    $returnto = urlencode(urldecode($_GET['returnto']));
+    $return_to = "<input type='hidden' name='returnto' value='$returnto'>";
 }
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
@@ -45,7 +46,6 @@ $body = "
                         <td>
                             <input type='email' class='w-100' name='email' autocomplete='on' required>" . ($got_ssl ? "
                             <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
-                            <input type='hidden' id='token' name='token' value=''>
                         </td>
                     </tr>
                     <tr class='no_hover'>
@@ -54,6 +54,7 @@ $body = "
                             <input type='password' class='w-100' name='password' autocomplete='on' required>";
 if (isset($returnto)) {
     $body .= "
+                            $return_to
                             <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "'>";
 }
 $body .= "

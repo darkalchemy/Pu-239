@@ -25,8 +25,8 @@ function navbar()
         <div class='contained'>
             <div class='nav_container'>
                 <div id='pm_count' class='has-text-centered vertical_center'></div>
-                <div id='hamburger'><i class='icon-menu size_6 is-primary' aria-hidden='true'></i></div>
-                <div id='close' class='top10 right10'><i class='icon-cancel icon size_7 is-primary' aria-hidden='true'></i></div>
+                <div id='hamburger'><i class='icon-menu size_6 has-text-link' aria-hidden='true'></i></div>
+                <div id='close' class='top10 right10'><i class='icon-cancel icon size_7 has-text-link' aria-hidden='true'></i></div>
                 <div id='menuWrapper'>
                     <ul class='level'>
                         <li>
@@ -36,28 +36,28 @@ function navbar()
                             </a>
                         </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
                         <li id='movies_links' class='clickable'>
-                            <a href='#'>{$lang['gl_movies_tv']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_movies_tv']}</a>
                             <ul class='ddFade ddFadeFast'>" . ($BLOCKS['bluray_com_api_on'] ? "
-                                <li><span class='left10'>{$lang['gl_bluray']}</span></li>
+                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_bluray']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>" : '') . ($BLOCKS['imdb_api_on'] ? "
-                                <li><span class='left10'>{$lang['gl_imdb']}</span></li>
+                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_imdb']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>" : '') . ($BLOCKS['tmdb_api_on'] ? "
-                                <li><span class='left10'>{$lang['gl_tmdb']}</span></li>
+                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_tmdb']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>" : '') . ($BLOCKS['tvmaze_api_on'] ? "
-                                <li><span class='left10'>{$lang['gl_tvmaze']}</span></li>
+                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_tvmaze']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>" : '') . '
                             </ul>
                         </li>' : '') . "
                         <li id='torrents_links' class='clickable'>
-                            <a href='#'>{$lang['gl_torrent']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_torrent']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/catalog.php'>{$lang['gl_catalogue']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders'><span class='has-text-weight-bold has-text-danger'>{$lang['gl_nseeds']}</span></a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1' class='has-text-weight-bold has-text-green'>{$lang['gl_newtor']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < $site_config['allowed']['upload'] ? "
@@ -66,7 +66,7 @@ function navbar()
                             </ul>
                         </li>
                         <li id='general_links' class='clickable'>
-                            <a href='#'>{$lang['gl_general']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_general']}</a>
                             <ul class='ddFade ddFadeFast'>" . ($site_config['bucket']['allowed'] ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
                                 <li><a href='{$site_config['paths']['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
@@ -82,7 +82,7 @@ function navbar()
                             </ul>
                         </li>
                         <li id='games_links' class='clickable'>
-                            <a href='#'>{$lang['gl_games']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_games']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
@@ -90,7 +90,7 @@ function navbar()
                             </ul>
                         </li>
                         <li id='user_links' class='clickable'>
-                            <a href='#'>{$lang['gl_users']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_users']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
@@ -99,14 +99,14 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/invite.php?do=view_page'>{$lang['gl_invites']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default' class='has-text-weight-bold'>{$lang['gl_usercp']}</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/forums.php'>{$lang['gl_forums']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/forums.php' class='has-text-weight-bold'>{$lang['gl_forums']}</a>
                         </li>" . ($CURUSER['class'] < UC_STAFF ? "
                         <li id='staff_links' class='clickable'>
-                            <a href='#'>{$lang['gl_help']}</a>
+                            <a href='#' class='has-text-weight-bold'>{$lang['gl_help']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a></li>
@@ -200,7 +200,7 @@ function staff_panel()
         foreach ($panels as $key => $value) {
             $panel .= "
                 <li class='clickable'>
-                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='#'>[" . substr($key, 1) . "]</a>
+                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>[" . substr($key, 1) . "]</a>
                     <ul class='ddFade ddFadeFast'>" . make_link([
                 'file_name' => 'staffpanel.php',
                 'page_name' => 'Staff Panel',

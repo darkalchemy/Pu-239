@@ -578,18 +578,18 @@ function get_default_border($folder)
     exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 }
 
-
 /**
  * @param string $file
  * @param bool   $delete
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ *
+ * @return bool
  */
 function can_delete(string $file, bool $delete)
 {
@@ -597,6 +597,7 @@ function can_delete(string $file, bool $delete)
         if (is_writable(dirname($file))) {
             if ($delete) {
                 unlink($file);
+
                 return true;
             } else {
                 return true;
@@ -618,5 +619,6 @@ function can_delete(string $file, bool $delete)
             }
         }
     }
+
     return false;
 }

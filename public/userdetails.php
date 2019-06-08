@@ -271,7 +271,7 @@ if ($CURUSER['id'] === $id || $CURUSER['class'] >= UC_ADMINISTRATOR) {
         <tr>
             <td class='rowhead'>Download Torrents</td>
             <td>
-                <ul class='level-left'>
+                <ul class='level-left buttons'>
                     <li class='right10'>
                         <a href='{$site_config['paths']['baseurl']}/download_multi.php?userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have previously snatched'>Snatched Torrents</a>
                     </li>

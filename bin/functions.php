@@ -7,11 +7,11 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array
  */
 function get_styles()
 {
@@ -35,11 +35,11 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array
  */
 function get_classes(array $styles, bool $create)
 {
@@ -164,7 +164,9 @@ function get_username()
             $user = $commands[$i];
             ++$i;
         }
+
         return $user;
     }
+
     return get_webserver_user();
 }
