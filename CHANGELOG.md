@@ -1,4 +1,5 @@
 ### 09 Jun, 2019
+fix: userhistory.php  
 update: database files  
 fix: floodlimit.php  
 fix: class_config.php  

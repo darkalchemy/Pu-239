@@ -85,6 +85,7 @@ $lang = [
     'usercomment.php' => 'User Comments',
     'usercp.php' => 'User Control Panel',
     'userdetails.php' => 'User Details',
+    'userhistory.php' => 'User History',
     'users.php' => 'Search Users',
     'verify_email' => 'Verify Email',
     'videoformats.php' => 'Video Formats',

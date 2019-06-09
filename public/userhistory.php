@@ -13,7 +13,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('userhistory'));
 global $container, $site_config, $CURUSER;
 
-$userid = (int) $_GET['id'];
+$userid = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($userid)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_invalidid']);
 }
@@ -21,7 +21,7 @@ if ($CURUSER['class'] == UC_MIN || ($CURUSER['id'] != $userid && $CURUSER['class
     stderr($lang['stderr_errorhead'], $lang['stderr_perms']);
 }
 $page = isset($_GET['page']) ? $_GET['page'] : '';
-$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'viewposts';
 $perpage = 25;
 $HTMLOUT = '';
 $user_stuffs = $container->get(User::class);
@@ -33,7 +33,7 @@ if ($action === 'viewposts') {
     $query = "SELECT $select_is FROM $from_is WHERE $where_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_noposts']);
-    $postcount = $arr[0];
+    $postcount = (int) $arr[0];
     $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
@@ -98,7 +98,7 @@ if ($action === 'viewposts') {
     echo stdhead($lang['head_post']) . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($action === 'viewcomments') {
-    $select_is = 'COUNT(id)';
+    $select_is = 'COUNT(t.id)';
     $from_is = 'comments AS c LEFT JOIN torrents as t
                   ON c.torrent = t.id';
     $where_is = 'c.user =' . sqlesc($userid) . '';
@@ -106,7 +106,7 @@ if ($action === 'viewposts') {
     $query = "SELECT $select_is FROM $from_is WHERE $where_is ORDER BY $order_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
-    $commentcount = $arr[0];
+    $commentcount = (int) $arr[0];
     $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
