@@ -1209,6 +1209,15 @@ ul li ul li {
     display: none;
 }
 
+.pagination-link.is-current {
+    color: #000;
+}
+
+.pagination-link:hover {
+    color: var(--main-bdr-color);
+    font-weight: bold;
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(100%);

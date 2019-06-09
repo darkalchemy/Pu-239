@@ -400,6 +400,9 @@ function run_uglify($argv = [])
     if (PRODUCTION) {
         passthru('sudo rm ' . DI_CACHE_DIR . 'CompiledContainer.php');
     }
+
+    cleanup(get_webserver_user());
+    return true;
 }
 
 /**
@@ -582,12 +585,12 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return bool
  */

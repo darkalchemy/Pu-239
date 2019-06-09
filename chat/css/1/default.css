@@ -37,7 +37,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 .ajax-chat {
     height: 100%;
-    color: #fff;
+    color: var(--default-text-color);
 }
 
 .ajax-chat h1, .ajax-chat h3 {
@@ -54,7 +54,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content textarea {
-    color: #b0b8a8;
+    color: var(--default-text-color);
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {

@@ -1,6 +1,6 @@
 .mentioned {
-    color: #5eff00;
-    text-shadow: 1px 1px #2c6609;
+    color: var(--main-bdr-color);
+    text-shadow: 1px 1px #000;
 }
 
 a {

@@ -113,10 +113,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'uglify' && $CURUSER['class'] >= UC_SYSOP)) {
-        run_uglify();
-        $session->set('is-success', 'You ugllified your css/js files');
-        $cache->flushDB();
-        $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+        if (run_uglify()) {
+            $session->set('is-success', 'All CSS and Javascript files processed');
+            $cache->flushDB();
+            $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+        } else {
+            $session->set('is-warning', 'uglify.php failed');
+        }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {

@@ -11,9 +11,8 @@ if (empty($BLOCKS)) {
 }
 
 $site_config['cache']['driver'] = 'memory';
-$user = get_webserver_user();
+$user = get_username();
 $group = get_webserver_user();
-cleanup($group);
 $paths = [
     ROOT_DIR,
 ];
@@ -52,78 +51,50 @@ $folders = [
     ROOT_DIR . 'uploads/',
     CHAT_DIR . 'js/',
     IMAGES_DIR,
+    VENDOR_DIR,
+    NODE_DIR,
 ];
 
 $folders = array_merge($dirs, $folders);
-
 $excludes = [
-    ROOT_DIR . 'vendor',
-    ROOT_DIR . 'node_modules',
+    ROOT_DIR . 'vendor/',
+    ROOT_DIR . 'node_modules/',
+    ROOT_DIR . '.git/',
+    ROOT_DIR . '.idea/',
 ];
 
-foreach ($folders as $folder) {
-    if (file_exists($folder)) {
-        chmod_r($folder, $group);
-    }
-}
+$chmod_folders = [
+    VENDOR_DIR,
+];
 
+cleanup($group);
+chmod(ROOT_DIR, 0774);
 $i = 1;
+
 foreach ($paths as $path) {
     if (file_exists($path)) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
-            if (is_file($name)) {
-                $ext = pathinfo($name, PATHINFO_EXTENSION);
-                $parent = dirname($name);
-                $continue = true;
-                foreach ($excludes as $exclude) {
-                    if (preg_match('#' . $exclude . '#', $parent)) {
-                        $continue = false;
-                    }
+            if (is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
+                if (preg_match('#' . IMAGES_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
+                    chown($name, $group);
+                } else {
+                    chown($name, $user);
                 }
-                if ($continue && in_array($ext, $exts)) {
-                    if (chmod($name, 0664)) {
-                        chown($name, $user);
-                        chgrp($name, $group);
-                        ++$i;
-                    }
+                chgrp($name, $group);
+                chmod($name, 0774);
+                $i++;
+            } elseif (!is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
+                if (preg_match('#' . IMAGES_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
+                    chown($name, $group);
+                    chmod($name, 0774);
+                } else {
+                    chmod($name, 0664);
                 }
+                $i++;
             }
         }
     }
 }
 
-foreach ($folders as $folder) {
-    if (file_exists($folder)) {
-        chown_r($folder, $group);
-    }
-}
-
-/**
- * @param $path
- * @param $group
- */
-function chown_r($path, $group)
-{
-    if (!file_exists($path)) {
-        return;
-    }
-    $user_group = false;
-    if ($path === IMAGES_DIR || $path === CACHE_DIR) {
-        $user_group = true;
-    }
-    $dir = new DirectoryIterator($path);
-    chown($path, $group);
-    foreach ($dir as $item) {
-        chown($item->getPathname(), $group);
-        if ($user_group) {
-            chgrp($item->getPathname(), $group);
-        }
-        if ($item->isDir() && !$item->isDot()) {
-            chown_r($item->getPathname(), $group);
-        }
-    }
-}
-
-cleanup($group);
 echo "$i files processed\n";

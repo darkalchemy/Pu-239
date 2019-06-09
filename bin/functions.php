@@ -7,9 +7,9 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array
  */
@@ -35,9 +35,9 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array
  */
@@ -79,57 +79,6 @@ function get_classes(array $styles, bool $create)
 }
 
 /**
- * @param $group
- */
-function cleanup($group)
-{
-    global $site_config;
-
-    if (file_exists($site_config['files']['path'])) {
-        chmod_r($site_config['files']['path'], $group);
-        chgrp_r($site_config['files']['path'], $group);
-    }
-}
-
-/**
- * @param $path
- * @param $group
- */
-function chgrp_r($path, $group)
-{
-    if (!file_exists($path)) {
-        return;
-    }
-    $dir = new DirectoryIterator($path);
-    chgrp($path, $group);
-    foreach ($dir as $item) {
-        chgrp($item->getPathname(), $group);
-        if ($item->isDir() && !$item->isDot()) {
-            chgrp_r($item->getPathname(), $group);
-        }
-    }
-}
-
-/**
- * @param $path
- * @param $group
- */
-function chmod_r($path, $group)
-{
-    if (!file_exists($path)) {
-        return;
-    }
-    $dir = new DirectoryIterator($path);
-    foreach ($dir as $item) {
-        chmod($item->getPathname(), 0775);
-        chown($item->getPathname(), $group);
-        if ($item->isDir() && !$item->isDot()) {
-            chmod_r($item->getPathname(), $group);
-        }
-    }
-}
-
-/**
  * @return string
  */
 function get_webserver_user()
@@ -148,7 +97,7 @@ function get_webserver_user()
 }
 
 /**
- * @return mixed|null
+ * @return mixed|string|null
  */
 function get_username()
 {
@@ -165,8 +114,23 @@ function get_username()
             ++$i;
         }
 
-        return $user;
+        if (!empty($user)) {
+            return $user;
+        }
     }
 
     return get_webserver_user();
+}
+
+/**
+ * @param string $group
+ */
+function cleanup(string $group)
+{
+    global $site_config;
+
+    if (file_exists($site_config['files']['path'])) {
+        chown($site_config['files']['path'], $group);
+        chgrp($site_config['files']['path'], $group);
+    }
 }
