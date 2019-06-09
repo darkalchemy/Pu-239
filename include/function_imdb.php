@@ -406,11 +406,13 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         $imdb_info = "
         <div class='padding20'>
             <div class='columns bottom20'>
-                <div class='column is-one-third'>
+                <div class='column is-one-third is-paddingless'>
                     <img src='" . url_proxy($poster, true, 450) . "' alt='' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
-                    $imdb_info
+                    <div class='left20'>
+                        $imdb_info
+                    </div>
                 </div>
             </div>
         </div>";

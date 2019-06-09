@@ -1327,6 +1327,14 @@ ul li ul li {
     ul.buttons li:not(:last-child) {
         margin-bottom: .6125em;
     }
+
+    .column .left20 {
+        margin-left: 0;
+    }
+
+    .level-left.is-wrapped ul {
+        display: inline-block;
+    }
 }
 
 @media (min-width: 768px) {

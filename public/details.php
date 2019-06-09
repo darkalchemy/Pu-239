@@ -251,8 +251,6 @@ if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['categ
                 </div>
             </div>";
     }
-    $imdb_data = "
-            <div class='padding20'>{$imdb_data}</div>";
 }
 if (!empty($torrent['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrent['youtube'], $match);
