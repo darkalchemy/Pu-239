@@ -35,10 +35,7 @@ $possible_modes = [
     'remove',
     '',
 ];
-$mode = isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '';
-if (isset($_POST['remove'])) {
-    $mode = 'remove';
-}
+$mode = isset($_POST['mode']) ? htmlsafechars($_POST['mode']) : '';
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
@@ -215,54 +212,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_POST);
         }
     } elseif ($mode === 'remove') {
-        $value = 0;
-        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
-        $res = sql_query("SELECT value from class_config WHERE name = '$name' ") or sqlerr(__FILE__, __LINE__);
-        while ($arr = mysqli_fetch_array($res)) {
-            $value = (int) $arr['value'];
-        }
-        $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ") or sqlerr(__FILE__, __LINE__);
-        while ($arr = mysqli_fetch_array($res)) {
-            $old_max = $arr['value'];
-            $new_max = $arr['value'] - 1;
-            sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'") or sqlerr(__FILE__, __LINE__);
-        }
-        $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
-        while ($arr = mysqli_fetch_array($res)) {
-            if ($value <= $arr['value']) {
-                $new_staff = $arr['value'] - 1;
-                sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
-            }
-        }
-        $i = $value;
-        while ($i <= $old_max) {
-            sql_query("UPDATE class_config SET value = value - 1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')") or sqlerr(__FILE__, __LINE__);
-            ++$i;
-        }
-        $i = $value;
-        while ($i <= $old_max) {
-            sql_query("UPDATE users SET class = class - 1 where class = $i") or sqlerr(__FILE__, __LINE__);
-            sql_query("UPDATE staffpanel SET av_class = av_class - 1 where av_class = $i") or sqlerr(__FILE__, __LINE__);
-            ++$i;
-        }
+        $value = (int) $_POST['class'];
         $deleted = $fluent->deleteFrom('class_config')
-                          ->where('name = ?', $name)
+                          ->where('value = ?', $value)
+                          ->where('name != ?', 'UC_MIN')
+                          ->where('name != ?', 'UC_MAX')
+                          ->where('name != ?', 'UC_STAFF')
                           ->execute();
-
-        $stylesheets = $fluent->from('stylesheets')
-                              ->select(null)
-                              ->select('id');
-
-        foreach ($stylesheets as $stylesheet) {
-            write_class_files($stylesheet['id']);
-        }
-
         if ($deleted) {
+            $max = $fluent->from('class_config')
+                          ->select(null)
+                          ->select('value')
+                          ->where('name = ?', 'UC_MAX')
+                          ->fetch('value');
+            $set = [
+                'value' => new Literal('value - 1'),
+            ];
+            $result = $fluent->update('class_config')
+                             ->set($set)
+                             ->where('name = ?', 'UC_MAX')
+                             ->execute();
+            $fluent->update('class_config')
+                   ->set($set)
+                   ->where('name = ?', 'UC_STAFF')
+                   ->execute();
+            $fluent->update('class_config')
+                   ->set($set)
+                   ->where('value > ?', $value)
+                   ->where('value <= ?', $max)
+                   ->where('name != ?', 'UC_MIN')
+                   ->where('name != ?', 'UC_MAX')
+                   ->where('name != ?', 'UC_STAFF')
+                   ->execute();
+            $set = [
+                'class' => new Literal('class - 1'),
+            ];
+            $fluent->update('users')
+                   ->set($set)
+                   ->where('class > ?', $value)
+                   ->where('class <= ?', $max)
+                   ->execute();
+            $set = [
+                'av_class' => new Literal('av_class - 1'),
+            ];
+            $fluent->update('staffpanel')
+                   ->set($set)
+                   ->where('av_class > ?', $value)
+                   ->where('av_class <= ?', $max)
+                   ->execute();
+
+            $stylesheets = $fluent->from('stylesheets')
+                                  ->select(null)
+                                  ->select('id');
+            foreach ($stylesheets as $stylesheet) {
+                write_class_files($stylesheet['id']);
+            }
+            update_forum_classes($value, 'decrement');
             $session->set('is-success', "{$lang['classcfg_success_reset']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
-        update_forum_classes($value, 'decrement');
         unset($_POST);
     }
     run_uglify();
@@ -272,7 +281,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $HTMLOUT .= "
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
-        <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post' accept-charset='utf-8'>
+        <br>
+        <h2 class='has-text-centered top20'>{$lang['classcfg_class_config']}</h2>
+        <form name='edit' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
@@ -281,7 +292,6 @@ $HTMLOUT .= "
                         <th class='has-text-centered'>{$lang['classcfg_class_refname']}</th>
                         <th class='has-text-centered'>{$lang['classcfg_class_color']}</th>
                         <th class='has-text-centered'>{$lang['classcfg_class_pic']}</th>
-                        <th class='has-text-centered'>{$lang['classcfg_class_del']}</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -308,58 +318,44 @@ if (!empty($primary_classes)) {
         $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
         $HTMLOUT .= "
                         <tr class='{$cname}'>
-                            <td class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
-                            <td class='has-text-centered'>
-                                <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int) $arr['value'] . " 'readonly>
+                            <td class='has-text-black has-text-weight-bold w-20'>" . htmlsafechars($arr['name']) . "</td>
+                            <td class='has-text-centered w-10'>
+                                <input type='number' name='" . htmlsafechars($arr['name']) . "[]' value='" . (int) $arr['value'] . "' class='has-text-centered w-100' readonly>
                             </td>
-                            <td class='has-text-centered'>
-                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "'>
+                            <td class='has-text-centered w-20'>
+                                <input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "' class='w-100'>
                             </td>
-                            <td class='has-text-centered'>
-                                <input class='w-100' type='color' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "'>
+                            <td class='has-text-centered w-20'>
+                                <input type='color' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "' class='w-100 is-paddingless'>
                             </td>
-                            <td class='has-text-centered'>
-                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "'>
-                            </td>
-                            <td class='has-text-centered'>
-                                <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post' accept-charset='utf-8'>
-                                    <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
-                                    <input type='submit' class='button is-small' value='{$lang['classcfg_class_remove']}'>
-                                </form>
+                            <td class='has-text-centered w-20'>
+                                <input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "' class='w-100'>
                             </td>
                         </tr>";
     }
 }
-$HTMLOUT .= '
-                </tbody>
-            </table>';
 
 $HTMLOUT .= "
-            <h2 class='has-text-centered top20'>{$lang['classcfg_class_security']}</h2>
-            <table class='table table-bordered table-stiped'>
-                <thead>
-                    <tr>
-                        <th>{$lang['classcfg_class_name']}</th>
-                        <th>{$lang['classcfg_class_value']}</th>
-                    </tr>
-                </thead>
-                <tbody>";
-
-if (!empty($base_classes)) {
-    foreach ($base_classes as $arr1) {
-        $HTMLOUT .= '
                         <tr>
-                            <td>' . htmlsafechars($arr1['name']) . "</td>
-                            <td>
-                                <input class='w-100' type='text' name='" . htmlsafechars($arr1['name']) . "[]' value='" . (int) $arr1['value'] . "'>
+                            <td colspan='5'
+                        </tr>";
+if (!empty($base_classes)) {
+    foreach ($base_classes as $arr) {
+        $cname = str_replace(' ', '_', strtolower($primary_classes[$arr['value']]['classname'])) . '_bk';
+        $HTMLOUT .= "
+                        <tr class='{$cname}'>
+                            <td colspan='2' class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
+                            <td colspan='3'>
+                                <input class='w-100' type='number' name='" . htmlsafechars($arr['name']) . "' value='" . (int) $arr['value'] . "'>
                             </td>
                         </tr>";
     }
 }
 $HTMLOUT .= "
                     <tr>
-                        <td colspan='2'>
+                        <td colspan='5'>
                             <div class='has-text-centered'>
+                                <input type='hidden' name='mode' value='edit'>
                                 <input type='submit' class='button is-small' value='{$lang['classcfg_class_apply']}'>
                             </div>
                         </td>
@@ -369,8 +365,37 @@ $HTMLOUT .= "
         </form>";
 
 $HTMLOUT .= "
+        <h2 class='has-text-centered top20'>{$lang['classcfg_class_del']}</h2>
+        <form name='add' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
+            <table class='table table-bordered table-stiped'>
+                <tr>
+                    <td colspan='5'>
+                        <div class='level-center-center'>
+                            <select name='class'>";
+foreach ($classes as $class) {
+    if (!in_array($class['name'], [
+        'UC_MIN',
+        'UC_STAFF',
+        'UC_MAX',
+    ])) {
+        $HTMLOUT .= "
+                                <option value='{$class['value']}'>{$class['name']}</option>";
+    }
+}
+
+$HTMLOUT .= "
+                            </select>
+                            <input type='hidden' name='mode' value='remove'>
+                            <input type='submit' class='button is-small left10' value='{$lang['classcfg_class_remove']}'>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>";
+
+$HTMLOUT .= "
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h2>
-        <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post' accept-charset='utf-8'>
+        <form name='add' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
@@ -386,12 +411,13 @@ $HTMLOUT .= "
                         <td><input class='w-100 tooltipper' type='text' name='name' value='' placeholder='UC_OWNER' title='All class names must begin with UC_'></td>
                         <td><input class='w-100' type='text' name='value' value=''></td>
                         <td><input class='w-100 tooltipper' type='text' name='cname' value='' placeholder='OWNER' title='All class reference names must be same as class name without UC_'></td>
-                        <td><input class='w-100' type='color' name='color' value='#ff0000'></td>
+                        <td><input class='w-100 is-paddingless' type='color' name='color' value='#e6fb04'></td>
                         <td><input class='w-100' type='text' name='pic' value=''></td>
                     </tr>
                     <tr>
                         <td colspan='5'>
                             <div class='has-text-centered'>
+                                <input type='hidden' name='mode' value='add'>
                                 <input type='submit' class='button is-small' value='{$lang['classcfg_add_new']}'>
                             </div>
                         </td>
@@ -399,4 +425,5 @@ $HTMLOUT .= "
                 </tbody>
             </table>
         </form>";
+
 echo stdhead($lang['classcfg_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -27,16 +27,19 @@ if (empty($argv[1])) {
         }
     }
 } else {
-    $table = $argv[1];
-    if (file_exists($table)) {
-        ++$i;
-        $ext = pathinfo($table, PATHINFO_EXTENSION);
-        if ($ext === 'gz') {
-            $source = file_get_contents('compress.zlib://' . $table);
-        } else {
-            $source = file_get_contents($table);
+    $args = $argv;
+    unset($args[0]);
+    foreach ($args as $table) {
+        if (file_exists($table)) {
+            ++$i;
+            $ext = pathinfo($table, PATHINFO_EXTENSION);
+            if ($ext === 'gz') {
+                $source = file_get_contents('compress.zlib://' . $table);
+            } else {
+                $source = file_get_contents($table);
+            }
+            $pdo->exec($source);
         }
-        $pdo->exec($source);
     }
 }
 

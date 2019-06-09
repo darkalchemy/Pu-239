@@ -30,6 +30,9 @@ $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
 global $container, $CURUSER, $site_config;
 
+if (!$CURUSER) {
+    stderr($lang['spanel_error'], $lang['spanel_access_denied']);
+}
 $cache = $container->get(Cache::class);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
@@ -39,11 +42,6 @@ if ($staff_classes === false || is_null($staff_classes)) {
         $staff_classes[] = $row['value'];
     }
     $cache->set('staff_classes_', $staff_classes, 0);
-}
-global $container, $CURUSER, $site_config;
-
-if (!$CURUSER) {
-    stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
 
 if (!$site_config['site']['staffpanel_online']) {

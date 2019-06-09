@@ -1,4 +1,7 @@
 ### 09 Jun, 2019
+fix: floodlimit.php  
+fix: class_config.php  
+update: allow import multiple tables import_tables.php  
 update: uglify.php  
 fix: proper perms set_perms.php  
 
