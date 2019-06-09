@@ -351,6 +351,7 @@ span {
 .button.tag {
     border: 1px solid #fff;
     width: 150px;
+    transition: all .5s ease-in-out;
 }
 
 .button.tag:hover {

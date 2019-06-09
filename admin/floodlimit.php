@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
     if (!file_exists($site_config['paths']['flood_file']) || !is_array($limit = json_decode(file_get_contents($site_config['paths']['flood_file'])))) {
         $limit = [];
     }

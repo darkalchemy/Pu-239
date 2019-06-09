@@ -402,6 +402,7 @@ function run_uglify($argv = [])
     }
 
     cleanup(get_webserver_user());
+
     return true;
 }
 

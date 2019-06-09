@@ -83,7 +83,7 @@ foreach ($paths as $path) {
                 }
                 chgrp($name, $group);
                 chmod($name, 0774);
-                $i++;
+                ++$i;
             } elseif (!is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
                 if (preg_match('#' . IMAGES_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
@@ -91,7 +91,7 @@ foreach ($paths as $path) {
                 } else {
                     chmod($name, 0664);
                 }
-                $i++;
+                ++$i;
             }
         }
     }
