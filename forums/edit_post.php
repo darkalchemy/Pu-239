@@ -26,7 +26,7 @@ if (!empty($arr_post['file'])) {
 	<tr>
 	<td>
 	<input type="checkbox" name="attachment_to_delete[]" value="' . (int) $attachments_arr['id'] . '"></td><td>
-	<span style="white-space:nowrap;">' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="emoticon tooltipper">') . '
+	<span class="has-no-wrap">' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="emoticon tooltipper">') . '
 	<a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span></td>
 	</tr>';
     }
@@ -49,8 +49,7 @@ if ($arr_post['staff_lock'] === 1) {
     stderr($lang['gl_error'], $lang['fe_this_post_is_staff_locked']);
 }
 $edited_by = $CURUSER['id'];
-$edit_date = TIME_NOW;
-$body = (isset($_POST['body']) ? $_POST['body'] : $arr_post['body']);
+$body = isset($_POST['body']) ? $_POST['body'] : $arr_post['body'];
 if ($can_edit) {
     $topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : $arr_post['topic_name']);
     $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : $arr_post['topic_desc']);
@@ -67,34 +66,60 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     }
     $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>';
     $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
-    $post_history = '<table>
-	<tr>
-	<td>#' . $post_id . '  ' . format_username((int) $arr_post['user_id']) . '</td>
-	<td>' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . format_username((int) $CURUSER['id']) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon tooltipper">' : '') . '</td>
-	<tr>
-	<td>' . (empty($arr_post['post_history']) ? ($can_edit ? '
-        <span style="white-space:nowrap;">Desc: ' . (!empty($arr_post['topic_desc']) ? 'yes' : 'none') . '</span><br>' : '') . '
-        <span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . (!empty($arr_post['post_title']) ? 'yes' : 'none') . '</span><br>
-        <span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . (!empty($arr_post['icon']) ? 'yes' : 'none') . '</span><br>
-        <span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ($show_bbcode === 'yes' ? 'on' : 'off') . '</span><br>' : ($can_edit ? '
-        <span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br>
-        <span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br>' : '') . '
-        <span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br>
-        <span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br>
-        <span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . (($show_bbcode !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br>
-        <span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br>') . '
-	</td>
-	<td>' . ($arr_post['bbcode'] === 'yes' ? format_comment($arr_post['body']) : format_comment_no_bbcode($arr_post['body'])) . '</td>
-	</tr>
-	</table><br>' . $arr_post['post_history'];
-    //=== let the sysop have the power to not show they edited their own post if they wish...
-    if ($show_edited_by === 'no' && $CURUSER['class'] >= UC_MAX) {
-        $edit_reason = !empty($arr_post['edit_reason']) ? htmlsafechars($arr_post['edit_reason']) : '';
-        $edited_by = htmlsafechars($arr_post['edited_by']);
-        $edit_date = (int) $arr_post['edit_date'];
-        $post_history = !empty($arr_post['post_history']) ? htmlsafechars($arr_post['post_history']) : '';
-    }
-    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+    $post_history = main_div("
+        <div class='w-100 padding10'>
+            <div class='columns is-marginless'>
+                <div class='column is-one-quarter round10 bg-02 padding20'>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>Edited:</div>
+                         <div class='column is-paddingless'>" . get_date((int) $arr_post['edit_date'], 'LONG', 1, 0) . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>Desc:</div>
+                         <div class='column is-paddingless'>" . (!empty($arr_post['topic_desc']) ? 'yes' : 'none') . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['fe_title']}:</div>
+                         <div class='column is-paddingless'>" . (!empty($arr_post['post_title']) ? 'yes' : 'none') . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['fe_icon']}:</div>
+                         <div class='column is-paddingless'>" . (!empty($arr_post['icon']) ? 'yes' : 'none') . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['ep_bb_code']}:</div>
+                         <div class='column is-paddingless'>" . ($show_bbcode === 'yes' ? 'on' : 'off') . '</div>' . ($can_edit ? "
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>Topic Name:</div>
+                         <div class='column is-paddingless'>" . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>Desc:</div>
+                         <div class='column is-paddingless'>" . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</div>' : '') . "
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['fe_title']}:</div>
+                         <div class='column is-paddingless'>" . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['fe_icon']}:</div>
+                         <div class='column is-paddingless'>" . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['ep_bb_code']}:</div>
+                         <div class='column is-paddingless'>" . (($show_bbcode !== $arr_post['bbcode']) ? $changed : $not_changed) . "</div>
+                    </div>
+                    <div class='columns is-marginless'>
+                        <div class='column is-paddingless is-one-third'>{$lang['fe_body']}:</div>
+                         <div class='column is-paddingless'>" . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . "</div>
+                    </div>
+                </div>
+                <div class='column round10 bg-02 left10'>" . format_comment($arr_post['body']) . '</div>
+            </div>
+        </div>', (!empty($arr_post['post_history']) ? 'bottom20' : '')) . $arr_post['post_history'];
+
+    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc(TIME_NOW) . ', post_history = ' . sqlesc($post_history) . ' WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     if ($can_edit) {

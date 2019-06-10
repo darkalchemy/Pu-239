@@ -15,11 +15,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param        $rows
  * @param string $variant
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -30,7 +30,7 @@ function commenttable($rows, $variant = 'torrent')
     $user_stuffs = $container->get(User::class);
     require_once INCL_DIR . 'function_users.php';
     require_once INCL_DIR . 'function_html.php';
-    $lang = load_language('torrenttable_functions');
+    $lang = array_merge(load_language('torrenttable_functions'), load_language('forums_global'));
     $count = 0;
     $variant_options = [
         'torrent' => 'comment',
@@ -129,23 +129,31 @@ function commenttable($rows, $variant = 'torrent')
         $text = format_comment($row['text']);
         if ($row['editedby']) {
             $text = "
-            <div class='flex-vertical comments h-100'>
+            <div class='flex-vertical comments h-100 padding10'>
                 <div>$text</div>
                 <div class='size_3'>{$lang['commenttable_last_edited_by']} " . format_username((int) $row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date((int) $row['editedat'], 'DATE') . '</div>
             </div>';
         }
         $top = $i++ >= 1 ? 'top20' : '';
+        $image = placeholder_image();
+        $member_reputation = !empty($usersdata['username']) ? get_reputation($row['user'], 'comments', true, 0, $row['anonymous']) : '';
         $htmlout .= main_div("
             <a id='comm{$row['id']}'></a>
             $this_text
-            <div class='columns is-marginless'>
-                <span class='round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
-                    {$avatar}
-                    <div>" . get_reputation($row['user'], 'comments', true, 0, $row['anonymous']) . "</div>
-                </span>
-                <span class='bg-02 round10 column'>
-                    $text
-                </span>
+            <div class='w-100 padding10'>
+                <div class='columns is-marginless'>
+                    <div class='column round10 bg-02 is-2-widescreen is-12-mobile has-text-centered'>
+                        " . $avatar . '<br>' . ($row['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $row['user'])) . ($row['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
+                        <span>' . ($row['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
+                        ' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+                        <ul class="level-center">
+                            <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
+                        </ul>' : '') . "
+                    </div>
+                    <div class='column round10 bg-02 left10'>
+                        $text
+                    </div>
+                </div>
             </div>", $top);
     }
 

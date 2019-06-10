@@ -90,6 +90,7 @@ $lang = [
     'verify_email' => 'Verify Email',
     'videoformats.php' => 'Video Formats',
     'view_mailbox' => 'View Mailboxes',
+    'view_post_history' => 'View Post History',
     'viewnfo.php' => 'View NFO',
     'view_announce_history.php' => 'View Announce History',
     'view_sql.php' => 'Adminer',

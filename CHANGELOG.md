@@ -1,4 +1,6 @@
 ### 09 Jun, 2019
+fix: forum post history  
+update: make forum posts and comments same format  
 fix: reports.php  
 fix: remove dd() usage  
 fix: imdb block format details.php  

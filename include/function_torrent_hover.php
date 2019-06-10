@@ -24,6 +24,7 @@ use Pu239\Torrent;
  * @param      $subtitles
  * @param      $genre
  * @param bool $icons
+ * @param null $is_comment
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -31,12 +32,13 @@ use Pu239\Torrent;
  *
  * @return string
  */
-function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
+function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false, $is_comment = null)
 {
     global $container, $site_config, $lang;
 
     $is_year = $released = $rated = $plot = $show_subs = $show_icons = '';
     if (!empty($imdb_id)) {
+        $is_comment = !empty($is_comment) ? '#comm' . $is_comment : '';
         $image_stuffs = $container->get(Image::class);
         $background = $image_stuffs->find_images($imdb_id, $type = 'background');
         $torrent = $container->get(Torrent::class);
@@ -112,7 +114,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     }
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
-                            <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>
+                            <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1{$is_comment}'>
                                 <div class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>

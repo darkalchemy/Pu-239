@@ -473,16 +473,16 @@ foreach ($posts as $arr) {
         if ($arr['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
-				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             } else {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username((int) $arr['edited_by']) . ']
-				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
         } else {
             $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' ' . format_username((int) $arr['edited_by']) . '
-				 at ' . get_date((int) $arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
     }
@@ -562,6 +562,7 @@ foreach ($posts as $arr) {
     }
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
     $dlink = "dLink_{$topic_id}_{$post_id}";
+    $avatar = get_avatar($usersdata);
 
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
@@ -599,25 +600,28 @@ foreach ($posts as $arr) {
             </td>
         </tr>
 		<tr>
-         <td class="has-text-centered w-15 mw-150">' . get_avatar($usersdata) . '<br>
-			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
-			<span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
-			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
-			<ul class="level-center">
-			    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
-			</ul>' : '') . "
-			</td>
-			<td class='{$post_status}' colspan='2' style='dheight:100%;dwidth:100%;'>
-                <div class='h-100'>
-                    <div class='h-100'>
-                        <div class='flex-vertical comments h-100'>
-                            <div class='margin10'>$body</div>
-                            <div class='size_3 margin10'>$edited_by</div>
+		    <td colspan="2">
+                <div class="w-100 padding10">
+                    <div class="columns is-marginless">
+                        <div class="column round10 bg-02 is-2-widescreen is-12-mobile has-text-centered">
+                            ' . $avatar . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
+			                <span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
+                            ' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+			                <ul class="level-center">
+			                    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
+			                </ul>' : '') . '
+                        </div>
+                        <div class="column round10 bg-02 left10">
+                            <div class="flex-vertical comments h-100 padding10">
+                                <div>' . $body . '</div>
+                                <div class="size_3">' . $edited_by . '</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </td></tr>" . (!empty($signature) ? '
-			<tr>
+            </td>
+         </tr>' . (!empty($signature) ? '
+		<tr>
 			    <td colspan="3" class="has-text-centered"><div class="signature">' . $signature . '</div></td>
 			</tr>' : '') . (!empty($attachments) ? '
 			<tr>

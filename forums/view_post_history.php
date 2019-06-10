@@ -2,36 +2,46 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+use Pu239\User;
+
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($post_id) || !is_valid_id($forum_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
-$res = sql_query('SELECT p.added, p.body, p.edited_by, p.user_id AS poster_id, p.edit_date, p.post_title, p.icon, p.post_history, p.bbcode, p.anonymous, t.topic_name AS topic_name, f.name AS forum_name, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.avatar, u.offensive_avatar, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id LEFT JOIN users AS u ON p.user_id=u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_array($res);
-$arr_edited = $user_stuffs->getUserFromId($arr['edited_by']);
-$icon = htmlsafechars($arr['icon']);
-$post_title = htmlsafechars($arr['post_title']);
-$location_bar = '<h1><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
-        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($arr['forum_name']) . '</a>
-        <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
-        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name']) . '</a></h1>
-        <span>' . $mini_menu . '</span><br><br>';
-$HTMLOUT .= $location_bar;
-$HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</>' : format_username((int) $arr['id'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr_edited['id'])) . '</h1>
-    <tablecellspacing="5" cellpadding="10" width="90%">
-    <tr>
-    <td class="forum_head" width="120px">
-    <span style="white-space:nowrap;">#' . $post_id . '
-    <span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
-    <td class="forum_head">
-    <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . '] GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon">' : '') . '</span>
-    </td></tr>
-    <tr>
-    <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['id'])) . '</td>
-    <td colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
-    </tr>
-    </table><br><h1>' . $lang['fe_post_history'] . '</h1>[ ' . $lang['vph_all_post_edits_date'] . '. ]<br><br>' . htmlspecialchars_decode($arr['post_history']) . '<br>' . $location_bar;
+$user_stuffs = $container->get(User::class);
+$fluent = $container->get(Database::class);
+$query = $fluent->from('posts AS p')
+                ->select('t.topic_name AS topic_name')
+                ->select('f.name AS forum_name')
+                ->leftJoin('topics AS t ON p.topic_id = t.id')
+                ->leftJoin('forums AS f ON t.forum_id = f.id')
+                ->where('p.id = ?', $post_id);
+if ($CURUSER['class'] < UC_STAFF) {
+    $query = $query->where("p.status = 'ok'")
+                   ->where("t.status = 'ok'");
+} elseif ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class']) {
+    $query = $query->where("p.status != 'deleted'")
+                   ->where("t.status != 'deleted'");
+}
+$query = $query->fetch();
+$arr_edited = $user_stuffs->getUserFromId($query['edited_by']);
+$icon = htmlsafechars($query['icon']);
+$post_title = htmlsafechars($query['post_title']);
+$HTMLOUT .= " 
+    <h1 class='has-text-centered'>" . ($query['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</>' : htmlsafechars($arr_edited['username'])) . '\'s ' . $lang['vph_final_edit_post'] . "</h1>
+    <h2 class='has-text-centered'>{$lang['vph_last_edit_by']}: " . ($query['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr_edited['username'])) . '</h2>';
+$body = "
+    #{$post_id} " . ($query['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr_edited['id'])) . " {$lang['fe_posted_on']}: " . get_date($query['added'], 'LONG') . '
+    <br>' . (!empty($post_title) ? "{$lang['fe_title']}: <span class='has-text-weight-bold'>{$post_title}</span>" : '') . (!empty($icon) ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon">' : '') . ($query['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr_edited['id'])) . ($query['bbcode'] === 'yes' ? format_comment($query['body']) : format_comment_no_bbcode($query['body']));
+$HTMLOUT .= main_div($body, 'bottom20', 'padding20') . "
+    <h2 class='has-text-centered'>{$lang['fe_post_history']}</h2>
+    <div class='has-text-centered bottom20'>
+        [ {$lang['vph_all_post_edits_date']} ]
+    </div>";
+$HTMLOUT .= $query['post_history'];
+//dd($query['post_history']);

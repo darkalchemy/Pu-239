@@ -33,7 +33,7 @@ $stdfoot = [
 $locale = 'torrent';
 $locale_link = 'details';
 $extra_link = '';
-$sql_1 = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
+$sql_1 = 'name, owner, comments, anonymous FROM torrents';
 $name = 'name';
 $table_type = $locale . 's';
 $_GET['type'] = (isset($_GET['type']) ? $_GET['type'] : (isset($_POST['locale']) ? $_POST['locale'] : ''));
@@ -55,8 +55,7 @@ if (isset($_GET['type'])) {
             break;
 
         default:
-            //case 'torrent':
-            $sql_1 = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
+            $sql_1 = 'name, owner, comments, anonymous FROM torrents';
             $name = 'name';
             $table_type = $locale . 's';
             break;
