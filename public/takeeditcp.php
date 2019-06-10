@@ -413,7 +413,6 @@ if ($action === 'avatar') {
 
     $action = 'location';
 } elseif ($action === 'default') {
-    //dd($_POST);
     if (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'yes') {
         $setbits2 |= user_options_2::PM_ON_DELETE;
     } elseif (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'no') {

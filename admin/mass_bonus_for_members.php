@@ -232,7 +232,6 @@ for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
 $all_classes_check_boxes .= '
     </div>';
 
-//dd($all_classes_check_boxes);
 $bonus_GB = '<select name="GB">
         <option class="head" value="">' . $lang['bonusmanager_up_add'] . '</option>
         <option class="body" value="1073741824">' . $lang['bonusmanager_up_1gb'] . '</option>

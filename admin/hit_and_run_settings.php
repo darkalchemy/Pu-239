@@ -78,6 +78,5 @@ $HTMLOUT .= main_table("
     </tr>
 
     <tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['hnr_settings_apply']}' class='button is-small'></td></tr>") . '</form>';
-//dd($site_config['hnr_config']);
 
 echo stdhead($lang['hnr_settings_stdhead']) . wrapper($HTMLOUT) . stdfoot();

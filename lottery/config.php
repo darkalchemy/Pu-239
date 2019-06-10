@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $session->set('is-warning', 'You forgot to fill some data');
         }
     }
-    //dd($lottery_config, $_POST);
     if (!empty($lottery_config)) {
         foreach ($lottery_config as $c_name => $c_value) {
             if (isset($_POST[$c_name])) {

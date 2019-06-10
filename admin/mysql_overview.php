@@ -58,7 +58,6 @@ $query = $tables->fetchAll();
 $body = '';
 if (!empty($query)) {
     foreach ($query as $row) {
-        //dd($row);
         $avg_length = mksize($row['Avg_row_length']);
         $data_length = mksize($row['Data_length']);
         $index_length = mksize($row['Index_length']);

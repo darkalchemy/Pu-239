@@ -550,8 +550,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-    } else {
-        dd($post);
     }
     if (!empty($msgs_buffer)) {
         $message_stuffs = $container->get(Message::class);
@@ -586,7 +584,6 @@ foreach ($options as $gets) {
     if (!empty($free) && $free['expires'] > $dt && in_array($gets['bonusname'], $disabled)) {
         continue;
     }
-    //dd($gets);
     $button = "
                 <div class='has-text-centered top20'>
                     <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma'>

@@ -31,9 +31,7 @@ foreach ($contents as $line) {
                 $type = 'main';
                 break;
         }
-        if (empty($type)) {
-            dd($content);
-        }
+
         $anidb[] = [
             'aid' => $content[0],
             'type' => $type,
