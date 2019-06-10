@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -9,10 +12,12 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_invite_tree'));
-global $site_config;
+global $container, $site_config;
 
 $HTMLOUT = '';
-$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
+$user_stuffs = $container->get(User::class);
+$fluent = $container->get(Database::class);
 if ($id !== 0) {
     $arr_user = $user_stuffs->getUserFromId($id);
     $HTMLOUT .= '
@@ -28,9 +33,21 @@ if ($id !== 0) {
     <table>
         <tr>
             <td>';
-    $rez_invited = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, INET6_NTOA(ip) AS ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($id) . ' ORDER BY added');
-    if (mysqli_num_rows($rez_invited) < 1) {
-        $HTMLOUT .= $lang['invite_none'];
+    $query = $fluent->from('users as u')
+                    ->select(null)
+                    ->select('u.id')
+                    ->select('u.username')
+                    ->select('u.uploaded')
+                    ->select('u.downloaded')
+                    ->select('u.email')
+                    ->select('i.status')
+                    ->leftJoin('invite_codes AS i ON u.id = i.receiver')
+                    ->where('u.invitedby = ?', $id)
+                    ->where("u.join_type = 'invite'")
+                    ->orderBy('u.registered')
+                    ->fetchAll();
+    if (empty($query)) {
+        $HTMLOUT .= stdmsg('', $lang['invite_none']);
     } else {
         $HTMLOUT .= '
                 <table class="table table-bordered table-striped">
@@ -42,11 +59,24 @@ if ($id !== 0) {
                         <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
                         <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
                     </tr>';
-        while ($arr_invited = mysqli_fetch_assoc($rez_invited)) {
+        foreach ($query as $arr_invited) {
             $deeper = '';
             if (isset($_GET['deeper']) || isset($_GET['really_deep'])) {
-                $rez_invited_deeper = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, INET6_NTOA(ip) AS wip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited['id']) . ' ORDER BY added');
-                if (mysqli_num_rows($rez_invited_deeper) > 0) {
+                $query2 = $fluent->from('users as u')
+                                 ->select(null)
+                                 ->select('u.id')
+                                 ->select('u.username')
+                                 ->select('u.uploaded')
+                                 ->select('u.downloaded')
+                                 ->select('u.email')
+                                 ->select('i.status')
+                                 ->leftJoin('invite_codes AS i ON u.id = i.receiver')
+                                 ->where('u.invitedby = ?', $arr_invited['id'])
+                                 ->where("u.join_type = 'invite'")
+                                 ->orderBy('u.registered')
+                                 ->fetchAll();
+
+                if (!empty($query2)) {
                     $deeper .= '
                     <tr>
                         <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span>
@@ -60,10 +90,23 @@ if ($id !== 0) {
                                         <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
                                         <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
                                     </tr>';
-                    while ($arr_invited_deeper = mysqli_fetch_assoc($rez_invited_deeper)) {
+                    foreach ($query2 as $arr_invited_deeper) {
                         if (isset($_GET['really_deep'])) {
-                            $rez_invited_really_deep = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, INET6_NTOA(ip) AS ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited_deeper['id']) . ' ORDER BY added');
-                            if (mysqli_num_rows($rez_invited_really_deep) > 0) {
+                            $query3 = $fluent->from('users as u')
+                                             ->select(null)
+                                             ->select('u.id')
+                                             ->select('u.username')
+                                             ->select('u.uploaded')
+                                             ->select('u.downloaded')
+                                             ->select('u.email')
+                                             ->select('i.status')
+                                             ->leftJoin('invite_codes AS i ON u.id = i.receiver')
+                                             ->where('u.invitedby = ?', $arr_invited_deeper['id'])
+                                             ->where("u.join_type = 'invite'")
+                                             ->orderBy('u.registered')
+                                             ->fetchAll();
+
+                            if (!empty($query3)) {
                                 $deeper .= '
                                     <tr>
                                         <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited_deeper['username']) . (substr($arr_invited_deeper['username'], -1) === 's' ? '\'' : '\'s') . ' Invites:</span>
@@ -77,15 +120,15 @@ if ($id !== 0) {
                                                         <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
                                                         <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
                                                     </tr>';
-                                while ($arr_invited_really_deep = mysqli_fetch_assoc($rez_invited_really_deep)) {
+                                foreach ($query3 as $arr_invited_really_deep) {
                                     $deeper .= '
                                                     <tr>
-                                                        <td>' . ($arr_invited_really_deep['status'] === 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username((int) $arr_invited_really_deep['id']) . '<br>' . $arr_invited_really_deep['ip']) . '</td>
+                                                        <td>' . ($arr_invited_really_deep['status'] === 'Pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep['id'])) . '</td>
                                                         <td>' . htmlsafechars($arr_invited_really_deep['email']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['uploaded']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['downloaded']) . '</td>
                                                         <td>' . member_ratio($arr_invited_really_deep['uploaded'], $arr_invited_really_deep['downloaded']) . '</td>
-                                                        <td>' . ($arr_invited_really_deep['status'] === 'confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
+                                                        <td>' . ($arr_invited_really_deep['status'] === 'Confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
                                                     </tr>');
                                 }
                                 $deeper .= '
@@ -97,12 +140,12 @@ if ($id !== 0) {
                         }
                         $deeper .= '
                                     <tr>
-                                        <td>' . ($arr_invited_deeper['status'] === 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username((int) $arr_invited_deeper['id']) . '<br>' . $arr_invited_deeper['wip']) . '</td>
+                                        <td>' . ($arr_invited_deeper['status'] === 'Pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper['id'])) . '</td>
                                         <td>' . htmlsafechars($arr_invited_deeper['email']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['uploaded']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['downloaded']) . '</td>
                                         <td>' . member_ratio($arr_invited_deeper['uploaded'], $arr_invited_deeper['downloaded']) . '</td>
-                                        <td>' . ($arr_invited_deeper['status'] === 'confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
+                                        <td>' . ($arr_invited_deeper['status'] === 'Confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
                                     </tr>');
                     }
                     $deeper .= '
@@ -114,12 +157,12 @@ if ($id !== 0) {
             }
             $HTMLOUT .= '
                     <tr>
-                        <td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username((int) $arr_invited['id']) . '<br>' . $arr_invited['ip']) . '</td>
+                        <td>' . ($arr_invited['status'] === 'Pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited['id'])) . '</td>
                         <td>' . htmlsafechars($arr_invited['email']) . '</td>
                         <td>' . mksize($arr_invited['uploaded']) . '</td>
                         <td>' . mksize($arr_invited['downloaded']) . '</td>
                         <td>' . member_ratio($arr_invited['uploaded'], $arr_invited['downloaded']) . '</td>
-                        <td>' . ($arr_invited['status'] === 'confirmed' ? '
+                        <td>' . ($arr_invited['status'] === 'Confirmed' ? '
                             <span class="has-color-lime">' . $lang['invite_confirmed'] . '</span>
                         </td>
                     </tr>' : '
@@ -196,12 +239,13 @@ if ($id !== 0) {
     $count = 0;
     foreach ($cc as $L) {
         $HTMLOUT .= ($count === 10) ? '<br><br>' : '';
-        if (!strcmp($L, $letter)) {
+        $LL = strtoupper((string) $L);
+        if (!strcmp((string) $L, $letter)) {
             $HTMLOUT .= '
-                        <a class="pagination-link is-current" aria-label="' . strtoupper($L) . '">' . strtoupper($L) . '</a>';
+                        <a class="pagination-link is-current" aria-label="' . $LL . '">' . $LL . '</a>';
         } else {
             $HTMLOUT .= '
-                        <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;letter=' . $L . '" class="pagination-link button">' . strtoupper($L) . '</a>';
+                        <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;letter=' . $L . '" class="pagination-link button">' . $LL . '</a>';
         }
         ++$count;
     }
@@ -213,7 +257,7 @@ if ($id !== 0) {
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query);
     $arr_count = mysqli_fetch_row($res_count);
-    $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
+    $count = $arr_count[0] > 0 ? (int) $arr_count[0] : 0;
     $link = $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree';
     $pager = pager($perpage, $count, $link);
     $menu_top = $pager['pagertop'];
@@ -242,8 +286,8 @@ if ($id !== 0) {
             $body .= '
             <tr>
                 <td>' . format_username((int) $row['id']) . '</td>
-                <td>' . get_date((int) $row['added'], '') . '</td><td>' . get_date((int) $row['last_access'], '') . '</td>
-                <td>' . get_user_class_name($row['class']) . '</td>' . $country . '
+                <td>' . get_date((int) $row['registered'], '') . '</td><td>' . get_date((int) $row['last_access'], '') . '</td>
+                <td>' . get_user_class_name((int) $row['class']) . '</td>' . $country . '
                 <td>
                     <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
                         <span class="button is-small">' . $lang['invite_search_view'] . '</span>
@@ -253,7 +297,7 @@ if ($id !== 0) {
         }
         $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= main_div($lang['invite_search_none']);
+        $HTMLOUT .= stdmsg('', $lang['invite_search_none']);
     }
     $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 }

@@ -55,7 +55,7 @@ if ($can_edit) {
     $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : $arr_post['topic_desc']);
 }
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : $arr_post['post_title']);
-$icon = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']));
+$icon = isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']);
 $show_bbcode = isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode'];
 $bb_code = $show_bbcode;
 $edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');

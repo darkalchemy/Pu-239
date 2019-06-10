@@ -67,7 +67,7 @@ function delete_poll($stdfoot)
 
     $poll_stuffs = $container->get(Poll::class);
     $pollvoter_stuffs = $container->get(PollVoter::class);
-    if (!isset($_GET['pid']) || !is_valid_id($_GET['pid'])) {
+    if (!isset($_GET['pid']) || !is_valid_id((int) $_GET['pid'])) {
         stderr($lang['poll_dp_usr_err'], $lang['poll_dp_no_poll']);
     }
     $pid = intval($_GET['pid']);
@@ -100,7 +100,7 @@ function update_poll()
     $poll_stuffs = $container->get(Poll::class);
     $pollvoter_stuffs = $container->get(PollVoter::class);
     $session = $container->get(Session::class);
-    if (!isset($_POST['pid']) || !is_valid_id($_POST['pid'])) {
+    if (!isset($_POST['pid']) || !is_valid_id((int) $_POST['pid'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_poll']);
     }
     $pid = intval($_POST['pid']);

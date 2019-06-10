@@ -14,6 +14,11 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('invite_code'));
 global $container, $CURUSER, $site_config;
 
+$stdfoot = [
+    'js' => [
+        get_file_name('invite_js'),
+    ],
+];
 $HTMLOUT = $sure = '';
 $do = isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : '');
 $valid_actions = [
@@ -60,7 +65,7 @@ if ($do === 'view_page') {
                         <th>{$lang['invites_status']}</th>
                     </tr>";
         foreach ($rows as $row) {
-            $ratio = member_ratio($row['uploaded'], $site_config['site']['ratio_free'] ? '0' : $row['downloaded']);
+            $ratio = member_ratio($row['uploaded'], $site_config['site']['ratio_free'] ? 0 : $row['downloaded']);
             if ($row['status'] === 0) {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
@@ -68,11 +73,12 @@ if ($do === 'view_page') {
             }
             $body .= "
                     <tr>
-                        <td class='level-left'>" . format_username((int) $row['id']) . '</td>
+                        <td class='level-left'>" . format_username($row['id']) . '</td>
                         <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
                         <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
-                        <td>{$status}</td>";
+                        <td>{$status}</td>
+                    </tr>";
         }
     }
 
@@ -97,14 +103,16 @@ if ($do === 'view_page') {
                     </tr>";
         for ($i = 0; $i < $num_row; ++$i) {
             $fetch_assoc = mysqli_fetch_assoc($select);
+            $secret = (int) $fetch_assoc['id'];
+            $invite = $fetch_assoc['code'];
             $can_send_it = empty($fetch_assoc['email']) ? "
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=send_email&amp;id=" . (int) $fetch_assoc['id'] . "' class='tooltipper' title='Send Email'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=send_email&amp;id={$secret}' class='tooltipper' title='Send Email'>
                                 <i class='icon-mail-alt' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . '
                             </a>' : "
                             <span class='tooltipper' title='Email Sent'>
                                 " . htmlsafechars($fetch_assoc['code']) . '
                             </span>';
-
+            $url = !empty($fetch_assoc['email']) ? "{$site_config['paths']['baseurl']}/signup.php?id={$secret}&amp;code={$invite}" : '';
             $body .= "
                     <tr>
                         <td>$can_send_it</td>
@@ -113,12 +121,17 @@ if ($do === 'view_page') {
                         </td>
                         <td class='has-text-centered'>" . get_date((int) $fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int) $fetch_assoc['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "' class='tooltipper' title='Delete'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$CURUSER['id']}' class='tooltipper' title='Delete'>
                                 <i class='icon-trash-empty icon has-text-danger'></i>
                             </a>
                         </td>
-                        <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . '</td>
-                    </tr>';
+                        <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . "</td>
+                    </tr>
+                    <tr>
+                        <td colspan='5'>
+                            <input type='type' id='invite_url' class='w-100 bg-none has-no-border has-text-link tooltipper' readonly title='If sending email failed, you can share this link' value='$url'>
+                        </td>
+                    </tr>";
         }
     }
     $HTMLOUT .= main_table($body, $heading) . "
@@ -127,7 +140,7 @@ if ($do === 'view_page') {
                     <input type='submit' class='button is-small' value='{$lang['invites_create']}'>
                 </div>
             </form>";
-    echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($do === 'create_invite') {
     if ($CURUSER['invites'] <= 0) {
@@ -170,9 +183,9 @@ if ($do === 'view_page') {
     header('Location: ?do=view_page');
 } elseif ($do === 'send_email') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $email = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
-        $invite = (isset($_POST['code']) ? htmlsafechars($_POST['code']) : '');
-        $secret = (isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '');
+        $email = isset($_POST['email']) ? htmlsafechars($_POST['email']) : '';
+        $invite = isset($_POST['code']) ? htmlsafechars($_POST['code']) : '';
+        $secret = isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '';
         if (!$email) {
             stderr($lang['invites_error'], $lang['invites_noemail']);
         }
@@ -221,7 +234,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
             die();
         }
     }
-    $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     if (!is_valid_id($id)) {
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
@@ -251,6 +264,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
                 <div class='has-text-centered margin20'>
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "'>
                     <input type='hidden' name='secret' value='{$fetch['id']}'>
+                    <input type='hidden' name='id' value='{$id}'>
                     <input type='submit' value='Send e-mail' class='button is-small'>
                 </div>
             </form>

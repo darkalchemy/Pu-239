@@ -37,7 +37,7 @@ if (isset($_GET['act'])) {
     if (!isset($_GET['act'])) {
         stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
     }
-    if (!is_valid_id($_GET['act'])) {
+    if (!is_valid_id((int) $_GET['act'])) {
         stderr("{$lang['themes_error']}", "{$lang['themes_inv_act']}");
     }
     $act = (int) $_GET['act'];

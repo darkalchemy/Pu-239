@@ -5,12 +5,14 @@ declare(strict_types = 1);
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Message;
 use Pu239\User;
 
 global $container, $CURUSER, $site_config;
 
 $all_my_boxes = $user_cache = $categories = '';
 $user_stuffs = $container->get(User::class);
+$message_stuffs = $container->get(Message::class);
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 if (isset($_POST['action2'])) {

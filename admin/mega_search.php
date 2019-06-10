@@ -10,6 +10,7 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_mega_search'));
 global $site_config;
 
+stderr('Error', 'This page has been disabled');
 $msg_to_analyze = (isset($_POST['msg_to_analyze']) ? htmlsafechars($_POST['msg_to_analyze']) : '');
 $invite_code = (isset($_POST['invite_code']) ? htmlsafechars($_POST['invite_code']) : '');
 $user_names = (isset($_POST['user_names']) ? $_POST['user_names'] : '');

@@ -14,7 +14,7 @@ $stdfoot = [
 ];
 global $CURUSER;
 
-if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id($_GET['id'])) {
+if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id((int) $_GET['id'])) {
     $id = (int) $_GET['id'];
 } else {
     $id = $CURUSER['id'];

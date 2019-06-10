@@ -2905,4 +2905,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `class_config` DROP INDEX `value_name_template`, ADD UNIQUE INDEX `name_template` (`name`, `template`)',
         'flush' => false,
     ],
+    [
+        'id' => 1560201245,
+        'info' => 'Alter users table',
+        'date' => '10 Jun 2019',
+        'query' => "ALTER TABLE `users` ADD COLUMN `join_type` enum('open', 'invite', 'promo') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'open' AFTER `invitedby`",
+        'flush' => false,
+    ],
 ];

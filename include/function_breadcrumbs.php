@@ -154,6 +154,7 @@ function get_secondarypage($lang, $queries, $path)
     $ignore = [
         'topic_id',
         'game_id',
+        'userids',
     ];
 
     if (in_array($list[0], $ignore)) {
@@ -218,6 +219,7 @@ function get_infopage($lang, $queries, $path)
         'mode',
         'sent',
         'search_what',
+        'link',
     ];
     $ignore2 = [
         'polls_manager',

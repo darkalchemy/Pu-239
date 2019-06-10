@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Database;
 use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -11,7 +12,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('signup'));
-global $contianer, $CURUSER, $site_config;
+global $container, $CURUSER, $site_config;
 
 if (!$CURUSER) {
     get_template();
@@ -137,59 +138,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     echo stdhead('Add Promo Link') . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($do === 'accounts') {
-    if ($id == 0) {
-        die("Can't find id");
-    } else {
-        $q1 = sql_query('SELECT name, users FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($q1) == 1) {
-            $a1 = mysqli_fetch_assoc($q1);
-            if (!empty($a1['users'])) {
-                $users = explode(',', $a1['users']);
-                if (!empty($users)) {
-                    $q2 = sql_query('SELECT id, username, added FROM users WHERE id IN (' . implode(', ', $users) . ')') or sqlerr(__FILE__, __LINE__);
-                }
-                $title = 'Users list for promo : ' . htmlsafechars($a1['name']);
-                $HTMLOUT = doc_head() . "
-    <meta property='og:title' content='{$title}'>
-    <title>$title</title>
-    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
-    <link rel='stylesheet' href='" . get_file_name('css') . "'>
-    <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
-    <style>
-    body { background-color:#999999;
-    color:#333333;
-    font-family:tahoma;
-    font-size:12px;
-    font-weight:bold;}
-    a:link, a:hover , a:visited {
-    color:#fff;
+    if (empty($link)) {
+        stderr('Error', 'Invalid Promo ID');
     }
-    .heading { background-color:#0033FF;
-    color:#CCCCCC;}
-    </style>
-    </head>
-    <body>
-    <table width='200' class='has-text-centered' style='border-collapse: collapse;'>
-    <tr><td class='rowhead' class='has-text-left' width='100'> User</td><td class='rowhead' class='has-text-left' nowrap='nowrap'>Added</td></tr>";
-                while ($ap = mysqli_fetch_assoc($q2)) {
-                    $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username((int) $ap['id']) . "</td><td class='has-text-left' nowrap='nowrap'>" . get_date((int) $ap['added'], 'LONG', 0, 1) . '</td></tr>';
-                }
-                $HTMLOUT .= "</table>
-                        <br>
-                    <div class='has-text-centered'><a href='javascript:close()'><input type='button' class='button is-small' value='Close'></a></div>
-                    </body>
-                    </html>";
-                echo wrapper($HTMLOUT);
-            } else {
-                die('No users');
-            }
-        } else {
-            die('Something odd happend');
+    $accounts = explode('|', urldecode($_GET['userids']));
+    if (empty($accounts)) {
+        stderr('Error', 'No users have signed up from this promo');
+    }
+    $name = $fluent->from('promo')
+                   ->select(null)
+                   ->select('name')
+                   ->where('link = ?', $link)
+                   ->fetch('name');
+    $user_stuffs = $container->get(User::class);
+    $body = '
+                    <h1 class="has-text-centered">Users list for promo: ' . htmlsafechars($name) . '</h1>
+                    <div class="padding20 level-center-center">';
+    foreach ($accounts as $ap) {
+        $ap = (int) $ap;
+        $promo_user = $user_stuffs->getUserFromId($ap);
+        if (!empty($promo_user)) {
+            $users[] = "<div class='margin20 padding20 bg-02 round10'>" . format_username($ap) . ' joined ' . get_date($promo_user['registered'], 'LONG', 0, 1) . '</div>';
         }
     }
+    $body .= implode('', $users) . '
+                    </div>';
+
+    $HTMLOUT .= main_div($body);
+    echo stdhead('Current Promos') . wrapper($HTMLOUT) . stdfoot();
+    die();
 }
 
 if (empty($_POST)) {
+    $modal = '
+        <div class="modal">
+            <div class="modal-background"></div>
+                <div class="modal-content">
+                    <!-- Any other Bulma elements you want -->
+                </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>';
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
@@ -229,7 +217,7 @@ if (empty($_POST)) {
                 <td class='has-text-centered'>" . get_date($ar['added'], 'LONG') . "</td>
                 <td class='has-text-centered'>" . get_date($ar['added'] + (86400 * $ar['days_valid']), 'LONG', 1, 0) . "</td>
                 <td class='has-text-centered'>" . $ar['max_users'] . "</td>
-                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . $ar['id'] . ')">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
+                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="' . $_SERVER['PHP_SELF'] . '?do=accounts&amp;link=' . $ar['link'] . '&amp;userids=' . urldecode($ar['users']) . '">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
                 <td class='has-text-centered'>" . mksize($ar['bonus_upload'] * 1073741824) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_invites']) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_karma']) . "</td>

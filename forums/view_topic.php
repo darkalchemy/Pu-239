@@ -467,7 +467,7 @@ foreach ($posts as $arr) {
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ';
     $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title']) . '</span>' : '';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy'>" : '';
-    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, $arr['post_id'], $arr['anonymous']) : '';
+    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, (int) $arr['post_id'], ($arr['anonymous'] === 'yes' ? true : false)) : '';
     $attachments = $edited_by = '';
     if ($arr['edit_date'] > 0) {
         if ($arr['anonymous'] === 'yes') {
@@ -563,10 +563,21 @@ foreach ($posts as $arr) {
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
     $dlink = "dLink_{$topic_id}_{$post_id}";
     $avatar = get_avatar($usersdata);
+    switch ($post_status) {
+        case 'deleted':
+            $show_status = "<div class='margin10 has-text-centered'><h3 class='has-text-danger'>Post Soft Deleted</h3></div>";
+            break;
+        case 'postlocked':
+            $show_status = "<div class='margin10 has-text-centered'><h3 class='has-text-warning'>Post Locked</h3></div>";
+            break;
+        default:
+            $show_status = '';
+    }
 
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
-            <td colspan="3">
+            <td colspan="3">' . $show_status . '
+                
                 <div class="columns level">
                     <div class="column is-one-quarter">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '">' : '') . '

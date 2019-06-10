@@ -175,6 +175,10 @@ function run_uglify($argv = [])
             SCRIPTS_DIR . 'cookieconsent.js',
         ];
 
+        $js_list['invite_js'] = [
+            SCRIPTS_DIR . 'invite.js',
+        ];
+
         $js_list['mass_bonus_js'] = [
             SCRIPTS_DIR . 'mass_bonus.js',
         ];

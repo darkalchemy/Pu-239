@@ -55,8 +55,8 @@ if (!isset($_GET['id'])) {
     die();
 }
 
-if (!is_valid_id($_GET['id'])) {
-    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
+if (!is_valid_id((int) $_GET['id'])) {
+    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']} {$_GET['id']}");
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -466,7 +466,7 @@ $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
 $user_stuffs = $container->get(User::class);
 $torrent_cache['rep'] = $user_stuffs->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
-    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', $torrent['anonymous'], $id, $torrent['anonymous']);
+    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', true, $id, ($torrent['anonymous'] === 'yes' ? true : false));
     $audit .= tr('Reputation', "
         <div class='level-left left10'>
             $member_reputation counts towards uploaders Reputation

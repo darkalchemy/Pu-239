@@ -58,7 +58,6 @@ function karmavip_update($data)
             write_log('Cleanup - Karma Vip status expired on - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $count);
-        status_change($arr['id']);
     }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

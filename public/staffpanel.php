@@ -398,7 +398,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h1 class='has-text-centered text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>";
+            <h1 class='has-text-centered text-shadow " . get_user_class_name((int) $arr['av_class'], true) . "'>" . get_user_class_name((int) $arr['av_class']) . "'s Panel</h1>";
                 }
                 $show_in_nav = $arr['navbar'] == 1 ? '
                 <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">true</span>' : '

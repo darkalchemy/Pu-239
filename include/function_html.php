@@ -418,6 +418,9 @@ function send_mail($email, $subject, $html, $plain)
 {
     global $container, $site_config;
 
+    if (!$site_config['mail']['smtp_enable']) {
+        return false;
+    }
     $mail = $container->get(PHPMailer::class);
     if ($mail) {
         $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}");

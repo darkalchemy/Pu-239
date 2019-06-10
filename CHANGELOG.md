@@ -1,4 +1,5 @@
 ### 09 Jun, 2019
+fix: strict issues  
 fix: forum post history  
 update: make forum posts and comments same format  
 fix: reports.php  

@@ -83,7 +83,7 @@ if (isset($_GET['type'])) {
 }
 $cache = $container->get(Cache::class);
 if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
-    if (!is_valid_id($_POST['id'])) {
+    if (!is_valid_id((int) $_POST['id'])) {
         stderr("{$lang['reports_error']}", "{$lang['reports_error3']}");
     }
     $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['body']);
@@ -201,13 +201,15 @@ if ($count === 0) {
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $name = !empty($arr_who2['name']) ? htmlsafechars($arr_who2['name']) : '';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Post':
                     $res_who2 = sql_query('SELECT topic_name FROM topics WHERE id =' . sqlesc($arr_info['2nd_value']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . (int) $arr_info['2nd_value'] . '&amp;page=last#' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['topic_name']) . '</b></a>';
+                    $name = !empty($arr_who2['topic_name']) ? htmlsafechars($arr_who2['topic_name']) : '';
+                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . (int) $arr_info['2nd_value'] . '&amp;page=last#' . (int) $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
             }
         }
@@ -226,7 +228,7 @@ if ($count === 0) {
             </td>" : '') . '
         </tr>';
         if ($arr_info['how_delt_with']) {
-            $HTMLOUT .= "
+            $body .= "
         <tr>
             <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
@@ -238,6 +240,7 @@ if ($count === 0) {
     $HTMLOUT .= main_table($body, $header);
     $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
 }
+
 if ($count > 0) {
     $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']}" . BBcode('', 'top20', 200) . "
     <input type='submit' class='button is-small margin20' value='{$lang['reports_confirm']}'>

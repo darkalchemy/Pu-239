@@ -91,7 +91,6 @@ function pu_update($data)
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                 }
-                status_change($arr['id']);
             }
 
             $count = count($msgs_buffer);

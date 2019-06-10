@@ -108,6 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cache->delete('staff_classes_');
     if ($mode === 'edit') {
         $edited = false;
+        if ($_POST['UC_MAX'] > UC_MAX || $_POST['UC_STAFF'] > UC_MAX || $_POST['UC_MIN'] > UC_MAX || $_POST['UC_MAX'] < UC_MIN || $_POST['UC_STAFF'] < UC_MIN || $_POST['UC_MIN'] < UC_MIN || $_POST['UC_MAX'] < $_POST['UC_MIN'] || $_POST['UC_MAX'] < $_POST['UC_STAFF'] || $_POST['UC_STAFF'] < $_POST['UC_MIN']) {
+            stderr('Error', 'Invalid Class Configuration UC_MAX|UC_STAFF|UC_MIN');
+        }
         if (!empty($class_config)) {
             foreach ($class_config as $current_name => $value) {
                 $current_value = $value['value'];
@@ -346,7 +349,7 @@ if (!empty($base_classes)) {
                         <tr class='{$cname}'>
                             <td colspan='2' class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
                             <td colspan='3'>
-                                <input class='w-100' type='number' name='" . htmlsafechars($arr['name']) . "' value='" . (int) $arr['value'] . "'>
+                                <input class='w-100' type='number' min='0' max='" . UC_MAX . "' name='" . htmlsafechars($arr['name']) . "' value='" . (int) $arr['value'] . "'>
                             </td>
                         </tr>";
     }

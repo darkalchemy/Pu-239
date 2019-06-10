@@ -54,25 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ];
                 $message_stuffs = $container->get(Message::class);
                 $message_stuffs->insert($msgs_buffer);
-                $post['email'] = $email;
-                $post['invitedby'] = $inviter;
+                $set = [
+                    'join_type' => 'invite',
+                    'invitedby' => $inviter,
+                ];
+                $user->update($set, $userid);
             }
         } elseif (!empty($promo)) {
             $valid = validate_promo($promo, true);
             if ($valid) {
                 $set = [
                     'accounts_made' => new Literal('accounts_made + 1'),
-                    'users' => empty($valid['users']) ? $userid : $valid['users'] . '|',
-                    $userid,
+                    'users' => empty($valid['users']) ? $userid : $valid['users'] . '|' . $userid,
                 ];
                 $fluent->update('promo')
                        ->set($set)
-                       ->where('link = ?', $promo)
+                       ->where('link = ?', $valid['link'])
                        ->execute();
 
                 $set = [
+                    'join_type' => 'promo',
+                    'invitedby' => $valid['id'],
                     'seedbonus' => $valid['bonus_karma'],
-                    'invite' => $valid['bonus_invites'],
+                    'invites' => $valid['bonus_invites'],
                     'uploaded' => $valid['bonus_upload'] * 1073741824,
                 ];
                 $user->update($set, $userid);
@@ -103,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!empty($valid)) {
             $title .= ' using a Site Promotion';
             $promo = "
-                <input type='hidden' name='token' value='{$valid}'>";
+                <input type='hidden' name='promo' value='{$valid}'>";
         }
     }
     $invite_id = !empty($_GET['id']) ? (int) $_GET['id'] : null;

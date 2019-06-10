@@ -111,7 +111,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				<td>' . format_username((int) $row['id']) . '</td>
 				<td>' . get_date((int) $row['registered'], '') . '</td>
 				<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $row['last_access'], '') : 'Never') . '</td>
-				<td>' . get_user_class_name($row['class']) . '</td>
+				<td>' . get_user_class_name((int) $row['class']) . '</td>
 				<td>' . $country . '</td>
 				<td>
 					<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="is-link">' . $lang['fe_post_history'] . '</a>

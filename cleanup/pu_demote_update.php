@@ -82,7 +82,6 @@ function pu_demote_update($data)
                 write_log('Cleanup: Demoted ' . $count . " member(s) from {$class_name} to {$prev_class_name}");
             }
             unset($users_buffer, $msgs_buffer, $count);
-            status_change($arr['id']);
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;

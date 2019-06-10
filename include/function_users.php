@@ -31,17 +31,17 @@ function get_parked()
 }
 
 /**
- * @param     $msg
- * @param int $channel
- * @param int $ttl
+ * @param string $msg
+ * @param int    $channel
+ * @param int    $ttl
  *
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
-function autoshout($msg, $channel = 0, $ttl = 7200)
+function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
 {
-    global $site_config;
+    global $container, $site_config;
 
     if (user_exists($site_config['chatbot']['id'])) {
         $values = [
@@ -54,8 +54,6 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
             'ttl' => $ttl,
         ];
 
-        global $container;
-
         $fluent = $container->get(Database::class);
         $fluent->insertInto('ajax_chat_messages')
                ->values($values)
@@ -64,26 +62,20 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
 }
 
 /**
- * @param        $user
+ * @param array  $user
  * @param string $mode
  * @param bool   $rep_is_on
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return string
  */
-function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $anonymous = false)
+function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, int $post_id = 0, bool $anonymous = false)
 {
-    global $container, $site_config;
-
-    if (empty($user['username'])) {
-        $user_stuffs = $container->get(User::class);
-        $user = $user_stuffs->getUserFromId($user);
-    }
+    global $site_config;
 
     if ($rep_is_on) {
         include CACHE_DIR . 'rep_cache.php';
@@ -140,13 +132,13 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $ano
                 break;
 
             default:
-                $pips = 12; // statusbar
+                $pips = 12;
         }
         $rep_bar = intval($rep_power / 100);
         if ($rep_bar > 10) {
             $rep_bar = 10;
         }
-        if ($user['g_rep_hide']) { // can set this to a group option if required, via admin?
+        if ($user['g_rep_hide']) {
             $posneg = 'off';
             $rep_level = 'rep_off';
         } else {
@@ -174,11 +166,11 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0, $ano
 }
 
 /**
- * @param $ratio
+ * @param float $ratio
  *
  * @return string
  */
-function get_ratio_color($ratio)
+function get_ratio_color(float $ratio)
 {
     if ($ratio < 0.1) {
         return '#ff0000';
@@ -245,11 +237,11 @@ function get_ratio_color($ratio)
 }
 
 /**
- * @param $ratio
+ * @param float $ratio
  *
  * @return string
  */
-function get_slr_color($ratio)
+function get_slr_color(float $ratio)
 {
     if ($ratio < 0.025) {
         return '#ff0000';
@@ -331,14 +323,14 @@ function get_slr_color($ratio)
 }
 
 /**
- * @param $ratio_to_check
+ * @param float $ratio_to_check
  *
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return string|null
  */
-function ratio_image_machine($ratio_to_check)
+function ratio_image_machine(float $ratio_to_check)
 {
     global $site_config;
 
@@ -376,16 +368,15 @@ function ratio_image_machine($ratio_to_check)
 }
 
 /**
- * @param      $class
+ * @param int  $class
  * @param bool $to_lower
  *
  * @return string
  */
-function get_user_class_name($class, $to_lower = false)
+function get_user_class_name(int $class, bool $to_lower = false)
 {
     global $site_config;
 
-    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -399,15 +390,14 @@ function get_user_class_name($class, $to_lower = false)
 }
 
 /**
- * @param $class
+ * @param int $class
  *
  * @return string
  */
-function get_user_class_color($class)
+function get_user_class_color(int $class)
 {
     global $site_config;
 
-    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -419,15 +409,14 @@ function get_user_class_color($class)
 }
 
 /**
- * @param $class
+ * @param int $class
  *
  * @return string
  */
-function get_user_class_image($class)
+function get_user_class_image(int $class)
 {
     global $site_config;
 
-    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -439,29 +428,25 @@ function get_user_class_image($class)
 }
 
 /**
- * @param $class
+ * @param int $class
  *
  * @return bool
  */
-function valid_class($class)
+function valid_class(int $class)
 {
-    $class = (int) $class;
-
     return (bool) ($class >= UC_MIN && $class <= UC_MAX);
 }
 
 /**
- * @param int $min
- * @param int $max
+ * @param int $minclass
+ * @param int $maxclass
  *
  * @return bool
  */
-function min_class($min = UC_MIN, $max = UC_MAX)
+function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
 {
     global $CURUSER;
 
-    $minclass = (int) $min;
-    $maxclass = (int) $max;
     if (!isset($CURUSER)) {
         return false;
     }
@@ -482,8 +467,8 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -575,22 +560,22 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
 }
 
 /**
- * @param $id
+ * @param int $id
  *
  * @return bool
  */
-function is_valid_id($id)
+function is_valid_id(int $id)
 {
-    return is_numeric($id) && ($id > 0) && (floor($id) == $id);
+    return $id > 0;
 }
 
 /**
- * @param $up
- * @param $down
+ * @param float $up
+ * @param float $down
  *
  * @return string
  */
-function member_ratio($up, $down)
+function member_ratio(float $up, float $down)
 {
     switch (true) {
         case $down > 0 && $up > 0:
@@ -613,14 +598,14 @@ function member_ratio($up, $down)
 }
 
 /**
- * @param $ratio
+ * @param float $ratio
  *
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return string
  */
-function get_user_ratio_image($ratio)
+function get_user_ratio_image(float $ratio)
 {
     global $site_config;
 
@@ -662,10 +647,10 @@ function get_user_ratio_image($ratio)
 /**
  * @param $avatar
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string|null
  */
@@ -703,11 +688,11 @@ function get_avatar($avatar)
 }
 
 /**
- * @param $fo
+ * @param string $fo
  *
  * @return bool
  */
-function blacklist($fo)
+function blacklist(string $fo)
 {
     global $site_config;
 
@@ -721,21 +706,23 @@ function blacklist($fo)
 }
 
 /**
- * @param $post_id
+ * @param int $post_id
  *
  * @throws DependencyException
  * @throws NotFoundException
  */
-function clr_forums_cache($post_id)
+function clr_forums_cache(int $post_id)
 {
     global $container;
 
     $cache = $container->get(Cache::class);
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $cache->delete('forum_last_post_' . $post_id . '_' . $uclass);
-        $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
-        $cache->delete('last_posts_' . $uclass);
+        $cache->deleteMulti([
+            'forum_last_post_' . $post_id . '_' . $uclass,
+            'sv_last_post_' . $post_id . '_' . $uclass,
+            'last_posts_' . $uclass,
+        ]);
         ++$uclass;
     }
 }

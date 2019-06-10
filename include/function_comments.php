@@ -7,7 +7,6 @@ use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Mood;
-use Pu239\Session;
 use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -15,11 +14,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param        $rows
  * @param string $variant
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
@@ -115,7 +114,6 @@ function commenttable($rows, $variant = 'torrent')
         $this_text .= "<span class='left5'>" . get_date((int) $row['added'], '') . '</span>';
         $row['id'] = (int) $row['id'];
         $tid = !empty($row[$variant]) ? "&amp;tid={$row[$variant]}" : '';
-        $session = $container->get(Session::class);
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['paths']['baseurl']}/{$type}.php?action=edit&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
                     <a href='{$site_config['paths']['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
@@ -136,7 +134,8 @@ function commenttable($rows, $variant = 'torrent')
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $image = placeholder_image();
-        $member_reputation = !empty($usersdata['username']) ? get_reputation($row['user'], 'comments', true, 0, $row['anonymous']) : '';
+        $user = $user_stuffs->getUserFromId($row['user']);
+        $member_reputation = !empty($usersdata['username']) ? get_reputation($user, 'comments', true, 0, ($row['anonymous']) === 'yes' ? true : false) : '';
         $htmlout .= main_div("
             <a id='comm{$row['id']}'></a>
             $this_text

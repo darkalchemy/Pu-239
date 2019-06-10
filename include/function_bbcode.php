@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -184,10 +184,10 @@ function format_urls($s)
  * @param bool $urls
  * @param bool $images
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */
@@ -405,7 +405,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $show_image = $images ? 'img-responsive' : 'is_hidden';
     if (stripos($s, '[img') !== false) {
         $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
-        $s = preg_replace("/\[img width=(\d+) height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img width=(\d+|auto) height=(\d+|auto)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
         $s = preg_replace("/\[img width=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="\\1" height="auto" class="' . $show_image . '"></a>', $s);
         $s = preg_replace("/\[img height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="auto" height="\\1" class="' . $show_image . '"></a>', $s);
         // [img=image services with or without extension
@@ -518,10 +518,10 @@ function format_code($s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */

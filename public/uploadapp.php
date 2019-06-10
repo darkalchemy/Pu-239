@@ -145,7 +145,7 @@ if (isset($_POST['form']) != 1) {
         </form>";
     }
 } else {
-    if (!is_valid_id($_POST['userid'])) {
+    if (!is_valid_id((int) $_POST['userid'])) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
     }
     if (!$_POST['speed']) {

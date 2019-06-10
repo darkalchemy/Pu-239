@@ -18,7 +18,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
 }
 
-if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
+if (!isset($_GET['id']) || !is_valid_id((int) $_GET['id'])) {
     stderr("{$lang['fastdelete_error']}", "{$lang['fastdelete_error_id']}");
 }
 

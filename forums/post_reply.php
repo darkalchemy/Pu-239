@@ -67,7 +67,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     ];
     $post_stuffs = $container->get(Post::class);
     $post_id = (int) $post_stuffs->insert($values);
-    clr_forums_cache($arr['real_forum_id']);
+    clr_forums_cache((int) $arr['real_forum_id']);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     sql_query('UPDATE topics SET last_post = ' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
