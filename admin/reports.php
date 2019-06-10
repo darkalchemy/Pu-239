@@ -195,7 +195,7 @@ if ($count === 0) {
                     $res_who2 = sql_query('SELECT name FROM torrents WHERE id =' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $name = !empty($arr_who2['name']) ? htmlsafechars($arr_who2['name']) : 'Torrent Unknown';
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Hit_And_Run':

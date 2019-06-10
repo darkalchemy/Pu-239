@@ -1,4 +1,5 @@
 ### 09 Jun, 2019
+fix: reports.php  
 fix: remove dd() usage  
 fix: imdb block format details.php  
 fix: userhistory.php  
