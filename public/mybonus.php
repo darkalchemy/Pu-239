@@ -586,7 +586,7 @@ foreach ($options as $gets) {
     }
     $button = "
                 <div class='has-text-centered top20'>
-                    <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma'>
+                    <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma' " . ($user['seedbonus'] < $gets['points'] ? 'disabled' : '') . ">
                 </div>";
     switch (true) {
         case $gets['id'] === 5:
@@ -597,6 +597,7 @@ foreach ($options as $gets) {
                     </div>";
             break;
         case $gets['id'] === 7:
+            $max = $user['seedbonus'] < 100000 ? $user['seedbonus'] : 100000;
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         <label for='username'>Enter the <b>username</b> you would like to send karma to:</label>
@@ -623,6 +624,7 @@ foreach ($options as $gets) {
                     </div>";
             break;
         case $gets['id'] === 11:
+            $max_donation = $user['seedbonus'] < $max_donation ? $user['seedbonus'] : $max_donation;
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         $top_donator1
@@ -637,6 +639,7 @@ foreach ($options as $gets) {
                     </div>";
             break;
         case $gets['id'] === 12:
+            $max_donation = $user['seedbonus'] < $max_donation ? $user['seedbonus'] : $max_donation;
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         $top_donator2
@@ -651,6 +654,7 @@ foreach ($options as $gets) {
                     </div>";
             break;
         case $gets['id'] === 13:
+            $max_donation = $user['seedbonus'] < $max_donation ? $user['seedbonus'] : $max_donation;
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         $top_donator3
@@ -686,17 +690,25 @@ foreach ($options as $gets) {
     }
 
     $body = "
-            <div class='masonry-item-clean padding10 bg-04 round10'>
-            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' accept-charset='utf-8'>
-                <input type='hidden' name='option' value='" . $gets['id'] . "'>
-                <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
-                <input type='hidden' name='menge' value='" . $gets['menge'] . "'>
-                <input type='hidden' name='pointspool' value='" . $gets['pointspool'] . "'>
-                <input type='hidden' name='minpoints' value='" . $gets['minpoints'] . "'>
-                <input type='hidden' name='points' value='" . $gets['points'] . "'>
-                <h3 class='has-text-centered'>" . htmlsafechars($gets['bonusname']) . '</h3>' . htmlsafechars($gets['description']) . $additional_text . $button . '
-            </form>
-            </div>';
+                <div class='masonry-item-clean padding20 bg-04 round10'>
+                    <div class='flex-vertical comments h-100'>
+                        <div>
+                            <h2 class='has-text-centered has-text-weight-bold'>" . htmlsafechars($gets['bonusname']) . '</h2>' . htmlsafechars($gets['description']) . $additional_text . "
+                        </div>
+                        <div>
+                            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' accept-charset='utf-8'>
+                                <input type='hidden' name='option' value='" . $gets['id'] . "'>
+                                <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
+                                <input type='hidden' name='menge' value='" . $gets['menge'] . "'>
+                                <input type='hidden' name='pointspool' value='" . $gets['pointspool'] . "'>
+                                <input type='hidden' name='minpoints' value='" . $gets['minpoints'] . "'>
+                                <input type='hidden' name='points' value='" . $gets['points'] . "'>
+                                $button
+                            </form>   
+                        </div>
+                    </div>
+                </div>";
+
     $items .= $body;
 }
 

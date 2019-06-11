@@ -1,4 +1,5 @@
 ### 09 Jun, 2019
+update: disable button when not enough seedbonus mybonus.php  
 update: return query results DESC  
 fix: say_thanks()  
 fix: clear torrent cache when leaving quick thank you  
