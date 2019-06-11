@@ -35,7 +35,7 @@ $dt = TIME_NOW;
 function classes2name($min, $max)
 {
     for ($i = $min; $i < $max + 1; ++$i) {
-        $sent2classes[] = get_user_class_name($i);
+        $sent2classes[] = get_user_class_name((int) $i);
     }
 }
 
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             if (ctype_digit($group) && (int) $group >= 0) {
                 $classes[] = $group;
-                $sent2classes[] = get_user_class_name($group);
+                $sent2classes[] = get_user_class_name((int) $group);
             }
         }
         if (count($classes) > 0) {
@@ -133,7 +133,7 @@ $groups['staff'] = [
     'minclass' => UC_MIN,
 ];
 for ($i = UC_STAFF; $i <= UC_MAX; ++$i) {
-    $groups['staff']['ops'][$i] = get_user_class_name($i);
+    $groups['staff']['ops'][$i] = get_user_class_name((int) $i);
 }
 $groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
 $groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
@@ -143,7 +143,7 @@ $groups['members'] = [
     'minclass' => UC_STAFF,
 ];
 for ($i = UC_MIN; $i <= $last_user_class; ++$i) {
-    $groups['members']['ops'][$i] = get_user_class_name($i);
+    $groups['members']['ops'][$i] = get_user_class_name((int) $i);
 }
 $groups['members']['ops']['donor'] = $lang['grouppm_donor'];
 $groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];

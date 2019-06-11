@@ -116,7 +116,7 @@ if ($count == 0) {
         $HTMLOUT .= "<tr>
                   <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
-                  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
+                  <td nowrap='nowrap'>" . get_user_class_name((int) $a['class']) . "</td>
                   <td nowrap='nowrap'>" . get_date((int) $a['last_access'], 'LONG', 0, 1) . "</td>
                   <td nowrap='nowrap'>" . get_date((int) $a['registered'], 'DATE', 1) . "</td>
                   <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>

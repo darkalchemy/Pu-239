@@ -42,7 +42,7 @@ foreach ($comments as $comment) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $users_data = $user_stuffs->getUserFromId((int) $owner);
-        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
+        $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 
     $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);

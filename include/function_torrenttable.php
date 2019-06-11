@@ -318,7 +318,7 @@ function torrenttable($res, $variant = 'index')
                 $uploader = '<span>' . get_anonymous_name() . '</span>';
                 $formatted = "<i>({$uploader})</i>";
             } else {
-                $uploader = "<span class='" . get_user_class_name($row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
+                $uploader = "<span class='" . get_user_class_name((int) $row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
                 $formatted = format_username((int) $row['owner']);
             }
         } else {

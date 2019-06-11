@@ -154,7 +154,7 @@ switch ($action) {
                             <select name='min_class_read'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_read'] === $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+                                <option class='body' value='{$i}'" . ($forum['min_class_read'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -166,7 +166,7 @@ switch ($action) {
                             <select name='min_class_write'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_write'] === $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+                                <option class='body' value='{$i}'" . ($forum['min_class_write'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -178,7 +178,7 @@ switch ($action) {
                             <select name='min_class_create'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_create'] === $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+                                <option class='body' value='{$i}'" . ($forum['min_class_create'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -243,8 +243,8 @@ foreach ($forums as $row) {
             </td>
             <td><span>' . $subforum_name . '</span></td>
             <td>' . $name . '</td>
-            <td>' . get_user_class_name($row['min_class_read']) . '</td>
-            <td>' . get_user_class_name($row['min_class_write']) . '</td>
+            <td>' . get_user_class_name((int) $row['min_class_read']) . '</td>
+            <td>' . get_user_class_name((int) $row['min_class_write']) . '</td>
             <td>' . get_user_class_name($row['min_class_create']) . '</td>
             <td class="has-text-centered">
                 <span class="level-center">

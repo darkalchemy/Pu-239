@@ -75,7 +75,7 @@ if ($count == 0) {
         $body .= '
         <tr>
             <td>' . format_username((int) $arr2['id']) . '</td>
-            <td>' . get_user_class_name($arr2['class']);
+            <td>' . get_user_class_name((int) $arr2['class']);
         if ($arr2['class'] > UC_ADMINISTRATOR && $arr2['id'] != $CURUSER['id']) {
             $body .= "</td>
             <td>{$lang['freeusers_until']}" . get_date((int) $arr2['free_switch'], 'DATE') . '(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td>

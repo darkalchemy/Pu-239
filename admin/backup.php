@@ -164,7 +164,7 @@ if (empty($mode)) {
         ->execute();
 
     if ($site_config['backup']['write_to_log']) {
-        write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
+        write_log($CURUSER['username'] . '(' . get_user_class_name((int) $CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
     header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=backup');
     die();
@@ -197,7 +197,7 @@ if (empty($mode)) {
                 ->execute();
 
             if ($site_config['backup']['write_to_log']) {
-                write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');
+                write_log($CURUSER['username'] . '(' . get_user_class_name((int) $CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');
             }
             $location = 'backup';
         } else {

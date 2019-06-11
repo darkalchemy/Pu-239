@@ -107,14 +107,14 @@ foreach ($query as $sub_forums_arr) {
 						' . get_date((int) $post_arr['added'], '') . '<br></span>';
             } else {
                 $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . format_username((int) $post_arr['user_id']) . ']
-						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
+						<span style="font-size: x-small;"> [ ' . get_user_class_name((int) $post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name']) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name']), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date((int) $post_arr['added'], '') . '<br></span>';
             }
         } else {
             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . format_username((int) $post_arr['user_id']) . '
-						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
+						<span style="font-size: x-small;"> [ ' . get_user_class_name((int) $post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name']) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name']), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date((int) $post_arr['added'], '') . '<br></span>';

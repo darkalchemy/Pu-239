@@ -113,7 +113,7 @@ if (mysqli_num_rows($res) >= 1) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $body .= "
         <tr>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name(htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
+            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name((int) htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
             <td>&#160;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "'></td>
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['min_ratio']) . "'></td>
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['uploaded']) . "'></td>
@@ -164,7 +164,7 @@ $body = "
 $maxclass = UC_STAFF;
 for ($i = 1; $i < $maxclass; ++$i) {
     $body .= "
-                    <option value='$i'>" . get_user_class_name($i) . '</option>';
+                    <option value='$i'>" . get_user_class_name((int) $i) . '</option>';
 }
 $body .= "
                 </select>

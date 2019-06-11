@@ -128,7 +128,7 @@ switch ($action) {
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+                $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
             <td><span class="has-text-weight-bold">' . $lang['ad_over_sort'] . '</span></td>
@@ -175,7 +175,7 @@ switch ($action) {
                 <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . $row['id'] . '">' . htmlsafechars($row['name']) . '</a><br>
                 ' . htmlsafechars($row['description']) . '
             </td>
-            <td class="has-text-centered">' . get_user_class_name($row['min_class_view']) . '</td>
+            <td class="has-text-centered">' . get_user_class_name((int) $row['min_class_view']) . '</td>
             <td class="has-text-centered">
                 <span class="level-center">
                     <span class="left10">
@@ -215,7 +215,7 @@ switch ($action) {
                         <select name="min_class_view">';
         for ($i = 0; $i <= $maxclass; ++$i) {
             $min_class_viewer .= '
-                            <option class="body" value="' . $i . '">' . get_user_class_name($i) . '</option>';
+                            <option class="body" value="' . $i . '">' . get_user_class_name((int) $i) . '</option>';
         }
         $body .= $min_class_viewer . '
                         </select>

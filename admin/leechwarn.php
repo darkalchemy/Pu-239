@@ -124,7 +124,7 @@ if ($count == 0) {
         <tr>
             <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . '</a></td>
             <td>' . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . '</font></td>
-            <td>' . get_user_class_name($a['class']) . '</td>
+            <td>' . get_user_class_name((int) $a['class']) . '</td>
             <td>' . get_date((int) $a['last_access'], 'LONG', 0, 1) . '</td>
             <td>' . get_date((int) $a['registered'], 'DATE', 1) . "</td>
             <td><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>

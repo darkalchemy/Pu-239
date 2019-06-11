@@ -100,7 +100,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             $users = $hit_and_run_arr;
             $users['id'] = (int) $Uid_ID;
             $HTMLOUT .= '<tr><td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
-            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
+            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name((int) $hit_and_run_arr['class']) . ' ]
 </td>
             <td><a class="is-link" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
             ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>

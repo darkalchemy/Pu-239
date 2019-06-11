@@ -216,7 +216,7 @@ if ($id !== 0) {
                 <select name="class">
                     <option value=" - ">' . $lang['invite_any'] . '</option>';
     for ($i = 0;; ++$i) {
-        if ($c = get_user_class_name($i)) {
+        if ($c = get_user_class_name((int) $i)) {
             $HTMLOUT .= '
                     <option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected' : '') . '>' . $c . '</option>';
         } else {

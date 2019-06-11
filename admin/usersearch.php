@@ -120,7 +120,7 @@ if (!is_valid_id($class)) {
     $class = '';
 }
 for ($i = 2;; ++$i) {
-    if ($c = get_user_class_name($i - 2)) {
+    if ($c = get_user_class_name((int) $i - 2)) {
         $body .= "
                     <option value='$i'" . (isset($class) && $class == $i ? ' selected' : '') . ">$c</option>";
     } else {

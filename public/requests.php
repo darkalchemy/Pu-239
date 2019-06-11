@@ -296,7 +296,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>requested by:</td>
-  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name((int) $usersdata['class']) . ' ]
   ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
@@ -377,7 +377,7 @@ switch ($action) {
                                      ->values($values)
                                      ->execute();
 
-            $color = get_user_class_name($CURUSER['class'], true);
+            $color = get_user_class_name((int) $CURUSER['class'], true);
             $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url ={$site_config['paths']['baseurl']}/requests.php?action=request_details & id ={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&new=1&id=' . $new_request_id);

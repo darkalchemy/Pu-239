@@ -105,7 +105,7 @@ if (mysqli_num_rows($res) != 0) {
         }
         $added = get_date((int) $arr['registered'], 'LONG', 0, 1);
         $last_access = get_date((int) $arr['last_access'], 'LONG', 0, 1);
-        $class = get_user_class_name($arr['class']);
+        $class = get_user_class_name((int) $arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
         $HTMLOUT .= "

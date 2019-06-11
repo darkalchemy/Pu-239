@@ -324,7 +324,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="' . $class . '"' . ($arr['av_class'] == $class ? ' selected' : '') . '>' . get_user_class_name($class) . '</option>';
+                           <option value="' . $class . '"' . ($arr['av_class'] == $class ? ' selected' : '') . '>' . get_user_class_name((int) $class) . '</option>';
         }
         $body .= '
                         </select>

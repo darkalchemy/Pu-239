@@ -586,8 +586,8 @@ foreach ($options as $gets) {
     }
     $button = "
                 <div class='has-text-centered top20'>
-                    <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma' " . ($user['seedbonus'] < $gets['points'] ? 'disabled' : '') . ">
-                </div>";
+                    <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma' " . ($user['seedbonus'] < $gets['points'] ? 'disabled' : '') . '>
+                </div>';
     switch (true) {
         case $gets['id'] === 5:
             $additional_text = "

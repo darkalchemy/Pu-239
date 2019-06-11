@@ -226,7 +226,7 @@ for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '
         <div>
             <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked>
-            <span style="font-weight: bold;color: #' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span>
+            <span style="font-weight: bold;color: #' . get_user_class_color($i) . ';">' . get_user_class_name((int) $i) . '</span>
         </div>';
 }
 $all_classes_check_boxes .= '

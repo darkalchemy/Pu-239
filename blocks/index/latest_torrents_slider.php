@@ -25,7 +25,7 @@ if (!empty($sliding_torrents)) {
         if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = '<span>' . get_anonymous_name() . '</span>';
         } else {
-            $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
+            $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
 
         $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow lazy round10'";

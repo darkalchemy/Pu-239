@@ -295,7 +295,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>offered by:</td>
-  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name((int) $usersdata['class']) . ' ]
   ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
@@ -376,7 +376,7 @@ switch ($action) {
                                    ->values($values)
                                    ->execute();
 
-            $color = get_user_class_name($CURUSER['class'], true);
+            $color = get_user_class_name((int) $CURUSER['class'], true);
             $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url ={$site_config['paths']['baseurl']}/offers.php?action=offer_details & id ={$new_offer_id}]{$offer_name}[/url]";
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&new=1&id=' . $new_offer_id);

@@ -61,7 +61,7 @@ function class_check($class = 0, $staff = true)
     } else {
         if (!$staff) {
             write_info("{$CURUSER['username']} attempted to access a staff page");
-            stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name($class) . 's and above. Read FAQ.');
+            stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name((int) $class) . 's and above. Read FAQ.');
         } else {
             header("Location: {$site_config['paths']['baseurl']}/404.html");
             die();

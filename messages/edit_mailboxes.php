@@ -244,7 +244,7 @@ $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>
 $body = '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
+                    ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name((int) $CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
                     <p class="top10">
                         <span>' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
                     </p>

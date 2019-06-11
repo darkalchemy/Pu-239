@@ -1,4 +1,5 @@
 ### 09 Jun, 2019
+fix: get_user_class_name() usage  
 update: disable button when not enough seedbonus mybonus.php  
 update: return query results DESC  
 fix: say_thanks()  

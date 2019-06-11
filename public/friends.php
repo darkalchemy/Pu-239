@@ -193,7 +193,7 @@ if (mysqli_num_rows($res) == 0) {
         $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = !empty($friendp['title']) ? htmlsafechars($friendp['title']) : '';
         if (!$title) {
-            $title = get_user_class_name($friendp['class']);
+            $title = get_user_class_name((int) $friendp['class']);
         }
         $linktouser = format_username((int) $friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friendp['last_access'], '') : 'Never');
         $confirm = "<br><span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
@@ -233,7 +233,7 @@ if (mysqli_num_rows($res) == 0) {
         $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = !empty($friend['title']) ? htmlsafechars($friend['title']) : '';
         if (!$title) {
-            $title = get_user_class_name($friend['class']);
+            $title = get_user_class_name((int) $friend['class']);
         }
         $ratio = member_ratio($friend['uploaded'], $site_config['site']['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friend['last_access'], '') : 'Never');

@@ -497,8 +497,8 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                         <span class='right20'>{$avatar}</span>
                         <span style='min-width: 150px;'>
                             <span class='level is-marginless'>
-                                <span class='level-left " . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
-                                <span class='level-right " . get_user_class_name($users_data['class'], true) . "'>" . get_user_class_name($users_data['class'], false) . "</span>
+                                <span class='level-left " . get_user_class_name((int) $users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
+                                <span class='level-right " . get_user_class_name((int) $users_data['class'], true) . "'>" . get_user_class_name((int) $users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Last Seen: </span>
@@ -527,9 +527,9 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                         </span>
                     </span>
                 </span>';
-        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#$uniqueid'";
+        $tooltip = "class='" . get_user_class_name((int) $users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#$uniqueid'";
     } else {
-        $tooltip = "class='" . get_user_class_name(($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
+        $tooltip = "class='" . get_user_class_name((int) ($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
 
     $username = $users_data['enabled'] != 'yes' ? '<s>' . htmlsafechars($users_data['username']) . '</s>' : $tag . htmlsafechars($users_data['username']);

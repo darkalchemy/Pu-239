@@ -559,7 +559,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             $maxclass = $CURUSER['class'] - 1;
         }
         for ($i = 0; $i <= $maxclass; ++$i) {
-            $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+            $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
         }
         $HTMLOUT .= '</select></td></tr>';
     }

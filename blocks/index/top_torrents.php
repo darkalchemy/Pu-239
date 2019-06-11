@@ -39,7 +39,7 @@ foreach ($top5torrents as $top5torrentarr) {
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
+        $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . htmlsafechars($username) . '</span>';
     }
 
     $block_id = "top_id_{$id}";

@@ -82,7 +82,7 @@ if ($action === 'viewbug') {
     while ($a = mysqli_fetch_assoc($as)) {
         $title = htmlsafechars($a['title']);
         $added = get_date((int) $a['added'], '', 0, 1);
-        $addedby = format_username((int) $a['sender']) . '<i>(' . get_user_class_name($a['class']) . ')</i>';
+        $addedby = format_username((int) $a['sender']) . '<i>(' . get_user_class_name((int) $a['class']) . ')</i>';
         switch ($a['priority']) {
             case 'low':
                 $priority = "<span style='color: green;'>{$lang['low']}</span>";
@@ -119,7 +119,7 @@ if ($action === 'viewbug') {
                 break;
 
             default:
-                $by = format_username((int) $a['staff']) . ' <i>(' . get_user_class_name($a['stclass']) . ')</i>';
+                $by = format_username((int) $a['staff']) . ' <i>(' . get_user_class_name((int) $a['stclass']) . ')</i>';
                 break;
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>

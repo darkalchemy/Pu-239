@@ -67,7 +67,7 @@ if (isset($_GET['act'])) {
                     <select name='class' class='w-100'>";
         for ($i = 0; $i <= UC_MAX; ++$i) {
             $body .= "
-                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
         }
         $body .= "
                     </select>
@@ -126,7 +126,7 @@ if (isset($_GET['act'])) {
                         <select name='class'>";
         for ($i = 0; $i <= UC_MAX; ++$i) {
             $body .= "
-                            <option value='$i'>" . get_user_class_name($i) . '</option>';
+                            <option value='$i'>" . get_user_class_name((int) $i) . '</option>';
         }
         $body .= "
                         </select>
@@ -305,7 +305,7 @@ if (!isset($_GET['act'])) {
             <td>" . htmlsafechars($template['uri']) . '</td>
             <td>' . htmlsafechars($template['name']) . '</td>
             <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b></td>
-            <td>' . get_user_class_name($template['min_class_to_view']) . "</td>
+            <td>' . get_user_class_name((int) $template['min_class_to_view']) . "</td>
             <td>
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_edit']}'>

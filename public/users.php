@@ -49,7 +49,7 @@ $div = "
 $div .= "
                 <option value='-'>(any class)</option>";
 for ($i = 0;; ++$i) {
-    if ($c = get_user_class_name($i)) {
+    if ($c = get_user_class_name((int) $i)) {
         $div .= "
                 <option value='$i'" . (ctype_digit($class) && $class == $i ? ' selected' : '') . ">$c</option>";
     } else {
@@ -116,7 +116,7 @@ if ($arr[0] > 0) {
                     <td>' . format_username((int) $row['id']) . '</td>
                     <td class="has-text-centered">' . get_date((int) $row['registered'], 'LONG') . '</td>
                     <td class="has-text-centered">' . get_date((int) $row['last_access'], 'LONG') . '</td>
-                    <td class="has-text-centered">' . get_user_class_name($row['class']) . "</td>
+                    <td class="has-text-centered">' . get_user_class_name((int) $row['class']) . "</td>
                     <td class='has-text-centered'>$country</td>
                 </tr>";
     }

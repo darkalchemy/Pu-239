@@ -421,7 +421,7 @@ function StatusBar()
         return '';
     }
     $StatusBar = $clock = '';
-    $color = get_user_class_name($CURUSER['class'], true);
+    $color = get_user_class_name((int) $CURUSER['class'], true);
     $StatusBar .= "
                     <div id='base_usermenu' class='right20 level-item'>
                         <div class='tooltipper-ajax'>" . format_username((int) $CURUSER['id'], true, false) . "</div>
@@ -457,7 +457,7 @@ function platform_menu()
 
     $styles = '';
     if (!empty($templates) && count($templates) > 1) {
-        $color = get_user_class_name($CURUSER['class'], true);
+        $color = get_user_class_name((int) $CURUSER['class'], true);
         $styles .= "
             <span class='dt-tooltipper-links' data-tooltip-content='#styles_tooltip'>
                 <span class='{$color} right10'>themes<i class='icon-down-open size_2'></i></span>

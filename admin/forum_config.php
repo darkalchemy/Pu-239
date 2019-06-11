@@ -116,7 +116,7 @@ function member_class_drop_down($member_class)
 {
     $member_class_drop_down = '';
     for ($i = 0; $i <= UC_MAX; ++$i) {
-        $member_class_drop_down .= '<option class="body" value="' . $i . '"' . ($member_class == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
+        $member_class_drop_down .= '<option class="body" value="' . $i . '"' . ($member_class == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
     }
 
     return $member_class_drop_down;

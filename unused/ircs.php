@@ -115,7 +115,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($ircusers) {
                 $ircusers .= ",\n";
             }
-            $arr['username'] = '' . get_user_class_name($arr['class']) . ' Leader is : ' . $arr['username'] . '(' . $ircbonus . ')';
+            $arr['username'] = '' . get_user_class_name((int) $arr['class']) . ' Leader is : ' . $arr['username'] . '(' . $ircbonus . ')';
             $ircusers .= $arr['username'];
         }
         if (!isset($ircusers)) {

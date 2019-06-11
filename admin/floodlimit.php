@@ -42,7 +42,7 @@ $body = '';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $body .= '
         <tr>
-            <td>' . get_user_class_name($i) . "</td>
+            <td>' . get_user_class_name((int) $i) . "</td>
             <td><input name='limit[$i]' type='text' class='w-100' value='" . (isset($limit[$i]) ? $limit[$i] : 0) . "'></td>
         </tr>";
 }

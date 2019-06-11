@@ -147,7 +147,7 @@ if (mysqli_num_rows($res) == 0) {
 
       ' . format_username((int) $shit_list['id']) . '<br>
 
-      <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
+      <b> [ ' . get_user_class_name((int) $shit_list['class']) . ' ]</b><br>
 
       <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
       <a class="is-link" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>

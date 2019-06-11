@@ -45,9 +45,9 @@ $text = "
             <select name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
-    if (trim(get_user_class_name($i)) != '') {
+    if (trim(get_user_class_name((int) $i)) != '') {
         $text .= "
-                <option value='$i'>" . get_user_class_name($i) . '</option>';
+                <option value='$i'>" . get_user_class_name((int) $i) . '</option>';
     }
 }
 $text .= "

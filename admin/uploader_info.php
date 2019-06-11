@@ -57,7 +57,7 @@ foreach ($counted as $arr) {
         <td>' . $i . '</td>
         <td>' . (int) $arr['how_many_torrents'] . '</td>
         <td>' . format_username($arr['owner']) . '</td>
-        <td>' . get_user_class_name($arr['class']) . '</td>
+        <td>' . get_user_class_name((int) $arr['class']) . '</td>
         <td>' . $ratio . '</td>
         <td>
             <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['owner'] . '" class="button is-small tooltipper" title="' . $lang['upinfo_sendpm'] . '">' . $lang['upinfo_sendpm'] . '</a>

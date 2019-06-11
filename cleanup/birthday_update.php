@@ -42,7 +42,7 @@ function birthday_update($data)
         $subject = "It's your birthday!!";
         $cache = $container->get(Cache::class);
         foreach ($users as $arr) {
-            $msg = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
+            $msg = 'Hey there <span class="' . get_user_class_name((int) $arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
             $msgs[] = [
                 'sender' => 0,
                 'poster' => 0,

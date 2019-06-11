@@ -49,11 +49,11 @@ if (!empty($CURUSER)) {
         $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
     if ($CURUSER['override_class'] != 255) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name((int) $CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name((int) $CURUSER['class']) . '</b></a>';
     } else {
-        $usrclass = get_user_class_name($CURUSER['class']);
+        $usrclass = get_user_class_name((int) $CURUSER['class']);
     }
     $member_reputation = get_reputation($CURUSER);
 

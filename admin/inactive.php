@@ -127,7 +127,7 @@ if ($count_inactive > 0) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $ratio = (member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']));
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date((int) $arr['last_access'], 'DATE') . '&#160;');
-        $class = get_user_class_name($arr['class']);
+        $class = get_user_class_name((int) $arr['class']);
         $HTMLOUT .= '<tr>
         <td>' . format_username((int) $arr['id']) . '</td>
         <td>' . $class . "</td>

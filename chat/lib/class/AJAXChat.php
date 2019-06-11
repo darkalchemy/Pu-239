@@ -2182,7 +2182,7 @@ class AJAXChat
                 $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
                 $uploaded = '[color=#00FF00]' . mksize($stats['uploaded']) . '[/color]';
                 $downloaded = '[color=#00FF00]' . mksize($stats['downloaded']) . '[/color]';
-                $userClass = get_user_class_name($stats['class']);
+                $userClass = get_user_class_name((int) $stats['class']);
                 $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
                 $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
@@ -2283,7 +2283,7 @@ class AJAXChat
                                           ->where('p.userid = ?', $whereisUserID)
                                           ->fetch('size');
                 $volume = '[color=#00FF00]' . mksize($seedsize) . '[/color]';
-                $whereisRoleClass = get_user_class_name($stats['class'], true);
+                $whereisRoleClass = get_user_class_name((int) $stats['class'], true);
                 $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['paths']['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str = '';
                 $str .= isset($stats['donor']) && $stats['donor'] === 'yes' ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'star.png[/img]' : '';
@@ -2368,7 +2368,7 @@ class AJAXChat
             return false;
         }
 
-        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $toRoleClass = get_user_class_name((int) $this->getRoleFromID($toUserID), true);
         $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
         $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $cur_user_data['username'] . '.';
         $user_data = $this->_user->getUserFromId($toUserID);
@@ -2444,7 +2444,7 @@ class AJAXChat
             return false;
         }
 
-        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $toRoleClass = get_user_class_name((int) $this->getRoleFromID($toUserID), true);
         $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
         $text = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $cur_user_data['username'] . '.';
         $user_data = $this->_user->getUserFromId($toUserID);
@@ -2490,7 +2490,7 @@ class AJAXChat
         $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid=u.id ORDER BY won DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
         if ($row) {
-            $whereisRoleClass = get_user_class_name($row[0], true);
+            $whereisRoleClass = get_user_class_name((int) $row[0], true);
             $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
         }
@@ -2499,7 +2499,7 @@ class AJAXChat
         $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid=u.id ORDER BY won ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
         if ($row) {
-            $whereisRoleClass = get_user_class_name($row[0], true);
+            $whereisRoleClass = get_user_class_name((int) $row[0], true);
             $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
         }
@@ -2545,7 +2545,7 @@ class AJAXChat
             }
 
             $user_data = $this->_user->getUserFromId($userID);
-            $isRoleClass = get_user_class_name($user_data['class'], true);
+            $isRoleClass = get_user_class_name((int) $user_data['class'], true);
             $user = '[' . $isRoleClass . ']' . $userName . '[/' . $isRoleClass . ']';
             $seen = $this->_fluent->from('ajax_chat_messages')
                                   ->select('UNIX_TIMESTAMP(dateTime) AS dateTime')
@@ -2579,7 +2579,7 @@ class AJAXChat
     {
         $userName = $this->getUserName();
         $whereisUserID = $this->getUserID();
-        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
+        $whereisRoleClass = get_user_class_name((int) $this->getRoleFromID($whereisUserID), true);
         $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
 
         $sql = "SELECT dateTime, userName, userID, text
@@ -2593,7 +2593,7 @@ class AJAXChat
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $messages = [];
         while ($mentions = mysqli_fetch_array($res)) {
-            $posterClass = get_user_class_name($mentions['userID'], true);
+            $posterClass = get_user_class_name((int) $mentions['userID'], true);
             $posterName = '[' . $posterClass . ']' . $mentions['userName'] . '[/' . $posterClass . ']';
             $mention = str_replace('/privmsgto ', '[PM] ', $mentions['text']);
             $messages[] = "{$mentions['dateTime']}: " . $posterName . " => {$mention}";
