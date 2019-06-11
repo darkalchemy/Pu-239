@@ -73,7 +73,10 @@ $fluent->update('torrents')
        ->where('id = ?', $id)
        ->execute();
 
-$cache->delete('latest_comments_');
+$cache->deleteMulti([
+    'latest_comments_',
+    'torrent_details_' . $id,
+]);
 if ($site_config['bonus']['on']) {
     $set = [
         'seedbonus' => new Literal('seedbonus + ' . $site_config['bonus']['per_comment']),

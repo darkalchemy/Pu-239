@@ -8,19 +8,19 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_696b84f8.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_375e6282.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_673943e9.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ff332dd3.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_8bfb2a3b.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_3d6fdacc.css";
         case 'vendor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/vendor_aae12b44.css";
+            return "{$site_config['paths']['baseurl']}/css/1/vendor_34928329.css";
         case 'cookieconsent_css':
-            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_1b6e5918.css";
+            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_f4fb5178.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_e26757ff.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_1a509b98.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_f2944378.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_39023546.js";
         case 'vendor_js':
@@ -56,7 +56,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_1192c531.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_e99ede5d.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':
@@ -84,7 +84,7 @@ function get_file_name($file)
         case 'dragndrop_js':
             return "{$site_config['paths']['baseurl']}/js/1/dragndrop_5647940a.js";
         case 'details_js':
-            return "{$site_config['paths']['baseurl']}/js/1/details_ad3135c4.js";
+            return "{$site_config['paths']['baseurl']}/js/1/details_a50064c7.js";
         case 'forums_js':
             return "{$site_config['paths']['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

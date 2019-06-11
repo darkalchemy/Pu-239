@@ -113,7 +113,6 @@ if ($action === 'add') {
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
-            //===end
         }
         $cpm = sql_query('SELECT commentpm FROM users WHERE id=' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
         $cpm_r = mysqli_fetch_assoc($cpm);

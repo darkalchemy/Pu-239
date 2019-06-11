@@ -83,7 +83,7 @@ if ($data === false || is_null($data)) {
     }
 
     $data = $data->leftJoin('categories AS c ON t.category = c.id')
-                 ->orderBy('t.added')
+                 ->orderBy('t.added DESC')
                  ->limit($limit)
                  ->fetchAll();
 

@@ -1,4 +1,7 @@
 ### 09 Jun, 2019
+update: return query results DESC  
+fix: say_thanks()  
+fix: clear torrent cache when leaving quick thank you  
 fix: strict issues  
 fix: forum post history  
 update: make forum posts and comments same format  

@@ -18,7 +18,7 @@ function show_thanks(tid) {
     }, 'json');
 }
 
-function say_thanks(csrf, tid) {
+function say_thanks(tid) {
     $('#thanks_button').attr('value', 'Please wait...').attr('disabled', 'disabled');
     var holder = $('#thanks_holder');
     $.post('./ajax/thanks.php', {

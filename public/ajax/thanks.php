@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Session;
 
@@ -33,8 +35,8 @@ $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
  * @param int  $tid
  * @param bool $ajax
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
  * @return false|string
