@@ -313,7 +313,7 @@ switch ($staff_action) {
         $res = sql_query('SELECT id FROM forums WHERE id=' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_row($res);
 
-        if (!is_valid_id($arr[0])) {
+        if (!is_valid_id((int) $arr[0])) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
         sql_query('UPDATE topics SET forum_id=' . sqlesc($forum_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -346,7 +346,7 @@ switch ($staff_action) {
         $topic_res = sql_query('SELECT COUNT(p.id) AS count, t.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE t.id=' . sqlesc($topic_id) . ' GROUP BY p.topic_id') or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_assoc($topic_res);
         $count = $topic_arr['count'];
-        if (!is_valid_id($topic_arr['id'])) {
+        if (!is_valid_id((int) $topic_arr['id'])) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
         sql_query('UPDATE posts SET topic_id=' . sqlesc($topic_to_merge_with) . ' WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);

@@ -151,7 +151,7 @@ $hnrs = $fluent->from('snatched AS s')
                ->fetchAll();
 
 $completed .= '
-<h1>Hit and Runs for: ' . format_username((int) $userid) . '</h1>';
+<h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
 if (count($hnrs) > 0) {
     $heading = "
         <tr>
@@ -299,6 +299,6 @@ if (count($hnrs) > 0) {
     $completed .= main_table($body, $heading);
 } else {
     $session->set('is-success', '[color=#' . get_user_class_color($user_stuff['class']) . ']' . $user_stuff['username'] . "[/color] {$lang['userdetails_no_hnrs']}");
-    $completed = main_div("<div class='padding20'>" . format_username((int) $userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
+    $completed = main_div("<div class='padding20'>" . format_username($userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();

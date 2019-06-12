@@ -208,8 +208,11 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_S
     if ($donoruntil === 0) {
         $HTMLOUT .= '';
     } else {
-        $h1 .= "<br><b>{$lang['userdetails_donatedtill']} - " . get_date((int) $user['donoruntil'], 'DATE') . '';
-        $h1 .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><br><span class='size_4'> {$lang['userdetails_renew']} <a class='is-link' href='{$site_config['paths']['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</span><br><br>";
+        $h1 .= "
+            <div class='top20 has-text-centered'>
+                {$lang['userdetails_donatedtill']} - " . get_date((int) $user['donoruntil'], 'DATE', 1, 0) . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b>
+                <br><span class='size_4'> {$lang['userdetails_renew']} <a class='is-link' href='{$site_config['paths']['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</span>
+            </div>";
     }
 }
 if ($CURUSER['id'] == $user['id']) {

@@ -45,8 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     $fluent = $container->get(Database::class);
 
     if ($user['id'] !== $CURUSER['id']) {
-        if ($CURUSER['class'] === UC_MAX && empty($post['modcomment'])) {
-            $update['modcomment'] = '';
+        if ($CURUSER['class'] === UC_MAX) {
+            $modcomment = $post['modcomment'];
+            $update['modcomment'] = $modcomment;
         }
         if (isset($post['class']) && (($class = (int) $post['class']) !== $user['class'])) {
             if ($CURUSER['class'] !== UC_MAX && ($class === UC_MAX || $class >= $CURUSER['class'] || $user['class'] >= $CURUSER['class'])) {
@@ -89,15 +90,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
                 $msg = $lang['modtask_donor_received'] . $username;
                 $subject = $lang['modtask_donor_subject'];
                 $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']} {$CURUSER['username']}\n" . $modcomment;
-                $update['donoruntil'] = 0;
+                $donoruntil = $dt + (2607 * 604800);
             } else {
                 $donoruntil = $dt + ($donorlength * 604800);
                 $dur = $donorlength . $lang['modtask_donor_week'] . ($donorlength > 1 ? $lang['modtask_donor_weeks'] : '');
                 $msg = $lang['modtask_donor_dear'] . $user['username'] . "{$lang['modtask_donor_msg']} $dur {$lang['modtask_donor_msg1']}" . $username;
                 $subject = $lang['modtask_donor_subject'];
                 $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']}" . $CURUSER['username'] . ".\n" . $modcomment;
-                $update['donoruntil'] = $dt + ($donorlength * 604800);
             }
+            $update['donoruntil'] = $donoruntil;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
@@ -107,20 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             ];
             $update['donor'] = 'yes';
             $useredit[] = $lang['modtask_donor_yes'];
-            if ($user['class'] <= UC_VIP) {
+            if ($user['class'] < UC_VIP) {
                 $update['class'] = UC_VIP;
                 $update['vipclass_before'] = $user['class'];
             }
         }
     }
-    if (isset($post['donorlengthadd']) && is_int($post['donorlengthadd'])) {
+    if (isset($post['donorlengthadd'])) {
         $donoruntil = $user['donoruntil'];
-        $donorlengthadd = $post['donorlengthadd'];
+        $donorlengthadd = $post['donorlengthadd'] === 255 ? 2607 : $post['donorlengthadd'];
         $dur = $donorlengthadd . $lang['modtask_donor_week'] . ($donorlengthadd > 1 ? $lang['modtask_donor_weeks'] : '');
         $msg = $lang['modtask_donor_dear'] . htmlsafechars($user['username']) . "{$lang['modtask_donor_msg2']} $dur {$lang['modtask_donor_msg3']}" . $username;
         $subject = $lang['modtask_donor_subject_again'];
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set_another']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
-        $donorlengthadd = $donorlengthadd * 7;
         $msgs[] = [
             'poster' => $CURUSER['id'],
             'receiver' => $userid,
@@ -128,14 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $update['donoruntil'] = $user['donoruntil'] === 0 ? $dt + (86400 * $donorlengthadd) : $user['donoruntil'] + (86400 * $donorlengthadd);
-        $update['donated'] = $user['donated'] + (int) $post['donated'];
-        $update['total_donated'] = $user['total_donated'] + (int) $post['donated'];
+        $update['donoruntil'] = $user['donoruntil'] === 0 ? $dt + (604800 * $donorlengthadd) : $user['donoruntil'] + (604800 * $donorlengthadd);
     }
     if (isset($post['donor']) && (($donor = $post['donor']) !== $user['donor'])) {
         $update['donor'] = $donor;
-        $update['donoruntil'] = 0;
-        $update['donated'] = 0;
         $update['class'] = $user['vipclass_before'];
         $useredit[] = $lang['modtask_donor_no'];
         if ($donor === 'no') {
@@ -388,13 +384,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
                 $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_add_upload']} (" . $uploadtoadd . ' ' . $formatup . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
             } else {
                 $newupload = $user['uploaded'] - ($formatup === 'mb' ? ($uploadtoadd * 1048576) : ($uploadtoadd * 1073741824));
+                $newupload = $newupload < 0 ? 0 : $newupload;
                 if ($newupload >= 0) {
                     $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_subtract_upload']} (" . $uploadtoadd . ' ' . $formatup . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
                 }
             }
-            if ($newupload !== 0) {
-                $update['uploaded'] = $newupload;
-            }
+            $update['uploaded'] = $newupload;
             $useredit[] = $lang['modtask_uploaded_altered'] . mksize($uploadtoadd) . $lang['modtask_to'] . mksize($newupload);
         }
         if ($downloadtoadd > 0) {
@@ -403,13 +398,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
                 $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_added_download']} (" . $downloadtoadd . ' ' . $formatdown . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
             } else {
                 $newdownload = $user['downloaded'] - ($formatdown === 'mb' ? ($downloadtoadd * 1048576) : ($downloadtoadd * 1073741824));
+                $newdownload = $newdownload < 0 ? 0 : $newdownload;
                 if ($newdownload >= 0) {
                     $modcomment = get_date($dt, 'DATE', 1) . " {$lang['modtask_subtract_download']} (" . $downloadtoadd . ' ' . $formatdown . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
                 }
             }
-            if ($newdownload !== 0) {
-                $update['downloaded'] = $newdownload;
-            }
+            $update['downloaded'] = $newdownload;
             $useredit[] = $lang['modtask_download_altered'] . mksize($downloadtoadd) . $lang['modtask_to'] . mksize($newdownload);
         }
     }
@@ -805,6 +799,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $useredit[] = $lang['modtask_skype_changed'];
     }
     if (!empty($update)) {
+        $update['modcomment'] = $modcomment;
         $users_class->update($update, $userid);
         if ($post['enabled'] !== 'yes') {
             $cache->delete('user_' . $userid);

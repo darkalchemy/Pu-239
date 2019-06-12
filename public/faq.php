@@ -137,7 +137,7 @@ if ($CURUSER) {
         if ($down > 0) {
             $r = $up / $down;
             if ($color) {
-                $r = "<span style='color: " . get_ratio_color($r) . ";'>$r</span>";
+                $r = "<span style='color: " . get_ratio_color($r) . ";'>" . number_format($r, 3) . '</span>';
             }
         } elseif ($up > 0) {
             $r = "'INF'";

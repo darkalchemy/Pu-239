@@ -45,14 +45,16 @@ $HTMLOUT .= "
         <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td><div class="padding20">' . $lang['hitnrun_none'] . '</div></td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     $Xbt_Seed = $hit_and_run_arr['seeder'] !== 'yes';
-    $Uid_ID = $hit_and_run_arr['userid'];
-    $S_date = $hit_and_run_arr['start_date'];
-    $T_ID = $hit_and_run_arr['torrentid'];
-    $C_Date = $hit_and_run_arr['complete_date'];
+    $Uid_ID = (int) $hit_and_run_arr['userid'];
+    $S_date = (int) $hit_and_run_arr['start_date'];
+    $T_ID = (int) $hit_and_run_arr['torrentid'];
+    $C_Date = (int) $hit_and_run_arr['complete_date'];
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['site']['ratio_free'] ? 0 : $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['site']['ratio_free'] ? 0 : $hit_and_run_arr['dload']);
+            $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['down']);
+            $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['dload']);
+            $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['dload']);
             $avatar = get_avatar($hit_and_run_arr);
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             switch (true) {
@@ -106,14 +108,14 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>
             ' . $lang['hitnrun_seeders'] . ' ' . (int) $hit_and_run_arr['numseeding'] . '
          </td>
-            <td>' . $lang['hitnrun_finished'] . ' ' . get_date((int) $C_Date, '') . '<br>
-            ' . $lang['hitnrun_stopped'] . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
+            <td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date) . '<br>
+            ' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
             ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
             **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
             <td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
             ' . ($site_config['site']['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
-            ' . $lang['hitnrun_ratio'] . '<span style="color: "' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</span><br>
-            ' . $lang['hitnrun_site_ratio'] . '<span style="color: "' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
+            ' . $lang['hitnrun_ratio'] . '<span style="color: "' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
+            ' . $lang['hitnrun_site_ratio'] . '<span style="color: "' . get_ratio_color($site_ratio) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
             <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . $lang['hitnrun_send'] . '"></a><br>
             <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . $lang['hitnrun_shit'] . '"></a></td></tr>';
         }

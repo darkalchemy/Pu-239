@@ -46,8 +46,8 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
             <td>' . $lang['userdetails_time_ratio'] . '</td>
             <td>
                 <div class="level-left">' . (($user['downloaded'] > 0 || $user['uploaded'] > 2147483648) ? '
-                    <span class="right10" style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '
-                    <span class="left10">[</span><span style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . $lang['userdetails_time_ratio_per'] : $lang['userdetails_inf']) . '
+                    <span class="right10" style="color: ' . get_ratio_color($avg_time_ratio) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine($avg_time_ratio) . '
+                    <span class="left10">[</span><span style="color: ' . get_ratio_color($avg_time_ratio) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . $lang['userdetails_time_ratio_per'] : $lang['userdetails_inf']) . '
                 </div>
             </td>
         </tr>';

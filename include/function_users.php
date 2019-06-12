@@ -68,8 +68,8 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -325,8 +325,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -467,8 +467,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws Exception
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string
  */
@@ -600,8 +600,8 @@ function member_ratio(float $up, float $down)
 /**
  * @param float $ratio
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -647,10 +647,10 @@ function get_user_ratio_image(float $ratio)
 /**
  * @param $avatar
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string|null
  */

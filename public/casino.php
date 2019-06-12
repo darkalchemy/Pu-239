@@ -401,7 +401,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $tbet2 = mysqli_fetch_row($betsp);
         $dummy = "<h2 class='has-text-centered'>{$lang['casino_bet_added_you_will_receive_a_pm_notify']}</h2>";
         $bet = mksize($nobits);
-        $classColor = get_user_class_color($user['class']);
+        $classColor = get_user_class_color((int) $user['class']);
         $message = "[color=#$classColor][b]{$user['username']}[/b][/color] {$lang['casino_has_just_placed_a']} [color=red][b]{$bet}[/b][/color] {$lang['casino_bet_in_the_casino']}";
         $messages = "{$user['username']} {$lang['casino_has_just_placed_a']} {$bet} {$lang['casino_bet_in_the_casino']}";
         $values = [

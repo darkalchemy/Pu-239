@@ -496,7 +496,7 @@ if ($game) {
 
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($CURUSER['class']);
-                    $opponent = get_user_class_color($a['class']);
+                    $opponent = get_user_class_color((int) $a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
@@ -601,7 +601,7 @@ if ($game) {
 
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($CURUSER['class']);
-                    $opponent = get_user_class_color($a['class']);
+                    $opponent = get_user_class_color((int) $a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
@@ -837,7 +837,7 @@ if ($game) {
 
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($CURUSER['class']);
-                $opponent = get_user_class_color($a['class']);
+                $opponent = get_user_class_color((int) $a['class']);
                 $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
                 autoshout($msg);
             }
@@ -1089,8 +1089,8 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed|null
  */

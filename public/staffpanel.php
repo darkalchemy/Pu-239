@@ -96,7 +96,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->delete('staff_panels_4');
         if (mysqli_affected_rows($mysqli)) {
             if ($CURUSER['class'] <= UC_MAX) {
-                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$arr['page_name']}[/color]'";
+                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
@@ -234,7 +234,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 }
                 if (empty($errors)) {
                     if ($CURUSER['class'] <= UC_MAX) {
-                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($_POST['av_class']) . "]{$page_name}[/color]'";
+                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = $action === 'add' ? 'added' : 'edited';
                         $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");

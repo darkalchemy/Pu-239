@@ -1,4 +1,5 @@
 ### 12 Jun, 2019
+fix: more strict issues  
 fix: tvmaze lookup  
 fix: many strict issues  
 

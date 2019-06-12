@@ -275,9 +275,9 @@ function is_set_not_empty($param)
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
-        $r = number_format($up / $down, 2);
+        $r = $up / $down;
         if ($color) {
-            $r = "<span style='color: " . get_ratio_color($r) . ";'>$r</span>";
+            $r = "<span style='color: " . get_ratio_color($r) . ";'>" . number_format($r, 3) . '</span>';
         }
     } elseif ($up > 0) {
         $r = 'Inf.';

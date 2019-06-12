@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Message;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -179,6 +180,7 @@ function dropdown()
 
 if (count($err) > 0) {
     $status = stristr($err[0], 'sent!') == true ? 'is-success' : 'is-warning';
+    $session = $container->get(Session::class);
     foreach ($err as $error) {
         $session->set($status, $error);
     }

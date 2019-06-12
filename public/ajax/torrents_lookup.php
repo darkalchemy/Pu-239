@@ -104,9 +104,9 @@ die();
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -166,9 +166,9 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -218,9 +218,9 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -270,9 +270,9 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -312,9 +312,9 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -381,8 +381,8 @@ function maketable(array $torrents)
     $body = '';
     foreach ($torrents as $torrent) {
         if ($torrent['downloaded'] > 0) {
-            $ratio = number_format($torrent['uploaded'] / $torrent['downloaded'], 3);
-            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>$ratio</span>";
+            $ratio = $torrent['uploaded'] / $torrent['downloaded'];
+            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>" . number_format($ratio, 3) . '</span>';
         } elseif ($torrent['uploaded'] > 0) {
             $ratio = "{$lang['userdetails_inf']}";
         } else {
@@ -471,8 +471,8 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -524,8 +524,8 @@ function staff_snatchtable(array $torrents, int $userid)
                 break;
         }
         if ($arr['downloaded'] > 0) {
-            $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
-            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'><b>{$lang['userdetails_s_ratio']}</b><br>$ratio</span>";
+            $ratio = $arr['uploaded'] / $arr['downloaded'];
+            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'><b>{$lang['userdetails_s_ratio']}</b><br>" . number_format($ratio, 3) . '</span>';
         } elseif ($arr['uploaded'] > 0) {
             $ratio = $lang['userdetails_inf'];
         } else {

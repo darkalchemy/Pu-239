@@ -99,10 +99,10 @@ if (mysqli_num_rows($res) != 0) {
         $uploaded = mksize($arr['uploaded']);
         $downloaded = mksize($arr['downloaded']);
         $ratio = $arr['downloaded'] > 0 ? $arr['uploaded'] / $arr['downloaded'] : 0;
-        $ratio = number_format($ratio, 2);
+        $ratio = $ratio;
         $color = get_ratio_color($ratio);
         if ($color) {
-            $ratio = "<span style='color: $color;'>$ratio</span>";
+            $ratio = "<span style='color: $color;'>" . number_format($ratio, 2) . '</span>';
         }
         $added = get_date((int) $arr['registered'], 'LONG', 0, 1);
         $last_access = get_date((int) $arr['last_access'], 'LONG', 0, 1);

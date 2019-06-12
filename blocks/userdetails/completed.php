@@ -156,7 +156,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>' . mksize($a['uploaded']) . '</td>
                 ' . ($site_config['site']['ratio_free'] ? '' : '
                 <td>' . mksize($a['downloaded']) . '</td>') . '
-                <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
+                <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color($a['uploaded'] / $a['downloaded']) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
                 <td>' . get_date((int) $a['complete_date'], 'DATE') . '</td>
                 <td>' . get_date((int) $a['last_action'], 'DATE') . "</td>
                 <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
