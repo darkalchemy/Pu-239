@@ -36,7 +36,7 @@ function tvmaze_schedule_update($data)
                 ->format('Y-m-d');
 
     $cache = $container->get(Cache::class);
-    $image_stuffs = $container->get(Image::class);
+    $images_class = $container->get(Image::class);
     if (!empty($tvmaze_data)) {
         foreach ($tvmaze_data as $tv) {
             if ($tv['airdate'] >= $start && $tv['airdate'] <= $end && $tv['_embedded']['show']['language'] === 'English') {
@@ -49,7 +49,7 @@ function tvmaze_schedule_update($data)
                             'url' => $poster,
                             'type' => 'poster',
                         ];
-                        $image_stuffs->insert($values);
+                        $images_class->insert($values);
                         $cache->set('insert_tvmaze_tvmazeid_' . $tv['id'], 0, 604800);
 
                         url_proxy($poster, true, 250);

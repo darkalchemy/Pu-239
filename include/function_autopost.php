@@ -88,8 +88,8 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'subject' => $subject,
             'msg' => $body,
         ];
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
 
         return [
             'topicid' => $topicid,

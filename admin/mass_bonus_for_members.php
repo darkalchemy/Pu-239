@@ -24,8 +24,8 @@ $stdfoot = [
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
 global $container, $site_config;
 
-$user_stuffs = $container->get(User::class);
-$message_stuffs = $container->get(Message::class);
+$users_class = $container->get(User::class);
+$messages_class = $container->get(Message::class);
 $dt = TIME_NOW;
 $h1_thingie = $HTMLOUT = '';
 $good_stuff = [
@@ -69,11 +69,11 @@ switch ($action) {
                     'uploaded' => $GB_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, (int) $arr_GB['id']);
+                $users_class->update($set, (int) $arr_GB['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
-                $message_stuffs->insert($pm_values);
+                $messages_class->insert($pm_values);
                 write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -105,11 +105,11 @@ switch ($action) {
                     'seedbonus' => $karma_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, (int) $arr_karma['id']);
+                $users_class->update($set, (int) $arr_karma['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
-                $message_stuffs->insert($pm_values);
+                $messages_class->insert($pm_values);
                 write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -141,11 +141,11 @@ switch ($action) {
                     'freeslots' => $freeslots_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, (int) $arr_freeslots['id']);
+                $users_class->update($set, (int) $arr_freeslots['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
-                $message_stuffs->insert($pm_values);
+                $messages_class->insert($pm_values);
                 write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -177,11 +177,11 @@ switch ($action) {
                     'invites' => $invites_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_stuffs->update($set, (int) $arr_invites['id']);
+                $users_class->update($set, (int) $arr_invites['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
-                $message_stuffs->insert($pm_values);
+                $messages_class->insert($pm_values);
                 write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -210,7 +210,7 @@ switch ($action) {
             }
             $count = count($pm_values);
             if ($count > 0) {
-                $message_stuffs->insert($pm_values);
+                $messages_class->insert($pm_values);
                 write_log($lang['bonusmanager_pm_writelog'] . $count . $lang['bonusmanager_pm_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $count);

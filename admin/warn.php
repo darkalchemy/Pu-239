@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($msgs_buffer)) {
             global $container;
 
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
             $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);

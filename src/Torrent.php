@@ -19,7 +19,7 @@ class Torrent
     protected $cache;
     protected $fluent;
     protected $site_config;
-    protected $user_stuffs;
+    protected $users_class;
     protected $settings;
     protected $image;
 
@@ -28,20 +28,20 @@ class Torrent
      *
      * @param Cache    $cache
      * @param Database $fluent
-     * @param User     $user_stuffs
+     * @param User     $users_class
      * @param Image    $image
      * @param Settings $settings
      *
      * @throws Exception
      */
-    public function __construct(Cache $cache, Database $fluent, User $user_stuffs, Image $image, Settings $settings)
+    public function __construct(Cache $cache, Database $fluent, User $users_class, Image $image, Settings $settings)
     {
         $this->settings = $settings;
         $this->site_config = $this->settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
         $this->image = $image;
-        $this->user_stuffs = $user_stuffs;
+        $this->users_class = $users_class;
     }
 
     /**
@@ -98,17 +98,62 @@ class Torrent
      *
      * @throws Exception
      *
-     * @return mixed
+     * @return bool|mixed
      */
     public function get_item(string $item, int $tid)
     {
-        $result = $this->fluent->from('torrents')
-                               ->select(null)
-                               ->select($item)
-                               ->where('id = ?', $tid)
-                               ->fetch($item);
+        $torrent = $this->get($tid);
+        if (!empty($torrent[$item])) {
+            return $torrent[$item];
+        }
 
-        return $result;
+        return false;
+    }
+
+    /**
+     * @param int  $tid
+     * @param bool $fresh
+     *
+     * @throws Exception
+     *
+     * @return bool|mixed
+     */
+    public function get(int $tid, bool $fresh = false)
+    {
+        $torrent = $this->cache->get('torrent_details_' . $tid);
+        if ($torrent === false || is_null($torrent) || $fresh) {
+            $torrent = $this->fluent->from('torrents')
+                                    ->select('HEX(info_hash) AS info_hash')
+                                    ->select('LENGTH(nfo) AS nfosz')
+                                    ->select("IF(num_ratings < {$this->site_config['site']['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
+                                    ->where('id = ?', $tid)
+                                    ->fetch();
+            if (empty($torrent)) {
+                return $torrent;
+            }
+
+            $torrent['previous'] = $this->fluent->from('torrents')
+                                                ->select(null)
+                                                ->select('id')
+                                                ->select('name')
+                                                ->where('id < ?', $tid)
+                                                ->orderBy('id DESC')
+                                                ->limit(1)
+                                                ->fetch();
+
+            $torrent['next'] = $this->fluent->from('torrents')
+                                            ->select(null)
+                                            ->select('id')
+                                            ->select('name')
+                                            ->where('id > ?', $tid)
+                                            ->orderBy('id')
+                                            ->limit(1)
+                                            ->fetch();
+
+            $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);
+        }
+
+        return $torrent;
     }
 
     /**
@@ -207,58 +252,12 @@ class Torrent
     }
 
     /**
-     * @param int  $tid
-     * @param bool $fresh
-     *
-     * @throws Exception
-     *
-     * @return bool|mixed
-     */
-    public function get(int $tid, bool $fresh = false)
-    {
-        $torrent = $this->cache->get('torrent_details_' . $tid);
-        if ($torrent === false || is_null($torrent) || $fresh) {
-            $torrent = $this->fluent->from('torrents')
-                                    ->select('HEX(info_hash) AS info_hash')
-                                    ->select('LENGTH(nfo) AS nfosz')
-                                    ->select("IF(num_ratings < {$this->site_config['site']['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
-                                    ->where('id = ?', $tid)
-                                    ->fetch();
-            if (empty($torrent)) {
-                return $torrent;
-            }
-
-            $torrent['previous'] = $this->fluent->from('torrents')
-                                                ->select(null)
-                                                ->select('id')
-                                                ->select('name')
-                                                ->where('id < ?', $tid)
-                                                ->orderBy('id DESC')
-                                                ->limit(1)
-                                                ->fetch();
-
-            $torrent['next'] = $this->fluent->from('torrents')
-                                            ->select(null)
-                                            ->select('id')
-                                            ->select('name')
-                                            ->where('id > ?', $tid)
-                                            ->orderBy('id')
-                                            ->limit(1)
-                                            ->fetch();
-
-            $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);
-        }
-
-        return $torrent;
-    }
-
-    /**
      * @param array $set
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -292,8 +291,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -332,7 +331,7 @@ class Torrent
         }
 
         if ($added > TIME_NOW - (14 * 86400)) {
-            $seedbonus = $this->user_stuffs->get_item('seedbonus', $owner);
+            $seedbonus = $this->users_class->get_item('seedbonus', $owner);
             $set = [
                 'seedbonus' => $seedbonus - $this->site_config['bonus']['per_delete'],
             ];
@@ -922,10 +921,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
+     * @throws Exception
      *
      * @return false|mixed|string|string[]|null
      */

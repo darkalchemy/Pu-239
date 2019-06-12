@@ -22,8 +22,8 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $set = [
         'override_class' => $newclass,
     ];
-    $user_stuffs = $container->get(User::class);
-    $user_stuffs->update($set, $CURUSER['id']);
+    $users_class = $container->get(User::class);
+    $users_class->update($set, $CURUSER['id']);
     $fluent = $container->get(Database::class);
     $fluent->deleteFrom('ajax_chat_online')
            ->where('userID = ?', $CURUSER['id'])

@@ -89,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $session = $container->get(Session::class);
     if (!empty($values)) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
         $values = [
             'user' => $CURUSER['id'],
             'date' => $dt,

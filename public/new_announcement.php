@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         56 => '2 Months',
     ];
     //== Usersearch POST data...
-    $n_pms = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
-    $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
+    $n_pms = isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0;
+    $ann_query = isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '';
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
         stderr('Error', 'Misformed Query');
     }

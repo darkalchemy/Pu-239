@@ -364,9 +364,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     preg_match_all('/@(.+\b)/imsU', $s, $match);
     global $container;
 
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     foreach ($match[1] as $tmp) {
-        $userid = $user_stuffs->getUserIdFromName($tmp);
+        $userid = $users_class->getUserIdFromName($tmp);
         if ($userid) {
             $username = format_username((int) $userid, false, true, true);
             $s = preg_replace("/@$tmp/", $username . ' ', $s);

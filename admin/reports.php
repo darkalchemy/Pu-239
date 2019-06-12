@@ -59,7 +59,7 @@ function round_time($ts)
 }
 
 if (isset($_GET['id'])) {
-    $id = ($_GET['id'] ? (int) $_GET['id'] : (int) $_POST['id']);
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     if (!is_valid_id($id)) {
         stderr("{$lang['reports_error']}", "{$lang['reports_error1']}");
     }

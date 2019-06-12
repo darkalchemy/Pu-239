@@ -13,10 +13,10 @@ require_once CLASS_DIR . 'class.bencdec.php';
 $lang = array_merge(load_language('global'), load_language('download'));
 global $container, $site_config, $CURUSER;
 
-$user_stuffs = $container->get(User::class);
-$T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';
+$users_class = $container->get(User::class);
+$T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) === 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
-    $user = $user_stuffs->get_user_from_torrent_pass($T_Pass);
+    $user = $users_class->get_user_from_torrent_pass($T_Pass);
     if (!$user) {
         die($lang['download_passkey']);
     } elseif ($user['enabled'] === 'no') {

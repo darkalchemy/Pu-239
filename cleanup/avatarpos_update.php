@@ -62,8 +62,8 @@ function avatarpos_update($data)
 
     $count = count($values);
     if ($count) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
     }
 
     $time_end = microtime(true);

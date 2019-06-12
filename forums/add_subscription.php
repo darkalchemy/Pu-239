@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 global $CURUSER, $lang, $site_config;
 
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 //=== first see if they are being norty...
 $norty_res = sql_query('SELECT min_class_read FROM forums WHERE id = ' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
 $norty_arr = mysqli_fetch_row($norty_res);

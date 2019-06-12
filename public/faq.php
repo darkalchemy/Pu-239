@@ -126,21 +126,21 @@ if ($CURUSER) {
     $byul = 0;
 
     /**
-     * @param      $up
-     * @param      $down
+     * @param int  $up
+     * @param int  $down
      * @param bool $color
      *
      * @return string
      */
-    function format_ratio($up, $down, $color = true)
+    function format_ratio(int $up, int $down, $color = true)
     {
         if ($down > 0) {
-            $r = number_format($up / $down, 2);
+            $r = $up / $down;
             if ($color) {
                 $r = "<span style='color: " . get_ratio_color($r) . ";'>$r</span>";
             }
         } elseif ($up > 0) {
-            $r = "'Inf.'";
+            $r = "'INF'";
         } else {
             $r = "'---'";
         }

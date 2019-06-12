@@ -52,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $message_stuffs = $container->get(Message::class);
-                $message_stuffs->insert($msgs_buffer);
+                $messages_class = $container->get(Message::class);
+                $messages_class->insert($msgs_buffer);
                 $set = [
                     'join_type' => 'invite',
                     'invitedby' => $inviter,

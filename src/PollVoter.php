@@ -14,8 +14,8 @@ class PollVoter
     protected $cache;
     protected $fluent;
     protected $site_config;
-    protected $user_stuffs;
-    protected $poll_stuffs;
+    protected $users_class;
+    protected $polls_class;
     protected $settings;
 
     /**
@@ -23,20 +23,20 @@ class PollVoter
      *
      * @param Cache    $cache
      * @param Database $fluent
-     * @param User     $user_stuffs
-     * @param Poll     $poll_stuffs
+     * @param User     $users_class
+     * @param Poll     $polls_class
      * @param Settings $settings
      *
      * @throws Exception
      */
-    public function __construct(Cache $cache, Database $fluent, User $user_stuffs, Poll $poll_stuffs, Settings $settings)
+    public function __construct(Cache $cache, Database $fluent, User $users_class, Poll $polls_class, Settings $settings)
     {
         $this->settings = $settings;
         $this->site_config = $this->settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
-        $this->user_stuffs = $user_stuffs;
-        $this->poll_stuffs = $poll_stuffs;
+        $this->users_class = $users_class;
+        $this->polls_class = $polls_class;
     }
 
     /**
@@ -99,7 +99,7 @@ class PollVoter
      */
     public function delete_users_cache()
     {
-        $ids = $this->user_stuffs->get_all_ids();
+        $ids = $this->users_class->get_all_ids();
         if (!empty($ids)) {
             foreach ($ids as $id) {
                 $this->cache->delete('poll_data_' . $id['id']);
@@ -118,7 +118,7 @@ class PollVoter
     {
         $poll_data = $this->cache->get('poll_data_' . $userid);
         if ($poll_data === false || is_null($poll_data)) {
-            $poll_data = $this->poll_stuffs->get_all(1);
+            $poll_data = $this->polls_class->get_all(1);
             if (!empty($poll_data)) {
                 $vote_data = $this->fluent->from('poll_voters')
                                           ->select(null)

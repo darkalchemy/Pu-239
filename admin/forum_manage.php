@@ -15,15 +15,15 @@ global $container, $site_config, $CURUSER;
 $HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $option_12 = $count = $forums_stuff = '';
 $row = 0;
 $maxclass = $CURUSER['class'];
-$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : '';
 $desc = isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '';
-$sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
-$parent_forum = isset($_POST['parent_forum']) ? intval($_POST['parent_forum']) : 0;
-$over_forums = isset($_POST['over_forums']) ? intval($_POST['over_forums']) : 0;
-$min_class_read = isset($_POST['min_class_read']) ? intval($_POST['min_class_read']) : 0;
-$min_class_write = isset($_POST['min_class_write']) ? intval($_POST['min_class_write']) : 0;
-$min_class_create = isset($_POST['min_class_create']) ? intval($_POST['min_class_create']) : 0;
+$sort = isset($_POST['sort']) ? (int) $_POST['sort'] : 0;
+$parent_forum = isset($_POST['parent_forum']) ? (int) $_POST['parent_forum'] : 0;
+$over_forums = isset($_POST['over_forums']) ? (int) $_POST['over_forums'] : 0;
+$min_class_read = isset($_POST['min_class_read']) ? (int) $_POST['min_class_read'] : 0;
+$min_class_write = isset($_POST['min_class_write']) ? (int) $_POST['min_class_write'] : 0;
+$min_class_create = isset($_POST['min_class_create']) ? (int) $_POST['min_class_create'] : 0;
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
@@ -46,14 +46,14 @@ $valid_actions = [
 ];
 $action = in_array($posted_action, $valid_actions) ? $posted_action : 'no_action';
 $fluent = $container->get(Database::class);
-$forum_stuffs = $container->get(Forum::class);
+$forum_class = $container->get(Forum::class);
 switch ($action) {
     case 'delete':
         if (!$id) {
             header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
             die();
         }
-        $forum_stuffs->delete($id);
+        $forum_class->delete($id);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
@@ -73,7 +73,7 @@ switch ($action) {
             'min_class_write' => $min_class_write,
             'min_class_create' => $min_class_create,
         ];
-        $forum_stuffs->update($set, $id);
+        $forum_class->update($set, $id);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
@@ -93,13 +93,13 @@ switch ($action) {
             'min_class_create' => $min_class_create,
             'forum_id' => $over_forums,
         ];
-        $forum_stuffs->add($values);
+        $forum_class->add($values);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&action=forum_manage');
         die();
         break;
 
     case 'edit_forum_page':
-        $forum = $forum_stuffs->get_forum($id);
+        $forum = $forum_class->get_forum($id);
         if (!empty($forum)) {
             $HTMLOUT .= $main_links . '
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
@@ -188,7 +188,7 @@ switch ($action) {
                         <td>{$lang['fm_efp_rank']}</td>
                         <td>
                             <select name='sort'>";
-            $count = $forum_stuffs->get_count();
+            $count = $forum_class->get_count();
             $maxclass = $count++;
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "

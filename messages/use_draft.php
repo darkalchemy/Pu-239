@@ -27,7 +27,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
     } elseif ($save_or_edit === 'send') {
         $res_receiver = sql_query('SELECT id, class, acceptpms, notifs, email, class, username FROM users WHERE LOWER(username)=LOWER(' . sqlesc(htmlsafechars($_POST['to'])) . ') LIMIT 1');
         $arr_receiver = mysqli_fetch_assoc($res_receiver);
-        if (!is_valid_id($arr_receiver['id'])) {
+        if (!is_valid_id((int) $arr_receiver['id'])) {
             stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
         }
         $receiver = intval($arr_receiver['id']);

@@ -150,13 +150,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                    ->select('name')
                    ->where('link = ?', $link)
                    ->fetch('name');
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     $body = '
                     <h1 class="has-text-centered">Users list for promo: ' . htmlsafechars($name) . '</h1>
                     <div class="padding20 level-center-center">';
     foreach ($accounts as $ap) {
         $ap = (int) $ap;
-        $promo_user = $user_stuffs->getUserFromId($ap);
+        $promo_user = $users_class->getUserFromId($ap);
         if (!empty($promo_user)) {
             $users[] = "<div class='margin20 padding20 bg-02 round10'>" . format_username($ap) . ' joined ' . get_date($promo_user['registered'], 'LONG', 0, 1) . '</div>';
         }

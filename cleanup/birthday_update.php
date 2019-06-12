@@ -59,14 +59,14 @@ function birthday_update($data)
         }
         $count = count($msgs);
         if ($count > 0) {
-            $message_stuffs = $container->get(Message::class);
+            $messages_class = $container->get(Message::class);
             if ($count > 100) {
                 foreach (array_chunk($msgs, 150) as $t) {
                     echo 'Inserting ' . count($t) . " messages\n";
-                    $message_stuffs->insert($t);
+                    $messages_class->insert($t);
                 }
             } else {
-                $message_stuffs->insert($msgs);
+                $messages_class->insert($msgs);
             }
 
             $set = [

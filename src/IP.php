@@ -68,8 +68,8 @@ class IP
         if ($cached_ip === false || is_null($cached_ip)) {
             $values['ip'] = inet_pton($ip);
             $this->fluent->insertInto('ips', $values)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
+                         ->onDuplicateKeyUpdate($update)
+                         ->execute();
             $this->cache->set($type . '_ip_' . $userid . '_' . $ip, $ip, $ttl);
         }
     }
@@ -126,7 +126,7 @@ class IP
     public function delete_by_age(int $timestamp)
     {
         $this->fluent->deleteFrom('ips')
-            ->where('last_access < ?', $timestamp)
-            ->execute();
+                     ->where('last_access < ?', $timestamp)
+                     ->execute();
     }
 }

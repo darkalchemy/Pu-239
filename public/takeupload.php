@@ -25,9 +25,9 @@ unset($_POST);
 global $container, $site_config, $CURUSER;
 
 $cache = $container->get(Cache::class);
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $owner_id = $user_stuffs->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
+    $owner_id = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
 } else {
     check_user_status();
     $owner_id = $CURUSER['id'];
@@ -35,7 +35,7 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
 }
 
 $dt = TIME_NOW;
-$user_data = $user_stuffs->getUserFromId($owner_id);
+$user_data = $users_class->getUserFromId($owner_id);
 
 ini_set('upload_max_filesize', (string) $site_config['site']['max_torrent_size']);
 ini_set('memory_limit', '64M');
@@ -160,7 +160,7 @@ if (!empty($half_length) && ($half_length = (int) $half_length)) {
     }
 }
 
-$freetorrent = !empty($freetorrent) && is_valid_id($freetorrent) ? intval($freetorrent) : 0;
+$freetorrent = !empty($freetorrent) && is_valid_id($freetorrent) ? (int) $freetorrent : 0;
 $descr = strip_tags(!empty($body) ? trim($body) : '');
 if (!$descr) {
     if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
@@ -178,8 +178,8 @@ if (!is_valid_id($catid)) {
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
-$request = (((!empty($request) && is_valid_id($request)) ? intval($request) : 0));
-$offer = (((!empty($offer) && is_valid_id($offer)) ? intval($offer) : 0));
+$request = (((!empty($request) && is_valid_id($request)) ? (int) $request : 0));
+$offer = (((!empty($offer) && is_valid_id($offer)) ? (int) $offer : 0));
 $subs = !empty($subs) ? implode('|', $subs) : '';
 $release_group_array = [
     'scene' => 1,
@@ -409,8 +409,8 @@ $values = [
 if (!empty($imdb)) {
     $values['imdb_id'] = $imdb;
 }
-$torrent_stuffs = $container->get(Torrent::class);
-$id = $torrent_stuffs->add($values);
+$torrents_class = $container->get(Torrent::class);
+$id = $torrents_class->add($values);
 
 if (!$id) {
     $session->set('is-warning', 'upload failed');
@@ -418,11 +418,11 @@ if (!$id) {
     die();
 }
 
-$torrent_stuffs->remove_torrent($infohash);
-$torrent_stuffs->get_torrent_from_hash($infohash);
+$torrents_class->remove_torrent($infohash);
+$torrents_class->get_torrent_from_hash($infohash);
 $cache->delete('peers_' . $owner_id);
-$peer_stuffs = $container->get(Peer::class);
-$peer_stuffs->getPeersFromUserId($owner_id);
+$peer_class = $container->get(Peer::class);
+$peer_class->getPeersFromUserId($owner_id);
 clear_image_cache();
 
 if (!empty($uplver) && $uplver === 'yes') {
@@ -474,7 +474,7 @@ if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_ir
     autoshout($msg);
     autoshout($msg, 2, 0);
 }
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 if ($offer > 0) {
     $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . ' AND offer_id=' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
     $subject = 'An offer you voted for has been uploaded!';
@@ -489,7 +489,7 @@ if ($offer > 0) {
         ];
     }
     if (!empty($msgs_buffer)) {
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
     }
     write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user_data['username']);
     $filled = 1;
@@ -509,7 +509,7 @@ if ($request > 0) {
         ];
     }
     if (!empty($msgs_buffer)) {
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
     }
     sql_query('UPDATE requests SET filled_by_user_id=' . sqlesc($owner_id) . ', filled_torrent_id=' . sqlesc($id) . ' WHERE id=' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
@@ -520,7 +520,7 @@ if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
 }
 
-$notify = $user_stuffs->get_users_for_notifications((int) $type);
+$notify = $users_class->get_users_for_notifications((int) $type);
 if (!empty($notify)) {
     $subject = 'New Torrent Uploaded!';
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
@@ -534,7 +534,7 @@ if (!empty($notify)) {
         ];
     }
     if (!empty($msgs_buffer)) {
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
     }
 }
 

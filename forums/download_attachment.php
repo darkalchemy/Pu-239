@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }

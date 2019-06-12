@@ -15,11 +15,11 @@ $lang = array_merge($lang, load_language('ad_invite_tree'));
 global $container, $site_config;
 
 $HTMLOUT = '';
-$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
-$user_stuffs = $container->get(User::class);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
+$users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
 if ($id !== 0) {
-    $arr_user = $user_stuffs->getUserFromId($id);
+    $arr_user = $users_class->getUserFromId($id);
     $HTMLOUT .= '
     <div class="bottom20">
         <ul class="level-center bg-06">' . ($arr_user['invitedby'] == 0 ? '

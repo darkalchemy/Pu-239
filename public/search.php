@@ -15,8 +15,8 @@ extract($_POST);
 unset($_POST);
 
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $user_stuffs = $container->get(User::class);
-    $userid = $user_stuffs->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
+    $users_class = $container->get(User::class);
+    $userid = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
 } else {
     $session = $container->get(Session::class);
     $session->set('is-warning', 'The search page is a restricted page, bots only');

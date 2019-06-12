@@ -84,7 +84,7 @@ if (isset($_POST['ddown']) && $_POST['ddown'] === 'ddown') {
     $update_ddown = "ddown = 'yes'";
 }
 
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 $cards_history = $dealer_cards_history = $deadcards = [];
 $sql = 'SELECT b.*, u.username, u.class, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id=b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY b.date ASC LIMIT 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -492,7 +492,7 @@ if ($game) {
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $message_stuffs->insert($msgs_buffer);
+                $messages_class->insert($msgs_buffer);
 
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($CURUSER['class']);
@@ -597,7 +597,7 @@ if ($game) {
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $message_stuffs->insert($msgs_buffer);
+                $messages_class->insert($msgs_buffer);
 
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($CURUSER['class']);
@@ -833,7 +833,7 @@ if ($game) {
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
 
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($CURUSER['class']);
@@ -890,7 +890,7 @@ if ($game) {
     $tot_wins = (int) $User['bjwins'];
     $tot_losses = (int) $User['bjlosses'];
     $tot_games = $tot_wins + $tot_losses;
-    $win_perc = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? '0' : number_format(($tot_wins / $tot_games) * 100, 1)) . '%');
+    $win_perc = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? 0 : number_format(($tot_wins / $tot_games) * 100, 1)) . '%');
     $plus_minus = $tot_wins - abs($tot_losses);
     $sql = 'SELECT * FROM blackjack WHERE game_id=' . sqlesc($blackjack['gameid']) . ' ORDER BY date ASC LIMIT 1';
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);

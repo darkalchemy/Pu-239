@@ -125,7 +125,7 @@ if ($count_inactive > 0) {
     <td class='colhead'>{$lang['inactive_lastseen']}</td>
     <td class='colhead'>{$lang['inactive_x']}</td></tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $ratio = (member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']));
+        $ratio = (member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']));
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date((int) $arr['last_access'], 'DATE') . '&#160;');
         $class = get_user_class_name((int) $arr['class']);
         $HTMLOUT .= '<tr>

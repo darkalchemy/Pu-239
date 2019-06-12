@@ -37,9 +37,9 @@ function gift_update($data)
     ];
     if (!empty($query)) {
         $count = count($query);
-        $user_stuffs = $container->get(User::class);
+        $users_class = $container->get(User::class);
         foreach ($query as $userid) {
-            $user_stuffs->update($set, $userid['id']);
+            $users_class->update($set, $userid['id']);
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;

@@ -245,10 +245,10 @@ class User
      * @param array $values
      * @param array $lang
      *
-     * @throws UnbegunTransaction
      * @throws DependencyException
      * @throws Exception
      * @throws NotFoundException
+     * @throws UnbegunTransaction
      *
      * @return bool|int
      */
@@ -329,8 +329,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -470,8 +470,8 @@ class User
      * @param int    $remember
      * @param array  $lang
      *
-     * @throws AttemptCancelledException
      * @throws AuthError
+     * @throws AttemptCancelledException
      *
      * @return bool
      */

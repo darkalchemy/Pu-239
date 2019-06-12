@@ -51,9 +51,9 @@ $casino = 'casino.php'; //== Name of file
 //== End of Config
 
 $fluent = $container->get(Database::class);
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 $auth = $container->get(Auth::class);
-$user = $user_stuffs->getUserFromId($auth->getUserId());
+$user = $users_class->getUserFromId($auth->getUserId());
 if (empty($user)) {
     stderr($lang['gl_error'], 'Invalid User Data', 'bottom20');
     die();
@@ -114,7 +114,7 @@ if (($user_win - $user_lost) > $max_download_user) {
     stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " {$lang['casino_you_have_reached_the_max_dl_for_a_single_user']}", 'bottom20');
 }
 if ($user['downloaded'] > 0) {
-    $ratio = number_format($user['uploaded'] / $user['downloaded'], 2);
+    $ratio = $user['uploaded'] / $user['downloaded'];
 } elseif ($user['uploaded'] > 0) {
     $ratio = 999;
 } else {
@@ -190,7 +190,7 @@ $post_color = isset($_POST['color']) ? $_POST['color'] : '';
 $post_number = isset($_POST['number']) ? $_POST['number'] : '';
 $post_betmb = isset($_POST['betmb']) ? $_POST['betmb'] : '';
 $cache = $container->get(Cache::class);
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 if (isset($color_options[$post_color], $number_options[$post_number]) || isset($betmb_options[$post_betmb])) {
     $betmb = $_POST['betmb'];
     if (isset($_POST['number'])) {
@@ -302,7 +302,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
             if ($writelog == 1) {
                 write_log($user['username'] . " won $nogb {$lang['casino_of_upload_credit_off']} " . htmlsafechars($tbet['proposed']));
             }
@@ -351,7 +351,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
 
             if ($writelog == 1) {
                 write_log('' . htmlsafechars($tbet['proposed']) . " won $nogb {$lang['casino_of_upload_credit_off']} " . $user['username']);
@@ -417,7 +417,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $set = [
             'uploaded' => $newups,
         ];
-        $user_stuffs->update($set, $user['id']);
+        $users_class->update($set, $user['id']);
         $user_deposit = $user_deposit + $nobits;
         $set = [
             'deposit' => $user_deposit,

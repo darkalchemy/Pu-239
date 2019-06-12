@@ -29,8 +29,9 @@ function get_imdb(url, tid, image) {
             image: image
         },
         success: function (data) {
-           if (data['fail'] === 'invalid') {
+            if (data['fail'] === 'invalid') {
                 e.innerHTML = 'IMDb Lookup Failed. Please check that your imdb link is correct.';
+                el.appendChild(e);
             } else {
                 e.remove();
                 var node = document.createElement('div');
@@ -42,12 +43,14 @@ function get_imdb(url, tid, image) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                    el.appendChild(e);
                 } else {
                     e.remove();
                     get_imdb(url, tid, image);
                 }
             } else {
                 e.innerHTML = 'Another *unknown* was returned';
+                el.appendChild(e);
             }
         }
     });

@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
-        $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . (int) $v . ",\n";
     }
     $missed = array_diff($list, $updated);
     foreach ($missed as $k) {

@@ -56,11 +56,11 @@ if (!in_array($action, $possible_actions)) {
     stderr($lang['pm_error'], $lang['pm_error_ruffian']);
 }
 
-$change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 0));
-$page = (isset($_GET['page']) ? intval($_GET['page']) : 0);
-$perpage = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 15));
-$mailbox = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ? intval($_POST['box']) : 1));
-$pm_id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$change_pm_number = (isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : (isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 0));
+$page = (isset($_GET['page']) ? (int) $_GET['page'] : 0);
+$perpage = (isset($_GET['perpage']) ? (int) $_GET['perpage'] : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 15));
+$mailbox = (isset($_GET['box']) ? (int) $_GET['box'] : (isset($_POST['box']) ? (int) $_POST['box'] : 1));
+$pm_id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0));
 $save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
 $urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
 $desc_asc = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
@@ -93,7 +93,7 @@ global $container;
 $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
 if (isset($_GET['change_pm_number'])) {
-    $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);
+    $change_pm_number = (isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : 20);
     sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user_' . $CURUSER['id'], [
         'pms_per_page' => $change_pm_number,

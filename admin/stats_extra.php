@@ -181,7 +181,7 @@ function show_views(array $inbound, array $month_names)
             ];
         }
         foreach ($results as $data) {
-            $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
+            $img_width = ($data['result_count'] / $max_result) * 100 - 8;
             if ($img_width < 1) {
                 $img_width = 1;
             }
@@ -353,7 +353,7 @@ function result_screen(string $mode, array $inbound, array $month_names)
     if (!empty($results)) {
         $body = '';
         foreach ($results as $data) {
-            $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
+            $img_width = ($data['result_count'] / $max_result) * 100 - 8;
             if ($img_width < 1) {
                 $img_width = 1;
             }

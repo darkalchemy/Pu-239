@@ -30,14 +30,14 @@ $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
 $fluent = $container->get(Database::class);
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userid = (int) $_POST['userid'];
         if (!is_valid_id($userid)) {
             stderr('Error', 'Invalid ID.');
         }
-        $arr = $user_stuffs->getUserFromId($userid);
+        $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
             stderr('Error', 'No user with that ID.');
         }
@@ -63,7 +63,7 @@ if ($action === 'add') {
         $set = [
             'comments' => $count,
         ];
-        $user_stuffs->update($set, $userid);
+        $users_class->update($set, $userid);
         header("Refresh: 0; url=userdetails.php?id=$userid&viewcomm=$newid#comm$newid");
         die();
     } else {
@@ -71,7 +71,7 @@ if ($action === 'add') {
         if (!is_valid_id($userid)) {
             stderr('Error', 'Invalid ID.');
         }
-        $arr = $user_stuffs->getUserFromId($userid);
+        $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
             stderr('Error', 'No user with that ID.');
         }
@@ -186,7 +186,7 @@ if ($action === 'add') {
         $set = [
             'comments' => $count,
         ];
-        $user_stuffs->update($set, $userid);
+        $users_class->update($set, $userid);
     }
     $session = $container->get(Session::class);
     $session->set('is-success', 'User Comment has been deleted.');

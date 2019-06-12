@@ -40,9 +40,9 @@ function peer_update($data)
         }
         $cache->delete('peers_' . $dead_peer['userid']);
     }
-    $torrent_stuffs = $container->get(Torrent::class);
+    $torrents_class = $container->get(Torrent::class);
     foreach (array_keys($torrent_seeds) as $tid) {
-        $torrent_stuffs->adjust_torrent_peers($tid, -$torrent_seeds[$tid], -$torrent_leeches[$tid], 0);
+        $torrents_class->adjust_torrent_peers($tid, -$torrent_seeds[$tid], -$torrent_leeches[$tid], 0);
     }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

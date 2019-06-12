@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     if (!is_valid_id($userid)) {
         stderr($lang['modtask_error'], $lang['modtask_bad_id']);
     }
-    $user_stuffs = $container->get(User::class);
-    $user = $user_stuffs->getUserFromId($userid);
+    $users_class = $container->get(User::class);
+    $user = $users_class->getUserFromId($userid);
     if ($CURUSER['id'] !== $userid && $CURUSER['class'] <= $user['class'] && $CURUSER['class'] < UC_MAX) {
         stderr($lang['modtask_error'], $lang['modtask_cannot_edit']);
     }
@@ -790,7 +790,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $useredit[] = $lang['modtask_viewoffensive_enabled'] . $view_offensive_avatar;
     }
     if ((isset($post['paranoia'])) && (($paranoia = (int) $post['paranoia']) !== $user['paranoia'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_paranoia_changed_to'] . intval($post['paranoia']) . $lang['modtask_gl_from'] . intval($user['paranoia']) . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_paranoia_changed_to'] . (int) $post['paranoia'] . $lang['modtask_gl_from'] . (int) $user['paranoia'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
         $update['paranoia'] = $paranoia;
         $useredit[] = $lang['modtask_paranoia_changed'];
     }
@@ -805,7 +805,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $useredit[] = $lang['modtask_skype_changed'];
     }
     if (!empty($update)) {
-        $user_stuffs->update($update, $userid);
+        $users_class->update($update, $userid);
         if ($post['enabled'] !== 'yes') {
             $cache->delete('user_' . $userid);
         }

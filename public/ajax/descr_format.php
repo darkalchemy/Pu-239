@@ -12,8 +12,8 @@ global $container;
 
 $tid = is_numeric($tid) ? (int) $tid : '';
 if (!empty($tid)) {
-    $torrent_stuffs = $container->get(Torrent::class);
-    $descr = $torrent_stuffs->format_descr($tid);
+    $torrents_class = $container->get(Torrent::class);
+    $descr = $torrents_class->format_descr($tid);
     if (!empty($descr)) {
         echo json_encode(['descr' => $descr]);
         die();

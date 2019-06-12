@@ -33,16 +33,16 @@ $HTMLOUT = $count2 = '';
 if ($CURUSER['class'] < (UC_MIN + 1)) {
     stderr('Error!', 'Sorry, you need to rank up!');
 }
-$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
-$comment_id = isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
+$comment_id = isset($_GET['cid']) ? (int) $_GET['cid'] : (isset($_POST['cid']) ? (int) $_POST['cid'] : 0);
 if (isset($_GET['comment_id']) && $comment_id === 0) {
     $comment_id = $_GET['comment_id'];
 } elseif (isset($_POST['comment_id']) && $comment_id === 0) {
     $comment_id = $_POST['comment_id'];
 }
-$category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
-$requested_by_id = isset($_GET['requested_by_id']) ? intval($_GET['requested_by_id']) : 0;
-$vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
+$category = isset($_GET['category']) ? (int) $_GET['category'] : (isset($_POST['category']) ? (int) $_POST['category'] : 0);
+$requested_by_id = isset($_GET['requested_by_id']) ? (int) $_GET['requested_by_id'] : 0;
+$vote = isset($_POST['vote']) ? (int) $_POST['vote'] : 0;
 $posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars((string) $_GET['action']) : (isset($_POST['action']) ? htmlsafechars((string) $_POST['action']) : '')));
 
 $valid_actions = [
@@ -81,7 +81,7 @@ $top_menu = '
     </div>';
 $session = $container->get(Session::class);
 $fluent = $container->get(Database::class);
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 switch ($action) {
     case 'update_request':
         if (!isset($id) || !is_valid_id($id)) {
@@ -261,7 +261,7 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $voted;
         }
-        $usersdata = $user_stuffs->getUserFromId($arr['requested_by_user_id']);
+        $usersdata = $users_class->getUserFromId($arr['requested_by_user_id']);
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
@@ -297,7 +297,7 @@ switch ($action) {
   <tr>
   <td>requested by:</td>
   <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name((int) $usersdata['class']) . ' ]
-  ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
+  ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? 0 : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
   <td><a class="is-link" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
@@ -513,9 +513,9 @@ switch ($action) {
         }
         $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : $edit_arr['request_name']);
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
-        $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
+        $body = isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description'];
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
-        $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
+        $category = isset($_POST['category']) ? (int) $_POST['category'] : $edit_arr['category'];
         $category_drop_down = '
                 <select name="category" required><option value="">Select Request Category</option>';
         $cats = genrelist(true);
@@ -683,7 +683,7 @@ switch ($action) {
         if ($CURUSER['id'] == $arr['user']) {
             $avatar = get_avatar($CURUSER);
         } else {
-            $arr_user = $user_stuffs->getUserFromId($arr['user']);
+            $arr_user = $users_class->getUserFromId($arr['user']);
             $avatar = get_avatar($arr_user);
         }
         $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit" accept-charset="utf-8">
@@ -790,7 +790,7 @@ switch ($action) {
         }
         $HTMLOUT = " < h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
-        $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
+        $returnto = isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '';
         if ($returnto) {
             $HTMLOUT .= "
                 <div class='has-text-centered margin20'>

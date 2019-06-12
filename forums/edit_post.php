@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-$post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
-$topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
-$page = isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ? intval($_POST['page']) : 0);
+$post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0);
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
+$page = isset($_GET['page']) ? (int) $_GET['page'] : (isset($_POST['page']) ? (int) $_POST['page'] : 0);
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -133,7 +133,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
         $size_error = $uploaded[1];
     }
     if (isset($_POST['attachment_to_delete'])) {
-        $_POST['attachment_to_delete'] = (isset($_POST['attachment_to_delete']) ? $_POST['attachment_to_delete'] : '');
+        $_POST['attachment_to_delete'] = isset($_POST['attachment_to_delete']) ? (int) $_POST['attachment_to_delete'] : 0;
         $attachment_to_delete = [];
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);

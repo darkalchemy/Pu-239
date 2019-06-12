@@ -18,7 +18,7 @@ $HTMLOUT = '';
 
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
@@ -207,7 +207,7 @@ if (isset($_POST['form']) != 1) {
             ];
         }
         if (!empty($msgs_buffer)) {
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
         }
         stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
     }

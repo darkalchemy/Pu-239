@@ -26,8 +26,8 @@ $posted_comments .= "
                     </thead>
                     <tbody>";
 
-$image_stuffs = $container->get(Image::class);
-$user_stuffs = $container->get(User::class);
+$images_class = $container->get(Image::class);
+$users_class = $container->get(User::class);
 foreach ($comments as $comment) {
     $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = $genre = '';
     $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = $imdb_id = '';
@@ -35,13 +35,13 @@ foreach ($comments as $comment) {
     $torrname = htmlsafechars($name);
     $user = $anonymous === 'yes' ? 'Anonymous' : format_username((int) $user);
     if (empty($poster) && !empty($imdb_id)) {
-        $poster = $image_stuffs->find_images($imdb_id);
+        $poster = $images_class->find_images($imdb_id);
     }
     $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='' class='tooltip-poster'>";
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || (int) $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $users_data = $user_stuffs->getUserFromId((int) $owner);
+        $users_data = $users_class->getUserFromId((int) $owner);
         $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 

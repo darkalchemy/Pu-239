@@ -27,8 +27,8 @@ if (isset($_POST['levelName'])) {
     }
 }
 
-$score = isset($_POST['score']) ? intval($_POST['score']) : (isset($_POST['gscore']) ? intval($_POST['gscore']) : 0);
-$level = isset($_POST['level']) ? intval($_POST['level']) : 1;
+$score = isset($_POST['score']) ? (int) $_POST['score'] : (isset($_POST['gscore']) ? (int) $_POST['gscore'] : 0);
+$level = isset($_POST['level']) ? (int) $_POST['level'] : 1;
 
 $highScore = 0;
 $fluent = $container->get(Database::class);
@@ -61,8 +61,8 @@ if ($highScore < $score) {
         'bonuscomment' => $bonuscomment . $CURUSER['bonuscomment'],
         'seedbonus' => $site_config['arcade']['top_score_points'] + $CURUSER['seedbonus'],
     ];
-    $user_stuffs = $container->get(User::class);
-    $user_stuffs->update($set, $CURUSER['id']);
+    $users_class = $container->get(User::class);
+    $users_class->update($set, $CURUSER['id']);
 } elseif ($score >= .9 * $highScore) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a whopping " . number_format($score) . '. Excellent! The high score remains ' . number_format($highScore) . '.';
 } else {

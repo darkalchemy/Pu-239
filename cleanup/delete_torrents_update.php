@@ -51,10 +51,10 @@ function delete_torrents_update($data)
 
     $values = [];
     $dt = TIME_NOW;
-    $torrent_stuffs = $container->get(Torrent::class);
+    $torrents_class = $container->get(Torrent::class);
     foreach ($never_seeded as $torrent) {
-        $torrent_stuffs->delete_by_id((int) $torrent['id']);
-        $torrent_stuffs->remove_torrent($torrent['info_hash']);
+        $torrents_class->delete_by_id((int) $torrent['id']);
+        $torrents_class->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
             'sender' => 0,
@@ -69,8 +69,8 @@ function delete_torrents_update($data)
     }
 
     foreach ($dead as $torrent) {
-        $torrent_stuffs->delete_by_id((int) $torrent['id']);
-        $torrent_stuffs->remove_torrent($torrent['info_hash']);
+        $torrents_class->delete_by_id((int) $torrent['id']);
+        $torrents_class->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
             'sender' => 0,
@@ -88,8 +88,8 @@ function delete_torrents_update($data)
     if ($count > 0) {
         $cache = $container->get(Cache::class);
         $cache->delete('torrent_poster_count_');
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
     }
 
     $time_end = microtime(true);

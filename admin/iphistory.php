@@ -21,35 +21,35 @@ $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr($lang['stderr_error'], $lang['stderr_badid']);
 }
-$ip_stuffs = $container->get(IP::class);
+$ips_class = $container->get(IP::class);
 if (isset($_GET['remove'])) {
     $remove = (int) htmlsafechars($_GET['remove']);
     $username2 = htmlsafechars($_GET['username2']);
     $deleteip = htmlsafechars($_GET['deleteip']);
-    $ip_stuffs->delete($remove);
+    $ips_class->delete($remove);
 }
 if (isset($_GET['setseedbox'])) {
-    $setseedbox = (int) htmlsafechars($_GET['setseedbox']);
+    $setseedbox = intval($_GET['setseedbox']);
     if (is_valid_id($setseedbox)) {
         $set = [
             'seedbox' => 1,
         ];
-        $ip_stuffs->set($set, $setseedbox);
+        $ips_class->set($set, $setseedbox);
     }
 }
 if (isset($_GET['setseedbox2'])) {
-    $setseedbox2 = (int) htmlsafechars($_GET['setseedbox2']);
+    $setseedbox2 = intval($_GET['setseedbox2']);
     if (is_valid_id($setseedbox2)) {
         $set = [
             'seedbox' => 0,
         ];
-        $ip_stuffs->set($set, $setseedbox2);
+        $ips_class->set($set, $setseedbox2);
     }
 }
-$user_stuffs = $container->get(User::class);
-$user = $user_stuffs->getUserFromId($id);
+$users_class = $container->get(User::class);
+$user = $users_class->getUserFromId($id);
 $username = htmlsafechars($user['username']);
-$resip = $ip_stuffs->get($id);
+$resip = $ips_class->get($id);
 $ipcount = count($resip);
 $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['iphistory_usedby']}" . format_username((int) $id) . "</h1>
@@ -100,7 +100,7 @@ foreach ($resip as $iphistory) {
         $set = [
             'seedbox' => 1,
         ];
-        $ip_stuffs->set($set, $ipid);
+        $ips_class->set($set, $ipid);
     }
     $lastbrowse = (int) $iphistory['lastbrowse'];
     $lastlogin = (int) $iphistory['lastlogin'];
@@ -110,8 +110,8 @@ foreach ($resip as $iphistory) {
     $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arrip2 = mysqli_fetch_row($resip2);
     $ipcount = $arrip2[0];
-    $ban_stuffs = $container->get(Ban::class);
-    $count = $ban_stuffs->get_count($iphistory['ip']);
+    $bans_class = $container->get(Ban::class);
+    $count = $bans_class->get_count($iphistory['ip']);
     if ($count === 0) {
         if ($ipcount > 1) {
             $ipshow = "<b><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span></a></b>';

@@ -85,8 +85,8 @@ function notify_owner(array $tids)
                ->execute();
     }
     if (!empty($values)) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
 
         return count($values);
     }

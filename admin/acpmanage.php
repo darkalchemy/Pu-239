@@ -25,13 +25,14 @@ $fluent = $container->get(Database::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     $ids = $_POST['ids'];
     foreach ($ids as $id) {
+        $id = (int) $id;
         if (!is_valid_id($id)) {
             stderr($lang['std_error'], $lang['text_invalid']);
         }
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
-        sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET enabled = 'yes' WHERE id IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $id, [
             'enabled' => 'yes',
         ], $site_config['expires']['user_cache']);

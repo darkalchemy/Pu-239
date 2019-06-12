@@ -11,8 +11,8 @@ use Pu239\User;
 global $container, $CURUSER, $site_config;
 
 $all_my_boxes = $user_cache = $categories = '';
-$user_stuffs = $container->get(User::class);
-$message_stuffs = $container->get(Message::class);
+$users_class = $container->get(User::class);
+$messages_class = $container->get(Message::class);
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 if (isset($_POST['action2'])) {
@@ -22,7 +22,7 @@ if (isset($_POST['action2'])) {
         'change_pm',
         'message_settings',
     ];
-    $action2 = (isset($_POST['action2']) ? strip_tags($_POST['action2']) : '');
+    $action2 = isset($_POST['action2']) ? strip_tags($_POST['action2']) : '';
     $worked = $deleted = '';
     if (!in_array($action2, $good_actions)) {
         stderr($lang['pm_error'], $lang['pm_edmail_error']);
@@ -30,11 +30,11 @@ if (isset($_POST['action2'])) {
 
     switch ($action2) {
         case 'change_pm':
-            $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
+            $change_pm_number = isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 20;
             $set = [
                 'pms_per_page' => $change_pm_number,
             ];
-            $user_stuffs->update($set, $CURUSER['id']);
+            $users_class->update($set, $CURUSER['id']);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes&pm=1');
             die();
 
@@ -95,7 +95,7 @@ if (isset($_POST['action2'])) {
                     $set = [
                         'location' => 1,
                     ];
-                    $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
+                    $messages_class->update_location($set, $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
                            ->where('id = ?', $row['id'])
                            ->execute();
@@ -110,7 +110,7 @@ if (isset($_POST['action2'])) {
 
         case 'message_settings':
             $set = [];
-            $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
+            $change_pm_number = isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 20;
             $setbits = $clrbits = 0;
             if ($_POST['show_pm_avatar'] === 'yes') {
                 $setbits |= user_options_2::SHOW_PM_AVATAR;
@@ -141,7 +141,7 @@ if (isset($_POST['action2'])) {
                 $set = [
                     'opt2' => new Literal("(opt2 | {$setbits}) & ~{$clrbits}"),
                 ];
-                $user_stuffs->update($set, $CURUSER['id'], false);
+                $users_class->update($set, $CURUSER['id'], false);
             }
             unset($set);
             $set = [
@@ -151,8 +151,8 @@ if (isset($_POST['action2'])) {
                 'deletepms' => $deletepms,
                 'notifs' => $notifs,
             ];
-            $user_stuffs->update($set, $CURUSER['id']);
-            $user_stuffs->getUserFromId($CURUSER['id'], true);
+            $users_class->update($set, $CURUSER['id']);
+            $users_class->getUserFromId($CURUSER['id'], true);
             $worked = '&pms=1';
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes' . $worked);
             die();
@@ -167,7 +167,7 @@ $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {
     foreach ($boxes as $row) {
-        $messages = $message_stuffs->get_count($CURUSER['id'], $row['boxnumber']);
+        $messages = $messages_class->get_count($CURUSER['id'], $row['boxnumber']);
         $all_my_boxes .= '
                     <tr>
                         <td colspan="2">

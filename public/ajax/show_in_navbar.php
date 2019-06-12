@@ -14,8 +14,8 @@ global $container;
 $auth = $container->get(Auth::class);
 $current_user = $auth->getUserId();
 if (!empty($current_user)) {
-    $user_stuffs = $container->get(User::class);
-    $class = $user_stuffs->get_item('class', $current_user);
+    $users_class = $container->get(User::class);
+    $class = $users_class->get_item('class', $current_user);
 }
 if (empty($current_user) || $class < UC_STAFF) {
     echo json_encode(['show_in_navbar' => 'class']);

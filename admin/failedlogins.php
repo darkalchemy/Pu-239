@@ -15,42 +15,24 @@ $lang = array_merge($lang, load_language('failedlogins'));
 global $container, $site_config;
 
 $session = $container->get(Session::class);
-$mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
-$id = isset($_GET['id']) ? (int) $_GET['id'] : '';
-
-/**
- * @param $id
- *
- * @throws Exception
- *
- * @return bool
- */
-function validate($id)
-{
-    global $lang;
-
-    if (!is_valid_id($id)) {
-        stderr($lang['failed_sorry'], "{$lang['failed_bad_id']}");
-    }
-
-    return true;
+$mode = isset($_GET['mode']) ? $_GET['mode'] : '';
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if (!is_valid_id($id)) {
+    stderr($lang['failed_sorry'], "{$lang['failed_bad_id']}");
 }
 
 if ($mode === 'ban') {
-    validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-warning', $lang['failed_message_ban']);
     unset($_POST);
 }
 if ($mode === 'removeban') {
-    validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_unban']);
     unset($_POST);
 }
 if ($mode === 'delete') {
-    validate($id);
-    sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM failedlogins WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_deleted']);
     unset($_POST);
 }

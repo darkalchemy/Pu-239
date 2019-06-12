@@ -59,8 +59,8 @@ if (isset($_GET['delete'])) {
 if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
     $type = isset($_GET['type']) && $_GET['type'] == 1 ? 1 : 2;
     $update = ['avatar' => trim(strip_tags($_GET['avatar']))];
-    $user_stuffs = $container->get(User::class);
-    $user_stuffs->update($update, $CURUSER['id']);
+    $users_class = $container->get(User::class);
+    $users_class->update($update, $CURUSER['id']);
     header("Location: {$site_config['paths']['baseurl']}/bitbucket.php?images=$type&updated=avatar");
 } elseif (!empty($_GET['avatar']) && $_GET['avatar'] === $CURUSER['avatar']) {
     $session->set('is-warning', 'This is already your avatar!');
@@ -105,7 +105,7 @@ $htmlout .= main_div("
 $htmlout .= main_div("
     <div class='output'></div>", 'output-wrapper is-hidden');
 
-$folder_month = empty($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month'];
+$folder_month = empty($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? 0 : '') . (int) $_GET['month'];
 
 if (isset($_GET['images']) && $_GET['images'] == 1) {
     $year = !isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int) $_GET['year'];
@@ -188,7 +188,7 @@ if (isset($_GET['images'])) {
                             <a href='{$site_config['paths']['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['paths']['baseurl']}/img.php?{$filename}' class='button is-small'>{$lang['bitbucket_maketma']}</a>
                         </li>
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int) $_GET['year']) . "' class='button is-small's>{$lang['bitbucket_delete']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? 0 : '') . (int) $_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int) $_GET['year']) . "' class='button is-small's>{$lang['bitbucket_delete']}</a>
                         </li>
                     </ul>
                 </div>

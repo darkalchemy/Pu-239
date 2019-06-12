@@ -6,9 +6,9 @@ use Pu239\Cache;
 
 global $container, $lang, $site_config, $CURUSER;
 
-$post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
-$topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
-$sanity_check = isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 0;
+$post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0);
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
+$sanity_check = isset($_GET['sanity_check']) ? (int) $_GET['sanity_check'] : 0;
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }

@@ -42,7 +42,7 @@ function torrents_update($data)
                        ->select('torrent')
                        ->fetchAll();
 
-    $torrent_stuffs = $container->get(Torrent::class);
+    $torrents_class = $container->get(Torrent::class);
     foreach ($torrents as $torrent) {
         $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;
 
@@ -68,7 +68,7 @@ function torrents_update($data)
                 'leechers' => $torrent['leechers_num'],
                 'comments' => $torrent['comments_num'],
             ];
-            $torrent_stuffs->update($set, $torrent['id'], true);
+            $torrents_class->update($set, $torrent['id'], true);
         }
     }
 

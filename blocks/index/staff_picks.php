@@ -28,12 +28,12 @@ $staffpicks .= "
                     </tr>
                 </thead>
                 <tbody>";
-$image_stuffs = $container->get(Image::class);
+$images_class = $container->get(Image::class);
 foreach ($staff_picks as $staff_pick) {
     $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
     extract($staff_pick);
     if (empty($poster) && !empty($imdb_id)) {
-        $poster = $image_stuffs->find_images($imdb_id);
+        $poster = $images_class->find_images($imdb_id);
     }
     $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 

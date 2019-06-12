@@ -17,9 +17,9 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_categories'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
-$params['parent_id'] = !empty($params['parent_id']) ? intval($params['parent_id']) : 0;
-$params['id'] = !empty($params['id']) ? intval($params['id']) : 0;
-$params['new_cat_id'] = !empty($params['new_cat_id']) ? intval($params['new_cat_id']) : 0;
+$params['parent_id'] = !empty($params['parent_id']) ? (int) $params['parent_id'] : 0;
+$params['id'] = !empty($params['id']) ? (int) $params['id'] : 0;
+$params['new_cat_id'] = !empty($params['new_cat_id']) ? (int) $params['new_cat_id'] : 0;
 
 switch ($params['mode']) {
     case 'takemove_cat':
@@ -64,12 +64,12 @@ switch ($params['mode']) {
  */
 function move_cat($params)
 {
-    global $container, $lang, $site_config;
+    global $container, $lang;
 
-    if ((!isset($params['id']) || !is_valid_id($params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id($params['new_cat_id']))) {
+    if ((!isset($params['id']) || !is_valid_id((int) $params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id((int) $params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    if (!is_valid_id($params['new_cat_id']) || ($params['id'] == $params['new_cat_id'])) {
+    if (!is_valid_id((int) $params['new_cat_id']) || ((int) $params['id'] === (int) $params['new_cat_id'])) {
         stderr($lang['categories_error'], $lang['categories_move_error2']);
     }
     $fluent = $container->get(Database::class);
@@ -119,8 +119,8 @@ function move_cat($params)
  */
 function move_cat_form($params)
 {
-    global $lang, $site_config;
-    if (!isset($params['id']) || !is_valid_id($params['id'])) {
+    global $lang;
+    if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
 
@@ -217,10 +217,10 @@ function add_cat($params)
  */
 function delete_cat($params)
 {
-    global $container, $site_config, $lang;
+    global $container, $lang;
 
     $cache = $container->get(Cache::class);
-    if (!isset($params['id']) || !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $fluent = $container->get(Database::class);
@@ -264,9 +264,9 @@ function delete_cat($params)
  */
 function delete_cat_form($params)
 {
-    global $container, $site_config, $lang;
+    global $container, $lang;
 
-    if (!isset($params['id']) || !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $cat = get_cat($params['id']);
@@ -313,10 +313,10 @@ function delete_cat_form($params)
  */
 function edit_cat($params)
 {
-    global $container, $site_config, $lang;
+    global $container, $lang;
 
     $cache = $container->get(Cache::class);
-    if (!isset($params['id']) || !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     foreach ([
@@ -372,9 +372,9 @@ function edit_cat($params)
  */
 function edit_cat_form($params)
 {
-    global $site_config, $lang;
+    global $lang;
 
-    if (!isset($params['id']) || !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
 

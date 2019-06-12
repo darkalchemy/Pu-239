@@ -209,7 +209,7 @@ function sharetable($res, $userid, $variant = 'index')
 
 global $container, $CURUSER, $site_config;
 
-$userid = isset($_GET['id']) ? (int) $_GET['id'] : '';
+$userid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID.');
 }
@@ -270,6 +270,6 @@ if ($count) {
     $htmlout .= sharetable($sharemarks, $userid, 'index');
     $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
-$user_stuffs = $container->get(User::class);
-$username = $user_stuffs->get_item('username', $userid);
+$users_class = $container->get(User::class);
+$username = $users_class->get_item('username', $userid);
 echo stdhead('Sharemarks for ' . htmlsafechars($username)) . wrapper($htmlout) . stdfoot($stdfoot);

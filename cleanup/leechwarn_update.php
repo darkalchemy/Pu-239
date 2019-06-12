@@ -72,9 +72,9 @@ function leechwarn_update($data)
     }
 
     $count = count($values);
-    $message_stuffs = $container->get(Message::class);
+    $messages_class = $container->get(Message::class);
     if ($count) {
-        $message_stuffs->insert($values);
+        $messages_class->insert($values);
     }
 
     $minratio = 0.5;
@@ -112,7 +112,7 @@ function leechwarn_update($data)
         $cache->update_row('user_' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }
     if (!empty($values)) {
-        $message_stuffs->insert($values);
+        $messages_class->insert($values);
     }
     $res = $fluent->from('users')
                   ->select(null)

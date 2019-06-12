@@ -13,32 +13,32 @@ flood_limit('messages');
 
 global $container, $CURUSER, $site_config, $lang;
 
-$message_stuffs = $container->get(Message::class);
-$user_stuffs = $container->get(User::class);
+$messages_class = $container->get(Message::class);
+$users_class = $container->get(User::class);
 
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
-    $receiver = isset($_POST['receiver']) ? intval($_POST['receiver']) : 0;
+    $receiver = isset($_POST['receiver']) ? (int) $_POST['receiver'] : 0;
     $subject = htmlsafechars($_POST['subject']);
     $msg = trim($_POST['body']);
-    $save = isset($_POST['save']) && intval($_POST['save']) === 1 ? 'yes' : 'no';
-    $delete = isset($_POST['delete']) && intval($_POST['delete']) != 0 ? intval($_POST['delete']) : 0;
+    $save = isset($_POST['save']) && (int) $_POST['save'] === 1 ? 'yes' : 'no';
+    $delete = isset($_POST['delete']) && (int) $_POST['delete'] != 0 ? (int) $_POST['delete'] : 0;
     $urgent = isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF ? 'yes' : 'no';
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
-    $arr_receiver = $user_stuffs->getUserFromId($receiver);
+    $arr_receiver = $users_class->getUserFromId($receiver);
 
-    if (!is_valid_id(intval($_POST['receiver'])) || !is_valid_id($arr_receiver['id'])) {
+    if (!is_valid_id((int) $_POST['receiver']) || !is_valid_id($arr_receiver['id'])) {
         stderr($lang['pm_error'], $lang['pm_send_not_found']);
     }
     if (!isset($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_send_nobody']);
     }
     if ($CURUSER['suspended'] === 'yes') {
-        $row = $user_stuffs->getUserFromId($receiver);
+        $row = $users_class->getUserFromId($receiver);
         if ($row['class'] < UC_STAFF) {
             stderr($lang['pm_error'], $lang['pm_send_your_acc']);
         }
     }
-    $count = $message_stuffs->get_count($receiver, 1);
+    $count = $messages_class->get_count($receiver, 1);
     if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
         stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
     }
@@ -78,7 +78,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'location' => 1,
         'urgent' => $urgent,
     ];
-    $message_stuffs->insert($msgs_buffer);
+    $messages_class->insert($msgs_buffer);
     if (!empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
@@ -100,19 +100,19 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $set = [
             'location' => 0,
         ];
-        $message = $message_stuffs->get_by_id($delete);
+        $message = $messages_class->get_by_id($delete);
         if (!empty($message)) {
             if ($message['receiver'] != $CURUSER['id']) {
                 stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
             }
             if ($save != 'yes') {
-                $message_stuffs->delete($delete, $message['receiver']);
-                $message_stuffs->update($set, $delete);
+                $messages_class->delete($delete, $message['receiver']);
+                $messages_class->update($set, $delete);
             } else {
                 $values = [
                     'location' => 0,
                 ];
-                $message_stuffs->update($values, $delete);
+                $messages_class->update($values, $delete);
             }
         }
     }
@@ -124,14 +124,14 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     die();
 }
 
-$receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : null));
-$replyto = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST['replyto']) ? intval($_POST['replyto']) : 0));
+$receiver = isset($_GET['receiver']) ? (int) $_GET['receiver'] : (isset($_POST['receiver']) ? (int) $_POST['receiver'] : 0);
+$replyto = isset($_GET['replyto']) ? (int) $_GET['replyto'] : (isset($_POST['replyto']) ? (int) $_POST['replyto'] : 0);
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if ($receiver && !is_valid_id($receiver)) {
     stderr($lang['pm_error'], $lang['pm_send_mid']);
 }
 if ($receiver) {
-    $arr_member = $user_stuffs->getUserFromId($receiver);
+    $arr_member = $users_class->getUserFromId($receiver);
 }
 
 if ($replyto != 0) {
@@ -139,7 +139,7 @@ if ($replyto != 0) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
 
-    $message = $message_stuffs->get_by_id($replyto);
+    $message = $messages_class->get_by_id($replyto);
     if ($message['sender'] == $CURUSER['id']) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
     }

@@ -7,8 +7,8 @@ use Pu239\Message;
 global $CURUSER, $container, $lang, $site_config;
 
 if ($site_config['alerts']['message'] && $CURUSER) {
-    $message_stuffs = $container->get(Message::class);
-    $unread = $message_stuffs->get_count($CURUSER['id']);
+    $messages_class = $container->get(Message::class);
+    $unread = $messages_class->get_count($CURUSER['id']);
 
     if (!empty($unread)) {
         $htmlout .= "

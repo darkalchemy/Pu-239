@@ -32,7 +32,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         return false;
     }
     $cache = $container->get(Cache::class);
-    $torrent_stuffs = $container->get(Torrent::class);
+    $torrents_class = $container->get(Torrent::class);
     $api_hits = $cache->get('google_api_hits_');
     $ebook = $cache->get('book_info_' . $tid);
     if ($ebook === false || is_null($ebook)) {
@@ -122,8 +122,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
             if (!empty($ebook['rating'])) {
                 $set['rating'] = $ebook['rating'];
             }
-            $torrent_stuffs = $container->get(Torrent::class);
-            $torrent_stuffs->update($set, $tid);
+            $torrents_class->update($set, $tid);
             $cache->set('book_info_' . $tid, $ebook, $site_config['expires']['book_info']);
         }
     }
@@ -211,14 +210,14 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         $set = [
             'poster' => $poster,
         ];
-        $torrent_stuffs->update($set, $tid);
+        $torrents_class->update($set, $tid);
         $values = [
             'isbn' => $ebook['isbn13'],
             'url' => $poster,
             'type' => 'poster',
         ];
-        $image_stuffs = $container->get(Image::class);
-        $image_stuffs->insert($values);
+        $images_class = $container->get(Image::class);
+        $images_class->insert($values);
     }
 
     if (!empty($poster)) {

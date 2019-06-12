@@ -271,7 +271,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         </div>";
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } elseif ($do === 'delete_invite') {
-    $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     $query = sql_query('SELECT * FROM invite_codes WHERE id=' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);
     if (!$assoc) {
@@ -302,7 +302,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
 } elseif ($do = 'confirm_account') {
-    $userid = (isset($_GET['userid']) ? (int) $_GET['userid'] : (isset($_POST['userid']) ? (int) $_POST['userid'] : ''));
+    $userid = isset($_GET['userid']) ? (int) $_GET['userid'] : (isset($_POST['userid']) ? (int) $_POST['userid'] : 0);
     if (!is_valid_id($userid)) {
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }

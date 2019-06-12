@@ -7,7 +7,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 flood_limit('forums');
-$forum_id = isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0);
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
         if ($i > 20 || $i < 2) {
             stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
         }
-        $multi_options = isset($_POST['multi_options']) && $_POST['multi_options'] <= $i ? intval($_POST['multi_options']) : 1;
+        $multi_options = isset($_POST['multi_options']) && $_POST['multi_options'] <= $i ? (int) $_POST['multi_options'] : 1;
 
         $poll_options = serialize($break_down_poll_options);
         $values = [

@@ -32,15 +32,15 @@ function prime_caches($data)
                         ->innerJoin('snatched ON users.id=snatched.userid')
                         ->groupBy('users.id');
     */
-    $torrent_stuffs = $container->get(Torrent::class);
-    $user_stuffs = $container->get(User::class);
-    $peer_stuffs = $container->get(Peer::class);
+    $torrents_class = $container->get(Torrent::class);
+    $users_class = $container->get(User::class);
+    $peer_class = $container->get(Peer::class);
     foreach ($torrents as $torrent) {
-        $torrent_stuffs->get($torrent['id']);
-        $torrent_stuffs->format_descr($torrent['id']);
-        $torrent_stuffs->get_torrent_from_hash($torrent['info_hash']);
-        $user_stuffs->getUserFromId($torrent['owner']);
-        $peer_stuffs->get_torrent_peers_by_tid($torrent['id']);
+        $torrents_class->get($torrent['id']);
+        $torrents_class->format_descr($torrent['id']);
+        $torrents_class->get_torrent_from_hash($torrent['info_hash']);
+        $users_class->getUserFromId($torrent['owner']);
+        $peer_class->get_torrent_peers_by_tid($torrent['id']);
     }
 
     $time_end = microtime(true);

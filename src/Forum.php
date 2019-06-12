@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use PDOStatement;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -52,7 +53,7 @@ class Forum
      *
      * @throws Exception
      *
-     * @return bool|int|\PDOStatement
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $forum_id)
     {

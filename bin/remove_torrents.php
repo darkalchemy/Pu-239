@@ -18,10 +18,10 @@ $torrents = $fluent->from('torrents')
     ->orderBy('id');
 
 $i = 0;
-$torrent_stuffs = $container->get(Torrent::class);
+$torrents_class = $container->get(Torrent::class);
 foreach ($torrents as $torrent) {
-    $torrent_stuffs->delete_by_id($torrent['id']);
-    $torrent_stuffs->remove_torrent($torrent['info_hash'], $torrent['id'], $torrent['owner']);
+    $torrents_class->delete_by_id($torrent['id']);
+    $torrents_class->remove_torrent($torrent['info_hash'], $torrent['id'], $torrent['owner']);
     ++$i;
 }
 

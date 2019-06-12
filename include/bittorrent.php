@@ -82,8 +82,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -114,11 +114,11 @@ function userlogin()
     if (isset($CURUSER)) {
         return true;
     }
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     $session = $container->get(Session::class);
-    $id = $user_stuffs->getUserId($session);
+    $id = $users_class->getUserId($session);
     if (!$id) {
-        $user_stuffs->logout();
+        $users_class->logout();
     }
     $cache = $container->get(Cache::class);
     $forced_logout = $cache->get('forced_logout_' . $id);
@@ -131,7 +131,7 @@ function userlogin()
 
     $ip = getip(true);
 
-    $users_data = $user_stuffs->getUserFromId($id);
+    $users_data = $users_class->getUserFromId($id);
     if (empty($users_data)) {
         //$session->destroy();
     }
@@ -141,8 +141,8 @@ function userlogin()
     }
 
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
-        $ban_stuffs = $container->get(Ban::class);
-        if ($ban_stuffs->check_bans($ip)) {
+        $bans_class = $container->get(Ban::class);
+        if ($bans_class->check_bans($ip)) {
             require_once INCL_DIR . 'function_html.php';
             header('Content-Type: text/html; charset=utf-8');
             echo doc_head() . '
@@ -165,7 +165,7 @@ function userlogin()
                 'enabled' => 'no',
                 'class' => 0,
             ];
-            $user_stuffs->update($set, $users_data['id']);
+            $users_class->update($set, $users_data['id']);
             write_log($msg);
             $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
             $subject = 'Fake Account Detected!';
@@ -176,8 +176,8 @@ function userlogin()
         }
     }
 
-    $userblock_stuffs = $container->get(Userblock::class);
-    $userblocks = $userblock_stuffs->get($id);
+    $userblock_class = $container->get(Userblock::class);
+    $userblocks = $userblock_class->get($id);
     $users_data['blocks'] = $userblocks;
     $users_data['username'] = htmlsafechars($users_data['username']);
 
@@ -203,7 +203,7 @@ function userlogin()
             'onlinetime' => $users_data['onlinetime'] + $update_time,
             'last_access_numb' => TIME_NOW,
         ];
-        $user_stuffs->update($set, $users_data['id']);
+        $users_class->update($set, $users_data['id']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
         $users_data['class'] = $users_data['override_class'];
@@ -216,9 +216,9 @@ function userlogin()
 }
 */
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -229,8 +229,8 @@ function get_stylesheet()
     $auth = $container->get(Auth::class);
     $userid = (int) $auth->getUserId();
     if (!empty($userid)) {
-        $user_stuffs = $container->get(User::class);
-        $user = $user_stuffs->getUserFromId($userid);
+        $users_class = $container->get(User::class);
+        $user = $users_class->getUserFromId($userid);
         if (empty($user)) {
             return $site_config['site']['stylesheet'];
         }
@@ -306,9 +306,9 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -333,9 +333,9 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -597,8 +597,8 @@ function get_time_offset()
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -653,20 +653,20 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
             if ($diff < 120) {
                 return '< 1 minute ago';
             } else {
-                return sprintf('%s minutes ago', intval($diff / 60));
+                return sprintf('%s minutes ago', (int) $diff / 60);
             }
         } elseif ($diff < 7200) {
             return '< 1 hour ago';
         } elseif ($diff < 86400) {
-            return sprintf('%s hours ago', intval($diff / 3600));
+            return sprintf('%s hours ago', (int) $diff / 3600);
         } elseif ($diff < 172800) {
             return '< 1 day ago';
         } elseif ($diff < 604800) {
-            return sprintf('%s days ago', intval($diff / 86400));
+            return sprintf('%s days ago', (int) $diff / 86400);
         } elseif ($diff < 1209600) {
             return '< 1 week ago';
         } elseif ($diff < 3024000) {
-            return sprintf('%s weeks ago', intval($diff / 604900));
+            return sprintf('%s weeks ago', (int) $diff / 604900);
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
@@ -678,7 +678,7 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
                 if ($diff < 120) {
                     return '< 1 minute ago';
                 } else {
-                    return sprintf('%s minutes ago', intval($diff / 60));
+                    return sprintf('%s minutes ago', (int) $diff / 60);
                 }
             }
         }
@@ -704,7 +704,7 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
     } elseif ($calc) {
-        $years = intval($date / 31536000);
+        $years = (int) $date / 31536000;
         $date -= $years * 31536000;
         $days = intval($date / 86400);
         $date -= $days * 86400;
@@ -881,7 +881,7 @@ function referer()
 {
     global $container;
 
-    $referer_stuffs = $container->get(Referrer::class);
+    $referrer_class = $container->get(Referrer::class);
     $http_referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
     if (!empty($_SERVER['HTTP_HOST']) && !empty($http_referer) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false) {
         $ip = getip(true);
@@ -896,7 +896,7 @@ function referer()
             'page' => $http_page,
             'date' => TIME_NOW,
         ];
-        $referer_stuffs->insert($values);
+        $referrer_class->insert($values);
     }
 }
 
@@ -977,8 +977,8 @@ function check_user_status()
         $user = $container->get(User::class);
         $userid = $auth->id();
         $users_data = $user->getUserFromId($userid);
-        $userblock_stuffs = $container->get(Userblock::class);
-        $userblocks = $userblock_stuffs->get($userid);
+        $userblock_class = $container->get(Userblock::class);
+        $userblocks = $userblock_class->get($userid);
         $users_data['blocks'] = $userblocks;
         $user->update_last_access($userid);
         $session = $container->get(Session::class);
@@ -1019,9 +1019,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1029,8 +1029,8 @@ function user_exists($user_id)
 {
     global $container;
 
-    $user_stuffs = $container->get(User::class);
-    $user = $user_stuffs->getUserFromId($user_id);
+    $users_class = $container->get(User::class);
+    $user = $users_class->getUserFromId($user_id);
     if (!empty($user)) {
         return true;
     }
@@ -1098,9 +1098,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -1338,9 +1338,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1381,9 +1381,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1417,8 +1417,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1483,9 +1483,9 @@ function formatQuery($query)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1506,8 +1506,8 @@ function insert_update_ip()
     $update = [
         'last_access' => $added,
     ];
-    $ip_stuffs = $container->get(IP::class);
-    $ip_stuffs->insert($values, $update, $CURUSER['id']);
+    $ips_class = $container->get(IP::class);
+    $ips_class->insert($values, $update, $CURUSER['id']);
 
     return true;
 }
@@ -1517,9 +1517,9 @@ function insert_update_ip()
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -1572,9 +1572,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param $details
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */
@@ -1642,9 +1642,9 @@ function get_body_image($details)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

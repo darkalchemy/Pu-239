@@ -251,8 +251,8 @@ if ($action === 'avatar') {
             ];
         }
         if (!empty($msgs_buffer)) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
         }
         $urladd .= '&mailsent=1';
     }

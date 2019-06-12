@@ -174,7 +174,7 @@ if (empty($mode)) {
     ] : []));
     if (!empty($ids)) {
         foreach ($ids as $id) {
-            if (!is_valid_id($id)) {
+            if (!is_valid_id((int) $id)) {
                 stderr($lang['backup_stderr'], $lang['backup_id']);
             }
         }

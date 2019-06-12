@@ -101,7 +101,7 @@ if ($action === 'app' || $action === 'show') {
                 <td>{$membertime}</td>
                 <td>" . get_user_class_name((int) $arr['class']) . '</td>
                 <td>' . mksize($arr['uploaded']) . '</td>
-                <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . "</td>
                 <td>{$status}</td>
                 <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int) $arr['id'] . '"></td>
             </tr>';
@@ -280,7 +280,7 @@ if ($action === 'acceptapp') {
         ];
     }
     if (!empty($msgs_buffer)) {
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
     }
     $cache->delete('new_uploadapp_');
     stderr($lang['uploadapps_app_accepted'], "{$lang['uploadapps_app_msg']} {$lang['uploadapps_app_click']} <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a> {$lang['uploadapps_app_return']}");
@@ -305,7 +305,7 @@ if ($action === 'rejectapp') {
     ];
 
     sql_query("UPDATE uploadapp SET status = 'rejected', comment = " . sqlesc($reason) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $message_stuffs->insert($msgs_buffer);
+    $messages_class->insert($msgs_buffer);
     $cache->delete('new_uploadapp_');
     stderr($lang['uploadapps_app_rej'], "{$lang['uploadapps_app_rejbeen']} {$lang['uploadapps_app_click']} <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
 }

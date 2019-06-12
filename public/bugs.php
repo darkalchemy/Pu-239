@@ -29,7 +29,7 @@ if ($action === 'viewbug') {
         if ($CURUSER['class'] < UC_MAX) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_only_coder']}");
         }
-        $id = isset($_POST['id']) ? (int) $_POST['id'] : '';
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
         if ($status === 'na') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_no_na']}");
@@ -38,7 +38,7 @@ if ($action === 'viewbug') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
         }
         $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $message_stuffs = $container->get(Message::class);
+        $messages_class = $container->get(Message::class);
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
@@ -65,20 +65,20 @@ if ($action === 'viewbug') {
                 'msg' => $msg,
                 'subject' => 'Bug Report',
             ];
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
             sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('bug_mess_');
         }
         header("location: {$_SERVER['PHP_SELF']}?action=bugs");
     }
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if (!$id || !is_valid_id($id)) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
     }
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", 'Only staff can view bugs.');
     }
-    $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($as)) {
         $title = htmlsafechars($a['title']);
         $added = get_date((int) $a['added'], '', 0, 1);

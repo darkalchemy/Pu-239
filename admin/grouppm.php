@@ -118,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'subject' => $subject,
                 ];
             }
-            $message_stuffs = $container->get(Message::class);
-            $r = $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $r = $messages_class->insert($msgs_buffer);
             $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($msgs_buffer) . ' users' : $lang['grouppm_again'];
         } else {
             $err[] = $lang['grouppm_nousers'];

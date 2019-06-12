@@ -15,8 +15,8 @@ $message = mysqli_fetch_assoc($res);
 if (!$message) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
-$user_stuffs = $container->get(User::class);
-$arr_user_stuff = $user_stuffs->getUserFromId((int) $message['sender'] === $CURUSER['id'] ? (int) $message['receiver'] : (int) $message['sender']);
+$users_class = $container->get(User::class);
+$arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $CURUSER['id'] ? (int) $message['receiver'] : (int) $message['sender']);
 $id = $arr_user_stuff['id'];
 sql_query('UPDATE messages SET unread = "no" WHERE id=' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);

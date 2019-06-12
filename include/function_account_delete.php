@@ -23,8 +23,8 @@ function account_delete(int $userid)
     if (empty($userid)) {
         return false;
     }
-    $user_stuffs = $container->get(User::class);
-    $user = $user_stuffs->getUserFromId($userid);
+    $users_class = $container->get(User::class);
+    $user = $users_class->getUserFromId($userid);
     $username = $user['username'];
     $cache = $container->get(Cache::class);
     $cache->delete('all_users_');

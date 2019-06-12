@@ -11,13 +11,13 @@ use Pu239\User;
 
 $image = placeholder_image();
 $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $now_viewing = '';
-$topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 
-$upload_errors_size = isset($_GET['se']) ? intval($_GET['se']) : 0;
-$upload_errors_type = isset($_GET['ee']) ? intval($_GET['ee']) : 0;
+$upload_errors_size = isset($_GET['se']) ? (int) $_GET['se'] : 0;
+$upload_errors_type = isset($_GET['ee']) ? (int) $_GET['ee'] : 0;
 global $container, $site_config, $CURUSER;
 
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
@@ -320,7 +320,7 @@ $fluent->update('topics')
 $res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
 $posts_count = (int) $arr_count[0];
-$perpage = isset($_GET['perpage']) ? intval($_GET['perpage']) : 15;
+$perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
 
 $page = 0;
 if (isset($_GET['page']) && $_GET['page'] === 'last') {
@@ -459,9 +459,9 @@ $HTMLOUT .= $mini_menu . "
             </ul>
         </div>';
 
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 foreach ($posts as $arr) {
-    $usersdata = $user_stuffs->getUserFromId((int) $arr['user_id']);
+    $usersdata = $users_class->getUserFromId((int) $arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ';
@@ -591,7 +591,7 @@ foreach ($posts as $arr) {
                                 <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" title="' . ($arr['anonymous'] === 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!" class="tooltipper emoticon lazy">
                             </a>
                         </span>' . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '
-                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy">' : get_user_ratio_image($usersdata['uploaded'], ($site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']))) . '
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy">' : get_user_ratio_image($usersdata['uploaded'], ($site_config['site']['ratio_free'] ? 0 : $usersdata['downloaded']))) . '
                     </div>
                     <div class="column has-text-centered is-one-quarter">
                         ' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . '
@@ -641,7 +641,7 @@ foreach ($posts as $arr) {
 			<tr>
 			    <td colspan="3">' . (($usersdata['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
                     <span><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon lazy"> ' . mksize($usersdata['uploaded']) . '</span>  
-                    ' . ($site_config['site']['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon lazy"> ' . mksize($usersdata['downloaded']) . '</span>') . '') . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? '0' : $usersdata['downloaded']) . '
+                    ' . ($site_config['site']['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon lazy"> ' . mksize($usersdata['downloaded']) . '</span>') . '') . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? 0 : $usersdata['downloaded']) . '
                     ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy">' : '') . '
                     ') . '
                     <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon lazy"> ' . $lang['vt_send_message'] . "</a>

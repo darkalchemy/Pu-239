@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 global $site_config, $CURUSER;
 
 if ($topic_id > 0) {
@@ -12,7 +12,7 @@ if ($topic_id > 0) {
     die();
 }
 if (isset($_POST['remove'])) {
-    $_POST['remove'] = (isset($_POST['remove']) ? $_POST['remove'] : '');
+    $_POST['remove'] = isset($_POST['remove']) ? $_POST['remove'] : [];
     $post_delete = [];
     foreach ($_POST['remove'] as $somevar) {
         $post_delete[] = intval($somevar);

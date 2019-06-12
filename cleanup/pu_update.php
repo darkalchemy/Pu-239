@@ -95,8 +95,8 @@ function pu_update($data)
 
             $count = count($msgs_buffer);
             if ($count > 0) {
-                $message_stuffs = $container->get(Message::class);
-                $message_stuffs->insert($msgs_buffer);
+                $messages_class = $container->get(Message::class);
+                $messages_class->insert($msgs_buffer);
                 $set = [
                     'invites' => new Literal('invites + 1'),
                     'class' => $class_value,
@@ -106,9 +106,9 @@ function pu_update($data)
                        ->set($set)
                        ->where('class = ?', $prev_class)
                        ->where('enabled = "yes"')
-                       ->where('added < ?', $maxdt)
+                       ->where('registered < ?', $maxdt)
                        ->where('uploaded >= ?', $limit)
-                       ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
+                       ->where('uploaded / IF(downloaded>0, downloaded, 1) >= ?', $minratio)
                        ->execute();
             }
             $time_end = microtime(true);

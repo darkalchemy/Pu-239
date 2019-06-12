@@ -23,6 +23,7 @@ function get_descr(tid) {
         success: function (data) {
             if (data['fail'] === 'invalid') {
                 e.innerHTML = 'Invalid text in \$torrent[\'descr\'].';
+                el.appendChild(e);
             } else {
                 e.remove();
                 var node = document.createElement('div');
@@ -34,12 +35,14 @@ function get_descr(tid) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                    el.appendChild(e);
                 } else {
                     e.remove();
                     get_descr(tid);
                 }
             } else {
                 e.innerHTML = 'Another *unknown* was returned';
+                el.appendChild(e);
             }
         }
     });

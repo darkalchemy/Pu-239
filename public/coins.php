@@ -65,7 +65,7 @@ $msgs_buffer[] = [
     'msg' => $msg,
     'subject' => $subject,
 ];
-$message_stuffs->insert($msgs_buffer);
+$messages_class->insert($msgs_buffer);
 $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
 $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);

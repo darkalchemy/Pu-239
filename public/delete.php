@@ -65,9 +65,9 @@ if ($rt == 1) {
     }
     $reasonstr = trim($reason[3]);
 }
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent_stuffs->delete_by_id($row['id']);
-$torrent_stuffs->remove_torrent($row['info_hash']);
+$torrents_class = $container->get(Torrent::class);
+$torrents_class->delete_by_id($row['id']);
+$torrents_class->remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['bonus']['on']) {
@@ -91,8 +91,8 @@ if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON
         'msg' => $msg,
         'subject' => $subject,
     ];
-    $message_stuffs = $container->get(Message::class);
-    $message_stuffs->insert($msgs_buffer);
+    $messages_class = $container->get(Message::class);
+    $messages_class->insert($msgs_buffer);
 }
 $session = $container->get(Session::class);
 $session->set('is-success', $msg);

@@ -27,8 +27,8 @@ function parse_poll()
         'allow_result_view' => 1,
         'allow_poll_tags' => 1,
     ];
-    $pollvoter_stuffs = $container->get(PollVoter::class);
-    $poll_data = $pollvoter_stuffs->get_user_poll($CURUSER['id']);
+    $pollvoter_class = $container->get(PollVoter::class);
+    $poll_data = $pollvoter_class->get_user_poll($CURUSER['id']);
     if (empty($poll_data)) {
         return false;
     }
@@ -82,7 +82,7 @@ function parse_poll()
                 }
                 $percent = $votes == 0 ? 0 : $votes / $tv_poll * 100;
                 $percent = sprintf('%.2f', $percent);
-                $width = $percent > 0 ? intval($percent * 4) : 0;
+                $width = $percent > 0 ? $percent * 4 : 0;
                 $choice_html .= poll_show_rendered_choice($choice_id, $votes, $id, $choice, $percent, $width);
             }
             $htmlout .= poll_show_rendered_question($question, $choice_html);

@@ -63,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . implode(', ', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
     sql_query('INSERT INTO users (id,downloaded) VALUES ' . implode(', ', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
-    $torrent_stuffs = $container->get(Torrent::class);
-    $torrent_stuffs->delete_by_id((int) $a['id']);
-    $torrent_stuffs->remove_torrent($a['info_hash']);
+    $torrents_class = $container->get(Torrent::class);
+    $torrents_class->delete_by_id((int) $a['id']);
+    $torrents_class->remove_torrent($a['info_hash']);
 
     write_log($lang['datareset_torr'] . $tname . $lang['datareset_wdel'] . htmlsafechars($CURUSER['username']) . $lang['datareset_allusr']);
     header('Refresh: 3; url=staffpanel.php?tool=datareset');

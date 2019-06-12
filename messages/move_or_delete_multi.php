@@ -12,14 +12,14 @@ if (empty($_POST['pm'])) {
     die();
 }
 $pm_messages = is_array($_POST['pm']) ? $_POST['pm'] : [$_POST['pm']];
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 $cache = $container->get(Cache::class);
 if (isset($_POST['move'])) {
     $set = [
         'location' => $_POST['boxx'],
     ];
     foreach ($pm_messages as $pm_message) {
-        $message_stuffs->update($set, $pm_message);
+        $messages_class->update($set, $pm_message);
     }
     $cache->delete('inbox_' . $CURUSER['id']);
     header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&multi_move=1&box=' . $mailbox);
@@ -28,24 +28,24 @@ if (isset($_POST['move'])) {
 if (isset($_POST['delete'])) {
     foreach ($pm_messages as $id) {
         $id = (int) $id;
-        $message = $message_stuffs->get_by_id($id);
+        $message = $messages_class->get_by_id($id);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
             stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
         }
         if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == $site_config['pm']['deleted']) {
-            $result = $message_stuffs->delete($id, $CURUSER['id']);
+            $result = $messages_class->delete($id, $CURUSER['id']);
         } elseif ($message['receiver'] == $CURUSER['id']) {
             $set = [
                 'location' => 0,
                 'unread' => 'no',
             ];
-            $result = $message_stuffs->update($set, $id);
+            $result = $messages_class->update($set, $id);
             $cache->decrement('inbox_' . $CURUSER['id']);
         } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != $site_config['pm']['deleted']) {
             $set = [
                 'saved' => 'no',
             ];
-            $result = $message_stuffs->update($set, $id);
+            $result = $messages_class->update($set, $id);
         }
     }
 

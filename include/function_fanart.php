@@ -149,8 +149,8 @@ function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackgr
         }
         if (!empty($images)) {
             if ($store) {
-                $image_stuffs = $container->get(Image::class);
-                $image_stuffs->insert($images);
+                $images_class = $container->get(Image::class);
+                $images_class->insert($images);
                 shuffle($images);
 
                 return $images[0]['url'];

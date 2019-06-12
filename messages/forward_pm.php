@@ -11,8 +11,8 @@ use Pu239\User;
 global $container, $CURUSER, $site_config;
 
 flood_limit('messages');
-$message_stuffs = $container->get(Message::class);
-$message = $message_stuffs->get_by_id($pm_id);
+$messages_class = $container->get(Message::class);
+$message = $messages_class->get_by_id($pm_id);
 $fluent = $container->get(Database::class);
 if (empty($message)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_notfound']);
@@ -20,13 +20,13 @@ if (empty($message)) {
 if ($message['receiver'] == $CURUSER['id'] && $message['sender'] == $CURUSER['id']) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_gentleman']);
 }
-$user_stuffs = $container->get(User::class);
-$to_user = $user_stuffs->getUserFromId((int) $user_stuffs->getUserIdFromName((string) $_POST['to']));
+$users_class = $container->get(User::class);
+$to_user = $users_class->getUserFromId((int) $users_class->getUserIdFromName((string) $_POST['to']));
 if (empty($to_user)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
 }
 
-$count = $message_stuffs->get_count($to_user['id'], 1);
+$count = $messages_class->get_count($to_user['id'], 1);
 if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
 }
@@ -77,7 +77,7 @@ $msgs_buffer[] = [
     'saved' => $save,
     'urgent' => $urgent,
 ];
-$result = $message_stuffs->insert($msgs_buffer);
+$result = $messages_class->insert($msgs_buffer);
 if (!$result) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_msg_fwd']);
 }

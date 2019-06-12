@@ -24,7 +24,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : '';
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'viewposts';
 $perpage = 25;
 $HTMLOUT = '';
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 if ($action === 'viewposts') {
     $select_is = 'COUNT(DISTINCT p.id)';
     $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id';
@@ -35,7 +35,7 @@ if ($action === 'viewposts') {
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_noposts']);
     $postcount = (int) $arr[0];
     $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
-    $user = $user_stuffs->getUserFromId($userid);
+    $user = $users_class->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {
@@ -108,7 +108,7 @@ if ($action === 'viewposts') {
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
     $commentcount = (int) $arr[0];
     $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
-    $user = $user_stuffs->getUserFromId($userid);
+    $user = $users_class->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {

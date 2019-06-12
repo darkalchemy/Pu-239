@@ -16,13 +16,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $container, $site_config, $CURUSER;
 
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $set = [
         'last_browse' => TIME_NOW,
     ];
-    $user_stuffs->update($set, $CURUSER['id']);
+    $users_class->update($set, $CURUSER['id']);
     header("Location: {$site_config['paths']['baseurl']}/browse.php");
     die();
 }
@@ -97,7 +97,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
             break;
     }
     $select = $select->orderBy("t.{$column} $ascdesc");
-    $pagerlink = 'sort=' . intval($_GET['sort']) . "&amp;type={$linkascdesc}&amp;";
+    $pagerlink = 'sort=' . (int) $_GET['sort'] . "&amp;type={$linkascdesc}&amp;";
 } else {
     $select = $select->orderBy('t.staff_picks DESC')
                      ->orderBy('t.sticky')
@@ -324,10 +324,10 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $set = [
         'last_browse' => TIME_NOW,
     ];
-    $user_stuffs->update($set, $CURUSER['id']);
+    $users_class->update($set, $CURUSER['id']);
 }
 
-$vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
+$vip = ((isset($_GET['vip'])) ? (int) $_GET['vip'] : '');
 $vip_box = "
                     <select name='vip' class='w-100'>
                         <option value='0'>{$lang['browse_include_vip']}</option>
@@ -342,14 +342,14 @@ $deadcheck = "
                         <option value='2'" . ($selected == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 
-$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
+$only_free = ((isset($_GET['only_free'])) ? (int) $_GET['only_free'] : '');
 $only_free_box = "
                     <select name='only_free' class='w-100'>
                         <option value='0'>{$lang['browse_all_free']}</option>
                         <option value='1'" . ($only_free == 1 ? ' selected' : '') . ">{$lang['browse_only_free']}</option>
                     </select>";
 
-$unsnatched = ((isset($_GET['unsnatched'])) ? intval($_GET['unsnatched']) : '');
+$unsnatched = ((isset($_GET['unsnatched'])) ? (int) $_GET['unsnatched'] : '');
 $unsnatched_box = "
                     <select name='unsnatched' class='w-100'>
                         <option value='0'>{$lang['browse_all']}</option>

@@ -47,7 +47,7 @@ function rehash_password($hash, $password, $userid)
 {
     global $container;
 
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     $options = get_options();
     $algo = $options['algo'];
     $options = $options['options'];
@@ -56,7 +56,7 @@ function rehash_password($hash, $password, $userid)
         $set = [
             'password' => make_passhash($password),
         ];
-        $user_stuffs->update($set, $userid);
+        $users_class->update($set, $userid);
     }
 }
 

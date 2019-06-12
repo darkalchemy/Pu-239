@@ -192,10 +192,9 @@ function cleanup_show_main()
  */
 function cleanup_show_edit()
 {
-    global $lang;
+    global $lang, $params;
 
-    global $params;
-    if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id($params['cid'])) {
+    if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id((int) $params['cid'])) {
         cleanup_show_main();
         exit;
     }

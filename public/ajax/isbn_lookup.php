@@ -16,8 +16,8 @@ $isbn = str_replace([
     '_',
     '-',
 ], '', $isbn);
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent = $torrent_stuffs->get($tid);
+$torrents_class = $container->get(Torrent::class);
+$torrent = $torrents_class->get($tid);
 $poster = !empty($torrent['poster']) ? $torrent['poster'] : '';
 $book_info = get_book_info((!empty($isbn) ? $isbn : '000000'), $name, $tid, $poster);
 if (!empty($book_info)) {

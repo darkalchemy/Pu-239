@@ -109,8 +109,8 @@ function searchcloud_insert($word, $column)
         'search_column' => new Literal('VALUES(search_column)'),
     ];
 
-    $searchcloud_stuffs = $container->get(Searchcloud::class);
-    $searchcloud_stuffs->insert($values, $update);
+    $seachcloud_class = $container->get(Searchcloud::class);
+    $seachcloud_class->insert($values, $update);
 }
 
 /**

@@ -30,8 +30,8 @@ if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) 
 $HTMLOUT = '';
 global $container, $site_config, $CURUSER;
 
-$message_stuffs = $container->get(Message::class);
-$unread = (int) $message_stuffs->get_count($CURUSER['id']);
+$messages_class = $container->get(Message::class);
+$unread = (int) $messages_class->get_count($CURUSER['id']);
 
 if ($unread >= 1) {
     $session = $container->get(Session::class);
@@ -41,8 +41,8 @@ if ($unread >= 1) {
     ]);
 }
 
-$pollvoter_stuffs = $container->get(PollVoter::class);
-$poll_data = $pollvoter_stuffs->get_user_poll($CURUSER['id']);
+$pollvoter_class = $container->get(PollVoter::class);
+$poll_data = $pollvoter_class->get_user_poll($CURUSER['id']);
 if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     $HTMLOUT .= "
 <script>
@@ -94,10 +94,10 @@ $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_
 $tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 $remove_columns = $CURUSER['class'] < UC_STAFF ? $site_config['site']['staff_blocks'] : [];
-$torrent_stuffs = $container->get(Torrent::class);
+$torrents_class = $container->get(Torrent::class);
 $available_columns = array_diff($available_columns, $remove_columns);
 
-if (in_array('glide', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
+if (in_array('glide', $available_columns) && $torrents_class->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
     $stdfoot = array_merge_recursive($stdfoot, [
         'js' => [
             get_file_name('glider_js'),
@@ -185,7 +185,7 @@ if (in_array('christmas_gift', $available_columns) && Christmas() && $CURUSER['b
     $remove_columns[] = 'christmas_gift';
 }
 
-if (in_array('torrents_scroller', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
+if (in_array('torrents_scroller', $available_columns) && $torrents_class->get_torrent_count() >= 10 && $CURUSER['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
     $stdfoot = array_merge_recursive($stdfoot, [
         'js' => [
             get_file_name('scroller_js'),

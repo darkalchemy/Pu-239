@@ -37,8 +37,8 @@ function achievement_avatar_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO usersachiev (userid, avatarach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE avatarach = VALUES(avatarach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
         }

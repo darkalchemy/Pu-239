@@ -18,16 +18,16 @@ if (empty($id)) {
 }
 global $container, $site_config;
 
-$user_stuffs = $container->get(User::class);
-$user = $user_stuffs->getUserFromId($id);
+$users_class = $container->get(User::class);
+$user = $users_class->getUserFromId($id);
 if (empty($user)) {
     stderr('Error', 'User not found');
 }
-$happylog_stuffs = $container->get(HappyLog::class);
-$count = $happylog_stuffs->get_count($id);
+$happylog_class = $container->get(HappyLog::class);
+$count = $happylog_class->get_count($id);
 $perpage = 30;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/happylog.php?id=$id&amp;");
-$res = $happylog_stuffs->get_by_userid($id, $pager['pdo']);
+$res = $happylog_class->get_by_userid($id, $pager['pdo']);
 $HTMLOUT .= "
     <h1 class='has-text-centered'>Happy hour log for " . format_username((int) $id) . '</h1>';
 if ($count > 0) {

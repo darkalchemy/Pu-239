@@ -22,7 +22,7 @@ if ($userid != $CURUSER['id']) {
 }
 $dt = TIME_NOW;
 //== action == add
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 $cache = $container->get(Cache::class);
 if ($action === 'add') {
     $targetid = (int) $_GET['targetid'];
@@ -55,7 +55,7 @@ if ($action === 'add') {
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
         if (mysqli_num_rows($r) == 1) {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
@@ -82,7 +82,7 @@ if ($action === 'add') {
 //== action == confirm
 if ($action === 'confirm') {
     $targetid = (int) $_GET['targetid'];
-    $sure = isset($_GET['sure']) ? intval($_GET['sure']) : false;
+    $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     $type = isset($_GET['type']) ? ($_GET['type'] === 'friend' ? 'friend' : 'block') : stderr($lang['friends_error'], 'LoL');
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
@@ -112,14 +112,14 @@ if ($action === 'confirm') {
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class->insert($msgs_buffer);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
     }
 } elseif ($action === 'delpending') {
     $targetid = (int) $_GET['targetid'];
-    $sure = isset($_GET['sure']) ? intval($_GET['sure']) : false;
+    $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     $type = htmlsafechars($_GET['type']);
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
@@ -143,7 +143,7 @@ if ($action === 'confirm') {
     }
 } elseif ($action === 'delete') {
     $targetid = (int) $_GET['targetid'];
-    $sure = isset($_GET['sure']) ? intval($_GET['sure']) : false;
+    $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     $type = htmlsafechars($_GET['type']);
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
@@ -235,7 +235,7 @@ if (mysqli_num_rows($res) == 0) {
         if (!$title) {
             $title = get_user_class_name((int) $friend['class']);
         }
-        $ratio = member_ratio($friend['uploaded'], $site_config['site']['ratio_free'] ? '0' : $friend['downloaded']);
+        $ratio = member_ratio($friend['uploaded'], $site_config['site']['ratio_free'] ? 0 : $friend['downloaded']);
         $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friend['last_access'], '') : 'Never');
         $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";

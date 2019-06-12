@@ -19,8 +19,9 @@ $possible_extensions = [
     'txt',
 ];
 $session = $container->get(Session::class);
-$id = $name = $body = $type = '';
+$name = $body = $type = '';
 extract($_POST);
+$id = (int) $id;
 if (!is_valid_id($id)) {
     $session->set('is-warning', $lang['takedit_no_data']);
     header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -283,13 +284,13 @@ $release_group_choices = [
     'none' => 3,
 ];
 
-$release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
+$release_group = isset($_POST['release_group']) ? $_POST['release_group'] : 'none';
 if (isset($release_group_choices[$release_group])) {
     $updateset[] = 'release_group = ' . sqlesc($release_group);
 }
 $torrent_cache['release_group'] = $release_group;
 
-$genreaction = (isset($_POST['genre']) ? $_POST['genre'] : '');
+$genreaction = isset($_POST['genre']) ? htmlsafechars($_POST['genre']) : '';
 
 $genre = '';
 
@@ -327,8 +328,8 @@ if ($torrent_cache) {
         'scroller_torrents_',
     ]);
 }
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent_stuffs->remove_torrent($infohash);
+$torrents_class = $container->get(Torrent::class);
+$torrents_class->remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
 $cache->delete('editedby_' . $id);
 

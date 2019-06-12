@@ -20,8 +20,8 @@ function pms_cleanup($data)
     $time_start = microtime(true);
     $secs = 90 * 86400;
     $dt = TIME_NOW - $secs;
-    $message_stuffs = $container->get(Message::class);
-    $messages = $message_stuffs->delete_old_messages($dt);
+    $messages_class = $container->get(Message::class);
+    $messages = $messages_class->delete_old_messages($dt);
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

@@ -476,8 +476,8 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
 {
     global $container, $site_config;
 
-    $user_stuffs = $container->get(User::class);
-    $users_data = $user_stuffs->getUserFromId($user_id);
+    $users_class = $container->get(User::class);
+    $users_data = $users_class->getUserFromId($user_id);
     $peer = $container->get(Peer::class);
     $peers = $peer->getPeersFromUserId($user_id);
     $tag = $tag ? '@' : '';
@@ -659,8 +659,8 @@ function get_avatar($avatar)
     global $container, $CURUSER, $site_config;
 
     if (!isset($avatar['avatar']) && !empty($avatar['user'])) {
-        $user_stuffs = $container->get(User::class);
-        $user = $user_stuffs->getUserFromId($avatar['user']);
+        $users_class = $container->get(User::class);
+        $user = $users_class->getUserFromId($avatar['user']);
         $avatar = $user;
         unset($user);
     }

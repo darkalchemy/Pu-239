@@ -147,8 +147,8 @@ function achievement_karma_update($data)
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
 
             $update = [
                 'date' => new Literal('VALUES(date)'),
@@ -157,15 +157,15 @@ function achievement_karma_update($data)
                 'description' => new Literal('VALUES(description)'),
             ];
 
-            $achievement_stuffs = $container->get(Achievement::class);
-            $achievement_stuffs->insert($achievements_buffer, $update);
+            $achievement_class = $container->get(Achievement::class);
+            $achievement_class->insert($achievements_buffer, $update);
 
             $update = [
                 'bonus' => new Literal('VALUES(bonus)'),
                 'achpoints' => new Literal('VALUES(achpoints)'),
             ];
-            $usersachiev_stuffs = $container->get(Usersachiev::class);
-            $usersachiev_stuffs->insert($usersachiev_buffer, $update);
+            $usersachiev_class = $container->get(Usersachiev::class);
+            $usersachiev_class->insert($usersachiev_buffer, $update);
         }
         $time_end = microtime(true);
         $run_time = $time_end - $time_start;

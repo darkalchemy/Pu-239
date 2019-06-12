@@ -31,7 +31,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
         break;
     }
     if ($ras['ip'] != $ip) {
-        $ros = $user_stuffs->getUsersFromIP($ras['ip']);
+        $ros = $users_class->getUsersFromIP($ras['ip']);
         if (count($ros) > 1) {
             ++$uc;
             foreach ($ros as $arr) {
@@ -53,7 +53,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
                     <td>$last_access</td>" . ($site_config['site']['ratio_free'] ? '' : "
                     <td>$downloaded</td>") . "
                     <td>$uploaded</td>
-                    <td>" . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+                    <td>" . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . '</td>
                     <td><span class="has-text-weight-bold">' . htmlsafechars($arr['ip']) . '</span></td>
                 </tr>';
                 $ip = htmlsafechars($arr['ip']);

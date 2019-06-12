@@ -13,7 +13,7 @@ check_user_status();
 $lang = load_language('global');
 global $container, $site_config, $CURUSER;
 
-$id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }

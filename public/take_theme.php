@@ -2,16 +2,20 @@
 
 declare(strict_types = 1);
 
+use Pu239\User;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 check_user_status();
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sid = isset($_GET['id']) ? (int) $_GET['id'] : 1;
     if ($sid > 0 && $sid != $CURUSER['stylesheet']) {
         $set = [
             'stylesheet' => $sid,
         ];
-        $user_stuffs->update($set, $CURUSER['id']);
+        $users_class = $container->get(User::class);
+        $users_class->update($set, $CURUSER['id']);
     }
 }
 

@@ -16,21 +16,21 @@ $lang = array_merge($lang, load_language('ad_cloudview'));
 global $container, $site_config, $lang;
 
 $HTMLOUT = '';
-$searchcloud_stuffs = $container->get(Searchcloud::class);
+$seachcloud_class = $container->get(Searchcloud::class);
 $cache = $container->get(Cache::class);
 if (isset($_POST['delcloud'])) {
-    $searchcloud_stuffs->delete($_POST['delcloud']);
+    $seachcloud_class->delete($_POST['delcloud']);
     $cache->delete('searchcloud_');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
     stderr("{$lang['cloudview_success']}", "{$lang['cloudview_success_del']}");
 }
-$count = $searchcloud_stuffs->get_count();
+$count = $seachcloud_class->get_count();
 $perpage = 15;
 $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cloudview&amp;action=cloudview&amp;');
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$searches = $searchcloud_stuffs->get($pager['pdo']);
+$searches = $seachcloud_class->get($pager['pdo']);
 $HTMLOUT .= "
 <form id='checkbox_container' method='post' action='{$_SERVER['PHP_SELF']}?tool=cloudview&amp;action=cloudview' accept-charset='utf-8'>";
 $heading = "

@@ -7,7 +7,7 @@ use Pu239\Message;
 global $container, $lang, $CURUSER;
 
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);
@@ -30,14 +30,14 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
             'unread' => 'no',
             'saved' => 'yes',
         ];
-        $result = $message_stuffs->insert($values);
+        $result = $messages_class->insert($values);
     }
     if ($save_or_edit === 'edit') {
         $update = [
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $result = $message_stuffs->update($update, $pm_id);
+        $result = $messages_class->update($update, $pm_id);
     }
     if (!$result) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
@@ -46,7 +46,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
     die();
 }
 
-$message = $message_stuffs->get_by_id($pm_id);
+$message = $messages_class->get_by_id($pm_id);
 $subject = htmlsafechars($message['subject']);
 $draft = $message['msg'];
 

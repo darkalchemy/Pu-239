@@ -117,14 +117,14 @@ function hitrun_update($data)
         }
 
         if (count($_pms) > 0) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($_pms);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($_pms);
         }
         if (count($_users) > 0) {
-            $user_stuffs = $container->get(User::class);
+            $users_class = $container->get(User::class);
             $update = $_users;
             unset($update['id'], $update['username']);
-            $user_stuffs->insert($_users, $update);
+            $users_class->insert($_users, $update);
         }
         $users = $fluent->from('snatched AS s')
                         ->select(null)

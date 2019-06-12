@@ -183,8 +183,8 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'year' => $imdb_data['year'],
             'rating' => $imdb_data['rating'],
         ]);
-        $torrent_stuffs = $container->get(Torrent::class);
-        $torrent_stuffs->update($set, $tid);
+        $torrents_class = $container->get(Torrent::class);
+        $torrents_class->update($set, $tid);
     }
 
     if (empty($imdb_data)) {
@@ -202,8 +202,8 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'url' => $poster,
             'type' => 'poster',
         ];
-        $image_stuffs = $container->get(Image::class);
-        $image_stuffs->insert($values);
+        $images_class = $container->get(Image::class);
+        $images_class->insert($values);
     }
     if (empty($poster)) {
         $poster = get_poster($imdbid);
@@ -407,7 +407,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         <div class='padding20'>
             <div class='columns bottom20'>
                 <div class='column is-one-third is-paddingless'>
-                    <img src='" . url_proxy($poster, true, 450) . "' alt='' class='lazy round10 img-polaroid'>
+                    <img src='" . url_proxy($poster, true, 450) . "' alt='' class='round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     <div class='left20'>
@@ -501,8 +501,8 @@ function get_imdb_info_short($imdb_id)
         ]);
         $imdb_short = $cache->get('imdb_short_' . $imdbid);
         if ($imdb_short === false || is_null($imdb_short)) {
-            $image_stuffs = $container->get(Image::class);
-            $image_stuffs->insert($values);
+            $images_class = $container->get(Image::class);
+            $images_class->insert($values);
             $cache->set('imdb_short_' . $imdbid, 'inserted', 86400);
         }
     }
@@ -646,11 +646,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
  *
  * @return bool
  */
@@ -699,9 +699,9 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -798,9 +798,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -833,9 +833,9 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -850,7 +850,7 @@ function get_top_tvshows(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('/(tt\d{7})/', $html, $matches);
+            preg_match_all('/data-tconst="(tt\d{7})"/', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;
@@ -868,9 +868,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -903,9 +903,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */

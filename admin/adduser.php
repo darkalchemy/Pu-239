@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         stderr($lang['std_err'], $lang['err_email']);
     }
-    $user_stuffs = $container->get(User::class);
-    $user_id = $user_stuffs->add($values, $lang);
+    $users_class = $container->get(User::class);
+    $user_id = $users_class->add($values, $lang);
     if ($user_id) {
-        $usersachiev_stuffs = $container->get(Usersachiev::class);
-        $usersachiev_stuffs->add(['userid' => $user_id]);
-        $userblock_stuffs = $container->get(Userblock::class);
-        $userblock_stuffs->add(['userid' => $user_id]);
+        $usersachiev_class = $container->get(Usersachiev::class);
+        $usersachiev_class->add(['userid' => $user_id]);
+        $userblock_class = $container->get(Userblock::class);
+        $userblock_class->add(['userid' => $user_id]);
         $cache->delete('all_users_');
         $cache->set('latestuser_', (int) $user_id, $site_config['expires']['latestuser']);
 
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
         }
     } else {
-        $dupe = $user_stuffs->getUserIdFromName($values['username']);
+        $dupe = $users_class->getUserIdFromName($values['username']);
         if ($dupe) {
             stderr($lang['std_err'], $lang['err_already_exists']);
         }

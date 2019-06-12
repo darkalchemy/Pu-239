@@ -36,7 +36,7 @@ $extra_link = '';
 $sql_1 = 'name, owner, comments, anonymous FROM torrents';
 $name = 'name';
 $table_type = $locale . 's';
-$_GET['type'] = (isset($_GET['type']) ? $_GET['type'] : (isset($_POST['locale']) ? $_POST['locale'] : ''));
+$_GET['type'] = isset($_GET['type']) ? htmlsafechars($_GET['type']) : (isset($_POST['locale']) ? htmlsafechars($_POST['locale']) : '');
 if (isset($_GET['type'])) {
     $type_options = [
         'torrent' => 'details',
@@ -63,11 +63,11 @@ if (isset($_GET['type'])) {
 }
 
 $cache = $container->get(Cache::class);
-$message_stuffs = $container->get(Message::class);
+$messages_class = $container->get(Message::class);
 $session = $container->get(Session::class);
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
+        $id = isset($_POST['tid']) ? (int) $_POST['tid'] : 0;
         if (!is_valid_id($id)) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
         }
@@ -76,13 +76,13 @@ if ($action === 'add') {
         if (!$arr) {
             stderr("{$lang['comment_error']}", "No $locale with that ID.");
         }
-        $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
+        $body = isset($_POST['body']) ? trim($_POST['body']) : '';
         if (!$body) {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
-        $owner = (isset($arr['owner']) ? $arr['owner'] : 0);
-        $arr['anonymous'] = (isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no');
-        $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
+        $owner = isset($arr['owner']) ? $arr['owner'] : 0;
+        $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no';
+        $arr['comments'] = isset($arr['comments']) ? $arr['comments'] : 0;
         if ($CURUSER['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
             $anon = 'yes';
         } else {
@@ -127,13 +127,13 @@ if ($action === 'add') {
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class->insert($msgs_buffer);
         }
         $session->set('is-success', 'Your comment has been posted');
         header("Refresh: 0; url=$locale_link.php?id=$id$extra_link&viewcomm=$newid#comm$newid");
         die();
     }
-    $id = (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
+    $id = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($id)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
@@ -178,7 +178,7 @@ if ($action === 'add') {
     echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'edit') {
-    $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
+    $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
@@ -191,7 +191,7 @@ if ($action === 'add') {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $body = (isset($_POST['body']) ? $_POST['body'] : '');
+        $body = isset($_POST['body']) ? $_POST['body'] : '';
         if ($body == '') {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
@@ -227,8 +227,8 @@ if ($action === 'add') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
-    $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
-    $tid = (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
+    $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
+    $tid = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
@@ -250,7 +250,7 @@ if ($action === 'add') {
     }
     if ($site_config['bonus']['on']) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
+        $arr['comments'] = isset($arr['comments']) ? (int) $arr['comments'] : 0;
         $update['comments'] = ($arr['comments'] - 1);
         $cache->update_row('torrent_details_' . $id, [
             'comments' => $update['comments'],
@@ -267,7 +267,7 @@ if ($action === 'add') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
-    $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
+    $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
@@ -279,7 +279,7 @@ if ($action === 'add') {
     $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
-    $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : false);
+    $returnto = isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '';
     if ($returnto) {
         preg_match('/viewcomm=(\d+)/', $returnto, $match);
         $hashtag = !empty($match[1]) ? '#comm' . $match[1] : '';

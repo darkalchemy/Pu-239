@@ -29,8 +29,8 @@ if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
 } else {
     $userid = $CURUSER['id'];
 }
-$user_stuffs = $container->get(User::class);
-$user_stuff = $user_stuffs->getUserFromId($userid);
+$users_class = $container->get(User::class);
+$user_stuff = $users_class->getUserFromId($userid);
 $diff = $user_stuff['uploaded'] - $user_stuff['downloaded'];
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $bp = $user_stuff['seedbonus'];
@@ -51,15 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['sid']) || empty($_POST['tid']) || empty($_POST['userid'])) {
         $session->set('is-danger', 'Invalid POST resquest');
     } else {
-        $torrent_stuffs = $container->get(Torrent::class);
-        $torrent = $torrent_stuffs->get($_POST['tid']);
+        $torrents_class = $container->get(Torrent::class);
+        $torrent = $torrents_class->get($_POST['tid']);
         if (!$torrent) {
             $session->set('is-danger', 'No torrent with that ID!');
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
-        $snatched_stuffs = $container->get(Snatched::class);
-        $snatched = $snatched_stuffs->get_snatched($_POST['userid'], $_POST['tid']);
+        $snatched_class = $container->get(Snatched::class);
+        $snatched = $snatched_class->get_snatched($_POST['userid'], $_POST['tid']);
         if (!$snatched || $snatched['id'] != $_POST['sid']) {
             $session->set('is-danger', 'No snatched torrent with that ID!');
             header("Location: {$_SERVER['PHP_SELF']}");
@@ -76,13 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mark_of_cain' => 'no',
                 'seedtime' => $_POST['seed'],
             ];
-            $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
+            $snatched_class->update($set, $_POST['tid'], $_POST['userid']);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'seedbonus' => $user_stuff['seedbonus'] - $cost,
                 'bonuscomment' => $bonuscomment,
             ];
-            $user_stuffs->update($set, $_POST['userid']);
+            $users_class->update($set, $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
             $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
         } elseif (!empty($_POST['bytes'])) {
@@ -98,13 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mark_of_cain' => 'no',
                 'uploaded' => $snatched['downloaded'],
             ];
-            $snatched_stuffs->update($set, $_POST['tid'], $_POST['userid']);
+            $snatched_class->update($set, $_POST['tid'], $_POST['userid']);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'uploaded' => $user_stuff['uploaded'] - $bytes,
                 'bonuscomment' => $bonuscomment,
             ];
-            $user_stuffs->update($set, $_POST['userid']);
+            $users_class->update($set, $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
             $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
         }
@@ -289,7 +289,7 @@ if (count($hnrs) > 0) {
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
             <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
             ' . ($site_config['site']['ratio_free'] ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
-            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color($a['uploaded'] / $a['downloaded']) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date((int) $a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date((int) $a['last_action'], 'DATE') . "</td>
             <td class='has-text-centered'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>

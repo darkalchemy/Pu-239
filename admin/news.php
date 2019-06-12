@@ -46,7 +46,7 @@ if ($mode === 'delete') {
     }
     $hash = hash('sha256', $site_config['site']['use_12_hour'] . $newsid . 'add');
     $sure = '';
-    $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
+    $sure = (isset($_GET['sure']) ? (int) $_GET['sure'] : '');
     if (!$sure) {
         stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", null);
     }

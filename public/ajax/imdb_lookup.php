@@ -26,8 +26,8 @@ if (!empty($imdb)) {
         $poster = get_image_by_id('tmdb_id', $imdb, 'movieposter');
     }
     if (empty($poster)) {
-        $image_stuffs = $container->get(Image::class);
-        $poster = $image_stuffs->find_images($imdb);
+        $images_class = $container->get(Image::class);
+        $poster = $images_class->find_images($imdb);
     }
     if (empty($poster)) {
         $poster = null;

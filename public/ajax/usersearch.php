@@ -11,8 +11,8 @@ global $container;
 
 $term = htmlsafechars(strtolower(strip_tags($_POST['keyword'])));
 if (!empty($term)) {
-    $user_stuffs = $container->get(User::class);
-    $users = $user_stuffs->search_by_username($term);
+    $users_class = $container->get(User::class);
+    $users = $users_class->search_by_username($term);
     if (!empty($users)) {
         echo json_encode($users);
         die();

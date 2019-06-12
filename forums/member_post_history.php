@@ -5,8 +5,8 @@ declare(strict_types = 1);
 global $site_config, $CURUSER;
 
 $colour = $post_status_image = $option = $next = '';
-$ASC_DESC = ((isset($_GET['ASC_DESC']) && $_GET['ASC_DESC'] === 'ASC') ? 'ASC ' : 'DESC ');
-$member_id = (isset($_GET['id']) ? intval($_GET['id']) : 0);
+$ASC_DESC = isset($_GET['ASC_DESC']) && $_GET['ASC_DESC'] === 'ASC' ? 'ASC ' : 'DESC ';
+$member_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!isset($member_id) || !is_valid_id($member_id)) {
     $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
     $class = isset($_GET['class']) ? $_GET['class'] : '-';
@@ -215,7 +215,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
         $body = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
         $post_id = (int) $arr['post_id'];
-        $user_arr = $user_stuffs->getUserFromId($arr['user_id']);
+        $user_arr = $users_class->getUserFromId($arr['user_id']);
         $HTMLOUT .= '
         <table class="table table-bordered table-striped">
         <tr>

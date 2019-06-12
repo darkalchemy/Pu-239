@@ -61,7 +61,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
             break;
     }
     $select = $select->orderBy("t.{$column} $ascdesc");
-    $pagerlink = 'sort=' . intval($_GET['sort']) . '&amp;type=' . $linkascdesc . '&amp;';
+    $pagerlink = 'sort=' . (int) $_GET['sort'] . '&amp;type=' . $linkascdesc . '&amp;';
 } else {
     $select = $select->orderBy('t.staff_picks DESC')
                      ->orderBy('t.sticky')

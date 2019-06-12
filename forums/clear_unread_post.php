@@ -6,8 +6,8 @@ use Pu239\Cache;
 
 global $container, $CURUSER, $site_config;
 
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
-$last_post = (isset($_GET['last_post']) ? intval($_GET['last_post']) : (isset($_POST['last_post']) ? intval($_POST['last_post']) : 0));
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
+$last_post = isset($_GET['last_post']) ? (int) $_GET['last_post'] : (isset($_POST['last_post']) ? (int) $_POST['last_post'] : 0);
 $check_it = sql_query('SELECT id, last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $check_it_arr = mysqli_fetch_assoc($check_it);
 $cache = $container->get(Cache::class);

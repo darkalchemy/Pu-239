@@ -6,7 +6,7 @@ use Pu239\Database;
 
 global $container, $site_config, $CURUSER;
 
-$type = $user['join_type'];
+$type = !empty($user['join_type']) ? $user['join_type'] : 'open';
 $invite_by = (int) $user['invitedby'];
 
 if ($invite_by > 0 && $type === 'invite') {

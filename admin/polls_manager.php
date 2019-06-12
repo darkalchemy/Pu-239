@@ -66,7 +66,7 @@ function delete_poll($stdfoot)
     global $container, $lang, $site_config;
 
     $poll_stuffs = $container->get(Poll::class);
-    $pollvoter_stuffs = $container->get(PollVoter::class);
+    $pollvoter_class = $container->get(PollVoter::class);
     if (!isset($_GET['pid']) || !is_valid_id((int) $_GET['pid'])) {
         stderr($lang['poll_dp_usr_err'], $lang['poll_dp_no_poll']);
     }
@@ -84,8 +84,8 @@ function delete_poll($stdfoot)
         </div>");
     }
     $poll_stuffs->delete($pid);
-    $pollvoter_stuffs->delete($pid);
-    $pollvoter_stuffs->delete_users_cache();
+    $pollvoter_class->delete($pid);
+    $pollvoter_class->delete_users_cache();
     show_poll_archive($stdfoot);
 }
 
@@ -98,7 +98,7 @@ function update_poll()
     global $container, $lang, $CURUSER;
 
     $poll_stuffs = $container->get(Poll::class);
-    $pollvoter_stuffs = $container->get(PollVoter::class);
+    $pollvoter_class = $container->get(PollVoter::class);
     $session = $container->get(Session::class);
     if (!isset($_POST['pid']) || !is_valid_id((int) $_POST['pid'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_poll']);
@@ -109,7 +109,7 @@ function update_poll()
     }
     $poll_title = htmlsafechars(strip_tags($_POST['poll_question']));
     $poll_data = makepoll();
-    $total_votes = isset($poll_data['total_votes']) ? intval($poll_data['total_votes']) : 0;
+    $total_votes = isset($poll_data['total_votes']) ? (int) $poll_data['total_votes'] : 0;
     unset($poll_data['total_votes']);
     if (!is_array($poll_data) || !count($poll_data)) {
         stderr($lang['poll_up_sys_err'], $lang['poll_up_no_data']);
@@ -121,7 +121,7 @@ function update_poll()
         'poll_question' => $poll_title,
     ];
     $result = $poll_stuffs->update($set, $pid);
-    $pollvoter_stuffs->delete_users_cache();
+    $pollvoter_class->delete_users_cache();
     if (!$result) {
         $msg = $lang['poll_up_error'];
     } else {
@@ -140,7 +140,7 @@ function insert_new_poll()
     global $container, $lang, $CURUSER;
 
     $poll_stuffs = $container->get(Poll::class);
-    $pollvoter_stuffs = $container->get(PollVoter::class);
+    $pollvoter_class = $container->get(PollVoter::class);
     $session = $container->get(Session::class);
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
@@ -159,7 +159,7 @@ function insert_new_poll()
         'poll_question' => $poll_title,
     ];
     $result = $poll_stuffs->insert($values);
-    $pollvoter_stuffs->delete_users_cache();
+    $pollvoter_class->delete_users_cache();
     if (!$result) {
         $msg = $lang['poll_inp_error'];
     } else {
@@ -213,7 +213,7 @@ function edit_poll_form($stdfoot)
     $poll_answers = $poll_data['choices'] ? unserialize(stripslashes($poll_data['choices'])) : [];
     foreach ($poll_answers as $question_id => $data) {
         $poll_questions .= "\t{$question_id} : '" . str_replace("'", '&#39;', $data['question']) . "',\n";
-        $data['multi'] = isset($data['multi']) ? intval($data['multi']) : 0;
+        $data['multi'] = isset($data['multi']) ? (int) $data['multi'] : 0;
         $poll_multi .= "\t{$question_id} : '" . $data['multi'] . "',\n";
         foreach ($data['choice'] as $choice_id => $text) {
             $choice = $text;
@@ -325,7 +325,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 {
     global $lang, $site_config;
 
-    $pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
+    $pid = isset($_GET['pid']) ? (int) $_GET['pid'] : 0;
     $form_type = $form_type != '' ? $form_type : 'poll_update';
     $HTMLOUT = "
     <script>

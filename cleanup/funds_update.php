@@ -54,8 +54,8 @@ function funds_update($data)
         }
         $count = count($users_buffer);
         if ($data['clean_log'] && $count > 0) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
             sql_query('INSERT INTO users (id, class, donor, donoruntil, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),
             donor = VALUES(donor),donoruntil = VALUES(donoruntil),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }

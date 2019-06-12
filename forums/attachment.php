@@ -19,13 +19,13 @@ function upload_attachments(int $post_id)
 {
     global $container, $site_config, $CURUSER;
 
-    $max_file_size = intval($site_config['forum_config']['max_file_size']);
+    $max_file_size = (int) $site_config['forum_config']['max_file_size'];
     $upload_folder = ROOT_DIR . $site_config['forum_config']['upload_folder'];
     $extension_error = $size_error = 0;
     if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
+                $size = (int) $_FILES['attachment']['size'][$key];
                 $type = $_FILES['attachment']['type'][$key];
                 $accepted_file_types = explode('|', $site_config['forum_config']['accepted_file_types']);
                 $accepted_file_extension = explode('|', $site_config['forum_config']['accepted_file_extension']);

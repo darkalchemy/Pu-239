@@ -193,10 +193,10 @@ $div .= '
 $htmlout .= main_div($div);
 
 if (!empty($rows)) {
-    $image_stuffs = $container->get(Image::class);
+    $images_class = $container->get(Image::class);
     foreach ($rows as $row) {
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
-            $row['poster'] = $image_stuffs->find_images($row['imdb_id']);
+            $row['poster'] = $images_class->find_images($row['imdb_id']);
         }
         if ($row['anonymous'] === 'yes' && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
             $uploader = get_anonymous_name();

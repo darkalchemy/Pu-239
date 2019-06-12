@@ -6,7 +6,7 @@ use Pu239\Database;
 
 require_once INCL_DIR . 'function_html.php';
 $posts = $delete_me = $rpic = $content = $child = $parent_forum_name = $first_post_arr = $post_status_image = $sub_forums = $locked = '';
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 global $container, $site_config, $CURUSER, $lang;
 
 if (!is_valid_id($forum_id)) {

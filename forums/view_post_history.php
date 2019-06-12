@@ -5,15 +5,15 @@ declare(strict_types = 1);
 use Pu239\Database;
 use Pu239\User;
 
-$post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
+$post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0);
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($post_id) || !is_valid_id($forum_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 global $container, $site_config, $CURUSER;
 
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
 $query = $fluent->from('posts AS p')
                 ->select('t.topic_name AS topic_name')
@@ -29,7 +29,7 @@ if ($CURUSER['class'] < UC_STAFF) {
                    ->where("t.status != 'deleted'");
 }
 $query = $query->fetch();
-$arr_edited = $user_stuffs->getUserFromId($query['edited_by']);
+$arr_edited = $users_class->getUserFromId($query['edited_by']);
 $icon = htmlsafechars($query['icon']);
 $post_title = htmlsafechars($query['post_title']);
 $HTMLOUT .= " 

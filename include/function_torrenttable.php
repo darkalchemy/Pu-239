@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use Pu239\Bookmark;
 use Pu239\Cache;
 use Pu239\Image;
-use Pu239\Session;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
@@ -38,9 +37,9 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @throws InvalidManipulation
  * @throws Exception
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -169,7 +168,7 @@ function torrenttable($res, $variant = 'index')
             'image' => $value['image'],
         ];
     }
-    $image_stuffs = $container->get(Image::class);
+    $images_class = $container->get(Image::class);
     foreach ($res as $row) {
         if ($CURUSER['opt2'] & user_options_2::SPLIT) {
             if (get_date((int) $row['added'], 'DATE') == $prevdate) {
@@ -191,7 +190,6 @@ function torrenttable($res, $variant = 'index')
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
-        /** Freeslot/doubleslot in Use **/
         $id = $row['id'];
         if (!empty($slot)) {
             foreach ($slot as $sl) {
@@ -233,7 +231,7 @@ function torrenttable($res, $variant = 'index')
         }
         $smalldescr = (!empty($row['description']) ? '<div><i>[' . htmlsafechars($row['description']) . ']</i></div>' : '');
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
-            $row['poster'] = $image_stuffs->find_images($row['imdb_id']);
+            $row['poster'] = $images_class->find_images($row['imdb_id']);
         }
         $poster = empty($row['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
         $user_rating = empty($row['rating_sum']) ? '' : ratingpic($row['rating_sum'] / $row['num_ratings']);
@@ -391,14 +389,13 @@ function torrenttable($res, $variant = 'index')
             }
             $htmlout .= '</td>';
         }
-        $session = $container->get(Session::class);
         $bookmark = "
                 <span data-tid='{$id}' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                     <i class='icon-bookmark-empty icon has-text-success' aria-hidden='true'></i>
                 </span>";
 
-        $bookmark_stuffs = $container->get(Bookmark::class);
-        $book = $bookmark_stuffs->get($CURUSER['id']);
+        $bookmark_class = $container->get(Bookmark::class);
+        $book = $bookmark_class->get($CURUSER['id']);
         if (!empty($book)) {
             foreach ($book as $bk) {
                 if ($bk['torrentid'] == $id) {

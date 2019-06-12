@@ -23,12 +23,12 @@ $main_links = "
             </div>
             <h1 class='has-text-centered'>{$lang['ad_over_forum']}</h1>";
 
-$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 $maxclass = $CURUSER['class'];
 $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : '';
 $desc = isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '';
-$sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
-$min_class_view = isset($_POST['min_class_view']) ? intval($_POST['min_class_view']) : 0;
+$sort = isset($_POST['sort']) ? (int) $_POST['sort'] : 0;
+$min_class_view = isset($_POST['min_class_view']) ? (int) $_POST['min_class_view'] : 0;
 $posted_action = isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : '');
 $valid_actions = [
     'delete',

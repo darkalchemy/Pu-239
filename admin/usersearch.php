@@ -116,9 +116,6 @@ $body .= "
                     <option value=''>{$lang['usersearch_any']}</option>";
 
 $class = isset($search['c']) ? (int) $search['c'] : '';
-if (!is_valid_id($class)) {
-    $class = '';
-}
 for ($i = 2;; ++$i) {
     if ($c = get_user_class_name((int) $i - 2)) {
         $body .= "

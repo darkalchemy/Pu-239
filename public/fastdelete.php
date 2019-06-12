@@ -45,9 +45,9 @@ if (!$sure) {
     $returnto = !empty($_GET['returnto']) ? '&amp;returnto=' . urlencode($_GET['returnto']) : '';
     stderr("{$lang['fastdelete_sure']}", sprintf($lang['fastdelete_sure_msg'], $returnto));
 }
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent_stuffs->delete_by_id($tid['id']);
-$torrent_stuffs->remove_torrent($tid['info_hash']);
+$torrents_class = $container->get(Torrent::class);
+$torrents_class->delete_by_id($tid['id']);
+$torrents_class->remove_torrent($tid['info_hash']);
 if ($CURUSER['id'] != $tid['owner']) {
     $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);

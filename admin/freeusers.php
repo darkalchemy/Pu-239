@@ -38,8 +38,8 @@ if ($remove) {
             $usernames[] = $arr['username'];
         }
         if (count($msgs_buffer) > 0) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($msgs_buffer);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
             sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE free_switch = VALUES(free_switch), modcomment=concat(VALUES(modcomment),modcomment)') or sqlerr(__FILE__, __LINE__);
             foreach ($usernames as $username) {
                 write_log("{$lang['freeusers_log1']} $remove ($username) {$lang['freeusers_log2']} $CURUSER[username]");

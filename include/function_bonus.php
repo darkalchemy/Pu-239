@@ -11,9 +11,9 @@ global $container;
 
 $fluent = $container->get(Database::class);
 $cache = $container->get(CACHE::class);
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 $auth = $container->get(Auth::class);
-$user = $user_stuffs->getUserFromId($auth->getUserId());
+$user = $users_class->getUserFromId($auth->getUserId());
 $ratio = 1;
 if ($user['uploaded'] !== 0 && $user['downloaded'] !== 0) {
     $ratio = $user['uploaded'] / $user['downloaded'];

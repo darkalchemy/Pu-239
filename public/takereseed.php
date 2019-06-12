@@ -39,8 +39,8 @@ if ($pm_what === 'last10') {
 }
 
 if (count($msgs_buffer) > 0) {
-    $message_stuffs = $container->get(Message::class);
-    $message_stuffs->insert($msgs_buffer);
+    $messages_class = $container->get(Message::class);
+    $messages_class->insert($msgs_buffer);
     $session->set('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
     $session->set('is-warning', 'There were no users to PM!');

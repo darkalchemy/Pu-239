@@ -49,7 +49,7 @@ function images_update()
     $cache = $container->get(Cache::class);
     $cache->set('images_update_', 'running', 1800);
     $fluent = $container->get(Database::class);
-    $image_stuffs = $container->get(Image::class);
+    $images_class = $container->get(Image::class);
 
     $fluent->deleteFrom('images')
            ->where("url = 'N/A' OR url = '' OR url IS NULL")
@@ -134,7 +134,7 @@ function images_update()
         $update = [
             'checked' => TIME_NOW,
         ];
-        $image_stuffs->update($values, $update);
+        $images_class->update($values, $update);
     }
     echo 'Checked ' . count($values) . " image tmdb_ids\n";
 
@@ -172,7 +172,7 @@ function images_update()
             'imdb_id' => new Literal('VALUES(imdb_id)'),
             'checked' => TIME_NOW,
         ];
-        $image_stuffs->update($values, $update);
+        $images_class->update($values, $update);
     }
     echo 'Checked ' . count($values) . " image imdb_ids\n";
 
@@ -180,7 +180,7 @@ function images_update()
         $update = [
             'checked' => TIME_NOW,
         ];
-        $image_stuffs->update($values1, $update);
+        $images_class->update($values1, $update);
     }
     echo 'Checked and failed to find ' . count($values1) . " image imdb_ids\n";
 
@@ -250,13 +250,13 @@ function images_update()
     }
     echo 'Checked ' . count($tmdb_ids) . ' images with empty imdb_id' . "\n";
     if (!empty($fanart_images)) {
-        $image_stuffs->insert_update($fanart_images);
+        $images_class->insert_update($fanart_images);
     }
     if (!empty($values)) {
         $update = [
             'updated' => TIME_NOW,
         ];
-        $image_stuffs->update($values, $update);
+        $images_class->update($values, $update);
         echo 'Updated ' . count($values) . " image imdb_ids\n";
         unset($values);
     }
@@ -292,7 +292,7 @@ function images_update()
         $update = [
             'fetched' => 'yes',
         ];
-        $image_stuffs->update($values, $update);
+        $images_class->update($values, $update);
     }
     echo 'Fetched, optimized and resized ' . count($values) . " images\n";
 
@@ -335,9 +335,9 @@ function images_update()
     echo 'Fetching IMDb data and finding images for ' . count($imdbids) . ' torrents with imdb_id set' . "\n";
     foreach ($imdbids as $imdbid) {
         get_imdb_info($imdbid['imdb_id'], true, false, $imdbid['id'], null);
-        $image_stuffs->find_images($imdbid['imdb_id'], 'poster');
-        $image_stuffs->find_images($imdbid['imdb_id'], 'banner');
-        $image_stuffs->find_images($imdbid['imdb_id'], 'background');
+        $images_class->find_images($imdbid['imdb_id'], 'poster');
+        $images_class->find_images($imdbid['imdb_id'], 'banner');
+        $images_class->find_images($imdbid['imdb_id'], 'background');
         update_torrent_data($imdbid['imdb_id']);
         $set = [
             'info_updated' => TIME_NOW,
@@ -364,9 +364,9 @@ function images_update()
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
-            $image_stuffs->find_images($imdb, 'poster');
-            $image_stuffs->find_images($imdb, 'banner');
-            $image_stuffs->find_images($imdb, 'background');
+            $images_class->find_images($imdb, 'poster');
+            $images_class->find_images($imdb, 'banner');
+            $images_class->find_images($imdb, 'background');
             update_torrent_data($imdb);
             $set = [
                 'updated' => TIME_NOW,
@@ -396,9 +396,9 @@ function images_update()
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
-            $image_stuffs->find_images($imdb, 'poster');
-            $image_stuffs->find_images($imdb, 'banner');
-            $image_stuffs->find_images($imdb, 'background');
+            $images_class->find_images($imdb, 'poster');
+            $images_class->find_images($imdb, 'banner');
+            $images_class->find_images($imdb, 'background');
             update_torrent_data($imdb);
             $set = [
                 'updated' => TIME_NOW,

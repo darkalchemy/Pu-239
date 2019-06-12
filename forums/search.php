@@ -17,7 +17,7 @@ $valid = [
     'all',
 ];
 $search_what = !empty($_GET['search_what']) && in_array($_GET['search_what'], $valid) ? $_GET['search_what'] : 'all';
-$search_when = isset($_GET['search_when']) ? intval($_GET['search_when']) : 0;
+$search_when = isset($_GET['search_when']) ? (int) $_GET['search_when'] : 0;
 $sort_by = isset($_GET['sort_by']) && $_GET['sort_by'] === 'date' ? 'date' : '';
 $asc_desc = isset($_GET['asc_desc']) && $_GET['asc_desc'] === 'ASC' ? 'ASC' : 'DESC';
 $show_as = isset($_GET['show_as']) && $_GET['show_as'] === 'posts' ? 'posts' : 'list';
@@ -32,9 +32,9 @@ $pager_links .= $show_as ? '&amp;show_as=' . $show_as : '';
 $author_id = 0;
 global $container, $site_config, $CURUSER;
 
-$user_stuffs = $container->get(User::class);
+$users_class = $container->get(User::class);
 if ($author) {
-    $author_id = $user_stuffs->getUserIdFromName($author);
+    $author_id = $users_class->getUserIdFromName($author);
     $author_error = empty($author_id) ? $lang['sea_sorry_no_member_found_with_that_username.'] . ' ' . $lang['sea_please_check_the_spelling.'] : '';
 }
 $fluent = $container->get(Database::class);
@@ -239,7 +239,7 @@ if ($search || $author_id) {
         <a id="results"></a>';
                 $x = 0;
                 foreach ($results as $arr) {
-                    $user = $user_stuffs->getUserFromId($arr['userid']);
+                    $user = $users_class->getUserFromId($arr['userid']);
                     $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title']) . '</span>' : 'Link to Post');
                     if ($search_what === 'all' || $search_what === 'title') {
                         $topic_title = highlightWords(htmlsafechars($arr['topic_title']), $search);
@@ -254,7 +254,7 @@ if ($search || $author_id) {
                     $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
                     $edited_by = '';
                     if ($arr['edit_date'] > 0) {
-                        $edited_username = $user_stuffs->get_item('username', $arr['edited_by']);
+                        $edited_username = $users_class->get_item('username', $arr['edited_by']);
                         $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
                     }
                     $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));

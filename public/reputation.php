@@ -37,7 +37,7 @@ $locales = [
     'torrents',
     'users',
 ];
-$rep_locale = (isset($input['locale']) && (in_array($input['locale'], $locales)) ? $input['locale'] : 'posts');
+$rep_locale = isset($input['locale']) && (in_array($input['locale'], $locales)) ? $input['locale'] : 'posts';
 if (!$check) {
     rep_output('Incorrect Access');
 }
@@ -144,7 +144,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     }
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
-    sql_query('UPDATE users SET reputation = ' . intval($res['reputation']) . ' WHERE id=' . sqlesc($res['userid'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET reputation = ' . (int) $res['reputation'] . ' WHERE id=' . sqlesc($res['userid'])) or sqlerr(__FILE__, __LINE__);
     $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $res['userid'], [
         'reputation' => $res['reputation'],
@@ -378,7 +378,7 @@ function fetch_reppower($user = [], $rep = 'pos')
     if (!$GVARS['g_rep_use']) { // allowed to rep at all?
         $rep = 0;
     } elseif ($is_mod && $GVARS['rep_adminpower']) { // is a mod and has loadsa power?
-        $reppower = ($rep != 'pos') ? intval($GVARS['rep_adminpower'] * -1) : intval($GVARS['rep_adminpower']);
+        $reppower = ($rep != 'pos') ? (int) $GVARS['rep_adminpower'] * -1 : intval($GVARS['rep_adminpower']);
     } elseif (($user['posts'] < $GVARS['rep_minpost']) || ($user['reputation'] < $GVARS['rep_minrep'])) { // not an admin, then work out postal based power
         $reppower = 0;
     } else { // ok failed all tests, so ratio is 1:1 but not negative, unless allowed
@@ -390,7 +390,7 @@ function fetch_reppower($user = [], $rep = 'pos')
             $reppower += intval($user['reputation'] / $GVARS['rep_kppower']);
         }
         if ($GVARS['rep_rdpower']) { // time based power
-            $reppower += intval((TIME_NOW - $user['registered']) / 86400 / $GVARS['rep_rdpower']);
+            $reppower += TIME_NOW - $user['registered'] / 86400 / $GVARS['rep_rdpower'];
         }
         if ($rep != 'pos') {
             $reppower = intval($reppower / 2);

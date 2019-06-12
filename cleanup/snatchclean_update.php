@@ -20,8 +20,8 @@ function snatchclean_update($data)
     $time_start = microtime(true);
     $days = 90;
     $dt = TIME_NOW - ($days * 86400);
-    $snatched_stuffs = $container->get(Snatched::class);
-    $snatched_stuffs->delete_stale($dt);
+    $snatched_class = $container->get(Snatched::class);
+    $snatched_class->delete_stale($dt);
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";

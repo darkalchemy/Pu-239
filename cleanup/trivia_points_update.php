@@ -52,7 +52,7 @@ function trivia_points_update($data)
                       ->fetchAll();
 
     if ($results) {
-        $user_stuffs = $container->get(User::class);
+        $users_class = $container->get(User::class);
         $subject = 'Trivia Bonus Points Award.';
         foreach ($results as $winners) {
             $user_id = $seedbonus = $correct = 0;
@@ -105,14 +105,14 @@ function trivia_points_update($data)
                 'modcomment' => $comment . $modcomment,
                 'seedbonus' => $seedbonus + $points,
             ];
-            $user_stuffs->update($values, $user_id);
+            $users_class->update($values, $user_id);
             $count = $i++;
         }
     }
 
     if (!empty($msgs)) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($msgs);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($msgs);
     }
 
     $set = [

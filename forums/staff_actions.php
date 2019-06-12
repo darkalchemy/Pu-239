@@ -34,9 +34,9 @@ if ($CURUSER['class'] < UC_STAFF) {
 if ($staff_action == 1) {
     stderr($lang['gl_error'], $lang['fe_no_action_selected']);
 }
-$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-$topic_id = isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0;
-$forum_id = isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0;
+$post_id = isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0;
+$topic_id = isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0;
+$forum_id = isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0;
 if ($topic_id > 0) {
     $res_check = sql_query('SELECT f.min_class_read FROM forums AS f LEFT JOIN topics AS t ON t.forum_id=f.id WHERE f.id=t.forum_id AND t.id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $arr_check = mysqli_fetch_row($res_check);
@@ -51,7 +51,7 @@ switch ($staff_action) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
-                $post_to_mess_with[] = intval($var);
+                $post_to_mess_with[] = (int) $var;
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
@@ -83,7 +83,7 @@ switch ($staff_action) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
-                $post_to_mess_with[] = intval($var);
+                $post_to_mess_with[] = (int) $var;
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
@@ -113,7 +113,7 @@ switch ($staff_action) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
-                $post_to_mess_with[] = intval($var);
+                $post_to_mess_with[] = (int) $var;
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
             $posts_count = count($post_to_mess_with);
@@ -138,10 +138,10 @@ switch ($staff_action) {
         break;
 
     case 'merge_posts':
-        $topic_to_merge_with = (isset($_POST['new_topic']) ? intval($_POST['new_topic']) : 0);
+        $topic_to_merge_with = isset($_POST['new_topic']) ? (int) $_POST['new_topic'] : 0;
         $topic_res = sql_query('SELECT id  FROM topics WHERE id=' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_row($topic_res);
-        if (!is_valid_id($topic_arr[0])) {
+        if (!is_valid_id((int) $topic_arr[0])) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
         if (isset($_POST['post_to_mess_with'])) {
@@ -172,10 +172,10 @@ switch ($staff_action) {
         break;
 
     case 'append_posts':
-        $topic_to_append_to = (isset($_POST['new_topic']) ? intval($_POST['new_topic']) : 0);
+        $topic_to_append_to = isset($_POST['new_topic']) ? (int) $_POST['new_topic'] : 0;
         $topic_res = sql_query('SELECT id  FROM topics WHERE id=' . sqlesc($topic_to_append_to)) or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_row($topic_res);
-        if (!is_valid_id($topic_arr[0])) {
+        if (!is_valid_id((int) $topic_arr[0])) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
         if (isset($_POST['post_to_mess_with'])) {
@@ -202,10 +202,10 @@ switch ($staff_action) {
                     'status' => $post_arr['status'],
                     'anonymous' => $post_arr['anonymous'],
                 ];
-                $post_stuffs = $container->get(Post::class);
-                $post_stuffs->insert($values);
+                $posts_class = $container->get(Post::class);
+                $posts_class->insert($values);
                 $count = $count + 1;
-                $post_stuffs->delete($post_to_mess_with, $topic_id);
+                $posts_class->delete($post_to_mess_with, $topic_id);
                 clr_forums_cache($topic_id);
             }
             if ($count > 0) {
@@ -342,7 +342,7 @@ switch ($staff_action) {
         break;
 
     case 'merge_topic':
-        $topic_to_merge_with = (isset($_POST['topic_to_merge_with']) ? intval($_POST['topic_to_merge_with']) : 0);
+        $topic_to_merge_with = (isset($_POST['topic_to_merge_with']) ? (int) $_POST['topic_to_merge_with'] : 0);
         $topic_res = sql_query('SELECT COUNT(p.id) AS count, t.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE t.id=' . sqlesc($topic_id) . ' GROUP BY p.topic_id') or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_assoc($topic_res);
         $count = $topic_arr['count'];

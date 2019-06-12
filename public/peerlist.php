@@ -75,7 +75,7 @@ function dltable($name, $arr, $torrent)
         } else {
             $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
         }
-        $body .= '<td>' . member_ratio($e['uploaded'], $site_config['site']['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $body .= '<td>' . member_ratio($e['uploaded'], $site_config['site']['ratio_free'] ? 0 : $e['downloaded']) . "</td>\n";
         $body .= '<td>' . sprintf('%.2f%%', 100 * (1 - ($e['to_go'] / $torrent['size']))) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['st']) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['la']) . "</td>\n";
@@ -89,8 +89,8 @@ function dltable($name, $arr, $torrent)
 
 global $container, $site_config;
 
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent = $torrent_stuffs->get($id);
+$torrents_class = $container->get(Torrent::class);
+$torrent = $torrents_class->get($id);
 if (empty($torrent)) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }

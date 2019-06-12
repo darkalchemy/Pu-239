@@ -23,7 +23,7 @@ $images = $fluent->from('images')
                  ->fetchAll();
 
 $values = [];
-$image_stuffs = $container->get(Image::class);
+$images_class = $container->get(Image::class);
 foreach ($images as $image) {
     $start = microtime(true);
     $untouched = url_proxy($image['url'], true);
@@ -67,7 +67,7 @@ foreach ($images as $image) {
             $run4 = $end4 - $start4;
             echo '1000x185: ' . $run4 . "\n\n";
         }
-        $image_stuffs->update($values, $update);
+        $images_class->update($values, $update);
     }
 }
 

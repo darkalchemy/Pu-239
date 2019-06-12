@@ -25,8 +25,8 @@ $pager = pager($perpage, $count, "staffpanel.php?tool=user_hits&amp;id=$id&amp;"
 if (!$count) {
     stderr($lang['userhits_stderr'], $lang['userhits_stderr1']);
 }
-$user_stuffs = $container->get(User::class);
-$user = $user_stuffs->getUserFromId($id);
+$users_class = $container->get(User::class);
+$user = $users_class->getUserFromId($id);
 $res = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $user = mysqli_fetch_assoc($res);
 $HTMLOUT .= "<h1>{$lang['userhits_profile']}" . format_username((int) $id) . "</h1>

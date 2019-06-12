@@ -1,3 +1,7 @@
+### 12 Jun, 2019
+fix: tvmaze lookup  
+fix: many strict issues  
+
 ### 09 Jun, 2019
 fix: get_user_class_name() usage  
 update: disable button when not enough seedbonus mybonus.php  

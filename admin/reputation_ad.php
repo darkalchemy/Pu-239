@@ -165,7 +165,7 @@ function show_form(array $input, string $type)
     $html = $lang['rep_ad_form_html'];
     $res = [];
     if ($type === 'edit') {
-        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
+        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . (int) $input['reputationlevelid']) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
             stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
         }
@@ -243,7 +243,7 @@ function do_update(array $input, string $type)
         $ids = $input['reputation'];
         if (is_array($ids) && count($ids)) {
             foreach ($ids as $k => $v) {
-                sql_query('UPDATE reputationlevel SET minimumreputation = ' . intval($v) . ' WHERE reputationlevelid=' . intval($k)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE reputationlevel SET minimumreputation = ' . (int) $v . ' WHERE reputationlevelid=' . sqlesc($k)) or sqlerr(__FILE__, __LINE__);
             }
         } else {
             stderr('', $lang['rep_ad_update_err4']);
@@ -265,7 +265,7 @@ function do_delete(array $input)
 {
     global $lang;
 
-    if (!isset($input['reputationlevelid']) || !is_valid_id($input['reputationlevelid'])) {
+    if (!isset($input['reputationlevelid']) || !is_valid_id((int) $input['reputationlevelid'])) {
         stderr('', 'No valid ID.');
     }
     $levelid = intval($input['reputationlevelid']);
@@ -291,7 +291,7 @@ function show_form_rep(array $input)
 {
     global $site_config, $lang;
 
-    if (!isset($input['reputationid']) || !is_valid_id($input['reputationid'])) {
+    if (!isset($input['reputationid']) || !is_valid_id((int) $input['reputationid'])) {
         stderr('', $lang['rep_ad_rep_form_nothing']);
     }
     $title = $lang['rep_ad_rep_form_title'];
@@ -302,7 +302,7 @@ function show_form_rep(array $input)
                     LEFT JOIN topics t ON p.topic_id=t.id
                     LEFT JOIN users leftfor ON leftfor.id=r.userid
                     LEFT JOIN users leftby ON leftby.id=r.whoadded
-                    WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+                    WHERE reputationid=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
     }
@@ -368,10 +368,10 @@ function view_list(array $now_date, array $input, int $time_offset)
         $input['orderby'] = isset($input['orderby']) ? $input['orderby'] : '';
         $who = isset($input['who']) ? (int) $input['who'] : 0;
         $user = isset($input['user']) ? $input['user'] : 0;
-        $first = isset($input['page']) ? intval($input['page']) : 0;
+        $first = isset($input['page']) ? (int) $input['page'] : 0;
         $cond = $who ? 'r.whoadded=' . sqlesc($who) : '';
-        $start = isset($input['startstamp']) ? intval($input['startstamp']) : mktime(0, 0, 0, $input['start']['month'], $input['start']['day'], $input['start']['year']) + $time_offset;
-        $end = isset($input['endstamp']) ? intval($input['endstamp']) : mktime(0, 0, 0, $input['end']['month'], $input['end']['day'] + 1, $input['end']['year']) + $time_offset;
+        $start = isset($input['startstamp']) ? (int) $input['startstamp'] : mktime(0, 0, 0, $input['start']['month'], $input['start']['day'], $input['start']['year']) + $time_offset;
+        $end = isset($input['endstamp']) ? (int) $input['endstamp'] : mktime(0, 0, 0, $input['end']['month'], $input['end']['day'] + 1, $input['end']['year']) + $time_offset;
         if (!$start) {
             $start = TIME_NOW - (3600 * 24 * 30);
         }
@@ -423,9 +423,9 @@ function view_list(array $now_date, array $input, int $time_offset)
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
         $table_header = '<table><tr>';
         $table_header .= "<td>{$lang['rep_ad_view_id']}</td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_date']}</a></td>";
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_date']}</a></td>";
         $table_header .= "<td>{$lang['rep_ad_view_point']}</td>";
         $table_header .= "<td>{$lang['rep_ad_view_reason']}</td>";
         $table_header .= "<td>{$lang['rep_ad_view_controls']}</td></tr>";
@@ -446,7 +446,7 @@ function view_list(array $now_date, array $input, int $time_offset)
                 'count' => $total['cnt'],
                 'perpage' => $deflimit,
                 'start_value' => $first,
-                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . $who . '&amp;user=' . $user . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
             ]);
         }
         // mofo query!
@@ -501,19 +501,19 @@ function do_delete_rep(array $input)
 {
     global $container, $site_config, $lang;
 
-    if (!is_valid_id($input['reputationid'])) {
+    if (!is_valid_id((int) $input['reputationid'])) {
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
     // check it's a valid ID.
-    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (($r = mysqli_fetch_assoc($query)) === false) {
         stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
     }
     $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
     // do the delete
-    sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
-    sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM reputation WHERE reputationid=' . sqlesc($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . sqlesc($r['userid'])) or sqlerr(__FILE__, __LINE__);
     $update['rep'] = ($User['reputation'] - $r['reputation']);
     $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $r['userid'], [
@@ -545,21 +545,20 @@ function do_edit_rep(array $input)
             stderr($lang['rep_ad_edit_txt'], $lang['rep_ad_edit_long']);
         }
     }
-    $oldrep = intval($input['oldreputation']);
-    $newrep = intval($input['reputation']);
-    // valid ID?
-    $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    $oldrep = $input['oldreputation'];
+    $newrep = $input['reputation'];
+    $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if ($r = mysqli_fetch_assoc($query) === false) {
         stderr($lang['rep_ad_edit_input'], $lang['rep_ad_edit_noid']);
     }
     if ($oldrep != $newrep) {
         if ($r['reason'] != $reason) {
-            sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE reputation SET reputation = ' . sqlesc($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid=' . sqlesc($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
         }
         $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
         $User = mysqli_fetch_assoc($sql);
         $diff = $oldrep - $newrep;
-        sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . sqlesc($r['userid'])) or sqlerr(__FILE__, __LINE__);
         $update['rep'] = ($User['reputation'] - $diff);
         $cache = $container->get(Cache::class);
         $cache->update_row('user_' . $r['userid'], [

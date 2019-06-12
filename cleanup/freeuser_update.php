@@ -30,7 +30,7 @@ function freeuser_update($data)
     $subject = 'Freeleech expired.';
     $msg = "Your freeleech has expired and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points.\n";
     $values = $set = $update = [];
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     foreach ($query as $arr) {
         $modcomment = $arr['modcomment'];
         $modcomment = get_date((int) $dt, 'DATE', 1) . " - Freeleech Removed By System.\n" . $modcomment;
@@ -45,13 +45,13 @@ function freeuser_update($data)
             'free_switch' => 0,
             'modcomment' => $modcomment,
         ];
-        $user_stuffs->update($set, $arr['id']);
+        $users_class->update($set, $arr['id']);
     }
 
     $count = count($values);
     if ($count) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($values);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($values);
     }
 
     if ($data['clean_log']) {

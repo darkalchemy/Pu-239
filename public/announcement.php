@@ -86,7 +86,6 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
 }
 
 if ((!empty($add_set))) {
-    $add_set = (isset($add_set)) ? $add_set : '';
     sql_query("UPDATE users SET $add_set WHERE id=" . ($row['id'])) or sqlerr(__FILE__, __LINE__);
 }
 

@@ -28,13 +28,14 @@ use Pu239\Session;
 use Pu239\User;
 
 global $container, $lang, $site_config, $CURUSER;
+
 $cache = $container->get(Cache::class);
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
 }
-$user_stuffs = $container->get(User::class);
-$user = $user_stuffs->getUserFromId($id);
+$users_class = $container->get(User::class);
+$user = $users_class->getUserFromId($id);
 if (empty($user)) {
     stderr($lang['userdetails_error'], $lang['userdetails_invalid']);
 } elseif ($user['status'] === 'pending') {
@@ -45,7 +46,7 @@ if (empty($user)) {
     die();
 }
 if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
-    $delete_me = isset($_GET['delete_hit_and_run']) ? intval($_GET['delete_hit_and_run']) : 0;
+    $delete_me = isset($_GET['delete_hit_and_run']) ? (int) $_GET['delete_hit_and_run'] : 0;
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
@@ -102,7 +103,7 @@ if (!(isset($_GET['hit'])) && $CURUSER['id'] !== $user['id']) {
     $update = [
         'hits' => $user['hits'] + 1,
     ];
-    $user_stuffs->update($update, $user['id']);
+    $users_class->update($update, $user['id']);
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
 if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id'])) {
@@ -417,8 +418,8 @@ $HTMLOUT .= "<table class='table table-bordered table-striped six'>";
 if (!empty($user['where_is'])) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_location']}</td><td class='has-text-left'>" . format_urls($user['where_is']) . '</td></tr>';
 }
-$mood_stuffs = $container->get(Mood::class);
-$moods = $mood_stuffs->get();
+$mood_class = $container->get(Mood::class);
+$moods = $mood_class->get();
 $moodname = (isset($moods['name'][$user['mood']]) ? htmlsafechars((string) $moods['name'][$user['mood']]) : $lang['userdetails_neutral']);
 $moodpic = (isset($moods['image'][$user['mood']]) ? htmlsafechars((string) $moods['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">

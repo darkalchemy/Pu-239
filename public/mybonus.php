@@ -54,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = isset($post['username']) ? htmlsafechars(trim($post['username'])) : '';
     $bonusgift = isset($post['bonusgift']) ? (int) $post['bonusgift'] : 0;
     $title = isset($post['title']) ? htmlsafechars(trim($post['title'])) : '';
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     $auth = $container->get(Auth::class);
-    $user = $user_stuffs->getUserFromId($auth->getUserId());
+    $user = $users_class->getUserFromId($auth->getUserId());
     $bonuslog = $container->get(Bonuslog::class);
 
     if (in_array($option, $traffic1) && $art === 'traffic') {
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'uploaded' => $user['uploaded'] + $options[$option]['menge'],
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'downloaded' => $user['downloaded'] - $options[$option]['menge'] > 0 ? $user['downloaded'] - $options[$option]['menge'] : 0,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $donate,
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
                         $end = 86400 * 3 + $dt;
                         $message = 'FreeLeech [ON]';
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 year Freeleech Status.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month King Status.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 2 weeks Pirate + freeleech Status.\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -170,19 +170,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'gift_1') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $bonusgift) {
-                $gift_user_id = $user_stuffs->getUserIdFromName($username);
+                $gift_user_id = $users_class->getUserIdFromName($username);
                 if ($gift_user_id) {
-                    $gift_user = $user_stuffs->getUserFromId((int) $gift_user_id);
+                    $gift_user = $users_class->getUserFromId((int) $gift_user_id);
                     $set = [
                         'seedbonus' => $user['seedbonus'] - $bonusgift,
                         'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $bonusgift . " Points as gift to $username .\n " . $user['bonuscomment'],
                     ];
-                    if ($user_stuffs->update($set, $user['id'])) {
+                    if ($users_class->update($set, $user['id'])) {
                         $set = [
                             'seedbonus' => $gift_user['seedbonus'] - $bonusgift,
                             'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . " Points as gift from {$user['username']} .\n " . $gift_user['bonuscomment'],
                         ];
-                        $user_stuffs->update($set, $gift_user['id']);
+                        $users_class->update($set, $gift_user['id']);
                         $msgs_buffer[] = [
                             'receiver' => $gift_user_id,
                             'added' => $dt,
@@ -235,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $set = [
                         'reputation' => $new_rep,
                     ];
-                    $user_stuffs->update($set, $ar['id']);
+                    $users_class->update($set, $ar['id']);
                     $msgs_buffer[] = [
                         'receiver' => $ar['id'],
                         'added' => $dt,
@@ -255,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'reputation' => $new_rep,
                         'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     ];
-                    if ($user_stuffs->update($set, $user['id'])) {
+                    if ($users_class->update($set, $user['id'])) {
                         $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                     } else {
                         $session->set('is-warning', 'Something went wrong');
@@ -276,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month VIP Status.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for removing warning.\n " . $user['bonuscomment'],
                     'modcomment' => get_date((int) $dt, 'DATE', 1) . " - Warning removed by - Bribe with Karma.\n" . $user['modcomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma. Please keep on your best behaviour from now on.');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -303,8 +303,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($art === 'ratio') {
         if ($options[$option]['enabled'] === 'yes') {
-            $snatched_stuffs = $container->get(Snatched::class);
-            $snatched = $snatched_stuffs->get_snatched($user['id'], $torrent_id);
+            $snatched_class = $container->get(Snatched::class);
+            $snatched = $snatched_class->get_snatched($user['id'], $torrent_id);
             if (!$snatched) {
                 $session->set('is-warning', 'Invalid Torrent ID');
             } elseif ($snatched['size'] > 6442450944) {
@@ -316,12 +316,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'uploaded' => $snatched['downloaded'],
                 ];
-                $snatched_stuffs->update($set, $torrent_id, $user['id']);
+                $snatched_class->update($set, $torrent_id, $user['id']);
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars((string) $snatched['name']) . ' ' . $torrent_id . ', ' . $difference . " bytes added.\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma. Please keep on your best behaviour from now on.');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -336,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month Immunity Status.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -354,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for  1 Year Parked Profile.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for user unlocks access.\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'], false)) {
+                if ($users_class->update($set, $user['id'], false)) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 }
             } else {
@@ -390,7 +390,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for user blocks access.\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -405,7 +405,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 14 Days Anonymous Profile.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -420,7 +420,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month Custom Smilies.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -435,7 +435,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 100 Reputation Points.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -450,7 +450,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['menge'] . " Invites for {$options[$option]['points']} Karma.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['menge']} Invite[/b] for {$options[$option]['points']} Karma");
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -465,7 +465,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] + $options[$option]['menge'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Invite for {$options[$option]['menge']} Karma.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You sold [b]{$options[$option]['points']} Invite[/b] for {$options[$option]['menge']} Karma");
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -480,7 +480,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'freeslots' => $user['freeslots'] + $options[$option]['menge'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Invite for {$options[$option]['menge']} Freeslots.\n" . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You traded [b]{$options[$option]['points']} Invites[/b] for {$options[$option]['menge']} Freeslots");
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -495,7 +495,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'freeslots' => $user['freeslots'] + $options[$option]['menge'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for freeslots.\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['menge']} Freeslots[/b] for {$options[$option]['points']} Karma");
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -514,7 +514,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for custom title. Old title was {$user['title']} new title is " . $title . ".\n " . $user['bonuscomment'],
                 ];
-                if ($user_stuffs->update($set, $user['id'])) {
+                if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
                 } else {
                     $session->set('is-warning', 'Something went wrong');
@@ -524,20 +524,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'bump') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
-                $torrent_stuffs = $container->get(Torrent::class);
-                $torrent = $torrent_stuffs->get((int) $torrent_id);
+                $torrents_class = $container->get(Torrent::class);
+                $torrent = $torrents_class->get((int) $torrent_id);
                 if ($torrent) {
                     $set = [
                         'bump' => 'yes',
                         'free' => 7 * 86400 + $dt,
                         'added' => $dt,
                     ];
-                    if ($torrent_stuffs->update($set, (int) $torrent_id)) {
+                    if ($torrents_class->update($set, (int) $torrent_id)) {
                         $set = [
                             'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                             'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' Points to Reanimate torrent: ' . $torrent['name'] . ".\n " . $user['bonuscomment'],
                         ];
-                        if ($user_stuffs->update($set, $user['id'])) {
+                        if ($users_class->update($set, $user['id'])) {
                             $session->set('is-success', ":woot: You reanimated for [b]{$torrent['name']}[/b] {$options[$option]['points']} Karma");
                         } else {
                             $session->set('is-warning', 'Something went wrong');
@@ -552,8 +552,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if (!empty($msgs_buffer)) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($msgs_buffer);
     }
     header("Location: {$_SERVER['PHP_SELF']}");
     die();

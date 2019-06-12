@@ -180,11 +180,11 @@ $legend = main_table("
         <td></td>
 	</tr>");
 
-$poll_starts = (isset($_POST['poll_starts']) ? intval($_POST['poll_starts']) : 0);
-$poll_ends = (isset($_POST['poll_ends']) ? intval($_POST['poll_ends']) : 1356048000);
-$change_vote = ((isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes') ? 'yes' : 'no');
-$multi_options = (isset($_POST['multi_options']) ? intval($_POST['multi_options']) : 1);
-$can_add_poll = (isset($_GET['action']) && $_GET['action'] == 'new_topic' ? 1 : 0);
+$poll_starts = isset($_POST['poll_starts']) ? (int) $_POST['poll_starts'] : 0;
+$poll_ends = isset($_POST['poll_ends']) ? (int) $_POST['poll_ends'] : 1356048000;
+$change_vote = (isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes') ? 'yes' : 'no';
+$multi_options = isset($_POST['multi_options']) ? (int) $_POST['multi_options'] : 1;
+$can_add_poll = isset($_GET['action']) && $_GET['action'] === 'new_topic' ? 1 : 0;
 
 $options = '';
 for ($i = 2; $i < 21; ++$i) {
@@ -268,7 +268,7 @@ $more_options = '
 <input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
 </td></tr>'), '', '', 'padding20') . '
 </div>';
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 
 $the_bottom_of_the_page = insert_quick_jump_menu($forum_id) . $legend;
 

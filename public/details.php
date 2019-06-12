@@ -63,8 +63,8 @@ if (!is_valid_id((int) $_GET['id'])) {
 
 $id = (int) $_GET['id'];
 $dt = TIME_NOW;
-$torrent_stuffs = $container->get(Torrent::class);
-$torrent = $torrent_stuffs->get($id);
+$torrents_class = $container->get(Torrent::class);
+$torrent = $torrents_class->get($id);
 $next = $previous = '';
 if (!empty($torrent['previous']['id'])) {
     $previous = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['previous']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars((string) $torrent['previous']['name']) . "'><i class='icon-left-open size_2' aria-hidden='true'></i></a>";
@@ -82,7 +82,7 @@ if (isset($_GET['hit'])) {
     $set = [
         'views' => $torrent['views'],
     ];
-    $torrent_stuffs->update($set, $id);
+    $torrents_class->update($set, $id);
 }
 $owned = $moderator = 0;
 $owner = $torrent['owner'];
@@ -98,7 +98,7 @@ if ($moderator) {
             'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ];
-        $torrent_stuffs->update($set, $id);
+        $torrents_class->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
         write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars((string) $torrent['name']) . ")[/url] was checked by {$CURUSER['username']}");
@@ -113,7 +113,7 @@ if ($moderator) {
             'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ];
-        $torrent_stuffs->update($set, $id);
+        $torrents_class->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
         write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars((string) $torrent['name']) . ")[/url] was re-checked by {$CURUSER['username']}");
@@ -123,7 +123,7 @@ if ($moderator) {
             'checked_by' => 0,
             'checked_when' => 0,
         ];
-        $torrent_stuffs->update($set, $id);
+        $torrents_class->update($set, $id);
         $torrent['checked_by'] = 0;
         $torrent['checked_when'] = 0;
         write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars((string) $torrent['name']) . ")[/url] was un-checked by {$CURUSER['username']}");
@@ -202,7 +202,7 @@ if (empty($torrent['imdb_id']) && !empty($torrent['url'])) {
         $set = [
             'imdb_id' => $imdb_id,
         ];
-        $torrent_stuffs->update($set, $id);
+        $torrents_class->update($set, $id);
         $torrent['imdb_id'] = $imdb_id;
     }
 }
@@ -228,7 +228,6 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['cat
     } else {
         $ids = get_show_id($torrent['name']);
     }
-
     if (!empty($ids['tvmaze_id'])) {
         $tvmaze_data = $cache->get('tvmaze_fullset_' . $ids['tvmaze_id']);
         if (empty($tvmaze_data)) {
@@ -241,7 +240,7 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['cat
         }
     }
 }
-if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['categories']['movie']) && !empty($torrent['imdb_id'])) {
+if ($BLOCKS['imdb_api_on'] && (in_array($torrent['category'], $site_config['categories']['movie']) || in_array($torrent['category'], $site_config['categories']['tv'])) && !empty($torrent['imdb_id'])) {
     $imdb_data = $cache->get('imdb_fullset_title_' . $torrent['imdb_id']);
     if ($imdb_data === false || is_null($imdb_data)) {
         $imdb_data = "
@@ -319,7 +318,7 @@ if (isset($torrent['cat_name'])) {
 } else {
     $info_block .= tr($lang['details_type'], '<div class="left10">None</div>', 1);
 }
-$lastseed = $torrent_stuffs->get_item('last_action', $id);
+$lastseed = $torrents_class->get_item('last_action', $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
 $info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date((int) $lastseed, '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
@@ -381,8 +380,8 @@ foreach ($tags as $tag) {
     }
 }
 $points = tr($lang['details_tags'], "<div class='left10'>$keywords</div>", 1);
-$coin_stuffs = $container->get(Coin::class);
-$torrent['torrent_points_'] = $coin_stuffs->get($id);
+$coin_class = $container->get(Coin::class);
+$torrent['torrent_points_'] = $coin_class->get($id);
 $my_points = isset($torrent['torrent_points_'][$CURUSER['id']]) ? $torrent['torrent_points_'][$CURUSER['id']] : 0;
 $points .= tr('Karma Points', '
                     <div class="left10">
@@ -463,10 +462,10 @@ $editlink = "<a href='$url' class='button is-small bottom10'>";
 $rowuser = !empty($owner) ? format_username((int) $owner) : $lang['details_unknown'];
 $uprow = $torrent['anonymous'] === 'yes' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
-$user_stuffs = $container->get(User::class);
-$torrent_cache['rep'] = $user_stuffs->get_item('reputation', $owner);
+$users_class = $container->get(User::class);
+$torrent_cache['rep'] = $users_class->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
-    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', true, $id, ($torrent['anonymous'] === 'yes' ? true : false));
+    $member_reputation = get_reputation($users_class->getUserFromId($owner), 'torrents', true, $id, ($torrent['anonymous'] === 'yes' ? true : false));
     $audit .= tr('Reputation', "
         <div class='level-left left10'>
             $member_reputation counts towards uploaders Reputation
@@ -575,8 +574,8 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
             <h2 class='has-text-centered top10'>{$lang['details_no_comment']}</h2>";
     } else {
         $perpage = 15;
-        $comment_stuffs = $container->get(Comment::class);
-        $torrent_comments = $comment_stuffs->get_torrent_comment($torrent['id'], $count, $perpage);
+        $comments_class = $container->get(Comment::class);
+        $torrent_comments = $comments_class->get_torrent_comment($torrent['id'], $count, $perpage);
         $pager = $torrent_comments[1];
         if ($count > $perpage) {
             $comments .= $pager['pagertop'];

@@ -61,8 +61,8 @@ function customsmilie_update($data)
 
     $count = count($msgs_buffer);
     if ($count > 0) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($msgs_buffer);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($msgs_buffer);
     }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

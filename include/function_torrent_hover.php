@@ -39,8 +39,8 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     $is_year = $released = $rated = $plot = $show_subs = $show_icons = '';
     if (!empty($imdb_id)) {
         $is_comment = !empty($is_comment) ? '#comm' . $is_comment : '';
-        $image_stuffs = $container->get(Image::class);
-        $background = $image_stuffs->find_images($imdb_id, $type = 'background');
+        $images_class = $container->get(Image::class);
+        $background = $images_class->find_images($imdb_id, $type = 'background');
         $torrent = $container->get(Torrent::class);
         $plot = $torrent->get_plot($imdb_id);
         if (!empty($plot)) {

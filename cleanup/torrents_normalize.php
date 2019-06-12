@@ -47,13 +47,13 @@ function torrents_normalize($data)
     $bad1 = array_diff($ids, $tids);
     $bad2 = array_diff($tids, $ids);
     $bad = array_merge($bad1, $bad2);
-    $torrent_stuffs = $container->get(Torrent::class);
+    $torrents_class = $container->get(Torrent::class);
     $i = 0;
     foreach ($bad as $tid) {
         ++$i;
-        $torrent_stuffs->delete_by_id((int) $tid);
+        $torrents_class->delete_by_id((int) $tid);
         if (!empty($list[$tid]['info_hash'])) {
-            $torrent_stuffs->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
+            $torrents_class->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
         }
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
+$topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -32,7 +32,7 @@ $valid_actions = [
     'reset_vote',
 ];
 //=== check posted action, and if no match, kill it
-$action = (in_array($posted_action, $valid_actions) ? $posted_action : 1);
+$action = in_array($posted_action, $valid_actions) ? $posted_action : 1;
 if ($action == 1) {
     stderr($lang['gl_error'], $lang['fe_bad_polls_action_msg']);
 }
@@ -48,7 +48,7 @@ switch ($action) {
         $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id=' . sqlesc($arr_poll['poll_id']) . ' AND user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res_poll_did_they_vote);
         $vote_count = number_format($row[0]);
-        $post_vote = (isset($_POST['vote']) ? $_POST['vote'] : '');
+        $post_vote = isset($_POST['vote']) ? $_POST['vote'] : '';
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id($arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
@@ -174,12 +174,12 @@ switch ($action) {
         //=== enter it into the DB \o/
         if (isset($_POST['add_the_poll']) && $_POST['add_the_poll'] == 1) {
             //=== post stuff
-            $poll_question = (isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '');
-            $poll_answers = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
-            $poll_ends = ((isset($_POST['poll_ends']) && $_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
-            $poll_starts = ((isset($_POST['poll_starts']) && $_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
-            $poll_starts = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
-            $change_vote = ((isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes') ? 'yes' : 'no');
+            $poll_question = isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '';
+            $poll_answers = isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '';
+            $poll_ends = (isset($_POST['poll_ends']) && $_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400);
+            $poll_starts = (isset($_POST['poll_starts']) && $_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400);
+            $poll_starts = $poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts;
+            $change_vote = (isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes') ? 'yes' : 'no';
             if ($poll_answers === '' && $poll_question === '') {
                 stderr($lang['gl_error'], '' . $lang['poll_be_sure_to_fill_in_the_question'] . '.');
             }
@@ -194,7 +194,7 @@ switch ($action) {
             if ($i > 20 || $i < 2) {
                 stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
             }
-            $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? intval($_POST['multi_options']) : 1);
+            $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? (int) $_POST['multi_options'] : 1);
             //=== serialize it and slap it in the DB allready!
             $poll_options = serialize($break_down_poll_options);
             sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')') or sqlerr(__FILE__, __LINE__);
@@ -412,12 +412,12 @@ switch ($action) {
         //=== enter it into the DB \o/
         if (isset($_POST['do_poll_edit']) && $_POST['do_poll_edit'] == 1) {
             //=== post stuff
-            $poll_question = (isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '');
-            $poll_answers = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
-            $poll_ends = ((isset($_POST['poll_ends']) && $_POST['poll_ends'] == 1356048000) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
-            $poll_starts = ((isset($_POST['poll_starts']) && $_POST['poll_starts'] == 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
-            $poll_starts = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
-            $change_vote = ((isset($_POST['change_vote']) && $_POST['change_vote'] == 'yes') ? 'yes' : 'no');
+            $poll_question = isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '';
+            $poll_answers = isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '';
+            $poll_ends = (isset($_POST['poll_ends']) && $_POST['poll_ends'] == 1356048000) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400);
+            $poll_starts = (isset($_POST['poll_starts']) && $_POST['poll_starts'] == 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400);
+            $poll_starts = $poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts;
+            $change_vote = isset($_POST['change_vote']) && $_POST['change_vote'] == 'yes' ? 'yes' : 'no';
             if ($poll_answers === '' || $poll_question === '') {
                 stderr($lang['gl_error'], '' . $lang['poll_be_sure_to_fill_in_the_question'] . '.');
             }
@@ -432,7 +432,7 @@ switch ($action) {
             if ($i > 20 || $i < 2) {
                 stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
             }
-            $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? intval($_POST['multi_options']) : 1);
+            $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? (int) $_POST['multi_options'] : 1);
             //=== serialize it and slap it in the DB FFS!
             $poll_options = serialize($break_down_poll_options);
             sql_query('UPDATE forum_poll  SET question = ' . sqlesc($poll_question) . ', poll_answers = ' . sqlesc($poll_options) . ', number_of_options = ' . $i . ' , poll_starts = ' . $poll_starts . ' , poll_ends = ' . $poll_ends . ', change_vote = \'' . $change_vote . '\', multi_options = ' . $multi_options . ', poll_closed = \'no\' WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);

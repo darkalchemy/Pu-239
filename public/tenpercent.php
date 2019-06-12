@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Message;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -49,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'msg' => $msg,
         'subject' => $subject,
     ];
-    $message_stuffs->insert($msgs_buffer);
+    $message_class = $container->get(Message::class);
+    $message_class->insert($msgs_buffer);
     if (!$res) {
         stderr('Error', 'It appears that something went wrong while trying to add 10% to your upload amount.');
     } else {

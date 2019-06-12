@@ -57,8 +57,8 @@ function uploadpos_update($data)
 
     $count = count($msgs);
     if ($count) {
-        $message_stuffs = $container->get(Message::class);
-        $message_stuffs->insert($msgs);
+        $messages_class = $container->get(Message::class);
+        $messages_class->insert($msgs);
         $set = [
             'uploadpos' => 1,
             'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),

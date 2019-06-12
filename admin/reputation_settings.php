@@ -24,7 +24,7 @@ function rep_cache()
 
     $rep_out = '<' . "?php\n\ndeclare(strict_types=1);\n\nglobal \$CURUSER;\n\n\$GVARS=array(\n";
     foreach ($_POST as $k => $v) {
-        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . (int) $v . ",\n";
     }
     $rep_out .= "\t'g_rep_negative' => true,\n";
     $rep_out .= "\t'g_rep_seeown' => true,\n";

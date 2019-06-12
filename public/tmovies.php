@@ -84,7 +84,7 @@ $HTMLOUT = "
 
 $body = "
         <div class='masonry padding20'>";
-$image_stuffs = $container->get(Image::class);
+$images_class = $container->get(Image::class);
 foreach ($select as $torrent) {
     $cast = $cache->get('cast_' . $torrent['imdb_id']);
     if ($cast === false || is_null($cast)) {
@@ -109,7 +109,7 @@ foreach ($select as $torrent) {
 
     $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
-        $image = $image_stuffs->find_images($torrent['imdb_id'], 'poster');
+        $image = $images_class->find_images($torrent['imdb_id'], 'poster');
         if (!empty($image)) {
             $image = url_proxy($image, true);
         } else {

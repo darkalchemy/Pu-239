@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 
 $child_boards = $now_viewing = $colour = '';
-$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }

@@ -86,8 +86,8 @@ function lotteryclean($data)
             }
         }
         if (!empty($_pms) && count($_pms)) {
-            $message_stuffs = $container->get(Message::class);
-            $message_stuffs->insert($_pms);
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($_pms);
         }
         $cache = $container->get(Cache::class);
         foreach ($uids as $user_id) {

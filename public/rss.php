@@ -18,8 +18,8 @@ if (!empty($torrent_pass)) {
     if (strlen($torrent_pass) != 64) {
         format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
     } else {
-        $user_stuffs = $container->get(User::class);
-        $user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
+        $users_class = $container->get(User::class);
+        $user = $users_class->get_user_from_torrent_pass($torrent_pass);
         if (!$user) {
             format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
         } elseif ($user['enabled'] === 'no') {

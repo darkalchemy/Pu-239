@@ -74,8 +74,8 @@ function pu_demote_update($data)
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                $message_stuffs = $container->get(Message::class);
-                $message_stuffs->insert($msgs_buffer);
+                $messages_class = $container->get(Message::class);
+                $messages_class->insert($msgs_buffer);
                 sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {

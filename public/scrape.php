@@ -2,12 +2,17 @@
 
 declare(strict_types = 1);
 
+use Pu239\Torrent;
+use Pu239\User;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 if (empty($_SERVER['QUERY_STRING'])) {
     err("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
+global $container;
+
 $q = explode('&', $_SERVER['QUERY_STRING']);
 $_GET = [];
 foreach ($q as $p) {
@@ -36,7 +41,8 @@ $torrent_pass = $_GET['torrent_pass'];
 if (!$torrent_pass) {
     err('empty torrent pass');
 }
-$user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
+$users_class = $container->get(User::class);
+$user = $users_class->get_user_from_torrent_pass($torrent_pass);
 if (empty($user) || $user['enabled'] === 'no' || $user['parked'] === 'yes' || $user['downloadpos'] != 1) {
     err('scrape user error');
 }
@@ -46,17 +52,18 @@ if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
 } elseif (empty($_GET['info_hash'])) {
     $numhash = 0;
 }
+$torrents_class = $container->get(Torrent::class);
 $torrents = [];
 if ($numhash < 1) {
     err('Scrape Error d5:filesdee');
 } elseif ($numhash === 1) {
-    $torrent = $torrent_stuffs->get_torrent_from_hash($_GET['info_hash']);
+    $torrent = $torrents_class->get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
         $torrents[$_GET['info_hash']] = $torrent;
     }
 } else {
     foreach ($_GET['info_hash'] as $hash) {
-        $torrent = $torrent_stuffs->get_torrent_from_hash($hash);
+        $torrent = $torrents_class->get_torrent_from_hash($hash);
         if ($torrent) {
             $torrents[$hash] = $torrent;
         }

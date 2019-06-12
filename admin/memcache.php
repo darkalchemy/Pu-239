@@ -477,7 +477,7 @@ if (isset($_GET['IMG'])) {
                         $px = $x + 40 * 2;
                         $py = ($placeindex - 15) * 12 + 6;
                     } else {
-                        $px = $x + 40 * 2 + 100 * intval(($placeindex - 15) / 15);
+                        $px = $x + 40 * 2 + 100 * (int) ($placeindex - 15 / 15);
                         $py = ($placeindex % 15) * 12 + 6;
                     }
                     imagefilledrectangle($im, $px, $py + 3, $px - 4, $py - 3, $color2);

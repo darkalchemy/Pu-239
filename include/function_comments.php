@@ -26,7 +26,7 @@ function commenttable($rows, $variant = 'torrent')
 {
     global $container, $CURUSER, $site_config;
 
-    $user_stuffs = $container->get(User::class);
+    $users_class = $container->get(User::class);
     require_once INCL_DIR . 'function_users.php';
     require_once INCL_DIR . 'function_html.php';
     $lang = array_merge(load_language('torrenttable_functions'), load_language('forums_global'));
@@ -52,7 +52,7 @@ function commenttable($rows, $variant = 'torrent')
         if ($variant === 'torrent') {
             $variantc = 'comment';
         }
-        $usersdata = $user_stuffs->getUserFromId($row['user']);
+        $usersdata = $users_class->getUserFromId($row['user']);
         $this_text = '';
         $mood = $container->get(Mood::class);
         $moods = $mood->get();
@@ -134,7 +134,7 @@ function commenttable($rows, $variant = 'torrent')
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $image = placeholder_image();
-        $user = $user_stuffs->getUserFromId($row['user']);
+        $user = $users_class->getUserFromId($row['user']);
         $member_reputation = !empty($usersdata['username']) ? get_reputation($user, 'comments', true, 0, ($row['anonymous']) === 'yes' ? true : false) : '';
         $htmlout .= main_div("
             <a id='comm{$row['id']}'></a>

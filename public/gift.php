@@ -25,7 +25,7 @@ $userid = (int) $CURUSER['id'];
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID', 'bottom20');
 }
-$open = (isset($_GET['open']) ? intval($_GET['open']) : 0);
+$open = isset($_GET['open']) ? (int) $_GET['open'] : 0;
 if ($open != 1) {
     stderr('Error', 'Invalid url', 'bottom20');
 }
