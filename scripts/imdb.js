@@ -21,7 +21,7 @@ function get_imdb(url, tid, image) {
         url: './ajax/imdb_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 7500,
+        timeout: 10000,
         context: this,
         data: {
             url: url,
@@ -41,13 +41,8 @@ function get_imdb(url, tid, image) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
-                if (count >= 8) {
-                    e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
-                    el.appendChild(e);
-                } else {
-                    e.remove();
-                    get_imdb(url, tid, image);
-                }
+                e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                el.appendChild(e);
             } else {
                 e.innerHTML = 'Another *unknown* was returned';
                 el.appendChild(e);

@@ -16,7 +16,7 @@ function get_tvmaze(tvmazeid, name, tid) {
         url: './ajax/tvmaze_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 7500,
+        timeout: 10000,
         context: this,
         data: {
             tvmazeid: tvmazeid,
@@ -32,18 +32,12 @@ function get_tvmaze(tvmazeid, name, tid) {
                 var node = document.createElement('div');
                 node.innerHTML = data['content'];
                 el.appendChild(node);
-                console.log('worked');
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
-                if (count >= 8) {
-                    e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
-                    el.appendChild(e);
-                } else {
-                    e.remove();
-                    get_tvmaze(tvmazeid, name, tid);
-                }
+                e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                el.appendChild(e);
             } else {
                 e.innerHTML = 'No TVMaze Data found for ' + name;
                 el.appendChild(e);
