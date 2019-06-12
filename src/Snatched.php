@@ -110,4 +110,21 @@ class Snatched
                      ->where('last_action < ?', $dt)
                      ->execute();
     }
+
+    /**
+     * @param int $userid
+     *
+     * @throws Exception
+     *
+     * @return bool|int|\PDOStatement
+     */
+    public function flush(int $userid)
+    {
+        $result = $this->fluent->update('snatched')
+            ->set(['seeder' => 'no'])
+            ->where('userid = ?', $userid)
+            ->execute();
+
+        return $result;
+    }
 }

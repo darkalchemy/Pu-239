@@ -258,4 +258,20 @@ class Peer
 
         return $result;
     }
+
+    /**
+     * @param int $userid
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    public function flush(int $userid)
+    {
+        $result = $this->fluent->deleteFrom('peers')
+            ->where('userid = ?', $userid)
+            ->execute();
+
+        return $result;
+    }
 }

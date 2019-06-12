@@ -359,12 +359,14 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
                             <a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
                             <div class="has-text-left" id="box_6">
-                            <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
-                            <input name="id" type="hidden" value="' . (int) $user['id'] . '">
-                            <input type="hidden" value="staff_notes" name="action" id="action">
-                            <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars((string) $user['staff_notes']) . '</textarea>
-                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
-                            </form>
+                                <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
+                                    <input name="id" type="hidden" value="' . (int) $user['id'] . '">
+                                    <input type="hidden" value="staff_notes" name="action" id="action">
+                                    <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars((string) $user['staff_notes']) . '</textarea>
+                                    <div class="has-text-centered">
+                                        <input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button">
+                                    </div>
+                                </form>
                             </div> </td></tr>';
 
     $the_flip_box_7 = '[ <a id="system_comments"></a><a class="is-link tooltipper" href="#system_comments" onclick="flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . ')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '"></a> ]';

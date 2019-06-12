@@ -194,10 +194,10 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -432,9 +432,9 @@ function StatusBar()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

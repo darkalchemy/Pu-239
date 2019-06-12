@@ -1,4 +1,5 @@
 ### 12 Jun, 2019
+fix: member_input.php  
 remove: retry on ajax lookups details.php  
 fix: autoshout new user with correct classname  
 fix: more strict issues  
