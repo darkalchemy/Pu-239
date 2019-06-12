@@ -602,7 +602,7 @@ function get_time_offset()
  *
  * @return false|mixed|string
  */
-function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc = false)
+function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
 {
     global $container, $site_config;
 
