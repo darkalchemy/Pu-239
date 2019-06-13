@@ -577,12 +577,15 @@ function is_valid_id(int $id)
  */
 function member_ratio(float $up, float $down)
 {
+    global $site_config;
+
+    $down = $site_config['site']['ratio_free'] ? 0 : $down;
     switch (true) {
         case $down > 0 && $up > 0:
             $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format($up / $down, 3) . '</span>';
             break;
 
-        case $down > 0 && $up == 0:
+        case $down > 0 && $up === 0:
             $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / $down, 3) . '</span>';
             break;
 
@@ -597,17 +600,12 @@ function member_ratio(float $up, float $down)
     return $ratio;
 }
 
-/**
- * @param float $ratio
- *
- * @throws NotFoundException
- * @throws DependencyException
- *
- * @return string
- */
-function get_user_ratio_image(float $ratio)
+function get_user_ratio_image(float $up, float $down)
 {
     global $site_config;
+
+    $down = $site_config['site']['ratio_free'] || (int) $down === 0 ? 1 : $down;
+    $ratio = $up / $down;
 
     require_once INCL_DIR . 'function_html.php';
     $image = placeholder_image();

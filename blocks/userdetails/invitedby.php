@@ -50,8 +50,8 @@ if (mysqli_num_rows($rez_invited) < 1) {
         <td>' . htmlsafechars($arr_invited['email']) . '</td>
         <td>' . mksize($arr_invited['uploaded']) . '</td>
         ' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
-        <td>' . member_ratio((float) $arr_invited['uploaded'], ($site_config['site']['ratio_free'] ? 0 : (float) $arr_invited['downloaded'])) . '</td>
-        <td>' . ($arr_invited['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
+        <td>' . member_ratio((int) $arr_invited['uploaded'], (int) $arr_invited['downloaded']) . '</td>
+        <td>' . ($arr_invited['status'] === 'confirmed' ? '<span style="color: lime;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
     }
     $inviteted_by_this_member .= '</table>';
 }

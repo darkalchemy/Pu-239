@@ -10,8 +10,8 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
             <td class="rowhead" style="vertical-align: middle">' . $lang['userdetails_share_ratio'] . '</td>
             <td>
                 <div class="level-left">
-                    ' . member_ratio($user['uploaded'], $site_config['site']['ratio_free'] ? 0 : $user['downloaded']) . '
-                    <span class="left10">' . get_user_ratio_image($user['uploaded'] / ($site_config['site']['ratio_free'] ? 1 : $user['downloaded'])) . '</span>
+                    ' . member_ratio((int) $user['uploaded'], (int) $user['downloaded']) . '
+                    <span class="left10">' . get_user_ratio_image($user['uploaded'], $user['downloaded']) . '</span>
                 </div>
             </td>
         </tr>';

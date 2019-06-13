@@ -320,7 +320,7 @@ if (!empty($info['length'])) {
     $totallen = 0;
     foreach ($flist as $fn) {
         if ((bool) empty($fn['length']) || (bool) empty($fn['path'])) {
-            $session->set('is-warning', 'file info not found');
+            $session->set('is-warning', 'file info not found, empty filename in torrent file?');
             header("Location: {$_SERVER['HTTP_REFERER']}");
             die();
         }

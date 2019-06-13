@@ -35,10 +35,10 @@ function clear_template_cache()
 if (isset($_GET['act'])) {
     $session = $container->get(Session::class);
     if (!isset($_GET['act'])) {
-        stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+        stderr($lang['themes_error'], $lang['themes_inv_id']);
     }
     if (!is_valid_id((int) $_GET['act'])) {
-        stderr("{$lang['themes_error']}", "{$lang['themes_inv_act']}");
+        stderr($lang['themes_error'], $lang['themes_inv_act']);
     }
     $act = (int) $_GET['act'];
 
@@ -87,7 +87,7 @@ if (isset($_GET['act'])) {
         </form>";
     }
     if ($act === 2) {
-        stderr("{$lang['themes_delete_q']}", "
+        stderr($lang['themes_delete_q'], "
             {$lang['themes_delete_sure_q']}
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=5&amp;id=$id&amp;sure=1'>
                 {$lang['themes_delete_sure_q2']}
@@ -143,13 +143,13 @@ if (isset($_GET['act'])) {
     }
     if ($act === 4) {
         if (!isset($_POST['id'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
         if (!isset($_POST['uri'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_uri']}");
+            stderr($lang['themes_error'], $lang['themes_inv_uri']);
         }
         if (!isset($_POST['title'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
+            stderr($lang['themes_error']}", $lang['themes_inv_name']);
         }
         $tid = (int) $_POST['tid'];
         $id = (int) $_POST['id'];
@@ -157,7 +157,7 @@ if (isset($_GET['act'])) {
         $min_class = $_POST['class'];
         $name = htmlsafechars($_POST['title']);
         if (!is_valid_id($id)) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
 
         $cur = $fluent->from('stylesheets')
@@ -191,11 +191,11 @@ if (isset($_GET['act'])) {
     }
     if ($act === 5) {
         if (!isset($_GET['id'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
         $id = (int) $_GET['id'];
         if (!is_valid_id($id)) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
         if (!isset($_GET['sure'])) {
             header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=themes');
@@ -225,20 +225,20 @@ if (isset($_GET['act'])) {
     }
     if ($act === 6) {
         if (!isset($_POST['id'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
         if (!isset($_POST['uri'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_uri']}");
+            stderr($lang['themes_error'], $lang['themes_inv_uri']);
         }
         if (!isset($_POST['name'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
+            stderr($lang['themes_error'], $lang['themes_inv_name']);
         }
         if (!file_exists(TEMPLATE_DIR . $_POST['id'] . '/template.php')) {
-            stderr("{$lang['themes_nofile']}", "{$lang['themes_inv_file']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
+            stderr($lang['themes_nofile'], "{$lang['themes_inv_file']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes'>{$lang['themes_not_exists']}</a>");
         }
         if (!isset($_POST['class'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_class']}");
+            stderr($lang['themes_error'], $lang['themes_inv_class']);
         }
 
         $values = [
@@ -258,13 +258,13 @@ if (isset($_GET['act'])) {
     }
     if ($act === 7) {
         if (!isset($_GET['id'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
+            stderr($lang['themes_error'], $lang['themes_inv_id']);
         }
         if (!isset($_GET['uri'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_uri']}");
+            stderr($lang['themes_error'], $lang['themes_inv_uri']);
         }
         if (!isset($_GET['name'])) {
-            stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
+            stderr($lang['themes_error'], $lang['themes_inv_name']);
         }
 
         $values = [

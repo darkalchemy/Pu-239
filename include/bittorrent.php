@@ -653,20 +653,20 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
             if ($diff < 120) {
                 return '< 1 minute ago';
             } else {
-                return sprintf('%s minutes ago', (int) $diff / 60);
+                return sprintf('%s minutes ago', (int) ($diff / 60));
             }
         } elseif ($diff < 7200) {
             return '< 1 hour ago';
         } elseif ($diff < 86400) {
-            return sprintf('%s hours ago', (int) $diff / 3600);
+            return sprintf('%s hours ago', (int) ($diff / 3600));
         } elseif ($diff < 172800) {
             return '< 1 day ago';
         } elseif ($diff < 604800) {
-            return sprintf('%s days ago', (int) $diff / 86400);
+            return sprintf('%s days ago', (int) ($diff / 86400));
         } elseif ($diff < 1209600) {
             return '< 1 week ago';
         } elseif ($diff < 3024000) {
-            return sprintf('%s weeks ago', (int) $diff / 604900);
+            return sprintf('%s weeks ago', (int) ($diff / 604900));
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
@@ -678,7 +678,7 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
                 if ($diff < 120) {
                     return '< 1 minute ago';
                 } else {
-                    return sprintf('%s minutes ago', (int) $diff / 60);
+                    return sprintf('%s minutes ago', (int) ($diff / 60));
                 }
             }
         }
@@ -704,7 +704,7 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
     } elseif ($calc) {
-        $years = (int) $date / 31536000;
+        $years = (int) ($date / 31536000);
         $date -= $years * 31536000;
         $days = intval($date / 86400);
         $date -= $days * 86400;

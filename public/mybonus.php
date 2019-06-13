@@ -605,7 +605,7 @@ foreach ($options as $gets) {
                     </div>
                     <div class='top20 has-text-centered'>
                         <label for='bonusgift'>Select how many points you want to send:</label>
-                        <input type='number' name='bonusgift' class='w-100' min='100' max='100000' required>
+                        <input type='number' name='bonusgift' class='w-100' min='100' max='$max' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>

@@ -131,7 +131,7 @@ if ($ip) {
         $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
         $iphistory = mysqli_num_rows($resip);
         if ($user['invitedby'] > 0) {
-            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
+            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']));
             $array = mysqli_fetch_assoc($res2);
             $invitedby = $array['id'];
             if ($invitedby == '') {

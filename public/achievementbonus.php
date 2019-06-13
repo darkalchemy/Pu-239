@@ -45,7 +45,7 @@ if ($bonus_type === 1) {
             'downloaded' => $down - $bonus_do,
         ], $site_config['expires']['user_cache']);
     } elseif ($down < $bonus_do) {
-        $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_your_dl_been_reset_0']}";
+        $msg = $lang['achbon_congratulations'], $lang['achbon_your_dl_been_reset_0'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
         $sql = "UPDATE users SET downloaded = '0' WHERE id =" . sqlesc($id);
@@ -84,23 +84,23 @@ if ($bonus_type === 1) {
 } elseif ($bonus_type == 5) {
     $rand_fail = random_int(1, 5);
     if ($rand_fail == 1) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg1']}";
+        $msg = $lang['gl_sorry'], $lang['achbon_failed_msg1'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
     } elseif ($rand_fail == 2) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg2']}";
+        $msg = $lang['gl_sorry'], $lang['achbon_failed_msg2'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
     } elseif ($rand_fail == 3) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg3']}";
+        $msg = $lang['gl_sorry'], $lang['achbon_failed_msg3'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
     } elseif ($rand_fail == 4) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg4']}";
+        $msg = $lang['gl_sorry'], $lang['achbon_failed_msg4'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
     } elseif ($rand_fail == 5) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg5']}";
+        $msg = $lang['gl_sorry'], $lang['achbon_failed_msg5'];
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('user_achievement_points_' . $id);
     }

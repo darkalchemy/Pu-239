@@ -295,8 +295,8 @@ switch ($action) {
   </tr>
   <tr>
   <td>offered by:</td>
-  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name((int) $usersdata['class']) . ' ]
-  ratio: ' . member_ratio($usersdata['uploaded'], $site_config['site']['ratio_free'] ? 0 : $usersdata['downloaded']) . get_user_ratio_image(($site_config['site']['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
+  <td>' . format_username($usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  ratio: ' . member_ratio($usersdata['uploaded'], $usersdata['downloaded']) . get_user_ratio_image($usersdata['uploaded'], $usersdata['downloaded']) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
   <td><a class="is-link" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>

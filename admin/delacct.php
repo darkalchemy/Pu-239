@@ -73,4 +73,4 @@ $HTMLOUT = "
             </form>
         </div>
 </div>";
-echo stdhead("{$lang['stdhead_delete']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['stdhead_delete']) . wrapper($HTMLOUT) . stdfoot();

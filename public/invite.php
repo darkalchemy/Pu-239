@@ -65,7 +65,7 @@ if ($do === 'view_page') {
                         <th>{$lang['invites_status']}</th>
                     </tr>";
         foreach ($rows as $row) {
-            $ratio = member_ratio($row['uploaded'], $site_config['site']['ratio_free'] ? 0 : $row['downloaded']);
+            $ratio = member_ratio($row['uploaded'], $row['downloaded']);
             if ($row['status'] === 0) {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {

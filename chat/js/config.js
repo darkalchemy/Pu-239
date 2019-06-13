@@ -600,7 +600,8 @@ var ajaxChatConfig = {
         ':maxlocked:',
         ':hslocked:',
         ':locked:',
-        ':dabunnies:'
+        ':dabunnies:',
+        ':woot:',
     ],
 
     // Defines the list of emoticon files associated with the emoticon codes:
@@ -1032,7 +1033,8 @@ var ajaxChatConfig = {
         'maxlocked.gif',
         'hslocked.gif',
         'locked.gif',
-        'bunnies3.gif'
+        'bunnies3.gif',
+        'w00t.gif',
     ],
 
     emoticonDisplay: [

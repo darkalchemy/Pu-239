@@ -13,6 +13,8 @@ use Pu239\Block;
 use Pu239\Bonuslog;
 use Pu239\Bookmark;
 use Pu239\Cache;
+use Pu239\Casino;
+use Pu239\CasinoBets;
 use Pu239\Coin;
 use Pu239\Comment;
 use Pu239\Database;
@@ -52,6 +54,8 @@ return [
     Bonuslog::class => autowire(),
     Bookmark::class => autowire(),
     Cache::class => autowire(),
+    Casino::class => autowire(),
+    CasinoBets::class => autowire(),
     Coin::class => autowire(),
     Comment::class => autowire(),
     Database::class => autowire(),

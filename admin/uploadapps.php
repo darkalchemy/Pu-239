@@ -97,13 +97,13 @@ if ($action === 'app' || $action === 'show') {
             <tr>
                 <td>{$elapsed}</td>
                 <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=viewapp&amp;id=" . (int) $arr['id'] . "'>{$lang['uploadapps_viewapp']}</a></td>
-                <td>" . format_username((int) $arr['userid']) . "</td>
+                <td>" . format_username($arr['userid']) . "</td>
                 <td>{$membertime}</td>
-                <td>" . get_user_class_name((int) $arr['class']) . '</td>
+                <td>" . get_user_class_name($arr['class']) . '</td>
                 <td>' . mksize($arr['uploaded']) . '</td>
-                <td>' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . "</td>
+                <td>' . member_ratio($arr['uploaded'], $arr['downloaded']) . "</td>
                 <td>{$status}</td>
-                <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int) $arr['id'] . '"></td>
+                <td><input type='checkbox' name='deleteapp[]' value='" . $arr['id'] . '"></td>
             </tr>';
         }
         $HTMLOUT .= main_table($body, $heading) . "
@@ -151,7 +151,7 @@ if ($action === 'viewapp') {
         </tr>') . "
         <tr>
             <td>{$lang['uploadapps_ratio1']}</td>
-            <td>" . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . "</td>
+            <td>" . member_ratio($arr['uploaded'], $arr['downloaded']) . "</td>
         </tr>
         <tr>
             <td>{$lang['uploadapps_connectable']}</td>

@@ -84,7 +84,7 @@ if (!empty($CURUSER)) {
     <span class='navbar-start' id='hide_html'>{$lang['gl_tstats']}</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_shareratio']}</span>
-        <span>" . member_ratio($CURUSER['uploaded'], $site_config['site']['ratio_free'] ? 0 : $CURUSER['downloaded']) . '</span>
+        <span>" . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</span>
     </span>';
 
     if ($site_config['site']['ratio_free']) {

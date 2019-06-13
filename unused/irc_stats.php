@@ -23,11 +23,11 @@ $_do = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : ''
  */
 function calctime($val)
 {
-    $days = (int) $val / 86400;
+    $days = (int) ($val / 86400);
     $val -= $days * 86400;
-    $hours = (int) $val / 3600;
+    $hours = (int) ($val / 3600);
     $val -= $hours * 3600;
-    $mins = (int) $val / 60;
+    $mins = (int) ($val / 60);
     $secs = $val - ($mins * 60);
 
     return "$days days, $hours hrs, $mins minutes";

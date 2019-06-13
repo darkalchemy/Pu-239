@@ -158,8 +158,8 @@ if ($how_many > 0) {
         <td class="has-text-centered">' . get_date((int) $arr['watched_user'], '') . '</td>
         <td class="has-text-left">' . format_username((int) $arr['id']) . '</td>
         <td class="has-text-left">' . $the_flip_box . '</td>
-        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . '</td>
-        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username((int) $arr['invitedby'])) . '</td>
+        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $arr['downloaded']) . '</td>
+        <td class="has-text-centered">' . (empty($invitor_arr['username']) ? $lang['watched_open_sign-ups'] : format_username($arr['invitedby'])) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '
     </tr>';

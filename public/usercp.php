@@ -11,6 +11,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once CACHE_DIR . 'timezones.php';
+
 check_user_status();
 $stdhead = [
     'css' => [
@@ -482,29 +483,44 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
+
     $categories = '';
-    $r = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($r) > 0) {
+    $groups = genrelist(true);
+    $count = count($groups) - 1;
+    $grouped = genrelist(false);
+    //dd($grouped);
+    if (!empty($grouped)) {
         $categories .= "
-                                            <div id='cat-container' class='level-center'>";
-        while ($a = mysqli_fetch_assoc($r)) {
-            $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
+                                            <div id='cat-container'>";
+        $parent = '';
+        for($i = 1; $i<=$count; $i++) {
             $categories .= "
-                                                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                                                    <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
-                                                    <span class='cat-image left10'>
-                                                        <a href='{$site_config['paths']['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
-                                                            $image
-                                                        </a>
-                                                    </span>
-                                                </span>";
-        }
-        $categories .= '
+                                                <div class='w-100 bordered level-center bottom20'>";
+            foreach ($grouped as $a) {
+                if (empty($a['parent_name'])) {
+                    continue;
+                }
+                if ($a['parent_id'] === $i) {
+                    $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
+                    $categories .= "
+                                                    <span class='margin10 level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                                                        <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
+                                                        <span class='cat-image left10'>
+                                                            <a href='{$site_config['paths']['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
+                                                                $image
+                                                            </a>
+                                                        </span>
+                                                    </span>";
+                }
+            }
+            $categories .= '
                                             </div>';
+        }
     }
 
     $HTMLOUT .= tr($lang['usercp_email_notif'], "
                                             <input type='checkbox' name='emailnotif'" . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
+
     $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
     $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes'" . (($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? ' checked' : '') . "> {$lang['usercp_default_clearnewtagmanually']}", 1);

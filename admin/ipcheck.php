@@ -53,7 +53,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
                     <td>$last_access</td>" . ($site_config['site']['ratio_free'] ? '' : "
                     <td>$downloaded</td>") . "
                     <td>$uploaded</td>
-                    <td>" . member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']) . '</td>
+                    <td>" . member_ratio($arr['uploaded'], $arr['downloaded']) . '</td>
                     <td><span class="has-text-weight-bold">' . htmlsafechars($arr['ip']) . '</span></td>
                 </tr>';
                 $ip = htmlsafechars($arr['ip']);

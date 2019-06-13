@@ -51,7 +51,7 @@ $i = 0;
 $body = '';
 foreach ($counted as $arr) {
     ++$i;
-    $ratio = member_ratio($arr['uploaded'], $site_config['site']['ratio_free'] ? 0 : $arr['downloaded']);
+    $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
     $body .= '
     <tr>
         <td>' . $i . '</td>
