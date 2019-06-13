@@ -37,11 +37,11 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @throws Exception
+ * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  *
- * @return string
+ * @throws Exception
  */
 function torrenttable($res, $variant = 'index')
 {
@@ -58,30 +58,32 @@ function torrenttable($res, $variant = 'index')
     $cache = $container->get(Cache::class);
     $free = $cache->get('site_events_');
     $free_display = '';
-    foreach ($free as $fl) {
-        switch ($fl['modifier']) {
-            case 1:
-                $free_display = '[Free]';
-                break;
+    if (!empty($free)) {
+        foreach ($free as $fl) {
+            switch ($fl['modifier']) {
+                case 1:
+                    $free_display = '[Free]';
+                    break;
 
-            case 2:
-                $free_display = '[Double]';
-                break;
+                case 2:
+                    $free_display = '[Double]';
+                    break;
 
-            case 3:
-                $free_display = '[Free and Double]';
-                break;
+                case 3:
+                    $free_display = '[Free and Double]';
+                    break;
 
-            case 4:
-                $free_display = '[Silver]';
-                break;
-        }
-        $slot = make_freeslots($CURUSER['id'], 'fllslot_');
-        $all_free_tag = ($fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' <a class="info" href="#">
+                case 4:
+                    $free_display = '[Silver]';
+                    break;
+            }
+            $slot = make_freeslots($CURUSER['id'], 'fllslot_');
+            $all_free_tag = ($fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' <a class="info" href="#">
             <b>' . $free_display . '</b>
             <span>' . ($fl['expires'] != 1 ? '
             Expires: ' . get_date((int) $fl['expires'], 'DATE') . '<br>
             (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '');
+        }
     }
     foreach ($_GET as $key => $var) {
         if (in_array($key, [

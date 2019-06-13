@@ -12,14 +12,13 @@ global $site_config, $CURUSER;
 
 $checked1 = $checked2 = $checked3 = $checked4 = $HTMLOUT = '';
 $free = get_event(true);
-
+$fl = $temp = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['remove'])) {
-        update_event($_POST['expires'], TIME_NOW);
+        update_event((int) $_POST['expires'], TIME_NOW);
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=freeleech");
         die();
     }
-
     $fl['modifier'] = isset($_POST['modifier']) ? (int) $_POST['modifier'] : false;
     if (isset($_POST['expires']) && (int) $_POST['expires'] === 255) {
         $fl['expires'] = 1;
@@ -34,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $i = 0;
     foreach ($free as $temp) {
-        if ($temp['modifier'] == $fl['modifier']) {
+        if ($temp['modifier'] === $fl['modifier']) {
             unset($free[$i]);
         }
         ++$i;
@@ -140,7 +139,7 @@ $HTMLOUT .= "
     <td><input type='text' class= 'w-100' name='title' placeholder='{$lang['freeleech_title']}'>
     </td></tr>
     <tr><td class='rowhead'>{$lang['freeleech_setby']}</td>
-    <td><span>" . format_username((int) $CURUSER['id']) . "</span>
+    <td><span>" . format_username($CURUSER['id']) . "</span>
     </td></tr>
     <tr><td colspan='2' class='has-text-centered'>
     <input type='hidden' class='w-100' value ='" . $CURUSER['id'] . "' name='setby'>

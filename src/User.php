@@ -313,7 +313,8 @@ class User
             ]);
             if ($userId > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
                 require_once INCL_DIR . 'function_users.php';
-                $message = "Welcome New {$this->site_config['site']['name']} Member: [" . UC_MIN . ']' . htmlsafechars($values['username']) . '[/' . UC_MIN . ']';
+                $classname = get_user_class_name(UC_MIN, true);
+                $message = "Welcome New {$this->site_config['site']['name']} Member: [" . $classname . ']' . htmlsafechars($values['username']) . '[/' . $classname . ']';
                 autoshout($message);
             }
 

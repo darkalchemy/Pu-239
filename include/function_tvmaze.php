@@ -16,12 +16,12 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws DependencyException
+ * @return string|null
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  *
- * @return string|null
+ * @throws DependencyException
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
@@ -65,6 +65,9 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     }
 
     foreach ($roles as $role) {
+        if (empty($role['thumb'])) {
+            continue;
+        }
         $persons[] = "
                         <ul class='right10'>
                             <li>
@@ -118,10 +121,10 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
+ * @return bool|string
  * @throws DependencyException
  *
- * @return bool|string
+ * @throws NotFoundException
  */
 function episode_format($tvmaze_data, $tvmaze_type)
 {
@@ -159,12 +162,12 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws DependencyException
+ * @return bool|string|null
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  *
- * @return bool|string|null
+ * @throws DependencyException
  */
 function get_episode($tvmaze_id, $season, $episode, $tid)
 {
@@ -215,13 +218,13 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @param int    $episode
  * @param string $poster
  *
+ * @return bool|string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  *
- * @return bool|string
  */
 function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, string $poster = '')
 {
@@ -313,11 +316,11 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws NotFoundException
+ * @return bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool|mixed
+ * @throws NotFoundException
  */
 function get_schedule($use_cache = true)
 {

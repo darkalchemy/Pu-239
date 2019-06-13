@@ -1,4 +1,5 @@
 ### 12 Jun, 2019
+fix: strict issues  
 update: default time relativity  
 fix: member_input.php  
 remove: retry on ajax lookups details.php  
