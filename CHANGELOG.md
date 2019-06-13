@@ -1,3 +1,9 @@
+### 13 Jun, 2019
+fix: cleaning null view_topic.php  
+fix: missing $session takereseed.php  
+fix: missing lang entry torrents_lookup.php  
+fix: missing () movies.php  
+
 ### 12 Jun, 2019
 fix: strict issues  
 update: default time relativity  

@@ -69,7 +69,7 @@ switch ($list) {
                 $titles = $body = [];
                 foreach ($shows as $tv) {
                     if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
-                        $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['paths']['images_baseurl'] . 'noposter.png';
+                        $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : (!empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['paths']['images_baseurl'] . 'noposter.png');
                         $airtime = strtotime($tv['airstamp']);
                         $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
                         $body[] = [

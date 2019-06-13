@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Message;
+use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 check_user_status();
@@ -38,6 +39,7 @@ if ($pm_what === 'last10') {
     ];
 }
 
+$session = $container->get(Session::class);
 if (count($msgs_buffer) > 0) {
     $messages_class = $container->get(Message::class);
     $messages_class->insert($msgs_buffer);

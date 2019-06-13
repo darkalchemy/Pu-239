@@ -104,11 +104,11 @@ die();
 /**
  * @param int $userid
  *
- * @throws NotFoundException
+ * @return array|bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool
+ * @throws NotFoundException
  */
 function get_uploaded(int $userid)
 {
@@ -166,11 +166,11 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
+ * @return array|bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool
+ * @throws NotFoundException
  */
 function get_seeding(int $userid)
 {
@@ -218,11 +218,11 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
+ * @return array|bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool
+ * @throws NotFoundException
  */
 function get_leeching(int $userid)
 {
@@ -270,11 +270,11 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
+ * @return array|bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool
+ * @throws NotFoundException
  */
 function get_snatched(int $userid)
 {
@@ -312,11 +312,11 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
+ * @return array|bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool
+ * @throws NotFoundException
  */
 function get_snatched_staff(int $userid)
 {
@@ -471,10 +471,10 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  *
- * @return string
+ * @throws DependencyException
  */
 function staff_snatchtable(array $torrents, int $userid)
 {
@@ -537,7 +537,7 @@ function staff_snatchtable(array $torrents, int $userid)
                 <td>' . ($arr['owner'] === $userid ? "
                     <b><span class='is-orange'>{$lang['userdetails_s_towner']}</span></b><br>" : '' . ($arr['complete_date'] != '0' ? "
                     <b><span class='is-lightgreen'>{$lang['userdetails_s_fin']}</span></b><br>" : "
-                    <b><span class='has-text-danger'>{$lang['userdetails_s_nofin']}</span></b><br>") . '') . $cat_info . "
+                    <b><span class='has-text-danger'>{$lang['userdetails_s_notfin']}</span></b><br>") . '') . $cat_info . "
                 </td>
                 <td>
                     <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['torrentid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>

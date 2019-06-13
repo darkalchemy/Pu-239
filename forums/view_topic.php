@@ -71,9 +71,9 @@ switch ($status) {
 }
 
 $forum_id = $arr['forum_id'];
-$topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username((int) $arr['user_id']);
-$topic_name = htmlsafechars($arr['topic_name']);
-$topic_desc1 = htmlsafechars($arr['topic_desc']);
+$topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['user_id']);
+$topic_name = !empty($arr['topic_name']) ? htmlsafechars($arr['topic_name']) : '';
+$topic_desc1 = !empty($arr['topic_desc']) ? htmlsafechars($arr['topic_desc']) : '';
 
 $members_votes = [];
 if ($arr['poll_id'] > 0) {
