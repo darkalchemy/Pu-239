@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Pu239;
 
@@ -28,8 +30,9 @@ class CasinoBets
     /**
      * @param string $username
      *
-     * @return int|mixed
      * @throws Exception
+     *
+     * @return int|mixed
      */
     public function get_open_bets(string $username)
     {
@@ -40,14 +43,16 @@ class CasinoBets
                              ->fetch('count');
 
         $bets = empty($bets) ? 1 : $bets;
+
         return $bets;
     }
 
     /**
      * @param int $id
      *
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_bet(int $id)
     {
@@ -61,8 +66,9 @@ class CasinoBets
     /**
      * @param int $userid
      *
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_bets(int $userid)
     {
@@ -101,8 +107,9 @@ class CasinoBets
     }
 
     /**
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_empty_bets()
     {
@@ -116,8 +123,9 @@ class CasinoBets
     /**
      * @param array $values
      *
-     * @return bool|int
      * @throws Exception
+     *
+     * @return bool|int
      */
     public function insert(array $values)
     {

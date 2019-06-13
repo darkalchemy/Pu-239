@@ -149,7 +149,7 @@ if (isset($_GET['act'])) {
             stderr($lang['themes_error'], $lang['themes_inv_uri']);
         }
         if (!isset($_POST['title'])) {
-            stderr($lang['themes_error']}", $lang['themes_inv_name']);
+            stderr($lang['themes_error'], $lang['themes_inv_name']);
         }
         $tid = (int) $_POST['tid'];
         $id = (int) $_POST['id'];

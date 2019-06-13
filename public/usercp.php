@@ -493,7 +493,7 @@ if ($action === 'avatar') {
         $categories .= "
                                             <div id='cat-container'>";
         $parent = '';
-        for($i = 1; $i<=$count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $categories .= "
                                                 <div class='w-100 bordered level-center bottom20'>";
             foreach ($grouped as $a) {

@@ -33,9 +33,9 @@ class Post
     /**
      * @param array $values
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function insert(array $values)
     {

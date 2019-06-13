@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Pu239;
 
@@ -40,14 +42,14 @@ class Casino
                      ->where('enableplay = "yes"')
                      ->where('userid = ?', $userid)
                      ->execute();
-
     }
 
     /**
      * @param int $userid
      *
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function add_user(int $userid)
     {
@@ -65,8 +67,9 @@ class Casino
     /**
      * @param int $userid
      *
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_user(int $userid)
     {
@@ -78,8 +81,9 @@ class Casino
     }
 
     /**
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_totals()
     {

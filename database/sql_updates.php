@@ -2916,14 +2916,14 @@ KEY `expires` (`expires`)
         'id' => 1560418712,
         'info' => 'Alter casino_bets',
         'date' => '10 Jun 2019',
-        'query' => "ALTER TABLE `casino_bets` MODIFY COLUMN `proposed` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+        'query' => 'ALTER TABLE `casino_bets` MODIFY COLUMN `proposed` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
     ],
     [
         'id' => 1560418713,
         'info' => 'Alter casino_bets',
         'date' => '10 Jun 2019',
-        'query' => "ALTER TABLE `casino_bets` MODIFY COLUMN `challenged` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+        'query' => 'ALTER TABLE `casino_bets` MODIFY COLUMN `challenged` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
     ],
 ];

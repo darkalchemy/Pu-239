@@ -315,7 +315,6 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             ];
             $users_class->update($update, $tbet['id']);
 
-
             $update = [
                 'lost' => new Literal('lost + ' . $tbet['amount']),
                 'trys' => new Literal('trys + 1'),
@@ -474,11 +473,11 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                             </td>
                         </tr>";
         }
-        $blocks[] = $open_bets . main_table($body, $heading) . "
-                </div>";
+        $blocks[] = $open_bets . main_table($body, $heading) . '
+                </div>';
     } else {
-        $blocks[] = $open_bets . main_div($lang['casino_sorry_no_bets_currently'], '', 'has-text-centered') . "
-                </div>";
+        $blocks[] = $open_bets . main_div($lang['casino_sorry_no_bets_currently'], '', 'has-text-centered') . '
+                </div>';
     }
 
     $real_chance = 2;
@@ -525,9 +524,9 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         <td>{$lang['casino_bet_on_color']}</td>
                         <td><input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'></td>
                     </tr>";
-    $blocks[] = $table . main_table($body) . "
+    $blocks[] = $table . main_table($body) . '
             </form>
-            </div>";
+            </div>';
 
     $real_chance = 6;
     if ($show_real_chance) {
@@ -543,7 +542,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         <td>{$lang['casino_number']}</td>
                         <td>
                             <div class='level-left'>";
-    for($i = 1; $i<=6; $i++) {
+    for ($i = 1; $i <= 6; ++$i) {
         $body .= "
                                 <label>$i</label>
                                 <input name='number' type='radio' value='$i' class='left5 right10'>";
@@ -578,9 +577,9 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         <td>{$lang['casino_bet_on_a_number']}</td>
                         <td><input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'></td>
                     </tr>";
-    $blocks[] = $table . main_table($body) . "
+    $blocks[] = $table . main_table($body) . '
             </form>
-            </div>";
+            </div>';
 
     $table = "
             <div class='w-100'>
@@ -606,8 +605,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         </tr>
                         <tr>
                             <td>{$lang['casino_deposit_on_p2p']}</td>
-                            <td>" . mksize($user_deposit + $nobits) . "</td>
-                        </tr>";
+                            <td>" . mksize($user_deposit + $nobits) . '</td>
+                        </tr>';
     $details = $table . main_table($body) . "
                     </div>
                     <div class='has-text-centered w-30 bg-03 margin20 padding20 round10'>
@@ -615,15 +614,15 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     $body = "
                         <tr>
                             <td>{$lang['casino_users_can_win']}</td>
-                            <td>" .mksize($max_download_global) . "</td>
+                            <td>" . mksize($max_download_global) . "</td>
                         </tr>
                         <tr>
                             <td>{$lang['casino_won']}</td>
-                            <td>" .mksize($global_win) . "</td>
+                            <td>" . mksize($global_win) . "</td>
                         </tr>
                         <tr>
                             <td>{$lang['casino_lost']}</td>
-                            <td>" .mksize($global_lost) . "</td>
+                            <td>" . mksize($global_lost) . "</td>
                         </tr>
                         <tr>
                             <td>{$lang['casino_ratio']}</td>
@@ -631,8 +630,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         </tr>
                         <tr>
                             <td>{$lang['casino_deposit']}</td>
-                            <td>" .mksize($global_deposit) . "</td>
-                        </tr>";
+                            <td>" . mksize($global_deposit) . '</td>
+                        </tr>';
 
     $details .= main_table($body) . "
                     </div>
@@ -651,11 +650,11 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                             <td>{$lang['casino_ratio']}</td>
                             <td>{$ratio}</td>
                         </tr>";
-    $details .= main_table($body) . "
+    $details .= main_table($body) . '
                     </div>
                 </div>
-            </div>";
+            </div>';
 }
 
-$HTMLOUT = main_div($HTMLOUT . "<div class='level-center'>" . implode('', $blocks) . "</div>" . $details);
+$HTMLOUT = main_div($HTMLOUT . "<div class='level-center'>" . implode('', $blocks) . '</div>' . $details);
 echo stdhead("{$lang['casino_stdhead']}") . wrapper($HTMLOUT) . stdfoot();

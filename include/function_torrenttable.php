@@ -37,11 +37,11 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @return string
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
- *
  * @throws Exception
+ *
+ * @return string
  */
 function torrenttable($res, $variant = 'index')
 {

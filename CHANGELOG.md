@@ -1,4 +1,7 @@
 ### 13 Jun, 2019
+fix: typos  
+fix: strict issues  
+update: casino.php  
 fix: cleaning null view_topic.php  
 fix: missing $session takereseed.php  
 fix: missing lang entry torrents_lookup.php  
