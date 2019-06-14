@@ -30,9 +30,9 @@ function get_file_name($file)
         case 'chat_main_js':
             return "{$site_config['paths']['baseurl']}/js/1/chat_main_d15a5c71.js";
         case 'chat_js':
-            return "{$site_config['paths']['baseurl']}/js/1/chat_01f13cf7.js";
+            return "{$site_config['paths']['baseurl']}/js/1/chat_d3fc5256.js";
         case 'chat_log_js':
-            return "{$site_config['paths']['baseurl']}/js/1/chat_log_6a6f6b6e.js";
+            return "{$site_config['paths']['baseurl']}/js/1/chat_log_482a9b29.js";
         case 'categories_js':
             return "{$site_config['paths']['baseurl']}/js/1/categories_5ad7e17e.js";
         case 'browse_js':
