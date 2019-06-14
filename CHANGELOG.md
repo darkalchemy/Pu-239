@@ -1,4 +1,5 @@
 ### 14 Jun, 2019
+remove: explicit ip address when instantiating Auth()  
 revert: rss.php  
 
 ### 13 Jun, 2019
