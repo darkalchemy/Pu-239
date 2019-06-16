@@ -3,7 +3,6 @@
 declare(strict_types = 1);
 
 define('TIME_NOW', time());
-
 define('ROOT_DIR', realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 define('INCL_DIR', ROOT_DIR . 'include' . DIRECTORY_SEPARATOR);
 define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);

@@ -150,9 +150,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_POST);
     } elseif ($mode === 'add') {
         if (!empty($_POST['name']) && isset($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
-            $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
-            $value = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
-            $r_name = isset($_POST['cname']) ? htmlsafechars($_POST['cname']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+            if (isset($_POST['name'])) {
+                $name = htmlsafechars($_POST['name']);
+            } else {
+                stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
+            }
+            if (isset($_POST['value'])) {
+                $value = htmlsafechars($_POST['value']);
+            } else {
+                sstderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+            }
+            if (isset($_POST['cname'])) {
+                $r_name = htmlsafechars($_POST['cname']);
+            } else {
+                stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+            }
             $color = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
             $color = str_replace('#', '', "$color");
             $pic = isset($_POST['pic']) ? htmlsafechars($_POST['pic']) : '';
@@ -308,6 +320,7 @@ $base = [
     'UC_MAX',
     'UC_STAFF',
 ];
+$primary_classes = [];
 foreach ($classes as $class) {
     if (!in_array($class['name'], $base)) {
         $primary_classes[] = $class;

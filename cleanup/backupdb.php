@@ -9,8 +9,8 @@ use Pu239\Database;
 /**
  * @param string $no_data
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

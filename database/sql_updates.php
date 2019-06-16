@@ -675,13 +675,6 @@ $sql_updates = [
         'flush' => true,
     ],
     [
-        'id' => 1540182645,
-        'info' => 'Add default promotion',
-        'date' => '22 Oct, 2018',
-        'query' => "INSERT INTO `class_promo` VALUES(1, '1', 1.20, 50, 20, 0.85)",
-        'flush' => true,
-    ],
-    [
         'id' => 1540337633,
         'info' => 'Remove readpost cleanup',
         'date' => '23 Oct, 2018',
@@ -1426,7 +1419,7 @@ $sql_updates = [
     ],
     [
         'id' => 1541055380,
-        'info' => 'Delete paypal config from staff panel',
+        'info' => 'Delete paypal_config from staff panel',
         'date' => '01 Nov, 2018',
         'query' => "DELETE FROM `staffpanel` where`page_name` = 'Paypal Settings'",
         'flush' => true,
@@ -2178,7 +2171,7 @@ CREATE TABLE `categories` (
     ],
     [
         'id' => 1553240006,
-        'info' => 'Create table events',
+        'info' => 'Create events',
         'date' => '22 Mar, 2019',
         'query' => "CREATE TABLE `events` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -2925,5 +2918,26 @@ KEY `expires` (`expires`)
         'date' => '10 Jun 2019',
         'query' => 'ALTER TABLE `casino_bets` MODIFY COLUMN `challenged` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
+    ],
+    [
+        'id' => 1560711809,
+        'info' => 'add constraint staff messages answers',
+        'date' => '10 Jun 2019',
+        'query' => 'ALTER TABLE `staffmessages_answers` ADD FOREIGN KEY (`staff_id`) REFERENCES `staffmessages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+        'flush' => true,
+    ],
+    [
+        'id' => 1560711810,
+        'info' => 'Add constraint messages',
+        'date' => '16 Jun 2019',
+        'query' => 'ALTER TABLE `messages` ADD FOREIGN KEY (`sender`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+        'flush' => true,
+    ],
+    [
+        'id' => 1560711811,
+        'info' => 'Add default promotion',
+        'date' => '16 Jun 2019',
+        'query' => "INSERT INTO `class_promo` VALUES(1, '1', 1.20, 50, 20, 0.85)",
+        'flush' => true,
     ],
 ];

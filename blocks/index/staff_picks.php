@@ -40,7 +40,8 @@ foreach ($staff_picks as $staff_pick) {
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . htmlsafechars($username) . '</span>';
+        $username = !empty($username) ? htmlsafechars($username) : 'unknown';
+        $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . $username . '</span>';
     }
 
     $block_id = "staff_pick_id_{$id}";

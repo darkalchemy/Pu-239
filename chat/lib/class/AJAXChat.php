@@ -109,8 +109,10 @@ class AJAXChat
     }
 
     /**
+     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      * @throws UnbegunTransaction
      * @throws \Envms\FluentPDO\Exception
      */

@@ -33,7 +33,8 @@ if ($users_friends === false || is_null($users_friends)) {
     }
     $cache->set($keys['user_friends'], $users_friends, 86400);
 }
-if (!empty($users_friends) && count($users_friends) > 0) {
+
+if (!empty($users_friends) && !empty($users_friends)) {
     $user_friends = "<table>\n" . "<tr><td class='colhead'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['site']['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
     if ($users_friends) {
         foreach ($users_friends as $a) {

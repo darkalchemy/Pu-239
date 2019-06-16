@@ -28,6 +28,7 @@ $env = $container->get('env');
 $settings = $container->get(Settings::class);
 $site_config = $settings->get_settings();
 
+require_once INCL_DIR . 'function_common.php';
 require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_blocks_index.php';
@@ -82,8 +83,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -216,9 +217,9 @@ function userlogin()
 }
 */
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */
@@ -228,6 +229,7 @@ function get_stylesheet()
 
     $auth = $container->get(Auth::class);
     $userid = (int) $auth->getUserId();
+    $user = [];
     if (!empty($userid)) {
         $users_class = $container->get(User::class);
         $user = $users_class->getUserFromId($userid);
@@ -306,9 +308,9 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -333,9 +335,9 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -591,152 +593,6 @@ function get_time_offset()
 }
 
 /**
- * @param int  $date
- * @param      $method
- * @param int  $norelative
- * @param int  $full_relative
- * @param bool $calc
- *
- * @throws NotFoundException
- * @throws DependencyException
- *
- * @return false|mixed|string
- */
-function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
-{
-    global $container, $site_config;
-
-    $session = $container->get(Session::class);
-
-    static $offset_set = 0;
-    static $today_time = 0;
-    static $yesterday_time = 0;
-    static $tomorrow_time = 0;
-
-    $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') : $site_config['site']['use_12_hour'];
-    $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
-    $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
-
-    $time_options = [
-        'JOINED' => $site_config['time']['joined'],
-        'SHORT' => $site_config['time']['short'] . ' ' . $time_string,
-        'LONG' => $site_config['time']['long'] . ' ' . $time_string,
-        'TINY' => $site_config['time']['tiny'],
-        'DATE' => $site_config['time']['date'],
-        'FORM' => $site_config['time']['form'],
-        'TIME' => $time_string,
-        'MYSQL' => 'Y-m-d G:i:s',
-        'WITH_SEC' => $time_string,
-        'WITHOUT_SEC' => $time_string_without_seconds,
-    ];
-    if (!$date) {
-        return '--';
-    }
-    if (empty($method)) {
-        $method = 'LONG';
-    }
-    if ($offset_set == 0) {
-        $GLOBALS['offset'] = get_time_offset();
-        if ($site_config['time']['use_relative']) {
-            $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
-            $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
-            $tomorrow_time = gmdate('d,m,Y', ((TIME_NOW + 86400) + $GLOBALS['offset']));
-        }
-        $offset_set = 1;
-    }
-    if ($site_config['time']['use_relative'] === 3) {
-        $full_relative = 1;
-    }
-    if ($full_relative && $norelative != false && !$calc) {
-        $diff = TIME_NOW - $date;
-        if ($diff < 3600) {
-            if ($diff < 120) {
-                return '< 1 minute ago';
-            } else {
-                return sprintf('%s minutes ago', (int) ($diff / 60));
-            }
-        } elseif ($diff < 7200) {
-            return '< 1 hour ago';
-        } elseif ($diff < 86400) {
-            return sprintf('%s hours ago', (int) ($diff / 3600));
-        } elseif ($diff < 172800) {
-            return '< 1 day ago';
-        } elseif ($diff < 604800) {
-            return sprintf('%s days ago', (int) ($diff / 86400));
-        } elseif ($diff < 1209600) {
-            return '< 1 week ago';
-        } elseif ($diff < 3024000) {
-            return sprintf('%s weeks ago', (int) ($diff / 604900));
-        } else {
-            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
-        }
-    } elseif ($site_config['time']['use_relative'] && $norelative != 1 && !$calc) {
-        $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
-        if ($site_config['time']['use_relative'] === 2) {
-            $diff = TIME_NOW - $date;
-            if ($diff < 3600) {
-                if ($diff < 120) {
-                    return '< 1 minute ago';
-                } else {
-                    return sprintf('%s minutes ago', (int) ($diff / 60));
-                }
-            }
-        }
-        if ($this_time == $today_time) {
-            if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
-            }
-
-            return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
-        } elseif ($this_time == $yesterday_time) {
-            if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
-            }
-
-            return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
-        } elseif ($this_time == $tomorrow_time) {
-            if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
-            }
-
-            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
-        } else {
-            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
-        }
-    } elseif ($calc) {
-        $years = (int) ($date / 31536000);
-        $date -= $years * 31536000;
-        $days = intval($date / 86400);
-        $date -= $days * 86400;
-        $hours = intval($date / 3600);
-        $date -= $hours * 3600;
-        $mins = intval($date / 60);
-        $secs = $date - ($mins * 60);
-        $text = [];
-        if ($years > 0) {
-            $text[] = number_format($years) . ' year' . plural($years);
-        }
-        if ($days > 0) {
-            $text[] = number_format($days) . ' day' . plural($days);
-        }
-        if ($hours > 0) {
-            $text[] = number_format($hours) . ' hour' . plural($hours);
-        }
-        if ($mins > 0) {
-            $text[] = number_format($mins) . ' min' . plural($mins);
-        }
-        if ($secs > 0) {
-            $text[] = number_format($secs) . ' sec' . plural($secs);
-        }
-        if (!empty($text)) {
-            return implode(', ', $text);
-        }
-    }
-
-    return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
-}
-
-/**
  * @param $num
  *
  * @return string|null
@@ -958,13 +814,37 @@ function suspended()
 }
 
 /**
+ * @param int $userid
+ *
+ * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function force_logout(int $userid)
+{
+    global $container;
+
+    $cache = $container->get(Cache::class);
+    $forced_logout = $cache->get('forced_logout_' . $userid);
+    if ($forced_logout) {
+        $user = $container->get(User::class);
+        $user->logout($userid);
+    }
+}
+
+/**
+ * @param string $type
+ *
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
- * @throws Exception
  */
-function check_user_status()
+function check_user_status(string $type = 'browse')
 {
     global $container, $site_config;
 
@@ -973,9 +853,10 @@ function check_user_status()
         referer();
         parked();
         suspended();
-        insert_update_ip();
+        insert_update_ip($type);
         $user = $container->get(User::class);
         $userid = $auth->id();
+        force_logout($userid);
         $users_data = $user->getUserFromId($userid);
         $userblock_class = $container->get(Userblock::class);
         $userblocks = $userblock_class->get($userid);
@@ -983,6 +864,7 @@ function check_user_status()
         $user->update_last_access($userid);
         $session = $container->get(Session::class);
         $session->set('UserRole', $users_data['class']);
+        $session->set('scheme', get_scheme());
         $GLOBALS['CURUSER'] = $users_data;
         get_template();
     } else {
@@ -1019,9 +901,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -1098,9 +980,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -1338,9 +1220,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|null
  */
@@ -1381,9 +1263,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|null
  */
@@ -1417,8 +1299,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1483,31 +1365,32 @@ function formatQuery($query)
 }
 
 /**
+ * @param string $type
+ *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool
  */
-function insert_update_ip()
+function insert_update_ip(string $type)
 {
-    global $container, $CURUSER;
+    global $container;
 
-    if (empty($CURUSER)) {
-        return false;
-    }
+    $auth = $container->get(Auth::class);
+    $userid = $auth->getUserId();
     $added = get_date(TIME_NOW, 'MYSQL', 1, 0);
     $values = [
         'ip' => getip(),
-        'userid' => $CURUSER['id'],
-        'type' => 'browse',
+        'userid' => $userid,
+        'type' => $type,
         'last_access' => $added,
     ];
     $update = [
         'last_access' => $added,
     ];
     $ips_class = $container->get(IP::class);
-    $ips_class->insert($values, $update, $CURUSER['id']);
+    $ips_class->insert($values, $update, $userid);
 
     return true;
 }
@@ -1517,9 +1400,9 @@ function insert_update_ip()
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
  */
@@ -1572,9 +1455,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */
@@ -1642,9 +1525,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed
  */

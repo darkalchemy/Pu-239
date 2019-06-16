@@ -1,3 +1,19 @@
+### 16 Jun, 2019
+update: general cleanup  
+rewrite: hitrun_update.php-untested  
+fix: pu_demote_update.php  
+fix: peerlist.php  
+update: viewnfo.php  
+fix: userdetails after promo deleted  
+fix: class config for AJAX Chat when class['name'] differs from class['className']  
+fix: usersearch.php  
+fix: mega_search.php  
+update: add min width to brwose torrents and view mailbox  
+update: tvmaze to show more cast info on hover  
+update: adduser.php use php-auth to create user  
+update: reset.php use php-auth to reset password  
+add: jobby to handle cron jobs  
+
 ### 14 Jun, 2019
 remove: explicit ip address when instantiating Auth()  
 revert: rss.php  

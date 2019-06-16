@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types = 1);
+require_once INCL_DIR . 'function_common.php';
 
 use Delight\Cookie\Session;
 use Pu239\Settings;

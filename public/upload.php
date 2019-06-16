@@ -124,11 +124,12 @@ if ($res_offers) {
                 </td>
             </tr>";
 }
+$session = $container->get(Session::class);
+$usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $announce_url = $site_config['announce_urls']['http'][0];
-if (get_scheme() === 'https') {
+if ($usessl === 'https') {
     $announce_url = $site_config['announce_urls']['https'][0];
 }
-$session = $container->get(Session::class);
 $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
@@ -241,6 +242,10 @@ $HTMLOUT .= $has_request;
 $subs_list .= "
                 <div id='subs' class='level-center'>";
 $subs = $container->get('subtitles');
+$s = [
+    'name' => '',
+    'pic' => '',
+];
 foreach ($subs as $s) {
     $subs_list .= "
                     <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>

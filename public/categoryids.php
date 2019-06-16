@@ -21,15 +21,19 @@ global $container, $site_config;
 
 $fluent = $container->get(Database::class);
 $counts = $fluent->from('torrents')
-                ->select(null)
-                ->select('category')
-                ->select('COUNT(id) AS count')
-                ->groupBy('category')
-                ->fetchPairs('category', 'COUNT(id)');
+                 ->select(null)
+                 ->select('category')
+                 ->select('COUNT(id) AS count')
+                 ->groupBy('category')
+                 ->fetchPairs('category', 'COUNT(id)');
 
+$child = [
+    'id' => '',
+    'name' => '',
+];
 foreach ($parents as $parent) {
     foreach ($parent['children'] as $child) {
-        $count = !empty($counts[$child['id']]) ? $counts[$child['id']] : 0;
+        $count = !empty($counts) && !empty($counts[$child['id']]) ? $counts[$child['id']] : 0;
         $body .= "
         <tr>
             <td class='has-text-centered'>{$child['id']}</td>

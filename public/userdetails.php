@@ -27,7 +27,7 @@ use Pu239\Mood;
 use Pu239\Session;
 use Pu239\User;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $lang, $site_config, $CURUSER, $mysqli;
 
 $cache = $container->get(Cache::class);
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
@@ -76,19 +76,19 @@ if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
 if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['id'] == $CURUSER['id']) || ($user['class'] < $site_config['allowed']['enable_invincible']) && $CURUSER['class'] >= $site_config['allowed']['enable_invincible']) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] === 'yes') {
-        $HTMLOUT .= invincible($id, true, true);
+        invincible($id, true, true);
     } elseif ($_GET['invincible'] === 'remove_bypass') {
-        $HTMLOUT .= invincible($id, false, false);
+        invincible($id, false, false);
     } else {
-        $HTMLOUT .= invincible($id, false, false);
+        invincible($id, false, false);
     }
 }
 if ((($user['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_STAFF) && $CURUSER['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
     require_once INCL_DIR . 'stealth.php';
     if ($_GET['stealth'] === 'yes') {
-        $HTMLOUT .= stealth($id);
+        stealth($id);
     } elseif ($_GET['stealth'] === 'no') {
-        $HTMLOUT .= stealth($id, false);
+        stealth($id, false);
     }
 }
 $country = '';

@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     stderr('Sorry', 'There is no subtitle with that id');
                 }
                 if ($CURUSER['id'] != $arr['owner'] && $CURUSER['class'] < UC_STAFF) {
-                    bark("You're not the owner! How did that happen?\n");
+                    stderr('Error', "You're not the owner! How did that happen?\n");
                 }
                 $updateset = [];
                 if ($arr['name'] != $releasename) {

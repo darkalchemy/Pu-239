@@ -31,7 +31,7 @@ if ($oldest === false || is_null($oldest)) {
 $oldest = get_date((int) $oldest, 'FORM', 1, 0);
 $today = get_date((int) TIME_NOW, 'FORM', 1, 0);
 
-$HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
+$HTMLOUT = $where_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
             <li class='is-link margin10'>
@@ -65,8 +65,8 @@ for ($i = 0; $i < count($options); ++$i) {
 }
 $body .= "
                 </select>
-                <input name='r' type='number' step='.1' value='" . (isset($search['r']) ? $search['r'] : '') . "' maxlength='4' class='top10 w-100'>
-                <input name='r2' type='number' step='.1' value='" . (isset($search['r2']) ? $search['r2'] : '') . "' maxlength='4' class='top10 w-100'>
+                <input name='r' type='test' value='" . (isset($search['r']) ? $search['r'] : '') . "' class='top10 w-100'>
+                <input name='r2' type='text' value='" . (isset($search['r2']) ? $search['r2'] : '') . "' class='top10 w-100'>
             </td>
             <td class='w-1'>{$lang['usersearch_status']}</td>
             <td class='w-10'>
@@ -252,12 +252,14 @@ $HTMLOUT .= main_table($body) . '
     </form>';
 
 /**
- * @param $param
+ * @param string $param
  *
  * @return bool
  */
-function is_set_not_empty($param)
+function is_set_not_empty(string $param)
 {
+    global $search;
+
     if (isset($search[$param]) && !empty($search[$param])) {
         return true;
     } else {
@@ -266,13 +268,13 @@ function is_set_not_empty($param)
 }
 
 /**
- * @param      $up
- * @param      $down
+ * @param int  $up
+ * @param int  $down
  * @param bool $color
  *
- * @return string
+ * @return float|int|string
  */
-function ratios($up, $down, $color = true)
+function ratios(int $up, int $down, bool $color = true)
 {
     if ($down > 0) {
         $r = $up / $down;
@@ -289,11 +291,11 @@ function ratios($up, $down, $color = true)
 }
 
 /**
- * @param $text
+ * @param string $text
  *
  * @return bool
  */
-function haswildcard($text)
+function haswildcard(string $text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {
         return false;
@@ -308,6 +310,7 @@ if (!empty($search)) {
     $names = isset($search['n']) ? explode(' ', trim($search['n'])) : [
         0 => '',
     ];
+    $join_is = ' LEFT JOIN ips AS i ON u.id = i.userid';
     if ($names[0] !== '') {
         $names_inc = [];
         foreach ($names as $name) {
@@ -396,7 +399,6 @@ if (!empty($search)) {
         $q1 .= ($q1 ? '&amp;' : '') . 'c=' . ($class + 2);
     }
     // IP
-    /*
     if (is_set_not_empty('ip')) {
         $ip = trim($search['ip']);
         $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
@@ -407,7 +409,7 @@ if (!empty($search)) {
         }
         $mask = trim($search['ma']);
         if (empty($mask) || $mask === '255.255.255.255') {
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.ip = '$ip'";
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . "i.ip = '$ip'";
         } else {
             if (substr($mask, 0, 1) == '/') {
                 $n = substr($mask, 1, strlen($mask) - 1);
@@ -423,12 +425,11 @@ if (!empty($search)) {
                 stdfoot();
                 die();
             }
-            $where_is .= (!empty($where_is) ? ' AND ' : '') . "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
+            $where_is .= (!empty($where_is) ? ' AND ' : '') . "INET_ATON(i.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
             $q1 .= ($q1 ? '&amp;' : '') . "ma=$mask";
         }
         $q1 .= ($q1 ? '&amp;' : '') . "ip=$ip";
     }
-    */
     // ratio
     if (is_set_not_empty('r')) {
         $ratio = trim($search['r']);
@@ -439,7 +440,7 @@ if (!empty($search)) {
         } elseif (strtolower(substr($ratio, 0, 3)) === 'inf') {
             $ratio2 = '';
             $where_is .= !empty($where_is) ? ' AND ' : '';
-            $where_is .= ' u.uploaded>0 and u.downloaded = 0';
+            $where_is .= ' u.uploaded > 0 and u.downloaded = 0';
         } else {
             if (!is_numeric($ratio) || $ratio < 0) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badratio']);
@@ -480,8 +481,8 @@ if (!empty($search)) {
         if ($comments[0] !== '') {
             $comments_inc = [];
             foreach ($comments as $comment) {
-                if (substr($comment, 0, 1) == '~') {
-                    if ($comment == '~') {
+                if (substr($comment, 0, 1) === '~') {
+                    if ($comment === '~') {
                         continue;
                     }
                     $comments_exc[] = substr($comment, 1);
@@ -490,6 +491,7 @@ if (!empty($search)) {
                 }
             }
             if (is_array($comments_inc)) {
+                unset($comment);
                 $where_is .= !empty($where_is) ? ' AND (' : '(';
                 foreach ($comments_inc as $comment) {
                     if (!haswildcard($comment)) {
@@ -650,9 +652,9 @@ if (!empty($search)) {
         $status = (int) $search['st'];
         $where_is .= ((!empty($where_is)) ? ' AND ' : '');
         if ($status === 1) {
-            $where_is .= "u.status = 'confirmed'";
+            $where_is .= 'u.status = 0';
         } else {
-            $where_is .= "u.status = 'pending'";
+            $where_is .= 'u.status = 4';
         }
         $q1 .= ($q1 ? '&amp;' : '') . "st=$status";
     }
@@ -703,7 +705,7 @@ if (!empty($search)) {
     $active = isset($search['ac']) ? $search['ac'] : '';
     if ($active === 1) {
         $distinct = 'DISTINCT ';
-        $join_is .= ' LEFT JOIN peers AS p ON u.id=p.userid';
+        $join_is .= ' LEFT JOIN peers AS p ON u.id = p.userid';
         $q1 .= ($q1 ? '&amp;' : '') . "ac=$active";
     }
     $from_is = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
@@ -711,9 +713,8 @@ if (!empty($search)) {
     $where_is = !empty($where_is) ? $where_is : '';
     $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (empty($where_is) ? '' : " WHERE $where_is ");
     $querypm = 'FROM ' . $from_is . (empty($where_is) ? ' ' : " WHERE $where_is ");
-    $announcement_query = 'SELECT u.id FROM ' . $from_is . (empty($where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
-    $select_is = 'u.id, u.username, u.email, u.status, u.registered, u.last_access,
-      u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
+    $announcement_query = "SELECT u.id FROM $from_is " . (empty($where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
+    $select_is = 'u.id, u.username, u.email, u.status, u.registered, u.last_access, u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned, INET6_NTOA(i.ip) AS ip, i.type';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
@@ -754,7 +755,7 @@ if (!empty($search)) {
                                 ->where('INET6_NTOA(last)>= ?', $user['ip'])
                                 ->fetch('count');
                 if ($count === 0) {
-                    $ipstr = $user['ip'];
+                    $ipstr = $user['ip'] . ' ' . $user['type'];
                 } else {
                     $ipstr = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
                 }
@@ -763,8 +764,8 @@ if (!empty($search)) {
             }
             $auxres = sql_query('SELECT SUM(uploaded) AS pul, SUM(downloaded) AS pdl FROM peers WHERE userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
             $array = mysqli_fetch_array($auxres);
-            $pul = $array['pul'];
-            $pdl = $array['pdl'];
+            $pul = (int) $array['pul'];
+            $pdl = (int) $array['pdl'];
             if ($pdl > 0) {
                 $partial = ratios($pul, $pdl) . ' (' . mksize($pul) . '/' . mksize($pdl) . ')';
             } elseif ($pul > 0) {
@@ -785,7 +786,7 @@ if (!empty($search)) {
             $body .= '
         <tr>
             <td>' . format_username((int) $user['id']) . '</td>
-            <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
+            <td>' . ratios((int) $user['uploaded'], (int) $user['downloaded']) . '</td>
             <td>' . $ipstr . '</td>
             <td>' . htmlsafechars($user['email']) . '</td>
             <td>' . get_date((int) $user['registered'], '') . '</td>

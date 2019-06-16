@@ -15,6 +15,7 @@ global $container, $site_config;
 
 $fluent = $container->get(Database::class);
 $session = $container->get(Session::class);
+$questions = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $canswers = [
         'canswer1',

@@ -205,10 +205,9 @@ function write_css($data, $template)
 {
     $classdata = '';
     foreach ($data as $class) {
-        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $cname = strtolower(str_replace('UC_', '', $class['name']));
         $ccolor = strtolower($class['classColor']);
         if (!empty($cname)) {
-            //$classdata .= "#content .{$cname} {
             $classdata .= ".{$cname} {
     color: $ccolor;
 }
@@ -221,7 +220,7 @@ function write_css($data, $template)
 }
 ';
     foreach ($data as $class) {
-        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $cname = strtolower(str_replace('UC_', '', $class['name']));
         if (!empty($cname)) {
             $classdata .= "#content #chatList span.{$cname} {
     font-weight: bold;
@@ -235,7 +234,7 @@ function write_css($data, $template)
 }
 ';
     foreach ($data as $class) {
-        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $cname = strtolower(str_replace('UC_', '', $class['name']));
         $ccolor = strtolower($class['classColor']);
         if (!empty($cname)) {
             $classdata .= ".{$cname}_bk {
@@ -305,15 +304,15 @@ function write_class_files($template)
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
             $js_classes[] = $arr['name'];
-            $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
+            $config_classes[] = strtolower(str_replace('UC_', '', $arr['name']));
             $data[] = [
+                'name' => $arr['name'],
                 'className' => $arr['classname'],
                 'classColor' => '#' . $arr['classcolor'],
             ];
         }
         $classes[] = "var {$arr['name']} = {$arr['value']};";
     }
-
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes, $config_classes);
     write_css($data, $template);
@@ -345,8 +344,8 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool|Image|mixed|string
  */
@@ -408,9 +407,9 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @throws NotFoundException
  * @throws \PHPMailer\PHPMailer\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -442,9 +441,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -468,9 +467,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */

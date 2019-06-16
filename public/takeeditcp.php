@@ -14,6 +14,7 @@ $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 use Delight\Auth\Auth;
 use Delight\Auth\EmailNotVerifiedException;
 use Delight\Auth\InvalidEmailException;
+use Delight\Auth\InvalidPasswordException;
 use Delight\Auth\NotLoggedInException;
 use Delight\Auth\TooManyRequestsException;
 use Delight\Auth\UserAlreadyExistsException;
@@ -26,11 +27,12 @@ $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
-$force_logout = false;
 global $container, $CURUSER, $site_config;
 
+$auth = $container->get(Auth::class);
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
+$session = $container->get(Session::class);
 
 if ($action === 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
@@ -90,40 +92,30 @@ if ($action === 'avatar') {
     $user_cache['signatures'] = $signatures;
     $action = 'signature';
 } elseif ($action === 'security') {
-    $email = $chpassword = $passagain = $chmailpass = $secretanswer = $current_pass = '';
+    $email = $passagain = $chmailpass = $confirm_password = $current_pass = '';
     extract($_POST);
-    if (!empty($chpassword)) {
-        if (strlen($chpassword) > 72) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
-        }
-
-        if ($chpassword !== $passagain) {
+    if (!empty($password)) {
+        if ($password !== $confirm_password) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
-
         if (empty($current_pass)) {
             stderr($lang['takeeditcp_err'], 'Current Password can not be empty!');
         }
-
-        if ($chpassword === $current_pass) {
+        if ($password === $current_pass) {
             stderr($lang['takeeditcp_err'], 'New password can not be the same as the old password!');
         }
+        try {
+            $auth->changePassword($current_pass, $password);
 
-        $cur_passhash = $fluent->from('users')
-                               ->select(null)
-                               ->select('password')
-                               ->where('id = ?', $CURUSER['id'])
-                               ->fetch('password');
-
-        if (!password_verify($current_pass, $cur_passhash)) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
+            $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW);
+            stderr('Success', 'Password has been changed. You will now be able to login with your new password.');
+        } catch (NotLoggedInException $e) {
+            stderr('Error', 'Not logged in');
+        } catch (InvalidPasswordException $e) {
+            stderr('Error', 'Invalid password(s)');
+        } catch (TooManyRequestsException $e) {
+            stderr('Error', 'Too many requests');
         }
-
-        $passhash = make_passhash($chpassword);
-        $updateset[] = 'password = ' . sqlesc($passhash);
-        $curuser_cache['password'] = $passhash;
-        $user_cache['password'] = $passhash;
-        $force_logout = true;
     }
 
     if (!empty($chmailpass)) {
@@ -151,16 +143,6 @@ if ($action === 'avatar') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
         $changedemail = 1;
-    }
-
-    if ($secretanswer != '') {
-        if (strlen($secretanswer) < 3) {
-            stderr($lang['takeeditcp_sorry'], $lang['takeeditcp_secret_short']);
-        }
-        $new_secret_answer = make_passhash($secretanswer);
-        $updateset[] = 'hintanswer = ' . sqlesc($new_secret_answer);
-        $curuser_cache['hintanswer'] = $new_secret_answer;
-        $user_cache['hintanswer'] = $new_secret_answer;
     }
     if (get_parked() == '1') {
         if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $CURUSER['parked']) {
@@ -196,8 +178,6 @@ if ($action === 'avatar') {
         $user_cache['passhint'] = $changeq;
     }
     if ($changedemail) {
-        $auth = $container->get(Auth::class);
-        $session = $container->get(Session::class);
         try {
             if ($auth->reconfirmPassword($_POST['chmailpass'])) {
                 $auth->changeEmail($_POST['email'], function ($selector, $token) {
@@ -470,9 +450,6 @@ if ($user_cache) {
 
 if (!empty($updateset)) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    if ($force_logout) {
-        $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW, 2591999);
-    }
 }
 if ($setbits || $clrbits) {
     $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($CURUSER['id']);

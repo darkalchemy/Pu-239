@@ -10,11 +10,12 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-header('content-type: application/json');
+$lang = array_merge(load_language('global'), load_language('bitbucket'));
 global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 $userid = $auth->getUserId();
+header('content-type: application/json');
 if (empty($userid)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();

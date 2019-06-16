@@ -22,24 +22,6 @@ $lang = [
     'email_head' => 'Error',
     'email_subjdetails' => 'account details',
     'email_subjreset' => 'password reset confirmation',
-    'email_newpass' => "<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>{$site_config['site']['name']} Reset Password</title>
-</head>
-<body>
-<p>As per your request we have generated a new password for your account.</p>
-<p>Here is the information we now have on file for this account:</p>
-<br>
-<p>
-User name: %s<br>
-Password:  %s
-</p>
-<br>
-<p>You may login at %s/login.php?returnto=/usercp.php?action=security</p>
-<p>and change your password.</p>
-<p>--%s</p>
-</body>
-</html>",
     'email_request' => doc_head() . "
     <title>{$site_config['site']['name']} Reset Password Request</title>
 </head>
@@ -51,7 +33,7 @@ Password:  %s
 <br>
 <p><b>%s/recover.php?selector=%s&token=%s</b></p>
 <br>
-<p>After you do this, your password will be reset and emailed back to you.</p>
+<p>After you do this, you will be able to log with the new password.</p>
 <p>--%s</p>
 </body>
 </html>",

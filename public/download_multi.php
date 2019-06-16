@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Phpzip;
+use Pu239\Session;
 use Pu239\Torrent;
 use Pu239\User;
 
@@ -22,7 +23,8 @@ $yes_no = [
 $users_class = $container->get(User::class);
 $torrents_class = $container->get(Torrent::class);
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
-    $usessl = get_scheme() === 'https' ? 'https' : 'http';
+    $session = $container->get(Session::class);
+    $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);
     if (!empty($_GET['owner'])) {
         $torrents = $torrents_class->get_all_by_owner($userid);

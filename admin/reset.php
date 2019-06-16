@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -12,27 +15,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userid = !empty($_GET['userid']) ? $_GET['userid'] : '';
 }
 $lang = array_merge($lang, load_language('ad_reset'));
-global $CURUSER;
+global $container, $CURUSER;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim(htmlsafechars($_POST['username']));
+    $user_class = $container->get(User::class);
+    $username = htmlsafechars($_POST['username']);
     $uid = (int) $_POST['uid'];
-    $newpassword = make_password();
-    $passhash = make_passhash($newpassword);
-    $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id=' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_affected_rows($mysqli) != 1) {
-        stderr($lang['reset_stderr'], $lang['reset_stderr1']);
-    }
-    write_log($lang['reset_pw_log1'] . htmlsafechars((string) $username) . $lang['reset_pw_log2'] . htmlsafechars((string) $CURUSER['username']));
-    stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars((string) $username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');
+    $user = $user_class->getUserFromId($uid);
+    $password = bin2hex(random_bytes(12));
+    $auth = $container->get(Auth::class);
+    $auth->forgotPassword($user['email'], function ($selector, $token) use ($password, $lang, $CURUSER, $username, $user_class) {
+        $details = [
+            'selector' => $selector,
+            'token' => $token,
+            'password' => $password,
+        ];
+        if ($user_class->reset_password($lang, $details, true)) {
+            write_log($lang['reset_pw_log1'] . $username . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
+            stderr($lang['reset_pw_success'], $lang['reset_pw_success1'] . ' <b>' . $username . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($password) . '</b>.');
+        } else {
+            stderr('Error', 'Password reset failed.');
+        }
+    });
 }
 $body = "
     <tr>
         <td>{$lang['reset_id']}</td>
-        <td><input type='text' name='uid' size='10' value='$userid'></td>
+        <td><input type='number' name='uid' size='10' value='$userid' class='w-100'></td>
     </tr>
     <tr>
         <td>{$lang['reset_username']}</td>
-        <td><input size='40' name='username' value='$username'></td>
+        <td><input name='username' value='$username' class='w-100'></td>
     </tr>
     <tr>
         <td colspan='2' class='has-text-centered'>

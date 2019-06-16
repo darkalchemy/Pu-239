@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             header("Location: {$site_config['paths']['baseurl']}");
         }
+        insert_update_ip('login');
         die();
     } else {
         unset($_POST);
@@ -31,60 +32,42 @@ $stdfoot = [];
 $return_to = '';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto'])) {
     $returnto = urlencode(urldecode($_GET['returnto']));
-    $return_to = "<input type='hidden' name='returnto' value='$returnto'>";
+    $return_to = "
+                        <input type='hidden' name='returnto' value='$returnto'>";
 }
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 
 $HTMLOUT = "
-            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' accept-charset='utf-8'>
-                <div class='level-center'>";
+            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' accept-charset='utf-8'>";
 
 $body = "
-                    <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['login_email']}</td>
-                        <td>
-                            <input type='email' class='w-100' name='email' autocomplete='on' required>" . ($got_ssl ? "
-                            <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
-                        </td>
-                    </tr>
-                    <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['login_password']}</td>
-                        <td>
-                            <input type='password' class='w-100' name='password' autocomplete='on' required>";
-if (isset($returnto)) {
-    $body .= "
-                            $return_to
-                            <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "'>";
-}
-$body .= "
-                        </td>
-                    </tr>
-                    <tr class='no_hover'>
-                        <td colspan='2' class='has-text-centered'>
-                            <span class='has-text-centered margin5'>
-                                <input id='login' type='submit' value='Login' class='button is-small'>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr class='no_hover'>
-                        <td colspan='2' class='has-text-centered'>
-                            <span class='has-text-centered margin5'>
-                                <label for='remember' class='level-item tooltipper' title='{$lang['login_remember_title']}'>{$lang['login_remember']}
-                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10'>
-                                </label>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr class='no_hover'>
-                        <td colspan='2'>
-                            <span class='level-center is-wrapped margin5'>
-                                <span class='tab'>{$lang['login_signup']}</span>" . ($site_config['mail']['smtp_enable'] ? "
-                                <span class='tab'>{$lang['login_forgot_1']}</span>" : '') . '
-                            </span>
-                        </td>
-                    </tr>';
-$HTMLOUT .= main_table($body, '', '', 'w-50', '') . '
+                <div class='columns'>                    
+                    <div class='column is-one-quarter'>{$lang['login_email']}</div>
+                    <div class='column'>
+                        <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['login_email']}' required>" . ($got_ssl ? "
+                        <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
+                    </div>
+                </div>
+                <div class='columns'>                    
+                    <div class='column is-one-quarter'>{$lang['login_password']}</div>
+                    <div class='column'>
+                        <input type='password' class='w-100' name='password' autocomplete='on' placeholder='{$lang['login_password']}' required>
+                    </div>
+                </div>$return_to
+                <div class='level-center-center bottom10'>
+                    <input type='checkbox' name='remember' value='1' id='remember' class='right10' checked>
+                    <label for='remember' class='level-item tooltipper' title='{$lang['login_remember_title']}'>{$lang['login_remember']}</label>
+                </div>
+                <div class='has-text-centered'>
+                    <input id='login' type='submit' value='Login' class='button is-small'>
+                </div>
+                <div class='level-center top20'>
+                    <span class='tab'>{$lang['login_signup']}</span>" . ($site_config['mail']['smtp_enable'] ? "
+                    <span class='tab'>{$lang['login_forgot_1']}</span>" : '') . '
+                </div>';
+
+$HTMLOUT .= main_div($body, '', 'padding20') . '
             </div>
         </form>';
 

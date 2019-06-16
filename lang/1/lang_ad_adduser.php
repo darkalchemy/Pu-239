@@ -14,7 +14,7 @@ $lang = [
     'err_password' => 'Forgot passwords or passwords mismatch or not longh enough (min 6 chars)',
     'err_email' => 'Forgot email or not a vaild email',
     'err_mysql_err' => 'There was a mysql error : %s, report to staff',
-    'err_already_exists' => 'User already exists...wait for redirect!',
+    'err_already_exists' => 'User or email already exists.',
     //Texts
     'text_user_added' => 'User was added, visit users details <a href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=%d">here</a>',
     'text_username' => 'Username',

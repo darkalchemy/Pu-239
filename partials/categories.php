@@ -6,13 +6,13 @@ $grouped = genrelist(true);
 $cats = [];
 $main_div = "
         <div class='padding20'>
-            <div id='parents' class='level-center'>";
+            <div id='parents' class='level-wide'>";
 
 $children = '';
 foreach ($grouped as $cat) {
     $main_div .= format_row($cat, 'parent', $cat['name']);
     $children .= "
-            <div id='{$cat['name']}' class='top20 level-center children padding20 bg-02 round10" . (!in_array($cat['id'], $cats) ? ' is_hidden' : '') . "'>";
+            <div id='{$cat['name']}' class='top20 level-wide children padding20 bg-03 round10" . (!in_array($cat['id'], $cats) ? ' is_hidden' : '') . "'>";
     foreach ($cat['children'] as $child) {
         if (is_array($child)) {
             $children .= format_row($child, 'child', $cat['name']);

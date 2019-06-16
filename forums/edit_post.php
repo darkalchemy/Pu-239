@@ -132,9 +132,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
         $extension_error = $uploaded[0];
         $size_error = $uploaded[1];
     }
-    if (isset($_POST['attachment_to_delete'])) {
-        $_POST['attachment_to_delete'] = isset($_POST['attachment_to_delete']) ? (int) $_POST['attachment_to_delete'] : 0;
-        $attachment_to_delete = [];
+    if (!empty($_POST['attachment_to_delete']) && is_array($_POST['attachment_to_delete'])) {
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);
             $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);

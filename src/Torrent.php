@@ -93,18 +93,37 @@ class Torrent
     }
 
     /**
-     * @param string $item
-     * @param int    $tid
+     * @param array $items
+     * @param int   $tid
      *
      * @throws Exception
      *
      * @return bool|mixed
      */
-    public function get_item(string $item, int $tid)
+    public function get_items(array $items, int $tid)
     {
         $torrent = $this->get($tid);
-        if (!empty($torrent[$item])) {
-            return $torrent[$item];
+        if (empty($torrent)) {
+            return false;
+        }
+        $count = count($items);
+        $list = [];
+        if ($count === 1) {
+            if (!empty($torrent[$items[0]])) {
+                return $torrent[$items[0]];
+            }
+
+            return false;
+        }
+
+        foreach ($items as $item) {
+            if (!empty($torrent[$item])) {
+                $list[$item] = $torrent[$item];
+            }
+        }
+
+        if (!empty($list)) {
+            return $list;
         }
 
         return false;
@@ -256,8 +275,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -291,8 +310,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -921,10 +940,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
      * @throws Exception
+     * @throws DependencyException
      *
      * @return false|mixed|string|string[]|null
      */

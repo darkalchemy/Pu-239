@@ -5,26 +5,19 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
-use Psr\Container\ContainerInterface;
 
 class CasinoBets
 {
-    protected $cache;
     protected $fluent;
-    protected $container;
 
     /**
      * Casino constructor.
      *
-     * @param Cache              $cache
-     * @param Database           $fluent
-     * @param ContainerInterface $c
+     * @param Database $fluent
      */
-    public function __construct(Cache $cache, Database $fluent, ContainerInterface $c)
+    public function __construct(Database $fluent)
     {
-        $this->container = $c;
         $this->fluent = $fluent;
-        $this->cache = $cache;
     }
 
     /**

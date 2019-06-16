@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Message;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -24,6 +25,7 @@ if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['sus
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 
+$user_class = $container->get(User::class);
 $blackjack['debug'] = false; // display debug info
 $blackjack['decks'] = 2; // number of decks in shoe
 $blackjack['dead_cards'] = 35; // number of cards remaining before shuffle
@@ -175,15 +177,9 @@ if ($game) {
 
     $cardcount = 52;
     $points = $showcards = $aces = '';
-    $sql = 'SELECT uploaded, downloaded, bjwins, bjlosses FROM users WHERE id=' . sqlesc($CURUSER['id']);
-    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $User = mysqli_fetch_assoc($res);
-    $User['uploaded'] = $User['uploaded'];
-    $User['downloaded'] = $User['downloaded'];
-    $User['bjwins'] = (int) $User['bjwins'];
-    $User['bjlosses'] = (int) $User['bjlosses'];
+    $User = $user_class->getUserFromId($CURUSER['id']);
     if ($start_ != 'yes') {
-        $sql = 'SELECT * FROM blackjack WHERE game_id=' . sqlesc($blackjack['gameid']) . ' AND userid=' . sqlesc($CURUSER['id']);
+        $sql = 'SELECT * FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid=' . sqlesc($CURUSER['id']);
         $playeres = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $playerarr = mysqli_fetch_assoc($playeres);
         if ($game === 'hit') {
@@ -458,10 +454,10 @@ if ($game) {
                     $sql = "UPDATE users SET uploaded = uploaded - {$blackjack['mb']}, bjlosses = bjlosses + {$blackjack['modifier']} WHERE id=" . sqlesc($a['userid']);
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-                    $update['uploaded'] = ($User['uploaded'] + $blackjack['mb']);
-                    $update['uploaded_loser'] = ($a['uploaded'] - $blackjack['mb']);
-                    $update['bjwins'] = ($User['bjwins'] + $blackjack['modifier']);
-                    $update['bjlosses'] = ($a['bjlosses'] + $blackjack['modifier']);
+                    $update['uploaded'] = $User['uploaded'] + $blackjack['mb'];
+                    $update['uploaded_loser'] = $a['uploaded'] - $blackjack['mb'];
+                    $update['bjwins'] = $User['bjwins'] + $blackjack['modifier'];
+                    $update['bjlosses'] = $a['bjlosses'] + $blackjack['modifier'];
 
                     //==stats
                     // winner $CURUSER
@@ -1089,8 +1085,8 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return array|bool|mixed|null
  */

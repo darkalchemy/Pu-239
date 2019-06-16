@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -184,10 +184,10 @@ function format_urls($s)
  * @param bool $urls
  * @param bool $images
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return mixed|string|string[]|null
  */
@@ -518,10 +518,10 @@ function format_code($s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string|string[]|null
  */

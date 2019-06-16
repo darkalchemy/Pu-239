@@ -488,14 +488,13 @@ if ($action === 'avatar') {
     $groups = genrelist(true);
     $count = count($groups) - 1;
     $grouped = genrelist(false);
-    //dd($grouped);
     if (!empty($grouped)) {
         $categories .= "
                                             <div id='cat-container'>";
         $parent = '';
         for ($i = 1; $i <= $count; ++$i) {
             $categories .= "
-                                                <div class='w-100 bordered level-center bottom20'>";
+                                                <div class='w-100 bordered level-wide bg-03 bottom20'>";
             foreach ($grouped as $a) {
                 if (empty($a['parent_name'])) {
                     continue;
@@ -503,7 +502,7 @@ if ($action === 'avatar') {
                 if ($a['parent_id'] === $i) {
                     $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
                     $categories .= "
-                                                    <span class='margin10 level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                                                    <span class='padding10 level-center tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                         <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
                                                         <span class='cat-image left10'>
                                                             <a href='{$site_config['paths']['baseurl']}/browse.php?c" . (int) $a['id'] . "'>

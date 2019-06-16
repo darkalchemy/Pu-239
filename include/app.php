@@ -4,7 +4,6 @@ declare(strict_types = 1);
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
-require_once INCL_DIR . 'function_common.php';
 
 use DI\ContainerBuilder;
 use SlashTrace\SlashTrace;

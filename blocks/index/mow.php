@@ -29,7 +29,8 @@ $torrents_mow .= "
 
 $images_class = $container->get(Image::class);
 foreach ($motw as $m_w) {
-    $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
+    $imdb_id = $subtitles = $anonymous = $name = $poster = $username = $image = $genre = '';
+    $year = $rating = $owner = $seeders = $leechers = $size = $added = $class = $id = $cat = $times_completed = 0;
     extract($m_w);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = $images_class->find_images($imdb_id);
@@ -39,7 +40,8 @@ foreach ($motw as $m_w) {
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
+        $username = !empty($username) ? htmlsafechars($username) : 'unknown';
+        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . $username . '</span>';
     }
 
     $block_id = "mow_id_{$id}";

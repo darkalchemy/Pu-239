@@ -83,7 +83,11 @@ if ($action === 'add') {
 if ($action === 'confirm') {
     $targetid = (int) $_GET['targetid'];
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
-    $type = isset($_GET['type']) ? ($_GET['type'] === 'friend' ? 'friend' : 'block') : stderr($lang['friends_error'], 'LoL');
+    if (isset($_POST['type'])) {
+        $type = $_GET['type'] === 'friend' ? 'friend' : 'block';
+    } else {
+        stderr($lang['friends_error'], 'LoL');
+    }
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -115,7 +119,7 @@ if ($action === 'confirm') {
         $messages_class->insert($msgs_buffer);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
+        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oops', 'That friend is already confirmed!');
     }
 } elseif ($action === 'delpending') {
     $targetid = (int) $_GET['targetid'];

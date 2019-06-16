@@ -108,7 +108,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>
             ' . $lang['hitnrun_seeders'] . ' ' . (int) $hit_and_run_arr['numseeding'] . '
          </td>
-            <td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date) . '<br>
+            <td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, 'LONG') . '<br>
             ' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
             ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
             **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>

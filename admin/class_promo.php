@@ -66,13 +66,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //ADD CLASS
     if ($mode === 'add') {
-        print_r($_POST, true);
-        $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
-        $min_ratio = isset($_POST['min_ratio']) ? $_POST['min_ratio'] : stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
-        $uploaded = isset($_POST['uploaded']) ? (int) $_POST['uploaded'] : stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
-        $time = isset($_POST['time']) ? (int) $_POST['time'] : stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
-        $low_ratio = isset($_POST['low_ratio']) ? $_POST['low_ratio'] : stderr($lang['classpromo_error'], $lang['classpromo_err_lowratio']);
-
+        if (isset($_POST['name'])) {
+            $name = htmlsafechars($_POST['name']);
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
+        }
+        if (isset($_POST['min_ratio'])) {
+            $min_ratio = htmlsafechars($_POST['min_ratio']);
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
+        }
+        if (isset($_POST['uploaded'])) {
+            $uploaded = htmlsafechars($_POST['uploaded']);
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
+        }
+        if (isset($_POST['uploaded'])) {
+            $time = (int) $_POST['time'];
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
+        }
+        if (isset($_POST['uploaded'])) {
+            $low_ratio = $_POST['low_ratio'];
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_lowratio']);
+        }
         if (sql_query('INSERT INTO class_promo (name, min_ratio,uploaded,time,low_ratio) VALUES(' . sqlesc($name) . ', ' . sqlesc($min_ratio) . ', ' . sqlesc($uploaded) . ', ' . sqlesc($time) . ', ' . sqlesc($low_ratio) . ')')) {
             stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
         } else {
@@ -83,7 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // remove
     if ($mode === 'remove') {
-        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classpromo_error'], $lang['classpromo_err_required']);
+        if (isset($_POST['remove'])) {
+            $name = htmlsafechars($_POST['remove']);
+        } else {
+            stderr($lang['classpromo_error'], $lang['classpromo_err_required']);
+        }
         if (sql_query('DELETE FROM class_promo WHERE name = ' . sqlesc($name) . '')) {
             stderr($lang['classpromo_success'], $lang['classpromo_success_reset']);
         } else {

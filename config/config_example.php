@@ -67,9 +67,9 @@ return [
             'nameblacklist' => CACHE_DIR . 'nameblacklist.txt',
             'happyhour' => CACHE_DIR . 'happyhour.cache',
             'sql_error_log' => SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log',
-            'baseurl' => get_scheme() . '://' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl'),
+            'baseurl' => '//' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl'),
             'images_baseurl' => '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
-            'chat_images_baseurl' => get_scheme() . '://' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl') . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+            'chat_images_baseurl' => '//' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl') . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
             'log_viewer' => [
                 '/var/log/apache2/',
                 '/var/log/nginx/',
@@ -86,5 +86,37 @@ return [
         'api' => [
             'sentry' => '',
         ],
+        'webserver' => [
+            'username' => 'www-data',
+        ],
     ],
 ];
+
+/**
+ * @param $val
+ *
+ * @return int|string
+ */
+function return_bytes($val)
+{
+    if ($val == '') {
+        return 0;
+    }
+    $val = strtolower(trim($val));
+    $last = $val[strlen($val) - 1];
+    $val = rtrim($val, $last);
+
+    switch ($last) {
+        case 'g':
+            $val *= (1024 * 1024 * 1024);
+            break;
+        case 'm':
+            $val *= (1024 * 1024);
+            break;
+        case 'k':
+            $val *= 1024;
+            break;
+    }
+
+    return $val;
+}

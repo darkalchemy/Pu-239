@@ -550,6 +550,7 @@ textarea {
 .level-wide {
     justify-content: space-between;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .module {
@@ -893,6 +894,7 @@ textarea {
     height: 100%;
 }
 
+.mh-
 .line-40 {
     line-height: 40px;
 }
@@ -1163,7 +1165,7 @@ ul li ul li {
     width: calc(50% - .625em);
 }
 
-.flex-grid .col:first-child {
+.flex-grid .col:not(:last-child) {
     margin-bottom: 1.25em;
 }
 

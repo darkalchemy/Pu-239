@@ -485,7 +485,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
-        return "<span class='has-text-danger'>unknown_id[$user_id]</span>";
+        return "<span class='has-text-danger'>unknown_userid[$user_id]</span>";
     }
     $avatar = get_avatar($users_data);
     $tip = $tooltip = '';

@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Session;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -29,7 +30,8 @@ if (!empty($T_Pass)) {
     $user = $CURUSER;
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$usessl = get_scheme() === 'https' ? 'https' : 'http';
+$session = $container->get(Session::class);
+$usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {

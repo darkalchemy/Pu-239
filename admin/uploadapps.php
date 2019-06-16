@@ -240,12 +240,13 @@ if ($action === 'acceptapp') {
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
     }
-    $arr = $fluent->from('uploadapp')
+    $arr = $fluent->from('uploadapp AS a')
                   ->select(null)
-                  ->select('uploadapp.userid AS uid')
-                  ->select('uploadapp.id')
-                  ->select('users.modcomment')
-                  ->leftJoin('users ON uploadapp.userid=users.id')
+                  ->select('a.userid AS uid')
+                  ->select('a.id')
+                  ->select('u.modcomment')
+                  ->select('u.username')
+                  ->leftJoin('users AS u ON a.userid = u.id')
                   ->where('uploadapp.id = ?', $id)
                   ->fetch();
 
@@ -261,7 +262,6 @@ if ($action === 'acceptapp') {
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_cache']);
     $msgs_buffer[] = [
-        'sender' => 0,
         'poster' => $CURUSER['id'],
         'receiver' => $arr['uid'],
         'added' => $dt,
@@ -271,7 +271,6 @@ if ($action === 'acceptapp') {
     $subres = sql_query('SELECT id FROM users WHERE class >= ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
     while ($subarr = mysqli_fetch_assoc($subres)) {
         $msgs_buffer[] = [
-            'sender' => 0,
             'poster' => $CURUSER['id'],
             'receiver' => $subarr['id'],
             'added' => $dt,
@@ -296,7 +295,6 @@ if ($action === 'rejectapp') {
     $subject = $lang['uploadapps_subject'];
     $msg = "{$lang['uploadapps_rej_no']}\n\n{$lang['uploadapps_rej_reason']} $reason";
     $msgs_buffer[] = [
-        'sender' => 0,
         'poster' => $CURUSER['id'],
         'receiver' => $arr['uid'],
         'added' => $dt,

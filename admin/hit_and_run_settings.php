@@ -12,6 +12,7 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
 global $container, $site_config;
 
+//dd($site_config['hnr_config']);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
     $fluent = $container->get(Database::class);

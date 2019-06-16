@@ -59,6 +59,7 @@ if ($action === 'viewposts') {
         $topicname = htmlsafechars($arr['topic_name']);
         $forumid = (int) $arr['f_id'];
         $forumname = htmlsafechars($arr['name']);
+        $editedby = (int) $arr['edited_by'];
         $dt = TIME_NOW - $site_config['forum_config']['readpost_expiry'];
         $newposts = 0;
         if ($arr['added'] > $dt) {
@@ -75,21 +76,21 @@ if ($action === 'viewposts') {
         <b>(<span class='has-text-danger'>{$lang['posts_new']}</span>)</b>" : '');
         $body = format_comment($arr['body']);
 
-        if (is_valid_id($arr['edited_by'])) {
+        if (is_valid_id($editedby)) {
             $body = wrapper($body, 'padding10 bottom20');
             $body .= "
                 <p>
                     <div class='size_4'>
-                        {$lang['posts_lasteditedby']} " . format_username((int) $arr['edited_by']) . " {$lang['posts_at']} " . get_date((int) $arr['edit_date'], 'LONG', 0, 1) . '
+                        {$lang['posts_lasteditedby']} " . format_username($editedby) . " {$lang['posts_at']} " . get_date((int) $arr['edit_date'], 'LONG', 0, 1) . '
                     </div>
                 </p>';
         }
 
         $HTMLOUT .= "
         <div class='portlet'>
-            <h2 class='has-text-centered'>
+            <h3 class='has-text-centered'>
             $title
-            </h2>" . main_div($body) . '
+            </h3>" . main_div($body, '', 'padding20') . '
         </div>';
     }
     if ($postcount > $perpage) {
@@ -141,9 +142,9 @@ if ($action === 'viewposts') {
         $body = format_comment($arr['text']);
         $HTMLOUT .= "
         <div class='portlet'>
-            <h2 class='has-text-centered'>
+            <h3 class='has-text-centered'>
                 $added --- <b>{$lang['posts_torrent']}: </b>" . ($torrent ? ("<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . " --- <b>{$lang['posts_comment']}: </b>#<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
-            </h2>" . main_div($body) . '
+            </h3>" . main_div($body, '', 'padding20') . '
         </div>';
     }
     if ($commentcount > $perpage) {

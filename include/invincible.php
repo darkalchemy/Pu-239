@@ -23,7 +23,6 @@ function invincible($id, $invincible = true, $bypass_bans = true)
 {
     global $container, $CURUSER;
 
-    $ip = '127.0.0.1';
     $setbits = $clrbits = 0;
     if ($invincible) {
         $display = 'now';

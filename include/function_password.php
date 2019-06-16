@@ -2,11 +2,6 @@
 
 declare(strict_types = 1);
 
-use DI\DependencyException;
-use DI\NotFoundException;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
-use Pu239\User;
-
 /**
  * @param $pass
  *
@@ -14,6 +9,7 @@ use Pu239\User;
  */
 function make_passhash($pass)
 {
+    // update usercp to reset password
     $options = get_options();
     $algo = $options['algo'];
     $options = $options['options'];
@@ -31,33 +27,6 @@ function make_passhash($pass)
 function make_password($bytes = 12)
 {
     return bin2hex(random_bytes($bytes));
-}
-
-/**
- * @param $hash
- * @param $password
- * @param $userid
- *
- * @throws UnbegunTransaction
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- */
-function rehash_password($hash, $password, $userid)
-{
-    global $container;
-
-    $users_class = $container->get(User::class);
-    $options = get_options();
-    $algo = $options['algo'];
-    $options = $options['options'];
-
-    if (password_needs_rehash($hash, $algo, $options)) {
-        $set = [
-            'password' => make_passhash($password),
-        ];
-        $users_class->update($set, $userid);
-    }
 }
 
 /**

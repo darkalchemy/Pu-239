@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Pu239\Bookmark;
 use Pu239\Cache;
 use Pu239\Image;
+use Pu239\Session;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
@@ -37,9 +38,9 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
+ * @throws Exception
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
- * @throws Exception
  *
  * @return string
  */
@@ -246,7 +247,7 @@ function torrenttable($res, $variant = 'index')
 
         $htmlout .= "
             <td>
-                <div class='level-wide'>
+                <div class='level-wide min-350'>
                     <div>
                         <a class='crap is-link' href='{$site_config['paths']['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
@@ -351,12 +352,14 @@ function torrenttable($res, $variant = 'index')
                     </div>
                 </div>
             </td>";
+        $session = $container->get(Session::class);
+        $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
         if ($variant === 'mytorrents') {
             $htmlout .= "
                 <td>
                     <div class='level-center'>
                         <div class='flex-inrow'>
-                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "' class='flex-item'>
+                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "' class='flex-item'>
                                 <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
                             </a>
                         </div>
@@ -376,7 +379,7 @@ function torrenttable($res, $variant = 'index')
                 <td class='has-text-centered'>
                     <div class='level-center'>
                         <div class='flex-inrow'>
-                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'  class='flex-item'>
+                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "'  class='flex-item'>
                                 <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
                             </a>
                         </div>

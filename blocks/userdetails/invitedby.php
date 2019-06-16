@@ -22,10 +22,11 @@ if ($invite_by > 0 && $type === 'invite') {
                    ->select('name')
                    ->where('id = ?', $invite_by)
                    ->fetch('name');
+    $name = !empty($name) ? htmlsafechars($name) : 'Promo has been Deleted';
     $HTMLOUT .= '
         <tr>
             <td class="rowhead">' . $lang['userdetails_invited_by'] . '</td>
-            <td><a href="' . $site_config['paths']['baseurl'] . '/promo.php">Promo: ' . htmlsafechars($name) . '</a></td>
+            <td><a href="' . $site_config['paths']['baseurl'] . '/promo.php">Promo: ' . $name . '</a></td>
         </tr>';
 } else {
     $HTMLOUT .= '

@@ -318,6 +318,10 @@ if (!empty($info['length'])) {
         die();
     }
     $totallen = 0;
+    $fn = [
+        'length' => 0,
+        'path' => '',
+    ];
     foreach ($flist as $fn) {
         if ((bool) empty($fn['length']) || (bool) empty($fn['path'])) {
             $session->set('is-warning', 'file info not found, empty filename in torrent file?');
@@ -437,8 +441,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

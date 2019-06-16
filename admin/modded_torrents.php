@@ -79,7 +79,11 @@ global $container;
 
 $fluent = $container->get(Database::class);
 if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
-    $mode = (isset($_GET['type']) && in_array($_GET['type'], $modes)) ? $_GET['type'] : stderr($lang['mtor_error'], '' . $lang['mtor_please_try_that_previous_request_again'] . '.');
+    if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
+        $mode = $_GET['type'];
+    } else {
+        stderr($lang['mtor_error'], $lang['mtor_please_try_that_previous_request_again']);
+    }
     if ($mode === 'yesterday') {
         $count = $fluent->from('torrents')
                         ->select(null)

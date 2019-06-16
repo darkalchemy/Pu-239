@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
+use Pu239\Session;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
@@ -24,7 +27,7 @@ $pointscangive = [
     1000,
 ];
 $returnto = "details.php?id=$id";
-$session = $container->get(\Pu239\Session::class);
+$session = $container->get(Session::class);
 if (!in_array($points, $pointscangive)) {
     $session->set('is-warning', $lang['coins_you_cant_give_that_amount_of_points']);
     header("Location: $returnto");
@@ -69,7 +72,7 @@ $messages_class->insert($msgs_buffer);
 $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
 $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);
-$cache = $container->get(\Pu239\Cache::class);
+$cache = $container->get(Cache::class);
 //==The torrent
 $cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],

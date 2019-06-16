@@ -83,7 +83,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         </div>", 'bottom20');
 }
 
-$paths = array_merge($site_config['paths']['log_viewer'], [SQLERROR_LOGS_DIR]);
+$paths = array_merge($site_config['paths']['log_viewer'], [LOGS_DIR]);
 $files = [];
 foreach ($paths as $path) {
     if (file_exists($path) && is_readable($path)) {

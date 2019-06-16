@@ -107,7 +107,7 @@ $count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;");
 if ($count === 0) {
-    $HTMLOUT .= stderr('', $lang['reports_nice'], 'bottom20');
+    $HTMLOUT .= stdmsg('', $lang['reports_nice'], 'bottom20');
 } else {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "

@@ -73,7 +73,6 @@ $count = $fluent->from('users')
                 ->fetch('count');
 $disabled = number_format($disabled);
 $pending = number_format($pending);
-$count = $count;
 $perpage = 25;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
 $res = sql_query("SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
@@ -99,7 +98,6 @@ if (mysqli_num_rows($res) != 0) {
         $uploaded = mksize($arr['uploaded']);
         $downloaded = mksize($arr['downloaded']);
         $ratio = $arr['downloaded'] > 0 ? $arr['uploaded'] / $arr['downloaded'] : 0;
-        $ratio = $ratio;
         $color = get_ratio_color($ratio);
         if ($color) {
             $ratio = "<span style='color: $color;'>" . number_format($ratio, 2) . '</span>';

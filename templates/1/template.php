@@ -194,21 +194,21 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return string
  */
 function stdfoot(array $stdfoot = [])
 {
+    require_once INCL_DIR . 'function_bbcode.php';
     global $site_config, $starttime, $querytime, $lang, $container, $CURUSER;
+
     $cache = $container->get(Cache::class);
     $session_id = session_id();
     $query_stats = $cache->get('query_stats_' . $session_id);
-
-    require_once INCL_DIR . 'function_bbcode.php';
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
     $header = $uptime = $htmlfoot = $now = '';
     $debug = $site_config['db']['debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? true : false;
@@ -226,8 +226,8 @@ function stdfoot(array $stdfoot = [])
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = $container->get(Redis::class);
             $stats = $client->info();
-            if ($stats) {
-                $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
+            if (!empty($stats)) {
+                $stat['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
                 $db = 'db' . $site_config['redis']['database'];
                 preg_match('/keys=(\d+)/', $stats[$db], $keys);
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - (float) $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format((float) $keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
@@ -432,9 +432,9 @@ function StatusBar()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

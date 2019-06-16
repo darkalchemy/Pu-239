@@ -6,6 +6,7 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use PDOStatement;
 
 /**
  * Class Snatched.
@@ -14,17 +15,27 @@ class Snatched
 {
     protected $cache;
     protected $fluent;
+    protected $user;
+    protected $site_config;
+    protected $settings;
 
     /**
      * Snatched constructor.
      *
      * @param Cache    $cache
      * @param Database $fluent
+     * @param User     $user
+     * @param Settings $settings
+     *
+     * @throws Exception
      */
-    public function __construct(Cache $cache, Database $fluent)
+    public function __construct(Cache $cache, Database $fluent, User $user, Settings $settings)
     {
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
         $this->cache = $cache;
         $this->fluent = $fluent;
+        $this->user = $user;
     }
 
     /**
@@ -116,15 +127,132 @@ class Snatched
      *
      * @throws Exception
      *
-     * @return bool|int|\PDOStatement
+     * @return bool|int|PDOStatement
      */
     public function flush(int $userid)
     {
         $result = $this->fluent->update('snatched')
-            ->set(['seeder' => 'no'])
-            ->where('userid = ?', $userid)
-            ->execute();
+                               ->set(['seeder' => 'no'])
+                               ->where('userid = ?', $userid)
+                               ->execute();
 
         return $result;
+    }
+
+    /**
+     * @param array $hnr
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    public function get_hit_and_runs(array $hnr)
+    {
+        $types = [
+            'days_3',
+            'days_14',
+            'days_over_14',
+        ];
+        $snatches = $users = $cains = [];
+        foreach ($types as $type) {
+            $snatched = $this->fluent->from('snatched AS s')
+                                     ->select('u.modcomment')
+                                     ->where('s.start_date < ?', $hnr['caindays'] * 86400);
+            if (!$hnr['all_torrents']) {
+                $snatched = $snatched->where('s.to_go = 0 AND s.seeder = "yes"');
+            }
+            $snatched = $snatched->where('(s.real_uploaded < s.real_downloaded OR s.seedtime < ?)', $hnr[$type])
+                                 ->where('t.added < ?', $hnr['age'] * 86400 + TIME_NOW)
+                                 ->where('t.owner != s.userid')
+                                 ->where('immunity = 0')
+                                 ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                                 ->leftJoin('users AS u ON s.userid = u.id')
+                                 ->fetchAll();
+
+            $snatches = array_merge($snatches, $snatched);
+            $this->remove_cain($hnr[$type]);
+        }
+        foreach ($snatches as $snatch) {
+            $users[$snatch['userid']][] = $snatch;
+            $cains[] = $snatch['id'];
+        }
+        $this->set_cain($cains);
+
+        return $users;
+    }
+
+    /**
+     * @param array $cains
+     *
+     * @throws Exception
+     */
+    public function set_cain(array $cains)
+    {
+        $set = ['mark_of_cain' => 'yes'];
+        $this->fluent->update('snatched')
+                     ->set($set)
+                     ->where('id', $cains)
+                     ->execute();
+    }
+
+    /**
+     * @param int $time
+     *
+     * @throws Exception
+     */
+    public function remove_cain(int $time)
+    {
+        $set = ['mark_of_cain' => 'no'];
+
+        $this->fluent->update('snatched')
+                     ->set($set)
+                     ->where('(real_uploaded > real_downloaded OR seedtime > ?)', $time)
+                     ->where('mark_of_cain = "yes"')
+                     ->execute();
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return array|bool
+     */
+    public function get_user_to_remove_hnr()
+    {
+        $users = $this->fluent->from('snatched AS s')
+                              ->select(null)
+                              ->select('s.userid')
+                              ->select('COUNT(s.id) AS count')
+                              ->select('u.modcomment')
+                              ->select('u.username')
+                              ->where('u.downloadpos = 0')
+                              ->innerJoin('users AS u ON s.userid = u.id')
+                              ->groupBy('s.userid')
+                              ->having('count <= ?', $this->site_config['hnr_config']['cainallowed'])
+                              ->fetchAll();
+
+        return $users;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return array|bool
+     */
+    public function get_user_to_add_hnr()
+    {
+        $users = $this->fluent->from('snatched AS s')
+                              ->select(null)
+                              ->select('s.userid')
+                              ->select('COUNT(s.id) AS count')
+                              ->select('u.modcomment')
+                              ->select('u.username')
+                              ->select('hit_and_run_total')
+                              ->where('u.downloadpos = 1')
+                              ->innerJoin('users AS u ON s.userid = u.id')
+                              ->groupBy('s.userid')
+                              ->having('count > ?', $this->site_config['hnr_config']['cainallowed'])
+                              ->fetchAll();
+
+        return $users;
     }
 }

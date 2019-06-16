@@ -28,7 +28,7 @@ $auth = $container->get(Auth::class);
 $user = $container->get(User::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['selector'], $_POST['token'])) {
-        $user->reset_password($lang, $_POST);
+        $user->reset_password($lang, $_POST, false);
     } else {
         $email = trim($_POST['email']);
         $user->create_reset($email, $lang);
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         $HTMLOUT = "
     <form method='post' action='{$site_config['paths']['baseurl']}/recover.php' accept-charset='utf-8'>
-        <div class='has-text-centered w-50'>
+        <div class='has-text-centered'>
             <h2 class='has-text-centered'>{$lang['set_new_password']}</h2>";
 
         $body = "
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type='hidden' name='token' value='{$_GET['token']}'>
             </div>
             <div class='has-text-centered padding10'>
-                <input id='signup_captcha_check' type='submit' value='Signup' class='button is-small top20'>
+                <input id='signup' type='submit' value='Reset' class='button is-small top20'>
             </div>";
         $HTMLOUT .= main_div($body, '', 'padding20') . '
         </div>

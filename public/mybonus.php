@@ -28,6 +28,7 @@ if (!$site_config['bonus']['on']) {
 
 $dt = TIME_NOW;
 $max_donation = 100000;
+$bonuses = [];
 $fluent = $container->get(Database::class);
 $torrent_ids = $fluent->from('torrents')
                       ->select(null)
@@ -39,6 +40,9 @@ $options = $fluent->from('bonus')
                   ->where('enabled = "yes"')
                   ->orderBy('orderid ASC')
                   ->fetchAll();
+$option = [
+    'id' => 0,
+];
 foreach ($options as $option) {
     $bonuses[$option['id']] = $option;
 }

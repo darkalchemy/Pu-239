@@ -38,56 +38,19 @@ class Settings
     public function get_settings()
     {
         $env = $this->container->get('env');
+        $staff = $this->get_staff();
+        $staff_forums = $this->get_staff_forums();
+        $site_config = $this->get_site_config();
+        $hnrs = $this->get_hnr();
+        $forums = $this->get_forum_config();
+        $badwords = $this->get_badwords();
         $this->class_config();
-        $config = array_merge_recursive($env, $this->get_staff(), $this->get_staff_forums(), $this->get_site_config(), $this->get_hnr(), $this->get_forum_config(), $this->get_badwords());
+        $config = array_merge_recursive($env, $staff, $staff_forums, $site_config, $hnrs, $forums, $badwords);
         $config['site']['badwords'] = array_merge($config['badwords'], $config['site']['bad_words']);
         unset($config['badwords'], $config['site']['bad_words']);
         $this->recursive_ksort($config);
 
         return $config;
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function class_config()
-    {
-        $styles = $this->get_styles();
-        foreach ($styles as $style) {
-            $class_config = $this->cache->get('class_config_' . $style);
-            if ($class_config === false || is_null($class_config)) {
-                $class_config = $this->fluent->from('class_config')
-                                             ->orderBy('value ASC')
-                                             ->where('template = ?', $style)
-                                             ->fetchAll();
-
-                $this->cache->set('class_config_' . $style, $class_config, 86400);
-            }
-        }
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return array
-     */
-    protected function get_styles()
-    {
-        $styles = $this->cache->get('styles_');
-        if ($styles === false || is_null($styles)) {
-            $query = $this->fluent->from('stylesheets')
-                                  ->select(null)
-                                  ->select('id')
-                                  ->select('uri');
-
-            $styles = [];
-            foreach ($query as $style) {
-                $styles[] = $style['id'];
-            }
-            $this->cache->set('styles_', $styles, 86400);
-        }
-
-        return $styles;
     }
 
     /**
@@ -112,7 +75,7 @@ class Settings
             if (!empty($staff['is_staff'])) {
                 $this->cache->set('is_staff_', $staff, 86400);
             } else {
-                $staff['is_staff'] = 0;
+                die("You don't have any users defined as STAFF");
             }
         }
 
@@ -135,8 +98,12 @@ class Settings
                                 ->orderBy('id')
                                 ->fetchAll();
 
-            foreach ($sql as $res) {
-                $staff_forums['staff_forums'][] = $res['id'];
+            if (empty($sql)) {
+                $staff_forums['staff_forums'] = 0;
+            } else {
+                foreach ($sql as $res) {
+                    $staff_forums['staff_forums'][] = $res['id'];
+                }
             }
 
             $this->cache->set('staff_forums_', $staff_forums, 86400);
@@ -190,6 +157,7 @@ class Settings
                     $site_config_db[$row['name']] = $value;
                 }
             }
+
             $this->cache->set('site_settings_', $site_config_db, 86400);
         }
 
@@ -273,6 +241,46 @@ class Settings
         }
 
         return $badwords;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function class_config()
+    {
+        $styles = $this->get_styles();
+        foreach ($styles as $style) {
+            $class_config = $this->cache->get('class_config_' . $style);
+            if ($class_config === false || is_null($class_config)) {
+                $class_config = $this->fluent->from('class_config')
+                                             ->orderBy('value ASC')
+                                             ->where('template = ?', $style)
+                                             ->fetchAll();
+                $this->cache->set('class_config_' . $style, $class_config, 86400);
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return array
+     */
+    protected function get_styles()
+    {
+        $styles = $this->cache->get('styles_');
+        if ($styles === false || is_null($styles)) {
+            $query = $this->fluent->from('stylesheets')
+                                  ->select(null)
+                                  ->select('id');
+            $styles = [];
+            foreach ($query as $style) {
+                $styles[] = $style['id'];
+            }
+            $this->cache->set('styles_', $styles, 86400);
+        }
+
+        return $styles;
     }
 
     /**

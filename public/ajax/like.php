@@ -2,12 +2,14 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
+check_user_status('like');
 
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
@@ -25,8 +27,8 @@ comment_like_unlike($fields);
 /**
  * @param $fields
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function comment_like_unlike($fields)

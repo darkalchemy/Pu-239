@@ -24,6 +24,5 @@ $lang = [
     'text_import' => 'Important',
     'text_title1' => 'There is no Title',
     'text_body1' => 'There is no Body',
-    'text_body1' => 'There is no Body',
     'text_some' => 'Something went wrong!',
 ];

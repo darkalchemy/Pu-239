@@ -54,6 +54,8 @@ $realip = $ip = $_SERVER['REMOTE_ADDR'];
 $port = (int) $port;
 $downloaded = (int) $downloaded;
 $uploaded = (int) $uploaded;
+$real_downloaded = $downloaded;
+$real_uploaded = $uploaded;
 $left = (int) $left;
 $rsize = 30;
 foreach ([
@@ -139,15 +141,16 @@ if ($site_config['site']['ip_logging']) {
         $connectable = 'no';
         $ip = '127.0.0.1';
     }
+    $added = get_date(TIME_NOW, 'MYSQL', 1, 0);
     if (!$no_log_ip) {
         $values = [
             'ip' => $ip,
             'userid' => $userid,
             'type' => 'announce',
-            'last_announce' => $dt,
+            'last_access' => $added,
         ];
         $update = [
-            'last_announce' => $dt,
+            'last_access' => $added,
         ];
         $ips_class = $container->get(IP::class);
         $ips_class->insert($values, $update, $userid);
@@ -327,6 +330,8 @@ $snatched_values['torrentid'] = $torrent['id'];
 $snatched_values['userid'] = $userid;
 $snatched_values['uploaded'] = $uploaded;
 $snatched_values['downloaded'] = $ratio_free ? 0 : $downloaded;
+$snatched_values['real_uploaded'] = $real_uploaded;
+$snatched_values['real_downloaded'] = $real_downloaded;
 $snatched_values['to_go'] = $left;
 $snatched_values['start_date'] = $dt;
 $snatched_values['last_action'] = $dt;

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use Pu239\Database;
 
 /**
  * @param $data
@@ -16,8 +17,14 @@ function bugs_update($data)
 {
     $time_start = microtime(true);
     $days = 30;
-    $time = TIME_NOW - ($days * 86400);
-    sql_query("DELETE FROM bugs WHERE status != 'na' AND added < {$time}") or sqlerr(__FILE__, __LINE__);
+    $dt = TIME_NOW - ($days * 86400);
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $fluent->deleteFrom('bugs')
+           ->where('status != "na"')
+           ->where('added < ?', $dt)
+           ->execute();
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

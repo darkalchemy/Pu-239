@@ -7,6 +7,7 @@ use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Image;
+use Pu239\Person;
 use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -16,16 +17,18 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
-    global $site_config, $BLOCKS;
+    global $container, $site_config, $BLOCKS;
+
+    $person_class = $container->get(Person::class);
     if (!$BLOCKS['tvmaze_api_on']) {
         return null;
     }
@@ -34,7 +37,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     $tvmaze_display['show'] = [
         'name' => line_by_line('Series Title', '%s'),
         'url' => line_by_line('Series Link', "<a href='{$site_config['site']['anonymizer_url']}%s'>TVMaze Lookup</a>"),
-        'premiered' => line_by_line('Serires Started', '%s'),
+        'premiered' => line_by_line('Series Started', '%s'),
         'airtime' => line_by_line('Airs', '%s'),
         'origin' => line_by_line('Origin: Language', '%s'),
         'status' => line_by_line('Status', '%s'),
@@ -56,9 +59,12 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     foreach ($cast as $person) {
         $roles[] = [
             'name' => $person['person']['name'],
+            'birthday' => $person['person']['birthday'],
+            'deathday' => $person['person']['deathday'],
             'character' => $person['character']['name'],
             'thumb' => $person['character']['image']['medium'],
-            'photo' => $person['character']['image']['medium'],
+            'photo' => $person['character']['image']['original'],
+            'image' => $person['person']['image']['original'],
             'url' => $person['character']['url'],
             'id' => $person['character']['id'],
         ];
@@ -67,6 +73,65 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     foreach ($roles as $role) {
         if (empty($role['thumb'])) {
             continue;
+        }
+        $person_info = $person_class->get_person_by_name($role['name']);
+        $birthday = $died = $birthplace = $history = '';
+        $update = [];
+        if (!empty($person_info)) {
+            if (empty($person_info['photo']) && !empty($role['image'])) {
+                $update['photo'] = $role['image'];
+            }
+            if (empty($person_info['birthday']) && !empty($role['birthday'])) {
+                $update['birthday'] = $role['birthday'];
+            }
+            if (empty($person_info['deathday']) && !empty($role['deathday'])) {
+                $update['deathday'] = $role['deathday'];
+            }
+            if (!empty($update)) {
+                $person_class->update($update, $person_info['id']);
+                $person_info = $person_class->get_person_by_name($role['name']);
+            }
+
+            if (!empty($person_info['birthday'])) {
+                $birthdate = date('F j, Y', strtotime($person_info['birthday']));
+                $birthday = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Birthdate:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$birthdate}</span>
+                                                        </div>";
+            }
+            if (!empty($person_info['died'])) {
+                $died = date('F j, Y', strtotime($person_info['died']));
+                $died = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Died On:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$died}</span>
+                                                        </div>";
+            }
+            if (!empty($person_info['birthplace'])) {
+                $birthplace = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Birth Place:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$person_info['birth_place']}</span>
+                                                        </div>";
+            }
+            if (!empty($person_info['bio'])) {
+                $stripped = strip_tags($person_info['bio']);
+                $text = strlen($stripped) > 500 ? substr($stripped, 0, 500) . '...' : $stripped;
+                $history = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Bio:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$text}</span>
+                                                        </div>";
+            }
         }
         $persons[] = "
                         <ul class='right10'>
@@ -99,7 +164,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                                                                     </div>
                                                                     <div class='column padding5 is-8'>
                                                                         <span class='size_4'>{$role['character']}</span>
-                                                                    </div>
+                                                                    </div>{$birthday}{$died}{$birthplace}{$history}
                                                                 </div>
                                                             </div>
 														</div>
@@ -121,8 +186,8 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -162,10 +227,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string|null
  */
@@ -179,7 +244,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
     $cache = $container->get(Cache::class);
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
-        $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
+        $tvmaze_link = "https://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
             return false;
@@ -236,7 +301,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
     $cache = $container->get(Cache::class);
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($tvmaze_show_data === false || is_null($tvmaze_show_data)) {
-        $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
+        $tvmaze_link = "https://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
             $cache->set('tvmaze_' . $tvmaze_id, 'failed', 86400);
@@ -316,9 +381,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $container->get(User::class);
     $userid = $user->add($post, $lang);
     if (!empty($userid)) {
+        insert_update_ip('register');
         if (!empty($invite_id) && !empty($invite_code)) {
             $email = validate_invite($invite_id, $invite_code);
             if (!empty($email)) {
@@ -144,8 +145,7 @@ if (!empty($signup_vars)) {
 }
 
 $HTMLOUT = "
-    <form method='post' action='{$site_config['paths']['baseurl']}/signup.php' accept-charset='utf-8'>
-        <div class='level-center'>";
+    <form method='post' action='{$site_config['paths']['baseurl']}/signup.php' accept-charset='utf-8'>";
 
 $disabled = !empty($email) ? 'disabled' : 'required';
 if (!empty($email)) {
@@ -155,44 +155,36 @@ if (!empty($email)) {
                     <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
 }
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
-$body = "
-            <tr>
-                <td colspan='2'>
-                    <h1 class='has-text-centered'>$title</h1>
-                    <p class='has-text-centered padding10 '>{$lang['signup_cookies']}</p>
-                </td>
-            </tr>
-            <tr class='no_hover'>
-                <td class='rowhead'>{$lang['signup_uname']}</td>
-                <td>
+$body = "          
+            <h1 class='has-text-centered'>$title</h1>
+            <div class='columns'>                    
+                <div class='column is-one-quarter'>{$lang['signup_uname']}</div>
+                <div class='column'>
                     <input type='text' name='username' id='username' class='w-100' onblur='checkit();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                     <div id='namecheck'></div>
-                </td>
-            </tr>
-            <tr class='no_hover'>
-                <td class='rowhead'>{$lang['signup_pass']}</td>
-                <td>
+                </div>
+            </div>
+            <div class='columns'>                    
+                <div class='column is-one-quarter'>{$lang['signup_pass']}</div>
+                <div class='column'>
                     <input type='password' id='password' name='password' class='w-100' autocomplete='on' required minlength='8'>
-                </td>
-            </tr>
-            <tr class='no_hover'>
-                <td class='rowhead'>{$lang['signup_passa']}</td>
-                <td>
+                </div>
+            </div>
+            <div class='columns'>                    
+                <div class='column is-one-quarter'>{$lang['signup_passa']}</div>
+                <div class='column'>
                     <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' required minlength='8'>
-                </td>
-            </tr>
-            <tr class='no_hover'>
-                <td class='rowhead'>{$lang['signup_email']}</td>
-                <td>
+                </div>
+            </div>
+            <div class='columns'>                    
+                <div class='column is-one-quarter'>{$lang['signup_email']}</div>
+                <div class='column'>
                     $email_form
-                </td>
-            </tr>
-            <tr class='no_hover'>
-                <td colspan='2' class='has-text-centered margin20'>{$invite}{$promo}
-                    <input id='submit' type='submit' value='Signup' class='button is-small margin10' disabled>
-                </td>
-            </tr>";
-$HTMLOUT .= main_table($body, '', '', 'w-50', '') . '
-        </div>
+                </div>
+            </div>
+            <div class='has-text-centered'>{$invite}{$promo}
+                <input id='submit' type='submit' value='Signup' class='button is-small' disabled>
+            </div>";
+$HTMLOUT .= main_div($body, '', 'padding20') . '
     </form>';
 echo stdhead($lang['head_signup']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

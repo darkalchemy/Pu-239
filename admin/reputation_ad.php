@@ -28,7 +28,7 @@ $now_date = [
 ];
 switch ($input['mode']) {
     case 'modify':
-        show_level();
+        show_level($input);
         break;
 
     case 'add':

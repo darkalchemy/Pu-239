@@ -40,13 +40,13 @@ if ($needed === 'leechers') {
             </ul>
         </div>";
 
-    $Dur = TIME_NOW - 86400 * 7; //== 7 days
+    $Dur = TIME_NOW - 86400 * 7;
     $res = sql_query("
         SELECT p.id, p.userid, p.torrent, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category
         FROM peers AS p
-        LEFT JOIN users AS u ON u.id=p.userid
-        LEFT JOIN torrents AS t ON t.id=p.torrent
-        WHERE p.seeder = 'yes' AND u.downloaded>'1024' AND u.added < $Dur
+        LEFT JOIN users AS u ON u.id = p.userid
+        LEFT JOIN torrents AS t ON t.id = p.torrent
+        WHERE p.seeder = 'yes' AND u.downloaded > 1024 AND u.registered < $Dur
         ORDER BY u.uploaded / u.downloaded ASC
         LIMIT 20") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
@@ -63,7 +63,11 @@ if ($needed === 'leechers') {
             $What_User_ID = $arr['userid'];
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
-            $cat = "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
+            if (!empty($needseed['cat_pic'])) {
+                $cat = "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
+            } else {
+                $cat = $needseed['cat_name'];
+            }
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
@@ -91,7 +95,7 @@ if ($needed === 'leechers') {
                 </li>
             </ul>
         </div>";
-    $res = sql_query('SELECT id, name, seeders, leechers, added, category FROM torrents WHERE leechers>= 0 AND seeders = 0 ORDER BY leechers DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, name, seeders, leechers, added, category FROM torrents WHERE leechers >= 0 AND seeders = 0 ORDER BY leechers DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $header = "
                 <tr>
@@ -104,7 +108,11 @@ if ($needed === 'leechers') {
         while ($arr = mysqli_fetch_assoc($res)) {
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
-            $cat = "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
+            if (!empty($needseed['cat_pic'])) {
+                $cat = "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
+            } else {
+                $cat = $needseed['cat_name'];
+            }
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $body .= "
                 <tr>

@@ -7,10 +7,10 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|void
  */
@@ -19,22 +19,26 @@ function breadcrumbs()
     global $site_config;
 
     $lang = load_language('breadcrumbs');
-    $path = $query = '';
-    $queries = [];
-
-    $url = $_SERVER['REQUEST_URI'];
-    $parsed_url = parse_url($url);
-    extract($parsed_url);
+    $array = parse_url($_SERVER['REQUEST_URI']);
+    $path = $array['path'];
+    $query = isset($array['query']) ? $array['query'] : '';
     if (empty($path)) {
         return;
     }
+    $queries = [];
     if (!empty($query)) {
         $queries = explode('&', $query);
     }
-
-    $pre_page = get_prepage($lang, $path);
+    $referer = $_SERVER['HTTP_REFERER'];
+    $pre_page = get_prepage($lang, $path, $referer);
     if (!empty($pre_page)) {
-        $links[] = $pre_page;
+        if (is_array($pre_page)) {
+            foreach ($pre_page as $page) {
+                $links[] = $page;
+            }
+        } else {
+            $links[] = $pre_page;
+        }
     }
     $links[] = get_basepage($lang, $path);
     if (!empty($queries)) {
@@ -79,14 +83,27 @@ function breadcrumbs()
 /**
  * @param $lang
  * @param $url
+ * @param $referer
  *
  * @return bool|string
  */
-function get_prepage($lang, $url)
+function get_prepage($lang, $url, $referer)
 {
     global $CURUSER;
 
     switch ($url) {
+        case '/viewnfo.php':
+        case '/filelist.php':
+        case '/peerlist.php':
+            $links[] = get_basepage($lang, '/browse.php');
+            $array = parse_url($referer);
+            $path = $array['path'];
+            $query = isset($array['query']) ? $array['query'] : '';
+            if (!empty($path) && $path != '/browse.php') {
+                $links[] = get_basepage($lang, $path, $query);
+            }
+
+            return $links;
         case '/catalog.php':
         case '/needseed.php':
         case '/offers.php':
@@ -137,9 +154,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */
@@ -155,6 +172,7 @@ function get_secondarypage($lang, $queries, $path)
         'topic_id',
         'game_id',
         'userids',
+        'userid',
     ];
 
     if (in_array($list[0], $ignore)) {
@@ -187,9 +205,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */
@@ -206,6 +224,7 @@ function get_infopage($lang, $queries, $path)
         'topic_id',
         'post_id',
         'id',
+        'userid',
         'gamename',
         'do',
         'forum_id',
@@ -282,6 +301,7 @@ function get_actionpage($lang, $queries, $path)
         'cats%5B%5D',
         'open',
         'id',
+        'userid',
         'search',
         'edited',
         'act',
@@ -357,12 +377,13 @@ function get_actionpage($lang, $queries, $path)
 }
 
 /**
- * @param $lang
- * @param $path
+ * @param array  $lang
+ * @param string $path
+ * @param string $query
  *
  * @return bool|string
  */
-function get_basepage($lang, $path)
+function get_basepage(array $lang, string $path, string $query = '')
 {
     global $site_config;
 
@@ -374,21 +395,21 @@ function get_basepage($lang, $path)
     if (in_array($path, $ignore)) {
         return false;
     }
-
     $title = $lang[trim($path, '/')];
     if (empty($title)) {
         die('path = ' . $path);
     }
+    $query = !empty($query) ? '?' . $query : '';
 
-    return "<a href='{$site_config['paths']['baseurl']}{$path}'>{$title}</a>";
+    return "<a href='{$site_config['paths']['baseurl']}{$path}{$query}'>{$title}</a>";
 }
 
 /**
  * @param $mailbox
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */

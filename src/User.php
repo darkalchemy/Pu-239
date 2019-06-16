@@ -245,19 +245,19 @@ class User
      * @param array $values
      * @param array $lang
      *
-     * @throws DependencyException
-     * @throws Exception
      * @throws NotFoundException
      * @throws UnbegunTransaction
+     * @throws DependencyException
+     * @throws Exception
      *
      * @return bool|int
      */
     public function add(array $values, array $lang)
     {
-        $userId = false;
+        $userid = false;
         try {
             if ($this->site_config['signup']['email_confirm'] === true) {
-                $userId = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
+                $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
                     $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
                         '<#SITENAME#>',
@@ -274,7 +274,7 @@ class User
                     $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
                 });
             } else {
-                $userId = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']));
+                $userid = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']));
             }
         } catch (DuplicateUsernameException $e) {
             $this->session->set('is-warning', 'Username already exists');
@@ -289,7 +289,7 @@ class User
         } catch (AuthError $e) {
             $this->session->set('is-warning', 'Unknown Error');
         }
-        if ($userId !== false) {
+        if ($userid !== false) {
             $dt = TIME_NOW;
             $set = [
                 'free_switch' => $dt + 14 * 86400,
@@ -302,27 +302,28 @@ class User
             if (!empty($values['invitedby'])) {
                 $set['invitedby'] = (int) $values['invitedby'];
             }
-            $this->update($set, $userId);
-            $this->achieve->add(['userid' => $userId]);
-            $this->userblock->add(['userid' => $userId]);
+            $this->update($set, $userid);
+            $this->achieve->add(['userid' => $userid]);
+            $this->userblock->add(['userid' => $userid]);
 
             $this->cache->deleteMulti([
                 'birthdayusers_',
                 'chat_users_list',
                 'is_staff_',
+                'all_users_',
             ]);
-            if ($userId > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
+            if ($userid > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
                 require_once INCL_DIR . 'function_users.php';
                 $classname = get_user_class_name(UC_MIN, true);
                 $message = "Welcome New {$this->site_config['site']['name']} Member: [" . $classname . ']' . htmlsafechars($values['username']) . '[/' . $classname . ']';
                 autoshout($message);
             }
 
-            $this->cache->set('latestuser_', format_username($userId), $this->site_config['expires']['latestuser']);
-            write_log('User account ' . $userId . ' (' . htmlsafechars($values['username']) . ') was created');
+            $this->cache->set('latestuser_', format_username($userid), $this->site_config['expires']['latestuser']);
+            write_log('User account ' . $userid . ' (' . htmlsafechars($values['username']) . ') was created');
         }
 
-        return $userId;
+        return $userid;
     }
 
     /**
@@ -455,14 +456,17 @@ class User
      */
     public function logout()
     {
-        if (!empty($this->auth->getUserId())) {
+        $userid = $this->auth->getUserId();
+        $this->cache->delete('forced_logout_' . $userid);
+        if (!empty($userid)) {
             $this->fluent->deleteFrom('ajax_chat_online')
-                         ->where('userID = ?', $this->auth->getUserId())
+                         ->where('userID = ?', $userid)
                          ->execute();
         }
-
         $this->auth->logOutEverywhere();
         $this->auth->destroySession();
+        header('Location: ' . $this->site_config['paths']['baseurl'] . '/login.php');
+        die();
     }
 
     /**
@@ -507,38 +511,40 @@ class User
     }
 
     /**
-     * @param $lang
-     * @param $post
+     * @param array $lang
+     * @param array $post
+     * @param bool  $return
      *
      * @throws AuthError
-     * @throws DependencyException
-     * @throws Exception
-     * @throws InvalidManipulation
-     * @throws NotFoundException
-     * @throws NotLoggedInException
+     *
+     * @return bool
      */
-    public function reset_password($lang, $post)
+    public function reset_password(array $lang, array $post, bool $return)
     {
         try {
             $this->auth->resetPassword($post['selector'], $post['token'], $post['password']);
-
-            stderr($lang['stderr_successhead'], 'Password has been reset');
         } catch (InvalidSelectorTokenPairException $e) {
-            stderr($lang['stderr_errorhead'], 'Invalid token');
+            $this->session->set('is-warning', 'Invalid token');
         } catch (TokenExpiredException $e) {
-            stderr($lang['stderr_errorhead'], 'Token expired');
+            $this->session->set('is-warning', 'Token expired');
         } catch (ResetDisabledException $e) {
-            stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+            $this->session->set('is-warning', 'Password reset is disabled');
         } catch (InvalidPasswordException $e) {
-            stderr($lang['stderr_errorhead'], 'Invalid password');
+            $this->session->set('is-warning', 'Invalid password');
         } catch (TooManyRequestsException $e) {
-            stderr($lang['stderr_errorhead'], 'Too many requests');
+            $this->session->set('is-warning', 'Too many requests');
         }
+        if ($return) {
+            return true;
+        }
+        $this->session->set('is-success', 'Password has been reset');
+        header('Location: ' . $this->site_config['paths']['baseurl']);
+        die();
     }
 
     /**
-     * @param $email
-     * @param $lang
+     * @param string $email
+     * @param array  $lang
      *
      * @throws AuthError
      * @throws DependencyException
@@ -547,7 +553,7 @@ class User
      * @throws NotFoundException
      * @throws NotLoggedInException
      */
-    public function create_reset($email, $lang)
+    public function create_reset(string $email, array $lang)
     {
         try {
             $this->auth->forgotPassword($email, function ($selector, $token) use ($email, $lang) {
@@ -615,5 +621,69 @@ class User
         $this->fluent->insertInto('users', $values)
                      ->onDuplicateKeyUpdate($update)
                      ->execute();
+    }
+
+    /**
+     * @param int $registered
+     * @param int $last_access
+     * @param int $parked
+     * @param int $class
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    public function get_inactives(int $registered, int $last_access, int $parked, int $class)
+    {
+        $botid = $this->site_config['chatbot']['id'];
+
+        $group1 = $this->fluent->from('users')
+                               ->select(null)
+                               ->select('id')
+                               ->where('status != 0')
+                               ->where('class < ?', $class)
+                               ->where('registered < ?', $registered)
+                               ->where('id != ?', $botid)
+                               ->fetchAll();
+        $group1 = !empty($group1) ? $group1 : [];
+        $group2 = $this->fluent->from('users')
+                               ->select(null)
+                               ->select('id')
+                               ->where('immunity = "no"')
+                               ->where('parked = "no"')
+                               ->where('status = 0')
+                               ->where('class < ?', $class)
+                               ->where('last_access < ?', $last_access)
+                               ->where('id != ?', $botid)
+                               ->fetchAll();
+        $group2 = !empty($group2) ? $group2 : [];
+        $group3 = $this->fluent->from('users')
+                               ->select(null)
+                               ->select('id')
+                               ->where('immunity = "no"')
+                               ->where('parked = "yes"')
+                               ->where('status = 0')
+                               ->where('class < ?', $class)
+                               ->where('last_access < ?', $parked)
+                               ->where('id != ?', $botid)
+                               ->fetchAll();
+
+        $group3 = !empty($group3) ? $group3 : [];
+
+        return array_merge($group1, $group2, $group3);
+    }
+
+    /**
+     * @param array $users
+     *
+     * @throws Exception
+     */
+    public function delete_users(array $users)
+    {
+        $this->fluent->deleteFrom('users')
+            ->where('id', $users)
+            ->execute();
+
+        $this->delete_user_cache($users);
     }
 }

@@ -101,6 +101,10 @@ $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 $subs_list .= "
         <div class='level-center'>";
 $subs = $container->get('subtitles');
+$s = [
+    'name' => '',
+    'pic' => '',
+];
 foreach ($subs as $s) {
     $torrent_subs = explode('|', $row['subs']);
     $subs_list .= "

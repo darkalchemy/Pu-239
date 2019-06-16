@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types = 1);
+require_once __DIR__ . '/../include/bittorrent.php';
 require_once FORUM_DIR . 'quick_reply.php';
 
 use Envms\FluentPDO\Literal;

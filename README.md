@@ -108,21 +108,8 @@ php bin/uglify.php
 # add cron job to root cron for running cleanup, please change path as needed
 sudo crontab -e
 
-### No logging
-# runs cron_controller.php every minute, if not already running, as user www-data
-* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php">/dev/null 2>&1
-
-# this can take several minutes to run, especially the first time, so we run it separate
-# runs images_update.php every 30 minutes, if not already running, as user www-data
-*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php">/dev/null 2>&1
-
-### logging
-# runs cron_controller.php every minute, if not already running, as user www-data
-* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php">> /var/log/nginx/cron_`date +\%Y\%m\%d`.log 2>&1
-
-# this can take several minutes to run, especially the first time, so we run it separate
-# runs images_update.php every 30 minutes, if not already running, as user www-data
-*/30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php">> /var/log/nginx/images_`date +\%Y\%m\%d`.log 2>&1
+# runs jobby.php every minute, if not already running
+* * * * * cd /var/www/Pu-239/bin/ && /usr/bin/php jobby.php 1>> /dev/null 2>&1
 
 # import additional tables
 php bin/import_tables.php

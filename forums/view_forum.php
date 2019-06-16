@@ -120,6 +120,9 @@ foreach ($query as $sub_forums_arr) {
 						' . get_date((int) $post_arr['added'], '') . '<br></span>';
         }
 
+        $first_post_arr = [
+            'first_post_id' => 0,
+        ];
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
         $last_unread_post_id = ($last_unread_post_arr[0] >= 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);

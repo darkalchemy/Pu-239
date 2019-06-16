@@ -2,12 +2,16 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
+use Pu239\Database;
+
 /**
  * @param $action
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|false|float|int|string
  */
@@ -54,7 +58,7 @@ function happyHour($action)
         if ($act === 1) {
             $todo = 255;
         } else {
-            $fluent = $container->get(\Pu239\Database::class);
+            $fluent = $container->get(Database::class);
             $categories = $fluent->from('categories')
                                  ->select(null)
                                  ->select('id')
@@ -99,8 +103,8 @@ function happyCheck($action, $id = null)
 /**
  * @param $act
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function happyFile($act)
@@ -137,8 +141,8 @@ function happyFile($act)
  * @param $torrentid
  * @param $multi
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  */
 function happyLog($userid, $torrentid, $multi)
 {

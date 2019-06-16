@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
 use Imdb\Config;
+use Jobby\Jobby;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Container\ContainerInterface;
 use Pu239\Achievement;
@@ -65,6 +66,7 @@ return [
     Image::class => autowire(),
     ImageProxy::class => autowire(),
     IP::class => autowire(),
+    Jobby::class => autowire(),
     Message::class => autowire(),
     Mood::class => autowire(),
     Parsedown::class => autowire(),

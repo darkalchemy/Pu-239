@@ -46,7 +46,7 @@ if ($mode === 'delete') {
     }
     $hash = hash('sha256', $site_config['site']['use_12_hour'] . $newsid . 'add');
     $sure = '';
-    $sure = (isset($_GET['sure']) ? (int) $_GET['sure'] : '');
+    $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!$sure) {
         stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", null);
     }
@@ -54,7 +54,7 @@ if ($mode === 'delete') {
         stderr($lang['news_error'], $lang['news_del_what']);
     }
 
-    $HTMLOUT .= deletenewsid($newsid);
+    deletenewsid($newsid);
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
     echo stdhead($lang['news_del_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
@@ -256,6 +256,6 @@ function deletenewsid($newsid)
     global $container, $CURUSER;
 
     $cache = $container->get(Cache::class);
-    sql_query('DELETE FROM news WHERE id=' . sqlesc($newsid) . ' AND userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM news WHERE id = ' . sqlesc($newsid) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->delete('latest_news_');
 }

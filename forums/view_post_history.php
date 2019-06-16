@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+require_once __DIR__ . '/../include/bittorrent.php';
+
 use Pu239\Database;
 use Pu239\User;
 

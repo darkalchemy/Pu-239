@@ -26,6 +26,8 @@ if (php_sapi_name() == 'cli') {
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function run_uglify($argv = [])
 {

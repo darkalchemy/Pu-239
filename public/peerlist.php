@@ -30,7 +30,7 @@ function dltable($name, $arr, $torrent)
     global $site_config, $CURUSER, $lang;
 
     if (!count($arr)) {
-        return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>");
+        return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>", '', 'padding20 has-text-centered');
     }
     $heading = "
         <tr>
@@ -104,7 +104,7 @@ $peers = $fluent->from('peers AS p')
                 ->select('p.finishedat')
                 ->select('p.downloadoffset')
                 ->select('p.uploadoffset')
-                ->select('INET6_NTOA(p.ip)')
+                ->select('INET6_NTOA(p.ip) AS ip')
                 ->select('p.port')
                 ->select('p.uploaded')
                 ->select('p.downloaded')
@@ -119,7 +119,7 @@ $peers = $fluent->from('peers AS p')
                 ->select('u.anonymous')
                 ->select('u.paranoia')
                 ->innerJoin('torrents AS t ON t.id = p.torrent')
-                ->innerJoin('users AS u ON u.id = p.userid')
+                ->leftJoin('users AS u ON u.id = p.userid')
                 ->where('p.torrent = ?', $id)
                 ->fetchAll();
 
