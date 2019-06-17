@@ -70,6 +70,7 @@ function autoclean()
     $query = $fluent->from('cleanup')
                     ->where('clean_on = 1')
                     ->where('clean_time < ?', $now)
+                    ->where('clean_title != ?', 'FUNDS')
                     ->orderBy('clean_time ASC')
                     ->orderBy('clean_increment ASC')
                     ->fetchAll();

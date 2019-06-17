@@ -1,4 +1,5 @@
 ### 16 Jun, 2019
+remove: funds_update from cron_controller.php  
 update: breadcrumbs  
 fix: User::delete_users()  
 fix: typos  

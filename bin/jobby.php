@@ -14,7 +14,7 @@ $jobby->add('Cron Controller', [
     'enabled' => true,
 ]);
 
-$jobby->add('Cron Controller', [
+$jobby->add('Images Controller', [
     'runAs' => $site_config['webserver']['username'],
     'command' => '/usr/bin/php ' . INCL_DIR . 'images_update.php',
     'schedule' => '*/10 * * * *',

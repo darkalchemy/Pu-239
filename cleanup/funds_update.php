@@ -37,7 +37,6 @@ function funds_update($data)
             $modcomment = get_date((int) $dt, 'DATE', 1) . " - Donation status Automatically Removed By System.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,
