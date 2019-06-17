@@ -1,4 +1,5 @@
 ### 16 Jun, 2019
+fix: typos  
 update: general cleanup  
 rewrite: hitrun_update.php-untested  
 fix: pu_demote_update.php  

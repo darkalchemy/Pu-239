@@ -227,7 +227,7 @@ function stdfoot(array $stdfoot = [])
             $client = $container->get(Redis::class);
             $stats = $client->info();
             if (!empty($stats)) {
-                $stat['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
+                $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
                 $db = 'db' . $site_config['redis']['database'];
                 preg_match('/keys=(\d+)/', $stats[$db], $keys);
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - (float) $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format((float) $keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
