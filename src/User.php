@@ -126,37 +126,18 @@ class User
     }
 
     /**
-     * @param array $users
+     * @param string $item
+     * @param int    $userid
      *
      * @throws Exception
+     *
+     * @return mixed
      */
-    public function delete_user_cache(array $users)
+    public function get_item(string $item, int $userid)
     {
-        foreach ($users as $userid) {
-            if (!empty($userid)) {
-                $user = $this->getUserFromId($userid);
-                $username = !empty($user) ? $user['username'] : '';
-                $this->cache->deleteMulti([
-                    'get_all_boxes_' . $userid,
-                    'inbox_' . $userid,
-                    'insertJumpTo' . $userid,
-                    'is_staffs',
-                    'peers_' . $userid,
-                    'poll_votes_' . $userid,
-                    'port_data_' . $userid,
-                    'shitlist_' . $userid,
-                    'user' . $userid,
-                    'useravatar_' . $userid,
-                    'userclasses_' . $username,
-                    'user_friends_' . $userid,
-                    'userhnrs_' . $userid,
-                    'users_names_' . $username,
-                    'user_rep_' . $userid,
-                    'user_snatches_data_' . $userid,
-                    'userstatus_' . $userid,
-                ]);
-            }
-        }
+        $user = $this->getUserFromId($userid);
+
+        return $user[$item];
     }
 
     /**
@@ -201,21 +182,6 @@ class User
     }
 
     /**
-     * @param string $item
-     * @param int    $userid
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
-    public function get_item(string $item, int $userid)
-    {
-        $user = $this->getUserFromId($userid);
-
-        return $user[$item];
-    }
-
-    /**
      * @param int    $class
      * @param string $bot
      * @param string $torrent_pass
@@ -245,10 +211,10 @@ class User
      * @param array $values
      * @param array $lang
      *
-     * @throws NotFoundException
      * @throws UnbegunTransaction
      * @throws DependencyException
      * @throws Exception
+     * @throws NotFoundException
      *
      * @return bool|int
      */
@@ -331,8 +297,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -475,8 +441,8 @@ class User
      * @param int    $remember
      * @param array  $lang
      *
-     * @throws AuthError
      * @throws AttemptCancelledException
+     * @throws AuthError
      *
      * @return bool
      */
@@ -680,10 +646,46 @@ class User
      */
     public function delete_users(array $users)
     {
-        $this->fluent->deleteFrom('users')
-            ->where('id', $users)
-            ->execute();
+        foreach ($users as $user) {
+            $this->fluent->deleteFrom('users')
+                         ->where('id', $user)
+                         ->execute();
 
-        $this->delete_user_cache($users);
+            $this->delete_user_cache($user);
+        }
+    }
+
+    /**
+     * @param array $users
+     *
+     * @throws Exception
+     */
+    public function delete_user_cache(array $users)
+    {
+        foreach ($users as $userid) {
+            if (!empty($userid)) {
+                $user = $this->getUserFromId($userid);
+                $username = !empty($user) ? $user['username'] : '';
+                $this->cache->deleteMulti([
+                    'get_all_boxes_' . $userid,
+                    'inbox_' . $userid,
+                    'insertJumpTo' . $userid,
+                    'is_staffs',
+                    'peers_' . $userid,
+                    'poll_votes_' . $userid,
+                    'port_data_' . $userid,
+                    'shitlist_' . $userid,
+                    'user' . $userid,
+                    'useravatar_' . $userid,
+                    'userclasses_' . $username,
+                    'user_friends_' . $userid,
+                    'userhnrs_' . $userid,
+                    'users_names_' . $username,
+                    'user_rep_' . $userid,
+                    'user_snatches_data_' . $userid,
+                    'userstatus_' . $userid,
+                ]);
+            }
+        }
     }
 }

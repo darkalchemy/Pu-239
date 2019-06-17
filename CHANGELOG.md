@@ -1,4 +1,5 @@
 ### 16 Jun, 2019
+fix: User::delete_users()  
 fix: typos  
 update: general cleanup  
 rewrite: hitrun_update.php-untested  
