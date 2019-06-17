@@ -29,7 +29,7 @@ function breadcrumbs()
     if (!empty($query)) {
         $queries = explode('&', $query);
     }
-    $referer = $_SERVER['HTTP_REFERER'];
+    $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
     $pre_page = get_prepage($lang, $path, $referer);
     if (!empty($pre_page)) {
         if (is_array($pre_page)) {
