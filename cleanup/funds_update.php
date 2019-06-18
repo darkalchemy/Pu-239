@@ -19,6 +19,7 @@ use Pu239\Message;
 function funds_update($data)
 {
     global $container, $site_config;
+    //update to run manually
 
     $time_start = microtime(true);
     $secs = 30 * 86400;

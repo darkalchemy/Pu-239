@@ -1,4 +1,5 @@
 ### 18 Jun, 2019
+update: db files  
 update: README  
 add: clickable categories browse.php  
 add: manage images staffpanel.php  
