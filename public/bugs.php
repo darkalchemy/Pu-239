@@ -59,7 +59,6 @@ if ($action === 'viewbug') {
                 sql_query($uq) or sqlerr(__FILE__, __LINE__);
             }
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $q1['sender'],
                 'added' => $dt,
                 'msg' => $msg,

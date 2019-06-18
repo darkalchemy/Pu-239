@@ -69,7 +69,6 @@ function achievement_up_update($data)
             }
             if (!empty($msg)) {
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $arr['id'],
                     'added' => $dt,
                     'msg' => $msg,

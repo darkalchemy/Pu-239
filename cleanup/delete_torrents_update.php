@@ -57,7 +57,6 @@ function delete_torrents_update($data)
         $torrents_class->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
-            'sender' => 0,
             'receiver' => $torrent['owner'],
             'added' => $dt,
             'msg' => $msg,
@@ -73,7 +72,6 @@ function delete_torrents_update($data)
         $torrents_class->remove_torrent($torrent['info_hash']);
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
-            'sender' => 0,
             'receiver' => $torrent['owner'],
             'added' => $dt,
             'msg' => $msg,

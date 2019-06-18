@@ -82,7 +82,6 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
 
         unset($values);
         $values[] = [
-            'sender' => 0,
             'receiver' => $site_config['site']['owner'],
             'added' => TIME_NOW,
             'subject' => $subject,

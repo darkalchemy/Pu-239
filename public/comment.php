@@ -121,7 +121,6 @@ if ($action === 'add') {
             $subby = 'Someone has left a comment';
             $msg = "You have received a comment on your torrent [url={$site_config['paths']['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].';
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['owner'],
                 'added' => $dt,
                 'msg' => $msg,

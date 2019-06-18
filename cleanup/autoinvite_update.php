@@ -36,7 +36,6 @@ function autoinvite_update($data)
             $modcomment = get_date((int) $dt, 'DATE', 1) . ' - Awarded 2 bonus invites by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ") .\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,

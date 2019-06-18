@@ -49,7 +49,6 @@ if ($action === 'add') {
         $subject = 'New Friend Request!';
         $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['paths']['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $targetid,
             'added' => $dt,
             'msg' => $msg,
@@ -110,7 +109,6 @@ if ($action === 'confirm') {
         $subject = 'You have a new friend!';
         $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['paths']['baseurl']}/friends.php][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $targetid,
             'added' => $dt,
             'msg' => $msg,

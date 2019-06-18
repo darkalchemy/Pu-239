@@ -80,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     foreach ($users as $user) {
         $values[] = [
-            'sender' => 0,
             'receiver' => $user['userid'],
             'added' => $dt,
             'msg' => $msg,

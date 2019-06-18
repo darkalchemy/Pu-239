@@ -22,7 +22,6 @@ if ($pm_what === 'last10') {
     $res = sql_query('SELECT s.userid, s.torrentid FROM snatched AS s WHERE s.torrentid =' . sqlesc($reseedid) . " AND s.seeder = 'yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res)) {
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $row['userid'],
             'added' => $dt,
             'msg' => $msg,
@@ -31,7 +30,6 @@ if ($pm_what === 'last10') {
     }
 } elseif ($pm_what === 'owner') {
     $msgs_buffer[] = [
-        'sender' => 0,
         'receiver' => $uploader,
         'added' => $dt,
         'msg' => $msg,

@@ -27,7 +27,6 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int|null    $tid
  * @param string|null $poster
  *
- * @return array|bool|mixed
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
  * @throws DependencyException
@@ -35,6 +34,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  *
+ * @return array|bool|mixed
  */
 function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid, ?string $poster)
 {
@@ -365,13 +365,13 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                         <div class='column padding5'>{$imdb_data[$foo]}</div>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                    'director',
-                    'writing',
-                    'producer',
-                    'composer',
-                    'cast',
-                    'trailers',
-                ])) {
+                'director',
+                'writing',
+                'producer',
+                'composer',
+                'cast',
+                'trailers',
+            ])) {
                 foreach ($imdb_data[$foo] as $pp) {
                     if ($foo === 'cast' && !empty($cast)) {
                         $imdb_tmp[] = "<div class='level-left is-wrapped'>" . implode(' ', $cast) . '</div>';
@@ -430,9 +430,9 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 /**
  * @param $imdb_id
  *
- * @return bool|mixed
  * @throws Exception
  *
+ * @return bool|mixed
  */
 function get_imdb_title($imdb_id)
 {
@@ -454,9 +454,9 @@ function get_imdb_title($imdb_id)
 /**
  * @param $imdb_id
  *
- * @return bool|string|string[]|null
  * @throws Exception
  *
+ * @return bool|string|string[]|null
  */
 function get_imdb_info_short($imdb_id)
 {
@@ -577,9 +577,9 @@ function get_imdb_info_short($imdb_id)
 }
 
 /**
- * @return array|bool
  * @throws Exception
  *
+ * @return array|bool
  */
 function get_upcoming()
 {
@@ -646,13 +646,13 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @return bool
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function update_torrent_data(string $imdb_id)
 {
@@ -699,11 +699,11 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function get_imdb_person($person_id)
 {
@@ -798,11 +798,11 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function get_top_movies(int $count)
 {
@@ -833,11 +833,11 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function get_top_tvshows(int $count)
 {
@@ -868,11 +868,11 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function get_top_anime(int $count)
 {
@@ -903,11 +903,11 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function get_oscar_winners(int $count)
 {

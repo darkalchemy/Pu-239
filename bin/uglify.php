@@ -20,14 +20,14 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
- * @return bool
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws AuthError
+ *
+ * @return bool
  */
 function run_uglify($argv = [])
 {
@@ -582,14 +582,14 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @return bool
  * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool
  */
 function can_delete(string $file, bool $delete)
 {

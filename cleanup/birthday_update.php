@@ -44,8 +44,6 @@ function birthday_update($data)
         foreach ($users as $arr) {
             $msg = 'Hey there <span class="' . get_user_class_name((int) $arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
             $msgs[] = [
-                'sender' => 0,
-                'poster' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,

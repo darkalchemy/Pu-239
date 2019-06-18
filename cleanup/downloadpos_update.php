@@ -40,7 +40,6 @@ function downloadpos_update($data)
         $modcomment = $arr['modcomment'];
         $modcomment = get_date((int) $dt, 'DATE', 1) . " - Download ban Automatically Removed By System.\n" . $modcomment;
         $values[] = [
-            'sender' => 0,
             'receiver' => $arr['id'],
             'added' => $dt,
             'msg' => $msg,

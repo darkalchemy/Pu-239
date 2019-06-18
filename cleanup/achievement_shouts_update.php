@@ -50,7 +50,6 @@ function achievement_shouts_update($data)
             }
             if (!empty($msg)) {
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $arr['userid'],
                     'added' => $dt,
                     'msg' => $msg,

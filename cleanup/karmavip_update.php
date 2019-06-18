@@ -33,7 +33,6 @@ function karmavip_update($data)
             $modcomment = get_date((int) $dt, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['userid'],
                 'added' => $dt,
                 'msg' => $msg,

@@ -27,7 +27,6 @@ if ($remove) {
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['freeusers_mod1'] . $CURUSER['username'] . " \n");
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,

@@ -198,12 +198,10 @@ if (isset($_POST['form']) != 1) {
 
         foreach ($subres as $arr) {
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,
                 'subject' => $subject,
-                'poster' => 0,
             ];
         }
         if (!empty($msgs_buffer)) {

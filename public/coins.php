@@ -62,7 +62,6 @@ sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' 
 $msg = "{$lang['coins_you_have_been_given']} $points {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
 $subject = $lang['coins_you_have_been_given_a_gift'];
 $msgs_buffer[] = [
-    'sender' => 0,
     'receiver' => $userid,
     'added' => $dt,
     'msg' => $msg,

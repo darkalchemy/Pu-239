@@ -43,7 +43,6 @@ function sendpmpos_update($data)
         foreach ($users as $arr) {
             $modcomment = $comment . $arr['modcomment'];
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,

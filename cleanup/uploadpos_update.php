@@ -40,7 +40,6 @@ function uploadpos_update($data)
     foreach ($res as $arr) {
         $modcomment = $comment . $arr['modcomment'];
         $msgs[] = [
-            'sender' => 0,
             'receiver' => $arr['id'],
             'added' => $dt,
             'msg' => $msg,

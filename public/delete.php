@@ -85,7 +85,6 @@ $msg = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  R
 if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
     $subject = 'Torrent Deleted';
     $msgs_buffer[] = [
-        'sender' => 0,
         'receiver' => $row['owner'],
         'added' => $dt,
         'msg' => $msg,

@@ -40,7 +40,6 @@ function customsmilie_update($data)
         $modcomment = $arr['modcomment'];
         $modcomment = get_date((int) $dt, 'DATE', 1) . " - Custom smilies Automatically Removed By System.\n" . $modcomment;
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $arr['id'],
             'added' => $dt,
             'msg' => $msg,

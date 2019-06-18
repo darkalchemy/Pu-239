@@ -83,10 +83,10 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @return string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return string
  */
 function getip($login = false)
 {
@@ -217,11 +217,11 @@ function userlogin()
 }
 */
 /**
- * @return mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return mixed
  */
 function get_stylesheet()
 {
@@ -308,11 +308,11 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function make_freeslots($userid, $key)
 {
@@ -335,11 +335,11 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function genrelist(bool $grouped)
 {
@@ -386,6 +386,7 @@ function genrelist(bool $grouped)
             }
         }
     }
+
     return $ret;
 }
 
@@ -414,26 +415,26 @@ function mksize($size)
     }
 
     return round($size, [
-            0,
-            0,
-            1,
-            2,
-            2,
-            3,
-            3,
-            4,
-            4,
-        ][$i]) . ' ' . [
-            'B',
-            'kB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
-            'EB',
-            'ZB',
-            'YB',
-        ][$i];
+        0,
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+    ][$i]) . ' ' . [
+        'B',
+        'kB',
+        'MB',
+        'GB',
+        'TB',
+        'PB',
+        'EB',
+        'ZB',
+        'YB',
+    ][$i];
 }
 
 /**
@@ -448,11 +449,11 @@ function mkprettytime($s)
     }
     $t = [];
     foreach ([
-                 '60:sec',
-                 '60:min',
-                 '24:hour',
-                 '0:day',
-             ] as $x) {
+        '60:sec',
+        '60:min',
+        '24:hour',
+        '0:day',
+    ] as $x) {
         $y = explode(':', $x);
         if ($y[0] > 1) {
             $v = $s % $y[0];
@@ -625,9 +626,9 @@ function CutName(string $txt, int $len = 40)
 /**
  * @param string $file
  *
- * @return array
  * @throws Exception
  *
+ * @return array
  */
 function load_language($file = '')
 {
@@ -903,11 +904,11 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @return bool
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool
  */
 function user_exists($user_id)
 {
@@ -982,11 +983,11 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @return array|bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return array|bool|mixed
  */
 function countries()
 {
@@ -1073,9 +1074,9 @@ function plural(int $int)
  * @param      $username
  * @param bool $ajax
  *
- * @return bool
  * @throws Exception
  *
+ * @return bool
  */
 function valid_username($username, $ajax = false)
 {
@@ -1116,9 +1117,9 @@ function valid_username($username, $ajax = false)
 /**
  * @param bool $celebrate
  *
- * @return bool
  * @throws Exception
  *
+ * @return bool
  */
 function Christmas($celebrate = true)
 {
@@ -1166,12 +1167,12 @@ function get_anonymous_name()
  * @param int|null $height
  * @param int|null $quality
  *
- * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
+ * @return string
  */
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
@@ -1222,11 +1223,11 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @return bool|mixed|null
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool|mixed|null
  */
 function get_show_id(string $name)
 {
@@ -1265,11 +1266,11 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @return bool|mixed|null
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool|mixed|null
  */
 function get_show_id_by_imdb(string $imdbid)
 {
@@ -1301,10 +1302,10 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @return false|mixed|string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return false|mixed|string
  */
 function time24to12($timestamp, $sec = false)
 {
@@ -1369,11 +1370,11 @@ function formatQuery($query)
 /**
  * @param string $type
  *
- * @return bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool
  */
 function insert_update_ip(string $type)
 {
@@ -1402,11 +1403,11 @@ function insert_update_ip(string $type)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @return bool|mixed|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed|string
  */
 function fetch(string $url, bool $fresh = true, bool $async = false)
 {
@@ -1457,11 +1458,11 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @return mixed|string
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed|string
  */
 function get_body_image(bool $details)
 {
@@ -1527,11 +1528,11 @@ function get_body_image(bool $details)
 }
 
 /**
- * @return bool|mixed
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool|mixed
  */
 function get_random_useragent()
 {

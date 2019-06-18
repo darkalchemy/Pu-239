@@ -485,7 +485,6 @@ if ($offer > 0) {
     $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $arr_offer['user_id'],
             'added' => $dt,
             'msg' => $msg,
@@ -505,7 +504,6 @@ if ($request > 0) {
     $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     while ($arr_req = mysqli_fetch_assoc($res_req)) {
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $arr_req['user_id'],
             'added' => $dt,
             'msg' => $msg,
@@ -530,7 +528,6 @@ if (!empty($notify)) {
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
         $msgs_buffer[] = [
-            'sender' => 0,
             'receiver' => $notif['id'],
             'added' => $dt,
             'msg' => $msg,

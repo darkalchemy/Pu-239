@@ -25,7 +25,6 @@ function achievement_sig_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $points = random_int(1, 3);
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $arr['userid'],
                 'added' => $dt,
                 'msg' => $msg,

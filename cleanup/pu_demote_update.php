@@ -59,7 +59,6 @@ function pu_demote_update($data)
                 $modcom = sqlesc($modcomment);
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $arr['id'],
                     'added' => $dt,
                     'msg' => $msg,

@@ -26,10 +26,10 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
- * @return false|mixed|string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return false|mixed|string
  */
 function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
 {

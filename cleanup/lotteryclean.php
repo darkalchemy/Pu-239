@@ -65,7 +65,6 @@ function lotteryclean($data)
                 'modcomment' => $mod_comment,
             ];
             $_pms[] = [
-                'sender' => 0,
                 'receiver' => $winner['uid'],
                 'added' => $dt,
                 'msg' => $msg['body'],

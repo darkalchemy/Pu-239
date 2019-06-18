@@ -482,7 +482,6 @@ if ($game) {
                     $outcome = "{$dbl_text}and tied";
                 }
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $a['userid'],
                     'added' => $dt,
                     'msg' => $msg,
@@ -587,7 +586,6 @@ if ($game) {
                     $outcome = "{$dbl_text}and lost";
                 }
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $a['userid'],
                     'added' => $dt,
                     'msg' => $msg,
@@ -823,7 +821,6 @@ if ($game) {
             }
 
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $a['userid'],
                 'added' => $dt,
                 'msg' => $msg,

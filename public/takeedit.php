@@ -97,10 +97,10 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
 }
 
 foreach ([
-             $type,
-             $body,
-             $name,
-         ] as $x) {
+    $type,
+    $body,
+    $name,
+] as $x) {
     if (empty($x)) {
         $session->set('is-warning', $lang['takedit_no_data']);
         header("Location: {$_SERVER['HTTP_REFERER']}");

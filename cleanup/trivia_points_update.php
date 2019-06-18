@@ -95,7 +95,6 @@ function trivia_points_update($data)
             $msg = 'You answered ' . number_format($correct) . ' trivia question' . plural($correct) . " correctly and were awarded $points Bonus Points!!\n";
             $comment = get_date((int) TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n";
             $msgs[] = [
-                'sender' => 0,
                 'receiver' => $user_id,
                 'added' => $dt,
                 'msg' => $msg,

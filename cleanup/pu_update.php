@@ -77,7 +77,6 @@ function pu_update($data)
                 $comment = get_date((int) $dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n";
                 $modcomment = $comment . $modcomment;
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $arr['id'],
                     'added' => $dt,
                     'msg' => $msg,

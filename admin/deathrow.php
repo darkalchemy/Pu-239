@@ -70,7 +70,6 @@ function notify_owner(array $tids)
     foreach ($torrents as $torrent) {
         $msg = "{$lang['deathrow_torrent']} [url={$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}]\"{$torrent['name']}\"[/url] {$lang['deathrow_warn']}";
         $values[] = [
-            'sender' => 0,
             'receiver' => $torrent['owner'],
             'added' => $dt,
             'msg' => $msg,

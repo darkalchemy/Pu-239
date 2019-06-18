@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'warned' => 0,
             ], $site_config['expires']['user_cache']);
             $msgs_buffer[] = [
-                'sender' => 0,
                 'receiver' => $id,
                 'registered' => $dt,
                 'msg' => $msg,

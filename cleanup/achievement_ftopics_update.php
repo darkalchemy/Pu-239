@@ -51,7 +51,6 @@ function achievement_ftopics_update($data)
             }
             if (!empty($msg)) {
                 $msgs_buffer[] = [
-                    'sender' => 0,
                     'receiver' => $arr['userid'],
                     'added' => $dt,
                     'msg' => $msg,

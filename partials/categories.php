@@ -47,7 +47,6 @@ $HTMLOUT .= main_div($main_div, 'bottom20');
  * @param string $cat_name
  * @param array  $grouped
  * @param array  $cats
- *
  * @param array  $terms
  *
  * @return string

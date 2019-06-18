@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'uploaded' => $update['uploaded'],
     ], $site_config['expires']['user_cache']);
     $msgs_buffer[] = [
-        'sender' => 0,
         'receiver' => $CURUSER['id'],
         'added' => $dt,
         'msg' => $msg,
