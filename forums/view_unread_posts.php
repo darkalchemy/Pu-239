@@ -108,8 +108,8 @@ if ($count === 0) {
                     <hr>in: <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr_unread['forum_id'] . '">' . htmlsafechars((string) $arr_unread['forum_name']) . '</a>
                     ' . (!empty($arr_unread['topic_desc']) ? ' [ <span style="font-size: x-small;">' . htmlsafechars((string) $arr_unread['topic_desc']) . '</span> ]' : '') . '
                 </td>
-                <td>' . number_format($arr_unread['post_count']) . '</td>
-                <td>' . number_format($arr_unread['views']) . '</td>
+                <td>' . number_format((int) $arr_unread['post_count']) . '</td>
+                <td>' . number_format((int) $arr_unread['views']) . '</td>
                 <td>' . $thread_starter . '</td>
             </tr>';
         }

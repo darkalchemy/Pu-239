@@ -7,28 +7,6 @@ use DI\NotFoundException;
 use Pu239\Session;
 
 /**
- * @return mixed
- */
-function get_scheme()
-{
-    global $site_config;
-
-    if (isset($site_config['site']['https_only']) && $site_config['site']['https_only']) {
-        return 'https';
-    } elseif (isset($_SERVER['REQUEST_SCHEME'])) {
-        return $_SERVER['REQUEST_SCHEME'];
-    } elseif (isset($_SERVER['HTTPS'])) {
-        return 'https';
-    } elseif (isset($_SERVER['REQUEST_URI'])) {
-        $url = parse_url($_SERVER['REQUEST_URI']);
-
-        return $url[0];
-    }
-
-    return 'http';
-}
-
-/**
  * @param $ip
  *
  * @return bool
@@ -48,10 +26,10 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws DependencyException
- * @throws NotFoundException
- *
  * @return false|mixed|string
+ * @throws DependencyException
+ *
+ * @throws NotFoundException
  */
 function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
 {

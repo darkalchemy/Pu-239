@@ -128,7 +128,7 @@ if ($action === 'viewposts') {
 
     while ($arr = mysqli_fetch_assoc($res)) {
         $commentid = (int) $arr['id'];
-        $torrent = htmlsafechars($arr['name']);
+        $torrent = !empty($arr['name']) ? htmlsafechars($arr['name']) : '';
         if (strlen($torrent) > 55) {
             $torrent = substr($torrent, 0, 52) . '...';
         }

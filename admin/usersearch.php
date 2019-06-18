@@ -752,7 +752,7 @@ if (!empty($search)) {
                                 ->select(null)
                                 ->select('COUNT(id) AS count')
                                 ->where('INET6_NTOA(first) <= ?', $user['ip'])
-                                ->where('INET6_NTOA(last)>= ?', $user['ip'])
+                                ->where('INET6_NTOA(last) >= ?', $user['ip'])
                                 ->fetch('count');
                 if ($count === 0) {
                     $ipstr = $user['ip'] . ' ' . $user['type'];

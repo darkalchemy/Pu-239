@@ -67,9 +67,9 @@ return [
             'nameblacklist' => CACHE_DIR . 'nameblacklist.txt',
             'happyhour' => CACHE_DIR . 'happyhour.cache',
             'sql_error_log' => SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log',
-            'baseurl' => '//' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl'),
+            'baseurl' => get_scheme() . '://' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl'),
             'images_baseurl' => '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
-            'chat_images_baseurl' => '//' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl') . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+            'chat_images_baseurl' => get_scheme() . '://' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl') . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
             'log_viewer' => [
                 '/var/log/apache2/',
                 '/var/log/nginx/',
@@ -119,4 +119,26 @@ function return_bytes($val)
     }
 
     return $val;
+}
+
+/**
+ * @return mixed
+ */
+function get_scheme()
+{
+    global $site_config;
+
+    if (isset($site_config['site']['https_only']) && $site_config['site']['https_only']) {
+        return 'https';
+    } elseif (isset($_SERVER['REQUEST_SCHEME'])) {
+        return $_SERVER['REQUEST_SCHEME'];
+    } elseif (isset($_SERVER['HTTPS'])) {
+        return 'https';
+    } elseif (isset($_SERVER['REQUEST_URI'])) {
+        $url = parse_url($_SERVER['REQUEST_URI']);
+
+        return $url[0];
+    }
+
+    return 'http';
 }

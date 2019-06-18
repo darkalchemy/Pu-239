@@ -7,12 +7,12 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws Exception
- * @throws DependencyException
+ * @return string|void
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
- * @return string|void
+ * @throws DependencyException
  */
 function breadcrumbs()
 {
@@ -20,7 +20,7 @@ function breadcrumbs()
 
     $lang = load_language('breadcrumbs');
     $array = parse_url($_SERVER['REQUEST_URI']);
-    $path = $array['path'];
+    $path = !empty($array['path']) ? $array['path'] : '';
     $query = isset($array['query']) ? $array['query'] : '';
     if (empty($path)) {
         return;
@@ -154,11 +154,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- *
  * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @throws NotFoundException
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -205,11 +205,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- *
  * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @throws NotFoundException
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -273,7 +273,7 @@ function get_infopage($lang, $queries, $path)
     } elseif ($list[0] === 'type') {
         $title = $lang[$list[1]];
     } elseif (!empty($list[0])) {
-        $title = $list[0] === 'action' && $list[1] === 'view' ? $lang[$list[1]] : $lang[$list[0]];
+        $title = $list[0] === 'action' && $list[1] === 'view' ? (!empty($lang[$list[1]]) ? $lang[$list[1]] : '') : (!empty($lang[$list[0]]) ? $lang[$list[0]] : '');
     }
 
     if (empty($title)) {
@@ -355,7 +355,7 @@ function get_actionpage($lang, $queries, $path)
         $title = $lang['search_forum'];
     }
     if (!empty($list[1]) && empty($title)) {
-        $title = $lang[$list[1]];
+        $title = !empty($lang[$list[1]]) ? $lang[$list[1]] : '';
     }
     if (empty($title)) {
         $title = htmlsafechars(ucwords(str_replace('_', ' ', $list[1])));
@@ -407,11 +407,11 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- *
  * @return mixed|string
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @throws NotFoundException
  */
 function get_mailbox_name($mailbox)
 {

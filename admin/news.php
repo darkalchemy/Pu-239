@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-use DI\DependencyException;
-use DI\NotFoundException;
 use Pu239\Cache;
+use Pu239\Database;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -39,12 +39,14 @@ if (!in_array($mode, $possible_modes)) {
 }
 
 $cache = $container->get(Cache::class);
+$fluent = $container->get(Database::class);
+$session = $container->get(Session::class);
 if ($mode === 'delete') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_del_invalid']);
     }
-    $hash = hash('sha256', $site_config['site']['use_12_hour'] . $newsid . 'add');
+    $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
     $sure = '';
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!$sure) {
@@ -54,10 +56,12 @@ if ($mode === 'delete') {
         stderr($lang['news_error'], $lang['news_del_what']);
     }
 
-    deletenewsid($newsid);
-    header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
-    stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
-    echo stdhead($lang['news_del_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    $fluent->deleteFrom('news')
+           ->where('id = ?', $newsid)
+           ->execute();
+    $cache->delete('latest_news_');
+    $session->set('is-success', $lang['news_del_redir']);
+    header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
     die();
 } elseif ($mode === 'add') {
     $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
@@ -74,20 +78,36 @@ if ($mode === 'delete') {
     if (!$added) {
         $added = TIME_NOW;
     }
-    sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($added) . ', ' . sqlesc($body) . ', ' . sqlesc($title) . ', ' . sqlesc($sticky) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
-    $cache->delete('latest_news_');
-    header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
-    mysqli_affected_rows($mysqli) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
+    $values = [
+        'userid' => $CURUSER['id'],
+        'added' => TIME_NOW,
+        'body' => $body,
+        'title' => $title,
+        'sticky' => $sticky,
+        'anonymous' => $anonymous,
+    ];
+    $results = $fluent->insertInto('news')
+                      ->values($values)
+                      ->execute();
+    if (!empty($results)) {
+        $cache->delete('latest_news_');
+        $session->set('is-success', $lang['news_add_success']);
+    } else {
+        $session->set('is-warning', $lang['news_add_something']);
+    }
+    header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
+    die();
 } elseif ($mode === 'edit') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_edit_invalid']);
     }
-    $res = sql_query('SELECT id, body, title, userid, added, anonymous, sticky FROM news WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) != 1) {
+    $arr = $fluent->from('news')
+                  ->where('id = ?', $newsid)
+                  ->fetch();
+    if (empty($arr)) {
         stderr($lang['news_error'], $lang['news_edit_nonews']);
     }
-    $arr = mysqli_fetch_assoc($res);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
         $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
@@ -99,10 +119,20 @@ if ($mode === 'delete') {
         if ($title == '') {
             stderr($lang['news_error'], $lang['news_edit_title']);
         }
-        sql_query('UPDATE news SET body=' . sqlesc($body) . ', sticky=' . sqlesc($sticky) . ', anonymous=' . sqlesc($anonymous) . ', title=' . sqlesc($title) . ' WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
+        $update = [
+            'body' => $body,
+            'sticky' => $sticky,
+            'anonymous' => $anonymous,
+            'title' => $title,
+        ];
+        $fluent->update('news')
+               ->set($update)
+               ->where('id = ?', $newsid)
+               ->execute();
         $cache->delete('latest_news_');
-        header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
-        stderr($lang['news_success'], $lang['news_edit_success']);
+        $session->set('is-success', $lang['news_edit_success']);
+        header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
+        die();
     } else {
         $HTMLOUT .= "
             <h1 class='has-text-centered'>{$lang['news_edit_item']}</h1>
@@ -113,7 +143,7 @@ if ($mode === 'delete') {
                             Title
                         </td>
                         <td>
-                            <input type='text' name='title' class='w-100' value='" . htmlsafechars($arr['title']) . "'>
+                            <input type='text' name='title' class='w-100' value='" . htmlspecialchars_decode($arr['title']) . "'>
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +151,7 @@ if ($mode === 'delete') {
                             BBcode Editor
                         </td>
                         <td class='is-paddingless'>
-                            " . BBcode($arr['body']) . "
+                            " . BBcode(htmlspecialchars_decode($arr['body'])) . "
                         </td>
                     </tr>
                     <tr>
@@ -160,7 +190,10 @@ if ($mode === 'delete') {
         die();
     }
 } elseif ($mode === 'news') {
-    $res = sql_query('SELECT n.id AS newsid, n.body, n.title, n.userid, n.added, n.anonymous, u.id, u.username, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS n LEFT JOIN users AS u ON u.id=n.userid ORDER BY sticky, added DESC') or sqlerr(__FILE__, __LINE__);
+    $results = $fluent->from('news')
+                      ->orderBy('sticky')
+                      ->orderBy('added DESC')
+                      ->fetchAll();
     $HTMLOUT .= "
     <div class='portlet'>
         <h1 class='has-text-centered'>{$lang['news_submit_new']}</h1>
@@ -213,14 +246,16 @@ if ($mode === 'delete') {
                 </table>
             </form>
         </div>";
-    while ($arr = mysqli_fetch_assoc($res)) {
-        $newsid = (int) $arr['newsid'];
+    $i = 0;
+    foreach ($results as $arr) {
+        $newsid = $arr['id'];
         $body = $arr['body'];
         $title = $arr['title'];
-        $added = get_date((int) $arr['added'], 'LONG', 0, 1);
-        $by = '<b>' . format_username((int) $arr['userid']) . '</b>';
+        $added = get_date($arr['added'], 'LONG', 0, 1);
+        $by = '<b>' . format_username($arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
-        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username((int) $arr['userid']);
+        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['userid']);
+        $class = $i++ != 0 ? 'top20' : '';
         $HTMLOUT .= main_div("
             <div class='level bg-01 padding20 round5'>
                 <div class='has-text-left'>
@@ -238,24 +273,9 @@ if ($mode === 'delete') {
             <div class='padding20'>
                 <h2>" . htmlsafechars($title) . '</h2>
                 <div>' . format_comment($body) . '</div>
-            </div>');
+            </div>', $class);
     }
 }
 
 echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();
-
-/**
- * @param $newsid
- *
- * @throws DependencyException
- * @throws NotFoundException
- */
-function deletenewsid($newsid)
-{
-    global $container, $CURUSER;
-
-    $cache = $container->get(Cache::class);
-    sql_query('DELETE FROM news WHERE id = ' . sqlesc($newsid) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->delete('latest_news_');
-}

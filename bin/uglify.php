@@ -20,14 +20,14 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
- * @throws AuthError
+ * @return bool
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return bool
+ * @throws AuthError
  */
 function run_uglify($argv = [])
 {
@@ -51,13 +51,13 @@ function run_uglify($argv = [])
                 echo "Creating classes\n";
             }
             $styles = get_styles();
-            $classes = get_classes($styles, true);
+            get_classes($styles, true);
             die();
         }
     }
 
     $styles = get_styles();
-    $classes = get_classes($styles, false);
+    get_classes($styles, false);
 
     foreach ($styles as $style) {
         make_dir(CACHE_DIR . $style);
@@ -520,16 +520,6 @@ function process_css($key, $list, $spurpose, $csstmp, $folder, $css_ext)
 }
 
 /**
- * @param $dir
- */
-function make_dir($dir)
-{
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
-}
-
-/**
  * @param $update
  * @param $pages
  */
@@ -592,14 +582,14 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws NotFoundException
+ * @return bool
  * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  *
- * @return bool
+ * @throws NotFoundException
  */
 function can_delete(string $file, bool $delete)
 {

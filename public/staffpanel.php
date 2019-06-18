@@ -182,15 +182,15 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if ($action === 'add') {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
                                       VALUES (' . implode(', ', array_map('sqlesc', [
-                        $page_name,
-                        $file_name,
-                        $description,
-                        $type,
-                        (int) $_POST['av_class'],
-                        (int) $CURUSER['id'],
-                        TIME_NOW,
-                        $navbar,
-                    ])) . ')');
+                            $page_name,
+                            $file_name,
+                            $description,
+                            $type,
+                            (int) $_POST['av_class'],
+                            (int) $CURUSER['id'],
+                            TIME_NOW,
+                            $navbar,
+                        ])) . ')');
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')

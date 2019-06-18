@@ -30,13 +30,3 @@ function goaccess_cleanup($data)
         write_log('GO Access Cleanup: Completed' . $text);
     }
 }
-
-/**
- * @param $path
- */
-function make_dir($path)
-{
-    if (!file_exists($path)) {
-        mkdir($path, 0777);
-    }
-}

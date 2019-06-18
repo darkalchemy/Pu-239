@@ -9,7 +9,7 @@
     "devDependencies": {
         "@glidejs/glide": "^3.3.0",
         "autoprefixer": "^9.6.0",
-        "browserslist": "^4.6.2",
+        "browserslist": "^4.6.3",
         "bulma": "^0.7.5",
         "clean-css-cli": "^4.3.0",
         "cookieconsent": "^3.1.1",

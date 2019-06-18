@@ -7,7 +7,7 @@
 4. Update jquery - Done
 5. Update all javascript files to remove jquery dependency
 6. Merge, mininify and gzip css/js files to reduce size and requests(not as important if http2 is enabled) - Done
-7. Replace manual concat/gzip of css/js file with webpack
+7. Replace manual concat/gzip of css/js file with uglifyjs - Done
 8. Optimize all images for web - Done
 9. Remove js from head and relocate to body
 10. Remove Simple Captcha - Done
@@ -21,16 +21,11 @@ MySQL 5.6 is required. MySQL 8.0 recommended.
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.5.  
 [NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.9.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.  
-A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.  
-
-A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).
-
-A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be).
-
-If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177) 
-
-There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)
-
+A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.   
+A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  
+A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be).  
+If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)   
+There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
 #### Please log in as a non-privileged user, NOT root, to install this.  
 ### Prior to install:
 ```
@@ -118,20 +113,22 @@ php bin/import_tables.php
 ### To Update:
 ```
 # get the files
-# how you do this step will depend how you did it initially, I personally use rsync to overwrite files from git to my webpath, then remove the install folder
+# how you do this step will depend how you did it initially, I personally run in a git repository
 cd Pu-239
 git pull
 
+# compare /config/config.php with /config/config_example.php for changes
 # check CHANGELOG for anything that neds to be done first
-# check to see if there are any database updates, from the staff panel
+# check to see if there are any database updates, from the staff panel or php bin/update_db.php
 
 # update dependancies:
-composer install -a (production mode add: --no-dev)
+composer install (production mode add: --no-dev)
 npm install
+sudo rm -rf /dev/shm/php-di
 sudo php bin/set_perms.php
 php bin/uglify.php
 
-# update additional tables          
+# update additional tables, if desired          
 php bin/import_tables.php
 
 # occasionally you may need to remove bad images
@@ -152,13 +149,10 @@ Make any edits or changes to the files in templates and scripts folder, then to 
 php bin/uglify.php
 ```
 
-### Adding, removing changing classes   
-Make any changes, then run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.
-
 ### Production
 Production creates minified javascript and css files when running uglify.php.  
 After changing the setting 'production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
-```$site_config['site']['production'] = false;```
+```config/define.php define('PRODUCTION', false);```
 
 
 ### Cache Engines  

@@ -2,9 +2,7 @@ In no particular order
 
 finish: casino.php rewrite  
 
-
-fix: promo.php what does it do?  
-fix: usersearch.php (ip search)  
+finish: cleanup/funds_update.php to run with jobby  
 update forced_logout_ to new user system  
 find and update all users "Pending"  
 finish replacing homespun user create/delete/etc  

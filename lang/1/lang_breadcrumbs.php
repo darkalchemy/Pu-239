@@ -181,6 +181,7 @@ $lang = [
     'load' => 'Server Load',
     'location' => 'Location Settings',
     'log_viewer' => 'Log Viewer',
+    'manage_images' => 'Manage Images',
     'mark_all_as_read' => 'Mark all as Read',
     'mass_bonus_for_members' => 'Mass Bonus',
     'mega_search' => 'Advanced Search',

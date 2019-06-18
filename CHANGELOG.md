@@ -1,3 +1,15 @@
+### 18 Jun, 2019
+update: README  
+add: clickable categories browse.php  
+add: manage images staffpanel.php  
+remove: jpg, png, gif requirement on poster takeedit.php  
+update: news.php  
+relocate: make_dir() to function_users.php  
+relocate: get_scheme() to config.php  
+fix: check if cast is empty function_imdb.php  
+fix: cast to int view_unread_posts.php  
+update: check if empty function_breadcrumbs.php  
+
 ### 16 Jun, 2019
 remove: funds_update from cron_controller.php  
 update: breadcrumbs  

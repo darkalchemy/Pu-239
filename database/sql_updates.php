@@ -2940,4 +2940,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `class_promo` VALUES(1, '1', 1.20, 50, 20, 0.85)",
         'flush' => true,
     ],
+    [
+        'id' => 1560769719,
+        'info' => 'Add Staff page',
+        'date' => '17 Jun, 2019',
+        'query' => "INSERT INTO `staffpanel` (`page_name`, `file_name`, `description`, `type`, `av_class`, `added_by`, `added`, `navbar`) VALUES ('Manage Images', 'staffpanel.php?tool=manage_images', 'Manage Images', 'stats', 4, 1, 1560769719, 1)",
+        'flush' => false,
+    ],
 ];

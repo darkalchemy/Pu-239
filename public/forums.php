@@ -515,8 +515,8 @@ switch ($action) {
                     $child_boards = '<hr class="is-marginless"><div class="top10"><span class="size_3">' . $lang['sv_child_boards'] . ': </span>' . implode(', ', $child_boards_cache) . '</div>';
                 }
                 $body .= '
-                    <tr>
-                        <td class="w-25">
+                    <tr class="min-600">
+                        <td class="min-350 w-40">
                             <div class="level">
                                 <span class="level-left">
                                     <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" class="tooltipper emoticon lazy right10">
@@ -539,10 +539,10 @@ switch ($action) {
                             </div>') . '
                             <div> ' . $forum_description . '</div>' . $child_boards . $now_viewing . '
                         </td>
-                        <td class="w-25">
+                        <td class="min-150 w-25">
                             <span>' . $post_count . ' ' . $lang['fe_posts'] . '<br>' . $topic_count . ' ' . $lang['fe_topics'] . '</span>
                         </td>
-                        <td class="w-25"><span>' . $last_post . '</span></td>
+                        <td class="min-150 w-25"><span>' . $last_post . '</span></td>
                     </tr>';
             }
             $over_forum_id = $arr_forums['over_forum_id'];

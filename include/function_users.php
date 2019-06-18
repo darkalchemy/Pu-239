@@ -68,10 +68,10 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws NotFoundException
- * @throws DependencyException
- *
  * @return string
+ * @throws NotFoundException
+ *
+ * @throws DependencyException
  */
 function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, int $post_id = 0, bool $anonymous = false)
 {
@@ -325,10 +325,10 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws NotFoundException
- * @throws DependencyException
- *
  * @return string|null
+ * @throws NotFoundException
+ *
+ * @throws DependencyException
  */
 function ratio_image_machine(float $ratio_to_check)
 {
@@ -467,10 +467,10 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
- * @throws Exception
- *
  * @return string
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @throws Exception
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
@@ -645,12 +645,12 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @throws InvalidManipulation
- * @throws DependencyException
+ * @return bool|mixed|string|null
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
- * @return bool|mixed|string|null
+ * @throws DependencyException
  */
 function get_avatar($avatar)
 {
@@ -722,5 +722,15 @@ function clr_forums_cache(int $post_id)
             'last_posts_' . $uclass,
         ]);
         ++$uclass;
+    }
+}
+
+/**
+ * @param $dir
+ */
+function make_dir($dir)
+{
+    if (!is_dir($dir)) {
+        mkdir($dir, 0664, true);
     }
 }

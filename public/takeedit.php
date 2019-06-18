@@ -97,10 +97,10 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
 }
 
 foreach ([
-    $type,
-    $body,
-    $name,
-] as $x) {
+             $type,
+             $body,
+             $name,
+         ] as $x) {
     if (empty($x)) {
         $session->set('is-warning', $lang['takedit_no_data']);
         header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -181,8 +181,8 @@ if (isset($_POST['nukereason']) && ($nukereason = $_POST['nukereason']) != $fetc
 }
 
 if (!empty($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['poster'])) {
-    if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $poster)) {
-        $session->set('is-warning', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
+    if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+$/i", $poster)) {
+        $session->set('is-warning', 'Make sure you include http(s):// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }

@@ -6,6 +6,7 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use Envms\FluentPDO\Literal;
+use Envms\FluentPDO\Queries\Select;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -118,5 +119,132 @@ class Image
         }
 
         return null;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_image(int $id)
+    {
+        return $this->fluent->from('images')
+                            ->where('id = ?', $id)
+                            ->fetch();
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     *
+     * @throws Exception
+     *
+     * @return array|bool
+     */
+    public function get_images(int $limit, int $offset)
+    {
+        return $this->fluent->from('images')
+                            ->limit($limit)
+                            ->offset($offset)
+                            ->fetchAll();
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_image_count()
+    {
+        return $this->fluent->from('images')
+                            ->select(null)
+                            ->select('COUNT(id) AS count')
+                            ->fetch('count');
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     */
+    public function delete_image(int $id)
+    {
+        $this->fluent->deleteFrom('images')
+                     ->where('id = ?', $id)
+                     ->execute();
+    }
+
+    /**
+     * @param string $terms
+     *
+     * @throws Exception
+     *
+     * @return Select|mixed
+     */
+    public function count_search_images(string $terms)
+    {
+        $count = $this->fluent->from('images')
+                              ->select(null)
+                              ->select('COUNT(id) AS count');
+        $terms = explode(' ', trim($terms));
+        foreach ($terms as $term) {
+            $term = trim($term);
+            if (in_array($term, [
+                'poster',
+                'banner',
+                'background',
+            ])) {
+                $count = $count->where('type = :type', [':type' => $term]);
+            } else {
+                $count = $count->where('(imdb_id = :imdb OR tmdb_id = :tmdb OR tvmaze_id = :tvmaze OR isbn = :isbn)', [
+                    ':imdb' => $term,
+                    ':tmdb' => $term,
+                    ':tvmaze' => $term,
+                    ':isbn' => $term,
+                ]);
+            }
+        }
+        $count = $count->fetch('count');
+
+        return $count;
+    }
+
+    /**
+     * @param string $terms
+     * @param int    $limit
+     * @param int    $offset
+     *
+     * @throws Exception
+     *
+     * @return array|bool|Select
+     */
+    public function search_images(string $terms, int $limit, int $offset)
+    {
+        $query = $this->fluent->from('images');
+        $terms = explode(' ', trim($terms));
+        foreach ($terms as $term) {
+            $term = trim($term);
+            if (in_array($term, [
+                'poster',
+                'banner',
+                'background',
+            ])) {
+                $query = $query->where('type = :type', [':type' => $term]);
+            } else {
+                $query = $query->where('(imdb_id = :imdb OR tmdb_id = :tmdb OR tvmaze_id = :tvmaze OR isbn = :isbn)', [
+                    ':imdb' => $term,
+                    ':tmdb' => $term,
+                    ':tvmaze' => $term,
+                    ':isbn' => $term,
+                ]);
+            }
+        }
+        $query = $query->limit($limit)
+                       ->offset($offset)
+                       ->fetchAll();
+
+        return $query;
     }
 }

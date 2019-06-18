@@ -823,11 +823,15 @@ textarea {
 }
 
 .min-150 {
-    min-width: 150px;
+    min-width: 150px !important;
 }
 
 .min-350 {
     min-width: 350px !important;
+}
+
+.min-600 {
+    min-width: 600px !important;
 }
 
 .w-1 {
