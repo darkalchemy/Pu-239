@@ -34,6 +34,8 @@ function hitrun_update($data)
         }
         $hnrs = [];
         foreach ($work as $hnr) {
+            $snatched->set_hnr($hnr);
+            $snatched->remove_hnr($hnr);
             $users = $snatched->get_hit_and_runs($hnr);
             $hnrs = array_merge($hnrs, $users);
         }

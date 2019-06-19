@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+update: add set_hnr() remove_hnr() to Snatched Class  
 update: check if empty function_tvmaze.php  
 update: temp fix for friends.php  
 update: config_example.php  

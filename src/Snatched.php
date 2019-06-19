@@ -164,7 +164,7 @@ class Snatched
             $snatched = $snatched->where('(s.real_uploaded < s.real_downloaded OR s.seedtime < ?)', $hnr[$type])
                                  ->where('t.added < ?', $hnr['age'] * 86400 + TIME_NOW)
                                  ->where('t.owner != s.userid')
-                                 ->where('immunity = 0')
+                                 ->where('u.immunity = 0')
                                  ->leftJoin('torrents AS t ON s.torrentid = t.id')
                                  ->leftJoin('users AS u ON s.userid = u.id')
                                  ->fetchAll();
@@ -182,20 +182,6 @@ class Snatched
     }
 
     /**
-     * @param array $cains
-     *
-     * @throws Exception
-     */
-    public function set_cain(array $cains)
-    {
-        $set = ['mark_of_cain' => 'yes'];
-        $this->fluent->update('snatched')
-                     ->set($set)
-                     ->where('id', $cains)
-                     ->execute();
-    }
-
-    /**
      * @param int $time
      *
      * @throws Exception
@@ -208,6 +194,20 @@ class Snatched
                      ->set($set)
                      ->where('(real_uploaded > real_downloaded OR seedtime > ?)', $time)
                      ->where('mark_of_cain = "yes"')
+                     ->execute();
+    }
+
+    /**
+     * @param array $cains
+     *
+     * @throws Exception
+     */
+    public function set_cain(array $cains)
+    {
+        $set = ['mark_of_cain' => 'yes'];
+        $this->fluent->update('snatched')
+                     ->set($set)
+                     ->where('id', $cains)
                      ->execute();
     }
 
@@ -254,5 +254,59 @@ class Snatched
                               ->fetchAll();
 
         return $users;
+    }
+
+    /**
+     * @param array $hnr
+     *
+     * @throws Exception
+     */
+    public function set_hnr(array $hnr)
+    {
+        $set = [
+            's.hit_and_run' => TIME_NOW,
+        ];
+        $types = [
+            'days_3',
+            'days_14',
+            'days_over_14',
+        ];
+        foreach ($types as $type) {
+            $this->fluent->update('snatched AS s')
+                         ->set($set)
+                         ->where('(s.real_uploaded < s.real_downloaded OR s.seedtime < ?)', $hnr[$type])
+                         ->where('t.owner != s.userid')
+                         ->where('u.immunity = 0')
+                         ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                         ->leftJoin('users AS u ON s.userid = u.id')
+                         ->execute();
+        }
+    }
+
+    /**
+     * @param array $hnr
+     *
+     * @throws Exception
+     */
+    public function remove_hnr(array $hnr)
+    {
+        $set = [
+            's.hit_and_run' => 0,
+        ];
+        $types = [
+            'days_3',
+            'days_14',
+            'days_over_14',
+        ];
+        foreach ($types as $type) {
+            $this->fluent->update('snatched AS s')
+                         ->set($set)
+                         ->where('(s.real_uploaded >= s.real_downloaded OR s.seedtime > ?)', $hnr[$type])
+                         ->where('t.owner != s.userid')
+                         ->where('u.immunity = 0')
+                         ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                         ->leftJoin('users AS u ON s.userid = u.id')
+                         ->execute();
+        }
     }
 }
