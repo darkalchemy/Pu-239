@@ -14,27 +14,32 @@ require_once INCL_DIR . 'function_users.php';
 global $container, $site_config;
 
 $cache = $container->get(Cache::class);
+$run = '';
 if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('cleanup_check_');
     $cache->delete('tfreak_cron_');
+} elseif (!empty($argv[1])) {
+    $run = trim($argv[1]);
 }
 
 echo "===================================================\n";
 echo get_date((int) TIME_NOW, 'LONG', 1, 0) . "\n";
 
 $cleanup_check = $cache->get('cleanup_check_');
-if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
-    autoclean();
+if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check)) || !empty($run)) {
+    autoclean($run);
 } else {
     echo "Already running.\n";
 }
 
 /**
+ * @param string $run
+ *
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
-function autoclean()
+function autoclean(string $run)
 {
     global $container, $site_config;
 
@@ -69,12 +74,15 @@ function autoclean()
     }
     $query = $fluent->from('cleanup')
                     ->where('clean_on = 1')
-                    ->where('clean_time < ?', $now)
-                    ->where('clean_title != ?', 'FUNDS')
-                    ->orderBy('clean_time ASC')
-                    ->orderBy('clean_increment ASC')
-                    ->fetchAll();
-
+                    ->where('clean_title != ?', 'FUNDS');
+    if (!empty($run)) {
+        $query = $query->where('function_name = ?', $run);
+    } else {
+        $query = $query->where('clean_time < ?', $now)
+                       ->orderBy('clean_time ASC')
+                       ->orderBy('clean_increment ASC');
+    }
+    $query = $query->fetchAll();
     if ($site_config['site']['name'] === 'Crafty') {
         $torrents = $fluent->from('torrents')
                            ->select(null)

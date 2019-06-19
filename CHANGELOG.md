@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+update: allow single item run cron_controller.php  
 fix: clear_cache.php  
 fix: user class promotions/demotions  
 update: add set_hnr() remove_hnr() to Snatched Class  
