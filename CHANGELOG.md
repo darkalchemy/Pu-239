@@ -1,3 +1,8 @@
+### 19 Jun, 2019
+update: force remove DI_CACHE_DIR when running set_perms.php clear_cache.php uglify.php  
+update: uploadapps.php  
+update: insert IMDb when inserting images from TvMaze  
+
 ### 18 Jun, 2019
 remove: empty array categories.php  
 remove: sender from messages when sent as system  

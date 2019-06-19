@@ -133,4 +133,9 @@ function cleanup(string $group)
         chown($site_config['files']['path'], $group);
         chgrp($site_config['files']['path'], $group);
     }
+    if (php_sapi_name() == 'cli') {
+        if (file_exists(DI_CACHE_DIR)) {
+            passthru('sudo chown -R ' . DI_CACHE_DIR);
+        }
+    }
 }

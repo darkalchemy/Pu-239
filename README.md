@@ -127,6 +127,7 @@ npm install
 sudo rm -rf /dev/shm/php-di
 sudo php bin/set_perms.php
 php bin/uglify.php
+sudo rm -rf /dev/shm/php-di
 
 # update additional tables, if desired          
 php bin/import_tables.php
@@ -135,6 +136,10 @@ php bin/import_tables.php
 php bin/validate_images.php
 ```
 
+### Making Changes
+After updating composer, npm, changing anything inside the config folder, changing anything inside the staffpanel, you must delete the php-di cache.  
+```sudo rm -rf /dev/shm/php-di```
+ 
 ### API's 
 Fanart.tv API provides posters, backgrounds and banners and needs an api key.  
 TMDb API allows upcoming movies and posters and needs an api key.  
@@ -144,10 +149,8 @@ TVMaze allows tv lookup and posters, no key needed.
 API keys are set in the Staff Panel -> Site Settings.  
 
 ### Making Changes to css/js files  
-Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:
-```
-php bin/uglify.php
-```
+Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:  
+```php bin/uglify.php```
 
 ### Production
 Production creates minified javascript and css files when running uglify.php.  

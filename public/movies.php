@@ -54,7 +54,6 @@ switch ($list) {
     case 'tvmaze':
         $title = 'TV Schedule';
         $tvmaze_data = get_schedule();
-
         if (is_array($tvmaze_data)) {
             $today = date('Y-m-d');
             $shows = [];

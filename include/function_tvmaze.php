@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|null
  */
@@ -186,8 +186,8 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -227,10 +227,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string|null
  */
@@ -346,6 +346,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
                 'url' => $poster,
                 'type' => 'poster',
             ];
+            if (!empty($tvmaze_show_data['_embedded']['show']['externals']['imdb'])) {
+                $values['imdb_id'] = $tvmaze_show_data['_embedded']['show']['externals']['imdb'];
+            }
             $images_class = $container->get(Image::class);
             $images_class->insert($values);
         }
@@ -381,9 +384,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */
@@ -397,7 +400,6 @@ function get_schedule($use_cache = true)
     $url = 'https://api.tvmaze.com/schedule/full';
     $cache = $container->get(Cache::class);
     $tvmaze_data = $cache->get('tvmaze_schedule_');
-
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
         $content = fetch($url);
         if (!$content) {

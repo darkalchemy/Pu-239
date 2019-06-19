@@ -29,7 +29,7 @@ if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
             </span>
             <div class='tooltip_templates'>
                 <div id='uploadapp_tooltip' class='margin20'>
-                    <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
+                    <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10 has-text-black'>
                         {$lang['gl_hey']} {$CURUSER['username']}!
                     </div>
                     <div class='has-text-centered'>

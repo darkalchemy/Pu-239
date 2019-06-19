@@ -40,6 +40,7 @@ function run_uglify($argv = [])
     if (php_sapi_name() == 'cli') {
         $site_config['cache']['driver'] = 'memory';
     }
+    clear_di_cache();
     foreach ($argv as $arg) {
         if (!PRODUCTION && ($arg === 'update' || $arg === 'all')) {
             passthru('composer self-update');
@@ -403,10 +404,7 @@ function run_uglify($argv = [])
             passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
         }
     }
-    if (PRODUCTION) {
-        passthru('sudo rm ' . DI_CACHE_DIR . 'CompiledContainer.php');
-    }
-
+    clear_di_cache();
     cleanup(get_webserver_user());
 
     return true;

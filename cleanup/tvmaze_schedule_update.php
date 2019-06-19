@@ -29,7 +29,6 @@ function tvmaze_schedule_update($data)
     }
 
     $tvmaze_data = get_schedule(false);
-
     $start = date('Y-m-d');
     $date = new DateTime($start);
     $end = $date->modify('+1 day')
@@ -49,6 +48,9 @@ function tvmaze_schedule_update($data)
                             'url' => $poster,
                             'type' => 'poster',
                         ];
+                        if (!empty($tv['_embedded']['show']['externals']['imdb'])) {
+                            $values['imdb_id'] = $tv['_embedded']['show']['externals']['imdb'];
+                        }
                         $images_class->insert($values);
                         $cache->set('insert_tvmaze_tvmazeid_' . $tv['id'], 0, 604800);
 

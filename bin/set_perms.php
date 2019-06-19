@@ -96,5 +96,6 @@ foreach ($paths as $path) {
         }
     }
 }
-
+clear_di_cache();
+cleanup($group);
 echo "$i files processed\n";

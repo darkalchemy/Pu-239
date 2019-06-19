@@ -105,7 +105,7 @@ if (!empty($images)) {
             </div>
         <form>" . ($count > $perpage ? $pager['pagerbottom'] : '');
 } else {
-    $HTMLOUT .= main_div('There are no log $images to view', '', 'padding20');
+    $HTMLOUT .= main_div('There are no images to view', '', 'padding20');
 }
 
 echo stdhead('Manage Images') . wrapper($HTMLOUT, 'is-paddingless') . stdfoot();

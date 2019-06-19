@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Message;
+use Pu239\Session;
+use Pu239\User;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -13,7 +16,10 @@ class_check($class);
 $lang = array_merge($lang, load_language('uploadapps'));
 global $container, $site_config, $CURUSER;
 
+$session = $container->get(Session::class);
 $fluent = $container->get(Database::class);
+$cache = $container->get(Cache::class);
+$messages_class = $container->get(Message::class);
 $possible_actions = [
     'show',
     'viewapp',
@@ -29,6 +35,117 @@ if (!in_array($action, $possible_actions)) {
 $dt = TIME_NOW;
 $HTMLOUT = $where = $where1 = '';
 
+if ($action === 'takeappdelete') {
+    if (empty($_POST['deleteapp'])) {
+        stderr($lang['uploadapps_silly'], $lang['uploadapps_twix']);
+    } else {
+        $ids = $_POST['deleteapp'];
+        if (!is_array($ids)) {
+            $session->set('is-warning', $lang['uploadapps_twix']);
+        }
+        $in = str_repeat('?,', count($ids) - 1) . '?';
+        $fluent->deleteFrom('uploadapp')
+               ->where('id IN (' . $in . ')', $ids)
+               ->execute();
+        $cache->delete('new_uploadapp_');
+        $session->set('is-success', $lang['uploadapps_deletedsuc']);
+    }
+    $action = 'show';
+} elseif ($action === 'acceptapp') {
+    $id = (int) $_POST['id'];
+    if (!is_valid_id($id)) {
+        stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
+    }
+    $arr = $fluent->from('uploadapp AS a')
+                  ->select(null)
+                  ->select('a.userid AS uid')
+                  ->select('a.id')
+                  ->select('u.modcomment')
+                  ->select('u.username')
+                  ->leftJoin('users AS u ON a.userid = u.id')
+                  ->where('a.id = ?', $id)
+                  ->fetch();
+
+    $note = htmlsafechars($_POST['note']);
+    $subject = $lang['uploadapps_subject'];
+    $msg = "{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note";
+    $msg1 = "{$lang['uploadapps_msg_user']} [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.";
+    $modcomment = get_date((int) $dt, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
+    $update = [
+        'status' => 'accepted',
+        'comment' => $note,
+        'moderator' => $CURUSER['username'],
+    ];
+    $fluent->update('uploadapp')
+           ->set($update)
+           ->where('id = ?', $id)
+           ->execute();
+    $user_class = $container->get(User::class);
+    $update = [
+        'class' => UC_UPLOADER,
+        'modcomment' => $modcomment,
+    ];
+    $user_class->update($update, $arr['uid']);
+    $msgs_buffer[] = [
+        'poster' => $CURUSER['id'],
+        'receiver' => $arr['uid'],
+        'added' => $dt,
+        'msg' => $msg,
+        'subject' => $subject,
+    ];
+    foreach ($site_config['is_staff'] as $staff) {
+        $msgs_buffer[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $staff,
+            'added' => $dt,
+            'msg' => $msg1,
+            'subject' => $subject,
+        ];
+    }
+    if (!empty($msgs_buffer)) {
+        $messages_class->insert($msgs_buffer);
+    }
+    $cache->delete('new_uploadapp_');
+    $session->set('is-success', $lang['uploadapps_app_msg']);
+    $action = 'show';
+}
+if ($action === 'rejectapp') {
+    $id = (int) $_POST['id'];
+    if (!is_valid_id($id)) {
+        stderr($lang['uploadapps_error'], $lang['uploadapps_no_up']);
+    }
+    $arr = $fluent->from('uploadapp')
+                  ->select(null)
+                  ->select('userid AS uid')
+                  ->select('id')
+                  ->where('id = ?', $id)
+                  ->fetch();
+
+    $reason = htmlsafechars($_POST['reason']);
+    $subject = $lang['uploadapps_subject'];
+    $msg = "{$lang['uploadapps_rej_no']}\n\n{$lang['uploadapps_rej_reason']} $reason";
+    $msgs_buffer[] = [
+        'poster' => $CURUSER['id'],
+        'receiver' => $arr['uid'],
+        'added' => $dt,
+        'msg' => $msg,
+        'subject' => $subject,
+    ];
+    $update = [
+        'status' => 'rejected',
+        'comment' => $reason,
+        'moderator' => $CURUSER['username'],
+    ];
+    $fluent->update('uploadapp')
+           ->set($update)
+           ->where('id = ?', $id)
+           ->execute();
+    $messages_class->insert($msgs_buffer);
+    $cache->delete('new_uploadapp_');
+    $session->set('is-success', $lang['uploadapps_app_rejbeen']);
+    $action = 'show';
+}
+
 if ($action === 'app' || $action === 'show') {
     if ($action === 'show') {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
@@ -38,7 +155,7 @@ if ($action === 'app' || $action === 'show') {
                       ->select('u.registered')
                       ->select('u.class')
                       ->leftJoin('users AS u ON a.userid = u.id')
-                      ->where('a.status = "pending"')
+                      ->where('a.status != "pending"')
                       ->fetchAll();
     } else {
         $hide = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>";
@@ -85,11 +202,11 @@ if ($action === 'app' || $action === 'show') {
         $body = '';
         foreach ($res as $arr) {
             if ($arr['status'] === 'accepted') {
-                $status = "<span style='color: green;'>{$lang['uploadapps_accepted']}</span>";
+                $status = "<span class='has-text-success'>{$lang['uploadapps_accepted']}</span>";
             } elseif ($arr['status'] === 'rejected') {
                 $status = "<span class='has-text-danger'>{$lang['uploadapps_rejected']}</span>";
             } else {
-                $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
+                $status = "<span class='has-text-info'>{$lang['uploadapps_pending']}</span>";
             }
             $membertime = get_date((int) $arr['registered'], '', 0, 1);
             $elapsed = get_date((int) $arr['applied'], '', 0, 1);
@@ -103,9 +220,10 @@ if ($action === 'app' || $action === 'show') {
                 <td>' . mksize($arr['uploaded']) . '</td>
                 <td>' . member_ratio($arr['uploaded'], $arr['downloaded']) . "</td>
                 <td>{$status}</td>
-                <td><input type='checkbox' name='deleteapp[]' value='" . $arr['id'] . '"></td>
-            </tr>';
+                <td><input type='checkbox' name='deleteapp[]' value='" . $arr['id'] . "'></td>
+            </tr>";
         }
+
         $HTMLOUT .= main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' value='Delete' class='button is-small'>
@@ -115,9 +233,7 @@ if ($action === 'app' || $action === 'show') {
             $HTMLOUT .= $pager['pagerbottom'];
         }
     }
-}
-
-if ($action === 'viewapp') {
+} elseif ($action === 'viewapp') {
     $id = (int) $_GET['id'];
     $arr = $fluent->from('uploadapp AS a')
                   ->select('u.uploaded')
@@ -220,7 +336,7 @@ if ($action === 'viewapp') {
                     <input type='submit' value='{$lang['uploadapps_reject']}' class='button is-small margin20'>
                 </div>
             </form>";
-        $HTMLOUT .= main_table($table) . main_div($div1, 'top20') . main_div($div2, 'top20');
+        $HTMLOUT .= main_table($table) . main_div($div1, 'top20', 'padding20') . main_div($div2, 'top20', 'padding20');
     } else {
         $table = "
         <tr>
@@ -234,87 +350,5 @@ if ($action === 'viewapp') {
         $HTMLOUT .= main_table($table);
     }
 }
-$cache = $container->get(Cache::class);
-if ($action === 'acceptapp') {
-    $id = (int) $_POST['id'];
-    if (!is_valid_id($id)) {
-        stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
-    }
-    $arr = $fluent->from('uploadapp AS a')
-                  ->select(null)
-                  ->select('a.userid AS uid')
-                  ->select('a.id')
-                  ->select('u.modcomment')
-                  ->select('u.username')
-                  ->leftJoin('users AS u ON a.userid = u.id')
-                  ->where('uploadapp.id = ?', $id)
-                  ->fetch();
 
-    $note = htmlsafechars($_POST['note']);
-    $subject = $lang['uploadapps_subject'];
-    $msg = "{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note";
-    $msg1 = "{$lang['uploadapps_msg_user']} [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.";
-    $modcomment = get_date((int) $dt, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
-    sql_query("UPDATE uploadapp SET status = 'accepted', comment = " . sqlesc($note) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET class = ' . UC_UPLOADER . ', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($arr['uid']) . ' AND class < ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user_' . $arr['uid'], [
-        'class' => 3,
-        'modcomment' => $modcomment,
-    ], $site_config['expires']['user_cache']);
-    $msgs_buffer[] = [
-        'poster' => $CURUSER['id'],
-        'receiver' => $arr['uid'],
-        'added' => $dt,
-        'msg' => $msg,
-        'subject' => $subject,
-    ];
-    $subres = sql_query('SELECT id FROM users WHERE class >= ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
-    while ($subarr = mysqli_fetch_assoc($subres)) {
-        $msgs_buffer[] = [
-            'poster' => $CURUSER['id'],
-            'receiver' => $subarr['id'],
-            'added' => $dt,
-            'msg' => $msg1,
-            'subject' => $subject,
-        ];
-    }
-    if (!empty($msgs_buffer)) {
-        $messages_class->insert($msgs_buffer);
-    }
-    $cache->delete('new_uploadapp_');
-    stderr($lang['uploadapps_app_accepted'], "{$lang['uploadapps_app_msg']} {$lang['uploadapps_app_click']} <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a> {$lang['uploadapps_app_return']}");
-}
-if ($action === 'rejectapp') {
-    $id = (int) $_POST['id'];
-    if (!is_valid_id($id)) {
-        stderr($lang['uploadapps_error'], $lang['uploadapps_no_up']);
-    }
-    $res = sql_query('SELECT uploadapp.id, users.id AS uid FROM uploadapp INNER JOIN users ON uploadapp.userid=users.id WHERE uploadapp.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res);
-    $reason = htmlsafechars($_POST['reason']);
-    $subject = $lang['uploadapps_subject'];
-    $msg = "{$lang['uploadapps_rej_no']}\n\n{$lang['uploadapps_rej_reason']} $reason";
-    $msgs_buffer[] = [
-        'poster' => $CURUSER['id'],
-        'receiver' => $arr['uid'],
-        'added' => $dt,
-        'msg' => $msg,
-        'subject' => $subject,
-    ];
-
-    sql_query("UPDATE uploadapp SET status = 'rejected', comment = " . sqlesc($reason) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $messages_class->insert($msgs_buffer);
-    $cache->delete('new_uploadapp_');
-    stderr($lang['uploadapps_app_rej'], "{$lang['uploadapps_app_rejbeen']} {$lang['uploadapps_app_click']} <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
-}
-//== Delete applications
-if ($action === 'takeappdelete') {
-    if (empty($_POST['deleteapp'])) {
-        stderr($lang['uploadapps_silly'], $lang['uploadapps_twix']);
-    } else {
-        sql_query('DELETE FROM uploadapp WHERE id IN (' . implode(', ', $_POST['deleteapp']) . ') ') or sqlerr(__FILE__, __LINE__);
-        $cache->delete('new_uploadapp_');
-        stderr($lang['uploadapps_deleted'], "{$lang['uploadapps_deletedsuc']} {$lang['uploadapps_app_click']} <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
-    }
-}
 echo stdhead($lang['uploadapps_stdhead']) . wrapper($HTMLOUT) . stdfoot();
