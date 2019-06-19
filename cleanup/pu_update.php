@@ -4,16 +4,13 @@ declare(strict_types = 1);
 
 use DI\DependencyException;
 use DI\NotFoundException;
-use Envms\FluentPDO\Literal;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
-use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Pu239\User;
 
 /**
  * @param $data
  *
- * @throws UnbegunTransaction
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
@@ -23,100 +20,85 @@ function pu_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
-    $dt = TIME_NOW;
     $fluent = $container->get(Database::class);
-    $promos = $fluent->from('class_promo')
-                     ->orderBy('id')
+    $user_class = $container->get(User::class);
+    $messages_class = $container->get(Message::class);
+    $dt = TIME_NOW;
+    $promos = $fluent->from('class_promo AS p')
+                     ->select('c.classname')
+                     ->select('c.value AS class_value')
+                     ->select('c.value - 1 AS prev_class_value')
+                     ->where('c.name != ?', 'UC_MIN')
+                     ->where('c.name != ?', 'UC_MAX')
+                     ->where('c.name != ?', 'UC_STAFF')
+                     ->leftJoin('class_config AS c ON p.name = c.name')
+                     ->orderBy('p.id')
                      ->fetchAll();
+
     foreach ($promos as $ac) {
-        $class_config[$ac['name']]['id'] = $ac['id'];
-        $class_config[$ac['name']]['name'] = $ac['name'];
-        $class_config[$ac['name']]['min_ratio'] = $ac['min_ratio'];
-        $class_config[$ac['name']]['uploaded'] = $ac['uploaded'];
-        $class_config[$ac['name']]['time'] = $ac['time'];
-        $class_config[$ac['name']]['low_ratio'] = $ac['low_ratio'];
-
-        $limit = $class_config[$ac['name']]['uploaded'] * 1024 * 1024 * 1024;
-        $minratio = $class_config[$ac['name']]['min_ratio'];
-        $maxdt = ($dt - 86400 * $class_config[$ac['name']]['time']);
-
-        $class_value = $class_config[$ac['name']]['name'];
-        $classes = $fluent->from('class_config')
-                          ->where('value = ?', $class_value)
-                          ->fetch();
-        $class_name = $classes['classname'];
-        $prev_class = $class_value - 1;
-
-        $classes = $fluent->from('class_config')
-                          ->where('value = ?', $prev_class)
-                          ->fetch();
-        $prev_class_name = $classes['classname'];
-        $users = $fluent->from('users')
-                        ->select(null)
-                        ->select('id')
-                        ->select('uploaded')
-                        ->select('downloaded')
-                        ->select('invites')
-                        ->select('modcomment')
-                        ->where('class = ?', $prev_class)
-                        ->where('enabled = "yes"')
-                        ->where('registered < ?', $maxdt)
-                        ->where('uploaded >= ?', $limit)
-                        ->where('uploaded / IF(downloaded>0, downloaded, 1)>= ?', $minratio)
-                        ->fetchAll();
-
+        $class_config = [
+            'id' => $ac['id'],
+            'name' => $ac['name'],
+            'min_ratio' => (float) $ac['min_ratio'],
+            'uploaded' => (int) $ac['uploaded'] * 1024 * 1024 * 1024,
+            'time' => $dt - 86400 * $ac['time'],
+            'low_ratio' => (float) $ac['low_ratio'],
+            'class_value' => $ac['class_value'],
+            'class_name' => $ac['classname'],
+            'prev_class_value' => (int) $ac['prev_class_value'],
+            'prev_class_name' => $site_config['class_names'][$ac['prev_class_value']],
+        ];
+        $items = [
+            'id',
+            'class',
+            'uploaded',
+            'downloaded',
+            'invites',
+            'modcomment',
+        ];
+        $where = [
+            'class =' => $class_config['prev_class_value'],
+            'uploaded / NULLIF(downloaded, 0) >' => $class_config['low_ratio'],
+            'enabled = ' => 'yes',
+            'registered < ' => $class_config['time'],
+            'uploaded >= ' => $class_config['uploaded'],
+        ];
+        $users = $user_class->search($items, $where);
         $msgs_buffer = $users_buffer = [];
-        $comment = '';
-        if (count($users) > 0) {
+        if (!empty($users)) {
             $subject = 'Class Promotion';
-            $msg = 'Congratulations, you have been promoted to [b]' . $class_name . "[/b]. :)\n You get one extra invite.\n";
-            $cache = $container->get(Cache::class);
+            $msg = 'Congratulations, you have been promoted to [b]' . $class_config['class_name'] . "[/b]. :)\n You get one extra invite.\n";
             foreach ($users as $arr) {
                 $ratio = $arr['downloaded'] === 0 ? 'Infinite' : number_format($arr['uploaded'] / $arr['downloaded'], 3);
-                $modcomment = $arr['modcomment'];
-                $comment = get_date((int) $dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n";
-                $modcomment = $comment . $modcomment;
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - Promoted to ' . $class_config['class_name'] . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $arr['modcomment'];
+                $invites = $user_class->get_item('invites', $arr['id']);
+                $update = [
+                    'invites' => $invites + 1,
+                    'class' => $class_config['class_value'],
+                    'modcomment' => $modcomment,
+                ];
+                $user_class->update($update, $arr['id']);
                 $msgs_buffer[] = [
                     'receiver' => $arr['id'],
                     'added' => $dt,
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $user = $cache->get('user_' . $arr['id']);
-                if (!empty($user)) {
-                    $cache->update_row('user_' . $arr['id'], [
-                        'class' => $class_value,
-                        'invites' => $arr['invites'] + 1,
-                        'modcomment' => $modcomment,
-                    ], $site_config['expires']['user_cache']);
-                }
             }
-
-            $count = count($msgs_buffer);
-            if ($count > 0) {
-                $messages_class = $container->get(Message::class);
+            if (!empty($msgs_buffer)) {
                 $messages_class->insert($msgs_buffer);
-                $set = [
-                    'invites' => new Literal('invites + 1'),
-                    'class' => $class_value,
-                    'modcomment' => new Literal("CONCAT(\"$comment\", modcomment)"),
-                ];
-                $fluent->update('users')
-                       ->set($set)
-                       ->where('class = ?', $prev_class)
-                       ->where('enabled = "yes"')
-                       ->where('registered < ?', $maxdt)
-                       ->where('uploaded >= ?', $limit)
-                       ->where('uploaded / IF(downloaded>0, downloaded, 1) >= ?', $minratio)
-                       ->execute();
             }
-            $time_end = microtime(true);
-            $run_time = $time_end - $time_start;
-            $text = " Run time: $run_time seconds";
-            echo $text . "\n";
-            if ($data['clean_log']) {
-                write_log('Cleanup: Promoted ' . $count . ' member(s) from ' . $prev_class_name . ' to ' . $class_name . $text);
+            if ($data['clean_log'] && !empty($users)) {
+                write_log('Cleanup: Promoted ' . count($users) . ' member' . plural(count($users)) . " from {$class_config['prev_class_name']} to {$class_config['class_name']}");
             }
+            unset($msgs_buffer);
+        }
+        $time_end = microtime(true);
+        $run_time = $time_end - $time_start;
+        $text = " Run time: $run_time seconds";
+        echo $text . "\n";
+        if ($data['clean_log']) {
+            write_log("{$class_config['class_name']} Promotion Updates Cleanup: Completed" . $text);
         }
     }
 }

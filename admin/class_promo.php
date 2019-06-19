@@ -2,13 +2,16 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_promo'));
-global $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
+$fluent = $container->get(Database::class);
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
@@ -50,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $uploaded = $post_data[3];
                 $time = $post_data[4];
                 $low_ratio = $post_data[5];
-
                 if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
                     $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($min_ratio) ? implode('|', $min_ratio) : $min_ratio) . ', ' . sqlesc(is_array($uploaded) ? implode('|', $uploaded) : $uploaded) . ', ' . sqlesc(is_array($time) ? implode('|', $time) : $time) . ', ' . sqlesc(is_array($low_ratio) ? implode('|', $low_ratio) : $low_ratio) . ')';
                 }
@@ -62,22 +64,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['classpromo_error'], $lang['classpromo_err_query1']);
         }
         exit;
-    }
-
-    //ADD CLASS
-    if ($mode === 'add') {
+    } elseif ($mode === 'add') {
         if (isset($_POST['name'])) {
-            $name = htmlsafechars($_POST['name']);
+            $class_id = (int) $_POST['name'];
+            $name = $fluent->from('class_config')
+                           ->select(null)
+                           ->select('name')
+                           ->where('value = ?', $class_id)
+                           ->where('name != ?', 'UC_STAFF')
+                           ->where('name != ?', 'UC_MIN')
+                           ->where('name != ?', 'UC_MAX')
+                           ->fetch('name');
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
         }
         if (isset($_POST['min_ratio'])) {
-            $min_ratio = htmlsafechars($_POST['min_ratio']);
+            $min_ratio = (float) $_POST['min_ratio'];
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
         }
         if (isset($_POST['uploaded'])) {
-            $uploaded = htmlsafechars($_POST['uploaded']);
+            $uploaded = (int) $_POST['uploaded'];
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
         }
@@ -87,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
         }
         if (isset($_POST['uploaded'])) {
-            $low_ratio = $_POST['low_ratio'];
+            $low_ratio = (float) $_POST['low_ratio'];
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_lowratio']);
         }
@@ -97,10 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['classpromo_error'], $lang['classpromo_err_query2']);
         }
         exit;
-    }
-
-    // remove
-    if ($mode === 'remove') {
+    } elseif ($mode === 'remove') {
         if (isset($_POST['remove'])) {
             $name = htmlsafechars($_POST['remove']);
         } else {
@@ -115,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$res = sql_query('SELECT * FROM class_promo ORDER BY id ASC');
+$res = sql_query('SELECT * FROM class_promo ORDER BY id');
 if (mysqli_num_rows($res) >= 1) {
     $head_top = "
     <h3 class='has-text-centered top20'>{$lang['classpromo_user_sett']}</h3>

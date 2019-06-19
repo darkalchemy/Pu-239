@@ -140,6 +140,22 @@ class User
         return $user[$item];
     }
 
+    public function search(array $items, array $where)
+    {
+        $users = $this->fluent->from('users')
+            ->select(null);
+        foreach ($items as $item) {
+            $users = $users->select($item);
+        }
+        foreach ($where as $key => $value) {
+            $users = $users->where($key . ' ?', $value);
+        }
+        //dd($users);
+        $users = $users->fetchAll();
+
+        return $users;
+    }
+
     /**
      * @param int  $userid
      * @param bool $fresh
