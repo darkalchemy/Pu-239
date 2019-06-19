@@ -1,4 +1,5 @@
 ### 18 Jun, 2019
+remove: empty array categories.php  
 remove: sender from messages when sent as system  
 update: db files  
 update: README  
