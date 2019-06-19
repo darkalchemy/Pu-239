@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+update: check if empty function_tvmaze.php  
 update: temp fix for friends.php  
 update: config_example.php  
 update: force remove DI_CACHE_DIR when running set_perms.php clear_cache.php uglify.php  

@@ -20,12 +20,12 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -580,12 +580,12 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws AuthError
  *
  * @return bool
  */

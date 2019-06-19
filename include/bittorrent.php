@@ -83,8 +83,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 /**
  * @param bool $login
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -217,9 +217,9 @@ function userlogin()
 }
 */
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -308,9 +308,9 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -335,9 +335,9 @@ function make_freeslots($userid, $key)
 /**
  * @param bool $grouped
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -904,9 +904,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -983,9 +983,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -1223,9 +1223,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1266,9 +1266,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1302,8 +1302,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1370,9 +1370,9 @@ function formatQuery($query)
 /**
  * @param string $type
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1403,9 +1403,9 @@ function insert_update_ip(string $type)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -1458,9 +1458,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1528,9 +1528,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

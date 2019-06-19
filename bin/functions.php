@@ -7,9 +7,9 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */
@@ -35,9 +35,9 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */

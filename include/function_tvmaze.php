@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws InvalidManipulation
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -227,10 +227,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws UnbegunTransaction
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws DependencyException
  *
  * @return bool|string|null
  */
@@ -329,10 +329,12 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
         $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
     }
 
-    $set = [
-        'newgenre' => $tvmaze_show_data['genres2'],
-        'rating' => $tvmaze_show_data['rating']['average'],
-    ];
+    if (!empty($tvmaze_show_data['genres2'])) {
+        $set['newgenre'] = $tvmaze_show_data['genres2'];
+    }
+    if (!empty($tvmaze_show_data['rating']['average'])) {
+        $set['rating'] = $tvmaze_show_data['rating']['average'];
+    }
     if (empty($poster)) {
         if (!empty($tvmaze_show_data['image']['medium'])) {
             $poster = $tvmaze_show_data['image']['medium'];
@@ -354,7 +356,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
         }
     }
     $torrents_class = $container->get(Torrent::class);
-    $torrents_class->update($set, $tid);
+    if (!empty($set)) {
+        $torrents_class->update($set, $tid);
+    }
     $episode = get_episode($tvmaze_id, $season, $episode, $tid);
     if (!empty($tvmaze_show_data)) {
         if (!empty($poster)) {
@@ -384,9 +388,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed
  */
