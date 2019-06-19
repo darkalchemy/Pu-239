@@ -55,7 +55,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 {
     global $site_config, $CURUSER;
 
-    $terms = !(empty($terms) ? '&amp;' . implode('&amp;', $terms) : '';
+    $terms = !empty($terms) ? '&amp;' . implode('&amp;', $terms) : '';
     $checked = in_array($cat['id'], $cats) ? ' checked' : '';
     $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}{$terms}";
     if ($parent === 'child') {
