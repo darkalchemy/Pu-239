@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+update: config_example.php  
 update: force remove DI_CACHE_DIR when running set_perms.php clear_cache.php uglify.php  
 update: uploadapps.php  
 update: insert IMDb when inserting images from TvMaze  
