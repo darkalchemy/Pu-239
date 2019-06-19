@@ -7,11 +7,11 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_styles()
 {
@@ -35,11 +35,11 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_classes(array $styles, bool $create)
 {
@@ -135,7 +135,7 @@ function cleanup(string $group)
     }
     if (php_sapi_name() == 'cli') {
         if (file_exists(DI_CACHE_DIR)) {
-            passthru('sudo chown -R ' . DI_CACHE_DIR);
+            passthru("sudo chown -R $group:$group " . DI_CACHE_DIR);
         }
     }
 }

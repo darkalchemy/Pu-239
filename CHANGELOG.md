@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+fix: chown: missing operand functions.php  
 update: allow single item run cron_controller.php  
 fix: clear_cache.php  
 fix: user class promotions/demotions  
