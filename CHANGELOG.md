@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+fix: insert_update_ip()  
 fix: disable ip logging  
 fix: chown: missing operand functions.php  
 update: allow single item run cron_controller.php  

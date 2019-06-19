@@ -27,15 +27,15 @@ function pu_demote_update($data)
     $messages_class = $container->get(Message::class);
     $dt = TIME_NOW;
     $promos = $fluent->from('class_promo AS p')
-                    ->select('c.classname')
-                    ->select('c.value AS class_value')
-                    ->select('c.value - 1 AS prev_class_value')
-                    ->where('c.name != ?', 'UC_MIN')
-                    ->where('c.name != ?', 'UC_MAX')
-                    ->where('c.name != ?', 'UC_STAFF')
-                    ->leftJoin('class_config AS c ON p.name = c.name')
-                    ->orderBy('p.id')
-                    ->fetchAll();
+                     ->select('c.classname')
+                     ->select('c.value AS class_value')
+                     ->select('c.value - 1 AS prev_class_value')
+                     ->where('c.name != ?', 'UC_MIN')
+                     ->where('c.name != ?', 'UC_MAX')
+                     ->where('c.name != ?', 'UC_STAFF')
+                     ->leftJoin('class_config AS c ON p.name = c.name')
+                     ->orderBy('p.id')
+                     ->fetchAll();
 
     foreach ($promos as $ac) {
         $class_config = [

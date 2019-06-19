@@ -140,22 +140,6 @@ class User
         return $user[$item];
     }
 
-    public function search(array $items, array $where)
-    {
-        $users = $this->fluent->from('users')
-            ->select(null);
-        foreach ($items as $item) {
-            $users = $users->select($item);
-        }
-        foreach ($where as $key => $value) {
-            $users = $users->where($key . ' ?', $value);
-        }
-        //dd($users);
-        $users = $users->fetchAll();
-
-        return $users;
-    }
-
     /**
      * @param int  $userid
      * @param bool $fresh
@@ -197,6 +181,22 @@ class User
         return $user;
     }
 
+    public function search(array $items, array $where)
+    {
+        $users = $this->fluent->from('users')
+                              ->select(null);
+        foreach ($items as $item) {
+            $users = $users->select($item);
+        }
+        foreach ($where as $key => $value) {
+            $users = $users->where($key . ' ?', $value);
+        }
+        //dd($users);
+        $users = $users->fetchAll();
+
+        return $users;
+    }
+
     /**
      * @param int    $class
      * @param string $bot
@@ -227,10 +227,10 @@ class User
      * @param array $values
      * @param array $lang
      *
-     * @throws UnbegunTransaction
      * @throws DependencyException
      * @throws Exception
      * @throws NotFoundException
+     * @throws UnbegunTransaction
      *
      * @return bool|int
      */
@@ -313,8 +313,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -457,8 +457,8 @@ class User
      * @param int    $remember
      * @param array  $lang
      *
-     * @throws AttemptCancelledException
      * @throws AuthError
+     * @throws AttemptCancelledException
      *
      * @return bool
      */

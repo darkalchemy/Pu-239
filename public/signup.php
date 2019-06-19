@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $container->get(User::class);
     $userid = $user->add($post, $lang);
     if (!empty($userid)) {
-        insert_update_ip('register');
+        insert_update_ip('register', $userid);
         if (!empty($invite_id) && !empty($invite_code)) {
             $email = validate_invite($invite_id, $invite_code);
             if (!empty($email)) {

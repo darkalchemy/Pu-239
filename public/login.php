@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -19,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             header("Location: {$site_config['paths']['baseurl']}");
         }
-        insert_update_ip('login');
+        $auth = $container->get(Auth::class);
+        $userid = $auth->getUserId();
+        insert_update_ip('login', $userid);
         die();
     } else {
         unset($_POST);
