@@ -5,9 +5,10 @@ declare(strict_types = 1);
 global $site_config;
 
 require_once __DIR__ . '/../include/bittorrent.php';
+require_once BIN_DIR . 'functions.php';
 $database = '';
 clear_di_cache();
-cleanup($group);
+cleanup(get_webserver_user());
 if (!empty($argv[1]) && !is_array($argv[1])) {
     $cache->delete($argv[1]);
     die("Cache: {$argv[1]} cleared\n");

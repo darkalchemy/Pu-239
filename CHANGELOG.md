@@ -1,4 +1,6 @@
 ### 19 Jun, 2019
+fix: clear_cache.php  
+fix: user class promotions/demotions  
 update: add set_hnr() remove_hnr() to Snatched Class  
 update: check if empty function_tvmaze.php  
 update: temp fix for friends.php  
