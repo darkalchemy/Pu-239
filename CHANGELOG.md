@@ -1,4 +1,6 @@
 ### 20 Jun, 2019
+fix: forum polls  
+update: formatting bugs.php  
 fix: get_user_class_name() use class_config.name instead of class_config.classname  
 fix: mybonus.php  
 fix: use class['name'] not class['classname'] class_config  

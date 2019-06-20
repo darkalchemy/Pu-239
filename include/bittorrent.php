@@ -242,6 +242,7 @@ function get_stylesheet()
     $class_config = $cache->get('class_config_' . $style);
     foreach ($class_config as $arr) {
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
+            $site_config['class_realnames'][$arr['value']] = str_replace('UC_', '', $arr['name']);
             $site_config['class_names'][$arr['value']] = $arr['classname'];
             $site_config['class_colors'][$arr['value']] = $arr['classcolor'];
             $site_config['class_images'][$arr['value']] = $site_config['paths']['images_baseurl'] . "class/{$arr['classpic']}";
@@ -1366,13 +1367,13 @@ function formatQuery($query)
 
 /**
  * @param string $type
- *
  * @param int    $userid
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function insert_update_ip(string $type, int $userid)
 {

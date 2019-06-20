@@ -2982,4 +2982,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `searchcloud` MODIFY COLUMN `searchedfor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
     ],
+    [
+        'id' => 1560990003,
+        'info' => 'Rename column',
+        'date' => '19 Jun 2019',
+        'query' => 'ALTER TABLE `forum_poll_votes` RENAME COLUMN `option` TO `options`',
+        'flush' => false,
+    ],
 ];

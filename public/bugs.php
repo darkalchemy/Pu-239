@@ -9,6 +9,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
+require_once INCL_DIR . 'function_bbcode.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
@@ -95,7 +96,7 @@ if ($action === 'viewbug') {
                 $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
                 break;
         }
-        $problem = htmlsafechars($a['problem']);
+        $problem = format_comment($a['problem']);
         switch ($a['status']) {
             case 'fixed':
                 $status = "<span style='color: green;'><b>{$lang['fixed']}</b></span>";
@@ -188,7 +189,7 @@ if ($action === 'viewbug') {
                     break;
             }
             $HTMLOUT .= "<tr>
-          <td><a href='?action=viewbug&amp;id=" . (int) $q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
+          <td><a href='?action=viewbug&amp;id=" . (int) $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
           <td nowrap='nowrap'>" . get_date((int) $q1['added'], 'TINY') . ' / ' . format_username((int) $q1['sender']) . "</td>
           <td>{$priority}</td>
           <td>{$status}</td>

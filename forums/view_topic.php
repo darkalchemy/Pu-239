@@ -11,7 +11,8 @@ use Pu239\Session;
 use Pu239\User;
 
 $image = placeholder_image();
-$members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $now_viewing = '';
+$status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $now_viewing = '';
+$members_votes = [];
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -76,7 +77,6 @@ $topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_usern
 $topic_name = !empty($arr['topic_name']) ? htmlsafechars($arr['topic_name']) : '';
 $topic_desc1 = !empty($arr['topic_desc']) ? htmlsafechars($arr['topic_desc']) : '';
 
-$members_votes = [];
 if ($arr['poll_id'] > 0) {
     $arr_poll = $fluent->from('forum_poll')
                        ->where('id = ?', $arr['poll_id'])
@@ -94,7 +94,7 @@ if ($arr['poll_id'] > 0) {
 
     $query = $fluent->from('forum_poll_votes')
                     ->select(null)
-                    ->select('option')
+                    ->select('options')
                     ->where('poll_id = ?', $arr['poll_id'])
                     ->where('user_id = ?', $CURUSER['id'])
                     ->fetchAll();
@@ -104,143 +104,112 @@ if ($arr['poll_id'] > 0) {
     if ($query) {
         $voted = 1;
         foreach ($query as $members_vote) {
-            $members_votes[] = $members_vote['option'];
+            $members_votes[] = $members_vote['options'];
         }
     }
     $change_vote = $arr_poll['change_vote'] === 'no' ? 0 : 1;
-    $poll_open = $arr_poll['poll_closed'] === 'yes' || $arr_poll['poll_starts'] > TIME_NOW || $arr_poll['poll_ends'] < TIME_NOW ? 0 : 1;
+    $poll_open = $arr_poll['poll_closed'] === 'yes' || $arr_poll['poll_starts'] > TIME_NOW || ($arr_poll['poll_ends'] != 1356048000 && $arr_poll['poll_ends'] < TIME_NOW) ? 0 : 1;
     $poll_options = unserialize($arr_poll['poll_answers']);
     $multi_options = $arr_poll['multi_options'];
     $total_votes = $fluent->from('forum_poll_votes')
                           ->select(null)
                           ->select('COUNT(id) AS count')
-                          ->where('option < 21')
+                          ->where('options < 21')
                           ->where('poll_id = ?', $arr['poll_id'])
                           ->fetch('count');
 
     $num_non_votes = $fluent->from('forum_poll_votes')
                             ->select(null)
                             ->select('COUNT(id) AS count')
-                            ->where('option>20')
+                            ->where('options > 20')
                             ->where('poll_id = ?', $arr['poll_id'])
                             ->fetch('count');
 
     $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
-
     $topic_poll .= ($voted || $poll_open === 0 ? '' : '
     <form action="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
-	    <fieldset class="poll_select">
-	        <input type="hidden" name="topic_id" value="' . $topic_id . '">
-	        <input type="hidden" name="action_2" value="poll_vote">') . '
-	        <tablecellspacing="5" cellpadding="5">
-	            <tr>
-	                <td colspan="2">
-	                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="tooltipper emoticon lazy">
-	                    <span>Poll' . ($arr_poll['poll_closed'] === 'yes' ? '
-                            closed
-                        </span>' : ($arr_poll['poll_starts'] > TIME_NOW ? '
-                            starts:
-                        </span> ' . get_date((int) $arr_poll['poll_starts'], '') : ($arr_poll['poll_ends'] == 1356048000 ? '
-                        </span>' : ($arr_poll['poll_ends'] > TIME_NOW ? ' 
-                            ends:
-                        </span> ' . get_date((int) $arr_poll['poll_ends'], '', 0, 1) : '
-                        </span>')))) . '
-	                </td>
-	                <td colspan="3">' . ($CURUSER['class'] < UC_STAFF ? '' : '
-	                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_edit&amp;topic_id=' . $topic_id . '" class="is-link">
-	                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/modify.gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_edit'] . '
-	                    </a>
-                    	<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_reset&amp;topic_id=' . $topic_id . '" class="is-link">
-                    	    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop_watch.png" alt=" " class="tooltipper emoticon lazy"> ' . $lang['fe_reset'] . '
-                    	</a>' . (($arr_poll['poll_ends'] > TIME_NOW || $arr_poll['poll_closed'] === 'no') ? '
-                    	<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_close&amp;topic_id=' . $topic_id . '" class="is-link">
-                    	    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy"> close</a>' : '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_open&amp;topic_id=' . $topic_id . '" class="is-link"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy"> ' . $lang['fe_start'] . '
-                        </a>') . '
-	                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_delete&amp;topic_id=' . $topic_id . '" class="is-link">
-	                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete.gif" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_delete'] . '
-	                    </a>') . '
-	                </td>
-	            </tr>
-	            <tr>
-                    <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll_question.png" alt="" class="tooltipper emoticon lazy"></td>
-                    <td colspan="5">' . format_comment($arr_poll['question']) . '</td>
-            	</tr>
-	            <tr>
-	                <td colspan="5">' . (($voted || $poll_open === 0) ? '' : '
-                        <p>you may select up to <span>' . $multi_options . ' </span>option' . plural($multi_options) . '.</p>') . '
-	                </td>
-	            </tr>';
+        <input type="hidden" name="topic_id" value="' . $topic_id . '">
+        <input type="hidden" name="action_2" value="poll_vote">') . '
+        <div class="level-wide bottom20 padding20">
+            <div class="level-left">
+                <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="tooltipper emoticon lazy">
+            </div>
+            <div class="level-center-center size_7">
+                <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll_question.png" alt="" class="tooltipper emoticon lazy right20">           
+                ' . format_comment($arr_poll['question']) . '
+            </div>
+            <div class="level-right">
+                <span class="right20">' . ($arr_poll['poll_closed'] === 'yes' ? 'Poll :: Closed</span>' : ($arr_poll['poll_starts'] > TIME_NOW ? 'Poll :: Starts: </span>' . get_date((int) $arr_poll['poll_starts'], '') : ($arr_poll['poll_ends'] == 1356048000 ? '</span>' : ($arr_poll['poll_ends'] > TIME_NOW ? 'Poll :: Ends: </span>' . get_date((int) $arr_poll['poll_ends'], 'LONG', 0, 1) : '</span>')))) . ($CURUSER['class'] < UC_STAFF ? '' : '
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_edit&amp;topic_id=' . $topic_id . '" class="is-link">
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/modify.gif" alt="" class="tooltipper emoticon lazy" title="' . $lang['fe_edit'] . '">
+                    </a>
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_reset&amp;topic_id=' . $topic_id . '" class="is-link">
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop_watch.png" alt=" " class="tooltipper emoticon lazy" title="' . $lang['fe_reset'] . '">
+                    </a>' . (($arr_poll['poll_ends'] > TIME_NOW || $arr_poll['poll_closed'] === 'no') ? '
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_close&amp;topic_id=' . $topic_id . '" class="is-link">
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy" title="Close">
+                    </a>' : '
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_open&amp;topic_id=' . $topic_id . '" class="is-link">
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy" title="' . $lang['fe_start'] . '">
+                    </a>') . '
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_delete&amp;topic_id=' . $topic_id . '" class="is-link">
+                        <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete.gif" alt="" class="tooltipper emoticon lazy" title="' . $lang['fe_delete'] . '">
+                    </a>') . '
+                </span>
+            </div>
+        </div>' . (($voted || $poll_open === 0) ? '' : '
+        <div class="has-text-centered bottom20 bg-02 min-350 w-50 round10 padding20">
+            <h3 class="bottom20">You may select up to ' . $multi_options . ' option' . plural($multi_options) . '.</h3>');
     $number_of_options = $arr_poll['number_of_options'];
     for ($i = 0; $i < $number_of_options; ++$i) {
         if ($voted) {
             $vote_count = $fluent->from('forum_poll_votes')
                                  ->select(null)
                                  ->select('COUNT(id) AS count')
-                                 ->where('option = ?', $i)
+                                 ->where('options = ?', $i)
                                  ->where('poll_id = ?', $arr['poll_id'])
                                  ->fetch('count');
 
             $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
             $math_text = $math . '% with ' . $vote_count . ' vote' . plural($vote_count);
             $math_image = '
-            <tablewidth="200px">
-		        <tr>
-		            <td style="padding: 0; background-image: url(' . $site_config['paths']['images_baseurl'] . '/forums/vote_img_bg.gif); background-repeat: repeat-x">
-                        <span class="tooltipper" title="' . $math_text . '">
-                            <i class="icon-search icon" aria-hidden="true"></i>
-                        </span>
-                	</td>
-        	   </tr>
-        	</table>';
+            <div style="padding: 0; background-image: url(' . $site_config['paths']['images_baseurl'] . '/forums/vote_img_bg.gif); background-repeat: repeat-x">
+                <span class="tooltipper" title="' . $math_text . '">
+                    <i class="icon-search icon" aria-hidden="true"></i>
+                </span>
+            </div>';
         }
-        $topic_poll .= '
-            <tr>
-                <td>' . (($voted || $poll_open === 0) ? '
-                    <span>' . ($i + 1) . '.</span>' : ($multi_options === 1 ? '
-                    <input type="radio" name="vote" value="' . $i . '">' : '
-                    <input type="checkbox" name="vote[]" id="vote[]" value="' . $i . '">')) . '
-                </td>
-		        <td>' . format_comment($poll_options[$i]) . '</td>
-		        <td>' . $math_image . '</td>
-		        <td><span>' . $math_text . '</span></td>
-		        <td>' . (in_array($i, $members_votes) ? '
-		            <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/check.gif" alt=" " class="tooltipper emoticon lazy">
-		            <span>' . $lang['fe_your_vote'] . '!</span>' : '') . '
-		        </td>
-		    </tr>';
+        $topic_poll .= ($voted || $poll_open === 0 ? '' : '
+            <span class="level-center-center padding10">
+                <span class="right20">' . ($multi_options === 1 ? '
+                    <input type="radio" name="vote" value="' . $i . '" class="right10">' : '
+                    <input type="checkbox" name="vote[]" id="vote[]" value="' . $i . '" class="right10"> ') . ($i + 1) . '.
+                </span>
+                <span>' . format_comment($poll_options[$i]) . $math_image . $math_text . (in_array($i, $members_votes) ? '
+                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/check.gif" alt=" " class="tooltipper emoticon lazy">' . $lang['fe_your_vote'] . '!' : '') . '
+                </span>
+            </span>');
     }
-    $topic_poll .= (($change_vote === 1 && $voted) ? '
-            <tr>
-                <td colspan="5">
-			        <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="is-link"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop_watch.png" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_reset_your_vote'] . '!</a>
-			</td>
-			</tr>' : '') . ($voted ? '
-	        <tr>
-			    <td colspan="5">' . $lang['fe_total_votes'] . ': ' . number_format($total_votes) . $total_non_votes . ($CURUSER['class'] < UC_STAFF ? '' : '<br>
-        			<a class="is-link"  title="' . $lang['fe_list_voters'] . '" id="toggle_voters">' . $lang['fe_list_voters'] . '</a>
-		        	<div id="voters" style="display:none">' . $who_voted . '</div>') . '
-			    </td>
-	        </tr>
-        </table><br>' : ($poll_open === 0 ? '' : '
-            <tr>
-                <td>' . ($multi_options == 1 ? '
-                    <input type="radio" name="vote" value="666">' : '
-                    <input type="checkbox" name="vote[]" id="vote[]" value="666">') . '
-                </td>
-                <td colspan="5">
-                    <span>' . $lang['fe_i_just_want_to_see_the_results'] . '!</span>
-                </td>
-            </tr>') . (($voted || $poll_open === 0) ? '
-        </table><br>' : '
-            <tr>
-                <td colspan="5">
-			        <input type="submit" name="button" class="button is-small w-100" value="' . $lang['fe_vote'] . '!">
-			    </td>
-		    </tr>
-		</table>
-    </fieldset>
-</form>'));
+    $topic_poll .= ($change_vote === 1 && $voted ? '
+            <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="is-link">
+                <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop_watch.png" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_reset_your_vote'] . '!
+            </a>' : '') . ($voted ? $lang['fe_total_votes'] . ': ' . number_format($total_votes) . $total_non_votes . ($CURUSER['class'] < UC_STAFF ? '' : '<br>
+            <a class="is-link"  title="' . $lang['fe_list_voters'] . '" id="toggle_voters">' . $lang['fe_list_voters'] . '</a>
+            <div id="voters" style="display:none">' . $who_voted . '</div>') : ($poll_open === 0 ? '' : '
+            <div class="margin20">' . ($multi_options === 1 ? '
+                <input type="radio" name="vote" value="666">' : '
+                <input type="checkbox" name="vote[]" id="vote[]" value="666">') . '
+                <span class="left10">' . $lang['fe_i_just_want_to_see_the_results'] . '!</span>
+            </div>') . ($voted || $poll_open === 0 ? '' : '
+            <div class="has-text-centered">
+                <input type="submit" name="button" class="button is-small" value="' . $lang['fe_vote'] . '!">
+            </div>'));
+
+    $topic_poll .= ($voted || $poll_open === 0 ? '' : '
+        </div>') . '
+    </form>';
 }
+$topic_poll = main_div($topic_poll, '', 'has-text-centered padding20');
 if (isset($_GET['search'])) {
     $search = htmlsafechars($_GET['search']);
     $topic_name = highlightWords($topic_name, $search);
@@ -458,7 +427,7 @@ $HTMLOUT .= $mini_menu . "
                     " . ($may_post ? $locked_or_reply_button : "Can't Post") . '
                 </li>
             </ul>
-        </div>';
+        </div>' . $topic_poll;
 
 $users_class = $container->get(User::class);
 foreach ($posts as $arr) {

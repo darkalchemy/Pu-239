@@ -45,13 +45,13 @@ switch ($action) {
         $res_poll = sql_query('SELECT t.poll_id, t.locked, f.min_class_write, f.min_class_read, p.poll_starts, p.poll_ends, p.change_vote, p.multi_options, p.poll_closed FROM topics AS t LEFT JOIN forum_poll AS p ON t.poll_id=p.id LEFT JOIN forums AS f ON t.forum_id=f.id  WHERE t.id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
         //=== did they vote yet
-        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id=' . sqlesc($arr_poll['poll_id']) . ' AND user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res_poll_did_they_vote);
-        $vote_count = number_format($row[0]);
+        $vote_count = number_format((int) $row[0]);
         $post_vote = isset($_POST['vote']) ? $_POST['vote'] : '';
         //=== let's do all the possible errors
         switch (true) {
-            case !is_valid_id($arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
+            case !is_valid_id((int) $arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
                 stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
@@ -80,24 +80,23 @@ switch ($action) {
                 break;
         }
         //=== ok, all is good, lets enter the vote(s) into the DB
-        $ip = sqlesc(($CURUSER['ip'] === '' ? htmlsafechars(getip()) : $CURUSER['ip']));
         $added = TIME_NOW;
         //=== if they selected "I just want to see the results!" only enter that one... 666 is reserved for that :)
         if (in_array('666', $post_vote)) {
-            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `options`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . $added . ')') or sqlerr(__FILE__, __LINE__);
             //=== all went well, send them back!
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
         } else {
             //=== if single vote (not array)
             if (is_valid_poll_vote($post_vote)) {
-                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `options`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
                 $success = 1;
             } else {
                 foreach ($post_vote as $votes) {
                     $vote = 0 + $votes;
                     if (is_valid_poll_vote($vote)) {
-                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `options`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
                         $success = 1;
                     }
                 }

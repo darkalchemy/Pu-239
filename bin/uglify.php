@@ -20,12 +20,12 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return bool
  */
@@ -36,7 +36,6 @@ function run_uglify($argv = [])
     if (empty($BLOCKS)) {
         die('BLOCKS are empty');
     }
-
     if (php_sapi_name() == 'cli') {
         $site_config['cache']['driver'] = 'memory';
     }
@@ -59,7 +58,6 @@ function run_uglify($argv = [])
 
     $styles = get_styles();
     get_classes($styles, false);
-
     foreach ($styles as $style) {
         make_dir(CACHE_DIR . $style);
         make_dir(TEMPLATE_DIR . $style);
@@ -580,12 +578,12 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
+ * @throws NotLoggedInException
  *
  * @return bool
  */
