@@ -1,4 +1,5 @@
 ### 20 Jun, 2019
+fix: mybonus.php  
 fix: use class['name'] not class['classname'] class_config  
 fix: Undefined variable: signup_vars adduser.php  
 

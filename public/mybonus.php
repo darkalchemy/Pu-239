@@ -697,10 +697,10 @@ foreach ($options as $gets) {
                 <div class='masonry-item-clean padding20 bg-04 round10'>
                     <div class='flex-vertical comments h-100'>
                         <div>
-                            <h2 class='has-text-centered has-text-weight-bold'>" . htmlsafechars($gets['bonusname']) . '</h2>' . htmlsafechars($gets['description']) . $additional_text . "
+                            <h2 class='has-text-centered has-text-weight-bold'>" . htmlsafechars($gets['bonusname']) . '</h2>' . htmlsafechars($gets['description']) . "
                         </div>
                         <div>
-                            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' accept-charset='utf-8'>
+                            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' accept-charset='utf-8'>$additional_text
                                 <input type='hidden' name='option' value='" . $gets['id'] . "'>
                                 <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                                 <input type='hidden' name='menge' value='" . $gets['menge'] . "'>
