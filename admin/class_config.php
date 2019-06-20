@@ -331,7 +331,7 @@ foreach ($classes as $class) {
 
 if (!empty($primary_classes)) {
     foreach ($primary_classes as $arr) {
-        $cname = str_replace('uc_', '', strtolower($arr['class'])) . '_bk';
+        $cname = str_replace('uc_', '', strtolower($arr['name'])) . '_bk';
         $HTMLOUT .= "
                         <tr class='{$cname}'>
                             <td class='has-text-black has-text-weight-bold w-20'>" . htmlsafechars($arr['name']) . "</td>
