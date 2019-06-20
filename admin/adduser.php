@@ -45,7 +45,7 @@ $body = "
         <div class='columns'>                    
             <div class='column is-one-quarter'>{$lang['text_username']}</div>
             <div class='column'>
-                <input type='text' name='username' id='username' class='w-100' onblur='checkit();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
+                <input type='text' name='username' id='username' class='w-100' onblur='checkit();' value='' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                 <div id='namecheck'></div>
             </div>
         </div>

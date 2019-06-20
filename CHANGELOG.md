@@ -1,3 +1,6 @@
+### 20 Jun, 2019
+fix: Undefined variable: signup_vars adduser.php  
+
 ### 19 Jun, 2019
 fix: floodlimits  
 fix: Data too long for column searchcloud  
