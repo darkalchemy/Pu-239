@@ -57,24 +57,24 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 
     $terms = !empty($terms) ? '&amp;' . implode('&amp;', $terms) : '';
     $checked = in_array($cat['id'], $cats) ? ' checked' : '';
-    $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}{$terms}";
+
+    $list = [];
+    $list[] = 'cats[]=' . $cat['parent_id'];
     if ($parent === 'child') {
         $js = '';
     } else {
         foreach ($grouped as $group) {
             if ($cat['id'] === $group['id']) {
-                $list = [];
                 foreach ($group['children'] as $children) {
                     $list[] = 'cats[]=' . $children['id'];
                 }
             }
         }
         $js = ' onclick="return showMe(event);"';
-        if (!empty($list)) {
-            $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
-        }
     }
-
+    if (!empty($list)) {
+        $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
+    }
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
         <span class='left10'>
             <a href='{$site_config['paths']['baseurl']}/browse.php?c{$cat['id']}'>
