@@ -68,10 +68,10 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws NotFoundException
+ * @return string
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, int $post_id = 0, bool $anonymous = false)
 {
@@ -325,10 +325,10 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws NotFoundException
+ * @return string|null
  * @throws DependencyException
  *
- * @return string|null
+ * @throws NotFoundException
  */
 function ratio_image_machine(float $ratio_to_check)
 {
@@ -380,10 +380,10 @@ function get_user_class_name(int $class, bool $to_lower = false)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($site_config['class_names'][$class]) && $to_lower) {
-        return strtolower(str_replace(' ', '_', $site_config['class_names'][$class]));
-    } elseif (isset($site_config['class_names'][$class])) {
-        return $site_config['class_names'][$class];
+    if (isset($site_config['class_realnames'][$class]) && $to_lower) {
+        return strtolower(str_replace(' ', '_', $site_config['class_realnames'][$class]));
+    } elseif (isset($site_config['class_realnames'][$class])) {
+        return $site_config['class_realnames'][$class];
     } else {
         return '';
     }
@@ -467,10 +467,10 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return string
  * @throws Exception
  *
- * @return string
+ * @throws \Envms\FluentPDO\Exception
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
@@ -645,12 +645,12 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @throws NotFoundException
+ * @return bool|mixed|string|null
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  *
- * @return bool|mixed|string|null
+ * @throws NotFoundException
  */
 function get_avatar($avatar)
 {
