@@ -2975,4 +2975,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `staffpanel` (`page_name`, `file_name`, `description`, `type`, `av_class`, `added_by`, `added`, `navbar`) VALUES ('Manage Images', 'staffpanel.php?tool=manage_images', 'Manage Images', 'stats', 4, 1, 1560769719, 1)",
         'flush' => true,
     ],
+    [
+        'id' => 1560990002,
+        'info' => 'Alter column',
+        'date' => '19 Jun 2019',
+        'query' => 'ALTER TABLE `searchcloud` MODIFY COLUMN `searchedfor` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'flush' => false,
+    ],
 ];

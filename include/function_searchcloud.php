@@ -100,7 +100,7 @@ function searchcloud_insert($word, $column)
     }
 
     $values = [
-        'searchedfor' => $word,
+        'searchedfor' => substr($word, 255),
         'search_column' => $column,
         'howmuch' => 1,
     ];

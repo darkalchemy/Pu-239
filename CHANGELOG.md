@@ -1,4 +1,5 @@
 ### 19 Jun, 2019
+fix: Data too long for column searchcloud  
 fix: open parent cat when single child cat selected categories.php  
 fix: insert_update_ip()  
 fix: disable ip logging  
