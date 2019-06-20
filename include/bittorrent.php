@@ -658,7 +658,7 @@ function flood_limit($table)
     global $container, $site_config, $CURUSER, $lang;
 
     $session = $container->get(Session::class);
-    if (!file_exists($site_config['paths']['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['paths']['flood_file'])))) {
+    if (!file_exists($site_config['paths']['flood_file']) || !is_array($max = json_decode(file_get_contents($site_config['paths']['flood_file'])))) {
         return;
     }
     if (!isset($max[$CURUSER['class']])) {
