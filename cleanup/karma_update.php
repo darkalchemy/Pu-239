@@ -5,7 +5,8 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
-use Pu239\Cache;
+use Pu239\Database;
+use Pu239\User;
 
 /**
  * @param $data
@@ -20,52 +21,37 @@ function karma_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
-    $count = $total = 0;
-
+    $fluent = $container->get(Database::class);
     if ($site_config['bonus']['on']) {
-        $users_buffer = [];
         $bmt = $site_config['bonus']['max_torrents'];
-        //        $sql = $fluent->from('peers')
-        //            ->select(null)
-        //            ->select('COUNT(torrent) AS tcount)
-        //            ->select('seedbonus')
-        //            ->select('users.username')
-
-        $sql = "SELECT COUNT(torrent) As tcount, userid, seedbonus, users.username
-                FROM peers
-                LEFT JOIN users ON users.id = userid
-                WHERE seeder = 'yes' AND connectable = 'yes'
-                GROUP BY userid, seedbonus, username";
-        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
-            $cache = $container->get(Cache::class);
-            while ($arr = mysqli_fetch_assoc($res)) {
-                if ($arr['tcount'] >= $bmt) {
-                    $arr['tcount'] = $bmt;
-                }
-                $Buffer_User = $arr['userid'];
-                if ($arr['userid'] == $Buffer_User && $arr['userid'] != null) {
-                    $bonus = $site_config['bonus']['per_duration'] * $arr['tcount'];
+        $sql = $fluent->from('peers AS p')
+                      ->select(null)
+                      ->select('userid')
+                      ->select('COUNT(p.torrent) AS tcount')
+                      ->select('u.seedbonus')
+                      ->innerJoin('users AS u ON p.userid = u.id')
+                      ->where('p.seeder = "yes"');
+        if ($site_config['tracker']['connectable_check']) {
+            $sql = $sql->where('connectable = "yes"');
+        }
+        $sql = $sql->groupBy('userid')
+                   ->fetchAll();
+        if (!empty($sql)) {
+            $total = 0;
+            $count = count($sql);
+            $user_class = $container->get(User::class);
+            foreach ($sql as $arr) {
+                if (!empty($arr['userid']) && is_valid_id($arr['userid'])) {
+                    $bonus = $site_config['bonus']['per_duration'] * ($arr['tcount'] > $bmt ? $bmt : $arr['tcount']);
                     $total += $bonus;
                     $update['seedbonus'] = $arr['seedbonus'] + $bonus;
-                    $users_buffer[] = "($Buffer_User, " . sqlesc($arr['username']) . ", {$update['seedbonus']}, '', '')";
-                    $cache->update_row('user_' . $Buffer_User, [
-                        'seedbonus' => $update['seedbonus'],
-                    ], $site_config['expires']['user_cache']);
+                    $user_class->update($update, $arr['userid']);
                 }
             }
-            $count = count($users_buffer);
-
-            if ($count > 0) {
-                $sql = 'INSERT INTO users (id, username, seedbonus) VALUES ' . implode(', ', $users_buffer) . ' 
-                        ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus)';
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
-            }
             if ($data['clean_log']) {
-                write_log('Cleanup - ' . $count . ' user' . plural($count) . ' received seedbonus totaling ' . $total . ' karma');
+                write_log('Seedbonus Cleanup - ' . $count . ' user' . plural($count) . ' received seedbonus totaling ' . $total . ' karma');
             }
         }
-        unset($users_buffer, $update, $count, $arr, $total, $Buffer_User, $sql, $res);
     }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;

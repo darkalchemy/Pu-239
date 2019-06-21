@@ -1,4 +1,6 @@
 ### 21 Jun, 2019
+update: karma_update.php  
+update: db files  
 fix: check targetid is set before assigning friends.php  
 fix: user set country takeeditcp.php  
 update: wrong id name CasinoBets.php  
