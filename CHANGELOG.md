@@ -1,4 +1,7 @@
 ### 21 Jun, 2019
+fix: user set country takeeditcp.php  
+update: wrong id name CasinoBets.php  
+update: deletion notice bugs.php  
 fix: sender can't be 0  
 fix: user class names when not for css  
 add: hide/show navbar on scroll  

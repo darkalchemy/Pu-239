@@ -369,7 +369,7 @@ if ($action === 'avatar') {
     }
     $action = 'social';
 } elseif ($action === 'location') {
-    if (isset($_POST['country']) && (($country = $_POST['country']) != $CURUSER['country']) && is_valid_id($country)) {
+    if (isset($_POST['country']) && (($country = (int) $_POST['country']) != $CURUSER['country']) && is_valid_id($country)) {
         $updateset[] = "country = $country";
         $curuser_cache['country'] = $country;
         $user_cache['country'] = $country;
