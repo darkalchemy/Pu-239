@@ -38,6 +38,6 @@ $lang = [
     'submit_btn_send' => 'Send this bug!',
     'go_back' => 'Go back',
     'h1_count_bugs' => "There is <span style='color: #FF0000;'>%s</span> new bug%s. Please check them",
-    'delete_when' => 'All solved bugs will be deleted after 2 weeks (from added date).',
+    'delete_when' => 'All solved bugs will be deleted after 30 days (from added date).',
     'no_bugs' => 'There are no reported bugs :).',
 ];

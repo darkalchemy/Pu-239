@@ -83,7 +83,7 @@ class CasinoBets
     {
         $this->fluent->update('casino_bets')
                      ->set($set)
-                     ->where('betid = ?', $id)
+                     ->where('id = ?', $id)
                      ->execute();
     }
 
