@@ -12,7 +12,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ff332dd3.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_3d6fdacc.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_0ce959d1.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_34928329.css";
         case 'cookieconsent_css':
@@ -22,7 +22,7 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_e5e07f89.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_39023546.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_1adc8925.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':

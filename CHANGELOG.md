@@ -1,3 +1,7 @@
+### 21 Jun, 2019
+fix: user class names when not for css  
+add: hide/show navbar on scroll  
+
 ### 20 Jun, 2019
 fix: forum polls  
 update: formatting bugs.php  

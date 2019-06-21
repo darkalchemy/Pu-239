@@ -20,12 +20,12 @@ if (php_sapi_name() == 'cli') {
 /**
  * @param array $argv
  *
- * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -235,6 +235,7 @@ function run_uglify($argv = [])
             SCRIPTS_DIR . 'flipper.js',
             SCRIPTS_DIR . 'replaced.js',
             SCRIPTS_DIR . 'hide_html.js',
+            SCRIPTS_DIR . 'hide_navbar.js',
         ];
 
         $js_list = array_merge($js_list, [
@@ -578,12 +579,12 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
  * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
