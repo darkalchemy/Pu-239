@@ -2989,4 +2989,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `forum_poll_votes` RENAME COLUMN `option` TO `options`',
         'flush' => false,
     ],
+    [
+        'id' => 1561142804,
+        'info' => 'Add Funds Table cleanup',
+        'date' => '20 Jun, 2019',
+        'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Funds Table Update', 'funds_table_update.php', 1531625400, 2592000, 1, 'Truncate Funds Table<br>This is handled by Jobby', 0, 'funds_table_update')",
+        'flush' => false,
+    ],
 ];

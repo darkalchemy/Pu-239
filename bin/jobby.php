@@ -22,6 +22,14 @@ $jobby->add('Images Controller', [
     'enabled' => true,
 ]);
 
+$jobby->add('Fund Table Update', [
+    'runAs' => $site_config['webserver']['username'],
+    'command' => '/usr/bin/php ' . INCL_DIR . 'cron_controller.php funds_table_update',
+    'schedule' => '0 0 1 * *',
+    'output' => LOGS_DIR . 'images/images_' . date('Y.m.d', TIME_NOW) . '.log',
+    'enabled' => true,
+]);
+
 $jobby->add('Fix log permissions', [
     'command' => 'sudo chown -R ' . $site_config['webserver']['username'] . ':' . $site_config['webserver']['username'] . ' ' . LOGS_DIR,
     'schedule' => '* * * * *',

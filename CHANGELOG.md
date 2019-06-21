@@ -1,4 +1,5 @@
 ### 21 Jun, 2019
+add: cleanup funds table, runs monthly through jobby  
 update: karma_update.php  
 update: db files  
 fix: check targetid is set before assigning friends.php  

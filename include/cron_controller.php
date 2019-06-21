@@ -72,13 +72,13 @@ function autoclean(string $run)
                    ->execute();
         }
     }
-    $query = $fluent->from('cleanup')
-                    ->where('clean_on = 1')
-                    ->where('clean_title != ?', 'FUNDS');
+    $query = $fluent->from('cleanup');
     if (!empty($run)) {
         $query = $query->where('function_name = ?', $run);
     } else {
-        $query = $query->where('clean_time < ?', $now)
+        $query = $query->where('clean_on = 1')
+                       ->where('function_name != ?', 'funds_table_update')
+                       ->where('clean_time < ?', $now)
                        ->orderBy('clean_time ASC')
                        ->orderBy('clean_increment ASC');
     }

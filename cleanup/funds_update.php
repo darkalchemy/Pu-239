@@ -5,8 +5,9 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
-use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Message;
+use Pu239\User;
 
 /**
  * @param $data
@@ -19,45 +20,44 @@ use Pu239\Message;
 function funds_update($data)
 {
     global $container, $site_config;
-    //update to run manually
 
     $time_start = microtime(true);
-    $secs = 30 * 86400;
-    $dt = sqlesc(TIME_NOW - $secs);
-    sql_query("DELETE FROM funds WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
-    $cache = $container->get(Cache::class);
-    $cache->delete('totalfunds_');
     $dt = TIME_NOW;
-    $res = sql_query("SELECT id, modcomment, vipclass_before FROM users WHERE donor = 'yes' AND donoruntil < " . $dt . ' AND donoruntil != 0') or sqlerr(__FILE__, __LINE__);
-    $msgs_buffer = $users_buffer = [];
-    if (mysqli_num_rows($res) > 0) {
+    $fluent = $container->get(Database::class);
+    $sql = $fluent->from('users')
+                  ->select(null)
+                  ->select('id')
+                  ->select('modcomment')
+                  ->select('vipclass_before')
+                  ->where('donor = "yes"')
+                  ->where('donoruntil < ?', $dt)
+                  ->where('donoruntil != 0')
+                  ->fetchAll();
+    $msgs_buffer = [];
+    if (!empty($sql)) {
+        $user_class = $container->get(User::class);
         $subject = 'Donor status removed by system.';
         $msg = "Your Donor status has timed out and has been auto-removed by the system, and your Vip status has been removed. We would like to thank you once again for your support to {$site_config['site']['name']}. If you wish to re-new your donation, Visit the site donate link. Cheers!\n";
-        while ($arr = mysqli_fetch_assoc($res)) {
-            $modcomment = $arr['modcomment'];
-            $modcomment = get_date((int) $dt, 'DATE', 1) . " - Donation status Automatically Removed By System.\n" . $modcomment;
-            $modcom = sqlesc($modcomment);
+        foreach ($sql as $arr) {
+            $modcomment = get_date($dt, 'DATE', 1) . " - Donation status Automatically Removed By System.\n" . $arr['modcomment'];
             $msgs_buffer[] = [
                 'receiver' => $arr['id'],
                 'added' => $dt,
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-            $users_buffer[] = '(' . $arr['id'] . ',' . $arr['vipclass_before'] . ',\'no\',\'0\', ' . $modcom . ')';
-            $update['class'] = ($arr['vipclass_before']);
-            $cache->update_row('user_' . $arr['id'], [
-                'class' => $update['class'],
+            $update = [
+                'class' => $arr['vipclass_before'],
+                'modcomment' => $modcomment,
                 'donor' => 'no',
                 'donoruntil' => 0,
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_cache']);
+            ];
+            $user_class->update($update, $arr['id']);
         }
-        $count = count($users_buffer);
+        $count = count($msgs_buffer);
         if ($data['clean_log'] && $count > 0) {
             $messages_class = $container->get(Message::class);
             $messages_class->insert($msgs_buffer);
-            sql_query('INSERT INTO users (id, class, donor, donoruntil, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),
-            donor = VALUES(donor),donoruntil = VALUES(donoruntil),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup: Donation status expired - ' . $count . ' Member(s)');
