@@ -269,19 +269,18 @@ if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 if (!isset($self)) {
-    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, false);
+    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, false, $peer_id);
     if ($count > 1) {
         err('Connection limit exceeded!');
     }
 } else {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
-    if ($user['highspeed'] === 'no' && $upthis > 103872) {
+    if ($user['highspeed'] === 'no' && $upthis > 5000000) {
         $diff = $dt - $self['ts'];
         $rate = $upthis / ($diff + 1);
         $last_up = (int) $user['uploaded'];
-        //=== about 5 MB/s
-        if ($rate > 503872) {
+        if ($rate > 5000000) {
             auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrent['id'], $agent, $realip, $last_up);
         }
     }

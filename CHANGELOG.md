@@ -1,4 +1,5 @@
 ### 21 Jun, 2019
+fix: limit torrents to 1 per user announce.php
 fix: change username  
 fix: email notification of watched cats takeupload.php  
 add: cleanup funds table, runs monthly through jobby  

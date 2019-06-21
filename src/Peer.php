@@ -123,17 +123,19 @@ class Peer
      * @param int    $tid
      * @param string $torrent_pass
      * @param bool   $by_class
+     * @param string $peer_id
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get_torrent_count(int $tid, string $torrent_pass, bool $by_class)
+    public function get_torrent_count(int $tid, string $torrent_pass, bool $by_class, string $peer_id)
     {
         $count = $this->fluent->from('peers')
                               ->select(null)
                               ->select('COUNT(id) AS count')
                               ->where('torrent = ?', $tid)
+                              ->where('peer_id != ?', $peer_id)
                               ->where('torrent_pass = ?', $torrent_pass);
 
         if ($by_class) {
@@ -269,8 +271,8 @@ class Peer
     public function flush(int $userid)
     {
         $result = $this->fluent->deleteFrom('peers')
-            ->where('userid = ?', $userid)
-            ->execute();
+                               ->where('userid = ?', $userid)
+                               ->execute();
 
         return $result;
     }
