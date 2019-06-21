@@ -11,7 +11,7 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('bitbucket'));
+$lang = load_language('bitbucket');
 global $container, $site_config;
 
 $auth = $container->get(Auth::class);
@@ -70,6 +70,6 @@ if (!empty($images)) {
     echo json_encode($output);
     die();
 } else {
-    echo json_encode(['msg' => 'Failure']);
+    echo json_encode(['msg' => $lang['bitbucket_unknown']]);
     die();
 }

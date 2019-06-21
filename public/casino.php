@@ -49,7 +49,6 @@ $maxtotbet = 30; //== Amount of total open bets allowed
 $alwdebt = 0; //== Allow users to get into debt
 $writelog = 1; //== Writes results to log
 $delold = 1; //== Clear bets once finished
-$sendfrom = 2; //== The id of the user which notification PM's are noted as sent from
 //== End of Config
 
 $fluent = $container->get(Database::class);
@@ -285,8 +284,6 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $subject = $lang['casino_casino_results'];
             $msg = 'You lost a bet! ' . htmlsafechars($user['username']) . ' just won ' . htmlsafechars($nogb) . ' of your upload credit!';
             $msgs_buffer[] = [
-                'sender' => $sendfrom,
-                'poster' => $sendfrom,
                 'receiver' => $tbet['userid'],
                 'added' => $dt,
                 'msg' => $msg,
@@ -341,8 +338,6 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $msg = "{$lang['casino_you_just_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_upload_credit_from']} " . $user['username'] . '!';
 
             $msgs_buffer[] = [
-                'sender' => $sendfrom,
-                'poster' => $sendfrom,
                 'receiver' => $tbet['userid'],
                 'added' => $dt,
                 'msg' => $msg,

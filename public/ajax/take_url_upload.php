@@ -10,7 +10,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-$lang = array_merge(load_language('global'), load_language('bitbucket'));
+$lang = load_language('bitbucket');
 global $container, $site_config;
 
 $auth = $container->get(Auth::class);
@@ -26,8 +26,6 @@ if (!filter_var($url, FILTER_VALIDATE_URL)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_url']]);
     die();
 }
-
-$lang = array_merge(load_language('global'), load_language('bitbucket'));
 
 $SaLt = $site_config['salt']['one'];
 $SaLty = $site_config['salt']['two'];
@@ -97,6 +95,6 @@ if (!empty($image)) {
     ]);
     die();
 } else {
-    echo json_encode(['msg' => 'Unknown failure occurred']);
+    echo json_encode(['msg' => $lang['bitbucket_unknown']]);
     die();
 }

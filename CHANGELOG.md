@@ -1,4 +1,5 @@
 ### 21 Jun, 2019
+fix: sender can't be 0  
 fix: user class names when not for css  
 add: hide/show navbar on scroll  
 

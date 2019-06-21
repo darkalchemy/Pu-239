@@ -60,4 +60,5 @@ $lang = [
     'bitbucket_invalid_url' => 'This does not appear to be a valid URL.',
     'bitbucket_download_failed' => 'There was an error trying to fetch the image.',
     'bitbucket_store_failed' => 'There was an error trying to save the image to BitBucket.',
+    'bitbucket_unknown' => 'Unknown failure occurred',
 ];

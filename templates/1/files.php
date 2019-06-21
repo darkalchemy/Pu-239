@@ -22,7 +22,7 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_e5e07f89.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_1adc8925.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_0239d3cd.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':

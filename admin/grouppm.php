@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $msg = str_replace('&amp', '&', $_POST['body']);
-    $sender = isset($_POST['system']) && $_POST['system'] === 'yes' ? 0 : $CURUSER['id'];
+    $sender = isset($_POST['system']) && $_POST['system'] === 'yes' ? 2 : $CURUSER['id'];
     if (empty($subject)) {
         $err[] = $lang['grouppm_nosub'];
     }
