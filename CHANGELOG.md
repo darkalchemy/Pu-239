@@ -1,4 +1,5 @@
 ### 21 Jun, 2019
+fix: check targetid is set before assigning friends.php  
 fix: user set country takeeditcp.php  
 update: wrong id name CasinoBets.php  
 update: deletion notice bugs.php  
