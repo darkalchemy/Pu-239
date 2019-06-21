@@ -336,7 +336,7 @@ cheers,\n
     $id = (int) $assoc['id'];
     $subject = sqlesc("Welcome to {$site_config['site']['name']} !");
     $added = TIME_NOW;
-    sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (2, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////
     header('Location: ?do=view_page');
 }

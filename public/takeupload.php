@@ -17,6 +17,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_bbcode.php';
 $torrent_pass = $auth = $strip = $bot = $owner_id = $csrf = $type = $name = $url = $isbn = $poster = $MAX_FILE_SIZE = $youtube = $tags = $description = $body = $release_group = $free_length = $half_length = '';
 $music = $movie = $game = $apps = $subs = $genre = [];
 $data = $_POST;
@@ -441,8 +442,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -527,12 +528,17 @@ if (!empty($notify)) {
     $subject = 'New Torrent Uploaded!';
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
-        $msgs_buffer[] = [
-            'receiver' => $notif['id'],
-            'added' => $dt,
-            'msg' => $msg,
-            'subject' => $subject,
-        ];
+        if ($site_config['signup']['email_confirm'] && strpos($notif['notifs'], 'email') !== false) {
+            $body = format_comment($msg);
+            send_mail(strip_tags($notif['email']), $subject, $body, strip_tags($body));
+        } else {
+            $msgs_buffer[] = [
+                'receiver' => $notif['id'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+        }
     }
     if (!empty($msgs_buffer)) {
         $messages_class->insert($msgs_buffer);

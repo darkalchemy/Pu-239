@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->update_row('user_' . $uid, [
                 'leechwarn' => 0,
             ], $site_config['expires']['user_cache']);
-            $pms[] = '(0,' . $uid . ', ' . sqlesc($sub) . ', ' . sqlesc($body) . ', ' . sqlesc(TIME_NOW) . ')';
+            $pms[] = '(2,' . $uid . ', ' . sqlesc($sub) . ', ' . sqlesc($body) . ', ' . sqlesc(TIME_NOW) . ')';
         }
         if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or ($q_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));

@@ -1,4 +1,6 @@
 ### 21 Jun, 2019
+fix: change username  
+fix: email notification of watched cats takeupload.php  
 add: cleanup funds table, runs monthly through jobby  
 update: karma_update.php  
 update: db files  

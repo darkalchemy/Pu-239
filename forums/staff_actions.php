@@ -269,7 +269,7 @@ switch ($staff_action) {
         }
         $subject = strip_tags(isset($_POST['subject']) ? trim($_POST['subject']) : '');
         $message = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : '');
-        $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 0 : $CURUSER['id']);
+        $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 2 : $CURUSER['id']);
         if ($subject == '' || $message == '') {
             stderr($lang['gl_error'], $lang['fe_you_must_enter_both_a_subj_mes']);
         }

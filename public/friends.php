@@ -172,7 +172,7 @@ if ($action === 'confirm') {
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         stderr('Success', 'Friend was deleted successfully.');
-        //mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
+    //mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
     } elseif ($type === 'block') {
         sql_query('DELETE FROM blocks WHERE userid=' . sqlesc($userid) . ' AND blockid=' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
@@ -180,7 +180,7 @@ if ($action === 'confirm') {
         $frag = 'blocks';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         stderr('Success', 'Block was deleted successfully.');
-        //mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Block was deleted successfully.') : stderr('oopss', 'No Block found with ID !! .');
+    //mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Block was deleted successfully.') : stderr('oopss', 'No Block found with ID !! .');
     } else {
         stderr('Error', 'Unknown type.');
     }

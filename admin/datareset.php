@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $msg = $lang['datareset_hey'] . htmlsafechars($a['username']) . "\n";
         $msg .= $lang['datareset_looks'] . htmlsafechars($a['name']) . $lang['datareset_nuked'];
         $msg .= $lang['datareset_down'] . mksize($a['sd']) . $lang['datareset_downbe'] . mksize($newd) . "\n";
-        $pms[] = '(0,' . sqlesc($a['uid']) . ',' . TIME_NOW . ',' . sqlesc($msg) . ')';
+        $pms[] = '(2,' . sqlesc($a['uid']) . ',' . TIME_NOW . ',' . sqlesc($msg) . ')';
         $cache = $container->get(Cache::class);
         $cache->update_row('user_' . $a['uid'], [
             'downloaded' => $new_download,

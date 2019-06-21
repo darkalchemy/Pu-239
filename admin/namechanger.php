@@ -40,7 +40,7 @@ if (isset($mode) && $mode == 'change') {
                 stderr($lang['namechanger_borked'], $lang['namechanger_already_exist']);
             }
         }
-        sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(2, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         header("Refresh: 2; url={$site_config['paths']['baseurl']}/staffpanel.php?tool=namechanger");
         stderr($lang['namechanger_success'], $lang['namechanger_u_changed'] . htmlsafechars($uname) . $lang['namechanger_please']);
     }

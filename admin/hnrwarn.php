@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = $lang['hnrwarn_msg1'] . $CURUSER['username'] . $lang['hnrwarn_msg2'];
         $pms = [];
         foreach ($_uids as $id) {
-            $pms[] = '(0,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
+            $pms[] = '(2,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
         $cache->update_row('user_' . $id, [
             'hnrwarn' => 'no',
