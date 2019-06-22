@@ -8,7 +8,10 @@ use Pu239\User;
 require_once __DIR__ . '/../include/bittorrent.php';
 global $container, $site_config;
 
-$user = $container->get(User::class);
 $auth = $container->get(Auth::class);
-$user->logout($auth->getUserId(), true);
+if ($auth->isLoggedIn()) {
+    $userid = $auth->getUserId();
+    $user = $container->get(User::class);
+    $user->logout($userid, true);
+}
 header("Location: {$site_config['paths']['baseurl']}/login.php");
