@@ -148,7 +148,9 @@ if (empty($mode)) {
     $pass = quotemeta($site_config['db']['password']);
     $db = $site_config['db']['database'];
     $ext = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
-    $filepath = BACKUPS_DIR . $ext;
+    $bdir = BACKUPS_DIR . 'db' . DIRECTORY_SEPARATOR . date('Y.m.d', $dt) . DIRECTORY_SEPARATOR;
+    make_dir($bdir, 0774);
+    $filepath = $bdir . $ext;
     if ($site_config['backup']['use_gzip']) {
         exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db | gzip -q9>{$filepath}.gz");
     } else {
@@ -187,9 +189,12 @@ if (empty($mode)) {
         if ($files) {
             $count = count($files);
             foreach ($files as $arr) {
-                $filename = BACKUPS_DIR . $arr['name'];
-                if (is_file($filename)) {
-                    unlink($filename);
+                preg_match('/\d{4}\.\d{2}\.\d{2}/', $arr['name'], $match);
+                if (isset($match[0])) {
+                    $filename = BACKUPS_DIR . 'db' . DIRECTORY_SEPARATOR . $match[0] . DIRECTORY_SEPARATOR . $arr['name'];
+                    if (is_file($filename)) {
+                        unlink($filename);
+                    }
                 }
             }
             $fluent->deleteFrom('dbbackup')

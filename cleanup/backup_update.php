@@ -19,29 +19,22 @@ function backup_update($data)
 
     $time_start = microtime(true);
     $dt = TIME_NOW;
-    $days = 3;
-    $hours = 6 * 3600;
+    $days = $dt - (3 * 86400);
+    $hours = $dt - (6 * 3600);
     $fluent = $container->get(Database::class);
-    $files = $fluent->from('dbbackup')
-                    ->where('added < ?', $dt - ($days * 86400))
-                    ->fetchAll();
-
-    foreach ($files as $arr) {
-        $filename = BACKUPS_DIR . $arr['name'];
-        if (is_file($filename)) {
-            unlink($filename);
-        }
-    }
-
     $fluent->deleteFrom('dbbackup')
-           ->where('added < ?', $dt - ($days * 86400))
+           ->where('added < ?', $days)
            ->execute();
 
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(BACKUPS_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    foreach ($objects as $name => $object) {
-        if (preg_match('/^tbl_/', basename($name))) {
+    $paths = [
+        BACKUPS_DIR . 'db' . DIRECTORY_SEPARATOR => $days,
+        BACKUPS_DIR . 'table' . DIRECTORY_SEPARATOR => $hours,
+    ];
+    foreach ($paths as $path => $dt) {
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($objects as $name => $object) {
             $date = filemtime($name);
-            if (($date + $hours) < $dt) {
+            if ($date < $dt) {
                 unlink($name);
             }
         }

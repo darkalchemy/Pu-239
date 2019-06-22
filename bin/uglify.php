@@ -59,9 +59,9 @@ function run_uglify($argv = [])
     $styles = get_styles();
     get_classes($styles, false);
     foreach ($styles as $style) {
-        make_dir(CACHE_DIR . $style);
-        make_dir(TEMPLATE_DIR . $style);
-        make_dir(CHAT_DIR . 'css' . DIRECTORY_SEPARATOR . $style);
+        make_dir(CACHE_DIR . $style, 0774);
+        make_dir(TEMPLATE_DIR . $style, 0774);
+        make_dir(CHAT_DIR . 'css' . DIRECTORY_SEPARATOR . $style, 0774);
         write_class_files($style);
     }
 
@@ -93,7 +93,7 @@ function run_uglify($argv = [])
         ];
 
         foreach ($dirs as $dir) {
-            make_dir($dir);
+            make_dir($dir, 0774);
             $files = glob($dir . '/*');
             foreach ($files as $file) {
                 can_delete($file, true);
@@ -501,7 +501,7 @@ function process_css($key, $list, $spurpose, $csstmp, $folder, $css_ext)
         if ($key === 'sceditor_css') {
             copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");
             $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
-            make_dir(BIN_DIR . $folder);
+            make_dir(BIN_DIR . $folder, 0774);
             $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
             $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.min.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
             file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);

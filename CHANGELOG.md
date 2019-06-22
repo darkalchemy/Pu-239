@@ -1,3 +1,6 @@
+### 22 Jun, 2019
+update: separate db backups into type/date folders  
+
 ### 21 Jun, 2019
 fix: incorrect height hide_navbar.js  
 fix: toggle status functions.php  

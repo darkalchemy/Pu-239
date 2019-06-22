@@ -56,15 +56,21 @@ function backupdb($data)
     $db = $site_config['db']['database'];
     $dt = TIME_NOW;
     $bdir = BACKUPS_DIR;
+    make_dir($bdir, 0774);
     $filename = $db . '_' . date('Y.m.d-H.i.s', $dt) . '.sql';
 
     exec("mysqldump -h $host -u'{$user}' -p'{$pass}' $db -d | sed 's/ AUTO_INCREMENT=[0-9]*//g'>{$bdir}{$db}_structure.sql");
+
+    $bdir = BACKUPS_DIR . 'db' . DIRECTORY_SEPARATOR . date('Y.m.d', $dt) . DIRECTORY_SEPARATOR;
+    make_dir($bdir, 0774);
     if ($site_config['backup']['use_gzip']) {
         exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ' | ' . $site_config['backup']['gzip_path'] . " -q9>{$bdir}{$filename}.gz");
     } else {
         exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ">{$bdir}{$filename}");
     }
 
+    $bdir = BACKUPS_DIR . 'table' . DIRECTORY_SEPARATOR . date('Y.m.d', $dt) . DIRECTORY_SEPARATOR;
+    make_dir($bdir, 0774);
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
         if ($table !== 'peers') {
