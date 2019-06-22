@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+update: move reset password and force logout to sysop  
 fix: user logout logout.php  
 fix: typo userdetails.php  
 fix: minor bugs  
