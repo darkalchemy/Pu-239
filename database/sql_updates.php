@@ -3018,10 +3018,10 @@ KEY `expires` (`expires`)
         'flush' => true,
     ],
     [
-        'id' => 1561210622,
-        'info' => 'Update seedbonus to float',
+        'id' => 1561210623,
+        'info' => 'Update seedbonus to deciaml',
         'date' => '22 Jun, 2019',
-        'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` float NOT NULL DEFAULT '200'",
+        'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` decimal(10,2) NOT NULL DEFAULT '200.00'",
         'flush' => true,
     ],
 ];

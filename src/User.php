@@ -327,7 +327,6 @@ class User
                                ->set($set)
                                ->where('id = ?', $userid)
                                ->execute();
-
         if ($result && $persist) {
             $this->cache->update_row('user_' . $userid, $set, $this->site_config['expires']['user_cache']);
         } else {

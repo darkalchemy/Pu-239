@@ -515,7 +515,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Karma: </span>
-                                <span class='level-right'>" . number_format($users_data['seedbonus']) . "</span>
+                                <span class='level-right'>" . number_format((float) $users_data['seedbonus']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Seeding: </span>

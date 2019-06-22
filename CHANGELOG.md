@@ -1,5 +1,5 @@
 ### 22 Jun, 2019
-update: seedbonus column to float  
+update: seedbonus column to decimal  
 update: mybonus.php  
 add: torrent['descr'] and tvmaze caching images_update.php  
 add: seedbonus to user for filling request  

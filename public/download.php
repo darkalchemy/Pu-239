@@ -63,7 +63,7 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_confi
     $cache->delete($user['id'] . '_happy');
 }
 if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_download']);
     $cache->update_row('user_' . $user['id'], [
         'seedbonus' => $update['seedbonus'],
