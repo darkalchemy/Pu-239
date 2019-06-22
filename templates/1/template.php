@@ -44,7 +44,7 @@ function stdhead(?string $title = null, array $stdhead = [])
     }
     if (!empty($CURUSER) && $CURUSER['enabled'] !== 'yes') {
         $user = $container->get(User::class);
-        $user->logout();
+        $user->logout($CURUSER['id'], true);
     }
     if (empty($title)) {
         $title = $site_config['site']['name'];

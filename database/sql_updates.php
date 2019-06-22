@@ -2996,4 +2996,18 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Funds Table Update', 'funds_table_update.php', 1531625400, 2592000, 1, 'Truncate Funds Table<br>This is handled by Jobby', 0, 'funds_table_update')",
         'flush' => false,
     ],
+    [
+        'id' => 1561210619,
+        'info' => 'Add limit ip to site_config',
+        'date' => '22 Jun, 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site','limit_ips','bool',false,'Disable Users that have exceeded allowed number of IPs.')",
+        'flush' => true,
+    ],
+    [
+        'id' => 1561210620,
+        'info' => 'Add limit ip count to site_config',
+        'date' => '22 Jun, 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site','limit_ips_count','int',3,'Disable Users that have exceeded this number of IPs.')",
+        'flush' => true,
+    ],
 ];

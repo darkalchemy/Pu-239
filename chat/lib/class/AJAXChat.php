@@ -249,7 +249,7 @@ class AJAXChat
     {
         $userRole = $this->_session->get('UserRole');
         if ($userRole === null) {
-            $this->_user->logout();
+            $this->_user->logout($this->getUserID(), true);
         }
 
         return $userRole;

@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+add: site_config settings to disable users that have exceeded a set number of ips  
 update: separate db backups into type/date folders  
 
 ### 21 Jun, 2019

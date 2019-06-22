@@ -36,9 +36,9 @@ class IP
     /**
      * @param int $userid
      *
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function get(int $userid)
     {
@@ -89,9 +89,9 @@ class IP
     /**
      * @param string $ip
      *
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function getUsersFromIP(string $ip)
     {
@@ -128,5 +128,25 @@ class IP
         $this->fluent->deleteFrom('ips')
                      ->where('last_access < ?', $timestamp)
                      ->execute();
+    }
+
+    /**
+     * @param int    $userid
+     * @param int    $days
+     * @param string $type
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function get_ip_count(int $userid, int $days, string $type)
+    {
+        $count = $this->fluent->from('ips')
+                              ->select(null)
+                              ->select('COUNT(ip) AS count')
+                              ->where('type = ?', $type)
+                              ->where('userid = ?', $userid)
+                              ->where('last_access >= NOW() - INTERVAL ? DAY', $days)
+                              ->fetch('count');
+        return $count;
     }
 }

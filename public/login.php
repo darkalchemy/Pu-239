@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Delight\Auth\Auth;
+use Pu239\IP;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -12,17 +13,25 @@ $lang = array_merge(load_language('global'), load_language('login'));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $container, $site_config;
-    $user = $container->get(User::class);
 
+    $user = $container->get(User::class);
     if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
+        $auth = $container->get(Auth::class);
+        $userid = $auth->getUserId();
+        insert_update_ip('login', $userid);
+        if ($site_config['site']['limit_ips']) {
+            $ips_class = $container->get(IP::class);
+            $count = $ips_class->get_ip_count($userid, 3, 'login');
+            if ($count > $site_config['site']['limit_ips_count']) {
+                $user->logout($userid, false);
+                die('You have exceeded the maximum number of IPs allowed');
+            }
+        }
         if (!empty($_POST['returnto'])) {
             header("Location: {$site_config['paths']['baseurl']}" . urldecode($_POST['returnto']));
         } else {
             header("Location: {$site_config['paths']['baseurl']}");
         }
-        $auth = $container->get(Auth::class);
-        $userid = $auth->getUserId();
-        insert_update_ip('login', $userid);
         die();
     } else {
         unset($_POST);
