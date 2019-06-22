@@ -22,7 +22,7 @@ $html .= '
             Time Remaining: <span class='has-text-danger'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . '</span>
         </span>
     </div>';
-$qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets AS t LEFT JOIN users AS u ON u.id=t.user GROUP BY u.id ORDER BY tickets DESC, username ASC') or sqlerr(__FILE__, __LINE__);
+$qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets AS t LEFT JOIN users AS u ON u.id=t.user GROUP BY u.id ORDER BY tickets DESC, username') or sqlerr(__FILE__, __LINE__);
 $header = $body = '';
 
 if (!mysqli_num_rows($qs)) {

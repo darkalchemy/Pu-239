@@ -298,7 +298,7 @@ function write_class_files($template)
     $t = 'define(';
     $configfile = "<?php\n\ndeclare(strict_types = 1);\n\n";
     $res = $fluent->from('class_config')
-                  ->orderBy('value ASC')
+                  ->orderBy('value')
                   ->where('template = ?', $template);
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";

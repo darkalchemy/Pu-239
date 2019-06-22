@@ -90,7 +90,7 @@ function show_level(array $input)
 
     $title = $lang['rep_ad_show_title'];
     $html = '';
-    $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation ASC') or sqlerr(__FILE__, __LINE__);
+    $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
         do_update($input, 'new');
 

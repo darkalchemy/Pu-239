@@ -91,8 +91,10 @@ class AJAXChat
     }
 
     /**
+     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      * @throws UnbegunTransaction
      * @throws \Envms\FluentPDO\Exception
      */
@@ -198,9 +200,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -237,9 +239,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return mixed|null
      */
@@ -351,7 +353,7 @@ class AJAXChat
                                  ->where('u.anonymous = "no"')
                                  ->where('u.anonymous_until = 0')
                                  ->orderBy('o.userRole DESC')
-                                 ->orderBy('LOWER(o.userName) ASC');
+                                 ->orderBy('LOWER(o.userName)');
 
             foreach ($sql as $row) {
                 $row['pmCount'] = $this->_message->get_count($row['userID']);
@@ -457,9 +459,9 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -986,11 +988,11 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1025,9 +1027,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1041,8 +1043,8 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
+     * @throws DependencyException
      *
      * @return array|null
      */
@@ -1280,11 +1282,11 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return mixed|string|null
      */
@@ -1502,9 +1504,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1764,9 +1766,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1980,9 +1982,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -2326,16 +2328,11 @@ class AJAXChat
         }
     }
 
-    public static function __callStatic($name, $arguments)
-    {
-        // TODO: Implement __callStatic() method.
-    }
-
     /**
      * @param $textParts
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -2411,8 +2408,8 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -2498,7 +2495,7 @@ class AJAXChat
         }
 
         unset($row);
-        $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid=u.id ORDER BY won ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid=u.id ORDER BY won LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name((int) $row[0], true);
@@ -2615,12 +2612,12 @@ class AJAXChat
      * @param $text
      * @param $textParts
      *
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -2681,12 +2678,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2705,10 +2702,10 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2804,10 +2801,10 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2847,8 +2844,8 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2907,12 +2904,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2928,12 +2925,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2985,11 +2982,11 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3009,12 +3006,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3030,12 +3027,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3083,11 +3080,11 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3241,6 +3238,11 @@ class AJAXChat
             default:
                 return AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'loggedOut.html';
         }
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        // TODO: Implement __callStatic() method.
     }
 
     /**

@@ -47,7 +47,7 @@ if ($needed === 'leechers') {
         LEFT JOIN users AS u ON u.id = p.userid
         LEFT JOIN torrents AS t ON t.id = p.torrent
         WHERE p.seeder = 'yes' AND u.downloaded > 1024 AND u.registered < $Dur
-        ORDER BY u.uploaded / u.downloaded ASC
+        ORDER BY u.uploaded / u.downloaded
         LIMIT 20") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $header = "

@@ -15,7 +15,7 @@ $fluent = $container->get(Database::class);
 if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
-$pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
+$pconf = sql_query('SELECT * FROM class_promo ORDER BY id ') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['id'] = $ac['id'];
     $class_config[$ac['name']]['name'] = $ac['name'];

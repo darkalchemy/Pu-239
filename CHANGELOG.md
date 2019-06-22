@@ -1,4 +1,7 @@
 ### 21 Jun, 2019
+update: simple search click to advanced search browse.php  
+add: one click site offline/online  
+add: auto put site offline/online during update  
 fix: limit torrents to 1 per user announce.php
 fix: change username  
 fix: email notification of watched cats takeupload.php  

@@ -43,7 +43,7 @@ if ($sanity_check > 0) {
         if (empty($arr['id'])) {
             sql_query('DELETE FROM topics WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         } else {
-            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = (SELECT COUNT(id) FROM posts WHERE topic_id=topics.id)') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ", post_count = (SELECT COUNT(id) FROM posts WHERE topic_id = topics.id) WHERE status = 'ok'") or sqlerr(__FILE__, __LINE__);
         }
         sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id=' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM posts WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);

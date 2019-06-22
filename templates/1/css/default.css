@@ -1225,6 +1225,21 @@ ul li ul li {
     font-weight: bold;
 }
 
+#simple.hidden,
+#advanced.hidden {
+    height: 0;
+    opacity: 0;
+    transition: all .25s ease;
+    position: absolute;
+}
+
+#simple,
+#advanced {
+    opacity: 1;
+    transition: all .5s ease;
+    position: relative;
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(100%);

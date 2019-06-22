@@ -24,7 +24,7 @@ while ($result = mysqli_fetch_assoc($res)) {
             INNER JOIN triviasettings AS s ON s.gamenum = t.gamenum
             WHERE t.correct = 1 AND t.gamenum = ' . sqlesc($gamenum) . '
             GROUP BY t.user_id
-            ORDER BY correct DESC, incorrect ASC
+            ORDER BY correct DESC, incorrect
             LIMIT 10';
     $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($query) > 0) {

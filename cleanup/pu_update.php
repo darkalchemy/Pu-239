@@ -14,6 +14,7 @@ use Pu239\User;
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function pu_update($data)
 {

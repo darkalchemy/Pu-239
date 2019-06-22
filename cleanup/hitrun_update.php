@@ -20,6 +20,7 @@ function hitrun_update($data)
             'third',
         ];
         $i = 1;
+        $work = [];
         foreach ($classes as $class) {
             $work[] = [
                 'min_class' => $site_config['hnr_config'][$class . 'class'],

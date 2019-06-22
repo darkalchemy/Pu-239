@@ -14,18 +14,20 @@ require_once INCL_DIR . 'function_html.php';
 require_once BIN_DIR . 'functions.php';
 
 if (php_sapi_name() == 'cli') {
+    toggle_site_status(true);
     run_uglify($argv);
+    toggle_site_status(false);
 }
 
 /**
  * @param array $argv
  *
- * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws NotLoggedInException
  *
  * @return bool
  */
@@ -34,12 +36,11 @@ function run_uglify($argv = [])
     global $site_config, $BLOCKS;
 
     if (empty($BLOCKS)) {
-        die('BLOCKS are empty');
+        return 'BLOCKS are empty';
     }
     if (php_sapi_name() == 'cli') {
         $site_config['cache']['driver'] = 'memory';
     }
-    clear_di_cache();
     foreach ($argv as $arg) {
         if (!PRODUCTION && ($arg === 'update' || $arg === 'all')) {
             passthru('composer self-update');
@@ -47,12 +48,11 @@ function run_uglify($argv = [])
             passthru('composer update');
             passthru('npm update');
         } elseif ($arg === 'classes') {
-            if (php_sapi_name() == 'cli') {
-                echo "Creating classes\n";
-            }
+            echo "Creating classes\n";
             $styles = get_styles();
             get_classes($styles, true);
-            die();
+
+            return true;
         }
     }
 
@@ -133,6 +133,7 @@ function run_uglify($argv = [])
 
         $js_list['browse_js'] = [
             SCRIPTS_DIR . 'autocomplete.js',
+            SCRIPTS_DIR . 'toggle.js',
         ];
 
         if ($BLOCKS['staff_picks_on']) {
@@ -403,7 +404,6 @@ function run_uglify($argv = [])
             passthru('vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --show-progress=dots -vvv');
         }
     }
-    clear_di_cache();
     cleanup(get_webserver_user());
 
     return true;
@@ -579,12 +579,12 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return bool
  */

@@ -40,7 +40,7 @@ $res = sql_query('SELECT m.id AS message_id, m.poster, m.sender, m.receiver, m.a
                             LEFT JOIN friends AS f ON f.userid=' . $CURUSER['id'] . ' AND f.friendid=m.sender
                             LEFT JOIN blocks AS b ON b.userid=' . $CURUSER['id'] . ' AND b.blockid=m.sender
                             WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . $CURUSER['id'] . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . $CURUSER['id'] . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . $CURUSER['id'] . ' AND location = ' . sqlesc($mailbox))) . '
-                            ORDER BY ' . $order_by . (isset($_GET['ASC']) ? ' ASC ' : ' DESC ') . $LIMIT) or sqlerr(__FILE__, __LINE__);
+                            ORDER BY ' . $order_by . (isset($_GET['ASC']) ? ' ' : ' DESC ') . $LIMIT) or sqlerr(__FILE__, __LINE__);
 //=== Start Page
 //echo stdhead(htmlsafechars($mailbox_name));
 //=== let's make the table

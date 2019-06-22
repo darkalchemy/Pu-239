@@ -22,10 +22,10 @@ global $container, $site_config, $CURUSER;
  * @param $char
  * @param $link
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return mixed|string
  */
@@ -40,9 +40,9 @@ function readMore($text, $char, $link)
 /**
  * @param $array
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -107,33 +107,33 @@ if (strlen($search) > 4) {
 }
 $fluent = $container->get(Database::class);
 $count = $fluent->from('torrents')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('name LIKE :name', $params)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('name LIKE :name', $params)
+                ->fetch('count');
 
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
 $top = $bottom = '';
-$rows = $tids = [];
+$rows = $tids = $peers = [];
 
 $query = $fluent->from('torrents')
-    ->select(null)
-    ->select('id')
-    ->select('name')
-    ->select('leechers')
-    ->select('seeders')
-    ->select('poster')
-    ->select('times_completed AS snatched')
-    ->select('owner')
-    ->select('size')
-    ->select('added')
-    ->select('descr')
-    ->select('imdb_id')
-    ->select('anonymous')
-    ->where('name LIKE :name', $params)
-    ->limit($pager['pdo']['limit'])
-    ->offset($pager['pdo']['offset']);
+                ->select(null)
+                ->select('id')
+                ->select('name')
+                ->select('leechers')
+                ->select('seeders')
+                ->select('poster')
+                ->select('times_completed AS snatched')
+                ->select('owner')
+                ->select('size')
+                ->select('added')
+                ->select('descr')
+                ->select('imdb_id')
+                ->select('anonymous')
+                ->where('name LIKE :name', $params)
+                ->limit($pager['pdo']['limit'])
+                ->offset($pager['pdo']['offset']);
 
 foreach ($query as $ta) {
     $rows[] = $ta;
@@ -143,25 +143,25 @@ foreach ($query as $ta) {
 foreach ($tids as $tid) {
     if (!empty($tid)) {
         $query = $fluent->from('peers')
-            ->select(null)
-            ->select('id')
-            ->select('torrent AS tid')
-            ->select('seeder')
-            ->select('finishedat')
-            ->select('downloadoffset')
-            ->select('uploadoffset')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('started')
-            ->select('last_action')
-            ->select('userid AS p_uid')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('port')
-            ->where('torrent', $tid)
-            ->where('seeder = "yes"')
-            ->where('to_go = 0')
-            ->orderBy('uploaded DESC')
-            ->limit(5);
+                        ->select(null)
+                        ->select('id')
+                        ->select('torrent AS tid')
+                        ->select('seeder')
+                        ->select('finishedat')
+                        ->select('downloadoffset')
+                        ->select('uploadoffset')
+                        ->select('uploaded')
+                        ->select('downloaded')
+                        ->select('started')
+                        ->select('last_action')
+                        ->select('userid AS p_uid')
+                        ->select('INET6_NTOA(ip) AS ip')
+                        ->select('port')
+                        ->where('torrent', $tid)
+                        ->where('seeder = "yes"')
+                        ->where('to_go = 0')
+                        ->orderBy('uploaded DESC')
+                        ->limit(5);
 
         foreach ($query as $pa) {
             $peers[$pa['tid']][] = $pa;

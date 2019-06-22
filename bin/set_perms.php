@@ -10,6 +10,7 @@ if (empty($BLOCKS)) {
     die('BLOCKS are empty');
 }
 
+toggle_site_status(true);
 $site_config['cache']['driver'] = 'memory';
 $user = get_username();
 $group = get_webserver_user();
@@ -96,6 +97,6 @@ foreach ($paths as $path) {
         }
     }
 }
-clear_di_cache();
 cleanup($group);
+toggle_site_status(false);
 echo "$i files processed\n";

@@ -130,6 +130,7 @@ $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if ($receiver && !is_valid_id($receiver)) {
     stderr($lang['pm_error'], $lang['pm_send_mid']);
 }
+$arr_member = [];
 if ($receiver) {
     $arr_member = $users_class->getUserFromId($receiver);
 }

@@ -126,7 +126,7 @@ switch ($staff_action) {
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_split_from[0]) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 $res_split_to = sql_query('SELECT p.id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE p.topic_id=' . sqlesc($new_topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_split_to = mysqli_fetch_row($res_split_to);
-                $res_owner = sql_query('SELECT p.user_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE p.topic_id=' . sqlesc($new_topic_id) . ' ORDER BY p.id ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                $res_owner = sql_query('SELECT p.user_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id WHERE p.topic_id=' . sqlesc($new_topic_id) . ' ORDER BY p.id LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_owner = mysqli_fetch_row($res_owner);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_split_to[0]) . ', post_count = ' . sqlesc($posts_count) . ', user_id=' . sqlesc($arr_owner[0]) . ' WHERE id=' . sqlesc($new_topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {

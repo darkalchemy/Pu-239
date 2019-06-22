@@ -46,7 +46,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $column = isset($_GET['sort'], $_valid_sort[(int) $_GET['sort']]) ? $_valid_sort[(int) $_GET['sort']] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
-            $ascdesc = 'ASC';
+            $ascdesc = '';
             $linkascdesc = 'asc';
             break;
 

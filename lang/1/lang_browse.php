@@ -63,4 +63,6 @@ $lang = [
     'browse_isbn' => 'ISBN',
     'search_imdb' => 'tt2401097',
     'search_isbn' => '978-0399501487',
+    'search_toggle_simple_btn' => 'Advanced Search',
+    'search_toggle_advanced_btn' => 'Simple Search',
 ];

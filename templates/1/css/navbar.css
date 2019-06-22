@@ -5,7 +5,7 @@ header#navbar {
     left: 0;
     z-index: 100;
     height: 40px;
-    transition: top .25s;
+    transition: top .35s;
 }
 
 .home {
@@ -45,7 +45,7 @@ header#navbar ul > li {
 header#navbar ul > li > a {
     font-weight: lighter;
     text-decoration: none;
-    transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     line-height: 40px;
 }
 
@@ -75,11 +75,11 @@ header#navbar .nav_container ul > li > ul > li > a {
 }
 
 .ddFadeFast {
-    transition: all .25s ease-in-out;
+    transition: all .35s ease-in-out;
 }
 
 li:hover ul.hov {
-    animation-duration: .25s;
+    animation-duration: .35s;
     animation-delay: .25s;
 }
 
@@ -117,7 +117,7 @@ header#navbar .nav_container ul > li > ul a:hover {
     height: 3px;
     position: relative;
     margin-top: 3px;
-    transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #close {
@@ -179,13 +179,13 @@ header#navbar .nav_container ul > li > ul a:hover {
 
     #hamburger {
         display: block;
-        transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         transform: translateY(0);
         z-index: 1;
     }
 
     #close {
-        transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         transform: translateX(50px);
         display: block;
         z-index: 1;

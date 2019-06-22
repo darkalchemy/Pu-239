@@ -253,7 +253,7 @@ class Settings
             $class_config = $this->cache->get('class_config_' . $style);
             if ($class_config === false || is_null($class_config)) {
                 $class_config = $this->fluent->from('class_config')
-                                             ->orderBy('value ASC')
+                                             ->orderBy('value')
                                              ->where('template = ?', $style)
                                              ->fetchAll();
                 $this->cache->set('class_config_' . $style, $class_config, 86400);

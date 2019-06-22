@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use Pu239\Cache;
 use Pu239\Database;
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array
  */
@@ -35,9 +36,9 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array
  */
@@ -138,4 +139,46 @@ function cleanup(string $group)
             passthru("sudo chown -R $group:$group " . DI_CACHE_DIR);
         }
     }
+}
+
+/**
+ * @param bool $before
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return int
+ */
+function toggle_site_status(bool $before)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
+    $online = $fluent->from('site_config')
+                     ->select(null)
+                     ->select('value')
+                     ->where('parent = "site"')
+                     ->where('name = "online"')
+                     ->fetch('value');
+    $online = (bool) $online;
+    $disabled = $online ? 0 : 1;
+    $set = [
+        'value' => $disabled,
+    ];
+    if ($before) {
+        clear_di_cache();
+    }
+    $fluent->update('site_config')
+           ->set($set)
+           ->where('parent = "site"')
+           ->where('name = "online"')
+           ->execute();
+    if (!$before) {
+        clear_di_cache();
+    }
+    $cache->delete('site_settings_');
+
+    return $disabled;
 }

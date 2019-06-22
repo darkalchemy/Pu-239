@@ -147,7 +147,7 @@ function cleanup_show_main()
                 </tr>
             </thead>
             <tbody>";
-    $sql = sql_query("SELECT * FROM cleanup ORDER BY clean_on DESC, clean_time ASC, clean_increment ASC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query("SELECT * FROM cleanup ORDER BY clean_on DESC, clean_time, clean_increment {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
     }

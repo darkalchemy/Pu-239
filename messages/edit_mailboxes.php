@@ -161,7 +161,7 @@ if (isset($_POST['action2'])) {
 
 $boxes = $fluent->from('pmboxes')
                 ->where('userid = ?', $CURUSER['id'])
-                ->orderBy('name ASC')
+                ->orderBy('name')
                 ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
 

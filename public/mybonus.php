@@ -38,7 +38,7 @@ $torrent_ids = $fluent->from('torrents')
 
 $options = $fluent->from('bonus')
                   ->where('enabled = "yes"')
-                  ->orderBy('orderid ASC')
+                  ->orderBy('orderid')
                   ->fetchAll();
 $option = [
     'id' => 0,

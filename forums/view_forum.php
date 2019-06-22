@@ -308,7 +308,7 @@ if (!empty($topic_arrs)) {
 												FROM posts AS p
 												LEFT JOIN users AS u ON p.user_id=u.id
 												WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' p.status != \'deleted\'  AND' : '')) . '
-												topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+												topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $first_post_arr = mysqli_fetch_assoc($first_post_res);
 
         if ($first_post_arr['anonymous'] === 'yes') {

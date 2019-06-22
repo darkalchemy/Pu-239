@@ -11,6 +11,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
 require_once BIN_DIR . 'uglify.php';
+require_once BIN_DIR . 'functions.php';
 check_user_status();
 $stdhead = [
     'css' => [
@@ -36,7 +37,7 @@ if (!$CURUSER) {
 $cache = $container->get(Cache::class);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value>= '$staff' GROUP BY value ORDER BY value ASC");
+    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value>= '$staff' GROUP BY value ORDER BY value");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
@@ -111,7 +112,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'uglify' && $CURUSER['class'] >= UC_SYSOP)) {
-        if (run_uglify()) {
+        toggle_site_status(true);
+        $result = run_uglify();
+        toggle_site_status(false);
+        if ($result) {
             $session->set('is-success', 'All CSS and Javascript files processed');
             $cache->flushDB();
             $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
@@ -125,6 +129,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                ->where('id>0')
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
+    } elseif (($action === 'toggle_status' && $CURUSER['class'] >= UC_SYSOP)) {
+        if (toggle_site_status($site_config['site']['online'])) {
+            $session->set('is-success', 'Site is Online.');
+        } else {
+            $session->set('is-success', 'Site is Offline.');
+        }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'add' && $CURUSER['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX)) {
@@ -360,13 +372,16 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
                     </li>
+                    <li class='margin10'>
+                        <a href='{$_SERVER['PHP_SELF']}?action=toggle_status' class='tooltipper' title='{$lang['spanel_toggle_status_title']}'>{$lang['spanel_toggle_status']}</a>
+                    </li>
                 </ul>";
         }
         $res = sql_query('SELECT s.*, u.username
                                 FROM staffpanel AS s
                                 LEFT JOIN users AS u ON u.id=s.added_by
                                 WHERE s.av_class <= ' . sqlesc($CURUSER['class']) . '
-                                ORDER BY s.av_class DESC, s.page_name ASC') or sqlerr(__FILE__, __LINE__);
+                                ORDER BY s.av_class DESC, s.page_name') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $db_classes = $unique_classes = $mysql_data = [];
             while ($arr = mysqli_fetch_assoc($res)) {

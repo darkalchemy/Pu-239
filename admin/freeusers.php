@@ -52,11 +52,11 @@ if ($remove) {
         die($lang['freeusers_fail']);
     }
 }
-$res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
+$res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res2);
 $perpage = 25;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=freeusers&amp;");
-$res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+$res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['freeusers_head']} ($count)</h1>";
 if ($count == 0) {

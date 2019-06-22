@@ -73,7 +73,7 @@ if ($count === 0) {
             $locked = $arr_unread['locked'] === 'yes';
             $sticky = $arr_unread['sticky'] === 'yes';
             $topic_poll = $arr_unread['poll_id'] > 0;
-            $first_unread_poster = sql_query('SELECT added FROM posts WHERE topic_id=' . sqlesc($arr_unread['topic_id']) . ' ORDER BY id ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+            $first_unread_poster = sql_query('SELECT added FROM posts WHERE topic_id=' . sqlesc($arr_unread['topic_id']) . ' ORDER BY id LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $first_unread_poster_arr = mysqli_fetch_row($first_unread_poster);
             if ($arr_unread['tan'] === 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {

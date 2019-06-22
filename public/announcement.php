@@ -33,7 +33,7 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
                 FROM announcement_main AS m
                 LEFT JOIN announcement_process AS p ON m.main_id=p.main_id AND p.user_id=%s
                 WHERE p.process_id IS NULL OR p.status = 0
-                ORDER BY m.main_id ASC
+                ORDER BY m.main_id
                 LIMIT 1', sqlesc($row['id']));
     $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($result)) {

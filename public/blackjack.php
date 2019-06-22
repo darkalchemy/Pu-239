@@ -88,7 +88,7 @@ if (isset($_POST['ddown']) && $_POST['ddown'] === 'ddown') {
 
 $messages_class = $container->get(Message::class);
 $cards_history = $dealer_cards_history = $deadcards = [];
-$sql = 'SELECT b.*, u.username, u.class, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id=b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY b.date ASC LIMIT 1';
+$sql = 'SELECT b.*, u.username, u.class, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id=b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY b.date LIMIT 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $nick = mysqli_fetch_assoc($res);
 $userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='has-text-danger'><b>Dealer</b></span>" : format_username((int) $nick['id']);
@@ -430,7 +430,7 @@ if ($game) {
         }
         if ($points == 21) {
             if ($waitarr['c'] > 0) {
-                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date ASC LIMIT 1';
+                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date LIMIT 1';
                 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $a = mysqli_fetch_assoc($res);
                 $points_text = htmlsafechars($a['points']) . " {$lang['bj_points2']}";
@@ -532,7 +532,7 @@ if ($game) {
             output($blackjack, $HTMLOUT, $debugout);
         } elseif ($points > 21) {
             if ($waitarr['c'] > 0) {
-                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE b.game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date ASC LIMIT 1';
+                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE b.game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date LIMIT 1';
                 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $a = mysqli_fetch_assoc($res);
                 $points_text = htmlsafechars($a['points']) . " {$lang['bj_points2']}";
@@ -748,7 +748,7 @@ if ($game) {
                         <td colspan='2'>";
         //{$user_warning}";
         if ($waitarr['c'] > 0) {
-            $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE b.game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date ASC LIMIT 1';
+            $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE b.game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($CURUSER['id']) . ' ORDER BY b.date LIMIT 1';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $a = mysqli_fetch_assoc($res);
             $points_text = htmlsafechars($a['points']) . " {$lang['bj_points2']}";
@@ -885,7 +885,7 @@ if ($game) {
     $tot_games = $tot_wins + $tot_losses;
     $win_perc = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? 0 : number_format(($tot_wins / $tot_games) * 100, 1)) . '%');
     $plus_minus = $tot_wins - abs($tot_losses);
-    $sql = 'SELECT * FROM blackjack WHERE game_id=' . sqlesc($blackjack['gameid']) . ' ORDER BY date ASC LIMIT 1';
+    $sql = 'SELECT * FROM blackjack WHERE game_id=' . sqlesc($blackjack['gameid']) . ' ORDER BY date LIMIT 1';
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $res = mysqli_fetch_assoc($result);
     $doubled = '';

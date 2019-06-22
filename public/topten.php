@@ -53,7 +53,7 @@ if (isset($_GET['view']) && $_GET['view'] === 't') {
     $view = isset($_GET['t']) ? strip_tags($_GET['t']) : '';
     // Top Torrents
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Active Torrents</h2></div>";
-    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
+    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added LIMIT 10");
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);

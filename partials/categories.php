@@ -57,8 +57,6 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 
     $terms = !empty($terms) ? '&amp;' . implode('&amp;', $terms) : '';
     $checked = in_array($cat['id'], $cats) ? ' checked' : '';
-
-    $list = [];
     $list[] = 'cats[]=' . $cat['parent_id'];
     if ($parent === 'child') {
         $js = '';
@@ -72,9 +70,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
         }
         $js = ' onclick="return showMe(event);"';
     }
-    if (!empty($list)) {
-        $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
-    }
+    $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
         <span class='left10'>
             <a href='{$site_config['paths']['baseurl']}/browse.php?c{$cat['id']}'>

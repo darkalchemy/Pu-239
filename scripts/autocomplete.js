@@ -1,20 +1,19 @@
-let min_length = 2;
+let min_length = 3;
 
 document.onclick = function (event) {
     closechoices(event);
 };
 
 suggcont = document.getElementById('autocomplete');
-
 suggcont.style.display = 'none';
 
-function autosearch(key) {
-    if (key != 13) {
-        let el = document.querySelector('#search');
+function autosearch(event) {
+    if (event.key !== 13) {
+        let el = document.querySelector('#' + event.target.id);
         let csrf = el.dataset.csrf;
         let keyword = el.value;
         let lastChar = keyword.slice(-1);
-        if (lastChar != ' ' && keyword.length >= min_length) {
+        if (lastChar !== ' ' && keyword.length >= min_length) {
             $.ajax({
                 url: './ajax/autocomplete.php',
                 type: 'POST',
@@ -37,12 +36,12 @@ function autosearch(key) {
 }
 
 function closechoices(event) {
-    if (event.target.id != 'autocomplete') {
+    if (event.target.id !== 'autocomplete') {
         $('#autocomplete').slideUp('slow', function () {
         });
     }
     let keyword = $('#search').val();
-    if (event.target.id == 'search' && keyword.length >= min_length) {
+    if (event.target.id === 'search' && keyword.length >= min_length) {
         $('#autocomplete').slideDown('slow', function () {
         });
     }

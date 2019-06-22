@@ -156,9 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
             }
             if (isset($_POST['value'])) {
-                $value = htmlsafechars($_POST['value']);
+                $value = (int) $_POST['value'];
             } else {
-                sstderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+                stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
             }
             if (isset($_POST['cname'])) {
                 $r_name = htmlsafechars($_POST['cname']);

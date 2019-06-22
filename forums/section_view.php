@@ -47,7 +47,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
             $child_boards = '';
             $child_boards_cache = [];
-            $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY sort') or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($child_boards) {
                     $child_boards .= ', ';

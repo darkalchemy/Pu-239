@@ -73,7 +73,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped'>
       <td class='colhead'>{$lang['moods_bonus']}</td>
       <td class='colhead'>{$lang['moods_edit1']}</td>" . //<td class='colhead'>{$lang['moods_remove']}</td>
     '</tr>';
-$res = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM moods ORDER BY id') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res)) {
     $color = true;
     while ($arr = mysqli_fetch_assoc($res)) {

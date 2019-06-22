@@ -357,12 +357,22 @@ $unsnatched_box = "
                     </select>";
 
 $HTMLOUT .= main_div("
-                <div class='padding20'>
-                    <div class='padding10 w-100'>
+                <div id='simple' class='has-text-centered'>
+                    <div class='has-text-centered padding20 level-center-center'>
+                        <span class='right10'>{$lang['browse_name']}</span>
+                        <input id='search_sim' name='sn' type='text' placeholder='{$lang['search_name']}' class='search min-350' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
+                        <span class='left10'>
+                            <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
+                        </span>
+                        <input type='checkbox' id='simple_btn' class='left10 tooltipper' title='{$lang['search_toggle_simple_btn']}' onclick='toggle_search()'>
+                    </div>
+                </div>
+                <div id='advanced' class='hidden'>
+                    <div class='padding20 w-100'>
                         <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
+                                <input id='search_adv' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_description']}</div>
@@ -447,15 +457,16 @@ $HTMLOUT .= main_div("
                                 $unsnatched_box
                             </div>
                         </div>
-                        <div id='autocomplete' class='w-100 bottom10'>
-                            <div class='padding20 bg-00 round10 bordered autofill'>
-                                <div id='autocomplete_list' class='margin10'>
-                                </div>
-                            </div>
+                        <div class='margin10 level-center-center'>
+                            <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
+                            <input type='checkbox' id='simple_btn' class='left10 tooltipper' title='{$lang['search_toggle_advanced_btn']}' onclick='toggle_search()'>
                         </div>
                     </div>
-                    <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
+                </div>
+                <div id='autocomplete' class='w-75 padding20 has-text-centered'>
+                    <div class='padding20 bg-00 round10 autofill'>
+                        <div id='autocomplete_list' class='margin10'>
+                        </div>
                     </div>
                 </div>");
 $HTMLOUT .= '
