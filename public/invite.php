@@ -27,6 +27,7 @@ $valid_actions = [
     'confirm_account',
     'view_page',
     'send_email',
+    'resend',
 ];
 $do = (($do && in_array($do, $valid_actions, true)) ? $do : '') or header('Location: ?do=view_page');
 if ($CURUSER['suspended'] === 'yes') {
@@ -98,7 +99,7 @@ if ($do === 'view_page') {
                         <td class='level-item'>{$lang['invites_send_code']}</td>
                         <td class='has-text-centered'>Sent To</td>
                         <td class='has-text-centered'>{$lang['invites_date']}</td>
-                        <td class='has-text-centered'>{$lang['invites_delete']}</td>
+                        <td class='has-text-centered'>{$lang['invites_delete_resend']}</td>
                         <td class='has-text-centered'>{$lang['invites_status']}</td>
                     </tr>";
         for ($i = 0; $i < $num_row; ++$i) {
@@ -123,7 +124,10 @@ if ($do === 'view_page') {
                         <td class='has-text-centered'>
                             <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$CURUSER['id']}' class='tooltipper' title='Delete'>
                                 <i class='icon-trash-empty icon has-text-danger'></i>
-                            </a>
+                            </a>" . (!empty($fetch_assoc['email']) ? "
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=resend&amp;id={$secret}&amp;sender={$CURUSER['id']}' class='tooltipper' title='Resend'>
+                                <i class='icon-mail icon has-text-success'></i>
+                            </a>" : '') . "
                         </td>
                         <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . "</td>
                     </tr>
@@ -181,7 +185,25 @@ if ($do === 'view_page') {
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
+} elseif ($do === 'resend') {
+    $code = $fluent->from('invite_codes')
+        ->where('id = ?', $_GET['id'])
+        ->where('sender = ?', $_GET['sender'])
+        ->fetch();
+    if (!empty($code)) {
+        $email = htmlsafechars($code['email']);
+        $invite = htmlsafechars($code['code']);
+        $secret = $code['id'];
+        $body = get_body($site_config['site']['name'], htmlspecialchars($CURUSER['username']), $email, $secret, $invite);
+        if (send_mail($code['email'], "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
+            $session = $container->get(Session::class);
+            $session->set('is-success', $lang['invites_confirmation']);
+            header("Location: {$site_config['paths']['baseurl']}/invite.php?do=view_page");
+            die();
+        }
+    }
 } elseif ($do === 'send_email') {
+    dd($_POST);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = isset($_POST['email']) ? htmlsafechars($_POST['email']) : '';
         $invite = isset($_POST['code']) ? htmlsafechars($_POST['code']) : '';
@@ -207,26 +229,7 @@ if ($do === 'view_page') {
 
         $inviter = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
-        $body = doc_head() . "
-    <meta property='og:title' content='{$title}'>
-    <title>{$title} Invitation</title>
-</head>
-<body>
-<p>You have been invited to {$site_config['site']['name']} by $inviter.<br>
-$inviter has specified this address ($email) as your email.<br>
-If you do not know this person, please ignore this email. Please do not reply.<br>
-This is a private site and you must agree to the rules before you can enter:</p>
-<p>{$site_config['paths']['baseurl']}/useragreement.php</p>
-<p>{$site_config['paths']['baseurl']}/rules.php</p>
-<p>{$site_config['paths']['baseurl']}/faq.php</p>
-<hr>
-<p>To confirm your invitation, you have to follow this link:</p>
-{$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite
-<hr>
-<p>After you do this, $inviter may need to confirm your account.<br>
-We urge you to read the RULES and FAQ before you start using {$site_config['site']['name']}.</p>
-</body>
-</html>";
+        $body = get_body($title, $inviter, $email, $secret, $invite);
         if (send_mail($email, "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
             $session = $container->get(Session::class);
             $session->set('is-success', $lang['invites_confirmation']);
@@ -339,4 +342,33 @@ cheers,\n
     sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (2, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////
     header('Location: ?do=view_page');
+}
+
+function get_body(string $title, string $inviter, string $email, int $secret, string $invite) {
+    global $site_config;
+
+    return doc_head() . "
+<meta property='og:title' content='{$title}'>
+<title>{$title} Invitation</title>
+</head>
+<body>
+    <p>
+        You have been invited to {$site_config['site']['name']} by $inviter.<br>
+        $inviter has specified this address ($email) as your email.<br>
+        If you do not know this person, please ignore this email. Please do not reply.<br>
+        This is a private site and you must agree to the rules before you can enter:
+    </p>
+    <p>{$site_config['paths']['baseurl']}/useragreement.php</p>
+    <p>{$site_config['paths']['baseurl']}/rules.php</p>
+    <p>{$site_config['paths']['baseurl']}/faq.php</p>
+    <hr>
+    <p>To confirm your invitation, you have to follow this link:</p>
+    {$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite
+    <hr>
+    <p>
+        After you do this, $inviter may need to confirm your account.<br>
+        We urge you to read the RULES and FAQ before you start using {$site_config['site']['name']}.
+    </p>
+</body>
+</html>";
 }

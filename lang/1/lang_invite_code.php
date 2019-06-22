@@ -33,6 +33,7 @@ $lang = [
     'invites_nocodes' => 'You have not created any invite codes at the moment!',
     'invites_date' => 'Created Date',
     'invites_delete' => 'Delete',
+    'invites_delete_resend' => 'Delete / Resend',
     'invites_create' => 'Create Invite Code',
     'invites_send_code' => 'Send Invite Code',
     'invites_delete1' => 'Delete Invite',

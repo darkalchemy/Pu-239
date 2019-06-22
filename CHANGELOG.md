@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+add: resend invide codes  
 update: seedbonus column to decimal  
 update: mybonus.php  
 add: torrent['descr'] and tvmaze caching images_update.php  
