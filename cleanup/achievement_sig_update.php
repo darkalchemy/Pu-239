@@ -32,7 +32,7 @@ function achievement_sig_update($data)
             ];
             $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Signature Setter\', \'signature.png\' , \'User has successfully set a signature on profile settings.\')';
             $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-            $cache->delete('user_achievement_points_' . $arr['userid']);
+            $cache->delete('user_' . $arr['userid']);
         }
         $count = count($achievements_buffer);
         if ($count > 0) {

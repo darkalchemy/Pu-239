@@ -32,7 +32,7 @@ function achievement_corrupt_update($data)
             ];
             $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Corruption Counts\', \'corrupt.png\' , \'Transferred at least 1 byte of incoming corrupt data.\')';
             $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-            $cache->delete('user_achievement_points_' . $arr['userid']);
+            $cache->delete('user_' . $arr['userid']);
         }
         $count = count($achievements_buffer);
         if ($count > 0) {

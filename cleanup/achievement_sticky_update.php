@@ -55,8 +55,8 @@ function achievement_sticky_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
+                $cache->delete('user_' . $arr['userid']);
             }
-            $cache->delete('user_achievement_points_' . $arr['userid']);
         }
         $count = count($achievements_buffer);
         if ($count > 0) {

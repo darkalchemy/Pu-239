@@ -65,7 +65,7 @@ function achievement_bday_update($data)
                     'subject' => $subject,
                 ];
                 $cache = $container->get(Cache::class);
-                $cache->delete('user_achievement_points_' . $arr['id']);
+                $cache->delete('user_' . $arr['id']);
             }
         }
         $count = count($achievements_buffer);

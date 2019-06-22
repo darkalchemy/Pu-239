@@ -523,7 +523,11 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Leeching: </span>
-                                <span class='level-right'>" . number_format($peers['no']) . '</span>
+                                <span class='level-right'>" . number_format($peers['no']) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Achievments: </span>
+                                <span class='level-right'>" . number_format($users_data['achpoints']) . '</span>
                             </span>
                         </span>
                     </span>

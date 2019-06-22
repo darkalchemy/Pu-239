@@ -141,7 +141,7 @@ function achievement_karma_update($data)
                     'bonus' => $lvl + 1,
                     'achpoints' => $points,
                 ];
-                $cache->delete('user_achievement_points_' . $arr['id']);
+                $cache->delete('user_' . $arr['id']);
             }
         }
         $count = count($achievements_buffer);

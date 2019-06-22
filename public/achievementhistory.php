@@ -22,7 +22,7 @@ $achpoints = (int) $arr['achpoints'];
 $spentpoints = (int) $arr['spentpoints'];
 $res = sql_query('SELECT COUNT(id) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
-$count = $row[0];
+$count = (int) $row[0];
 $perpage = 15;
 if (!$count) {
     stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username((int) $arr['id']) . " {$lang['achievement_history_err3']}");

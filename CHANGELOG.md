@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+update: return users achievement counts with user, clear cache  
 update: move reset password and force logout to sysop  
 fix: user logout logout.php  
 fix: typo userdetails.php  

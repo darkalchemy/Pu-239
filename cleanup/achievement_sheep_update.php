@@ -32,7 +32,7 @@ function achievement_sheep_update($data)
             ];
             $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Sheep Fondler\', \'sheepfondler.png\' , \'User has been caught touching the sheep at least 1 time.\')';
             $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-            $cache->delete('user_achievement_points_' . $arr['userid']);
+            $cache->delete('user_' . $arr['userid']);
         }
         $count = count($achievements_buffer);
         if ($count > 0) {

@@ -63,7 +63,7 @@ function achievement_fpost_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $cache->delete('user_achievement_points_' . $arr['userid']);
+                $cache->delete('user_' . $arr['userid']);
             }
         }
         $count = count($achievements_buffer);

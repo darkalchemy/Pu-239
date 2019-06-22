@@ -36,18 +36,6 @@ if (!empty($CURUSER)) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    $Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id']);
-    if ($Achievement_Points === false || is_null($Achievement_Points)) {
-        $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
-                            FROM users AS u
-                            LEFT JOIN usersachiev AS a ON u.id=a.userid
-                            WHERE u.id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $Achievement_Points = mysqli_fetch_assoc($Sql);
-        $Achievement_Points['id'] = (int) $Achievement_Points['id'];
-        $Achievement_Points['achpoints'] = (int) $Achievement_Points['achpoints'];
-        $Achievement_Points['spentpoints'] = (int) $Achievement_Points['spentpoints'];
-        $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
-    }
     if ($CURUSER['override_class'] != 255) {
         $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name((int) $CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
@@ -78,7 +66,7 @@ if (!empty($CURUSER)) {
     </span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_achpoints']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></span>
+        <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $CURUSER['achpoints'] . "</a></span>
     </span>
     <br>
     <span class='navbar-start' id='hide_html'>{$lang['gl_tstats']}</span>
