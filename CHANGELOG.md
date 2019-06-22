@@ -1,4 +1,6 @@
 ### 22 Jun, 2019
+add: torrent['descr'] and tvmaze caching images_update.php  
+add: seedbonus to user for filling request  
 fix: add bot to user_blocks and usersachiev install.php  
 update: return users achievement counts with user, clear cache  
 update: move reset password and force logout to sysop  

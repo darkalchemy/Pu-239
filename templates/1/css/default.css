@@ -1226,7 +1226,9 @@ ul li ul li {
 }
 
 #simple.hidden,
-#advanced.hidden {
+#simple.hidden *,
+#advanced.hidden,
+#advanced.hidden * {
     height: 0;
     opacity: 0;
     transition: all .25s ease;

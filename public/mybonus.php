@@ -718,4 +718,98 @@ foreach ($options as $gets) {
 
 $HTMLOUT .= main_div($items, 'top20', 'masonry padding20');
 
+$bpt = $site_config['bonus']['per_duration'];
+$bmt = $site_config['bonus']['max_torrents'];
+$at = $fluent->from('peers')
+             ->select(null)
+             ->select('COUNT(*) AS count')
+             ->where('seeder = ?', 'yes')
+             ->where('connectable = ?', 'yes')
+             ->where('userid=?', $user['id'])
+             ->fetch('count');
+
+$at = $at >= $bmt ? $bmt : $at;
+
+$atform = number_format($at);
+$activet = number_format($at * $bpt * 2, 2);
+
+$HTMLOUT .= "
+    <div class='portlet'>
+        <h1 class='top20 has-text-centered'>What the hell are these Karma Bonus points, and how do I get them?</h1>
+        <div class='bordered bottom20'>
+            <div class='alt_bordered bg-00 padding20'>
+                <h2>
+                    For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2, 2) . " Karma Bonus Point...
+                </h2>
+                <p>
+                    If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!<br>
+                    This is awarded on a per torrent basis (max of $bmt) even if there are no leechers on the Torrent you are seeding! <br>
+                    Seeding Torrents Based on Connectable Status = <span>
+                        <span class='tooltipper' title='Seeding $atform torrents'> $atform </span>*
+                        <span class='tooltipper' title='$bpt per announce period'> $bpt </span>*
+                        <span class='tooltipper' title='2 announce periods per hour'> 2 </span>= $activet
+                    </span>
+                    karma per hour
+                </p>
+            </div>
+        </div>
+        <div class='bordered bottom20'>
+            <div class='alt_bordered bg-00 padding20'>
+                <h2>Other things that will get you karma points:</h2>
+                <p>
+                    Uploading a new torrent = {$site_config['bonus']['per_upload']} points<br>
+                    Filling a request = {$site_config['bonus']['per_request']} points<br>
+                    Comment on torrent = {$site_config['bonus']['per_comment']} point<br>
+                    Saying thanks = {$site_config['bonus']['per_thanks']} points<br>
+                    Rating a torrent = {$site_config['bonus']['per_rating']} points<br>
+                    Making a post = {$site_config['bonus']['per_post']} point<br>
+                    Starting a topic = {$site_config['bonus']['per_topic']} points
+                </p>
+            </div>
+        </div>
+
+        <div class='bordered'>
+            <div class='alt_bordered bg-00 padding20'>
+                <h2>Some things that will cost you karma points:</h2>
+                <p>
+                    Deleting a torrent = -{$site_config['bonus']['per_delete']} points<br>
+                    Downloading a torrent = -{$site_config['bonus']['per_download']} points<br>
+                    Upload credit<br>
+                    Custom title<br>
+                    One month VIP status<br>
+                    A 1:1 ratio on a torrent<br>
+                    Buying off your warning<br>
+                    One month custom smilies for the forums and comments<br>
+                    Getting extra invites<br>
+                    Getting extra freeslots<br>
+                    Giving.gift of karma points to another user<br>
+                    Asking for a re-seed<br>
+                    Making a request<br>
+                    Freeleech, Doubleupload, Halfdownload contribution<br>
+                    Anonymous profile<br>
+                    Download reduction<br>
+                    Freeleech for a year<br>
+                    Pirate or King status<br>
+                    Unlocking parked option<br>
+                    Pirates bounty<br>
+                    Reputation points<br>
+                    Userblocks<br>
+                    Bump a torrent<br>
+                    User immuntiy<br>
+                    User unlocks<br>
+                </p>
+                <p>
+                    But keep in mind that everything that can get you karma can also be lost...<br>
+                </p>
+                <p>
+                    ie: If you up a torrent then delete it, you will gain and then lose 15 points, making a post and having it deleted will do the same... and there are other hidden bonus karma points all over the site which is another way to help out your ratio!
+                </p>
+                <span>
+                    *Please note, staff can give or take away points for breaking the rules, or doing good for the community.
+                </span>
+            </div>
+        </div>
+    </div>";
+
+
 echo stdhead($user['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();

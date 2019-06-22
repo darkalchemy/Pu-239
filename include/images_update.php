@@ -35,7 +35,7 @@ if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || i
  */
 function images_update()
 {
-    global $container;
+    global $container, $BLOCKS, $site_config;
 
     require_once INCL_DIR . 'function_tmdb.php';
     require_once INCL_DIR . 'function_tvmaze.php';
@@ -43,6 +43,7 @@ function images_update()
     require_once INCL_DIR . 'function_bluray.php';
     require_once INCL_DIR . 'function_books.php';
     require_once INCL_DIR . 'function_fanart.php';
+    require_once INCL_DIR . 'function_get_images.php';
     $time_start = microtime(true);
     set_time_limit(1800);
     ignore_user_abort(true);
@@ -348,6 +349,49 @@ function images_update()
                ->execute();
     }
     echo count($imdbids) . " torrents imdb info cached\n";
+
+    $torrents = $fluent->from('torrents')
+                       ->select(null)
+                       ->select('id')
+                       ->where('descr != ""');
+    $count = 0;
+    foreach ($torrents as $tor) {
+        $torrent->format_descr($tor['id']);
+        $count++;
+    }
+    echo $count . " torrents descr info cached\n";
+
+    if ($BLOCKS['tvmaze_api_on']) {
+        $in = str_repeat('?,', count($site_config['categories']['tv']) - 1) . '?';
+        $torrents = $fluent->from('torrents')
+                           ->select(null)
+                           ->select('id')
+                           ->select('name')
+                           ->select('imdb_id')
+                           ->select('poster')
+                           ->where('category IN (' . $in . ')', $site_config['categories']['tv']);
+
+        $count = 0;
+        foreach ($torrents as $tor) {
+            if (!empty($tor['imdb_id'])) {
+                $ids = get_show_id_by_imdb($tor['imdb_id']);
+            } else {
+                $ids = get_show_id($tor['name']);
+            }
+            if (!empty($ids['tvmaze_id'])) {
+                preg_match('/S(\d+)E(\d+)/i', $tor['name'], $match);
+                $episode = !empty($match[2]) ? (int) $match[2] : 0;
+                $season = !empty($match[1]) ? (int) $match[1] : 0;
+                if (empty($tor['poster'])) {
+                    $poster = get_image_by_id('tv', (string) $ids['tvmaze_id'], 'poster', $season);
+                }
+                $poster = empty($poster) ? '' : $poster;
+                tvmaze($ids['tvmaze_id'], $tor['id'], $season, $episode, $poster);
+                $count++;
+            }
+        }
+        echo $count . " torrents tvmaze info cached\n";
+    }
 
     $offer_links = $fluent->from('offers')
                           ->select(null)

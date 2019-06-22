@@ -442,10 +442,10 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  *
- * @return string
+ * @throws DependencyException
  */
 function file_list($arr, $id)
 {
@@ -513,6 +513,12 @@ if ($request > 0) {
     }
     if (!empty($msgs_buffer)) {
         $messages_class->insert($msgs_buffer);
+    }
+    if ($site_config['bonus']['on']) {
+        $set = [
+            'seedbonus' => $update['seedbonus'] + $site_config['bonus']['per_request'],
+        ];
+        $users_class->update($set, $user_data['id']);
     }
     sql_query('UPDATE requests SET filled_by_user_id=' . sqlesc($owner_id) . ', filled_torrent_id=' . sqlesc($id) . ' WHERE id=' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);

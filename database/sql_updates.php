@@ -3010,4 +3010,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site','limit_ips_count','int',3,'Disable Users that have exceeded this number of IPs.')",
         'flush' => true,
     ],
+    [
+        'id' => 1561210621,
+        'info' => 'Add bonus per request filled',
+        'date' => '22 Jun, 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('bonus','per_request','int',30,'Bonus earned by user per torrent request filled.')",
+        'flush' => true,
+    ],
 ];

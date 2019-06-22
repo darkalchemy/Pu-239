@@ -19,7 +19,7 @@ $episode = !empty($match[2]) ? (int) $match[2] : 0;
 $season = !empty($match[1]) ? (int) $match[1] : 0;
 $torrents_class = $container->get(Torrent::class);
 $poster = $torrents_class->get_items(['poster'], $tid);
-if ($poster) {
+if (empty($poster)) {
     $poster = get_image_by_id('tv', (string) $tvmazeid, 'poster', $season);
 }
 $poster = empty($poster) ? '' : $poster;
