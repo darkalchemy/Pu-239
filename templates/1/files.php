@@ -64,7 +64,7 @@ function get_file_name($file)
         case 'lightbox_js':
             return "{$site_config['paths']['baseurl']}/js/1/lightbox_1de13332.js";
         case 'tooltipster_js':
-            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_7883a611.js";
+            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_38785f34.js";
         case 'site_config_js':
             return "{$site_config['paths']['baseurl']}/js/1/site_config_07db2f4b.js";
         case 'checkport_js':

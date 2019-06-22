@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+update: popups max width to 500px  
 fix: add/edit category without image  
 fix: add item to array site_settings.php  
 fix: float seedbonus  

@@ -4,7 +4,8 @@ var update_animation = 'rotate';
 var short = 250;
 var long = 500;
 var distance = 12;
-var maxWidth = window.innerWidth * .5;
+var width = window.innerWidth * .75;
+var maxWidth = Math.min(width, 500);
 var sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {
