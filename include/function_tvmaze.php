@@ -85,7 +85,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                 $update['birthday'] = $role['birthday'];
             }
             if (empty($person_info['deathday']) && !empty($role['deathday'])) {
-                $update['deathday'] = $role['deathday'];
+                $update['died'] = $role['deathday'];
             }
             if (!empty($update)) {
                 $person_class->update($update, $person_info['id']);
@@ -316,7 +316,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
     $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
     if (!empty($airtime)) {
         $timestamp = strtotime('today midnight');
-        $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
+        $airtime = $timestamp + $airtime[0] * 3600 + (isset($airtime[1]) ? $airtime[1] * 60 : 0);
     }
 
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);

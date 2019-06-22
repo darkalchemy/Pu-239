@@ -324,7 +324,7 @@ function get_actionpage($lang, $queries, $path)
         's',
         'w',
     ];
-    if (in_array($list[0], $ignore) || $list[1] === 'view_page' || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0]) || preg_match('/\d+/', $list[1])) {
+    if (in_array($list[0], $ignore) || preg_match('/c\d+/', $list[0]) || (isset($list[1]) && ($list[1] === 'view_page' || $list[1] === 'bugs' || preg_match('/\d+/', $list[1])))) {
         return false;
     }
 

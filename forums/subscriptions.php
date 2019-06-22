@@ -94,8 +94,8 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc']) . '</span>' : '') . '
         </td>
 		<td>' . $thread_starter . '</td>
-		<td>' . number_format($topic_arr['post_count']) . '</td>
-		<td>' . number_format($topic_arr['views']) . '</td>
+		<td>' . number_format((int) $topic_arr['post_count']) . '</td>
+		<td>' . number_format((int) $topic_arr['views']) . '</td>
 		<td><span style="white-space:nowrap;">' . get_date((int) $topic_arr['added'], '') . '</span><br>by&nbsp;' . $last_post_username . '</td>
 		<td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '">
 		<img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post"></a></td>

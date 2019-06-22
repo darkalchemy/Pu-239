@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+fix: minor bugs  
 add: force logout button userdetails.php  
 update: error message of too many IPs  
 add: site_config settings to disable users that have exceeded a set number of ips  

@@ -88,7 +88,7 @@ if ($count === 0) {
     		' . (!empty($arr_unread['topic_desc']) ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc']) . '</span> ]' : '') . '
         </td>
 		<td>' . number_format($arr_unread['post_count'] - 1) . '</td>
-		<td>' . number_format($arr_unread['views']) . '</td>
+		<td>' . number_format((int) $arr_unread['views']) . '</td>
 		<td>' . $thread_starter . '</td>
 		</tr>';
         }
