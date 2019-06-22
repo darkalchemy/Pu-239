@@ -179,6 +179,9 @@ if (!empty($userId)) {
     update_user($userId, UC_MAX);
 }
 $userId = $auth->registerWithUniqueUsername('donkey.kong@nintendo.com', bin2hex(random_bytes(16)), strip_tags($vars['chatbot']['name']));
+if (!empty($userId)) {
+    update_user($userId, UC_MAX);
+}
 
 echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
 $cache->flushDB();
