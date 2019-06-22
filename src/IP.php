@@ -36,9 +36,9 @@ class IP
     /**
      * @param int $userid
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function get(int $userid)
     {
@@ -89,9 +89,9 @@ class IP
     /**
      * @param string $ip
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function getUsersFromIP(string $ip)
     {
@@ -135,8 +135,9 @@ class IP
      * @param int    $days
      * @param string $type
      *
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_ip_count(int $userid, int $days, string $type)
     {
@@ -147,6 +148,7 @@ class IP
                               ->where('userid = ?', $userid)
                               ->where('last_access >= NOW() - INTERVAL ? DAY', $days)
                               ->fetch('count');
+
         return $count;
     }
 }

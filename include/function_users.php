@@ -68,10 +68,10 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @return string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return string
  */
 function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, int $post_id = 0, bool $anonymous = false)
 {
@@ -325,10 +325,10 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @return string|null
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return string|null
  */
 function ratio_image_machine(float $ratio_to_check)
 {
@@ -468,10 +468,10 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @return string
  * @throws Exception
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
@@ -646,12 +646,12 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @return bool|mixed|string|null
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed|string|null
  */
 function get_avatar($avatar)
 {

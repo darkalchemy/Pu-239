@@ -178,7 +178,7 @@ function toggle_site_status(bool $before)
     if (!$before) {
         clear_di_cache();
     }
-       $cache->set('site_settings_', false);
+    $cache->set('site_settings_', false);
 
     return $disabled;
 }

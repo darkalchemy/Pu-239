@@ -4,13 +4,16 @@ declare(strict_types = 1);
 
 use Delight\Auth\Auth;
 use Pu239\IP;
+use Pu239\Session;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-$lang = array_merge(load_language('global'), load_language('login'));
+global $site_config;
 
+$lang = array_merge(load_language('global'), load_language('login'));
+get_template();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $container, $site_config;
 
@@ -24,7 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = $ips_class->get_ip_count($userid, 3, 'login');
             if ($count > $site_config['site']['limit_ips_count']) {
                 $user->logout($userid, false);
-                die('You have exceeded the maximum number of IPs allowed');
+                $session = $container->get(Session::class);
+                $session->set('is-danger', 'You have exceeded the maximum number of IPs allowed');
+                stderr('Error', "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
             }
         }
         if (!empty($_POST['returnto'])) {
@@ -37,9 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_POST);
     }
 }
-global $site_config;
 
-get_template();
 $stdfoot = [];
 $return_to = '';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto'])) {
