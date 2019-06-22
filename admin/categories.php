@@ -170,12 +170,11 @@ function move_cat_form($params)
  */
 function add_cat($params)
 {
-    global $container, $site_config, $lang;
+    global $container, $lang;
 
     foreach ([
         'new_cat_name',
         'new_cat_desc',
-        'cat_image',
         'parent_id',
     ] as $x) {
         if (!isset($params[$x])) {
@@ -188,7 +187,7 @@ function add_cat($params)
     $values = [
         'name' => $params['new_cat_name'],
         'cat_desc' => $params['new_cat_desc'],
-        'image' => $params['cat_image'],
+        'image' => !empty($params['cat_image']) ? $params['cat_image'] : '',
         'parent_id' => $params['parent_id'],
     ];
     $fluent = $container->get(Database::class);
@@ -322,7 +321,6 @@ function edit_cat($params)
     foreach ([
         'cat_name',
         'cat_desc',
-        'cat_image',
         'parent_id',
         'order_id',
     ] as $x) {
@@ -336,7 +334,7 @@ function edit_cat($params)
     $set = [
         'name' => $params['cat_name'],
         'cat_desc' => $params['cat_desc'],
-        'image' => $params['cat_image'],
+        'image' => !empty($params['cat_image']) ? $params['cat_image'] : '',
         'ordered' => $params['order_id'],
         'parent_id' => $params['parent_id'],
     ];

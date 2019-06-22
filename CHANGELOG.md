@@ -1,4 +1,6 @@
 ### 22 Jun, 2019
+fix: add/edit category without image  
+fix: add item to array site_settings.php  
 fix: float seedbonus  
 add: resend invide codes  
 update: seedbonus column to decimal  

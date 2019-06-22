@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
         } elseif ($id === 'Add') {
             if (!empty($item)) {
-                $set['value'] = $item . '|' . $value;
+                $set['value'] = implode('|', $item) . '|' . $value;
                 $fluent->update('site_config')
                        ->set($set)
                        ->where('parent = ?', $parent)
