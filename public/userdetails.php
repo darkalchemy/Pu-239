@@ -58,8 +58,8 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     die();
 }
 $session = $container->get(Session::class);
-if (isset($_GET['force_logout']) && $CURUSER['class'] >= UC_STAFF) {
-    $cache->set('forced_logout_' . $userid, TIME_NOW);
+if (isset($_GET['force_logout']) && $id != $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
+    $cache->set('forced_logout_' . $id, TIME_NOW);
     $session->set('is-success', 'This user will be forced to logout on next page view');
 }
 if ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) {

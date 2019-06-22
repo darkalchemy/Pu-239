@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+fix: typo userdetails.php  
 fix: minor bugs  
 add: force logout button userdetails.php  
 update: error message of too many IPs  
