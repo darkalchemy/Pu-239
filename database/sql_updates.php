@@ -3017,4 +3017,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('bonus','per_request','int',30,'Bonus earned by user per torrent request filled.')",
         'flush' => true,
     ],
+    [
+        'id' => 1561210622,
+        'info' => 'Update seedbonus to float',
+        'date' => '22 Jun, 2019',
+        'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` float NOT NULL DEFAULT '200'",
+        'flush' => true,
+    ],
 ];
