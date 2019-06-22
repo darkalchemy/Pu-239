@@ -57,6 +57,11 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     header('Location: ?id=' . $id . '&completed=1');
     die();
 }
+$session = $container->get(Session::class);
+if (isset($_GET['force_logout']) && $CURUSER['class'] >= UC_STAFF) {
+    force_logout($id);
+    $session->set('is-success', 'This user will be forced to logout on next page view');
+}
 if ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) {
     $auth = $container->get(Auth::class);
     $ip = $auth->getIpAddress();
@@ -237,7 +242,6 @@ $HTMLOUT .= "
 
 $stealth = $cache->get('display_stealth_' . $user['id']);
 if ($stealth) {
-    $session = $container->get(Session::class);
     $session->set('is-info', htmlsafechars((string) $user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
@@ -245,6 +249,7 @@ $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERM
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . "
             <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$id}'>Reset Password</a></li>
+            <li class='margin10'><a class='has-text-danger tooltipper' title='Force this user to Logout' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;force_logout=yes'>Force Logout</a></li>
         </ul>
     </div>";
 
