@@ -1,4 +1,5 @@
 ### 21 Jun, 2019
+fix: incorrect height hide_navbar.js  
 fix: toggle status functions.php  
 update: a bit of code cleanup phpstorm/phpcs-fixer  
 update: simple search click to advanced search browse.php  
