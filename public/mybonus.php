@@ -723,10 +723,13 @@ $bmt = $site_config['bonus']['max_torrents'];
 $at = $fluent->from('peers')
              ->select(null)
              ->select('COUNT(*) AS count')
-             ->where('seeder = ?', 'yes')
-             ->where('connectable = ?', 'yes')
-             ->where('userid=?', $user['id'])
-             ->fetch('count');
+             ->where('seeder = ?', 'yes');
+if ($site_config['tracker']['connectable_check']) {
+    $at = $at->where('connectable = "yes"');
+}
+$at = $at->where('connectable = ?', 'yes')
+         ->where('userid=?', $user['id'])
+         ->fetch('count');
 
 $at = $at >= $bmt ? $bmt : $at;
 
@@ -737,14 +740,14 @@ $HTMLOUT .= "
     <div class='portlet'>
         <h1 class='top20 has-text-centered'>What the hell are these Karma Bonus points, and how do I get them?</h1>
         <div class='bordered bottom20'>
-            <div class='alt_bordered bg-00 padding20'>
+            <div class='alt_bordered bg-04 padding20'>
                 <h2>
                     For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2, 2) . " Karma Bonus Point...
                 </h2>
                 <p>
                     If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!<br>
                     This is awarded on a per torrent basis (max of $bmt) even if there are no leechers on the Torrent you are seeding! <br>
-                    Seeding Torrents Based on Connectable Status = <span>
+                    Seeding" . ($site_config['tracker']['connectable_check'] ? ' Torrents Based on Connectable Status' : '') . " = <span>
                         <span class='tooltipper' title='Seeding $atform torrents'> $atform </span>*
                         <span class='tooltipper' title='$bpt per announce period'> $bpt </span>*
                         <span class='tooltipper' title='2 announce periods per hour'> 2 </span>= $activet
@@ -754,7 +757,7 @@ $HTMLOUT .= "
             </div>
         </div>
         <div class='bordered bottom20'>
-            <div class='alt_bordered bg-00 padding20'>
+            <div class='alt_bordered bg-04 padding20'>
                 <h2>Other things that will get you karma points:</h2>
                 <p>
                     Uploading a new torrent = {$site_config['bonus']['per_upload']} points<br>
@@ -769,7 +772,7 @@ $HTMLOUT .= "
         </div>
 
         <div class='bordered'>
-            <div class='alt_bordered bg-00 padding20'>
+            <div class='alt_bordered bg-04 padding20'>
                 <h2>Some things that will cost you karma points:</h2>
                 <p>
                     Deleting a torrent = -{$site_config['bonus']['per_delete']} points<br>

@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+update: mybonus.php  
 add: torrent['descr'] and tvmaze caching images_update.php  
 add: seedbonus to user for filling request  
 fix: add bot to user_blocks and usersachiev install.php  
