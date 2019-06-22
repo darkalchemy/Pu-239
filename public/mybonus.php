@@ -568,7 +568,7 @@ $HTMLOUT = "
         <div class='has-text-centered size_6 top20 bottom20'>Karma Bonus Point's System</div>";
 $HTMLOUT .= $fl_header . "
             <div class='has-text-centered top20'>
-                <span class='size_5'>Exchange your <span class='has-text-primary'>" . number_format($user['seedbonus']) . "</span> Karma Bonus Points for goodies!</span>
+                <span class='size_5'>Exchange your <span class='has-text-primary'>" . number_format((float) $user['seedbonus']) . "</span> Karma Bonus Points for goodies!</span>
                 <br>
                 <span class='size_3'>
                     [ If no buttons appear, you have not earned enough bonus points to trade. ]

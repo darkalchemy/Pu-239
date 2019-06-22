@@ -1,4 +1,5 @@
 ### 22 Jun, 2019
+fix: float seedbonus  
 add: resend invide codes  
 update: seedbonus column to decimal  
 update: mybonus.php  

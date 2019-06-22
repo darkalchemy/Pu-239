@@ -40,7 +40,7 @@ if (!mysqli_num_rows($qs)) {
     <tr>
         <td>' . format_username((int) $ar['id']) . '</a></td>
         <td>' . number_format((int) $ar['tickets']) . '</td>
-        <td>' . number_format((int) $ar['seedbonus']) . '</td>
+        <td>' . number_format((float) $ar['seedbonus']) . '</td>
     </tr>';
     }
     $html .= main_table($body, $header);

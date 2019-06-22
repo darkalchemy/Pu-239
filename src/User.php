@@ -172,7 +172,7 @@ class User
                 } else {
                     $user['it'] = 'it';
                 }
-
+                $user['seedbonus'] = (float) $user['seedbonus'];
                 $this->cache->set('user_' . $userid, $user, $this->site_config['expires']['user_cache']);
             }
         }

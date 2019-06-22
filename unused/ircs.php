@@ -46,7 +46,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $lastseen = htmlsafechars($arr['last_access']);
                 echo htmlsafechars($arr['username']) . ' - Uploaded: (' . mksize($arr['uploaded']) . ') - Downloaded: (' . mksize($arr['downloaded']) . ') - Ratio: (' . number_format($ratio, 2) . ') - Invites: (' . (int) $arr['invites'] . ') - Joined: (' . get_date((int) $arr['added'], 'DATE', 0, 1) . '' . ') - Online time: (' . time_return($arr['onlinetime']) . ') - Last Seen: (' . get_date((int) $lastseen, 'DATE', 0, 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'check') {
-                echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format($arr['seedbonus'], 1) . ')';
+                echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format((float) $arr['seedbonus'], 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] === 'ircbonus') {
                 $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['irc']['autoclean_interval'] * 4), 1) : '0.0');
                 echo $arr['username'] . ' - IRC Bonus: (' . $ircbonus . ')';

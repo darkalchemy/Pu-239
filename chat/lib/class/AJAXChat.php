@@ -2204,7 +2204,7 @@ class AJAXChat
                 }
 
                 $casino = $stats['casino'] > 0 ? '[color=#00FF00]' . mksize($stats['casino']) . '[/color]' : '[color=#CC0000]' . mksize($stats['casino']) . '[/color]';
-                $seedbonus = '[color=#00FF00]' . number_format($stats['seedbonus']) . '[/color]';
+                $seedbonus = '[color=#00FF00]' . number_format((float) $stats['seedbonus']) . '[/color]';
                 $freeslots = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
                 $ircidle = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date((int) $stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date((int) $stats['irctotal'], 'LONG', false, false, true) . '[/color]';
                 $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
