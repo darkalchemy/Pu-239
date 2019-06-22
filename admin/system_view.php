@@ -51,8 +51,8 @@ hr {width: 100%; background-color: #ccc; border: 0; height: 1px;}
 $html = [];
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */

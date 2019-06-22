@@ -358,13 +358,13 @@ $unsnatched_box = "
 
 $HTMLOUT .= main_div("
                 <div id='simple' class='has-text-centered'>
-                    <div class='has-text-centered padding20 level-center-center'>
+                    <div class='has-text-centered padding20 level-center-center is-wrapped'>
                         <span class='right10'>{$lang['browse_name']}</span>
-                        <input id='search_sim' name='sn' type='text' placeholder='{$lang['search_name']}' class='search min-350' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
+                        <input id='search_sim' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100 margin20' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
                         <span class='left10'>
                             <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
                         </span>
-                        <input type='checkbox' id='simple_btn' class='left10 tooltipper' title='{$lang['search_toggle_simple_btn']}' onclick='toggle_search()'>
+                        <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_simple_btn']}</span>
                     </div>
                 </div>
                 <div id='advanced' class='hidden'>
@@ -459,7 +459,7 @@ $HTMLOUT .= main_div("
                         </div>
                         <div class='margin10 level-center-center'>
                             <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
-                            <input type='checkbox' id='simple_btn' class='left10 tooltipper' title='{$lang['search_toggle_advanced_btn']}' onclick='toggle_search()'>
+                            <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_advanced_btn']}</span>
                         </div>
                     </div>
                 </div>

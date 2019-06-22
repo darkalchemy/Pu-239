@@ -26,7 +26,7 @@ function karma_update($data)
         $bmt = $site_config['bonus']['max_torrents'];
         $sql = $fluent->from('peers AS p')
                       ->select(null)
-                      ->select('userid')
+                      ->select('p.userid')
                       ->select('COUNT(p.torrent) AS tcount')
                       ->select('u.seedbonus')
                       ->innerJoin('users AS u ON p.userid = u.id')

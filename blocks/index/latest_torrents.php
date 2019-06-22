@@ -20,7 +20,7 @@ $latest_torrents .= "
                     <thead>
                         <tr>
                             <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                            <th class='w-50 minw-150'>{$lang['last5torrents_title']}</th>
+                            <th class='w-50 min-350'>{$lang['last5torrents_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_leechers']}</th>

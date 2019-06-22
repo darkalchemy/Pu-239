@@ -37,8 +37,8 @@ class Person
     public function get_person_by_name(string $name)
     {
         $result = $this->fluent->from('person')
-            ->where('name = ?', $name)
-            ->fetch();
+                               ->where('name = ?', $name)
+                               ->fetch();
 
         return $result;
     }
@@ -52,8 +52,8 @@ class Person
     public function update(array $update, int $id)
     {
         $this->fluent->update('person')
-            ->set($update)
-            ->where('id = ?', $id)
-            ->execute();
+                     ->set($update)
+                     ->where('id = ?', $id)
+                     ->execute();
     }
 }

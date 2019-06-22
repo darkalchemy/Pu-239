@@ -27,9 +27,9 @@ $htmlout = '';
  * @param        $userid
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

@@ -8,9 +8,9 @@ use Pu239\Cache;
 use Pu239\Database;
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */
@@ -36,9 +36,9 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */
@@ -144,9 +144,9 @@ function cleanup(string $group)
 /**
  * @param bool $before
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return int
  */
@@ -178,7 +178,7 @@ function toggle_site_status(bool $before)
     if (!$before) {
         clear_di_cache();
     }
-    $cache->delete('site_settings_');
+       $cache->set('site_settings_', false);
 
     return $disabled;
 }

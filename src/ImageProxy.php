@@ -24,10 +24,10 @@ class ImageProxy
      * @param int|null $height
      * @param int|null $quality
      *
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return bool|string
      */
@@ -63,9 +63,9 @@ class ImageProxy
      * @param string $url
      * @param string $path
      *
-     * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return bool
      */

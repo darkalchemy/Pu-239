@@ -34,9 +34,9 @@ $links = "
  * @param      $arr
  * @param bool $empty
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -75,6 +75,7 @@ function do_sort($arr, $empty = false)
 
     return $ret_html;
 }
+
 global $container;
 
 $fluent = $container->get(Database::class);
@@ -107,7 +108,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
                            ->where('checked_when>= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
                            ->orderBy('checked_when DESC')
-                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
+                           ->limit($pager['pdo']['limit'])
+                           ->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             if ($data) {
@@ -150,7 +152,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->where('checked_when>= UNIX_TIMESTAMP(CURDATE())')
                            ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
                            ->orderBy('checked_when DESC')
-                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
+                           ->limit($pager['pdo']['limit'])
+                           ->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             if ($data) {
@@ -202,7 +205,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->select('name')
                            ->select('added')
                            ->where('checked_when = 0')
-                           ->limit($pager['pdo']['limit'])->offset($pager['pdo']['offset'])
+                           ->limit($pager['pdo']['limit'])
+                           ->offset($pager['pdo']['offset'])
                            ->fetchAll();
 
             $HTMLOUT .= main_table(do_sort($data), $heading);

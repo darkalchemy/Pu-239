@@ -49,7 +49,11 @@ $html = str_replace([
 $html = str_replace('–', '-', $html);
 $html = str_replace('href="', 'href="' . $site_config['site']['anonymizer_url'], $html);
 $html = str_replace('="/images/', '="https://torrentfreak.com/images/', $html);
-$html = str_replace(['</img>', '<p> </p>', '<p></p>'], '', $html);
+$html = str_replace([
+    '</img>',
+    '<p> </p>',
+    '<p></p>',
+], '', $html);
 preg_match_all('/<img.*?src=["|\'](.*?)["|\'].*?>/s', $html, $matches);
 $i = 0;
 foreach ($matches[1] as $match) {

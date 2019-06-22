@@ -18,7 +18,8 @@ if (empty($tid)) {
     die();
 }
 $auth = $container->get(Auth::class);
-$current_user = $auth->getUserId(); if (empty($current_user)) {
+$current_user = $auth->getUserId();
+if (empty($current_user)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }
@@ -26,11 +27,11 @@ $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 if ($private === 'true') {
     $bookmark = $fluent->from('bookmarks')
-        ->select(null)
-        ->select('private')
-        ->where('torrentid = ?', $tid)
-        ->where('userid = ?', $current_user)
-        ->fetch('private');
+                       ->select(null)
+                       ->select('private')
+                       ->where('torrentid = ?', $tid)
+                       ->where('userid = ?', $current_user)
+                       ->fetch('private');
 
     if ($bookmark === 'yes') {
         $private = 'no';
@@ -44,10 +45,10 @@ if ($private === 'true') {
     ];
 
     $fluent->update('bookmarks')
-        ->set($set)
-        ->where('torrentid = ?', $tid)
-        ->where('userid = ?', $current_user)
-        ->execute();
+           ->set($set)
+           ->where('torrentid = ?', $tid)
+           ->where('userid = ?', $current_user)
+           ->execute();
 
     $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
@@ -61,16 +62,16 @@ if ($private === 'true') {
 }
 
 $bookmark = $fluent->from('bookmarks')
-    ->select(null)
-    ->select('id')
-    ->where('torrentid = ?', $tid)
-    ->where('userid = ?', $current_user)
-    ->fetch('id');
+                   ->select(null)
+                   ->select('id')
+                   ->where('torrentid = ?', $tid)
+                   ->where('userid = ?', $current_user)
+                   ->fetch('id');
 
 if (!empty($bookmark)) {
     $fluent->delete('bookmarks')
-        ->where('id = ?', $bookmark)
-        ->execute();
+           ->where('id = ?', $bookmark)
+           ->execute();
     $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
         'content' => 'deleted',
@@ -85,8 +86,8 @@ if (!empty($bookmark)) {
         'torrentid' => $tid,
     ];
     $fluent->insertInto('bookmarks')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
     $cache->delete('bookmarks_' . $current_user);
     echo json_encode([
         'content' => 'added',

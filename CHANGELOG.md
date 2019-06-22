@@ -1,4 +1,6 @@
 ### 21 Jun, 2019
+fix: toggle status functions.php  
+update: a bit of code cleanup phpstorm/phpcs-fixer  
 update: simple search click to advanced search browse.php  
 add: one click site offline/online  
 add: auto put site offline/online during update  

@@ -1082,8 +1082,8 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed|null
  */

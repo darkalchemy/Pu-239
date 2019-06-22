@@ -72,9 +72,9 @@ function update_event(int $expires, int $new_expires)
 /**
  * @param bool $all
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */

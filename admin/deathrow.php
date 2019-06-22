@@ -42,9 +42,9 @@ function calctime($val)
 /**
  * @param array $tids
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|int
  */

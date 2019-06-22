@@ -74,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $fluent = $container->get(Database::class);
     $users = $fluent->from('peers')
-        ->select(null)
-        ->select('DISTINCT userid AS userid')
-        ->where('connectable = "no"');
+                    ->select(null)
+                    ->select('DISTINCT userid AS userid')
+                    ->where('connectable = "no"');
 
     foreach ($users as $user) {
         $values[] = [
@@ -95,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'date' => $dt,
         ];
         $fluent->insertInto('notconnectablepmlog')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
         $session->set('is-success', 'PM Sent to all non connectable peers');
     } else {
         $session->set('is-warning', 'No non connectable peers');

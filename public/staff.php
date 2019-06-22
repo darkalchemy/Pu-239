@@ -46,9 +46,9 @@ foreach ($query as $arr2) {
  * @param $staff_array
  * @param $staffclass
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */

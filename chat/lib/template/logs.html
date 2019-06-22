@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="[CONTENT_ENCODING/]"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="[LANG_CODE/]" lang="[LANG_CODE/]" dir="[BASE_DIRECTION/]">
+<html dir="[BASE_DIRECTION/]" lang="[LANG_CODE/]" xml:lang="[LANG_CODE/]" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
+    <meta content="[CONTENT_TYPE/]" http-equiv="Content-Type"/>
     <title>[LANG]logsTitle[/LANG]</title>
     [STYLE_SHEETS/]
-    <script src="[JS_MAIN/]" charset="UTF-8"></script>
-    <script src="[JS_LOG/]" charset="UTF-8"></script>
+    <script charset="UTF-8" src="[JS_MAIN/]"></script>
+    <script charset="UTF-8" src="[JS_LOG/]"></script>
     <script>
         // <![CDATA[
         function toggleContainer(containerID, hideContainerIDs) {
@@ -119,19 +119,19 @@
         <div id="chatList"></div>
     </div>
     <div id="inputFieldContainer">
-        <textarea id="inputField" rows="1" cols="50" title="[LANG]inputLineBreak[/LANG]"
-                  onkeypress="ajaxChat.handleInputFieldKeyPress(event);"></textarea>
+        <textarea cols="50" id="inputField" onkeypress="ajaxChat.handleInputFieldKeyPress(event);" rows="1"
+                  title="[LANG]inputLineBreak[/LANG]"></textarea>
     </div>
     <div id="submitButtonContainer">
-        <input type="button" id="submitButton" value="[LANG]logsSearch[/LANG]" onclick="ajaxChat.sendMessage();"/>
+        <input id="submitButton" onclick="ajaxChat.sendMessage();" type="button" value="[LANG]logsSearch[/LANG]"/>
     </div>
     <div id="optionsContainer">
-        <input type="image" src="./images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
-               title="[LANG]toggleAudio[/LANG]" onclick="ajaxChat.toggleSetting('audio', 'audioButton');"/>
-        <input type="image" src="./images/pixel.gif" class="button" id="autoScrollButton"
-               alt="[LANG]toggleAutoScroll[/LANG]"
+        <input alt="[LANG]toggleAudio[/LANG]" class="button" id="audioButton" onclick="ajaxChat.toggleSetting('audio', 'audioButton');" src="./images/pixel.gif"
+               title="[LANG]toggleAudio[/LANG]" type="image"/>
+        <input alt="[LANG]toggleAutoScroll[/LANG]" class="button" id="autoScrollButton" onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton')"
+               src="./images/pixel.gif"
                title="[LANG]toggleAutoScroll[/LANG]"
-               onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton')"/>
+               type="image"/>
     </div>
     <div id="settingsContainer" style="display:none;">
         <h3>[LANG]settings[/LANG]</h3>
@@ -139,55 +139,55 @@
             <table>
                 <tr class="rowOdd">
                     <td><label for="bbCodeSetting">[LANG]settingsBBCode[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="bbCodeSetting"
-                                               onclick="ajaxChat.setSetting('bbCode', this.checked);"/></td>
+                    <td class="setting"><input id="bbCodeSetting" onclick="ajaxChat.setSetting('bbCode', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowEven">
                     <td><label for="hyperLinksSetting">[LANG]settingsHyperLinks[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="hyperLinksSetting"
-                                               onclick="ajaxChat.setSetting('hyperLinks', this.checked);"/></td>
+                    <td class="setting"><input id="hyperLinksSetting" onclick="ajaxChat.setSetting('hyperLinks', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="lineBreaksSetting">[LANG]settingsLineBreaks[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="lineBreaksSetting"
-                                               onclick="ajaxChat.setSetting('lineBreaks', this.checked);"/></td>
+                    <td class="setting"><input id="lineBreaksSetting" onclick="ajaxChat.setSetting('lineBreaks', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowEven">
                     <td><label for="emoticonsSetting">[LANG]settingsEmoticons[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="emoticonsSetting"
-                                               onclick="ajaxChat.setSetting('emoticons', this.checked);"/></td>
+                    <td class="setting"><input id="emoticonsSetting" onclick="ajaxChat.setSetting('emoticons', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="autoFocusSetting">[LANG]settingsAutoFocus[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="autoFocusSetting"
-                                               onclick="ajaxChat.setSetting('autoFocus', this.checked);"/></td>
+                    <td class="setting"><input id="autoFocusSetting" onclick="ajaxChat.setSetting('autoFocus', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowEven">
                     <td><label for="maxMessagesSetting">[LANG]settingsMaxMessages[/LANG]</label></td>
-                    <td class="setting"><input type="text" class="text" id="maxMessagesSetting"
-                                               onchange="ajaxChat.setSetting('maxMessages', parseInt(this.value));"/>
+                    <td class="setting"><input class="text" id="maxMessagesSetting" onchange="ajaxChat.setSetting('maxMessages', parseInt(this.value));"
+                                               type="text"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="wordWrapSetting">[LANG]settingsWordWrap[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="wordWrapSetting"
-                                               onclick="ajaxChat.setSetting('wordWrap', this.checked);"/></td>
+                    <td class="setting"><input id="wordWrapSetting" onclick="ajaxChat.setSetting('wordWrap', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowEven">
                     <td><label for="maxWordLengthSetting">[LANG]settingsMaxWordLength[/LANG]</label></td>
-                    <td class="setting"><input type="text" class="text" id="maxWordLengthSetting"
-                                               onchange="ajaxChat.setSetting('maxWordLength', parseInt(this.value));"/>
+                    <td class="setting"><input class="text" id="maxWordLengthSetting" onchange="ajaxChat.setSetting('maxWordLength', parseInt(this.value));"
+                                               type="text"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="dateFormatSetting">[LANG]settingsDateFormat[/LANG]</label></td>
-                    <td class="setting"><input type="text" class="text" id="dateFormatSetting"
-                                               onchange="ajaxChat.setSetting('dateFormat', this.value);"/></td>
+                    <td class="setting"><input class="text" id="dateFormatSetting" onchange="ajaxChat.setSetting('dateFormat', this.value);"
+                                               type="text"/></td>
                 </tr>
                 <tr class="rowEven">
                     <td><label for="persistFontColorSetting">[LANG]settingsPersistFontColor[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="persistFontColorSetting"
-                                               onclick="ajaxChat.setPersistFontColor(this.checked);"/></td>
+                    <td class="setting"><input id="persistFontColorSetting" onclick="ajaxChat.setPersistFontColor(this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="audioVolumeSetting">[LANG]settingsAudioVolume[/LANG]</label></td>
@@ -213,9 +213,9 @@
                         <select id="soundReceiveSetting"
                                 onchange="ajaxChat.setSetting('soundReceive', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
@@ -224,9 +224,9 @@
                         <select id="soundSendSetting"
                                 onchange="ajaxChat.setSetting('soundSend', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowEven">
@@ -235,9 +235,9 @@
                         <select id="soundEnterSetting"
                                 onchange="ajaxChat.setSetting('soundEnter', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
@@ -246,9 +246,9 @@
                         <select id="soundLeaveSetting"
                                 onchange="ajaxChat.setSetting('soundLeave', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowEven">
@@ -257,9 +257,9 @@
                         <select id="soundChatBotSetting"
                                 onchange="ajaxChat.setSetting('soundChatBot', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
@@ -268,9 +268,9 @@
                         <select id="soundErrorSetting"
                                 onchange="ajaxChat.setSetting('soundError', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowEven">
@@ -279,28 +279,28 @@
                         <select id="soundPrivateSetting"
                                 onchange="ajaxChat.setSetting('soundPrivate', this.options[this.selectedIndex].value);">
                             <option value="">-</option>
-                        </select><input type="image" src="./images/pixel.gif" class="button playback"
-                                        alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                        onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                        </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                        src="./images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                        type="image"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
                     <td><label for="blinkSetting">[LANG]settingsBlink[/LANG]</label></td>
-                    <td class="setting"><input type="checkbox" id="blinkSetting"
-                                               onclick="ajaxChat.setSetting('blink', this.checked);"/></td>
+                    <td class="setting"><input id="blinkSetting" onclick="ajaxChat.setSetting('blink', this.checked);"
+                                               type="checkbox"/></td>
                 </tr>
                 <tr class="rowEven">
 
                     <td><label for="blinkIntervalSetting">[LANG]settingsBlinkInterval[/LANG]</label></td>
-                    <td class="setting"><input type="text" class="text" id="blinkIntervalSetting"
-                                               onchange="ajaxChat.setSetting('blinkInterval', parseInt(this.value));"/>
+                    <td class="setting"><input class="text" id="blinkIntervalSetting" onchange="ajaxChat.setSetting('blinkInterval', parseInt(this.value));"
+                                               type="text"/>
                     </td>
                 </tr>
                 <tr class="rowOdd">
 
                     <td><label for="blinkIntervalNumberSetting">[LANG]settingsBlinkIntervalNumber[/LANG]</label></td>
-                    <td class="setting"><input type="text" class="text" id="blinkIntervalNumberSetting"
-                                               onchange="ajaxChat.setSetting('blinkIntervalNumber', parseInt(this.value));"/>
+                    <td class="setting"><input class="text" id="blinkIntervalNumberSetting" onchange="ajaxChat.setSetting('blinkIntervalNumber', parseInt(this.value));"
+                                               type="text"/>
                     </td>
                 </tr>
             </table>

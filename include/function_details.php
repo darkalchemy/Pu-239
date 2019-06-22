@@ -10,9 +10,9 @@ use Pu239\Database;
 /**
  * @param $imdb_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -48,9 +48,9 @@ function get_banner($imdb_id)
 /**
  * @param $imdb_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */

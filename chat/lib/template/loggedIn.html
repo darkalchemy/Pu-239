@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="[LANG_CODE/]" lang="[LANG_CODE/]" dir="[BASE_DIRECTION/]">
+<html dir="[BASE_DIRECTION/]" lang="[LANG_CODE/]" xml:lang="[LANG_CODE/]" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="[CONTENT_TYPE/]" http-equiv="Content-Type"/>
     <title>[LANG]title[/LANG]</title>
     [STYLE_SHEETS/]
 </head>
@@ -23,10 +23,10 @@
             <label for="channelSelection">[LANG]channel[/LANG]:</label>
             <select id="channelSelection" onchange="ajaxChat.switchChannel(this.options[this.selectedIndex].value);">[CHANNEL_OPTIONS/]</select>
         </div>
-        <input type="image" src="../images/pixel.gif" class="button" id="showChannelsButton"
-               alt="[LANG]toggleHelp[/LANG]"/>
+        <input alt="[LANG]toggleHelp[/LANG]" class="button" id="showChannelsButton" src="../images/pixel.gif"
+               type="image"/>
     </div>
-    <div id="statusIconContainer" class="waiting"></div>
+    <div class="waiting" id="statusIconContainer"></div>
 
     <div id="mainPanelContainer">
 
@@ -144,70 +144,70 @@
             <div id="settingsList">
                 <dl>
                     <dt><label
-                            title="Change the direction of messages, Select for new messages on top. You will need to refresh after changing this."
-                            for="postDirectionSetting">Enable Top Down</label></dt>
-                    <dd><input type="checkbox" id="postDirectionSetting"
-                               onclick="ajaxChat.setSetting('postDirection', this.checked);"/></dd>
+                            for="postDirectionSetting"
+                            title="Change the direction of messages, Select for new messages on top. You will need to refresh after changing this.">Enable Top Down</label></dt>
+                    <dd><input id="postDirectionSetting" onclick="ajaxChat.setSetting('postDirection', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="bbCodeSetting">[LANG]settingsBBCode[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="bbCodeSetting"
-                               onclick="ajaxChat.setSetting('bbCode', this.checked);"/></dd>
+                    <dd><input id="bbCodeSetting" onclick="ajaxChat.setSetting('bbCode', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="bbCodeImagesSetting">[LANG]settingsBBCodeImages[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="bbCodeImagesSetting"
-                               onclick="ajaxChat.setSetting('bbCodeImages', this.checked);"/></dd>
+                    <dd><input id="bbCodeImagesSetting" onclick="ajaxChat.setSetting('bbCodeImages', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="bbCodeColorsSetting">[LANG]settingsBBCodeColors[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="bbCodeColorsSetting"
-                               onclick="ajaxChat.setSetting('bbCodeColors', this.checked);"/></dd>
+                    <dd><input id="bbCodeColorsSetting" onclick="ajaxChat.setSetting('bbCodeColors', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="hyperLinksSetting">[LANG]settingsHyperLinks[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="hyperLinksSetting"
-                               onclick="ajaxChat.setSetting('hyperLinks', this.checked);"/></dd>
+                    <dd><input id="hyperLinksSetting" onclick="ajaxChat.setSetting('hyperLinks', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="lineBreaksSetting">[LANG]settingsLineBreaks[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="lineBreaksSetting"
-                               onclick="ajaxChat.setSetting('lineBreaks', this.checked);"/></dd>
+                    <dd><input id="lineBreaksSetting" onclick="ajaxChat.setSetting('lineBreaks', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="emoticonsSetting">[LANG]settingsEmoticons[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="emoticonsSetting"
-                               onclick="ajaxChat.setSetting('emoticons', this.checked);"/></dd>
+                    <dd><input id="emoticonsSetting" onclick="ajaxChat.setSetting('emoticons', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="autoFocusSetting">[LANG]settingsAutoFocus[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="autoFocusSetting"
-                               onclick="ajaxChat.setSetting('autoFocus', this.checked);"/></dd>
+                    <dd><input id="autoFocusSetting" onclick="ajaxChat.setSetting('autoFocus', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="maxMessagesSetting">[LANG]settingsMaxMessages[/LANG]</label></dt>
-                    <dd><input type="text" class="text" id="maxMessagesSetting"
-                               onchange="ajaxChat.setSetting('maxMessages', parseInt(this.value));"/></dd>
+                    <dd><input class="text" id="maxMessagesSetting" onchange="ajaxChat.setSetting('maxMessages', parseInt(this.value));"
+                               type="text"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="wordWrapSetting">[LANG]settingsWordWrap[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="wordWrapSetting"
-                               onclick="ajaxChat.setSetting('wordWrap', this.checked);"/></dd>
+                    <dd><input id="wordWrapSetting" onclick="ajaxChat.setSetting('wordWrap', this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="maxWordLengthSetting">[LANG]settingsMaxWordLength[/LANG]</label></dt>
-                    <dd><input type="text" class="text" id="maxWordLengthSetting"
-                               onchange="ajaxChat.setSetting('maxWordLength', parseInt(this.value));"/></dd>
+                    <dd><input class="text" id="maxWordLengthSetting" onchange="ajaxChat.setSetting('maxWordLength', parseInt(this.value));"
+                               type="text"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="dateFormatSetting">[LANG]settingsDateFormat[/LANG]</label></dt>
-                    <dd><input type="text" class="text" id="dateFormatSetting"
-                               onchange="ajaxChat.setSetting('dateFormat', this.value);"/></dd>
+                    <dd><input class="text" id="dateFormatSetting" onchange="ajaxChat.setSetting('dateFormat', this.value);"
+                               type="text"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="persistFontColorSetting">[LANG]settingsPersistFontColor[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="persistFontColorSetting"
-                               onclick="ajaxChat.setPersistFontColor(this.checked);"/></dd>
+                    <dd><input id="persistFontColorSetting" onclick="ajaxChat.setPersistFontColor(this.checked);"
+                               type="checkbox"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="audioBackendSetting">[LANG]settingsAudioSupport[/LANG]</label></dt>
@@ -243,9 +243,9 @@
                     <dd><select id="soundReceiveSetting"
                                 onchange="ajaxChat.setSetting('soundReceive', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -253,9 +253,9 @@
                     <dd><select id="soundSendSetting"
                                 onchange="ajaxChat.setSetting('soundSend', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -263,9 +263,9 @@
                     <dd><select id="soundEnterSetting"
                                 onchange="ajaxChat.setSetting('soundEnter', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -273,9 +273,9 @@
                     <dd><select id="soundLeaveSetting"
                                 onchange="ajaxChat.setSetting('soundLeave', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -283,9 +283,9 @@
                     <dd><select id="soundChatBotSetting"
                                 onchange="ajaxChat.setSetting('soundChatBot', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -293,9 +293,9 @@
                     <dd><select id="soundErrorSetting"
                                 onchange="ajaxChat.setSetting('soundError', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
@@ -303,25 +303,25 @@
                     <dd><select id="soundPrivateSetting"
                                 onchange="ajaxChat.setSetting('soundPrivate', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="../images/pixel.gif" class="button playback"
-                                    alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
-                                    onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
+                    </select><input alt="[LANG]playSelectedSound[/LANG]" class="button playback" onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"
+                                    src="../images/pixel.gif" title="[LANG]playSelectedSound[/LANG]"
+                                    type="image"/>
                     </dd>
                 </dl>
                 <dl>
                     <dt><label for="blinkSetting">[LANG]settingsBlink[/LANG]</label></dt>
-                    <dd><input type="checkbox" id="blinkSetting" onclick="ajaxChat.setSetting('blink', this.checked);"/>
+                    <dd><input id="blinkSetting" onclick="ajaxChat.setSetting('blink', this.checked);" type="checkbox"/>
                     </dd>
                 </dl>
                 <dl>
                     <dt><label for="blinkIntervalSetting">[LANG]settingsBlinkInterval[/LANG]</label></dt>
-                    <dd><input type="text" class="text" id="blinkIntervalSetting"
-                               onchange="ajaxChat.setSetting('blinkInterval', parseInt(this.value));"/></dd>
+                    <dd><input class="text" id="blinkIntervalSetting" onchange="ajaxChat.setSetting('blinkInterval', parseInt(this.value));"
+                               type="text"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="blinkIntervalNumberSetting">[LANG]settingsBlinkIntervalNumber[/LANG]</label></dt>
-                    <dd><input type="text" class="text" id="blinkIntervalNumberSetting"
-                               onchange="ajaxChat.setSetting('blinkIntervalNumber', parseInt(this.value));"/></dd>
+                    <dd><input class="text" id="blinkIntervalNumberSetting" onchange="ajaxChat.setSetting('blinkIntervalNumber', parseInt(this.value));"
+                               type="text"/></dd>
                 </dl>
             </div>
         </div>
@@ -329,59 +329,59 @@
     </div>
 
     <div id="inputFieldContainer">
-        <textarea id="inputField" rows="1" cols="50" title="[LANG]inputLineBreak[/LANG]"
-                  onkeydown="ajaxChat.handleInputFieldKeyDown(event);"
-                  onkeyup="ajaxChat.handleInputFieldKeyUp(event);"></textarea>
+        <textarea cols="50" id="inputField" onkeydown="ajaxChat.handleInputFieldKeyDown(event);" onkeyup="ajaxChat.handleInputFieldKeyUp(event);"
+                  rows="1"
+                  title="[LANG]inputLineBreak[/LANG]"></textarea>
     </div>
     <div id="submitButtonContainer">
         <span id="messageLengthCounter">0/[MESSAGE_TEXT_MAX_LENGTH/]</span>
-        <input type="button" id="submitButton" value="[LANG]messageSubmit[/LANG]" onclick="ajaxChat.sendMessage();"/>
+        <input id="submitButton" onclick="ajaxChat.sendMessage();" type="button" value="[LANG]messageSubmit[/LANG]"/>
     </div>
-    <div id="emoticonsContainer" dir="ltr"></div>
+    <div dir="ltr" id="emoticonsContainer"></div>
     <div id="bbCodeContainer">
-        <input id="bbCodeBold" type="button" value="[LANG]bbCodeLabelBold[/LANG]" title="[LANG]bbCodeTitleBold[/LANG]"
-               onclick="ajaxChat.insertBBCode('b');" style="font-weight:bold;"/>
-        <input id="bbCodeItalic" type="button" value="[LANG]bbCodeLabelItalic[/LANG]"
-               title="[LANG]bbCodeTitleItalic[/LANG]" onclick="ajaxChat.insertBBCode('i');" style="font-style:italic;"/>
-        <input id="bbCodeUnderline" type="button" value="[LANG]bbCodeLabelUnderline[/LANG]"
-               title="[LANG]bbCodeTitleUnderline[/LANG]" onclick="ajaxChat.insertBBCode('u');"
-               style="text-decoration:underline;"/>
-        <input class="txtUpsideDown" id="bbCodeUpsideDown" type="button" value="[LANG]bbCodeLabelUpsideDown[/LANG]"
-               title="[LANG]bbCodeTitleUpsideDown[/LANG]" onclick="ajaxChat.insertBBCode('updown');"/>
-        <input id="bbCodeQuote" type="button" value="[LANG]bbCodeLabelQuote[/LANG]"
-               title="[LANG]bbCodeTitleQuote[/LANG]" onclick="ajaxChat.insertBBCode('quote');"/>
-        <input id="bbCodeCode" type="button" value="[LANG]bbCodeLabelCode[/LANG]" title="[LANG]bbCodeTitleCode[/LANG]"
-               onclick="ajaxChat.insertBBCode('code');"/>
-        <input id="bbCodeURL" type="button" value="[LANG]bbCodeLabelURL[/LANG]" title="[LANG]bbCodeTitleURL[/LANG]"
-               onclick="ajaxChat.insertBBCode('url');"/>
-        <input id="bbCodeVideo" type="button" value="Video" title="[LANG]bbCodeTitleVideo[/LANG]"
-               onclick="ajaxChat.insertBBCode('video');"/>
-        <input id="bbCodeIMG" type="button" value="[LANG]bbCodeLabelImg[/LANG]" title="[LANG]bbCodeTitleImg[/LANG]"
-               onclick="ajaxChat.insertBBCode('img');"/>
-        <input id="bbCodeColor" type="button" value="[LANG]bbCodeLabelColor[/LANG]"
-               title="[LANG]bbCodeTitleColor[/LANG]"/>
-        <input id="bbCodeSmilies" type="button" value="Smilies" onclick="PopMoreSmiles();"
-               title="[LANG]bbCodeTitleEmoticon[/LANG]"/>
+        <input id="bbCodeBold" onclick="ajaxChat.insertBBCode('b');" style="font-weight:bold;" title="[LANG]bbCodeTitleBold[/LANG]"
+               type="button" value="[LANG]bbCodeLabelBold[/LANG]"/>
+        <input id="bbCodeItalic" onclick="ajaxChat.insertBBCode('i');" style="font-style:italic;"
+               title="[LANG]bbCodeTitleItalic[/LANG]" type="button" value="[LANG]bbCodeLabelItalic[/LANG]"/>
+        <input id="bbCodeUnderline" onclick="ajaxChat.insertBBCode('u');" style="text-decoration:underline;"
+               title="[LANG]bbCodeTitleUnderline[/LANG]" type="button"
+               value="[LANG]bbCodeLabelUnderline[/LANG]"/>
+        <input class="txtUpsideDown" id="bbCodeUpsideDown" onclick="ajaxChat.insertBBCode('updown');" title="[LANG]bbCodeTitleUpsideDown[/LANG]"
+               type="button" value="[LANG]bbCodeLabelUpsideDown[/LANG]"/>
+        <input id="bbCodeQuote" onclick="ajaxChat.insertBBCode('quote');" title="[LANG]bbCodeTitleQuote[/LANG]"
+               type="button" value="[LANG]bbCodeLabelQuote[/LANG]"/>
+        <input id="bbCodeCode" onclick="ajaxChat.insertBBCode('code');" title="[LANG]bbCodeTitleCode[/LANG]" type="button"
+               value="[LANG]bbCodeLabelCode[/LANG]"/>
+        <input id="bbCodeURL" onclick="ajaxChat.insertBBCode('url');" title="[LANG]bbCodeTitleURL[/LANG]" type="button"
+               value="[LANG]bbCodeLabelURL[/LANG]"/>
+        <input id="bbCodeVideo" onclick="ajaxChat.insertBBCode('video');" title="[LANG]bbCodeTitleVideo[/LANG]" type="button"
+               value="Video"/>
+        <input id="bbCodeIMG" onclick="ajaxChat.insertBBCode('img');" title="[LANG]bbCodeTitleImg[/LANG]" type="button"
+               value="[LANG]bbCodeLabelImg[/LANG]"/>
+        <input id="bbCodeColor" title="[LANG]bbCodeTitleColor[/LANG]" type="button"
+               value="[LANG]bbCodeLabelColor[/LANG]"/>
+        <input id="bbCodeSmilies" onclick="PopMoreSmiles();" title="[LANG]bbCodeTitleEmoticon[/LANG]" type="button"
+               value="Smilies"/>
     </div>
-    <div id="colorCodesContainer" style="display:none;" dir="ltr"></div>
+    <div dir="ltr" id="colorCodesContainer" style="display:none;"></div>
     <div id="optionsContainer">
-        <input type="image" src="../images/pixel.gif" class="button" id="helpButton" alt="[LANG]toggleHelp[/LANG]"
+        <input alt="[LANG]toggleHelp[/LANG]" class="button" id="helpButton" onclick="ajaxChat.view.toggleContainer('helpContainer', ['onlineListContainer','settingsContainer']);" src="../images/pixel.gif"
                title="[LANG]toggleHelp[/LANG]"
-               onclick="ajaxChat.view.toggleContainer('helpContainer', ['onlineListContainer','settingsContainer']);"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="settingsButton"
-               alt="[LANG]toggleSettings[/LANG]"
+               type="image"/>
+        <input alt="[LANG]toggleSettings[/LANG]" class="button" id="settingsButton" onclick="ajaxChat.view.toggleContainer('settingsContainer', ['onlineListContainer','helpContainer']);"
+               src="../images/pixel.gif"
                title="[LANG]toggleSettings[/LANG]"
-               onclick="ajaxChat.view.toggleContainer('settingsContainer', ['onlineListContainer','helpContainer']);"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="onlineListButton"
-               alt="[LANG]toggleOnlineList[/LANG]"
+               type="image"/>
+        <input alt="[LANG]toggleOnlineList[/LANG]" class="button" id="onlineListButton" onclick="ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer','helpContainer']);"
+               src="../images/pixel.gif"
                title="[LANG]toggleOnlineList[/LANG]"
-               onclick="ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer','helpContainer']);"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
-               title="[LANG]toggleAudio[/LANG]" onclick="ajaxChat.toggleSetting('audio', 'audioButton');"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="autoScrollButton"
-               alt="[LANG]toggleAutoScroll[/LANG]"
+               type="image"/>
+        <input alt="[LANG]toggleAudio[/LANG]" class="button" id="audioButton" onclick="ajaxChat.toggleSetting('audio', 'audioButton');" src="../images/pixel.gif"
+               title="[LANG]toggleAudio[/LANG]" type="image"/>
+        <input alt="[LANG]toggleAutoScroll[/LANG]" class="button" id="autoScrollButton" onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton');"
+               src="../images/pixel.gif"
                title="[LANG]toggleAutoScroll[/LANG]"
-               onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton');"/>
+               type="image"/>
     </div>
 
     <!--
@@ -394,8 +394,8 @@
     </div> -->
 </div>
 <div id="flashInterfaceContainer"></div>
-<script src="[JS_MAIN/]" charset="UTF-8"></script>
-<script src="[JS/]" charset="UTF-8"></script>
+<script charset="UTF-8" src="[JS_MAIN/]"></script>
+<script charset="UTF-8" src="[JS/]"></script>
 <script>
     ajaxChatConfig.anonLink = '[ANON_LINK/]';
     ajaxChatConfig.token = '[TOKEN/]';

@@ -207,9 +207,9 @@ switch ($action) {
 /**
  * @param int $box
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -254,8 +254,8 @@ function get_all_boxes($box = 1)
 /**
  * @param $mailbox
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */

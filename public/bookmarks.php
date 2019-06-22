@@ -29,9 +29,9 @@ $htmlout = '';
  * @param        $userid
  * @param string $variant
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -133,9 +133,9 @@ function bookmarktable($res, $userid, $variant = 'index')
                             </a>
                         </td>" : '');
         $bms = $fluent->from('bookmarks')
-            ->where('torrentid = ?', $id)
-            ->where('userid = ?', $userid)
-            ->fetch();
+                      ->where('torrentid = ?', $id)
+                      ->where('userid = ?', $userid)
+                      ->fetch();
         if ($bms['private'] === 'yes') {
             $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
@@ -257,10 +257,10 @@ $htmlout .= '
 
 $fluent = $container->get(Database::class);
 $count = $fluent->from('bookmarks')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('userid = ?', $userid)
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('userid = ?', $userid)
+                ->fetch('count');
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (empty($torrentsperpage)) {
     $torrentsperpage = 25;
@@ -269,30 +269,30 @@ if (empty($torrentsperpage)) {
 if ($count) {
     $pager = pager($torrentsperpage, $count, 'bookmarks.php?&amp;');
     $bookmarks = $fluent->from('bookmarks AS b')
-        ->select(null)
-        ->select('b.id as bookmarkid')
-        ->select('t.owner')
-        ->select('t.id')
-        ->select('t.name')
-        ->select('t.comments')
-        ->select('t.leechers')
-        ->select('t.seeders')
-        ->select('t.save_as')
-        ->select('t.numfiles')
-        ->select('t.added')
-        ->select('t.filename')
-        ->select('t.size')
-        ->select('t.views')
-        ->select('t.visible')
-        ->select('t.hits')
-        ->select('t.times_completed')
-        ->select('t.category')
-        ->innerJoin('torrents AS t ON b.torrentid=t.id')
-        ->where('b.userid = ?', $userid)
-        ->orderBy('t.id DESC')
-        ->limit($pager['pdo']['limit'])
-        ->offset($pager['pdo']['offset'])
-        ->fetchAll();
+                        ->select(null)
+                        ->select('b.id as bookmarkid')
+                        ->select('t.owner')
+                        ->select('t.id')
+                        ->select('t.name')
+                        ->select('t.comments')
+                        ->select('t.leechers')
+                        ->select('t.seeders')
+                        ->select('t.save_as')
+                        ->select('t.numfiles')
+                        ->select('t.added')
+                        ->select('t.filename')
+                        ->select('t.size')
+                        ->select('t.views')
+                        ->select('t.visible')
+                        ->select('t.hits')
+                        ->select('t.times_completed')
+                        ->select('t.category')
+                        ->innerJoin('torrents AS t ON b.torrentid=t.id')
+                        ->where('b.userid = ?', $userid)
+                        ->orderBy('t.id DESC')
+                        ->limit($pager['pdo']['limit'])
+                        ->offset($pager['pdo']['offset'])
+                        ->fetchAll();
 
     $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
     $htmlout .= bookmarktable($bookmarks, $userid, 'index');

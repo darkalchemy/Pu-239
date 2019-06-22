@@ -12,9 +12,9 @@ use Pu239\Image;
  * @param string $type
  * @param int    $season
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed
  */
@@ -101,9 +101,9 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  * @param bool   $store
  * @param string $type
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */

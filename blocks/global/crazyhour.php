@@ -13,10 +13,10 @@ if ($site_config['bonus']['crazy_hour']) {
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws Exception
+ * @throws NotFoundException
  *
  * @return string
  */

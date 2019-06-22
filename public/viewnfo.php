@@ -20,7 +20,10 @@ if ($CURUSER['class'] === UC_MIN) {
     stderr('error', 'Invalid ID');
 }
 $torrent = $container->get(Torrent::class);
-$nfo = $torrent->get_items(['name', 'nfo'], $id);
+$nfo = $torrent->get_items([
+    'name',
+    'nfo',
+], $id);
 if (empty($nfo) || empty($nfo['nfo'])) {
     die($lang['text_puke']);
 }

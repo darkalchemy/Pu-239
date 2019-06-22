@@ -8,10 +8,10 @@ use Pu239\PollVoter;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return bool|string
  */

@@ -1,8 +1,8 @@
 In no particular order  
 
 finish: casino.php rewrite  
+remove the need for using global $mysqli
 
-finish: cleanup/funds_update.php to run with jobby  
 update forced_logout_ to new user system  
 find and update all users "Pending"  
 finish replacing homespun user create/delete/etc  

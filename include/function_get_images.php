@@ -14,9 +14,9 @@ require_once INCL_DIR . 'function_fanart.php';
  * @param string   $type
  * @param int|null $season
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */

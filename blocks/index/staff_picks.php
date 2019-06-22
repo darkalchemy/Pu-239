@@ -21,7 +21,7 @@ $staffpicks .= "
                 <thead>
                     <tr>
                         <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                        <th class='w-50 minw-150'>{$lang['staff_picks']}</th>
+                        <th class='w-50 min-350'>{$lang['staff_picks']}</th>
                         <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_leechers']}</th>

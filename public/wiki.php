@@ -73,8 +73,8 @@ function navmenu()
 }
 
 /**
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|void
  */

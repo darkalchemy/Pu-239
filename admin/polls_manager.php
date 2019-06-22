@@ -189,11 +189,11 @@ function show_poll_form($stdfoot)
 /**
  * @param $stdfoot
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */

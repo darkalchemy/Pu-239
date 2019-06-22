@@ -40,9 +40,9 @@ $heading = "
 /**
  * @param $comment
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

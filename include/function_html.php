@@ -344,8 +344,8 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|Image|mixed|string
  */
@@ -407,9 +407,9 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @throws \PHPMailer\PHPMailer\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \PHPMailer\PHPMailer\Exception
  *
  * @return bool
  */
@@ -441,9 +441,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */
@@ -467,9 +467,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */

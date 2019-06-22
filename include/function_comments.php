@@ -14,11 +14,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param        $rows
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|null
  */

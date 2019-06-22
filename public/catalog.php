@@ -22,10 +22,10 @@ global $container, $site_config, $CURUSER;
  * @param $char
  * @param $link
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -40,9 +40,9 @@ function readMore($text, $char, $link)
 /**
  * @param $array
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

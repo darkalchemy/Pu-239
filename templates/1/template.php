@@ -194,10 +194,10 @@ function stdhead(?string $title = null, array $stdhead = [])
 /**
  * @param array $stdfoot
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -261,7 +261,7 @@ function stdfoot(array $stdfoot = [])
                             <tr>
                                 <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
                                 <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
-                                <th>{$lang['gl_stdfoot_qs']}</th>
+                                <th class='min-350'>{$lang['gl_stdfoot_qs']}</th>
                             </tr>";
             $body = '';
             foreach ($query_stats as $key => $value) {
@@ -432,9 +432,9 @@ function StatusBar()
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */

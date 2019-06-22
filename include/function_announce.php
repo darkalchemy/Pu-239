@@ -22,22 +22,22 @@ function crazyhour_announce()
     $fluent = $container->get(Database::class);
     if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
         $cz['crazyhour'] = $fluent->from('freeleech')
-            ->select(null)
-            ->select('var')
-            ->select('amount')
-            ->where('type = ?', 'crazyhour')
-            ->fetch();
+                                  ->select(null)
+                                  ->select('var')
+                                  ->select('amount')
+                                  ->where('type = ?', 'crazyhour')
+                                  ->fetch();
 
         if ($cz['crazyhour'] === false) {
             $cz['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
             $fluent->update('freeleech')
-                ->set([
-                    'var' => $cz['crazyhour']['var'],
-                    'amount' => $cz['crazyhour']['amount'],
-                ])
-                ->where('type = ?', 'crazyhour')
-                ->execute();
+                   ->set([
+                       'var' => $cz['crazyhour']['var'],
+                       'amount' => $cz['crazyhour']['amount'],
+                   ])
+                   ->where('type = ?', 'crazyhour')
+                   ->execute();
         }
         $cache->set('crazyhour_', $cz['crazyhour'], 0);
     }
@@ -54,9 +54,9 @@ function crazyhour_announce()
                 'amount' => $cz['crazyhour']['amount'],
             ];
             $fluent->update('freeleech')
-                ->set($set)
-                ->where('type = ?', 'crazyhour')
-                ->execute();
+                   ->set($set)
+                   ->where('type = ?', 'crazyhour')
+                   ->execute();
 
             $cache->set('crazyhour_', $cz['crazyhour'], 0);
 
@@ -69,8 +69,8 @@ function crazyhour_announce()
                 'txt' => $text,
             ];
             $fluent->insertInto('sitelog')
-                ->values($values)
-                ->execute();
+                   ->values($values)
+                   ->execute();
         }
 
         return false;
@@ -80,9 +80,9 @@ function crazyhour_announce()
             if (($cz_lock = $cache->set('crazyhour_lock_', 1, 10)) !== false) {
                 $set = ['amount' => $cz['crazyhour']['amount']];
                 $fluent->update('freeleech')
-                    ->set($set)
-                    ->where('type = ?', 'crazyhour')
-                    ->execute();
+                       ->set($set)
+                       ->where('type = ?', 'crazyhour')
+                       ->execute();
 
                 $cache->set('crazyhour_', $cz['crazyhour'], 0);
 
@@ -95,8 +95,8 @@ function crazyhour_announce()
                     'txt' => $text,
                 ];
                 $fluent->insertInto('sitelog')
-                    ->values($values)
-                    ->execute();
+                       ->values($values)
+                       ->execute();
             }
         }
 
@@ -110,9 +110,9 @@ function crazyhour_announce()
  * @param int $torrentid
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return int|mixed
  */
@@ -126,8 +126,8 @@ function get_happy(int $torrentid, int $userid)
     $happy = $cache->get($keys['happyhour']);
     if ($happy === false || is_null($happy)) {
         $res = $fluent->from('happyhour')
-            ->where('userid = ?', $userid)
-            ->fetchAll();
+                      ->where('userid = ?', $userid)
+                      ->fetchAll();
 
         $happy = [];
         foreach ($res as $row) {
@@ -146,9 +146,9 @@ function get_happy(int $torrentid, int $userid)
  * @param int $torrentid
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -163,8 +163,8 @@ function get_slots(int $torrentid, int $userid)
     $slot = $cache->get('fllslot_' . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
-            ->where('userid=?', $userid)
-            ->fetchAll();
+                       ->where('userid=?', $userid)
+                       ->fetchAll();
         $cache->set('fllslot_' . $userid, $slot, $ttl_slot);
     }
     if (!empty($slot)) {
@@ -216,8 +216,8 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
         'torrentid' => $torrentid,
     ];
     $fluent->insertInto('cheaters')
-        ->values($values)
-        ->execute();
+           ->values($values)
+           ->execute();
 
     return true;
 }

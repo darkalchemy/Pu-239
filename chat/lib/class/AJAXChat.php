@@ -200,9 +200,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -239,9 +239,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return mixed|null
      */
@@ -459,9 +459,9 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -988,11 +988,11 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return bool
      */
@@ -1027,9 +1027,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -1043,8 +1043,8 @@ class AJAXChat
     }
 
     /**
-     * @throws NotFoundException
      * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return array|null
      */
@@ -1282,11 +1282,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return mixed|string|null
      */
@@ -1504,9 +1504,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -1766,9 +1766,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -1982,9 +1982,9 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -2331,8 +2331,8 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -2408,8 +2408,8 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -2612,12 +2612,12 @@ class AJAXChat
      * @param $text
      * @param $textParts
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return bool
      */
@@ -2678,12 +2678,12 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2702,10 +2702,10 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -2801,10 +2801,10 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -2844,8 +2844,8 @@ class AJAXChat
     }
 
     /**
-     * @throws NotFoundException
      * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return string
      */
@@ -2904,12 +2904,12 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2925,12 +2925,12 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2982,11 +2982,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -3006,12 +3006,12 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -3027,12 +3027,12 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -3080,11 +3080,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */

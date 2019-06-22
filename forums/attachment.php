@@ -9,9 +9,9 @@ use Pu239\Database;
 /**
  * @param int $post_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array
  */

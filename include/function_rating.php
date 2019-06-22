@@ -11,9 +11,9 @@ use Pu239\Database;
  * @param $id
  * @param $what
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */

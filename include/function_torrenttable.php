@@ -38,9 +38,9 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @throws Exception
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws Exception
  *
  * @return string
  */

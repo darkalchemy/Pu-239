@@ -18,7 +18,7 @@ $posted_comments .= "
                     <thead>
                         <tr>
                             <th class='has-text-centered w-10'>Type</th>
-                            <th class='w-50 minw-150'>Last 5 Comments</th>
+                            <th class='w-50 min-350'>Last 5 Comments</th>
                             <th class='has-text-centered'>User</th>
                             <th class='has-text-centered'>When</th>
                             <th class='has-text-centered'>Likes</th>

@@ -72,8 +72,8 @@ function class_check($class = 0, $staff = true)
 /**
  * @param $script
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int
  */

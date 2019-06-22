@@ -45,8 +45,12 @@ function foxnews_shout($links = [])
             $items = $doc->getElementsByTagName('item');
             $pubs = [];
             foreach ($items as $item) {
-                $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-                $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+                $title = empty($item->getElementsByTagName('title')
+                                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                                                                      ->item(0)->nodeValue;
+                $link = empty($item->getElementsByTagName('link')
+                                   ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                                                                     ->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
                     'link' => replace_unicode_strings($link),
@@ -67,7 +71,8 @@ function foxnews_shout($links = [])
                 $values = [
                     'link' => $link,
                 ];
-                $query = $fluent->insertInto('newsrss')->values($values);
+                $query = $fluent->insertInto('newsrss')
+                                ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {
@@ -111,8 +116,12 @@ function tfreak_shout($links = [])
         $items = $doc->getElementsByTagName('item');
         $pubs = [];
         foreach ($items as $item) {
-            $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-            $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+            $title = empty($item->getElementsByTagName('title')
+                                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                                                                  ->item(0)->nodeValue;
+            $link = empty($item->getElementsByTagName('link')
+                               ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                                                                 ->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
                 'link' => replace_unicode_strings($link),
@@ -133,7 +142,8 @@ function tfreak_shout($links = [])
             $values = [
                 'link' => $link,
             ];
-            $query = $fluent->insertInto('newsrss')->values($values);
+            $query = $fluent->insertInto('newsrss')
+                            ->values($values);
             $newid = $query->execute();
             if ($newid) {
                 if (!$empty || $count === $i++) {
@@ -216,7 +226,8 @@ function github_shout($links = [])
                 $values = [
                     'link' => $link,
                 ];
-                $query = $fluent->insertInto('newsrss')->values($values);
+                $query = $fluent->insertInto('newsrss')
+                                ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     if (!$empty || $count === $i++) {

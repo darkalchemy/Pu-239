@@ -51,9 +51,9 @@ $HTMLOUT .= main_table($body) . '
     </form>';
 $fluent = $container->get(Database::class);
 $count1 = $fluent->from('bannedemails')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->fetch('count');
+                 ->select(null)
+                 ->select('COUNT(id) AS count')
+                 ->fetch('count');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);

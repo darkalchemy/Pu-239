@@ -12,9 +12,9 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */
@@ -144,9 +144,9 @@ function clean_data($data)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array
  */

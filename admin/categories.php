@@ -507,9 +507,9 @@ function build_table(array $data, string $parent_name)
 /**
  * @param array $cat
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -655,9 +655,9 @@ function get_images(array $cat)
 /**
  * @param int $id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */

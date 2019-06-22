@@ -13,9 +13,9 @@ use Pu239\Message;
  * @param string $subject
  * @param string $body
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|null
  */

@@ -17,10 +17,10 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int    $tid
  * @param string $poster
  *
- * @throws InvalidManipulation
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws InvalidManipulation
  *
  * @return array|bool
  */

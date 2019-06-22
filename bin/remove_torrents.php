@@ -11,11 +11,11 @@ global $container;
 $time_start = microtime(true);
 $fluent = $container->get(Database::class);
 $torrents = $fluent->from('torrents')
-    ->select(null)
-    ->select('id')
-    ->select('info_hash')
-    ->select('owner')
-    ->orderBy('id');
+                   ->select(null)
+                   ->select('id')
+                   ->select('info_hash')
+                   ->select('owner')
+                   ->orderBy('id');
 
 $i = 0;
 $torrents_class = $container->get(Torrent::class);

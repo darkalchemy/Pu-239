@@ -10,9 +10,9 @@ use Pu239\Database;
 /**
  * @param $dates
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -56,9 +56,9 @@ function get_tv_by_day($dates)
 /**
  * @param $dates
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -95,9 +95,9 @@ function get_movies_by_week($dates)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -140,9 +140,9 @@ function get_movies_in_theaters()
 /**
  * @param $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -243,8 +243,8 @@ function get_movie_id($imdbid, $type)
 /**
  * @param $json
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -324,9 +324,9 @@ function getStartAndEndDate($year, $week)
 /**
  * @param $tmdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|null
  */

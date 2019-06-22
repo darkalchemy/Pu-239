@@ -39,7 +39,7 @@ $forum_posts .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='m-50 minw-150'>{$lang['latestposts_topic_title']}</th>
+                        <th class='w-50 min-350'>{$lang['latestposts_topic_title']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_replies']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_views']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_last_post']}</th>

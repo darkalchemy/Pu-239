@@ -19,7 +19,7 @@ $torrents_mow .= "
                     <thead>
                         <tr>
                             <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                            <th class='w-50 minw-150'>{$lang['index_mow_title']}</th>
+                            <th class='w-50 min-350'>{$lang['index_mow_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
