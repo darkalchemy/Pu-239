@@ -1,4 +1,8 @@
 ### 23 Jun, 2019
+fix: undefined $torrent image_update.php  
+fix: undefined $session  topiccounter.php  
+fix: cast to int poll.php   
+fix: achievementhistory.php  
 fix: can't delete folder  
 fix: incorrect index name used  
 add: staff option to set initial upload credit to new users  

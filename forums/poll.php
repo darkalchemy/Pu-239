@@ -122,7 +122,7 @@ switch ($action) {
         $vote_count = number_format($row[0]);
         //=== let's do all the possible errors
         switch (true) {
-            case !is_valid_id($arr_poll['poll_id']): //=== no poll
+            case !is_valid_id((int) $arr_poll['poll_id']): //=== no poll
                 stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
                 break;
 
@@ -198,7 +198,7 @@ switch ($action) {
             $poll_options = serialize($break_down_poll_options);
             sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')') or sqlerr(__FILE__, __LINE__);
             $poll_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-            if (is_valid_id($poll_id)) {
+            if (is_valid_id((int) $poll_id)) {
                 sql_query('UPDATE `topics` SET poll_id=' . sqlesc($poll_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {
                 stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'added') . '.');
@@ -328,7 +328,7 @@ switch ($action) {
         //=== be sure there is a poll to reset :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id = $arr_poll[0];
+        $poll_id = (int) $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
@@ -353,7 +353,7 @@ switch ($action) {
         //=== be sure there is a poll to close :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id = $arr_poll[0];
+        $poll_id = (int) $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . ' .. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . ' </a>.');
         } else {
@@ -379,7 +379,7 @@ switch ($action) {
         //=== be sure there is a poll to open :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id = $arr_poll[0];
+        $poll_id = (int) $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {

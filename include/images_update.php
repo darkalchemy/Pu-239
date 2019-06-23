@@ -51,6 +51,7 @@ function images_update()
     $cache->set('images_update_', 'running', 1800);
     $fluent = $container->get(Database::class);
     $images_class = $container->get(Image::class);
+    $torrent = $container->get(Torrent::class);
 
     $fluent->deleteFrom('images')
            ->where("url = 'N/A' OR url = '' OR url IS NULL")

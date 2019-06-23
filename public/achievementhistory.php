@@ -24,9 +24,6 @@ $res = sql_query('SELECT COUNT(id) FROM achievements WHERE userid =' . sqlesc($i
 $row = mysqli_fetch_row($res);
 $count = (int) $row[0];
 $perpage = 15;
-if (!$count) {
-    stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username((int) $arr['id']) . " {$lang['achievement_history_err3']}");
-}
 $pager = pager($perpage, $count, "?id=$id&amp;");
 global $CURUSER, $site_config;
 
@@ -49,6 +46,7 @@ if ($id === $CURUSER['id']) {
         </ul>
     </div>";
 }
+
 $HTMLOUT .= "
     <div class='has-text-centered'>
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username((int) $arr['id']) . "</h1>
@@ -61,24 +59,28 @@ $HTMLOUT .= '</h2>
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$heading = "
+if ($count === 0) {
+    $HTMLOUT .= stdmsg($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username((int) $arr['id']) . " {$lang['achievement_history_err3']}");
+} else {
+    $heading = "
                     <tr>
                         <th>{$lang['achievement_history_award']}</th>
                         <th>{$lang['achievement_history_descr']}</th>
                         <th>{$lang['achievement_history_date']}</th>
                     </tr>";
-$res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-$body = '';
-while ($arr = mysqli_fetch_assoc($res)) {
-    $body .= "
+    $res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $body = '';
+    while ($arr = mysqli_fetch_assoc($res)) {
+        $body .= "
                     <tr>
                         <td class='has-text-centered'><img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'></td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
                         <td>' . get_date((int) $arr['date'], '') . '</td>
                     </tr>';
-}
-$HTMLOUT .= main_table($body, $heading) . '
+    }
+    $HTMLOUT .= main_table($body, $heading) . '
         </div>';
+}
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
