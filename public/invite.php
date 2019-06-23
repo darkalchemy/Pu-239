@@ -344,7 +344,8 @@ cheers,\n
     header('Location: ?do=view_page');
 }
 
-function get_body(string $title, string $inviter, string $email, int $secret, string $invite) {
+function get_body(string $title, string $inviter, string $email, int $secret, string $invite)
+{
     global $site_config;
 
     return doc_head() . "

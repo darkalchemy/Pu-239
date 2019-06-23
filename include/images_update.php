@@ -357,7 +357,7 @@ function images_update()
     $count = 0;
     foreach ($torrents as $tor) {
         $torrent->format_descr($tor['id']);
-        $count++;
+        ++$count;
     }
     echo $count . " torrents descr info cached\n";
 
@@ -387,7 +387,7 @@ function images_update()
                 }
                 $poster = empty($poster) ? '' : $poster;
                 tvmaze($ids['tvmaze_id'], $tor['id'], $season, $episode, $poster);
-                $count++;
+                ++$count;
             }
         }
         echo $count . " torrents tvmaze info cached\n";

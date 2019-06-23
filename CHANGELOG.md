@@ -1,4 +1,7 @@
 ### 22 Jun, 2019
+update: explode string to array categories.php  
+update: cast to int flash.php  
+update: tvmaze genres clickable  
 add: link to staff messages navbar.php  
 update: popups max width to 500px  
 fix: add/edit category without image  

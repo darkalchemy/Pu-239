@@ -814,5 +814,4 @@ $HTMLOUT .= "
         </div>
     </div>";
 
-
 echo stdhead($user['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();

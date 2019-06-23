@@ -17,7 +17,8 @@ foreach ($get as $key => $value) {
         $terms[] = "$key=$value";
     }
 }
-$cats = !empty($get['cats']) ? $get['cats'] : [];
+$cats = !empty($get['cats']) ? (!is_array($get['cats']) ? explode(',', $get['cats']) : $get['cats']) : [];
+asort($cats);
 $main_div = "
         <div class='padding20'>
             <div id='parents' class='level-wide'>";

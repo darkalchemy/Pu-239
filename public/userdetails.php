@@ -251,9 +251,9 @@ $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERM
 $HTMLOUT .= $CURUSER['class'] >= UC_SYSOP ? "
             <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$id}'>Reset Password</a></li>
             <li class='margin10'><a class='has-text-danger tooltipper' title='Force this user to Logout' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;force_logout=yes'>Force Logout</a></li>" : '';
-$HTMLOUT .= "
+$HTMLOUT .= '
         </ul>
-    </div>";
+    </div>';
 
 $HTMLOUT .= "
         $h1

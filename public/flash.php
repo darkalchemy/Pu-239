@@ -127,7 +127,7 @@ if (mysqli_num_rows($res) > 0) {
                     <td>' . $member_rank . '</td>
                     <td>' . format_username((int) $CURUSER['id']) . '</td>
                     <td>' . (int) $row['level'] . '</td>
-                    <td>' . number_format($member_score_arr['score']) . '</td>
+                    <td>' . number_format((int) $member_score_arr['score']) . '</td>
                 </tr>';
         }
     }

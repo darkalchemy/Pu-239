@@ -284,7 +284,7 @@ if (!empty($title)) {
 $count = $count->fetch('count');
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
-    $torrentsperpage = 20;
+    $torrentsperpage = 25;
 }
 if ($count > 0) {
     if ($addparam != '') {

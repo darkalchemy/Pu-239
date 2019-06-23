@@ -132,12 +132,14 @@ if ($moderator) {
         $cache->deleteMulti([
             'motw_',
             'torrent_details_' . $id,
+            'torrent_descr_' . $id,
             'top_torrents_',
             'latest_torrents_',
-            'torrent_descr_' . $id,
+            'tvshow_ids_' . $torrent['imdb_id'],
             'staff_picks_',
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
+            'imdb_' . str_replace('tt', '', $torrent['imdb_id']),
             'book_fullset_' . $torrent['id'],
             'slider_torrents_',
             'scroller_torrents_',
@@ -157,6 +159,7 @@ if ($moderator) {
             $cache->deleteMulti([
                 'tvshow_episode_info_' . $ids['tvmaze_id'] . $season . $episode,
                 'tvmaze_' . $ids['tvmaze_id'],
+                'tvmaze_fullset_' . $ids['tvmaze_id'],
             ]);
         }
         if (!empty($ids['thetvdb_id'])) {

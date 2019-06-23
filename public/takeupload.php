@@ -442,10 +442,10 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @return string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return string
  */
 function file_list($arr, $id)
 {

@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|null
  */
@@ -32,7 +32,6 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     if (!$BLOCKS['tvmaze_api_on']) {
         return null;
     }
-
     $cast = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
     $tvmaze_display['show'] = [
         'name' => line_by_line('Series Title', '%s'),
@@ -42,7 +41,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         'origin' => line_by_line('Origin: Language', '%s'),
         'status' => line_by_line('Status', '%s'),
         'runtime' => line_by_line('Runtime', '%s min'),
-        'genres2' => line_by_line('Genres', '%s'),
+        'genres_clickable' => line_by_line('Genres', '%s'),
         'rated' => line_by_line('Rating', '%s'),
         'summary' => line_by_line('Summary', '%s'),
     ];
@@ -186,8 +185,8 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -227,10 +226,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string|null
  */
@@ -311,14 +310,12 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
         $tvmaze_show_data = json_decode($content, true);
         $cache->set('tvmaze_' . $tvmaze_id, $tvmaze_show_data, 604800);
     }
-
     $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
     $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
     if (!empty($airtime)) {
         $timestamp = strtotime('today midnight');
         $airtime = $timestamp + $airtime[0] * 3600 + (isset($airtime[1]) ? $airtime[1] * 60 : 0);
     }
-
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
     $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date((int) $airtime, 'WITHOUT_SEC', 0, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
@@ -327,6 +324,12 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
         $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
         $temp = explode(', ', $temp);
         $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
+        $tmp = [];
+        foreach ($temp as $genre) {
+            $genre_title = 'Search by genre: ' . ucwords($genre);
+            $tmp[] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sg=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
+        }
+        $tvmaze_show_data['genres_clickable'] = implode(', ', $tmp);
     }
 
     if (!empty($tvmaze_show_data['genres2'])) {
@@ -388,9 +391,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed
  */
