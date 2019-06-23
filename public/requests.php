@@ -378,7 +378,7 @@ switch ($action) {
                                      ->execute();
 
             $color = get_user_class_name((int) $CURUSER['class'], true);
-            $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url ={$site_config['paths']['baseurl']}/requests.php?action=request_details & id ={$new_request_id}]{$request_name}[/url]";
+            $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url={$site_config['paths']['baseurl']}/requests.php?action=request_details&id={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&new=1&id=' . $new_request_id);
             die();

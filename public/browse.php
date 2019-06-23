@@ -357,7 +357,7 @@ $unsnatched_box = "
                     </select>";
 
 $HTMLOUT .= main_div("
-                <div id='simple' class='has-text-centered'>
+                <div id='simple' class='has-text-centered w-50'>
                     <div class='has-text-centered padding20 level-center-center is-wrapped'>
                         <span class='right10'>{$lang['browse_name']}</span>
                         <input id='search_sim' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100 margin20' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
@@ -459,7 +459,7 @@ $HTMLOUT .= main_div("
                         </div>
                         <div class='margin10 level-center-center'>
                             <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
-                            <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_advanced_btn']}</span>
+                            <span id='advanced_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_advanced_btn']}</span>
                         </div>
                     </div>
                 </div>

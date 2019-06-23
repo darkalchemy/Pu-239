@@ -597,7 +597,7 @@ foreach ($options as $gets) {
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         <label for='title'>Enter the <b>Special Title</b> you would like to have:</label>
-                        <input type='text' name='title' class='w-100' maxlength='30' value='" . (!empty($user['title']) ? htmlsafechars($user['title']) : '') . "' required>
+                        <input type='text' id='title' name='title' class='w-100' maxlength='30' value='" . (!empty($user['title']) ? htmlsafechars($user['title']) : '') . "' required>
                     </div>";
             break;
         case $gets['id'] === 7:
@@ -605,11 +605,11 @@ foreach ($options as $gets) {
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         <label for='username'>Enter the <b>username</b> you would like to send karma to:</label>
-                        <input type='text' name='username' class='w-100' maxlength='64' required>
+                        <input type='text' id='username' name='username' class='w-100' maxlength='64' required>
                     </div>
                     <div class='top20 has-text-centered'>
                         <label for='bonusgift'>Select how many points you want to send:</label>
-                        <input type='number' name='bonusgift' class='w-100' min='100' max='$max' required>
+                        <input type='number' id='bonusgift' name='bonusgift' class='w-100' min='100' max='$max' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
@@ -624,7 +624,7 @@ foreach ($options as $gets) {
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         <label for='torrent_id'>Enter the <b>Torrent ID:</b></label>
-                        <input type='number' class='w-100' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
+                        <input type='number' class='w-100' id='torrent_id' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
                     </div>";
             break;
         case $gets['id'] === 11:
@@ -635,7 +635,7 @@ foreach ($options as $gets) {
                     </div>
                     <div class='top20 has-text-centered'>
                         <label for='donate'>Enter the <b>amount to contribute</b></label>
-                        <input type='number' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
+                        <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
@@ -650,7 +650,7 @@ foreach ($options as $gets) {
                     </div>
                     <div class='top20 has-text-centered'>
                         <label for='donate'>Enter the <b>amount to contribute</b></label>
-                        <input type='number' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
+                        <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
@@ -665,7 +665,7 @@ foreach ($options as $gets) {
                     </div>
                     <div class='top20 has-text-centered'>
                         <label for='donate'>Enter the <b>amount to contribute</b></label>
-                        <input type='number' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
+                        <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
@@ -686,7 +686,7 @@ foreach ($options as $gets) {
             $additional_text = "
                     <div class='top20 has-text-centered'>
                         <label for='torrent_id'>Enter the <b>Torrent ID:</b></label>
-                        <input type='number' class='w-100' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
+                        <input type='number' class='w-100' id='torrent_id' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
                     </div>";
             break;
         default:

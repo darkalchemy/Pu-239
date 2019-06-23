@@ -1,3 +1,9 @@
+### 23 Jun, 2019
+add: missing id's for labels  
+fix: remove extra spaces requests.php offers.php  
+fix: cast to int invite.php  
+update: bug message formatting bugs.php  
+
 ### 22 Jun, 2019
 update: explode string to array categories.php  
 update: cast to int flash.php  

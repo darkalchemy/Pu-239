@@ -207,7 +207,7 @@ if ($do === 'view_page') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = isset($_POST['email']) ? htmlsafechars($_POST['email']) : '';
         $invite = isset($_POST['code']) ? htmlsafechars($_POST['code']) : '';
-        $secret = isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '';
+        $secret = isset($_POST['secret']) ? (int) $_POST['secret'] : 0;
         if (!$email) {
             stderr($lang['invites_error'], $lang['invites_noemail']);
         }

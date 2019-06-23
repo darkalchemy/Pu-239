@@ -42,7 +42,7 @@ $text = "
     <div class='has-text-centered padding20'>
         <label for='name'>Class</label>
         <span class='margin20'>
-            <select name='class'>";
+            <select id='class' name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name((int) $i)) != '') {

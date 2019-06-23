@@ -45,7 +45,7 @@ $HTMLOUT .= main_div("
             <ul class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
                     <label for='bm'>Bookmarked Torrents<br>
-                        <select name='bm' class='top10 w-100'>
+                        <select id='bm' name='bm' class='top10 w-100'>
                             <option value='0'>No</option>
                             <option value='1'>Yes - Only bookmarked torrents</option>
                         </select>
@@ -53,7 +53,7 @@ $HTMLOUT .= main_div("
                 </li>
                 <li class='has-text-centered w-25 tooltipper' title='Generate Links to download torrents or to view torrent details.'>
                     <label for='feed'>RSS Link Type<br>
-                        <select name='feed' class='top10 w-100'>
+                        <select id='feed' name='feed' class='top10 w-100'>
                             <option value='dl'>{$lang['getrss_dl']}</option>
                             <option value='web'>{$lang['getrss_web']}</option>
                         </select>
@@ -61,7 +61,7 @@ $HTMLOUT .= main_div("
                 </li>
                 <li class='has-text-centered w-25 tooltipper' title='How many results should be returned in the RSS feed?'>
                     <label for='count'>Results in Feed<br>
-                        <select name='count' class='top10 w-100'>
+                        <select id='count' name='count' class='top10 w-100'>
                             <option value='15'>15</option>
                             <option value='30'>30</option>
                             <option value='50'>50</option>

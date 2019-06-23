@@ -1025,7 +1025,6 @@ option.head {
 }
 
 .object-fit-video {
-    -o-object-fit: fill;
     object-fit: fill;
     width: 100% !important;
     background: transparent;

@@ -380,7 +380,7 @@ switch ($action) {
 
             $color = get_user_class_name((int) $CURUSER['class'], true);
             $msg = "[{
-        $color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url ={$site_config['paths']['baseurl']}/offers.php?action=offer_details & id ={$new_offer_id}]{$offer_name}[/url]";
+        $color}]{$CURUSER['username']}[/{$color}] posted a new offer: [url={$site_config['paths']['baseurl']}/offers.php?action=offer_details&id={$new_offer_id}]{$offer_name}[/url]";
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&new=1&id=' . $new_offer_id);
             die();

@@ -364,7 +364,7 @@ $HTMLOUT .= main_div("
                     <label for='date' class='right10'>" . $lang['mtor_on_which_day'] . "</label>
                 </div>
                 <div class='column has-text-left'>
-                    <input type='date' name='date'>
+                    <input type='date' id='date' name='date'>
                 </div>
             </div>
             <button type='submit' class='button is-small'>" . $lang['mtor_search'] . '</button>

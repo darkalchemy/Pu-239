@@ -184,8 +184,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList div.monospace {
     font-family: "Lucida Console", Monaco, monospace;
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
     tab-size: 4;
     -moz-osx-font-smoothing: auto;
     -webkit-font-smoothing: antialiased;
@@ -206,8 +204,6 @@ input[type=button] {
     vertical-align: top;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     color: #363636;
     cursor: pointer;

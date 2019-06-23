@@ -128,7 +128,7 @@ if ($action === 'viewbug') {
       <tr><td class='rowhead'>{$lang['title']}:</td><td>{$title}</td></tr>
       <tr><td class='rowhead'>{$lang['added']} / {$lang['by']}</td><td>{$added} / {$addedby}</td></tr>
       <tr><td class='rowhead'>{$lang['priority']}</td><td>" . $priority . "</td></tr>
-      <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
+      <tr class='no_hover'><td class='rowhead'>{$lang['problem_bug']}</td><td><div class='margin20 code'>{$problem}</div></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
         if ($a['status'] === 'na') {
             $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";

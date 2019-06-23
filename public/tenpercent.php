@@ -107,7 +107,7 @@ $HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
     <form name='tenpercent' method='post' action='tenpercent.php' accept-charset='utf-8'>
         <div class='has-text-centered padding10'>
             <label for='sure'><b>Yes please </b></label>
-            <input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();'>
+            <input type='checkbox' id='sure' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();'>
         </div>
         <div class='has-text-centered padding10'>
             <input type='submit' name='submit' value='Add 10%' class='button is-small' disabled>
