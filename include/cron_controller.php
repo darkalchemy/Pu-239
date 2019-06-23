@@ -164,7 +164,7 @@ function autoclean(string $run)
     $torrent->get_top();
     $torrent->get_latest([]);
     $torrent->get_latest($site_config['categories']['tv']);
-    $torrent->get_latest($site_config['categories']['movies']);
+    $torrent->get_latest($site_config['categories']['movie']);
     $torrent->get_mow();
     $torrent->get_plots();
     $comment = $container->get(Comment::class);

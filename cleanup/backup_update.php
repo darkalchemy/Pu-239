@@ -33,9 +33,11 @@ function backup_update($data)
     foreach ($paths as $path => $dt) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
-            $date = filemtime($name);
-            if ($date < $dt) {
-                unlink($name);
+            if (!is_file($name)) {
+                $date = filemtime($name);
+                if ($date < $dt) {
+                    unlink($name);
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
 ### 23 Jun, 2019
+fix: can't delete folder  
+fix: incorrect index name used  
 add: staff option to set initial upload credit to new users  
 add: staff option to enable/disable upload credit to download  
 remove: redundant updates images_update.php  
