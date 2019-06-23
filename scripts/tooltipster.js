@@ -5,7 +5,7 @@ var short = 250;
 var long = 500;
 var distance = 12;
 var width = window.innerWidth * .75;
-var maxWidth = Math.min(width, 500);
+var maxWidth = Math.min(width, 600);
 var sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {

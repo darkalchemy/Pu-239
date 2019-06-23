@@ -173,6 +173,17 @@ function staff_panel()
 
             $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }
+        $staff_panel[] = [
+            "id" => 0,
+            "page_name" => "Staff Messages",
+            "file_name" => "staffbox.php",
+            "description" => "View Staff Messages",
+            "type" => "user",
+            "av_class" => UC_STAFF,
+            "added_by" => 1,
+            "added" => 1546167296,
+            "navbar" => 1,
+        ];
         if (in_array($CURUSER['id'], $site_config['adminer']['allowed_ids'])) {
             $staff_panel[] = [
                 'page_name' => 'Adminer',
@@ -183,6 +194,7 @@ function staff_panel()
             ];
             $staff_panel = array_msort($staff_panel, ['page_name' => SORT_ASC]);
         }
+        //dd($staff_panel);
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
                 if ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'user') {
