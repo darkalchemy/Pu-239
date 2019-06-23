@@ -1,4 +1,5 @@
 ### 23 Jun, 2019
+update: use $site_config['require_credit'] to determine if user allowed to download torrent  
 fix: typo backup_update.php  
 fix: undefined $torrent image_update.php  
 fix: undefined $session  topiccounter.php  

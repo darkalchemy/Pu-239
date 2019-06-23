@@ -49,7 +49,7 @@ if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'
 if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download'])) {
     stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]", 'bottom20');
 }
-if ($user['class'] === 0 && $row['size'] > ($user['uploaded'] - $user['downloaded'])) {
+if ($site_config['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
     stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]", 'bottom20');
 }
 if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
@@ -63,13 +63,13 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_confi
     $cache->delete($user['id'] . '_happy');
 }
 if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_download']);
     $cache->update_row('user_' . $user['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
-sql_query('UPDATE torrents SET hits = hits + 1 WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $torrents = $cache->get('torrent_details_' . $id);
 $update['hits'] = $torrents['hits'] + 1;
 $cache->update_row('torrent_details_' . $id, [
@@ -78,7 +78,7 @@ $cache->update_row('torrent_details_' . $id, [
 
 if (isset($_GET['slot'])) {
     $added = (TIME_NOW + 14 * 86400);
-    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $slot = mysqli_fetch_assoc($slots_sql);
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $user['id'];
     if ($_GET['slot'] === 'free') {
@@ -89,9 +89,9 @@ if (isset($_GET['slot'])) {
             stderr('Doh!', 'No Slots.', 'bottom20');
         }
         $user['freeslots'] = ($user['freeslots'] - 1);
-        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            sql_query('UPDATE freeslots SET free = "yes", addedfree = ' . $added . ' WHERE torrentid=' . $id . ' AND userid=' . $user['id'] . ' AND doubleup = "yes"') or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE freeslots SET free = "yes", addedfree = ' . $added . ' WHERE torrentid = ' . $id . ' AND userid = ' . $user['id'] . ' AND doubleup = "yes"') or sqlerr(__FILE__, __LINE__);
         } elseif ($used_slot && $slot['doubleup'] === 'no') {
             sql_query('INSERT INTO freeslots (torrentid, userid, free, addedfree) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
         } else {
