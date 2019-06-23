@@ -59,14 +59,6 @@ function images_update()
            ->where("imdb_id = '' OR imdb_id IS NULL")
            ->execute();
 
-    $torrent = $container->get(Torrent::class);
-    $torrent->get_latest_scroller();
-    $torrent->get_latest_slider();
-    $torrent->get_staff_picks();
-    $torrent->get_top();
-    $torrent->get_latest();
-    $torrent->get_mow();
-    $torrent->get_plots();
     get_upcoming();
     get_movies_in_theaters();
     get_bluray_info();

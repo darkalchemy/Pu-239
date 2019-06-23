@@ -78,6 +78,7 @@ $lang = [
     'trivia.php' => 'Trivia',
     'trivia_results.php' => 'Trivia Results',
     'topten.php' => 'Top 10',
+    'upcoming.php' => 'The Cooker',
     'upload.php' => 'Upload Torrent',
     'uploadapp.php' => 'Uploaders App',
     'user_blocks.php' => 'User Blocks',

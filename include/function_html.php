@@ -344,10 +344,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws DependencyException
+ * @return bool|Image|mixed|string
  * @throws NotFoundException
  *
- * @return bool|Image|mixed|string
+ * @throws DependencyException
  */
 function placeholder_image(int $size = 10)
 {
@@ -407,11 +407,11 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @throws DependencyException
+ * @return bool
  * @throws NotFoundException
  * @throws \PHPMailer\PHPMailer\Exception
  *
- * @return bool
+ * @throws DependencyException
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -441,11 +441,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return mixed
+ * @throws \Envms\FluentPDO\Exception
  */
 function validate_invite(int $id, string $code)
 {
@@ -467,11 +467,11 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws NotFoundException
+ * @return mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return mixed
+ * @throws NotFoundException
  */
 function validate_promo(string $code, bool $full)
 {
@@ -493,4 +493,30 @@ function validate_promo(string $code, bool $full)
     }
 
     return $valid;
+}
+
+/**
+ * @param array $lang
+ *
+ * @return string
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function category_dropdown(array $lang)
+{
+    $cats = genrelist(true);
+    $s = "
+            <select id='upload_category' name='type' class='w-100' required>
+                <option value='0'>({$lang['upload_choose_one']})</option>";
+    foreach ($cats as $cat) {
+        foreach ($cat['children'] as $row) {
+            $s .= "
+                <option value='{$row['id']}'>" . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+        }
+    }
+    $s .= '
+            </select>';
+
+    return $s;
 }

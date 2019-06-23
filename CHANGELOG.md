@@ -1,4 +1,9 @@
 ### 23 Jun, 2019
+add: staff option to set initial upload credit to new users  
+add: staff option to enable/disable upload credit to download  
+remove: redundant updates images_update.php  
+add: latest tv torrents block index page  
+add: latest movie torrents block index page  
 add: missing id's for labels  
 fix: remove extra spaces requests.php offers.php  
 fix: cast to int invite.php  

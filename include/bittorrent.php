@@ -859,9 +859,6 @@ function check_user_status(string $type = 'browse')
         insert_update_ip($type, $userid);
         force_logout($userid);
         $users_data = $user->getUserFromId($userid);
-        $userblock_class = $container->get(Userblock::class);
-        $userblocks = $userblock_class->get($userid);
-        $users_data['blocks'] = $userblocks;
         $user->update_last_access($userid);
         $session = $container->get(Session::class);
         $session->set('UserRole', $users_data['class']);

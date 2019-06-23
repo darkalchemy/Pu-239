@@ -25,6 +25,8 @@ $list = [
     'forum_posts_on',
     'staff_picks_on',
     'latest_torrents_on',
+    'latest_movies_on',
+    'latest_tv_on',
     'latest_torrents_scroll_on',
     'latest_torrents_slider_on',
     'announcement_on',
@@ -119,7 +121,7 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_index']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_index']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -229,6 +231,20 @@ $contents[] = "
                             <div class='w-100'>{$lang['block_torrents_set']}</div>";
 
 $contents[] = "
+                            <div class='w-100'>{$lang['block_torrents_movies']}</div>
+                            <div class='slideThree'>
+                                <#latest_movies_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_torrents_movies_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_torrents_tv']}</div>
+                            <div class='slideThree'>
+                                <#latest_tv_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_torrents_tv_set']}</div>";
+
+$contents[] = "
                             <div class='w-100'>{$lang['block_torrents_scroll']}</div>
                             <div class='slideThree'>
                                 <#latest_torrents_scroll_on#>
@@ -316,7 +332,7 @@ $HTMLOUT .= "
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_stdhead' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -430,7 +446,7 @@ $HTMLOUT .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_userdetails' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -678,7 +694,7 @@ $HTMLOUT .= "
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_apis' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -776,8 +792,7 @@ function template_out($matches)
             $BLOCKS = [];
         }
     }
-
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . "> 
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . (!empty($BLOCKS[$matches[1]]) && $BLOCKS[$matches[1]] == 1 ? ' checked' : '') . "> 
     <label for='{$matches[1]}'></label>";
 }

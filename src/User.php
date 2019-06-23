@@ -173,6 +173,8 @@ class User
                     $user['it'] = 'it';
                 }
                 $user['seedbonus'] = (float) $user['seedbonus'];
+                $user['blocks'] = $this->userblock->get($userid);
+
                 $this->cache->set('user_' . $userid, $user, $this->site_config['expires']['user_cache']);
             }
         }
@@ -283,6 +285,7 @@ class User
                 'apikey' => bin2hex(random_bytes(32)),
                 'stylesheet' => $this->site_config['site']['stylesheet'],
                 'last_access' => $dt,
+                'uploaded' => $this->site_config['upload_credit'],
             ];
             if (!empty($values['invitedby'])) {
                 $set['invitedby'] = (int) $values['invitedby'];

@@ -140,22 +140,11 @@ $HTMLOUT .= "
         </div>
         <div class='banner_container has-text-centered w-100'></div>
         <table class='table table-bordered table-striped top20'>";
-$s = "
-            <select id='upload_category' name='type' class='w-100' required>
-                <option value='0'>({$lang['upload_choose_one']})</option>";
-$cats = genrelist(true);
-foreach ($cats as $cat) {
-    foreach ($cat['children'] as $row) {
-        $s .= "
-                <option value='{$row['id']}'" . ($type == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
-    }
-}
-$s .= '
-            </select>';
+
 $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_type']}</td>
-                <td>$s</td>
+                <td>" . category_dropdown($lang) . "</td>
             </tr>
             <tr>
                 <td class='rowhead'>{$lang['upload_torrent']}</td>

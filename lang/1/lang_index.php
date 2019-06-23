@@ -41,14 +41,16 @@ $lang = [
     'latesttorrents_leechers' => 'Leechers',
     'latesttorrents_no_torrents' => 'No torrents Found',
     // last 5
-    'last5torrents_title' => 'Last 5 torrents',
+    'last5torrents_title' => 'Last 5 Torrents',
+    'last5torrents_movie_title' => 'Last 5 Movie Torrents',
+    'last5torrents_tv_title' => 'Last 5 TV Torrents',
     'last5torrents_type' => 'Type',
     'last5torrents_name' => 'Name',
     'last5torrents_seeders' => 'Seeders',
     'last5torrents_leechers' => 'Leechers',
     'last5torrents_no_torrents' => 'No torrents Found',
     // top 5
-    'top5torrents_title' => ' Top 5 torrents',
+    'top5torrents_title' => ' Top 5 Torrents',
     'top5torrents_type' => 'Type',
     'top5torrents_name' => 'Name',
     'top5torrents_seeders' => 'Seeders',

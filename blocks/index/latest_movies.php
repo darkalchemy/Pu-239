@@ -8,9 +8,9 @@ use Pu239\Torrent;
 global $container, $lang, $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
-$last5torrents = $torrent->get_latest([]);
+$last5movietorrents = $torrent->get_latest($site_config['categories']['movie']);
 
-$latest_torrents .= "
+$latest_movies .= "
     <a id='latesttorrents-hash'></a>
     <div id='latesttorrents' class='box'>
         <div class='has-text-centered'>
@@ -20,7 +20,7 @@ $latest_torrents .= "
                     <thead>
                         <tr>
                             <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                            <th class='w-50 min-350'>{$lang['last5torrents_title']}</th>
+                            <th class='w-50 min-350'>{$lang['last5torrents_movie_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_leechers']}</th>
@@ -29,7 +29,7 @@ $latest_torrents .= "
                     <tbody>";
 
 $images_class = $container->get(Image::class);
-foreach ($last5torrents as $last5torrent) {
+foreach ($last5movietorrents as $last5torrent) {
     $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
     extract($last5torrent);
     if (empty($poster) && !empty($imdb_id)) {
@@ -45,15 +45,15 @@ foreach ($last5torrents as $last5torrent) {
     }
 
     $block_id = "last_id_{$id}";
-    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
+    $latest_movies .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
 }
-if (count($last5torrents) === 0) {
-    $latest_torrents .= "
+if (count($last5movietorrents) === 0) {
+    $latest_movies .= "
                         <tr>
                             <td colspan='5'>{$lang['last5torrents_no_torrents']}</td>
                         </tr>";
 }
-$latest_torrents .= '
+$latest_movies .= '
                     </tbody>
                 </table>
             </div>

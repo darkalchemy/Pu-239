@@ -162,7 +162,9 @@ function autoclean(string $run)
     $torrent->get_latest_slider();
     $torrent->get_staff_picks();
     $torrent->get_top();
-    $torrent->get_latest();
+    $torrent->get_latest([]);
+    $torrent->get_latest($site_config['categories']['tv']);
+    $torrent->get_latest($site_config['categories']['movies']);
     $torrent->get_mow();
     $torrent->get_plots();
     $comment = $container->get(Comment::class);
