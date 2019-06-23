@@ -1,4 +1,5 @@
 ### 23 Jun, 2019
+fix: typo backup_update.php  
 fix: undefined $torrent image_update.php  
 fix: undefined $session  topiccounter.php  
 fix: cast to int poll.php   
