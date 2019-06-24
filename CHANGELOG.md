@@ -1,4 +1,5 @@
 ### 24 Jun, 2019
+update: select only invited users  
 fix: signup.php  
 update: add default achpoints  
 update: add ignore() Userblock.php Usersachiev.php  

@@ -43,6 +43,7 @@ if ($do === 'view_page') {
                   ->select('uploaded')
                   ->select('downloaded')
                   ->select('status')
+                  ->where('join_type = "invite"')
                   ->where('invitedby = ?', $CURUSER['id']);
 
     foreach ($sql as $row) {
@@ -187,9 +188,9 @@ if ($do === 'view_page') {
     header('Location: ?do=view_page');
 } elseif ($do === 'resend') {
     $code = $fluent->from('invite_codes')
-        ->where('id = ?', $_GET['id'])
-        ->where('sender = ?', $_GET['sender'])
-        ->fetch();
+                   ->where('id = ?', $_GET['id'])
+                   ->where('sender = ?', $_GET['sender'])
+                   ->fetch();
     if (!empty($code)) {
         $email = htmlsafechars($code['email']);
         $invite = htmlsafechars($code['code']);
