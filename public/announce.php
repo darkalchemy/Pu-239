@@ -27,24 +27,24 @@ if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
 }
 
 foreach ([
-    'torrent_pass',
-    'info_hash',
-    'peer_id',
-    'port',
-    'downloaded',
-    'uploaded',
-    'left',
-    'compact',
-] as $x) {
+             'torrent_pass',
+             'info_hash',
+             'peer_id',
+             'port',
+             'downloaded',
+             'uploaded',
+             'left',
+             'compact',
+         ] as $x) {
     if (!isset(${$x})) {
         err("Missing key: $x");
     }
 }
 
 foreach ([
-    'info_hash',
-    'peer_id',
-] as $x) {
+             'info_hash',
+             'peer_id',
+         ] as $x) {
     if (strlen(${$x}) != 20) {
         err("Invalid $x (" . strlen(${$x}) . ' - ' . urlencode(${$x}) . ')');
     }
@@ -59,10 +59,10 @@ $real_uploaded = $uploaded;
 $left = (int) $left;
 $rsize = 30;
 foreach ([
-    'num want',
-    'numwant',
-    'num_want',
-] as $x) {
+             'num want',
+             'numwant',
+             'num_want',
+         ] as $x) {
     if (isset(${$x})) {
         $rsize = (int) ${$x};
         break;
@@ -103,7 +103,7 @@ if (empty($user)) {
 } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
     err('Your downloading privileges have been disabled! (Read the rules)');
 } elseif ($user['class'] === 0 && $seeder === 'no') {
-    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, true);
+    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, true, $peer_id);
     if ($count > 3) {
         err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
     }
