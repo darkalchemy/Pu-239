@@ -36,9 +36,9 @@ class Userblock
     /**
      * @param int $userid
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function get(int $userid)
     {
@@ -72,6 +72,7 @@ class Userblock
     {
         $this->fluent->insertInto('user_blocks')
                      ->values($values)
+                     ->ignore()
                      ->execute();
     }
 }

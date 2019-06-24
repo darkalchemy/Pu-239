@@ -61,6 +61,7 @@ class Usersachiev
     {
         $this->fluent->insertInto('usersachiev')
                      ->values($values)
+                     ->ignore()
                      ->execute();
     }
 }

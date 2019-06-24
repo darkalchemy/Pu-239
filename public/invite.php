@@ -203,7 +203,6 @@ if ($do === 'view_page') {
         }
     }
 } elseif ($do === 'send_email') {
-    dd($_POST);
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = isset($_POST['email']) ? htmlsafechars($_POST['email']) : '';
         $invite = isset($_POST['code']) ? htmlsafechars($_POST['code']) : '';
