@@ -11,7 +11,9 @@ global $container, $site_config;
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
     $userid = $auth->getUserId();
-    $user = $container->get(User::class);
-    $user->logout($userid, true);
+    if (!empty($userid)) {
+        $user = $container->get(User::class);
+        $user->logout($userid, true);
+    }
 }
 header("Location: {$site_config['paths']['baseurl']}/login.php");

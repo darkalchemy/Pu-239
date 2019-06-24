@@ -461,7 +461,7 @@ class User
             $this->auth->destroySession();
         }
         if ($redirect) {
-            header('Location: ' . $this->site_config['paths']['baseurl'] . ' / login . php');
+            header('Location: ' . $this->site_config['paths']['baseurl'] . '/login.php');
             die();
         }
     }
@@ -592,8 +592,8 @@ class User
                 $update_time = $new_time;
             }
             $where = $this->container->get('where');
-            $request = $_SERVER['REQUEST_URI'] === ' / ' ? ' / index . php' : $_SERVER['REQUEST_URI'];
-            if (preg_match(' / \/(.*?)\.php / is', $request, $whereis_temp)) {
+            $request = $_SERVER['REQUEST_URI'] === '/' ? '/index.php' : $_SERVER['REQUEST_URI'];
+            if (preg_match('/\/(.*?)\.php/is', $request, $whereis_temp)) {
                 if (isset($where[$whereis_temp[1]])) {
                     $whereis = sprintf($where[$whereis_temp[1]], $user['username'], htmlsafechars($request));
                 } else {
