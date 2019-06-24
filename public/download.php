@@ -77,8 +77,7 @@ if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
     $downloaded = $cache->get('downloaded_' . $user['id'] . '_' . $id);
     if ($downloaded === false || is_null($downloaded)) {
         $snatched = $container->get(Snatched::class);
-        $has_snatched = get_snatched($user['id'], $id);
-
+        $has_snatched = $snatched->get_snatched($user['id'], $id);
         if (!$has_snatched) {
             $cache->set('downloaded_' . $user['id'] . '_' . $id, 'downloaded');
             $update = [
