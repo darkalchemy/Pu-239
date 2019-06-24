@@ -479,6 +479,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
 
     $users_class = $container->get(User::class);
     $users_data = $users_class->getUserFromId($user_id);
+    $achpoints = isset($users_data['achpoints']) ? $users_data['achpoints'] : 0;
     $peer = $container->get(Peer::class);
     $peers = $peer->getPeersFromUserId($user_id);
     $tag = $tag ? '@' : '';
@@ -527,7 +528,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Achievments: </span>
-                                <span class='level-right'>" . number_format($users_data['achpoints']) . '</span>
+                                <span class='level-right'>" . number_format($achpoints) . '</span>
                             </span>
                         </span>
                     </span>

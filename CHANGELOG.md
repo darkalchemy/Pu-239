@@ -1,3 +1,9 @@
+### 24 Jun, 2019
+update: add default achpoints  
+update: add ignore() Userblock.php Usersachiev.php  
+fix: typo invite.php  
+add: script to fix usersachiev userblocks usersfix.php  
+
 ### 23 Jun, 2019
 fix: typo torrents_lookup.php  
 fix: extra spaces User.php  
