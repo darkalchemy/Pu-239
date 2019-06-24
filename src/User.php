@@ -73,9 +73,9 @@ class User
     /**
      * @param string $username
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function getUserIdFromName(string $username)
     {
@@ -97,9 +97,9 @@ class User
     /**
      * @param string $username
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function search_by_username(string $username)
     {
@@ -129,9 +129,9 @@ class User
      * @param string $item
      * @param int    $userid
      *
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function get_item(string $item, int $userid)
     {
@@ -144,9 +144,9 @@ class User
      * @param int  $userid
      * @param bool $fresh
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function getUserFromId(int $userid, bool $fresh = false)
     {
@@ -208,9 +208,9 @@ class User
      * @param string $torrent_pass
      * @param string $auth
      *
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
     {
@@ -232,12 +232,12 @@ class User
      * @param array $values
      * @param array $lang
      *
-     * @throws NotFoundException
+     * @return bool|int
      * @throws UnbegunTransaction
      * @throws DependencyException
      * @throws Exception
      *
-     * @return bool|int
+     * @throws NotFoundException
      */
     public function add(array $values, array $lang)
     {
@@ -319,10 +319,10 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws UnbegunTransaction
+     * @return bool|int|PDOStatement
      * @throws Exception
      *
-     * @return bool|int|PDOStatement
+     * @throws UnbegunTransaction
      */
     public function update(array $set, int $userid, bool $persist = true)
     {
@@ -340,9 +340,9 @@ class User
     }
 
     /**
+     * @return array|PDOStatement
      * @throws Exception
      *
-     * @return array|PDOStatement
      */
     public function get_all_ids()
     {
@@ -358,9 +358,9 @@ class User
     /**
      * @param $torrent_pass
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function get_user_from_torrent_pass(string $torrent_pass)
     {
@@ -390,9 +390,9 @@ class User
     /**
      * @param int $category
      *
+     * @return array
      * @throws Exception
      *
-     * @return array
      */
     public function get_users_for_notifications(int $category)
     {
@@ -414,9 +414,9 @@ class User
     }
 
     /**
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function get_latest_user()
     {
@@ -448,13 +448,19 @@ class User
     public function logout(int $userid, bool $redirect)
     {
         $this->cache->delete('forced_logout_' . $userid);
+        if (empty($userid)) {
+            $userid = $this->auth->getUserId();
+        }
         if (!empty($userid)) {
+            $this->cache->delete('user_' . $userid);
             $this->fluent->deleteFrom('ajax_chat_online')
                          ->where('userID = ?', $userid)
                          ->execute();
         }
-        $this->auth->logOutEverywhere();
-        $this->auth->destroySession();
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->logOutEverywhere();
+            $this->auth->destroySession();
+        }
         if ($redirect) {
             header('Location: ' . $this->site_config['paths']['baseurl'] . '/login.php');
             die();
@@ -467,13 +473,18 @@ class User
      * @param int    $remember
      * @param array  $lang
      *
-     * @throws AuthError
-     * @throws AttemptCancelledException
-     *
      * @return bool
+     * @throws AttemptCancelledException
+     * @throws AuthError
+     * @throws NotLoggedInException
      */
     public function login(string $email, string $password, int $remember, array $lang)
     {
+        if ($this->auth->isLoggedIn()) {
+            $this->auth->logOutEverywhere();
+            $this->auth->destroySession();
+        }
+
         $duration = null;
         if ($remember === 1) {
             $duration = (int) $this->site_config['expires']['remember_me'] * 60 * 60 * 24;
@@ -481,6 +492,8 @@ class User
 
         try {
             $this->auth->login($email, $password, $duration);
+            $userid = $this->auth->getUserId();
+            $this->cache->delete('user_' . $userid);
 
             return true;
         } catch (InvalidEmailException $e) {
@@ -507,9 +520,9 @@ class User
      * @param array $post
      * @param bool  $return
      *
+     * @return bool
      * @throws AuthError
      *
-     * @return bool
      */
     public function reset_password(array $lang, array $post, bool $return)
     {
@@ -621,9 +634,9 @@ class User
      * @param int $parked
      * @param int $class
      *
+     * @return array
      * @throws Exception
      *
-     * @return array
      */
     public function get_inactives(int $registered, int $last_access, int $parked, int $class)
     {

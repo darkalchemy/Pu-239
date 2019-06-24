@@ -3,6 +3,8 @@
 declare(strict_types = 1);
 
 use Delight\Auth\Auth;
+use Delight\Auth\InvalidSelectorTokenPairException;
+use Delight\Auth\TokenExpiredException;
 use Delight\Auth\TooManyRequestsException;
 use Delight\Auth\UserAlreadyExistsException;
 use Pu239\Cache;
@@ -18,20 +20,28 @@ if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();
     $auth->destroySession();
 }
+
 try {
-    if ($emails = $auth->confirmEmail($_GET['selector'], $_GET['token'])) {
-        if (empty($emails[0])) {
-            $session->set('is-success', 'Your email has been confirmed');
-        } else {
-            $session->set('is-success', "Your email has been changed to {$emails[1]}");
-        }
-        $cache = $container->get(Cache::class);
-        $cache->delete('user_' . $auth->getUserId());
+    $emails = $auth->confirmEmail($_GET['selector'], $_GET['token']);
+    if (empty($emails[0])) {
+        $session->set('is-success', 'Your email has been confirmed');
+    } else {
+        $session->set('is-success', "Your email has been changed to {$emails[1]}");
     }
+    $cache = $container->get(Cache::class);
+    $userid = $auth->getUserId();
+    if ($auth->isLoggedIn()) {
+        $auth->logOutEverywhere();
+        $auth->destroySession();
+    }
+} catch (InvalidSelectorTokenPairException $e) {
+    $session->set('is-warning', 'Invalid token');
+} catch (TokenExpiredException $e) {
+    $session->set('is-warning', 'Token expired');
 } catch (UserAlreadyExistsException $e) {
-    die('Email address already exists');
+    $session->set('is-warning', 'Email address already exists');
 } catch (TooManyRequestsException $e) {
-    die('Too many requests');
+    $session->set('is-warning', 'Too many requests');
 }
 
 header("Refresh: 0; url={$site_config['paths']['baseurl']}/usercp.php?action=security");

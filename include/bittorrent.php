@@ -829,8 +829,10 @@ function force_logout(int $userid)
 
     $cache = $container->get(Cache::class);
     $forced_logout = $cache->get('forced_logout_' . $userid);
+
     if ($forced_logout) {
         $user = $container->get(User::class);
+        $cache->delete('user_' . $userid);
         $user->logout($userid, true);
     }
 }

@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $fluent->deleteFrom('ajax_chat_online')
                ->where('userID = ?', $userid)
                ->execute();
-        $cache->set('forced_logout_' . $userid, $dt, 2591999);
+        $cache->set('forced_logout_' . $userid, $dt);
     }
     if (isset($post['downloadpos']) && ($downloadpos = (int) $post['downloadpos'])) {
         $disable_pm = '';

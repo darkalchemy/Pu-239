@@ -53,8 +53,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
             $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['down']);
             $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['dload']);
-            $ratio_site = member_ratio($hit_and_run_arr['up'], (int) $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], (int) $hit_and_run_arr['dload']);
+            $ratio_site = member_ratio((int) $hit_and_run_arr['up'], (int) $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio((int) $hit_and_run_arr['uload'], (int) $hit_and_run_arr['dload']);
             $avatar = get_avatar($hit_and_run_arr);
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             switch (true) {

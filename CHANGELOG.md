@@ -1,4 +1,8 @@
 ### 23 Jun, 2019
+update: error messages verify_email.php  
+fix: clear user cache where user forced logout  
+fix: clear user cache when user logs in/out  
+fix: cast to int hit_and_run.php  
 update: use $site_config['require_credit'] to determine if user allowed to download torrent  
 fix: typo backup_update.php  
 fix: undefined $torrent image_update.php  

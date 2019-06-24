@@ -135,7 +135,7 @@ function leechwarn_update($data)
                ->execute();
 
         $cache->delete('user_' . $arr['id']);
-        $cache->set('forced_logout_' . $arr['id'], TIME_NOW, 2591999);
+        $cache->set('forced_logout_' . $arr['id'], TIME_NOW);
     }
 
     $time_end = microtime(true);
