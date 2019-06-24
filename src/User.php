@@ -286,7 +286,7 @@ class User
                 'apikey' => bin2hex(random_bytes(32)),
                 'stylesheet' => $this->site_config['site']['stylesheet'],
                 'last_access' => $dt,
-                'uploaded' => $this->site_config['upload_credit'],
+                'uploaded' => $this->site_config['signup']['upload_credit'],
             ];
             if (!empty($values['invitedby'])) {
                 $set['invitedby'] = (int) $values['invitedby'];

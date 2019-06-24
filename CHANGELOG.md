@@ -1,4 +1,5 @@
 ### 24 Jun, 2019
+fix: signup.php  
 update: add default achpoints  
 update: add ignore() Userblock.php Usersachiev.php  
 fix: typo invite.php  
