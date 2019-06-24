@@ -1,4 +1,5 @@
 ### 23 Jun, 2019
+fix: typo torrents_lookup.php  
 fix: extra spaces User.php  
 update: Too few arguments to function get_torrent_count() Peer.php  
 fix: typo  
