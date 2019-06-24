@@ -1,4 +1,5 @@
 ### 23 Jun, 2019
+update: Too few arguments to function get_torrent_count() Peer.php  
 fix: typo  
 fix: typo announce.php  
 update: error messages verify_email.php  
