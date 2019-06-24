@@ -112,7 +112,7 @@ if ($action === 'avatar') {
         } catch (NotLoggedInException $e) {
             stderr('Error', 'Not logged in');
         } catch (InvalidPasswordException $e) {
-            stderr('Error', 'Invalid password(s)');
+            stderr('Error', 'Invalid password');
         } catch (TooManyRequestsException $e) {
             stderr('Error', 'Too many requests');
         }
@@ -239,12 +239,9 @@ if ($action === 'avatar') {
     $action = 'security';
 } elseif ($action === 'torrents') {
     $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
-    $pmnotif = 'no';
-    if (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pm]') !== false) {
-        $pmnotif = 'yes';
-    }
-    $notifs = ($pmnotif === 'yes' ? '[pm]' : '');
-    $notifs .= ($emailnotif === 'yes' ? '[email]' : '');
+    $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
+    $notifs = $pmnotif === 'yes' ? '[pmail]' : '';
+    $notifs .= $emailnotif === 'yes' ? '[email]' : '';
     $r = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
     $rows = mysqli_num_rows($r);
     for ($i = 0; $i < $rows; ++$i) {

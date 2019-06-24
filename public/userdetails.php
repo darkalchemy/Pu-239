@@ -67,13 +67,13 @@ if ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) {
     $ip = $auth->getIpAddress();
     $addr = gethostbyaddr($ip) . "($ip)";
 }
-if ($user['perms'] & bt_options::PERMS_STEALTH) {
+if ($user['perms'] & PERMS_STEALTH) {
     $joindate = "{$lang['userdetails_na']}";
 } else {
     $joindate = get_date((int) $user['registered'], '');
 }
 $lastseen = $user['last_access'];
-if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
+if ($lastseen == 0 || $user['perms'] & PERMS_STEALTH) {
     $lastseen = "{$lang['userdetails_never']}";
 } else {
     $lastseen = get_date((int) $user['last_access'], '', 0, 1);
@@ -155,8 +155,8 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users">' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
 }
-$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
+$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
+$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
 $enabled = $user['enabled'] === 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
@@ -234,8 +234,8 @@ $HTMLOUT .= "
         $sharemark_link
         $shitty_link
         $friend_links
-        $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & PERMS_NO_IP ? "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & PERMS_BYPASS_BAN) ? "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
@@ -245,7 +245,7 @@ if ($stealth) {
     $session->set('is-info', htmlsafechars((string) $user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
-$HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
+$HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '');
 $HTMLOUT .= $CURUSER['class'] >= UC_SYSOP ? "

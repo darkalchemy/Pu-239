@@ -25,16 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateset = [];
     $setbits = $clrbits = 0;
     if (isset($_POST['unlock_user_moods'])) {
-        $setbits |= bt_options::UNLOCK_MORE_MOODS;
+        $setbits |= UNLOCK_MORE_MOODS;
     } // Unlock bonus moods
     else {
-        $clrbits |= bt_options::UNLOCK_MORE_MOODS;
+        $clrbits |= UNLOCK_MORE_MOODS;
     } // lock bonus moods
 
     if (isset($_POST['perms_stealth'])) {
-        $setbits |= bt_options::PERMS_STEALTH; // stealth on
+        $setbits |= PERMS_STEALTH; // stealth on
     } else {
-        $clrbits |= bt_options::PERMS_STEALTH; // stealth off
+        $clrbits |= PERMS_STEALTH; // stealth off
     }
 
     if ($setbits || $clrbits) {
@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ' . $_SERVER['PHP_SELF']);
     die();
 }
-$checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
-$checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked' : '');
+$checkbox_unlock_moods = (($CURUSER['perms'] & UNLOCK_MORE_MOODS) ? ' checked' : '');
+$checkbox_unlock_stealth = (($CURUSER['perms'] & PERMS_STEALTH) ? ' checked' : '');
 
 $HTMLOUT = '
             <div class="bg-02 top20">

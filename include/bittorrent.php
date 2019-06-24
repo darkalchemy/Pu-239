@@ -35,7 +35,6 @@ require_once CLASS_DIR . 'class_blocks_index.php';
 require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_blocks_apis.php';
-require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 
 if (!PRODUCTION) {
@@ -95,7 +94,7 @@ function getip()
     if (!validip($ip)) {
         $ip = '10.0.0.1';
     }
-    $no_log_ip = isset($CURUSER) && $CURUSER['perms'] & bt_options::PERMS_NO_IP;
+    $no_log_ip = isset($CURUSER) && $CURUSER['perms'] & PERMS_NO_IP;
     if ($site_config['site']['ip_logging'] && !$no_log_ip) {
         return $ip;
     }
@@ -139,7 +138,7 @@ function userlogin()
         //$session->destroy();
     }
 
-    if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
+    if (!isset($users_data['perms']) || (!($users_data['perms'] & PERMS_BYPASS_BAN))) {
         $bans_class = $container->get(Ban::class);
         if ($bans_class->check_bans($ip)) {
             require_once INCL_DIR . 'function_html.php';

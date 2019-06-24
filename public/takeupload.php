@@ -18,8 +18,9 @@ require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-$torrent_pass = $auth = $strip = $bot = $owner_id = $csrf = $type = $name = $url = $isbn = $poster = $MAX_FILE_SIZE = $youtube = $tags = $description = $body = $release_group = $free_length = $half_length = '';
+$torrent_pass = $auth = $strip = $bot = $owner_id = $csrf = $name = $url = $isbn = $poster = $MAX_FILE_SIZE = $youtube = $tags = $description = $body = $release_group = $free_length = $half_length = '';
 $music = $movie = $game = $apps = $subs = $genre = [];
+$type = 0;
 $data = $_POST;
 extract($_POST);
 unset($_POST);
@@ -397,7 +398,7 @@ $values = [
     'descr' => $descr,
     'ori_descr' => $descr,
     'description' => $description,
-    'category' => $type,
+    'category' => $catid,
     'free' => $free2,
     'silver' => $silver,
     'save_as' => $dname,
@@ -529,15 +530,18 @@ if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
 }
 
-$notify = $users_class->get_users_for_notifications((int) $type);
+$notify = $users_class->get_notifications($catid);
 if (!empty($notify)) {
     $subject = 'New Torrent Uploaded!';
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
-        if ($site_config['signup']['email_confirm'] && strpos($notif['notifs'], 'email') !== false) {
+        file_put_contents('/var/log/nginx/email.log', $notif['notifs'] . PHP_EOL, FILE_APPEND);
+        if ($site_config['mail']['smtp_enable'] && strpos($notif['notifs'], 'email') !== false) {
             $body = format_comment($msg);
             send_mail(strip_tags($notif['email']), $subject, $body, strip_tags($body));
-        } else {
+            file_put_contents('/var/log/nginx/email.log', 'sent' . PHP_EOL, FILE_APPEND);
+        }
+        if (strpos($notif['notifs'], 'pmail') !== false) {
             $msgs_buffer[] = [
                 'receiver' => $notif['id'],
                 'added' => $dt,

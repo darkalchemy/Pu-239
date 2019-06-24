@@ -7,7 +7,6 @@ use Pu239\User;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
-require_once CLASS_DIR . 'class_bt_options.php';
 if (empty($_SERVER['QUERY_STRING'])) {
     err("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }

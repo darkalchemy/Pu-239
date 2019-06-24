@@ -23,10 +23,10 @@ function stealth($id, $stealth = true)
     $setbits = $clrbits = 0;
     if ($stealth) {
         $display = 'is';
-        $setbits |= bt_options::PERMS_STEALTH;
+        $setbits |= PERMS_STEALTH;
     } else {
         $display = 'is not';
-        $clrbits |= bt_options::PERMS_STEALTH;
+        $clrbits |= PERMS_STEALTH;
     }
 
     if ($setbits || $clrbits) {

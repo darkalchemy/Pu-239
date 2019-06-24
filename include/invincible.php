@@ -26,17 +26,17 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     $setbits = $clrbits = 0;
     if ($invincible) {
         $display = 'now';
-        $setbits |= bt_options::PERMS_NO_IP;
+        $setbits |= PERMS_NO_IP;
         if ($bypass_bans) {
-            $setbits |= bt_options::PERMS_BYPASS_BAN;
+            $setbits |= PERMS_BYPASS_BAN;
         } else {
-            $clrbits |= bt_options::PERMS_BYPASS_BAN;
+            $clrbits |= PERMS_BYPASS_BAN;
             $display = 'now bypass bans off and';
         }
     } else {
         $display = 'no longer';
-        $clrbits |= bt_options::PERMS_NO_IP;
-        $clrbits |= bt_options::PERMS_BYPASS_BAN;
+        $clrbits |= PERMS_NO_IP;
+        $clrbits |= PERMS_BYPASS_BAN;
     }
     if ($setbits || $clrbits) {
         sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 

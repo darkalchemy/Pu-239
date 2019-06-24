@@ -21,7 +21,7 @@ if ($active24 === false || is_null($active24)) {
                     ->select(null)
                     ->select('id')
                     ->where('last_access > ?', $dt)
-                    ->where('perms < ?', bt_options::PERMS_STEALTH)
+                    ->where('perms < ?', PERMS_STEALTH)
                     ->where('id != 2')
                     ->orderBy('username')
                     ->fetchAll();

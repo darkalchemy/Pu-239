@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Pu239;
 
-use bt_options;
 use Delight\Auth\AttemptCancelledException;
 use Delight\Auth\Auth;
 use Delight\Auth\AuthError;
@@ -233,11 +232,13 @@ class User
      * @param array $lang
      *
      * @return bool|int
-     * @throws UnbegunTransaction
+     * @throws AuthError
      * @throws DependencyException
      * @throws Exception
-     *
+     * @throws InvalidManipulation
      * @throws NotFoundException
+     * @throws NotLoggedInException
+     * @throws UnbegunTransaction
      */
     public function add(array $values, array $lang)
     {
@@ -264,17 +265,17 @@ class User
                 $userid = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']));
             }
         } catch (DuplicateUsernameException $e) {
-            $this->session->set('is-warning', 'Username already exists');
+            stderr('Error', 'Username already exists');
         } catch (InvalidEmailException $e) {
-            $this->session->set('is-warning', 'Invalid email address');
+            stderr('Error', 'Invalid email address');
         } catch (InvalidPasswordException $e) {
-            $this->session->set('is-warning', 'Invalid password');
+            stderr('Error', 'Invalid password');
         } catch (UserAlreadyExistsException $e) {
-            $this->session->set('is-warning', 'Email already in use');
+            stderr('Error', 'Email already in use');
         } catch (TooManyRequestsException $e) {
-            $this->session->set('is-warning', 'Too many requests');
+            stderr('Error', 'Too many requests');
         } catch (AuthError $e) {
-            $this->session->set('is-warning', 'Unknown Error');
+            stderr('Error', 'Unknown Error');
         }
         if ($userid !== false) {
             $dt = TIME_NOW;
@@ -394,23 +395,20 @@ class User
      * @throws Exception
      *
      */
-    public function get_users_for_notifications(int $category)
+    public function get_notifications(int $category)
     {
+
+        $cat = '[cat' . $category . ']';
         $users = $this->fluent->from('users')
                               ->select(null)
                               ->select('id')
                               ->select('email')
                               ->select('notifs')
-                              ->where('notifs IS NOT NULL');
+                              ->where('MATCH (notifs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cat)
+                              ->where('MATCH (notifs) AGAINST (? IN NATURAL LANGUAGE MODE)', '[email] [pmail]')
+                              ->fetchAll();
 
-        $notify = [];
-        foreach ($users as $user) {
-            if (strpos($user['notifs'], '[cat' . $category . ']') !== false) {
-                $notify[] = $user;
-            }
-        }
-
-        return $notify;
+        return $users;
     }
 
     /**
@@ -420,6 +418,7 @@ class User
      */
     public function get_latest_user()
     {
+        require_once CLASS_DIR . 'class_user_options.php';
         $this->cache->delete('latestuser_');
         $userid = $this->cache->get('latestuser_');
         if ($userid === false || is_null($userid)) {
@@ -427,7 +426,7 @@ class User
                                    ->select(null)
                                    ->select('id')
                                    ->where('status = 0')
-                                   ->where('perms < ?', bt_options::PERMS_STEALTH)
+                                   ->where('perms < ?', PERMS_STEALTH)
                                    ->orderBy('id DESC')
                                    ->fetch('id');
 
@@ -462,7 +461,7 @@ class User
             $this->auth->destroySession();
         }
         if ($redirect) {
-            header('Location: ' . $this->site_config['paths']['baseurl'] . '/login.php');
+            header('Location: ' . $this->site_config['paths']['baseurl'] . ' / login . php');
             die();
         }
     }
@@ -476,6 +475,10 @@ class User
      * @return bool
      * @throws AttemptCancelledException
      * @throws AuthError
+     * @throws DependencyException
+     * @throws Exception
+     * @throws InvalidManipulation
+     * @throws NotFoundException
      * @throws NotLoggedInException
      */
     public function login(string $email, string $password, int $remember, array $lang)
@@ -497,21 +500,13 @@ class User
 
             return true;
         } catch (InvalidEmailException $e) {
-            $this->session->set('is-warning', $lang['login_email_pass_incorrect']);
-
-            return false;
+            stderr('Error',  $lang['login_email_pass_incorrect']);
         } catch (InvalidPasswordException $e) {
-            $this->session->set('is-warning', $lang['login_email_pass_incorrect']);
-
-            return false;
+            stderr('Error', $lang['login_email_pass_incorrect']);
         } catch (EmailNotVerifiedException $e) {
-            $this->session->set('is-warning', $lang['login_not_verified']);
-
-            return false;
+            stderr('Error', $lang['login_not_verified']);
         } catch (TooManyRequestsException $e) {
-            $this->session->set('is-warning', $lang['login_too_many']);
-
-            return false;
+            stderr('Error', $lang['login_too_many']);
         }
     }
 
@@ -522,22 +517,26 @@ class User
      *
      * @return bool
      * @throws AuthError
-     *
+     * @throws DependencyException
+     * @throws Exception
+     * @throws InvalidManipulation
+     * @throws NotFoundException
+     * @throws NotLoggedInException
      */
     public function reset_password(array $lang, array $post, bool $return)
     {
         try {
             $this->auth->resetPassword($post['selector'], $post['token'], $post['password']);
         } catch (InvalidSelectorTokenPairException $e) {
-            $this->session->set('is-warning', 'Invalid token');
+            stderr('Error', 'Invalid token');
         } catch (TokenExpiredException $e) {
-            $this->session->set('is-warning', 'Token expired');
+            stderr('Error', 'Token expired');
         } catch (ResetDisabledException $e) {
-            $this->session->set('is-warning', 'Password reset is disabled');
+            stderr('Error', 'Password reset is disabled');
         } catch (InvalidPasswordException $e) {
-            $this->session->set('is-warning', 'Invalid password');
+            stderr('Error', 'Invalid password');
         } catch (TooManyRequestsException $e) {
-            $this->session->set('is-warning', 'Too many requests');
+            stderr('Error', 'Too many requests');
         }
         if ($return) {
             return true;
@@ -554,9 +553,9 @@ class User
      * @throws AuthError
      * @throws DependencyException
      * @throws Exception
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws InvalidManipulation
      */
     public function create_reset(string $email, array $lang)
     {
@@ -569,6 +568,7 @@ class User
         } catch (InvalidEmailException $e) {
             stderr($lang['stderr_errorhead'], $lang['stderr_invalidemail']);
         } catch (EmailNotVerifiedException $e) {
+            stderr($lang['stderr_errorhead'], 'Email has not been verified');
         } catch (ResetDisabledException $e) {
             stderr($lang['stderr_errorhead'], 'Password reset is disabled');
         } catch (TooManyRequestsException $e) {
@@ -592,8 +592,8 @@ class User
                 $update_time = $new_time;
             }
             $where = $this->container->get('where');
-            $request = $_SERVER['REQUEST_URI'] === '/' ? '/index.php' : $_SERVER['REQUEST_URI'];
-            if (preg_match('/\/(.*?)\.php/is', $request, $whereis_temp)) {
+            $request = $_SERVER['REQUEST_URI'] === ' / ' ? ' / index . php' : $_SERVER['REQUEST_URI'];
+            if (preg_match(' / \/(.*?)\.php / is', $request, $whereis_temp)) {
                 if (isset($where[$whereis_temp[1]])) {
                     $whereis = sprintf($where[$whereis_temp[1]], $user['username'], htmlsafechars($request));
                 } else {

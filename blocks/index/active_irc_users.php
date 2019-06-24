@@ -16,7 +16,7 @@ if ($irc === false || is_null($irc)) {
                     ->select(null)
                     ->select('id')
                     ->where('onirc = ?', 'yes')
-                    ->where('perms < ?', bt_options::PERMS_STEALTH)
+                    ->where('perms < ?', PERMS_STEALTH)
                     ->where('id != 2')
                     ->orderBy('username')
                     ->fetchAll();

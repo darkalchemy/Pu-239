@@ -199,12 +199,12 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt = $dt - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = !empty($friendp['title']) ? htmlsafechars($friendp['title']) : '';
         if (!$title) {
             $title = get_user_class_name((int) $friendp['class']);
         }
-        $linktouser = format_username((int) $friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friendp['last_access'], '') : 'Never');
+        $linktouser = format_username((int) $friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < PERMS_STEALTH ? get_date((int) $friendp['last_access'], '') : 'Never');
         $confirm = "<br><span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
         $block = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
         $avatar = get_avatar($friendp);
@@ -239,13 +239,13 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt = $dt - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < PERMS_STEALTH ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
         $title = !empty($friend['title']) ? htmlsafechars($friend['title']) : '';
         if (!$title) {
             $title = get_user_class_name((int) $friend['class']);
         }
         $ratio = member_ratio((int) $friend['uploaded'], (int) $friend['downloaded']);
-        $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date((int) $friend['last_access'], '') : 'Never');
+        $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < PERMS_STEALTH ? get_date((int) $friend['last_access'], '') : 'Never');
         $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
         $avatar = get_avatar($friend);

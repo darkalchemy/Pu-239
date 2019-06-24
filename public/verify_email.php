@@ -35,13 +35,13 @@ try {
         $auth->destroySession();
     }
 } catch (InvalidSelectorTokenPairException $e) {
-    $session->set('is-warning', 'Invalid token');
+    stderr('Error', 'Invalid token');
 } catch (TokenExpiredException $e) {
-    $session->set('is-warning', 'Token expired');
+    stderr('Error', 'Token expired');
 } catch (UserAlreadyExistsException $e) {
-    $session->set('is-warning', 'Email address already exists');
+    stderr('Error', 'Email address already exists');
 } catch (TooManyRequestsException $e) {
-    $session->set('is-warning', 'Too many requests');
+    stderr('Error', 'Too many requests');
 }
 
 header("Refresh: 0; url={$site_config['paths']['baseurl']}/usercp.php?action=security");

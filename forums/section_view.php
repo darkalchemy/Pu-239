@@ -70,7 +70,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 if ($nowviewing) {
                     $nowviewing .= ",\n";
                 }
-                $nowviewing .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>' . $lang['fe_unkn0wn'] . '</i>' : format_username((int) $arr['user_id']));
+                $nowviewing .= ($arr['perms'] & PERMS_STEALTH ? '<i>' . $lang['fe_unkn0wn'] . '</i>' : format_username((int) $arr['user_id']));
             }
             $now_viewing_cache['now_viewing'] = $nowviewing;
             $cache->set('now_viewing_section_view', $now_viewing_cache, $site_config['expires']['section_view']);

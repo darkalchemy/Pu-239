@@ -92,7 +92,7 @@ if (!$torrent) {
 $users_class = $container->get(User::class);
 $user = $users_class->get_user_from_torrent_pass($torrent_pass);
 $peer_class = $container->get(Peer::class);
-if (!$user) {
+if (empty($user)) {
     err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
 } elseif ($user['enabled'] === 'no') {
     err("Permission denied, you're account is disabled");
@@ -107,10 +107,9 @@ if (!$user) {
     if ($count > 3) {
         err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
     }
-} elseif ($site_config['require_credit'] && ($seeder === 'no' && ($torrent['size'] > ($user['uploaded'] - $user['downloaded'])))) {
+} elseif ($site_config['site']['require_credit'] && ($seeder === 'no' && ($torrent['size'] > ($user['uploaded'] - $user['downloaded'])))) {
     err('You do not have enough upload credit to download this torrent.');
 }
-
 $userid = $user['id'];
 $connectable = 'yes';
 $conn_ttl = 300;
@@ -136,7 +135,7 @@ if ($site_config['tracker']['require_connectable'] && $connectable === 'no') {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 if ($site_config['site']['ip_logging']) {
-    $no_log_ip = $user['perms'] & bt_options::PERMS_NO_IP;
+    $no_log_ip = $user['perms'] & PERMS_NO_IP;
     if ($no_log_ip) {
         $connectable = 'no';
         $ip = '127.0.0.1';

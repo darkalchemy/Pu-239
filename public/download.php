@@ -2,8 +2,12 @@
 
 declare(strict_types = 1);
 
+use Envms\FluentPDO\Literal;
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Session;
+use Pu239\Snatched;
+use Pu239\Torrent;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -15,6 +19,10 @@ $lang = array_merge(load_language('global'), load_language('download'));
 global $container, $site_config, $CURUSER;
 
 $users_class = $container->get(User::class);
+$fluent = $container->get(Database::class);
+$torrent_class = $container->get(Torrent::class);
+$session = $container->get(Session::class);
+$cache = $container->get(Cache::class);
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) === 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $user = $users_class->get_user_from_torrent_pass($T_Pass);
@@ -30,15 +38,13 @@ if (!empty($T_Pass)) {
     $user = $CURUSER;
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$session = $container->get(Session::class);
 $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
     stderr($lang['download_user_error'], $lang['download_no_id']);
 }
-$res = sql_query('SELECT name, owner, vip, category, filename, info_hash, size FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res);
+$row = $torrent_class->get($id);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff', 'bottom20');
@@ -46,41 +52,54 @@ if (!$row || !is_file($fn) || !is_readable($fn)) {
 if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !($user['id'] == $row['owner'])) {
     stderr('Error', 'Your download rights have been disabled.', 'bottom20');
 }
-if (($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download'])) {
+if ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
     stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]", 'bottom20');
 }
-if ($site_config['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
+if ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
     stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]", 'bottom20');
 }
 if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!', 'bottom20');
 }
-$cache = $container->get(Cache::class);
 if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
-    sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($user['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
-    $cache->delete($user['id'] . '_happy');
+    $values = [
+        ';userid' => $user['id'],
+        'torrentid' => $id,
+        'multiplier' => $multiplier,
+    ];
+    $fluent->insertInto('happyhour')
+           ->values($values)
+           ->execute();
 }
 if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_download']) . ' WHERE id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_download']);
-    $cache->update_row('user_' . $user['id'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_cache']);
+    $downloaded = $cache->get('downloaded_' . $user['id'] . '_' . $id);
+    if ($downloaded === false || is_null($downloaded)) {
+        $snatched = $container->get(Snatched::class);
+        $has_snatched = get_snatched($user['id'], $id);
+
+        if (!$has_snatched) {
+            $cache->set('downloaded_' . $user['id'] . '_' . $id, 'downloaded');
+            $update = [
+                'seedbonus' => $user['seedbonus'] - $site_config['bonus']['per_download'],
+            ];
+            $users_class->update($update, $user['id']);
+        }
+    }
 }
-sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$torrents = $cache->get('torrent_details_' . $id);
-$update['hits'] = $torrents['hits'] + 1;
-$cache->update_row('torrent_details_' . $id, [
-    'hits' => $update['hits'],
-], $site_config['expires']['torrent_details']);
+$update = [
+    'hits' => new Literal('hits + 1'),
+];
+$torrent_class->update($update, $id);
 
 if (isset($_GET['slot'])) {
-    $added = (TIME_NOW + 14 * 86400);
-    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-    $slot = mysqli_fetch_assoc($slots_sql);
-    $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $user['id'];
+    $added = TIME_NOW + 14 * 86400;
+    $slot = $fluent->from('freeslots')
+                   ->where('torrentid = ?', $id)
+                   ->where('userid = ?', $user['id'])
+                   ->fetch();
+    $used_slot = $slot['torrentid'] === $id && $slot['userid'] === $user['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
             stderr('Doh!', 'Freeleech slot already in use.', 'bottom20');
@@ -88,40 +107,69 @@ if (isset($_GET['slot'])) {
         if ($user['freeslots'] < 1) {
             stderr('Doh!', 'No Slots.', 'bottom20');
         }
-        $user['freeslots'] = ($user['freeslots'] - 1);
-        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $update = [
+            'freeslots' => $user['freeslots'] - 1,
+        ];
+        $users_class->update($update, $user['id']);
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            sql_query('UPDATE freeslots SET free = "yes", addedfree = ' . $added . ' WHERE torrentid = ' . $id . ' AND userid = ' . $user['id'] . ' AND doubleup = "yes"') or sqlerr(__FILE__, __LINE__);
-        } elseif ($used_slot && $slot['doubleup'] === 'no') {
-            sql_query('INSERT INTO freeslots (torrentid, userid, free, addedfree) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+            $update = [
+                'free' => 'yes',
+                'addedfree' => $added,
+            ];
+            $fluent->update('freeslots')
+                   ->set($update)
+                   ->where('torrentid = ?', $id)
+                   ->where('userid = ?', $user['id'])
+                   ->where('doubleup = ?', 'yes')
+                   ->execute();
         } else {
-            sql_query('INSERT INTO freeslots (torrentid, userid, free, addedfree) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'torrentid' => $id,
+                'userid' => $user['id'],
+                'free' => 'yes',
+                'addedfree' => $added,
+            ];
+            $fluent->insertInto('freeslots')
+                   ->values($values)
+                   ->execute();
         }
-    } /* doubleslot **/ elseif ($_GET['slot'] === 'double') {
+    } elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
             stderr('Doh!', 'Doubleseed slot already in use.', 'bottom20');
         }
         if ($user['freeslots'] < 1) {
             stderr('Doh!', 'No Slots.', 'bottom20');
         }
-        $user['freeslots'] = ($user['freeslots'] - 1);
-        sql_query('UPDATE users SET freeslots = freeslots - 1 WHERE id=' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $update = [
+            'freeslots' => $user['freeslots'] - 1,
+        ];
+        $users_class->update($update, $user['id']);
         if ($used_slot && $slot['free'] === 'yes') {
-            sql_query('UPDATE freeslots SET doubleup = "yes", addedup = ' . $added . ' WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($user['id']) . ' AND free = "yes"') or sqlerr(__FILE__, __LINE__);
-        } elseif ($used_slot && $slot['free'] === 'no') {
-            sql_query('INSERT INTO freeslots (torrentid, userid, doubleup, addedup) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+            $update = [
+                'doubleup' => 'yes',
+                'addedfree' => $added,
+            ];
+            $fluent->update('freeslots')
+                   ->set($update)
+                   ->where('torrentid = ?', $id)
+                   ->where('userid = ?', $user['id'])
+                   ->where('free = ?', 'yes')
+                   ->execute();
         } else {
-            sql_query('INSERT INTO freeslots (torrentid, userid, doubleup, addedup) VALUES (' . sqlesc($id) . ', ' . sqlesc($user['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'torrentid' => $id,
+                'userid' => $user['id'],
+                'doubleup' => 'yes',
+                'addedfree' => $added,
+            ];
+            $fluent->insertInto('freeslots')
+                   ->values($values)
+                   ->execute();
         }
     } else {
         stderr('ERROR', 'What\'s up doc?', 'bottom20');
     }
-    $cache->delete('fllslot_' . $user['id']);
     make_freeslots($user['id'], 'fllslot_');
-    $user['freeslots'] = ($user['freeslots'] - 1);
-    $cache->update_row('user_' . $user['id'], [
-        'freeslots' => $user['freeslots'],
-    ], $site_config['expires']['user_cache']);
 }
 $cache->deleteMulti([
     'top_torrents_',

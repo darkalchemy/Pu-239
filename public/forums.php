@@ -558,7 +558,7 @@ switch ($action) {
             $forumusers = '';
             $forum_users_cache = [];
             $query = $fluent->from('now_viewing')
-                            ->where('users.perms < ?', bt_options::PERMS_STEALTH)
+                            ->where('users.perms < ?', PERMS_STEALTH)
                             ->innerJoin('users ON now_viewing.user_id=users.id');
 
             foreach ($query as $row) {

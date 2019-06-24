@@ -516,10 +516,10 @@ if ($action === 'avatar') {
                                             </div>';
         }
     }
-
+    $HTMLOUT .= tr($lang['usercp_pm_notif'], "
+                                            <input type='checkbox' name='pmnotif'" . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pmail]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
     $HTMLOUT .= tr($lang['usercp_email_notif'], "
                                             <input type='checkbox' name='emailnotif'" . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false ? ' checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
-
     $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
     $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes'" . (($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? ' checked' : '') . "> {$lang['usercp_default_clearnewtagmanually']}", 1);

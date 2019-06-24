@@ -3145,4 +3145,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('site','require_credit','bool',false,'Require users to have enough upload credit to download torrents.')",
         'flush' => true,
     ],
+    [
+        'id' => 1561306792,
+        'info' => 'Add fulltext index',
+        'date' => '23 Jun, 2019',
+        'query' => 'ALTER TABLE `users` ADD FULLTEXT INDEX `notifs`(`notifs`)',
+        'flush' => false,
+    ],
 ];

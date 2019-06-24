@@ -1,4 +1,5 @@
 ### 23 Jun, 2019
+fix: typo announce.php  
 update: error messages verify_email.php  
 fix: clear user cache where user forced logout  
 fix: clear user cache when user logs in/out  

@@ -14,7 +14,7 @@ $HTMLOUT = '';
 if (!isset($CURUSER['id'])) {
     die($lang['user_mood_log']);
 }
-$more = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? 2 : 1);
+$more = (($CURUSER['perms'] & UNLOCK_MORE_MOODS) ? 2 : 1);
 if (isset($_GET['id'])) {
     $moodid = (isset($_GET['id']) ? (int) $_GET['id'] : 1);
     $res_moods = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' AND id=' . sqlesc($moodid)) or sqlerr(__FILE__, __LINE__);

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     if ($user['immunity'] >= 1 && $CURUSER['class'] < UC_MAX) {
         stderr($lang['modtask_error'], $lang['modtask_user_immune']);
     }
-    $username = $CURUSER['perms'] & bt_options::PERMS_STEALTH ? 'System' : htmlsafechars($CURUSER['username']);
+    $username = $CURUSER['perms'] & PERMS_STEALTH ? 'System' : htmlsafechars($CURUSER['username']);
     $modcomment = !empty($user['modcomment']) ? $user['modcomment'] : '';
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
