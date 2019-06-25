@@ -1,5 +1,6 @@
 In no particular order  
 
+update admin/shit_list.php  
 finish: casino.php rewrite  
 remove the need for using global $mysqli
 
