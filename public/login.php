@@ -14,12 +14,17 @@ global $site_config;
 
 $lang = array_merge(load_language('global'), load_language('login'));
 get_template();
+
+$auth = $container->get(Auth::class);
+if ($auth->isLoggedIn()) {
+    $auth->logOutEverywhere();
+    $auth->destroySession();
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $container, $site_config;
 
     $user = $container->get(User::class);
     if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
-        $auth = $container->get(Auth::class);
         $userid = $auth->getUserId();
         insert_update_ip('login', $userid);
         if ($site_config['site']['limit_ips']) {
@@ -86,4 +91,4 @@ $HTMLOUT .= main_div($body, '', 'padding20') . '
             </div>
         </form>';
 
-echo stdhead("{$lang['login_login_btn']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['login_login_btn']}", [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);

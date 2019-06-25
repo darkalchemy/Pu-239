@@ -187,4 +187,4 @@ $body = "
             </div>";
 $HTMLOUT .= main_div($body, '', 'padding20') . '
     </form>';
-echo stdhead($lang['head_signup']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['head_signup'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);

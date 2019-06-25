@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>';
 
         echo stdhead($lang['head_recover']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        die();
     } catch (InvalidSelectorTokenPairException $e) {
         stderr($lang['stderr_errorhead'], 'Invalid token');
     } catch (TokenExpiredException $e) {
@@ -75,16 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
-            <div class='w-50 has-text-centered'>
-                <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>";
+            <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>";
     $HTMLOUT .= main_div("
-                <div class='bottom20'>
-                    <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['recover_regdemail']}' required>
-                </div>
-                <div class='has-text-centered'>
-                    <input type='submit' class='button is-small'>
-                </div>", '', 'padding20') . '
+            <div class='bottom20'>
+                <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['recover_regdemail']}' required>
             </div>
+            <div class='has-text-centered'>
+                <input type='submit' class='button is-small'>
+            </div>", '', 'padding20') . '
         </form>';
-    echo stdhead($lang['head_recover']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($lang['head_recover'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

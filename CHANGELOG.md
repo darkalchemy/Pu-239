@@ -1,3 +1,19 @@
+### 25 Jun, 2019
+add: biblys/isbn to validate isbn  
+update: function_bt_client.php  
+remove: duplicate items sceditor.js  
+update: userdetails.php  
+fix: no default value uploadapp.php  
+update: page style login.php recover.php signup.php  
+fix: check if empty function_tvmaze.php  
+fix: cast to int hnrs.php  
+fix: new bugs count bugs.php  
+fix: extraneous spaces function_books.php  
+fix: div by 0 hit_and_run.php  
+update: font color blocks/global/uploadapp.php  
+fix: incorrent user index achievement_seedtime_update.php  
+update: quick reply for everyone view_topic.php  
+
 ### 24 Jun, 2019
 update: select only invited users  
 fix: signup.php  

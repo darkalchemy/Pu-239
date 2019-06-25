@@ -15,18 +15,18 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 /**
  * @param string|null $title
  * @param array       $stdhead
+ * @param string      $class
  *
+ * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
- * @throws Exception
  *
  * @return string
  */
-function stdhead(?string $title = null, array $stdhead = [])
+function stdhead(?string $title = null, array $stdhead = [], string $class = 'page-wrapper')
 {
     global $container, $site_config, $CURUSER;
 
@@ -83,7 +83,7 @@ function stdhead(?string $title = null, array $stdhead = [])
 <body class='background-16 skin-2'>
     <div id='body-overlay'>
     <div id='container'></div>
-        <div class='page-wrapper'>";
+        <div class='$class'>";
     global $BLOCKS;
 
     if ($CURUSER) {

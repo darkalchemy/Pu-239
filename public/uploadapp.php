@@ -177,6 +177,7 @@ if (isset($_POST['form']) != 1) {
         'sites' => htmlsafechars($_POST['sites']),
         'sitenames' => htmlsafechars($_POST['sitenames']),
         'scene' => htmlsafechars($_POST['scene']),
+        'moderator' => '',
         'creating' => htmlsafechars($_POST['creating']),
         'seeding' => htmlsafechars($_POST['seeding']),
     ];

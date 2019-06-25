@@ -11,6 +11,7 @@
         "ext-iconv": "*",
         "ext-imagick": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-mysqli": "*",
         "ext-pdo": "*",
@@ -24,6 +25,7 @@
         "ext-zlib": "*",
         "amnuts/opcache-gui": "^2.4",
         "aura/sql": "^3.0",
+        "biblys/isbn": "^2.1.0",
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "delight-im/auth": "^8.1",
         "envms/fluentpdo": "^2.1",
@@ -41,8 +43,7 @@
         "slashtrace/slashtrace": "^1.1",
         "slashtrace/slashtrace-sentry": "^1.0",
         "spatie/image": "^1.7",
-        "spatie/image-optimizer": "^1.1",
-        "ext-libxml": "*"
+        "spatie/image-optimizer": "^1.1"
     },
     "autoload": {
         "psr-4": {

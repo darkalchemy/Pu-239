@@ -18,8 +18,7 @@ $users = $fluent->from('users')
 
 $achieve = $container->get(Usersachiev::class);
 $userblock = $container->get(Userblock::class);
-foreach ($users as $user)
-{
+foreach ($users as $user) {
     $achieve->add(['userid' => $user['id']]);
     $userblock->add(['userid' => $user['id']]);
 }

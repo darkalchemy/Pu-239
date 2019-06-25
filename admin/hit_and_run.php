@@ -51,8 +51,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     $C_Date = (int) $hit_and_run_arr['complete_date'];
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['down']);
-            $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 0 : (int) $hit_and_run_arr['dload']);
+            $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['down']);
+            $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['dload']);
             $ratio_site = member_ratio((int) $hit_and_run_arr['up'], (int) $hit_and_run_arr['down']);
             $ratio_torrent = member_ratio((int) $hit_and_run_arr['uload'], (int) $hit_and_run_arr['dload']);
             $avatar = get_avatar($hit_and_run_arr);
@@ -113,7 +113,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
             **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
             <td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
-            ' . ($site_config['site']['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
+            ' . ($site_config['site']['ratio_free'] ? '' : $lang['hitnrun_downloaded'] . mksize($hit_and_run_arr['dload']) . '<br>') . '
             ' . $lang['hitnrun_ratio'] . '<span style="color: "' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
             ' . $lang['hitnrun_site_ratio'] . '<span style="color: "' . get_ratio_color($site_ratio) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
             <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . $lang['hitnrun_send'] . '"></a><br>

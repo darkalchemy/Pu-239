@@ -3057,7 +3057,7 @@ KEY `expires` (`expires`)
         'id' => 1561277232,
         'info' => 'Add bot replies table',
         'date' => '23 Jun, 2019',
-        'query' => "CREATE TABLE `bot_replies` (
+        'query' => 'CREATE TABLE `bot_replies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `phraseid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reply` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3068,14 +3068,14 @@ KEY `expires` (`expires`)
   KEY `approved_by` (`approved_by`),
   KEY `userid` (`userid`),
   CONSTRAINT `bot_replies_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC',
         'flush' => false,
     ],
     [
         'id' => 1561277233,
         'info' => 'Add bot triggers table',
         'date' => '23 Jun, 2019',
-        'query' => "CREATE TABLE `bot_triggers` (
+        'query' => 'CREATE TABLE `bot_triggers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `phrase` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `approved_by` int(10) unsigned NOT NULL DEFAULT 0,
@@ -3086,7 +3086,7 @@ KEY `expires` (`expires`)
   KEY `userid` (`userid`),
   FULLTEXT KEY `ft_phrase` (`phrase`),
   CONSTRAINT `bot_triggers_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC',
         'flush' => false,
     ],
     [
@@ -3118,7 +3118,7 @@ KEY `expires` (`expires`)
         'id' => 1561306788,
         'info' => 'Add notify',
         'date' => '23 Jun, 2019',
-        'query' => "CREATE TABLE `notify` (
+        'query' => 'CREATE TABLE `notify` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `upcomingid` int(10) unsigned NOT NULL DEFAULT 0,
   `userid` int(10) unsigned NOT NULL DEFAULT 0,
@@ -3128,7 +3128,7 @@ KEY `expires` (`expires`)
   KEY `upcoming` (`upcomingid`),
   CONSTRAINT `notify_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `notify_ibfk_2` FOREIGN KEY (`upcomingid`) REFERENCES `upcoming` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC',
         'flush' => false,
     ],
     [
@@ -3150,6 +3150,20 @@ KEY `expires` (`expires`)
         'info' => 'Add fulltext index',
         'date' => '23 Jun, 2019',
         'query' => 'ALTER TABLE `users` ADD FULLTEXT INDEX `notifs`(`notifs`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1561306793,
+        'info' => 'Alter column',
+        'date' => '24 Jun, 2019',
+        'query' => 'ALTER TABLE `uploadapp` MODIFY COLUMN `moderator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL',
+        'flush' => false,
+    ],
+    [
+        'id' => 1561306794,
+        'info' => 'Alter column',
+        'date' => '24 Jun, 2019',
+        'query' => 'ALTER TABLE `uploadapp` MODIFY COLUMN `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
         'flush' => false,
     ],
 ];

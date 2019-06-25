@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 require_once INCL_DIR . 'function_html.php';
 
+use Biblys\Isbn\Isbn;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Image;
@@ -17,10 +18,10 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int    $tid
  * @param string $poster
  *
- * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws InvalidManipulation
+ * @throws UnbegunTransaction
  *
  * @return array|bool
  */
@@ -62,8 +63,15 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         }
         $books = $container->get(GoogleBooks::class);
         if (!empty($isbn) && $isbn != '000000') {
-            $book = $books->volumes->byIsbn($isbn);
-        } else {
+            $isbn_class = new Isbn($isbn);
+            try {
+                $isbn_class->validate();
+                $book = $books->volumes->byIsbn($isbn);
+            } catch (Exception $e) {
+                stderr('Error', "An error occured while parsing $isbn: " . $e->getMessage());
+            }
+        }
+        if (empty($book)) {
             $book = $books->volumes->firstOrNull($name);
         }
 
@@ -133,14 +141,13 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         return false;
     }
 
-    $ebook_info = "
-                    <div class='columns'>
+    $ebook_info = "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Title: </span>
                         <span class='column padding5'>{$ebook['title']}</span>
                     </div>
                     <div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Author: </span>
-                        <span class='column padding5'>" . implode(', ', $ebook['authors']) . "</span>
+                        <span class='column padding5'>" . implode(', ', $ebook['authors']) . " </span>
                     </div>
                     <div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Published: </span>
@@ -148,16 +155,14 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
                     </div>";
 
     if (!empty($ebook['description'])) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Description: </span>
                         <span class='column padding5'>{$ebook['description']}</span>
                     </div>";
     }
 
     if (!empty($ebook['isbn10'])) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>ISBN 10: </span>
                         <span class='column padding5'>
                             <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn10']}") . "' target='_blank'>{$ebook['isbn10']}</a>
@@ -166,8 +171,7 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
     }
 
     if (!empty($ebook['isbn13'])) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>ISBN 13: </span>
                         <span class='column padding5'>
                             <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn13']}") . "' target='_blank'>{$ebook['isbn13']}</a>
@@ -176,30 +180,26 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
     }
 
     if (!empty($ebook['categories'])) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Genre: </span>
                         <span class='column padding5'>" . implode(', ', $ebook['categories']) . '</span>
                     </div>';
     }
 
-    $ebook_info .= "
-                    <div class='columns'>
+    $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Pages: </span>
                         <span class='column padding5'>{$ebook['pageCount']}</span>
                     </div>";
 
     if (!empty($ebook['rating'])) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>Rating: </span>
                         <span class='column padding5'>{$ebook['rating']}</span>
                     </div>";
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $ebook_info .= "
-                    <div class='columns'>
+        $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>API Hits: </span>
                         <span class='column padding5'>$api_hits</span>
                     </div>";
@@ -221,14 +221,12 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
     }
 
     if (!empty($poster)) {
-        $ebook_info = "
-        <div class='padding10'>
+        $ebook_info = "<div class='padding10'>
             <div class='columns'>
                 <div class='column is-3'>
                     <img alt='' src='" . placeholder_image(250) . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
                 </div>
-                <div class='column'>
-                    $ebook_info
+                <div class='column'>$ebook_info
                 </div>
             </div>
         </div>";

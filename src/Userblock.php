@@ -36,9 +36,9 @@ class Userblock
     /**
      * @param int $userid
      *
-     * @return bool|mixed
      * @throws Exception
      *
+     * @return bool|mixed
      */
     public function get(int $userid)
     {

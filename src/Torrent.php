@@ -96,9 +96,9 @@ class Torrent
      * @param array $items
      * @param int   $tid
      *
-     * @return bool|mixed
      * @throws Exception
      *
+     * @return bool|mixed
      */
     public function get_items(array $items, int $tid)
     {
@@ -133,9 +133,9 @@ class Torrent
      * @param int  $tid
      * @param bool $fresh
      *
-     * @return bool|mixed
      * @throws Exception
      *
+     * @return bool|mixed
      */
     public function get(int $tid, bool $fresh = false)
     {
@@ -178,9 +178,9 @@ class Torrent
     /**
      * @param int $userid
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function get_all_snatched(int $userid)
     {
@@ -198,9 +198,9 @@ class Torrent
     /**
      * @param int $userid
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function get_all_by_owner(int $userid)
     {
@@ -217,9 +217,9 @@ class Torrent
     /**
      * @param string $visible
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function get_all(string $visible)
     {
@@ -275,10 +275,10 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @return bool|int|PDOStatement
      * @throws Exception
-     *
      * @throws UnbegunTransaction
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $tid, bool $seeders = false)
     {
@@ -310,10 +310,10 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @return bool
      * @throws Exception
-     *
      * @throws UnbegunTransaction
+     *
+     * @return bool
      */
     public function remove_torrent(string $infohash, int $tid = null, int $owner = null, int $added = null)
     {
@@ -368,9 +368,9 @@ class Torrent
     /**
      * @param string $info_hash
      *
-     * @return array|bool
      * @throws Exception
      *
+     * @return array|bool
      */
     public function get_torrent_from_hash(string $info_hash)
     {
@@ -416,9 +416,9 @@ class Torrent
     /**
      * @param array $values
      *
-     * @return bool|int
      * @throws Exception
      *
+     * @return bool|int
      */
     public function add(array $values)
     {
@@ -430,9 +430,9 @@ class Torrent
     }
 
     /**
-     * @return bool|mixed
      * @throws Exception
      *
+     * @return bool|mixed
      */
     public function get_torrent_count()
     {
@@ -450,9 +450,9 @@ class Torrent
     }
 
     /**
-     * @return array
      * @throws Exception
      *
+     * @return array
      */
     public function get_latest_scroller()
     {
@@ -540,9 +540,9 @@ class Torrent
     }
 
     /**
-     * @return array
      * @throws Exception
      *
+     * @return array
      */
     public function get_latest_slider()
     {
@@ -652,9 +652,9 @@ class Torrent
     }
 
     /**
-     * @return array|bool|mixed
      * @throws Exception
      *
+     * @return array|bool|mixed
      */
     public function get_staff_picks()
     {
@@ -712,9 +712,9 @@ class Torrent
     }
 
     /**
-     * @return array|bool|mixed
      * @throws Exception
      *
+     * @return array|bool|mixed
      */
     public function get_top()
     {
@@ -773,8 +773,9 @@ class Torrent
     /**
      * @param array $categories
      *
-     * @return array|bool|mixed
      * @throws Exception
+     *
+     * @return array|bool|mixed
      */
     public function get_latest(array $categories)
     {
@@ -836,9 +837,9 @@ class Torrent
     }
 
     /**
-     * @return array|bool|mixed
      * @throws Exception
      *
+     * @return array|bool|mixed
      */
     public function get_mow()
     {
@@ -916,9 +917,9 @@ class Torrent
     /**
      * @param string $imdb
      *
-     * @return bool|mixed|null
      * @throws Exception
      *
+     * @return bool|mixed|null
      */
     public function get_plot(string $imdb)
     {
@@ -946,12 +947,12 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @return false|mixed|string|string[]|null
      * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
-     *
      * @throws InvalidManipulation
+     *
+     * @return false|mixed|string|string[]|null
      */
     public function format_descr(int $torrentid)
     {

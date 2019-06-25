@@ -926,5 +926,6 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>');
     $HTMLOUT .= main_table($table) . '
         </form>
-    </div>' . quick_reply($topic_id);
+    </div>';
 }
+$HTMLOUT .= quick_reply($topic_id);

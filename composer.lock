@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d806416b8e6ec847987f8ef9ab06a449",
+    "content-hash": "6ac0f3a714dfb240f281fc366925700f",
     "packages": [
         {
             "name": "amnuts/opcache-gui",
@@ -108,6 +108,52 @@
                 "sqlsrv"
             ],
             "time": "2018-06-11T12:57:42+00:00"
+        },
+        {
+            "name": "biblys/isbn",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/biblys/isbn.git",
+                "reference": "c9ce51f2c563bb7de4000652a00e0c8f7750cc0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/biblys/isbn/zipball/c9ce51f2c563bb7de4000652a00e0c8f7750cc0c",
+                "reference": "c9ce51f2c563bb7de4000652a00e0c8f7750cc0c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.2",
+                "phpunit/phpunit": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Biblys": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clement Bourgoin",
+                    "email": "cb@nokto.net"
+                }
+            ],
+            "description": "A PHP library to convert and validate ISBNs & EANs",
+            "homepage": "https://github.com/biblys/isbn",
+            "keywords": [
+                "ISBN",
+                "book",
+                "ean"
+            ],
+            "time": "2019-04-18T00:00:00+00:00"
         },
         {
             "name": "blocktrail/cryptojs-aes-php",
@@ -3972,6 +4018,7 @@
         "ext-iconv": "*",
         "ext-imagick": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-mysqli": "*",
         "ext-pdo": "*",
@@ -3982,8 +4029,7 @@
         "ext-xml": "*",
         "ext-zend-opcache": "*",
         "ext-zip": "*",
-        "ext-zlib": "*",
-        "ext-libxml": "*"
+        "ext-zlib": "*"
     },
     "platform-dev": []
 }

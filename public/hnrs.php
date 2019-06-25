@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $session->set('is-danger', 'Invalid POST resquest');
     } else {
         $torrents_class = $container->get(Torrent::class);
-        $torrent = $torrents_class->get($_POST['tid']);
+        $torrent = $torrents_class->get((int) $_POST['tid']);
         if (!$torrent) {
             $session->set('is-danger', 'No torrent with that ID!');
             header("Location: {$_SERVER['PHP_SELF']}");

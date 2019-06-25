@@ -153,7 +153,7 @@ $lang = [
     //////for singular&plural
     'gl_reports_dealt' => 'to be dealt with',
     'gl_reports_click' => 'click headline above to view reports',
-    'gl_uploadapp_new' => 'New Uploader App Waiting',
+    'gl_uploadapp_new' => 'New Uploader App',
     'gl_uploadapp_ua' => 'uploader application',
     'gl_uploadapp_dealt' => 'to be dealt with',
     'gl_uploadapp_click' => 'Click at the headling above here to view the application',

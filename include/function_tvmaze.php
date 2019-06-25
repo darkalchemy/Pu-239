@@ -312,7 +312,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
     }
     $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
     $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
-    if (!empty($airtime)) {
+    if (!empty($airtime[0])) {
         $timestamp = strtotime('today midnight');
         $airtime = $timestamp + $airtime[0] * 3600 + (isset($airtime[1]) ? $airtime[1] * 60 : 0);
     }

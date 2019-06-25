@@ -111,6 +111,23 @@ class Snatched
     }
 
     /**
+     * @param array $set
+     * @param int   $id
+     *
+     * @throws Exception
+     * @throws UnbegunTransaction
+     */
+    public function update_by_id(array $set, int $id)
+    {
+        $this->fluent->update('snatched')
+                     ->set($set)
+                     ->where('id = ?', $id)
+                     ->execute();
+
+        $this->cache->update_row("snatches_{$userid}_{$tid}", $set);
+    }
+
+    /**
      * @param int $dt
      *
      * @throws Exception

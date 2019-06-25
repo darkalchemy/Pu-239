@@ -24,12 +24,12 @@ if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>
-            <span class='button tag is-info dt-tooltipper-small' data-tooltip-content='#uploadapp_tooltip'>
+            <span class='button tag is-info dt-tooltipper-small has-text-black' data-tooltip-content='#uploadapp_tooltip'>
                 {$lang['gl_uploadapp_new']}
             </span>
             <div class='tooltip_templates'>
                 <div id='uploadapp_tooltip' class='margin20'>
-                    <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10 has-text-black'>
+                    <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         {$lang['gl_hey']} {$CURUSER['username']}!
                     </div>
                     <div class='has-text-centered'>
