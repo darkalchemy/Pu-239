@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ];
                     if ($users_class->update($set, $user['id'])) {
                         $set = [
-                            'seedbonus' => $gift_user['seedbonus'] - $bonusgift,
+                            'seedbonus' => $gift_user['seedbonus'] + $bonusgift,
                             'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . " Points as gift from {$user['username']} .\n " . $gift_user['bonuscomment'],
                         ];
                         $users_class->update($set, $gift_user['id']);

@@ -1,4 +1,5 @@
 ### 25 Jun, 2019
+fix: user credit mybonus.php  
 fix: use correct user['id'] $id $CURUSER['id'] userdetails.php  
 add: biblys/isbn to validate isbn  
 update: function_bt_client.php  
