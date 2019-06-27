@@ -14,6 +14,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 global $container, $site_config;
 
+get_template();
 $session = $container->get(Session::class);
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {

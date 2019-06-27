@@ -1,4 +1,6 @@
 ### 26 Jun, 2019
+fix: undefined functions() verify_email.php  
+update: favicon  
 fix: parameter placement dubug_pdo()  
 add: unset unsed item toggle.js  
 remove: unused js file template.php  
