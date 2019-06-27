@@ -38,47 +38,51 @@ $select = $fluent->from('torrents AS t')
                  ->where('t.category', $site_config['categories']['movie'])
                  ->groupBy('t.imdb_id, t.id');
 
-$title = $addparam = '';
+$title = '';
+$addparam = [];
 foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
         $title .= " $cleaned";
 
         if ($search != 'srs' && $search != 'sre') {
-            $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
-        }
-        if ($search === 'sn') {
-            $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'sys') {
-            $count = $count->where('t.year >= ?', (int) $cleaned);
-            $select = $select->where('t.year >= ?', (int) $cleaned)
-                             ->orderBy('t.year DESC');
-        } elseif ($search === 'sye') {
-            $count = $count->where('t.year <= ?', (int) $cleaned);
-            $select = $select->where('t.year <= ?', (int) $cleaned)
-                             ->orderBy('t.year DESC');
-        } elseif ($search === 'srs') {
-            $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
-            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
-            $select = $select->where('t.rating >= ?', (float) $_GET['srs'])
-                             ->orderBy('t.rating DESC');
-        } elseif ($search === 'sre') {
-            $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
-            $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
-            $select = $select->where('t.rating <= ?', (float) $_GET['sre'])
-                             ->orderBy('t.rating DESC');
+            $addparam[] = "{$search}=" . urlencode($cleaned);
         }
     }
 }
-
+if (!empty($_GET['sn'])) {
+    $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', searchfield($_GET['sn']));
+    $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', searchfield($_GET['sn']));
+}
+if (!empty($_GET['sys'])) {
+    $count->where('t.year >= ?', (int) $_GET['sys']);
+    $select->where('t.year >= ?', (int) $_GET['sys'])
+           ->orderBy('t.year DESC');
+}
+if (!empty($_GET['sye'])) {
+    $count->where('t.year <= ?', (int) $_GET['sye']);
+    $select->where('t.year <= ?', (int) $_GET['sye'])
+           ->orderBy('t.year DESC');
+}
+if (!empty($_GET['srs'])) {
+    $addparam[] = "{$search}=" . urlencode($_GET['srs']);
+    $count->where('t.rating >= ?', (float) $_GET['srs']);
+    $select->where('t.rating >= ?', (float) $_GET['srs'])
+           ->orderBy('t.rating DESC');
+}
+if (!empty($_GET['sre'])) {
+    $addparam[] = "{$search}=" . urlencode($_GET['sre']);
+    $count->where('t.rating <= ?', (float) $_GET['sre']);
+    $select->where('t.rating <= ?', (float) $_GET['sre'])
+           ->orderBy('t.rating DESC');
+}
 $count = $count->fetch('count');
-$perpage = 25;
-$addparam = empty($addparam) ? '?' : $addparam . '&amp;';
+$perpage = 1;
+$addparam = !empty($addparam) ? '?' . implode('&amp;', $addparam) . '&amp;' : '?';
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/tmovies.php{$addparam}");
-$select = $select->limit($pager['pdo']['limit'])
-                 ->offset($pager['pdo']['offset'])
-                 ->orderBy('t.added DESC');
+$select->limit($pager['pdo']['limit'])
+       ->offset($pager['pdo']['offset'])
+       ->orderBy('t.added DESC');
 $HTMLOUT = "
     <h1 class='has-text-centered top20'>Movies</h1>";
 

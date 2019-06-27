@@ -18,6 +18,17 @@ global $container, $site_config, $CURUSER;
 
 $users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
+$hide_simple = '';
+$hide_advanced = "class='hidden'";
+if (!empty($_GET)) {
+    if (!empty($_GET['sns'])) {
+        unset($_GET['incldead'], $_GET['vip'], $_GET['only_free'], $_GET['unsnatched'], $_GET['sna'], $_GET['sd'], $_GET['sg'], $_GET['so'], $_GET['sys'], $_GET['sye'], $_GET['srs'], $_GET['sre'], $_GET['si'], $_GET['ss'], $_GET['sp'], $_GET['spf'], $_GET['st'], $_GET['sr']);
+    } else {
+        unset($_GET['sns']);
+        $hide_simple = 'hidden';
+        $hide_advanced = '';
+    }
+}
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $set = [
         'last_browse' => TIME_NOW,
@@ -31,11 +42,11 @@ $count = $fluent->from('torrents AS t')
                 ->select(null)
                 ->select('COUNT(t.id) AS count');
 
-$select = $fluent->from('torrents AS t')
-                 ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
-                 ->select('u.username')
-                 ->select('u.class')
-                 ->leftJoin('users AS u ON t.owner = u.id');
+$query = $fluent->from('torrents AS t')
+                ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
+                ->select('u.username')
+                ->select('u.class')
+                ->leftJoin('users AS u ON t.owner = u.id');
 
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
@@ -47,9 +58,9 @@ $stdfoot = [
 ];
 
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'), load_language('bookmark'));
-
 $valid_search = [
-    'sn',
+    'sns',
+    'sna',
     'sd',
     'sg',
     'so',
@@ -64,7 +75,6 @@ $valid_search = [
     'sr',
     'st',
 ];
-
 if (isset($_GET['sort'], $_GET['type'])) {
     $column = $ascdesc = '';
     $_valid_sort = [
@@ -96,66 +106,66 @@ if (isset($_GET['sort'], $_GET['type'])) {
             $linkascdesc = 'desc';
             break;
     }
-    $select = $select->orderBy("t.{$column} $ascdesc");
+    $query->orderBy("t.{$column} $ascdesc");
     $pagerlink = 'sort=' . (int) $_GET['sort'] . "&amp;type={$linkascdesc}&amp;";
 } else {
-    $select = $select->orderBy('t.staff_picks DESC')
-                     ->orderBy('t.sticky')
-                     ->orderBy('t.added DESC');
+    $query->orderBy('t.staff_picks DESC')
+          ->orderBy('t.sticky')
+          ->orderBy('t.added DESC');
     $pagerlink = '';
 }
 
 $today = 0;
 if (!empty($_GET['today']) && $_GET['today']) {
-    $count = $count->where('t.added >= ?', strtotime('today midnight'));
-    $select = $select->where('t.added >= ?', strtotime('today midnight'));
+    $count->where('t.added >= ?', strtotime('today midnight'));
+    $query->where('t.added >= ?', strtotime('today midnight'));
     $addparam .= 'today=1&amp;';
     $today = 1;
 }
 
-$selected = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
-if ($selected === 1) {
+$queryed = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
+if ($queryed === 1) {
     $addparam .= 'incldead=1&amp;';
     if (!isset($CURUSER) || $CURUSER['class'] < UC_ADMINISTRATOR) {
-        $count = $count->where('t.banned != "yes"');
-        $select = $select->where('t.banned != "yes"');
+        $count->where('t.banned != "yes"');
+        $query->where('t.banned != "yes"');
     }
 } else {
-    if ($selected === 2) {
+    if ($queryed === 2) {
         $addparam .= 'incldead=2&amp;';
-        $count = $count->where('t.visible = "no"');
-        $select = $select->where('t.visible = "no"');
+        $count->where('t.visible = "no"');
+        $query->where('t.visible = "no"');
     } else {
-        $count = $count->where('t.visible = "yes"');
-        $select = $select->where('t.visible = "yes"');
+        $count->where('t.visible = "yes"');
+        $query->where('t.visible = "yes"');
     }
 }
 
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
-    $count = $count->where('t.free >= 1');
-    $select = $select->where('t.free >= 1');
+    $count->where('t.free >= 1');
+    $query->where('t.free >= 1');
     $addparam .= 'only_free=1&amp;';
 }
 if (isset($_GET['vip'])) {
     if ($_GET['vip'] == 2) {
-        $count = $count->where('t.vip = 1');
-        $select = $select->where('t.vip = 1');
+        $count->where('t.vip = 1');
+        $query->where('t.vip = 1');
     } elseif ($_GET['vip'] == 1) {
-        $count = $count->where('t.vip = 0');
-        $select = $select->where('t.vip = 0');
+        $count->where('t.vip = 0');
+        $query->where('t.vip = 0');
     }
     $addparam .= "vip={$_GET['vip']}&amp;";
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
-    $count = $count->where('s.to_go IS NULL')
-                   ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
-    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-                     ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
-                     ->having('to_go = -1');
+    $count->where('s.to_go IS NULL')
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+    $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
+          ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
-    $select = $select->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-                     ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+    $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
 }
 
 $cats = [];
@@ -169,19 +179,20 @@ if (isset($_GET['cats'])) {
 
 if (!empty($cats)) {
     $addparam .= 'cats=' . implode(',', $cats) . '&amp;';
-    $count = $count->where('t.category', $cats);
-    $select = $select->where('t.category', $cats);
+    $count->where('t.category', $cats);
+    $query->where('t.category', $cats);
 }
 
 foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
-        if (!empty($_POST['search']) && $search === 'sn') {
+        if (!empty($_POST['search']) && ($search === 'sns' || $search === 'sna')) {
             $cleaned = searchfield($_POST['search']);
         }
         $title .= " $cleaned";
         $insert_cloud = [
-            'sn',
+            'sns',
+            'sna',
             'sd',
             'si',
             'ss',
@@ -192,7 +203,8 @@ foreach ($valid_search as $search) {
         ];
         if (in_array($search, $insert_cloud)) {
             $column = str_replace([
-                'sn',
+                'sns',
+                'sna',
                 'sd',
                 'si',
                 'ss',
@@ -201,6 +213,7 @@ foreach ($valid_search as $search) {
                 'sg',
                 'sr',
             ], [
+                'name',
                 'name',
                 'descr',
                 'imdb',
@@ -213,66 +226,79 @@ foreach ($valid_search as $search) {
             searchcloud_insert($cleaned, $column);
         }
         $addparam .= "{$search}=" . urlencode((string) $cleaned) . '&amp;';
-        if ($search === 'sn') {
-            $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'sd') {
-            $count = $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $select = $select->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'sg') {
-            $count = $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $select = $select->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'so') {
-            $count = $count->where('u.username = ?', $cleaned);
-            $select = $select->where('u.username = ?', $cleaned);
-        } elseif ($search === 'sys') {
-            $count = $count->where('t.year >= ?', (int) $cleaned);
-            $select = $select->where('t.year >= ?', (int) $cleaned);
-        } elseif ($search === 'sye') {
-            $count = $count->where('t.year <= ?', (int) $cleaned);
-            $select = $select->where('t.year <= ?', (int) $cleaned);
-        } elseif ($search === 'srs') {
-            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
-            $select = $select->where('t.rating >= ?', (float) $_GET['srs']);
-        } elseif ($search === 'sre') {
-            $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
-            $select = $select->where('t.rating <= ?', (float) $_GET['sre']);
-        } elseif ($search === 'si') {
+        if ($search === 'sns' || $search === 'sna') {
+            $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+            $query->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+        }
+        if ($search === 'sd') {
+            $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+            $query->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+        }
+        if ($search === 'sg') {
+            $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+            $query->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+        }
+        if ($search === 'so') {
+            $count->where('u.username = ?', $cleaned);
+            $query->where('u.username = ?', $cleaned);
+        }
+        if ($search === 'sys') {
+            $count->where('t.year >= ?', (int) $_GET['sys']);
+            $query->where('t.year >= ?', (int) $_GET['sys']);
+        }
+        if ($search === 'sye') {
+            $count->where('t.year <= ?', (int) $_GET['sye']);
+            $query->where('t.year <= ?', (int) $_GET['sye']);
+        }
+        if ($search === 'srs') {
+            $count->where('t.rating >= ?', (float) $_GET['srs']);
+            $query->where('t.rating >= ?', (float) $_GET['srs']);
+        }
+        if ($search === 'sre') {
+            $count->where('t.rating <= ?', (float) $_GET['sre']);
+            $query->where('t.rating <= ?', (float) $_GET['sre']);
+        }
+        if ($search === 'si') {
             $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
             if (!empty($match[1])) {
-                $count = $count->where('t.imdb_id = ?', $match[1]);
-                $select = $select->where('t.imdb_id = ?', $cleaned);
+                $count->where('t.imdb_id = ?', $match[1]);
+                $query->where('t.imdb_id = ?', $match[1]);
             }
-        } elseif ($search === 'ss') {
+        }
+        if ($search === 'ss') {
             $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
             if (!empty($match[1])) {
-                $count = $count->where('t.isbn = ?', $match[1]);
-                $select = $select->where('t.isbn = ?', $cleaned);
+                $count->where('t.isbn = ?', $match[1]);
+                $query->where('t.isbn = ?', $match[1]);
             }
-        } elseif ($search === 'sp') {
-            $count = $count->where('p.name = ?', $cleaned)
-                           ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                           ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-            $select = $select->where('p.name = ?', $cleaned)
-                             ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                             ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-        } elseif ($search === 'spf') {
-            $count = $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                           ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                           ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-            $select = $select->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                             ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                             ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-        } elseif ($search === 'sr') {
-            $count = $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                           ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
-            $select = $select->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                             ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
-        } elseif ($search === 'st') {
+        }
+        if ($search === 'sp') {
+            $count->where('p.name = ?', $cleaned)
+                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+            $query->where('p.name = ?', $cleaned)
+                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+        }
+        if ($search === 'spf') {
+            $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+            $query->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+        }
+        if ($search === 'sr') {
+            $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                  ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+            $query->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                  ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+        }
+        if ($search === 'st') {
             $subs = explode(' ', $cleaned);
             foreach ($subs as $sub) {
-                $count = $count->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-                $select = $select->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $count->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
         }
     }
@@ -299,9 +325,9 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['paths']['baseurl']}/browse.php?" . $addparam);
-    $select = $select->limit($pager['pdo']['limit'])
-                     ->offset($pager['pdo']['offset'])
-                     ->fetchAll();
+    $query->limit($pager['pdo']['limit'])
+          ->offset($pager['pdo']['offset'])
+          ->fetchAll();
 }
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
@@ -338,8 +364,8 @@ $vip_box = "
 $deadcheck = "
                     <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>
-                        <option value='1'" . ($selected == 1 ? ' selected' : '') . ">{$lang['browse_inc_dead']}</option>
-                        <option value='2'" . ($selected == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
+                        <option value='1'" . ($queryed == 1 ? ' selected' : '') . ">{$lang['browse_inc_dead']}</option>
+                        <option value='2'" . ($queryed == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 
 $only_free = ((isset($_GET['only_free'])) ? (int) $_GET['only_free'] : '');
@@ -357,22 +383,22 @@ $unsnatched_box = "
                     </select>";
 
 $HTMLOUT .= main_div("
-                <div id='simple' class='has-text-centered w-50'>
+                <div id='simple' class='has-text-centered w-50 $hide_simple'>
                     <div class='has-text-centered padding20 level-center-center is-wrapped'>
                         <span class='right10'>{$lang['browse_name']}</span>
-                        <input id='search_sim' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100 margin20' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
+                        <input id='search_sim' name='sns' type='text' placeholder='{$lang['search_name']}' class='search w-100 margin20' value='" . (!empty($_GET['sns']) ? $_GET['sns'] : '') . "' onkeyup='autosearch(event)'>
                         <span class='left10'>
                             <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
                         </span>
                         <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_simple_btn']}</span>
                     </div>
                 </div>
-                <div id='advanced' class='hidden'>
+                <div id='advanced' $hide_advanced>
                     <div class='padding20 w-100'>
                         <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search_adv' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch(event)'>
+                                <input id='search_adv' name='sna' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sna']) ? $_GET['sna'] : '') . "' onkeyup='autosearch(event)'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_description']}</div>
@@ -472,11 +498,10 @@ $HTMLOUT .= main_div("
 $HTMLOUT .= '
             </form>';
 $HTMLOUT .= "{$new_button}";
-
 if ($count) {
     $HTMLOUT .= ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagertop']}</div>" : '') . "
-            <div class='table-wrapper top20'>" . torrenttable($select, 'index') . '</div>' . ($count > $torrentsperpage ? "
+            <div class='table-wrapper top20'>" . torrenttable($query, 'index') . '</div>' . ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagerbottom']}</div>" : '');
 } else {
     if (isset($cleansearchstr)) {

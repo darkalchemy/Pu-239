@@ -1,3 +1,13 @@
+### 26 Jun, 2019
+fix: parameter placement dubug_pdo()  
+add: unset unsed item toggle.js  
+remove: unused js file template.php  
+update: check if empty class_check.php  
+update: add text shadow to torrent names when stickied browse.php  
+fix: pager tmovies.php  
+update: check for empty selector or token verfiry_email.php  
+fix: str_replace string not array mybonus.php  
+
 ### 25 Jun, 2019
 fix: user credit mybonus.php  
 fix: use correct user['id'] $id $CURUSER['id'] userdetails.php  

@@ -8,23 +8,24 @@ use Pu239\Image;
 use Pu239\Torrent;
 
 /**
- * @param      $text
- * @param      $id
- * @param      $block_id
- * @param      $name
- * @param      $poster
- * @param      $uploader
- * @param      $added
- * @param      $size
- * @param      $seeders
- * @param      $leechers
- * @param      $imdb_id
- * @param      $rating
- * @param      $year
- * @param      $subtitles
- * @param      $genre
- * @param bool $icons
- * @param null $is_comment
+ * @param        $text
+ * @param        $id
+ * @param        $block_id
+ * @param        $name
+ * @param        $poster
+ * @param        $uploader
+ * @param        $added
+ * @param        $size
+ * @param        $seeders
+ * @param        $leechers
+ * @param        $imdb_id
+ * @param        $rating
+ * @param        $year
+ * @param        $subtitles
+ * @param        $genre
+ * @param bool   $icons
+ * @param null   $is_comment
+ * @param string $sticky
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -32,7 +33,7 @@ use Pu239\Torrent;
  *
  * @return string
  */
-function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false, $is_comment = null)
+function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false, $is_comment = null, $sticky = '')
 {
     global $container, $site_config, $lang;
 
@@ -115,7 +116,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1{$is_comment}'>
-                                <div class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
+                                <div class='dt-tooltipper-large $sticky' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>

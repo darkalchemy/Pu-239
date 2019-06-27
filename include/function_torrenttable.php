@@ -38,9 +38,9 @@ function readMore($text, $char, $link)
  * @param        $res
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -244,12 +244,11 @@ function torrenttable($res, $variant = 'index')
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
             $descr = preg_replace('/\[img=.*?\]\s+/', '', $descr);
         }
-
         $htmlout .= "
             <td>
                 <div class='level-wide min-350'>
                     <div>
-                        <a class='crap is-link' href='{$site_config['paths']['baseurl']}/details.php?";
+                        <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }
@@ -327,7 +326,8 @@ function torrenttable($res, $variant = 'index')
             $formatted = "<i>({$uploader})</i>";
         }
         $block_id = "torrent_{$id}";
-        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $genres);
+        $sticky = $row['sticky'] === 'yes' ? 'sticky' : '';
+        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $genres, false, null, $sticky);
         $subs = $container->get('subtitles');
         $subs_array = explode('|', $row['subs']);
         $Subs = [];

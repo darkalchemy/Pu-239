@@ -37,7 +37,13 @@ function debug_pdo()
         global $container;
 
         $params = [];
-        $query = str_replace(' ?', ' %s', $BaseQuery->getQuery(true));
+        $query = str_replace([
+            ' ?',
+            '(?',
+        ], [
+            ' %s',
+            '(%s',
+        ], $BaseQuery->getQuery(true));
         $paramaters = $BaseQuery->getParameters();
         $time = $BaseQuery->getExecutionTime();
         if (!empty($paramaters) && count($paramaters) >= 1) {
@@ -53,7 +59,7 @@ function debug_pdo()
         }
 
         if (!empty($query)) {
-            store_query(trim($query), $time);
+            store_query(trim($query), $time, $params);
         }
     };
 }
@@ -61,8 +67,8 @@ function debug_pdo()
 /**
  * @param $query
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool|mysqli_result
  */
@@ -76,7 +82,7 @@ function sql_query($query)
         mysqli_set_charset($mysqli, 'utf8mb4');
         $result = mysqli_query($mysqli, $query);
         $query_end_time = microtime(true);
-        store_query(formatQuery($query), $query_end_time - $query_start_time);
+        store_query(formatQuery($query), $query_end_time - $query_start_time, []);
     } else {
         mysqli_set_charset($mysqli, 'utf8mb4');
         $result = mysqli_query($mysqli, $query);
@@ -88,8 +94,8 @@ function sql_query($query)
 /**
  * @param $x
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int|string
  */
@@ -110,8 +116,8 @@ function sqlesc($x)
 /**
  * @param $x
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int|string
  */
@@ -180,11 +186,12 @@ function sqlerr($file = '', $line = '')
 /**
  * @param string $query
  * @param float  $time
+ * @param array  $params
  *
  * @throws DependencyException
  * @throws NotFoundException
  */
-function store_query(string $query, float $time)
+function store_query(string $query, float $time, array $params)
 {
     if (PHP_SAPI !== 'cli') {
         global $container;
@@ -195,6 +202,7 @@ function store_query(string $query, float $time)
         $query_stat[] = [
             'seconds' => number_format($time, 6),
             'query' => $query,
+            'params' => $params,
         ];
         $cache->set('query_stats_' . $id, $query_stat, 60);
     }

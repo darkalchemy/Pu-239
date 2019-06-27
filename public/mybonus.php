@@ -509,7 +509,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'title') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
-                $title = str_replace($site_config['site']['badwords'], '', $title);
+                foreach ($site_config['site']['badwords'] as $badword) {
+                    $title = str_replace($badword, '', $title);
+                }
                 if (empty($title)) {
                     $title = 'I just wasted my karma';
                 }

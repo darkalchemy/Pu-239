@@ -7,10 +7,10 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|void
  */
@@ -154,9 +154,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -205,9 +205,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -305,7 +305,8 @@ function get_actionpage($lang, $queries, $path)
         'search',
         'edited',
         'act',
-        'sn',
+        'sna',
+        'sns',
         'sd',
         'sg',
         'so',
@@ -407,9 +408,9 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */

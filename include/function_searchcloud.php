@@ -63,13 +63,14 @@ function searchcloud($limit = 100)
 }
 
 /**
- * @param $word
- * @param $column
+ * @param string $word
+ * @param string $column
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
-function searchcloud_insert($word, $column)
+function searchcloud_insert(string $word, string $column)
 {
     global $container;
 
@@ -85,7 +86,6 @@ function searchcloud_insert($word, $column)
             }
         }
     }
-
     if ($add) {
         $searchcloud['search'][] = [
             'searchedfor' => $word,
@@ -100,10 +100,10 @@ function searchcloud_insert($word, $column)
     $values = [
         'searchedfor' => substr($word, 255),
         'search_column' => $column,
-        'howmuch' => 1,
+        'howmuch' => $howmuch,
     ];
     $update = [
-        'howmuch' => $howmuch,
+        'howmuch' => new Literal('VALUES(howmuch)'),
         'search_column' => new Literal('VALUES(search_column)'),
     ];
 

@@ -283,6 +283,10 @@ span {
     margin-top: 5px;
 }
 
+.sticky {
+    text-shadow: -1px 0 var(--main-bdr-color), 0 1px var(--main-bdr-color), 1px 0 var(--main-bdr-color), 0 -1px var(--main-bdr-color);
+}
+
 .text-shadow {
     text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }

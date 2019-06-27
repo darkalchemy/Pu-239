@@ -72,14 +72,17 @@ function class_check($class = 0, $staff = true)
 /**
  * @param $script
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int
  */
 function get_access($script)
 {
     $ending = parse_url($script, PHP_URL_QUERY);
+    if (empty($ending)) {
+        return UC_MAX;
+    }
     $count = substr_count($ending, '&');
     $i = 0;
     while ($i <= $count) {

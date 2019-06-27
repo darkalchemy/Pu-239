@@ -20,7 +20,9 @@ if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();
     $auth->destroySession();
 }
-
+if (empty($_GET['selector']) || empty($_GET['token'])) {
+    stderr('Error', 'Invalid verification link');
+}
 try {
     $emails = $auth->confirmEmail($_GET['selector'], $_GET['token']);
     if (empty($emails[0])) {

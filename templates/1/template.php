@@ -262,9 +262,11 @@ function stdfoot(array $stdfoot = [])
                                 <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
                                 <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
                                 <th class='min-350'>{$lang['gl_stdfoot_qs']}</th>
+                                <th class='min-150'>Parameters</th>
                             </tr>";
             $body = '';
             foreach ($query_stats as $key => $value) {
+                $params = implode("\n", $value['params']);
                 $querytime += $value['seconds'];
                 $body .= '
                             <tr>
@@ -273,6 +275,7 @@ function stdfoot(array $stdfoot = [])
                                 <td>
                                     <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                 </td>
+                                <td>' . format_comment($params) . '</td>
                             </tr>';
             }
             $cache->delete('query_stats_' . $session_id);
@@ -357,7 +360,6 @@ function stdfoot(array $stdfoot = [])
 
     $htmlfoot .= "
     <script src='" . get_file_name('jquery_js') . "'></script>
-    <script src='" . get_file_name('theme_js') . "'></script>
     <script src='" . get_file_name('lightbox_js') . "'></script>
     <script src='" . get_file_name('tooltipster_js') . "'></script>
     <script src='" . get_file_name('cookieconsent_js') . "'></script>
