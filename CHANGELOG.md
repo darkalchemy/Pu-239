@@ -1,4 +1,5 @@
 ### 26 Jun, 2019
+fix: undefined index HTTP_REFERER takeupload.php  
 fix: undefined functions() verify_email.php  
 update: favicon  
 fix: parameter placement dubug_pdo()  

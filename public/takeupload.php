@@ -46,33 +46,23 @@ $session = $container->get(Session::class);
 if ($user_data['class'] < $site_config['allowed']['upload'] || $user_data['uploadpos'] != 1 || $user_data['suspended'] === 'yes') {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['not_authorized']);
 }
-if (empty($body) || empty($type) || empty($name)) {
+if (empty($body) || empty($type) || empty($name) || empty($_FILES['file'])) {
     $session->set('is-warning', $lang['takeupload_no_formdata']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_no_formdata']);
 }
-if ((bool) empty($_FILES['file'])) {
-    $session->set('is-warning', $lang['takeupload_no_formdata']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
-}
-
 $url = strip_tags(!empty($url) ? trim($url) : '');
 if (!empty($url)) {
     preg_match('/(tt\d{7})/i', $url, $imdb);
     $imdb = !empty($imdb[1]) ? $imdb[1] : '';
 }
-
 $poster = strip_tags(!empty($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
     $session->set('is-warning', $lang['takeupload_no_filename']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_no_filename']);
 }
 
 if (!empty($uplver) && $uplver === 'yes') {
@@ -107,24 +97,20 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
     if ($nfofile['name'] == '') {
         $session->set('is-warning', $lang['takeupload_no_nfo']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        why_die($lang['takeupload_no_nfo']);
     }
     if ($nfofile['size'] == 0) {
         $session->set('is-warning', $lang['takeupload_0_byte']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        why_die($lang['takeupload_0_byte']);
     }
     if ($nfofile['size'] > $site_config['site']['nfo_size']) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        why_die($lang['takeupload_nfo_big']);
     }
     $nfofilename = $nfofile['tmp_name'];
     if (@!is_uploaded_file($nfofilename)) {
         $session->set('is-warning', $lang['takeupload_nfo_failed']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        why_die($lang['takeupload_nfo_failed']);
     }
     $nfo_content = str_ireplace([
         "\x0d\x0d\x0a",
@@ -169,16 +155,14 @@ if (!$descr) {
         $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
     } else {
         $session->set('is-warning', $lang['takeupload_no_descr']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        why_die($lang['takeupload_no_descr']);
     }
 }
 $description = strip_tags(!empty($description) ? trim($description) : '');
 $catid = (int) $type;
 if (!is_valid_id($catid)) {
     $session->set('is-warning', $lang['takeupload_no_cat']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_no_cat']);
 }
 $request = (((!empty($request) && is_valid_id($request)) ? (int) $request : 0));
 $offer = (((!empty($offer) && is_valid_id($offer)) ? (int) $offer : 0));
@@ -200,8 +184,7 @@ $tags = strip_tags(!empty($tags) ? trim($tags) : '');
 
 if (!validfilename($fname)) {
     $session->set('is-warning', $lang['takeupload_invalid']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_invalid']);
 }
 
 if (empty($isbn)) {
@@ -215,8 +198,7 @@ if (empty($isbn)) {
 
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
     $session->set('is-warning', $lang['takeupload_not_torrent']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_not_torrent']);
 }
 $shortfname = $torrent = $matches[1];
 if (!empty($name)) {
@@ -225,28 +207,24 @@ if (!empty($name)) {
 $tmpname = $f['tmp_name'];
 if (!is_uploaded_file($tmpname)) {
     $session->set('is-warning', $lang['takeupload_eek']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_eek']);
 }
 if (!filesize($tmpname)) {
     $session->set('is-warning', $lang['takeupload_no_file']);
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    why_die($lang['takeupload_no_file']);
 }
 $dict = bencdec::decode_file($tmpname, $site_config['site']['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
 if ($dict === false) {
-    $session->set('is-warning', 'What did you upload? This is not a bencoded file!');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_what']);
+    why_die($lang['takeupload_what']);
 }
 if (!empty($dict['announce-list'])) {
     unset($dict['announce-list']);
 }
 $dict['info']['private'] = 1;
-if ((bool) empty($dict['info'])) {
-    $session->set('is-warning', 'invalid torrent, info dictionary does not exist');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+if (empty($dict['info'])) {
+    $session->set('is-warning', $lang['takeupload_empty_dict']);
+    why_die($lang['takeupload_empty_dict']);
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
@@ -258,44 +236,37 @@ $count = $fluent->from('torrents')
                 ->fetch('count');
 
 if ($count > 0) {
-    $session->set('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_already']);
+    why_die($lang['takeupload_already']);
 }
 if (bencdec::get_type($info) != 'dictionary') {
-    $session->set('is-warning', 'invalid torrent, info is not a dictionary');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_not_dict']);
+    why_die($lang['takeupload_not_dict']);
 }
-if ((bool) empty($info['name']) || (bool) empty($info['piece length']) || (bool) empty($info['pieces'])) {
-    $session->set('is-warning', 'invalid torrent, missing parts of the info dictionary');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+if (empty($info['name']) || empty($info['piece length']) || empty($info['pieces'])) {
+    $session->set('is-warning', $lang['takeupload_missing_parts']);
+    why_die($lang['takeupload_missing_parts']);
 }
 if (bencdec::get_type($info['name']) != 'string' || bencdec::get_type($info['piece length']) != 'integer' || bencdec::get_type($info['pieces']) != 'string') {
-    $session->set('is-warning', 'invalid torrent, invalid types in info dictionary');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_invalid_types']);
+    why_die($lang['takeupload_invalid_types']);
 }
 $dname = $info['name'];
 $plen = $info['piece length'];
 $pieces_len = strlen($info['pieces']);
 if ($pieces_len % 20 != 0) {
-    $session->set('is-warning', 'invalid pieces');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_pieces']);
+    why_die($lang['takeupload_pieces']);
 }
 if ($plen % 4096) {
-    $session->set('is-warning', 'piece size is not mod(4096), invalid torrent.');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_piece_size']);
+    why_die($lang['takeupload_piece_size']);
 }
 $filelist = [];
 if (!empty($info['length'])) {
     if (bencdec::get_type($info['length']) != 'integer') {
-        $session->set('is-warning', 'length must be an integer');
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        $session->set('is-warning', $lang['takeupload_invalid']);
+        why_die($lang['takeupload_invalid']);
     }
     $totallen = $info['length'];
     $filelist[] = [
@@ -303,21 +274,18 @@ if (!empty($info['length'])) {
         $totallen,
     ];
 } else {
-    if ((bool) empty($info['files'])) {
-        $session->set('is-warning', 'missing both length and files');
-        header("Location: {{$_SERVER['HTTP_REFERER']}");
-        die();
+    if (empty($info['files'])) {
+        $session->set('is-warning', $lang['takeupload_both']);
+        why_die($lang['takeupload_both']);
     }
     if (bencdec::get_type($info['files']) != 'list') {
-        $session->set('is-warning', 'invalid files, not a list');
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        $session->set('is-warning', $lang['takeupload_file_list']);
+        why_die($lang['takeupload_file_list']);
     }
     $flist = &$info['files'];
     if (!count($flist)) {
-        $session->set('is-warning', 'no files');
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        $session->set('is-warning', $lang['takeupload_no_files']);
+        why_die($lang['takeupload_no_files']);
     }
     $totallen = 0;
     $fn = [
@@ -325,15 +293,13 @@ if (!empty($info['length'])) {
         'path' => '',
     ];
     foreach ($flist as $fn) {
-        if ((bool) empty($fn['length']) || (bool) empty($fn['path'])) {
-            $session->set('is-warning', 'file info not found, empty filename in torrent file?');
-            header("Location: {$_SERVER['HTTP_REFERER']}");
-            die();
+        if (empty($fn['length']) || empty($fn['path'])) {
+            $session->set('is-warning', $lang['takeupload_no_info']);
+            why_die($lang['takeupload_no_info']);
         }
         if (bencdec::get_type($fn['length']) != 'integer' || bencdec::get_type($fn['path']) != 'list') {
-            $session->set('is-warning', 'invalid file info');
-            header("Location: {$_SERVER['HTTP_REFERER']}");
-            die();
+            $session->set('is-warning', $lang['takeupload_invalid_info']);
+            why_die($lang['takeupload_invalid_info']);
         }
         $ll = $fn['length'];
         $ff = $fn['path'];
@@ -341,16 +307,14 @@ if (!empty($info['length'])) {
         $ffa = [];
         foreach ($ff as $ffe) {
             if (bencdec::get_type($ffe) != 'string') {
-                $session->set('is-warning', 'filename type error');
-                header("Location: {$_SERVER['HTTP_REFERER']}");
-                die();
+                $session->set('is-warning', $lang['takeupload_type_error']);
+                why_die($lang['takeupload_type_error']);
             }
             $ffa[] = $ffe;
         }
         if (!count($ffa)) {
-            $session->set('is-warning', 'filename error');
-            header("Location: {$_SERVER['HTTP_REFERER']}");
-            die();
+            $session->set('is-warning', $lang['takeupload_error']);
+            why_die($lang['takeupload_error']);
         }
         $ffe = implode('/', $ffa);
         $filelist[] = [
@@ -363,13 +327,12 @@ if (!empty($info['length'])) {
 $num_pieces = $pieces_len / 20;
 $expected_pieces = (int) ceil($totallen / $plen);
 if ($num_pieces != $expected_pieces) {
-    $session->set('is-warning', 'total file size and number of pieces do not match');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_no_match']);
+    why_die($lang['takeupload_no_match']);
 }
 
-$tmaker = (!empty($dict['created by']) && !empty($dict['created by'])) ? $dict['created by'] : $lang['takeupload_unknown'];
-$dict['comment'] = ("In using this torrent you are bound by the {$site_config['site']['name']} Confidentiality Agreement By Law"); // change torrent comment
+$tmaker = !empty($dict['created by']) && !empty($dict['created by']) ? $dict['created by'] : $lang['takeupload_unknown'];
+$dict['comment'] = $lang['takeupload_agreement'];
 
 $visible = 'no';
 $torrent = str_replace('_', ' ', $torrent);
@@ -419,9 +382,8 @@ $torrents_class = $container->get(Torrent::class);
 $id = $torrents_class->add($values);
 
 if (!$id) {
-    $session->set('is-warning', 'upload failed');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_failed']);
+    why_die($lang['takeupload_failed']);
 }
 
 $torrents_class->remove_torrent($infohash);
@@ -443,10 +405,10 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws NotFoundException
+ * @return string
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function file_list($arr, $id)
 {
@@ -462,9 +424,8 @@ sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($fil
 
 $dir = TORRENTS_DIR . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
-    $session->set('is-warning', 'Could not properly encode file');
-    header("Location: {$_SERVER['HTTP_REFERER']}");
-    die();
+    $session->set('is-warning', $lang['takeupload_encode_error']);
+    why_die($lang['takeupload_encode_error']);
 }
 @unlink($tmpname);
 
@@ -483,7 +444,7 @@ if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_ir
 $messages_class = $container->get(Message::class);
 if ($offer > 0) {
     $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . ' AND offer_id=' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
-    $subject = 'An offer you voted for has been uploaded!';
+    $subject = $lang['takeupload_offer_subject'];
     $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
         $msgs_buffer[] = [
@@ -501,8 +462,8 @@ if ($offer > 0) {
 }
 $filled = 0;
 if ($request > 0) {
-    $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = "yes" AND request_id=' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
-    $subject = 'A request you were interested in has been uploaded!';
+    $res_req = sql_query("SELECT user_id FROM request_votes WHERE vote = 'yes' AND request_id=" . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
+    $subject = $lang['takeupload_request_subject'];
     $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     while ($arr_req = mysqli_fetch_assoc($res_req)) {
         $msgs_buffer[] = [
@@ -532,14 +493,13 @@ if ($filled == 0) {
 
 $notify = $users_class->get_notifications($catid);
 if (!empty($notify)) {
-    $subject = 'New Torrent Uploaded!';
+    $subject = $lang['takeupload_email_subject'];
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
         file_put_contents('/var/log/nginx/email.log', $notif['notifs'] . PHP_EOL, FILE_APPEND);
         if ($site_config['mail']['smtp_enable'] && strpos($notif['notifs'], 'email') !== false) {
             $body = format_comment($msg);
             send_mail(strip_tags($notif['email']), $subject, $body, strip_tags($body));
-            file_put_contents('/var/log/nginx/email.log', 'sent' . PHP_EOL, FILE_APPEND);
         }
         if (strpos($notif['notifs'], 'pmail') !== false) {
             $msgs_buffer[] = [
@@ -558,3 +518,12 @@ if (!empty($notify)) {
 $cache->delete('user_upload_variables_' . $owner_id);
 $session->set('is-success', $lang['takeupload_success']);
 header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id&uploaded=1");
+
+function why_die(string $why)
+{
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        header("Location: {$_SERVER['HTTP_REFERER']}");
+        die();
+    }
+    die($why);
+}
