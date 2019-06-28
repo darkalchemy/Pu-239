@@ -202,7 +202,7 @@ if ($action === 'viewbug') {
                    ->select('s.class AS stclass')
                    ->leftJoin('users AS u ON b.sender = u.id')
                    ->leftJoin('users AS s ON b.staff = s.id')
-                   ->orderBy('b.added')
+                   ->orderBy('b.added DESC')
                    ->limit($pager['pdo']['limit'])
                    ->offset($pager['pdo']['offset'])
                    ->fetchAll();
