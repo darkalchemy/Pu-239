@@ -1,4 +1,5 @@
 ### 27 Jun, 2019
+update: bugs.php  
 update: remove "{}" when not needed  
 update: add comments to fix/ignore bugs.php  
 fix: must be of the type int move_or_delete_multi.php  

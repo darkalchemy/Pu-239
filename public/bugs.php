@@ -202,7 +202,6 @@ if ($action === 'viewbug') {
                    ->select('s.class AS stclass')
                    ->leftJoin('users AS u ON b.sender = u.id')
                    ->leftJoin('users AS s ON b.staff = s.id')
-                   ->orderBy('b.priority DESC')
                    ->orderBy('b.status DESC')
                    ->orderBy('b.added')
                    ->limit($pager['pdo']['limit'])
@@ -259,12 +258,12 @@ if ($action === 'viewbug') {
             }
             $body .= "
     <tr>
-        <td><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
+        <td class='w-25'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
         <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
         <td>{$priority}</td>
         <td>{$status}</td>
         <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . '</td>
-        <td>' . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
+        <td class='w-25'>' . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);
