@@ -192,7 +192,7 @@ if ($CURUSER) {
         $byboth = $byratio && $byul;
         $next_para .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])) . '.)');
     } else {
-        $next_para .= "{$lang['faq_nodelay']}";
+        $next_para .= $lang['faq_nodelay'];
     }
 }
 

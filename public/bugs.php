@@ -2,8 +2,11 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -20,151 +23,217 @@ $possible_actions = [
     'bugs',
     'add',
 ];
-$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'bugs');
 if (!in_array($action, $possible_actions)) {
-    stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
+    stderr('Error', $lang['bugs_how']);
 }
 $dt = TIME_NOW;
+$fluent = $container->get(Database::class);
+$messages_class = $container->get(Message::class);
+$user_class = $container->get(User::class);
+$cache = $container->get(Cache::class);
+$session = $container->get(Session::class);
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($CURUSER['class'] < UC_MAX) {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_only_coder']}");
+            stderr($lang['stderr_error'], $lang['stderr_only_coder']);
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
+        $comment = !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
         if ($status === 'na') {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_no_na']}");
+            stderr($lang['stderr_error'], $lang['stderr_no_na']);
         }
         if (!$id || !is_valid_id($id)) {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
+            stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
         }
-        $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $messages_class = $container->get(Message::class);
-        while ($q1 = mysqli_fetch_assoc($query1)) {
-            switch ($status) {
-                case 'fixed':
-                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n";
-                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id=' . sqlesc($q1['sender']);
-                    $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
-                    $cache->update_row('user_' . $q1['sender'], [
-                        'uploaded' => $update['uploaded'],
-                    ], $site_config['expires']['user_cache']);
-                    break;
+        $bug = $fluent->from('bugs')
+                      ->where('id = ?', $id)
+                      ->fetch();
+        $user = $user_class->getUserFromId($bug['sender']);
+        $comment = "\n[precode]{$comment}[/precode]";
+        switch ($status) {
+            case 'fixed':
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$comment";
+                $update = [
+                    'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
+                ];
+                $user_class->update($update, $user['id']);
+                break;
 
-                case 'ignored':
-                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n";
-                    $uq = '';
-                    break;
-            }
-            if (!empty($uq)) {
-                sql_query($uq) or sqlerr(__FILE__, __LINE__);
-            }
-            $msgs_buffer[] = [
-                'receiver' => $q1['sender'],
-                'added' => $dt,
-                'msg' => $msg,
-                'subject' => 'Bug Report',
-            ];
-            $messages_class->insert($msgs_buffer);
-            sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $cache->delete('bug_mess_');
+            case 'ignored':
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$comment";
+                break;
         }
+        $msgs_buffer[] = [
+            'receiver' => $user['id'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => 'Response to your Bug Report',
+        ];
+        $messages_class->insert($msgs_buffer);
+        $update = [
+            'status' => $status,
+            'staff' => $CURUSER['id'],
+            'comment' => !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '',
+        ];
+        $fluent->update('bugs')
+               ->set($update)
+               ->where('id = ?', $id)
+               ->execute();
+        $cache->delete('bug_mess_');
         header("location: {$_SERVER['PHP_SELF']}?action=bugs");
     }
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if (!$id || !is_valid_id($id)) {
-        stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
+        stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
     }
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr("{$lang['stderr_error']}", 'Only staff can view bugs.');
+        stderr($lang['stderr_error'], 'Only staff can view bugs.');
     }
-    $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    while ($a = mysqli_fetch_assoc($as)) {
-        $title = htmlsafechars($a['title']);
-        $added = get_date((int) $a['added'], '', 0, 1);
-        $addedby = format_username((int) $a['sender']) . '<i>(' . get_user_class_name((int) $a['class']) . ')</i>';
-        switch ($a['priority']) {
-            case 'low':
-                $priority = "<span style='color: green;'>{$lang['low']}</span>";
-                break;
+    $bug = $fluent->from('bugs AS b')
+                  ->select('u.username')
+                  ->select('u.class')
+                  ->select('s.username AS st')
+                  ->select('s.class AS stclass')
+                  ->leftJoin('users AS u ON b.sender = u.id')
+                  ->leftJoin('users AS s ON b.staff = u.id')
+                  ->where('b.id = ?', $id)
+                  ->fetch();
 
-            case 'high':
-                $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
-                break;
+    $title = htmlsafechars($bug['title']);
+    $added = get_date($bug['added'], 'LONG', 0, 1);
+    $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
+    switch ($bug['priority']) {
+        case 'low':
+            $priority = "<span class='has-text-green'>{$lang['low']}</span>";
+            break;
 
-            case 'veryhigh':
-                $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
-                break;
-        }
-        $problem = format_comment($a['problem']);
-        switch ($a['status']) {
-            case 'fixed':
-                $status = "<span style='color: green;'><b>{$lang['fixed']}</b></span>";
-                break;
+        case 'high':
+            $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
+            break;
 
-            case 'ignored':
-                $status = "<span style='color: #FF8C00;'><b>{$lang['ignored']}</b></span>";
-                break;
-
-            default:
-                $status = "<select name='status'>
-          <option value='na'>{$lang['select_one']}</option>
-          <option value='fixed'>{$lang['fix_problem']}</option>
-          <option value='ignored'>{$lang['ignore_problem']}</option>
-        </select>";
-        }
-        switch ($a['staff']) {
-            case 0:
-                $by = '';
-                break;
-
-            default:
-                $by = format_username((int) $a['staff']) . ' <i>(' . get_user_class_name((int) $a['stclass']) . ')</i>';
-                break;
-        }
-        $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
-      <input type='hidden' name='id' value='" . (int) $a['id'] . "'/>
-      <table class='table table-bordered table-striped'>
-      <tr><td class='rowhead'>{$lang['title']}:</td><td>{$title}</td></tr>
-      <tr><td class='rowhead'>{$lang['added']} / {$lang['by']}</td><td>{$added} / {$addedby}</td></tr>
-      <tr><td class='rowhead'>{$lang['priority']}</td><td>" . $priority . "</td></tr>
-      <tr class='no_hover'><td class='rowhead'>{$lang['problem_bug']}</td><td><div class='margin20 code'>{$problem}</div></td></tr>
-      <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
-        if ($a['status'] === 'na') {
-            $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";
-        }
+        case 'veryhigh':
+            $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
+            break;
     }
-    $HTMLOUT .= "</table></form><div class='has-text-centered margin20'><a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a></div>\n";
+    $problem = format_comment($bug['problem']);
+    switch ($bug['status']) {
+        case 'fixed':
+            $status = "<span class='has-text-green'><b>{$lang['fixed']}</b></span>";
+            break;
+
+        case 'ignored':
+            $status = "<span class='has-text-orange'><b>{$lang['ignored']}</b></span>";
+            break;
+
+        default:
+            $status = "
+            <select name='status'>
+                <option value='na'>{$lang['select_one']}</option>
+                <option value='fixed'>{$lang['fix_problem']}</option>
+                <option value='ignored'>{$lang['ignore_problem']}</option>
+            </select>";
+    }
+    switch ($bug['staff']) {
+        case 0:
+            $by = '';
+            break;
+
+        default:
+            $by = format_username($bug['staff']) . ' <i>(' . get_user_class_name($bug['stclass']) . ')</i>';
+            break;
+    }
+    $HTMLOUT .= "
+        <form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
+            <input type='hidden' name='id' value='" . $bug['id'] . "'>";
+    $body = "
+            <tr>
+                <td class='rowhead'>{$lang['title']}:</td>
+                <td>{$title}</td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['added']} / {$lang['by']}</td>
+                <td>{$added} / {$addedby}</td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['priority']}</td>
+                <td>" . $priority . "</td>
+            </tr>
+            <tr class='no_hover'>
+                <td class='rowhead'>{$lang['problem_bug']}</td>
+                <td><div class='margin20 code'>{$problem}</div></td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['status']} / {$lang['by']}</td>
+                <td>{$status} - {$by}</td>
+            </tr>
+            <tr class='no_hover'>
+                <td class='rowhead'>{$lang['problem_comment']}</td>
+                <td><textarea name='comment' class='w-100' rows='6'></textarea></td>
+            </tr>";
+    if ($bug['status'] === 'na') {
+        $body .= "
+            <tr>
+                <td colspan='2' class='has-text-centered'>
+                    <input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'>
+                </td>
+            </tr>";
+    }
+    $HTMLOUT .= main_table($body) . "
+        </form>
+        <div class='has-text-centered margin20'>
+            <a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a>
+        </div>";
 } elseif ($action === 'bugs') {
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");
+        stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
     }
-    $fluent = $container->get(Database::class);
     $count = $fluent->from('bugs')
                     ->select(null)
                     ->select('COUNT(id) AS count')
                     ->fetch('count');
     $perpage = 25;
     $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/bugs.php?action=bugs&amp;');
-    $res = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-    $r = sql_query("SELECT * FROM bugs WHERE status = 'na'") or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) > 0) {
-        $bugs = mysqli_num_rows($r);
+    $bugs = $fluent->from('bugs AS b')
+                   ->select('u.username')
+                   ->select('u.class')
+                   ->select('s.username AS st')
+                   ->select('s.class AS stclass')
+                   ->leftJoin('users AS u ON b.sender = u.id')
+                   ->leftJoin('users AS s ON b.staff = s.id')
+                   ->orderBy('b.priority DESC')
+                   ->orderBy('b.status DESC')
+                   ->orderBy('b.added')
+                   ->limit($pager['pdo']['limit'])
+                   ->offset($pager['pdo']['offset'])
+                   ->fetchAll();
+
+    $na_count = $fluent->from('bugs')
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('status = "na"')
+                       ->fetch('count');
+
+    if ($count > 0) {
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-      <h1 class='has-text-centered'>" . sprintf($lang['h1_count_bugs'], $bugs, ($bugs > 1 ? 's' : '')) . "</h1>
-      <div class='has-text-centered size_3'>{$lang['delete_when']}</div>
-      <table class='table table-bordered table-striped'><tr>
-      <td class='colhead'>{$lang['title']}</td>
-      <td class='colhead'>{$lang['added']} / {$lang['by']}</td>
-      <td class='colhead'>{$lang['priority']}</td>
-      <td class='colhead'>{$lang['status']}</td>
-      <td class='colhead'>{$lang['coder']}</td>
-      </tr>";
-        while ($q1 = mysqli_fetch_assoc($res)) {
+        <h1 class='has-text-centered'>" . sprintf($lang['h1_count_bugs'], $na_count, ($na_count > 1 ? 's' : '')) . "</h1>
+        <div class='has-text-centered size_3'>{$lang['delete_when']}</div>";
+        $heading = "        
+    <tr>
+        <th>{$lang['title']}</th>
+        <th>{$lang['added']} / {$lang['by']}</th>
+        <th>{$lang['priority']}</th>
+        <th>{$lang['status']}</th>
+        <th>{$lang['coder']}</th>
+        <th>{$lang['comment']}</th>
+    </tr>";
+        $body = '';
+        foreach ($bugs as $q1) {
             switch ($q1['priority']) {
                 case 'low':
-                    $priority = "<span style='color: green;'>{$lang['low']}</span>";
+                    $priority = "<span class='has-text-green'>{$lang['low']}</span>";
                     break;
 
                 case 'high':
@@ -177,26 +246,28 @@ if ($action === 'viewbug') {
             }
             switch ($q1['status']) {
                 case 'fixed':
-                    $status = "<span style='color: green;'><b>{$lang['fixed']}</b></span>";
+                    $status = "<span class='has-text-green'><b>{$lang['fixed']}</b></span>";
                     break;
 
                 case 'ignored':
-                    $status = "<span style='color: #FF8C00;'><b>{$lang['ignored']}</b></span>";
+                    $status = "<span class='has-text-orange'><b>{$lang['ignored']}</b></span>";
                     break;
 
                 default:
-                    $status = "<span style='color: black;'><b>N/A</b></span>";
+                    $status = "<span class='has-text-gold'><b>N/A</b></span>";
                     break;
             }
-            $HTMLOUT .= "<tr>
-          <td><a href='?action=viewbug&amp;id=" . (int) $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
-          <td nowrap='nowrap'>" . get_date((int) $q1['added'], 'TINY') . ' / ' . format_username((int) $q1['sender']) . "</td>
-          <td>{$priority}</td>
-          <td>{$status}</td>
-      <td>" . ($q1['status'] != 'na' ? format_username((int) $q1['staff']) : '---') . '</td>
-      </tr>';
+            $body .= "
+    <tr>
+        <td><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
+        <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
+        <td>{$priority}</td>
+        <td>{$status}</td>
+        <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . '</td>
+        <td>' . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
+    </tr>';
         }
-        $HTMLOUT .= '</table>';
+        $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
     } else {
         $session->set('is-warning', $lang['no_bugs']);
@@ -209,34 +280,58 @@ if ($action === 'viewbug') {
         $priority = htmlsafechars($_POST['priority']);
         $problem = htmlsafechars($_POST['problem']);
         if (empty($title) || empty($priority) || empty($problem)) {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_missing']}");
+            stderr($lang['stderr_error'], $lang['stderr_missing']);
         }
         if (strlen($problem) < 20) {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_problem_20']}");
+            stderr($lang['stderr_error'], $lang['stderr_problem_min']);
         }
-        if (strlen($title) < 10) {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_title_10']}");
+        if (strlen($title) < 5) {
+            stderr($lang['stderr_error'], $lang['stderr_title_min']);
         }
-        $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES (' . sqlesc($title) . ', ' . sqlesc($priority) . ', ' . sqlesc($problem) . ', ' . sqlesc($CURUSER['id']) . ', ' . $dt . ')') or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'title' => $title,
+            'priority' => $priority,
+            'problem' => $problem,
+            'sender' => $CURUSER['id'],
+            'added' => $dt,
+        ];
+        $fluent->insertInto('bugs')
+               ->values($values)
+               ->execute();
         $cache->delete('bug_mess_');
         if ($q1) {
-            stderr("{$lang['stderr_sucess']}", sprintf($lang['stderr_sucess_2'], $priority));
+            stderr($lang['stderr_sucess'], sprintf($lang['stderr_sucess_2'], $priority));
         } else {
-            stderr("{$lang['stderr_error']}", "{$lang['stderr_something_is_wrong']}");
+            stderr($lang['stderr_error'], $lang['stderr_something_is_wrong']);
         }
     }
-    $HTMLOUT .= "<form method='post' action='bugs.php?action=add' accept-charset='utf-8'>
-                  <table class='table table-bordered table-striped'>
-                  <tr><td class='rowhead'>{$lang['title']}:</td><td><input type='text' name='title' size='60'/><br>{$lang['proper_title']}</td></tr>
-                  <tr><td class='rowhead'>{$lang['problem_bug']}:</td><td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td></tr>
-                  <tr><td class='rowhead'>{$lang['priority']}:</td><td><select name='priority'>
-                  <option value='0'>{$lang['select_one']}</option>
-                  <option value='low'>{$lang['low']}</option>
-                  <option value='high'>{$lang['high']}</option>
-                  <option value='veryhigh'>{$lang['veryhigh']}</option>
-                  </select>
-                  <br>{$lang['only_veryhigh_when']}</td></tr>
-                  <tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_send']}' class='button is-small'/></td></tr>
-                  </table></form>";
+    $HTMLOUT .= "
+    <form method='post' action='{$_SERVER['PHP_SELF']}?action=add' accept-charset='utf-8'>";
+    $body = "
+        <tr>
+            <td class='rowhead'>{$lang['title']}:</td>
+            <td><input type='text' name='title' size='60'><br>{$lang['proper_title']}</td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['problem_bug']}:</td>
+            <td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['priority']}:</td>
+            <td>
+                <select name='priority'>
+                    <option value='0'>{$lang['select_one']}</option>
+                    <option value='low'>{$lang['low']}</option>
+                    <option value='high'>{$lang['high']}</option>
+                    <option value='veryhigh'>{$lang['veryhigh']}</option>
+                </select>
+                <br>{$lang['only_veryhigh_when']}
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_send']}' class='button is-small'></td>
+        </tr>";
+    $HTMLOUT .= main_table($body) . '
+    </form>';
 }
-echo stdhead("{$lang['header']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['header']) . wrapper($HTMLOUT) . stdfoot();

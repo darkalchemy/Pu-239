@@ -27,7 +27,7 @@ $HTMLOUT = '';
 global $CURUSER;
 
 if ($CURUSER) {
-    $HTMLOUT .= "{$lang['links_dead']}";
+    $HTMLOUT .= $lang['links_dead'];
 }
 $HTMLOUT .= "<table><tr><td class='embedded'>";
 $HTMLOUT .= "{$lang['links_other_pages_header']}

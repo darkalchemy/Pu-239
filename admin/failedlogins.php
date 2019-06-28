@@ -18,7 +18,7 @@ $session = $container->get(Session::class);
 $mode = isset($_GET['mode']) ? $_GET['mode'] : '';
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
-    stderr($lang['failed_sorry'], "{$lang['failed_bad_id']}");
+    stderr($lang['failed_sorry'], $lang['failed_bad_id']);
 }
 
 if ($mode === 'ban') {

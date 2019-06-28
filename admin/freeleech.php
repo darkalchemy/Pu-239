@@ -87,7 +87,7 @@ if (isset($free) && (count($free) < 1)) {
             <tr>
                 <td>$mode</td>
                 <td>" . get_date((int) $fl['begin'], 'LONG') . '</td>
-                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freeleech_until']}" . get_date((int) $fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
+                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? $lang['freeleech_until'] . get_date((int) $fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
                 <td>{$username}</td>
                 <td>{$fl['title']}</td>
                 <td class='has-text-centered'>

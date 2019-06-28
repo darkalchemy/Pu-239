@@ -21,7 +21,7 @@ $dt = TIME_NOW;
 global $CURUSER, $site_config;
 
 if ($CURUSER['class'] < UC_STAFF) {
-    stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+    stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
                 $dur = $donorlength . $lang['modtask_donor_week'] . ($donorlength > 1 ? $lang['modtask_donor_weeks'] : '');
                 $msg = $lang['modtask_donor_dear'] . $user['username'] . "{$lang['modtask_donor_msg']} $dur {$lang['modtask_donor_msg1']}" . $username;
                 $subject = $lang['modtask_donor_subject'];
-                $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_donor_set']}" . $CURUSER['username'] . ".\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_donor_set'] . $CURUSER['username'] . ".\n" . $modcomment;
             }
             $update['donoruntil'] = $donoruntil;
             $msgs[] = [
@@ -448,10 +448,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         if (!empty($avatar)) {
             $img_size = getimagesize($avatar);
             if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-                stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
+                stderr($lang['modtask_user_error'], $lang['modtask_not_image']);
             }
             if ($img_size[0] < 100 || $img_size[1] < 100) {
-                stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
+                stderr($lang['modtask_user_error'], $lang['modtask_image_small']);
             }
         }
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_avatar_change']}" . htmlsafechars((string) $user['avatar']) . "{$lang['modtask_to']}" . htmlsafechars((string) $avatar) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
@@ -463,10 +463,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         if (!empty($signature)) {
             $img_size = getimagesize($signature);
             if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-                stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
+                stderr($lang['modtask_user_error'], $lang['modtask_not_image']);
             }
             if ($img_size[0] < 100 || $img_size[1] < 15) {
-                stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
+                stderr($lang['modtask_user_error'], $lang['modtask_image_small']);
             }
         }
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_signature_change']}" . htmlsafechars((string) $user['signature']) . "{$lang['modtask_to']}" . htmlsafechars((string) $signature) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
@@ -489,7 +489,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         } elseif ($support === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_fls_demoted'] . $CURUSER['username'] . ".\n" . $modcomment;
         } else {
-            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+            stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
         }
         $supportfor = $post['supportfor'];
         $update['support'] = $support;
@@ -608,7 +608,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             $subject = $lang['modtask_highs_status'];
             $msg = $lang['modtask_highs_disabled'] . $username . $lang['modtask_highs_pm'] . $username . $lang['modtask_highs_reason'];
         } else {
-            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+            stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
         }
         $update['highspeed'] = $highspeed;
         $useredit[] = $lang['modtask_highs_enabled'] . $highspeed;
@@ -630,7 +630,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             $subject = $lang['modtask_canleech_status'];
             $msg = $lang['modtask_canleech_ability'] . $username . $lang['modtask_canleech_pm'] . $username . $lang['modtask_canleech_reason'];
         } else {
-            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+            stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
         }
         $update['can_leech'] = $can_leech;
         $useredit[] = $lang['modtask_canleech_edited'] . $can_leech;
@@ -663,7 +663,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         } elseif ($parked === 'no') {
             $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unparked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
         } else {
-            stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
+            stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
         }
         $update['parked'] = $parked;
         $useredit[] = $lang['modtask_parked_acc'] . $parked;
@@ -825,4 +825,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     header("Location: {$site_config['paths']['baseurl']}/$returnto");
 }
 
-stderr("{$lang['modtask_user_error']}", "{$lang['modtask_no_idea']}");
+stderr($lang['modtask_user_error'], $lang['modtask_no_idea']);

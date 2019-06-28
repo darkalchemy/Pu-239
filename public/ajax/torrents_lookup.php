@@ -381,7 +381,7 @@ function maketable(array $torrents)
             $ratio = $torrent['uploaded'] / $torrent['downloaded'];
             $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>" . number_format($ratio, 3) . '</span>';
         } elseif ($torrent['uploaded'] > 0) {
-            $ratio = "{$lang['userdetails_inf']}";
+            $ratio = $lang['userdetails_inf'];
         } else {
             $ratio = '---';
         }
@@ -482,7 +482,7 @@ function staff_snatchtable(array $torrents, int $userid)
                         <th>{$lang['userdetails_s_cat']}</th>
                         <th>{$lang['userdetails_s_torr']}</th>
                         <th>{$lang['userdetails_s_sl']}</th>
-                        <th>{$lang['userdetails_s_up']}" . ($site_config['site']['ratio_free'] ? '' : "{$lang['userdetails_s_down']}") . "</th>
+                        <th>{$lang['userdetails_s_up']}" . ($site_config['site']['ratio_free'] ? '' : $lang['userdetails_s_down']) . "</th>
                         <th>{$lang['userdetails_s_tsize']}</th>
                         <th>{$lang['userdetails_ratio']}</th>
                         <th>{$lang['userdetails_client']}</th>

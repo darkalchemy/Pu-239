@@ -390,7 +390,7 @@ function torrenttable($res, $variant = 'index')
             if ($row['visible'] === 'no') {
                 $htmlout .= "<b>{$lang['torrenttable_not_visible']}</b>";
             } else {
-                $htmlout .= "{$lang['torrenttable_visible']}";
+                $htmlout .= $lang['torrenttable_visible'];
             }
             $htmlout .= '</td>';
         }

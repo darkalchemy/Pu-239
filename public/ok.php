@@ -14,9 +14,9 @@ if (!$CURUSER) {
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
 if ($type === 'signup' && isset($_GET['email'])) {
-    stderr("{$lang['ok_success']}", sprintf((!$site_config['signup']['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'])));
+    stderr($lang['ok_success'], sprintf((!$site_config['signup']['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'])));
 } elseif ($type === 'invite' && isset($_GET['email'])) {
-    stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars($_GET['email'])));
+    stderr($lang['ok_invsuccess'], sprintf($lang['ok_email2'], htmlsafechars($_GET['email'])));
 } elseif ($type === 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {
@@ -24,7 +24,7 @@ if ($type === 'signup' && isset($_GET['email'])) {
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=adduser");
         die();
     }
-    $HTMLOUT = stdhead("{$lang['ok_sysop_account']}");
+    $HTMLOUT = stdhead($lang['ok_sysop_account']);
     $text1 = $lang['ok_sysop_activated'];
     $text2 = main_div($lang['ok_account_login']);
     $HTMLOUT .= wrapper($text1 . $text2, 'has-text-centered');
@@ -32,9 +32,9 @@ if ($type === 'signup' && isset($_GET['email'])) {
     echo $HTMLOUT;
     die();
 } elseif ($type === 'confirmed') {
-    $HTMLOUT .= stdhead("{$lang['ok_confirmed']}");
+    $HTMLOUT .= stdhead($lang['ok_confirmed']);
     $HTMLOUT .= "<h1>{$lang['ok_confirmed']}</h1>\n";
-    $HTMLOUT .= "{$lang['ok_user_confirmed']}";
+    $HTMLOUT .= $lang['ok_user_confirmed'];
     $HTMLOUT .= stdfoot();
     echo $HTMLOUT;
     die();
@@ -45,14 +45,14 @@ if ($type === 'signup' && isset($_GET['email'])) {
         header("Location: {$site_config['paths']['baseurl']}");
         die();
     } else {
-        $HTMLOUT .= stdhead("{$lang['ok_signup_confirm']}");
+        $HTMLOUT .= stdhead($lang['ok_signup_confirm']);
         $HTMLOUT .= "<h1>{$lang['ok_success_confirmed']}</h1>\n";
-        $HTMLOUT .= "{$lang['ok_account_cookies']}";
+        $HTMLOUT .= $lang['ok_account_cookies'];
         $HTMLOUT .= stdfoot();
         echo $HTMLOUT;
         die();
     }
 } else {
-    stderr("{$lang['ok_user_error']}", "{$lang['ok_no_action']}");
+    stderr($lang['ok_user_error'], $lang['ok_no_action']);
     die();
 }

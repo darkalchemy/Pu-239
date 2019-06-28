@@ -45,7 +45,7 @@ if (isset($_GET['delete'])) {
     $delfile = urldecode(decrypt($getfile, $PICSALT));
     $delhash = md5($delfile . $USERSALT . $SaLt);
     if ($delhash != $_GET['delhash']) {
-        stderr($lang['bitbucket_umm'], "{$lang['bitbucket_wayd']}");
+        stderr($lang['bitbucket_umm'], $lang['bitbucket_wayd']);
     }
     $myfile = BITBUCKET_DIR . $delfile;
     if ((($pi = pathinfo($myfile)) && preg_match('#^(' . $str . ')$#i', $pi['extension'])) && is_file($myfile)) {

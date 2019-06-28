@@ -410,7 +410,7 @@ function main_screen($mode)
 
     $form_code = $table = '';
     $page_title = $lang['stats_ex_center'];
-    $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
+    $page_detail = $lang['stats_ex_details_main'] . '<br>' . $lang['stats_ex_details_main1'];
     if ($mode === 'reg') {
         $form_code = 'show_reg';
         $table = $lang['stats_ex_registr'];

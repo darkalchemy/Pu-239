@@ -22,7 +22,7 @@ if (isset($_POST['delcloud'])) {
     $seachcloud_class->delete($_POST['delcloud']);
     $cache->delete('searchcloud_');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
-    stderr("{$lang['cloudview_success']}", "{$lang['cloudview_success_del']}");
+    stderr($lang['cloudview_success'], $lang['cloudview_success_del']);
 }
 $count = $seachcloud_class->get_count();
 $perpage = 15;

@@ -652,4 +652,4 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
 }
 
 $HTMLOUT = main_div($HTMLOUT . "<div class='level-center'>" . implode('', $blocks) . '</div>' . $details);
-echo stdhead("{$lang['casino_stdhead']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['casino_stdhead']) . wrapper($HTMLOUT) . stdfoot();

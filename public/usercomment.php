@@ -221,7 +221,7 @@ if ($action === 'add') {
                 <a href='$returnto#comments' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
     stderr('Error', 'Unknown action');

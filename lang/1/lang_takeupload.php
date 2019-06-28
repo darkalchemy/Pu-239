@@ -57,4 +57,3 @@ $lang = [
     'takeupload_request_subject' => 'A request you were interested in has been uploaded!',
     'takeupload_email_subject' => 'New Torrent Uploaded!',
 ];
-

@@ -32,7 +32,7 @@ if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         {$lang['gl_bug_alert1']}
                     </div>
-                    <div class='has-text-centered'>{$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? "{$lang['gl_bugss']}" : '') . '!</div>
+                    <div class='has-text-centered'>{$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? $lang['gl_bugss'] : '') . '!</div>
                  </div>
             </div>
         </a>

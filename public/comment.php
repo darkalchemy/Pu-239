@@ -69,16 +69,16 @@ if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = isset($_POST['tid']) ? (int) $_POST['tid'] : 0;
         if (!is_valid_id($id)) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+            stderr($lang['comment_error'], $lang['comment_invalid_id']);
         }
         $res = sql_query("SELECT $sql_1 WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_array($res);
         if (!$arr) {
-            stderr("{$lang['comment_error']}", "No $locale with that ID.");
+            stderr($lang['comment_error'], "No $locale with that ID.");
         }
         $body = isset($_POST['body']) ? trim($_POST['body']) : '';
         if (!$body) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
+            stderr($lang['comment_error'], $lang['comment_body']);
         }
         $owner = isset($arr['owner']) ? $arr['owner'] : 0;
         $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no';
@@ -134,12 +134,12 @@ if ($action === 'add') {
     }
     $id = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($id)) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+        stderr($lang['comment_error'], $lang['comment_invalid_id']);
     }
     $res = sql_query("SELECT $sql_1 WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr("{$lang['comment_error']}", "No $locale with that ID.");
+        stderr($lang['comment_error'], "No $locale with that ID.");
     }
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -179,20 +179,20 @@ if ($action === 'add') {
 } elseif ($action === 'edit') {
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+        stderr($lang['comment_error'], $lang['comment_invalid_id']);
     }
     $res = sql_query("SELECT c.*, t.$name, t.id as tid FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}.");
+        stderr($lang['comment_error'], "{$lang['comment_invalid_id']}.");
     }
     if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
+        stderr($lang['comment_error'], $lang['comment_denied']);
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = isset($_POST['body']) ? $_POST['body'] : '';
         if ($body == '') {
-            stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
+            stderr($lang['comment_error'], $lang['comment_body']);
         }
         $text = htmlsafechars($body);
         $editedat = TIME_NOW;
@@ -224,16 +224,16 @@ if ($action === 'add') {
     die();
 } elseif ($action === 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
+        stderr($lang['comment_error'], $lang['comment_denied']);
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     $tid = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+        stderr($lang['comment_error'], $lang['comment_invalid_id']);
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
-        stderr("{$lang['comment_delete']}", "{$lang['comment_about_delete']}\n" . "<a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
+        stderr($lang['comment_delete'], $lang['comment_about_delete'] . "<br><a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
           <span class='has-text-success'>here</span></a> {$lang['comment_delete_sure']}");
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
@@ -264,16 +264,16 @@ if ($action === 'add') {
     die();
 } elseif ($action === 'vieworiginal') {
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
+        stderr($lang['comment_error'], $lang['comment_denied']);
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+        stderr($lang['comment_error'], $lang['comment_invalid_id']);
     }
     $res = sql_query("SELECT c.*, t.$name FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
+        stderr($lang['comment_error'], "{$lang['comment_invalid_id']} $commentid.");
     }
     $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
@@ -287,9 +287,9 @@ if ($action === 'add') {
                 <a href='$returnto{$hashtag}' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
-    stderr("{$lang['comment_error']}", "{$lang['comment_unknown']}");
+    stderr($lang['comment_error'], $lang['comment_unknown']);
 }
 die();

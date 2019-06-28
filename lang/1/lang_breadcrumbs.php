@@ -7,6 +7,7 @@ $lang = [
     'achievementbonus.php' => 'Achievement Bonus',
     'achievementhistory.php' => 'Achievement History',
     'achievementlist.php' => 'Achievement List',
+    'ajaxchat.php' => 'AJAX Chat',
     'anatomy.php' => 'Anatomy',
     'announcement.php' => 'Site Announcements',
     'arcade.php' => 'Old School Arcade',

@@ -262,8 +262,7 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
     }
 }
 
-if (!empty($_POST['isbn']) && $_POST['isbn'] != $fetch_assoc['isbn']) {
-    $isbn = $_POST['isbn'];
+if (!empty($_POST['isbn']) && ($isbn = $_POST['isbn'] != $fetch_assoc['isbn'])) {
     $updateset[] = 'isbn = ' . sqlesc($isbn);
     $torrent_cache['isbn'] = $isbn;
 }

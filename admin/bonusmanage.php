@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: {$_SERVER['PHP_SELF']}?tool=bonusmanage");
             die();
         } else {
-            stderr($lang['bonusmanager_oops'], "{$lang['bonusmanager_sql']}");
+            stderr($lang['bonusmanager_oops'], $lang['bonusmanager_sql']);
         }
     }
 }

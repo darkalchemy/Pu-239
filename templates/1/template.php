@@ -242,13 +242,13 @@ function stdfoot(array $stdfoot = [])
             }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
-                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['bytes']);
+                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . $lang['gl_stdfoot_querys_mstat6'] . mksize($stats['bytes']);
             }
         } elseif ($site_config['cache']['driver'] === 'file') {
             $files_info = GetDirectorySize($site_config['files']['path'], true, true);
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$site_config['files']['path']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
         } elseif ($site_config['cache']['driver'] === 'memory') {
-            $header = "{$lang['gl_stdfoot_querys_memory']}";
+            $header = $lang['gl_stdfoot_querys_memory'];
         } elseif ($site_config['cache']['driver'] === 'couchbase') {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }

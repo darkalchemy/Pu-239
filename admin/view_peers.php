@@ -23,7 +23,7 @@ $count = $fluent->from('peers')
 $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
-    <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
+    <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . $lang['wpeers_peer'] . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
 $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];

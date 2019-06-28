@@ -259,9 +259,9 @@ $rg = "
                 <option value='scene'" . ($release_group === 'scene' ? ' selected' : '') . '>Scene</option>
             </select>';
 $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
-$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
+$HTMLOUT .= tr($lang['upload_anonymous'], "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
-    $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments === 'yes' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
+    $HTMLOUT .= tr($lang['upload_comment'], "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments === 'yes' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
 }
 if ($CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "

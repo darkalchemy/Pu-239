@@ -64,4 +64,18 @@ class Usersachiev
                      ->ignore()
                      ->execute();
     }
+
+    /**
+     * @param array $set
+     * @param int   $userid
+     *
+     * @throws Exception
+     */
+    public function update(array $set, int $userid)
+    {
+        $this->fluent->update('usersachiev')
+            ->set($set)
+            ->where('user_id = ?', $userid)
+            ->execute();
+    }
 }

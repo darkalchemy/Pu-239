@@ -21,7 +21,7 @@ $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
-        $session->set('is-warning', "{$lang['inactive_selectuser']}");
+        $session->set('is-warning', $lang['inactive_selectuser']);
     }
 
     if ($action === 'deluser' && (!empty($_POST['userid']))) {

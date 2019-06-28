@@ -85,4 +85,4 @@ if (mysqli_num_rows($res) == 0) {
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead("{$lang['stdhead_log']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['stdhead_log']) . wrapper($HTMLOUT) . stdfoot();

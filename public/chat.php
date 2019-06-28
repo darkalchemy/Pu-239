@@ -16,4 +16,4 @@ $HTMLOUT = "
     <div class='padding20'>
     <p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>";
 
-echo stdhead("{$lang['chat_chat']}") . wrapper(main_div($HTMLOUT)) . stdfoot();
+echo stdhead($lang['chat_chat']) . wrapper(main_div($HTMLOUT)) . stdfoot();

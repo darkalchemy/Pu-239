@@ -19,7 +19,7 @@ if (isset($_POST['move'])) {
         'location' => $_POST['boxx'],
     ];
     foreach ($pm_messages as $pm_message) {
-        $messages_class->update($set, $pm_message);
+        $messages_class->update($set, (int) $pm_message);
     }
     $cache->delete('inbox_' . $CURUSER['id']);
     header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&multi_move=1&box=' . $mailbox);

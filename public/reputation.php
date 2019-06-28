@@ -30,6 +30,7 @@ if (isset($input['done'])) {
     rep_output($lang['info_reputation_added']);
 }
 
+$input['pid'] = isset($input['pid']) ? (int) $input['pid'] : 0;
 $check = isset($input['pid']) ? is_valid_id($input['pid']) : false;
 $locales = [
     'posts',

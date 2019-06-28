@@ -46,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     $last = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
     if (!$first || !$last || !$comment) {
-        stderr("{$lang['stderr_error']}", "{$lang['text_missing']}");
+        stderr($lang['stderr_error'], $lang['text_missing']);
     }
     if (!validip($first) || !validip($last)) {
-        stderr("{$lang['stderr_error']}", "{$lang['text_badip']}");
+        stderr($lang['stderr_error'], $lang['text_badip']);
     }
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {
@@ -150,4 +150,4 @@ if ($CURUSER['class'] >= UC_MAX) {
             </form>
         </div>";
 }
-echo stdhead("{$lang['stdhead_adduser']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['stdhead_adduser']) . wrapper($HTMLOUT) . stdfoot();

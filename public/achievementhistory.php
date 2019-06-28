@@ -60,7 +60,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if ($count === 0) {
-    $HTMLOUT .= stdmsg($lang['achievement_history_no'], "{$lang['achievement_history_err2']} " . format_username((int) $arr['id']) . " {$lang['achievement_history_err3']}");
+    $HTMLOUT .= stdmsg($lang['achievement_history_no'], $lang['achievement_history_err2'] . ' ' . format_username((int) $arr['id']) . ' ' . $lang['achievement_history_err3']);
 } else {
     $heading = "
                     <tr>

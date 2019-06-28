@@ -40,7 +40,7 @@ if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
 
 if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     if (!$id) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_error2']}");
+        stderr($lang['credits_error'], $lang['credits_error2']);
     }
     sql_query("DELETE FROM modscredits where id='$id'") or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
@@ -51,7 +51,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     $id = (int) $_GET['id'];
     $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
+        stderr($lang['credits_error'], $lang['credits_nocr']);
     }
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' accept-charset='utf-8'>
@@ -100,7 +100,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     }
     $res = sql_query('SELECT id FROM modscredits WHERE id=' . sqlesc($id));
     if (mysqli_num_rows($res) == 0) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
+        stderr($lang['credits_error'], $lang['credits_nocr']);
     }
 
     $name = $_POST['name'];
@@ -111,19 +111,19 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     $credit = $_POST['credits'];
 
     if (empty($name)) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_error3']}");
+        stderr($lang['credits_error'], $lang['credits_error3']);
     }
 
     if (empty($description)) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_error4']}");
+        stderr($lang['credits_error'], $lang['credits_error4']);
     }
 
     if (empty($link)) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_error5']}");
+        stderr($lang['credits_error'], $lang['credits_error5']);
     }
 
     if (empty($credit)) {
-        stderr("{$lang['credits_error']}", "{$lang['credits_error6']}");
+        stderr($lang['credits_error'], $lang['credits_error6']);
     }
 
     sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

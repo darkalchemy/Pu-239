@@ -76,7 +76,7 @@ if (isset($_GET['act'])) {
             <tr>
                 <td>{$lang['themes_is_folder']}</td>
                 <td>
-                    <b>" . (file_exists(TEMPLATE_DIR . $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b>
+                    <b>" . (file_exists(TEMPLATE_DIR . $template['id'] . '/template.php') ? $lang['themes_file_exists'] : $lang['themes_not_exists']) . '</b>
                 </td>
             </tr>
             <tr>';
@@ -304,7 +304,7 @@ if (!isset($_GET['act'])) {
             <td>$template[id]</td>
             <td>" . htmlsafechars($template['uri']) . '</td>
             <td>' . htmlsafechars($template['name']) . '</td>
-            <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b></td>
+            <td><b>' . (file_exists(TEMPLATE_DIR . (int) $template['id'] . '/template.php') ? $lang['themes_file_exists'] : $lang['themes_not_exists']) . '</b></td>
             <td>' . get_user_class_name((int) $template['min_class_to_view']) . "</td>
             <td>
                 <span>
@@ -327,4 +327,4 @@ if (!isset($_GET['act'])) {
             </a>
         </div>";
 }
-echo stdhead("{$lang['stdhead_templates']}") . wrapper($HTML) . stdfoot();
+echo stdhead($lang['stdhead_templates']) . wrapper($HTML) . stdfoot();

@@ -776,17 +776,17 @@ switch ($action) {
 
     case 'vieworiginal':
         if ($CURUSER['class'] < UC_STAFF) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
+            stderr($lang['comment_error'], $lang['comment_denied']);
         }
         if (!is_valid_id($comment_id)) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+            stderr($lang['comment_error'], $lang['comment_invalid_id']);
         }
         $arr = $fluent->from('comments')
                       ->where('id = ?', $comment_id)
                       ->fetch();
 
         if (!$arr) {
-            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $comment_id . ");
+            stderr($lang['comment_error'], "{$lang['comment_invalid_id']} $comment_id . ");
         }
         $HTMLOUT = " < h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
@@ -797,6 +797,6 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 }

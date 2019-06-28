@@ -36,6 +36,7 @@ if (mysqli_num_rows($res) === 0) {
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $notes = htmlsafechars($arr['notes']);
+        $count = (int) $arr['count'];
         $clienticon = '';
         if ($arr['clienticon'] != '') {
             $clienticon = "<img src='" . $site_config['paths']['images_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "'>";
@@ -44,7 +45,7 @@ if (mysqli_num_rows($res) === 0) {
             <tr>
                 <td>$clienticon</td>
                 <td>$notes</td>
-                <td>" . htmlsafechars($arr['count']) . ' time' . plural($arr['count']) . '</td>
+                <td>" . $count . ' time' . plural($count) . '</td>
             </tr>';
     }
 }

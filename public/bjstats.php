@@ -66,13 +66,13 @@ $HTMLOUT .= bjtable($res, "{$lang['bj_most']} {$lang['bj_games_played']}");
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins / (bjwins + bjlosses) AS winperc FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winperc DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, "{$lang['bj_highest_win_per']}");
+$HTMLOUT .= bjtable($res, $lang['bj_highest_win_per']);
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins - bjlosses AS winnings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winnings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, "{$lang['bj_most_credit_won']}");
+$HTMLOUT .= bjtable($res, $lang['bj_most_credit_won']);
 $HTMLOUT .= '<br><br>';
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjlosses - bjwins AS losings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY losings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, "{$lang['bj_most_credit_loss']}");
+$HTMLOUT .= bjtable($res, $lang['bj_most_credit_loss']);
 $HTMLOUT .= '<br><br>';
 echo stdhead($lang['bj_blackjack_stats']) . $HTMLOUT . stdfoot();

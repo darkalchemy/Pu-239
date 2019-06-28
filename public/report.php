@@ -31,7 +31,7 @@ if (!$site_config['staff']['reports']) {
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
-    stderr("{$lang['report_error']}", "{$lang['report_error1']}");
+    stderr($lang['report_error'], $lang['report_error1']);
 }
 $type = isset($_GET['type']) ? htmlsafechars($_GET['type']) : (!empty($_POST['type']) ? htmlsafechars($_POST['type']) : '');
 $typesallowed = [
@@ -46,19 +46,19 @@ $typesallowed = [
     'Post',
 ];
 if (!in_array($type, $typesallowed)) {
-    stderr("{$lang['report_error']}", "{$lang['report_error2']}");
+    stderr($lang['report_error'], $lang['report_error2']);
 }
 if (isset($_POST['do_it'])) {
     $id = !empty($_POST['id']) ? (int) $_POST['id'] : 0;
     $id_2 = !empty($_POST['id_2']) ? (int) $_POST['id_2'] : 0;
     $do_it = !empty($_POST['do_it']) ? (int) $_POST['do_it'] : 0;
     if (!is_valid_id($do_it)) {
-        stderr("{$lang['report_error']}", "{$lang['report_error3']}");
+        stderr($lang['report_error'], $lang['report_error3']);
     }
 
     $reason = !empty($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     if (empty($reason)) {
-        stderr("{$lang['report_error']}", "{$lang['report_error4']}");
+        stderr($lang['report_error'], $lang['report_error4']);
     }
     $fluent = $container->get(Database::class);
     $previous = $fluent->from('reports')
@@ -70,7 +70,7 @@ if (isset($_POST['do_it'])) {
                        ->fetch('id');
 
     if (!empty($previous)) {
-        stderr("{$lang['report_error5']}", "{$lang['report_error6']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>!");
+        stderr($lang['report_error5'], "{$lang['report_error6']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>!");
     }
 
     $values = [

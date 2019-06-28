@@ -2,6 +2,7 @@
 
 $primary: #add8e6;
 $green: #00ff00;
+$orange: #FF8C00;
 $lightgreen: #90ee90;
 $jade: #2cc48a;
 $turquoise: #40e0d0;
@@ -29,5 +30,5 @@ $gold-invert: findColorInvert($gold);
 $warning-invert: findColorInvert($warning);
 $info-invert: findColorInvert($info);
 
-$custom-colors: ('green': ($green, $green-invert), 'lightgreen': ($lightgreen, $lightgreen-invert), 'jade': ($jade, $jade-invert), 'turquoise': ($turquoise, $turquoise-invert), 'blue': ($blue, $blue-invert), 'lightblue': ($lightblue, $lightblue-invert), 'gold': ($gold, $gold-invert));
+$custom-colors: ('orange': ($orange, $orange-invert), 'green': ($green, $green-invert), 'lightgreen': ($lightgreen, $lightgreen-invert), 'jade': ($jade, $jade-invert), 'turquoise': ($turquoise, $turquoise-invert), 'blue': ($blue, $blue-invert), 'lightblue': ($lightblue, $lightblue-invert), 'gold': ($gold, $gold-invert));
 $colors: mergeColorMaps($colors, $custom-colors);

@@ -61,7 +61,7 @@ function round_time($ts)
 if (isset($_GET['id'])) {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     if (!is_valid_id($id)) {
-        stderr("{$lang['reports_error']}", "{$lang['reports_error1']}");
+        stderr($lang['reports_error'], $lang['reports_error1']);
     }
 }
 if (isset($_GET['type'])) {
@@ -78,13 +78,13 @@ if (isset($_GET['type'])) {
         'Post',
     ];
     if (!in_array($type, $typesallowed)) {
-        stderr("{$lang['reports_error']}", "{$lang['reports_error2']}");
+        stderr($lang['reports_error'], $lang['reports_error2']);
     }
 }
 $cache = $container->get(Cache::class);
 if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     if (!is_valid_id((int) $_POST['id'])) {
-        stderr("{$lang['reports_error']}", "{$lang['reports_error3']}");
+        stderr($lang['reports_error'], $lang['reports_error3']);
     }
     $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['body']);
     $when_delt_with = 'when_delt_with = ' . sqlesc(TIME_NOW);

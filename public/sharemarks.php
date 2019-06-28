@@ -146,7 +146,7 @@ function sharetable($res, $userid, $variant = 'index')
             if ($row['visible'] === 'no') {
                 $body .= "<b>{$lang['torrenttable_not_visible']}</b>";
             } else {
-                $body .= "{$lang['torrenttable_visible']}";
+                $body .= $lang['torrenttable_visible'];
             }
             $body .= "</td>\n";
         }

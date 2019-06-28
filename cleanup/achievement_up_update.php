@@ -74,7 +74,7 @@ function achievement_up_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $cache->delete('user_' . $arr['userid']);
+                $cache->delete('user_' . $arr['id']);
             }
         }
         $count = count($achievements_buffer);

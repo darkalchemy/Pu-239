@@ -82,7 +82,7 @@ if ($needed === 'leechers') {
     } else {
         $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noleech']}</div>");
     }
-    echo stdhead("{$lang['needseed_lin']}") . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead($lang['needseed_lin']) . wrapper($HTMLOUT) . stdfoot();
 } else {
     $HTMLOUT .= "
         <div class='padding20'>
@@ -126,5 +126,5 @@ if ($needed === 'leechers') {
     } else {
         $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noseed']}</div>");
     }
-    echo stdhead("{$lang['needseed_sin']}") . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead($lang['needseed_sin']) . wrapper($HTMLOUT) . stdfoot();
 }

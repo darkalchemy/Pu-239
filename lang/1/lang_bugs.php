@@ -11,8 +11,8 @@ $lang = [
     'stderr_invalid_id' => 'Invalid ID',
     'stderr_only_staff_can_view' => 'Only staff can view bugs',
     'stderr_missing' => 'You missing something?<br>Please try again.',
-    'stderr_problem_20' => "We can't use a problem text there is less then 20 chars.",
-    'stderr_title_10' => "We can't use a title there is less then 10 chars.",
+    'stderr_problem_min' => "We can't use a problem text there is less then 20 chars.",
+    'stderr_title_min' => "We can't use a title there is less then 5 chars.",
     'stderr_sucess' => 'Success',
     'stderr_sucess_2' => 'Your bug has been sent to our coder.<br>You have choosen priority: %s',
     'stderr_something_is_wrong' => 'Error.. Please try again.',
@@ -40,4 +40,7 @@ $lang = [
     'h1_count_bugs' => "There is <span style='color: #FF0000;'>%s</span> new bug%s. Please check them",
     'delete_when' => 'All solved bugs will be deleted after 30 days (from added date).',
     'no_bugs' => 'There are no reported bugs :).',
+    'bugs_how' => 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.',
+    'problem_comment' => 'Staff Comment',
+    'comment' => 'Staff Comment',
 ];

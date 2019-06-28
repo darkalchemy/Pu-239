@@ -60,4 +60,4 @@ $text .= "
 
 $HTMLOUT .= main_div($text) . '
 </form>';
-echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();
+echo stdhead($lang['set_class_temp']) . $HTMLOUT . stdfoot();

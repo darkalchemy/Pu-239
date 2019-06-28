@@ -119,7 +119,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
     }
     $receiver = '';
-    $body = "{$lang['non_con_body']}";
+    $body = $lang['non_con_body'];
     $HTMLOUT .= main_div(BBcode($body, '', 250) . "
             <div class='has-text-centered'>
                 <input type='submit' value='Send' class='button is-small'>

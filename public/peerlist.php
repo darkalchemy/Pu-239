@@ -66,7 +66,7 @@ function dltable($name, $arr, $torrent)
             <td>' . ($mod ? $e['ip'] : preg_replace('/\.\d+$/', '.xxx', $e['ip'])) . '</td>';
         }
         $secs = max(1, ($now - $e['st']) - ($now - $e['la']));
-        $body .= '<td>' . ($e['connectable'] === 'yes' ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
+        $body .= '<td>' . ($e['connectable'] === 'yes' ? $lang['peerslist_yes'] : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
         $body .= '<td>' . mksize($e['uploaded']) . "</td>\n";
         $body .= '<td><span style="white-space: nowrap;">' . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
         $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
@@ -92,7 +92,7 @@ global $container, $site_config;
 $torrents_class = $container->get(Torrent::class);
 $torrent = $torrents_class->get($id);
 if (empty($torrent)) {
-    stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
+    stderr($lang['peerslist_error'], $lang['peerslist_nothing']);
 }
 $downloaders = [];
 $seeders = [];
@@ -124,7 +124,7 @@ $peers = $fluent->from('peers AS p')
                 ->fetchAll();
 
 if (empty($peers)) {
-    stderr("<a id='seeders'></a>{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
+    stderr($lang['peerslist_warning'], $lang['peerslist_no_data']);
 }
 foreach ($peers as $subrow) {
     if ($subrow['seeder'] === 'yes') {

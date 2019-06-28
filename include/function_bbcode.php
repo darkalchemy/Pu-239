@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -186,10 +186,10 @@ function format_urls($s)
  * @param bool $urls
  * @param bool $images
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */
@@ -214,6 +214,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         //$s = htmlsafechars($s);
     }
 
+    $s = check_BBcode($s);
     $bb_code_in = [
         '/\s*\[table\](.*?)\[\/table\]\n?/is',
         '/\s*\[tr\](.*?)\[\/tr\]\s*/is',
@@ -235,6 +236,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[strike\](.*?)\[\/strike\]/is',
         '/\[s\](.*?)\[\/s\]/is',
         '/\[pre\](.*?)\[\/pre\]/is',
+        '/\[precode\](.*?)\[\/precode\]/is',
         '/\[marquee\](.*?)\[\/marquee\]/is',
         '/\[collapse=(.*?)\](.*?)\[\/collapse\]/is',
         '/\[size=([1-7])\](.*?)\[\/size\]/is',
@@ -303,6 +305,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<s>\1</s>',
         '<s>\1</s>',
         '<span class="pre padding20">\1</span>',
+        '<pre class="pre round10 h-100">\1</pre>',
         '<div class="marquee"><span>\1</span></div>',
         '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display===\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size_\1">\2</span>',
@@ -352,15 +355,27 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
 
     if (preg_match("#function\s*\((.*?)\|\|#is", $s)) {
-        $s = str_replace(':', '&#58;', $s);
-        $s = str_replace('[', '&#91;', $s);
-        $s = str_replace(']', '&#93;', $s);
-        $s = str_replace(')', '&#41;', $s);
-        $s = str_replace('(', '&#40;', $s);
-        $s = str_replace('{', '&#123;', $s);
-        $s = str_replace('}', '&#125;', $s);
-        $s = str_replace('$', '&#36;', $s);
-        $s = str_replace('&nbsp;', '&#160;', $s);
+        $s = str_replace([
+            '&nbsp;',
+            ':',
+            '[',
+            ']',
+            ')',
+            '(',
+            '{',
+            '}',
+            '$',
+        ], [
+            '&#160;',
+            '&#58;',
+            '&#91;',
+            '&#93;',
+            '&#41;',
+            '&#40;',
+            '&#123;',
+            '&#125;',
+            '&#36;',
+        ], $s);
     }
 
     preg_match_all('/@(.+\b)/imsU', $s, $match);
@@ -467,7 +482,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 
     $s = format_quotes($s);
     $s = format_code($s);
-    $s = check_BBcode($s);
     $s = str_replace([
         "\r\n",
         "\r",
@@ -479,11 +493,11 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 }
 
 /**
- * @param $s
+ * @param string $s
  *
- * @return mixed
+ * @return mixed|string
  */
-function format_code($s)
+function format_code(string $s)
 {
     if (preg_match('/\[code\]/', $s)) {
         preg_match_all('/\\[code.*?\\]/', $s, $result, PREG_PATTERN_ORDER);
@@ -520,10 +534,10 @@ function format_code($s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */

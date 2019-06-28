@@ -36,7 +36,7 @@ $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($id)) {
-    stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
+    stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
 }
 $users_class = $container->get(User::class);
 $user = $users_class->getUserFromId($id);
@@ -75,13 +75,13 @@ if ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) {
     $addr = gethostbyaddr($ip) . "($ip)";
 }
 if ($user['perms'] & PERMS_STEALTH) {
-    $joindate = "{$lang['userdetails_na']}";
+    $joindate = $lang['userdetails_na'];
 } else {
     $joindate = get_date((int) $user['registered'], '');
 }
 $lastseen = $user['last_access'];
 if ($lastseen == 0 || $user['perms'] & PERMS_STEALTH) {
-    $lastseen = "{$lang['userdetails_never']}";
+    $lastseen = $lang['userdetails_never'];
 } else {
     $lastseen = get_date((int) $user['last_access'], '', 0, 1);
 }

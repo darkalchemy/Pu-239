@@ -19,7 +19,7 @@ if ($CURUSER['class'] < UC_STAFF) {
 }
 
 if (!isset($_GET['id']) || !is_valid_id((int) $_GET['id'])) {
-    stderr("{$lang['fastdelete_error']}", "{$lang['fastdelete_error_id']}");
+    stderr($lang['fastdelete_error'], $lang['fastdelete_error_id']);
 }
 
 $id = (int) $_GET['id'];
@@ -43,7 +43,7 @@ if (!$tid) {
 $sure = isset($_GET['sure']) && (int) $_GET['sure'];
 if (!$sure) {
     $returnto = !empty($_GET['returnto']) ? '&amp;returnto=' . urlencode($_GET['returnto']) : '';
-    stderr("{$lang['fastdelete_sure']}", sprintf($lang['fastdelete_sure_msg'], $returnto));
+    stderr($lang['fastdelete_sure'], sprintf($lang['fastdelete_sure_msg'], $returnto));
 }
 $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($tid['id']);

@@ -75,7 +75,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
-    $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : "{$lang['snatches_unknown']}");
+    $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : $lang['snatches_unknown']);
     $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $body .= "
         <tr>

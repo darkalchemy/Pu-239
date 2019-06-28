@@ -1,5 +1,16 @@
-### 26 Jun, 2019
+### 27 Jun, 2019
+update: remove "{}" when not needed  
+update: add comments to fix/ignore bugs.php  
+fix: must be of the type int move_or_delete_multi.php  
+fix: must be of the type int achievementlist.php  
+fix: Undefined variable: session postcounter.php  
+fix: must be of the type int reputation.php  
+fix: Undefined index ajaxchat.php in function_breadcrumbs.php  
+fix: Undefined index userid in achievement_up_update.php  
+fix: check if empty before setting takeedit.php  
 fix: undefined index HTTP_REFERER takeupload.php  
+
+### 26 Jun, 2019
 fix: undefined functions() verify_email.php  
 update: favicon  
 fix: parameter placement dubug_pdo()  

@@ -3166,4 +3166,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `uploadapp` MODIFY COLUMN `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
         'flush' => false,
     ],
+    [
+        'id' => 1561681195,
+        'info' => 'Add message column',
+        'date' => '27 Jun, 2019',
+        'query' => 'ALTER TABLE `bugs` ADD COLUMN `comment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AFTER `problem`',
+        'flush' => false,
+    ],
 ];

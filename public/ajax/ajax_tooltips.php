@@ -30,7 +30,7 @@ if (!empty($CURUSER)) {
                 break;
 
             default:
-                $connectable = "{$lang['gl_na_connectable']}";
+                $connectable = $lang['gl_na_connectable'];
         }
     } else {
         $connectable = $lang['gl_na_connectable'];

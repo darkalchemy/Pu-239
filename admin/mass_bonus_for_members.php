@@ -58,7 +58,7 @@ switch ($action) {
                 $GB_new = $arr_GB['uploaded'] + $GB;
                 $modcomment = $arr_GB['modcomment'];
                 $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
-                $msg = "{$lang['bonusmanager_up_addedmsg']}{$bonus_added}{$lang['bonusmanager_up_addedmsg1']}{$site_config['site']['name']}{$lang['bonusmanager_up_addedmsg2']}";
+                $msg = $lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_up_addedmsg2'];
                 $pm_values[] = [
                     'receiver' => (int) $arr_GB['id'],
                     'added' => $dt,

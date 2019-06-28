@@ -16,11 +16,11 @@ $lang = array_merge(load_language('global'), load_language('delete'));
 global $container, $site_config, $CURUSER;
 
 if (empty($_GET['id']) && empty($_POST['id'])) {
-    stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
+    stderr($lang['delete_failed'], $lang['delete_missing_data']);
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
-    stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
+    stderr($lang['delete_failed'], $lang['delete_missing_data']);
 }
 $dt = TIME_NOW;
 $fluent = $container->get(Database::class);
@@ -38,30 +38,30 @@ $row = $fluent->from('torrents AS t')
               ->fetch();
 
 if (!$row) {
-    stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");
+    stderr($lang['delete_failed'], $lang['delete_not_exist']);
 }
 if ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < UC_STAFF) {
-    stderr("{$lang['delete_failed']}", "{$lang['delete_not_owner']}\n");
+    stderr($lang['delete_failed'], $lang['delete_not_owner']);
 }
 $rt = (int) $_POST['reasontype'];
 if (!is_int($rt) || $rt < 1 || $rt > 5) {
-    stderr("{$lang['delete_failed']}", "{$lang['delete_invalid']}");
+    stderr($lang['delete_failed'], $lang['delete_invalid']);
 }
-$reason = $_POST['reason'];
-if ($rt == 1) {
-    $reasonstr = "{$lang['delete_dead']}";
-} elseif ($rt == 2) {
-    $reasonstr = "{$lang['delete_dupe']}" . ($reason[0] ? (': ' . trim($reason[0])) : '!');
-} elseif ($rt == 3) {
-    $reasonstr = "{$lang['delete_nuked']}" . ($reason[1] ? (': ' . trim($reason[1])) : '!');
-} elseif ($rt == 4) {
+$reason = (int) $_POST['reason'];
+if ($rt === 1) {
+    $reasonstr = $lang['delete_dead'];
+} elseif ($rt === 2) {
+    $reasonstr = $lang['delete_dupe'] . ($reason[0] ? (': ' . trim($reason[0])) : '!');
+} elseif ($rt === 3) {
+    $reasonstr = $lang['delete_nuked'] . ($reason[1] ? (': ' . trim($reason[1])) : '!');
+} elseif ($rt === 4) {
     if (!$reason[2]) {
-        stderr("{$lang['delete_failed']}", "{$lang['delete_violated']}");
+        stderr($lang['delete_failed'], $lang['delete_violated']);
     }
-    $reasonstr = $site_config['site']['name'] . "{$lang['delete_rules']}" . trim($reason[2]);
+    $reasonstr = $site_config['site']['name'] . $lang['delete_rules'] . trim($reason[2]);
 } else {
     if (!$reason[3]) {
-        stderr("{$lang['delete_failed']}", "{$lang['delete_reason']}");
+        stderr($lang['delete_failed'], $lang['delete_reason']);
     }
     $reasonstr = trim($reason[3]);
 }

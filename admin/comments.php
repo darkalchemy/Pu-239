@@ -98,7 +98,7 @@ switch ($view) {
 
         $HTMLOUT .= main_table($body, $heading);
 
-        echo stdhead("{$lang['text_all_comm']}") . wrapper($HTMLOUT) . stdfoot();
+        echo stdhead($lang['text_all_comm']) . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 
@@ -122,7 +122,7 @@ switch ($view) {
         $HTMLOUT .= main_table($body) . '
         </form>';
 
-        echo stdhead("{$lang['text_search']}") . wrapper($HTMLOUT) . stdfoot();
+        echo stdhead($lang['text_search']) . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 
@@ -148,7 +148,7 @@ switch ($view) {
 
         $HTMLOUT .= main_table($body, $heading);
 
-        echo stdhead("{$lang['text_results']}{$_POST['keywords']}") . wrapper($HTMLOUT) . stdfoot();
+        echo stdhead($lang['text_results'] . $_POST['keywords']) . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 }
@@ -174,4 +174,4 @@ if ($rows == 0) {
 
 $HTMLOUT .= main_table($body, $heading);
 
-echo stdhead("{$lang['text_overview']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['text_overview']) . wrapper($HTMLOUT) . stdfoot();

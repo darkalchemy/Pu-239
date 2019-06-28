@@ -91,4 +91,4 @@ $HTMLOUT .= main_div($body, '', 'padding20') . '
             </div>
         </form>';
 
-echo stdhead("{$lang['login_login_btn']}", [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['login_login_btn'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);

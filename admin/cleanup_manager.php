@@ -312,12 +312,12 @@ function cleanup_take_edit($params)
         ];
         $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
         if (empty($params[$x])) {
-            stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error2']}");
+            stderr($lang['cleanup_take_error'], $lang['cleanup_take_error2']);
         }
     }
     $params['clean_file'] = preg_replace('#\.{1,}#s', '.', $params['clean_file']);
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
-        stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
+        stderr($lang['cleanup_take_error'], $lang['cleanup_take_error3']);
     }
     // new clean time = $params['clean_time'] = intval(TIME_NOW + $params['clean_increment']);
     //one more time around! LoL
@@ -437,12 +437,12 @@ function cleanup_take_new($params)
         ];
         $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
         if (empty($params[$x])) {
-            stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error2']}");
+            stderr($lang['cleanup_take_error'], $lang['cleanup_take_error2']);
         }
     }
     $params['clean_file'] = preg_replace('#\.{1,}#s', '.', trim($params['clean_file']));
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
-        stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
+        stderr($lang['cleanup_take_error'], $lang['cleanup_take_error3']);
     }
 
     foreach ($params as $k => $v) {
@@ -450,9 +450,9 @@ function cleanup_take_new($params)
     }
     sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_log']}, {$params['clean_on']})");
     if (((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
-        stderr($lang['cleanup_new_info'], "{$lang['cleanup_new_success']}");
+        stderr($lang['cleanup_new_info'], $lang['cleanup_new_success']);
     } else {
-        stderr($lang['cleanup_new_error'], "{$lang['cleanup_new_error1']}");
+        stderr($lang['cleanup_new_error'], $lang['cleanup_new_error1']);
     }
     die();
 }
@@ -476,14 +476,14 @@ function cleanup_take_delete($params)
     ];
     $params['cid'] = filter_var($params['cid'], FILTER_VALIDATE_INT, $opts);
     if (!is_numeric($params['cid'])) {
-        stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error1']}");
+        stderr($lang['cleanup_del_error'], $lang['cleanup_del_error1']);
     }
     $params['cid'] = sqlesc($params['cid']);
     sql_query("DELETE FROM cleanup WHERE clean_id={$params['cid']}");
     if (mysqli_affected_rows($mysqli) === 1) {
-        stderr($lang['cleanup_del_info'], "{$lang['cleanup_del_success']}");
+        stderr($lang['cleanup_del_info'], $lang['cleanup_del_success']);
     } else {
-        stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error2']}");
+        stderr($lang['cleanup_del_error'], $lang['cleanup_del_error2']);
     }
     die();
 }
@@ -532,7 +532,7 @@ function cleanup_take_unlock($params)
     if (mysqli_affected_rows($mysqli) === 1) {
         cleanup_show_main(); // this go bye bye later
     } else {
-        stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error']}");
+        stderr($lang['cleanup_unlock_error'], $lang['cleanup_unlock_error']);
     }
     die();
 }
