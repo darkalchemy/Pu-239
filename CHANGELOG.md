@@ -1,4 +1,5 @@
 ### 27 Jun, 2019
+update: allow send message to user without closing bug bugs.php  
 update: bugs.php  
 update: remove "{}" when not needed  
 update: add comments to fix/ignore bugs.php  

@@ -41,9 +41,6 @@ if ($action === 'viewbug') {
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
         $comment = !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
-        if ($status === 'na') {
-            stderr($lang['stderr_error'], $lang['stderr_no_na']);
-        }
         if (!$id || !is_valid_id($id)) {
             stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
         }
@@ -51,10 +48,10 @@ if ($action === 'viewbug') {
                       ->where('id = ?', $id)
                       ->fetch();
         $user = $user_class->getUserFromId($bug['sender']);
-        $comment = "\n[precode]{$comment}[/precode]";
+        $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$comment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -62,8 +59,11 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$comment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 break;
+
+            case 'na':
+                $msg = $comment;
         }
         $msgs_buffer[] = [
             'receiver' => $user['id'],
@@ -202,7 +202,6 @@ if ($action === 'viewbug') {
                    ->select('s.class AS stclass')
                    ->leftJoin('users AS u ON b.sender = u.id')
                    ->leftJoin('users AS s ON b.staff = s.id')
-                   ->orderBy('b.status DESC')
                    ->orderBy('b.added')
                    ->limit($pager['pdo']['limit'])
                    ->offset($pager['pdo']['offset'])
