@@ -262,8 +262,8 @@ if ($action === 'viewbug') {
         <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
         <td>{$priority}</td>
         <td>{$status}</td>
-        <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . '</td>
-        <td class='w-25'>' . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
+        <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . "</td>
+        <td class='w-25'>" . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);
