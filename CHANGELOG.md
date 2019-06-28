@@ -1,3 +1,6 @@
+### 28 Jun, 2019
+fix: variable not found bugs.php  
+
 ### 27 Jun, 2019
 update: allow send message to user without closing bug bugs.php  
 update: bugs.php  

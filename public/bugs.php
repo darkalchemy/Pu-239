@@ -104,6 +104,8 @@ if ($action === 'viewbug') {
     $title = htmlsafechars($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
+    $comment = !empty($bug['comment']) ? format_comment($bug['comment']) : '';
+    $problem = !empty($bug['problem']) ? format_comment($bug['problem']) : '';
     switch ($bug['priority']) {
         case 'low':
             $priority = "<span class='has-text-green'>{$lang['low']}</span>";
@@ -117,7 +119,6 @@ if ($action === 'viewbug') {
             $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
             break;
     }
-    $problem = format_comment($bug['problem']);
     switch ($bug['status']) {
         case 'fixed':
             $status = "<span class='has-text-green'><b>{$lang['fixed']}</b></span>";
@@ -170,7 +171,7 @@ if ($action === 'viewbug') {
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['problem_comment']}</td>
-                <td><textarea name='comment' class='w-100' rows='6'></textarea></td>
+                <td><textarea name='comment' class='w-100' rows='6'>$comment</textarea></td>
             </tr>";
     if ($bug['status'] === 'na') {
         $body .= "
@@ -293,11 +294,11 @@ if ($action === 'viewbug') {
             'sender' => $CURUSER['id'],
             'added' => $dt,
         ];
-        $fluent->insertInto('bugs')
+        $result = $fluent->insertInto('bugs')
                ->values($values)
                ->execute();
         $cache->delete('bug_mess_');
-        if ($q1) {
+        if ($result) {
             stderr($lang['stderr_sucess'], sprintf($lang['stderr_sucess_2'], $priority));
         } else {
             stderr($lang['stderr_error'], $lang['stderr_something_is_wrong']);
@@ -308,11 +309,11 @@ if ($action === 'viewbug') {
     $body = "
         <tr>
             <td class='rowhead'>{$lang['title']}:</td>
-            <td><input type='text' name='title' size='60'><br>{$lang['proper_title']}</td>
+            <td><input type='text' name='title' class='w-100'><br>{$lang['proper_title']}</td>
         </tr>
         <tr>
             <td class='rowhead'>{$lang['problem_bug']}:</td>
-            <td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td>
+            <td><textarea class='w-100' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td>
         </tr>
         <tr>
             <td class='rowhead'>{$lang['priority']}:</td>
