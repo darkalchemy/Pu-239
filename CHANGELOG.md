@@ -1,4 +1,6 @@
 ### 28 Jun, 2019
+fix: cast to int bugs.php hnrs.php  
+fix: id is ambiguous search.php  
 update: promo users style promo.php  
 fix: variable not found bugs.php  
 

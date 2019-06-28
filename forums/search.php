@@ -41,10 +41,10 @@ $fluent = $container->get(Database::class);
 if ($search || $author_id) {
     $count = $fluent->from('posts AS p')
                     ->select(null)
-                    ->select('COUNT(id) AS count')
+                    ->select('COUNT(p.id) AS count')
                     ->where('f.min_class_read <= ?', $CURUSER['class'])
-                    ->leftJoin('topics AS t ON p.topic_id=t.id')
-                    ->leftJoin('forums AS f ON t.forum_id=f.id');
+                    ->leftJoin('topics AS t ON p.topic_id = t.id')
+                    ->leftJoin('forums AS f ON t.forum_id = f.id');
 
     $results = $fluent->from('posts AS p')
                       ->select(null)

@@ -136,14 +136,13 @@ if ($action === 'viewbug') {
                 <option value='ignored'>{$lang['ignore_problem']}</option>
             </select>";
     }
-    switch ($bug['staff']) {
+    switch (!empty($bug['staff']) && !empty($bug['stclass'])) {
         case 0:
             $by = '';
             break;
 
         default:
             $by = format_username($bug['staff']) . ' <i>(' . get_user_class_name($bug['stclass']) . ')</i>';
-            break;
     }
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
@@ -295,8 +294,8 @@ if ($action === 'viewbug') {
             'added' => $dt,
         ];
         $result = $fluent->insertInto('bugs')
-               ->values($values)
-               ->execute();
+                         ->values($values)
+                         ->execute();
         $cache->delete('bug_mess_');
         if ($result) {
             stderr($lang['stderr_sucess'], sprintf($lang['stderr_sucess_2'], $priority));

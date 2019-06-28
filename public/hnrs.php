@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die();
         }
         $snatched_class = $container->get(Snatched::class);
-        $snatched = $snatched_class->get_snatched($_POST['userid'], $_POST['tid']);
+        $snatched = $snatched_class->get_snatched((int) $_POST['userid'], (int) $_POST['tid']);
         if (!$snatched || $snatched['id'] != $_POST['sid']) {
             $session->set('is-danger', 'No snatched torrent with that ID!');
             header("Location: {$_SERVER['PHP_SELF']}");
