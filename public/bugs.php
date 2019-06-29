@@ -101,7 +101,7 @@ if ($action === 'viewbug') {
                   ->where('b.id = ?', $id)
                   ->fetch();
 
-    $title = htmlsafechars($bug['title']);
+    $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
     $comment = !empty($bug['comment']) ? format_comment($bug['comment']) : '';
@@ -257,8 +257,8 @@ if ($action === 'viewbug') {
             }
             $body .= "
     <tr>
-        <td class='w-25 min-150'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
-        <td>" . get_date($q1['added'], 'TINY') . '<br>' . format_username($q1['sender']) . "</td>
+        <td class='w-25 min-150'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . '</a></td>
+        <td>' . get_date($q1['added'], 'TINY') . '<br>' . format_username($q1['sender']) . "</td>
         <td>{$priority}</td>
         <td>{$status}</td>
         <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . "</td>

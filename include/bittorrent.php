@@ -306,17 +306,18 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function make_freeslots(int $userid, string $key, bool $clear)
 {
     global $container;
 
     $cache = $container->get(Cache::class);
-    if ($clear){
+    if ($clear) {
         $cache->delete($key . $userid);
     }
     $slot = $cache->get($key . $userid);

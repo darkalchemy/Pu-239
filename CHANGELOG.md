@@ -1,4 +1,5 @@
 ### 29 Jun, 2019
+update: style bugs.php  
 fix: clear fllslot_ when adding  
 fix: show free/double slots correctly on browse page  
 
