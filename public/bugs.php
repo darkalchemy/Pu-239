@@ -257,12 +257,12 @@ if ($action === 'viewbug') {
             }
             $body .= "
     <tr>
-        <td class='w-25'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
-        <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
+        <td class='w-25 min-150'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . "</a></td>
+        <td>" . get_date($q1['added'], 'TINY') . '<br>' . format_username($q1['sender']) . "</td>
         <td>{$priority}</td>
         <td>{$status}</td>
         <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . "</td>
-        <td class='w-25'>" . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
+        <td class='w-25 min-350'>" . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);

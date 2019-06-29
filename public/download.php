@@ -49,16 +49,16 @@ $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff', 'bottom20');
 }
-if (($user['downloadpos'] == 0 || $user['can_leech'] == 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !($user['id'] == $row['owner'])) {
+if (($user['downloadpos'] === 0 || $user['can_leech'] === 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !$user['id'] === $row['owner']) {
     stderr('Error', 'Your download rights have been disabled.', 'bottom20');
 }
 if ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
-    stderr('Error', "You don't have enough karma to download, trying seeding back some torrents =]", 'bottom20');
+    stderr('Error', "You don't have enough karma[seedbonus] to download, trying seeding back some torrents =]", 'bottom20');
 }
 if ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
     stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]", 'bottom20');
 }
-if ($row['vip'] == 1 && $user['class'] < UC_VIP) {
+if ($row['vip'] === 1 && $user['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!', 'bottom20');
 }
 if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
@@ -104,7 +104,7 @@ if (isset($_GET['slot'])) {
             stderr('Doh!', 'Freeleech slot already in use.', 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Slots.', 'bottom20');
+            stderr('Doh!', 'No Freeslots left.', 'bottom20');
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -137,7 +137,7 @@ if (isset($_GET['slot'])) {
             stderr('Doh!', 'Doubleseed slot already in use.', 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Slots.', 'bottom20');
+            stderr('Doh!', 'No Doubleseed Slots left.', 'bottom20');
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -168,7 +168,7 @@ if (isset($_GET['slot'])) {
     } else {
         stderr('ERROR', 'What\'s up doc?', 'bottom20');
     }
-    make_freeslots($user['id'], 'fllslot_');
+    make_freeslots($user['id'], 'fllslot_', true);
 }
 $cache->deleteMulti([
     'top_torrents_',

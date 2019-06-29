@@ -46,7 +46,12 @@ $query = $fluent->from('torrents AS t')
                 ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
                 ->select('u.username')
                 ->select('u.class')
-                ->leftJoin('users AS u ON t.owner = u.id');
+                ->select('f.doubleup AS doubleslot')
+                ->select('f.free AS freeslot')
+                ->select('f.addedup')
+                ->select('f.addedfree')
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $CURUSER['id']);
 
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [

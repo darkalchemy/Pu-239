@@ -351,7 +351,7 @@ $torrent['addfree'] = !empty($torrent['addedfree']) ? get_date((int) $torrent['a
 $torrent['idk'] = $dt + 14 * 86400;
 $torrent['freeimg'] = '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" alt="">';
 $torrent['doubleimg'] = '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" alt="">';
-$slot = make_freeslots($CURUSER['id'], 'fllslot_');
+$slot = make_freeslots($CURUSER['id'], 'fllslot_', false);
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
     foreach ($slot as $sl) {
@@ -624,7 +624,7 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
         $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . (int) $CURUSER['freeslots'] . ' Slots Remaining.' : '';
         $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> - " . (int) $CURUSER['freeslots'] . ' Slots Remaining.' : '';
     } elseif ($free_slot && $double_slot) {
-        $slots .= '<div class="has-text-centered bottom10">' . $torrent['freeimg'] . ' ' . $torrent['doubleimg'] . ' <span class="has-text-success">Freeleech and Doubleseed Slots In Use!</span> (upload stats x2 and no download stats are recorded)<p>Freeleech Expires: 12:01AM ' . $torrent['addfree'] . ' and Doubleseed Expires: 12:01AM ' . $torrent['addup'] . '</p></div>';
+        $slots .= main_div('<div class="has-text-centered padding20">' . $torrent['freeimg'] . ' ' . $torrent['doubleimg'] . ' <span class="has-text-success padding10">Freeleech and Doubleseed Slots In Use!</span> (upload stats x2 and no download stats are recorded)<div class="padding10">Freeleech Expires: 12:01AM ' . $torrent['addfree'] . ' and Doubleseed Expires: 12:01AM ' . $torrent['addup'] . '</div></div>', 'bottom20');
         $freeslot = $freeslot_zip = $freeslot_text = '';
     } else {
         $freeslot = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . $CURUSER['freeslots'] . ' Slots Remaining. ' : '';

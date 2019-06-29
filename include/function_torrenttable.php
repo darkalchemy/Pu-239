@@ -48,7 +48,7 @@ function torrenttable($res, $variant = 'index')
 {
     global $container, $site_config, $CURUSER, $lang;
 
-    $htmlout = $prevdate = $nuked = $free_slot = $free_color = $slots_check = $double_slot = $private = '';
+    $htmlout = $prevdate = $nuked = $free_color = $slots_check = $private = '';
     $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
     $oldlink = [];
 
@@ -78,12 +78,12 @@ function torrenttable($res, $variant = 'index')
                     $free_display = '[Silver]';
                     break;
             }
-            $slot = make_freeslots($CURUSER['id'], 'fllslot_');
-            $all_free_tag = ($fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' <a class="info" href="#">
+            $all_free_tag = $fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' 
+            <a class="info" href="#">
             <b>' . $free_display . '</b>
             <span>' . ($fl['expires'] != 1 ? '
             Expires: ' . get_date((int) $fl['expires'], 'DATE') . '<br>
-            (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '');
+            (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '';
         }
     }
     foreach ($_GET as $key => $var) {
@@ -194,11 +194,6 @@ function torrenttable($res, $variant = 'index')
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         $id = $row['id'];
-        if (!empty($slot)) {
-            foreach ($slot as $sl) {
-                $slots_check = ($sl['torrentid'] == $id && $sl['free'] === 'yes' || $sl['doubleup'] === 'yes');
-            }
-        }
         $htmlout .= "
                     <tr>
                     <td class='has-text-centered'>";
@@ -277,22 +272,8 @@ function torrenttable($res, $variant = 'index')
             </div>';
 
         $icons[] = !empty($row['descr']) ? $title : '';
-
-        if (!empty($slot)) {
-            foreach ($slot as $sl) {
-                if ($sl['torrentid'] == $id && $sl['free'] === 'yes') {
-                    $free_slot = 1;
-                }
-                if ($sl['torrentid'] == $id && $sl['doubleup'] === 'yes') {
-                    $double_slot = 1;
-                }
-                if ($free_slot && $double_slot) {
-                    break;
-                }
-            }
-        }
-        $icons[] = $free_slot == 1 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
-        $icons[] = $double_slot == 1 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
+        $icons[] = $row['freeslot'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
+        $icons[] = $row['doubleslot'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
         $icons[] = $row['nuked'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "'>" : '';
         $icons[] = $row['bump'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>'>" : '';
 

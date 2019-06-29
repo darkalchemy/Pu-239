@@ -300,6 +300,7 @@ span {
     height: 16px;
     padding: 0;
     font-size: 16px !important;
+    margin-right: 5px;
 }
 
 .emoticon {

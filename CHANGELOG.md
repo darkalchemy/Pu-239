@@ -1,3 +1,7 @@
+### 29 Jun, 2019
+fix: clear fllslot_ when adding  
+fix: show free/double slots correctly on browse page  
+
 ### 28 Jun, 2019
 fix: cast to int bugs.php hnrs.php  
 fix: id is ambiguous search.php  
