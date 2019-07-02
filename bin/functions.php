@@ -8,11 +8,11 @@ use Pu239\Cache;
 use Pu239\Database;
 
 /**
- * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array
  */
 function get_styles()
 {
@@ -36,11 +36,11 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array
  */
 function get_classes(array $styles, bool $create)
 {
@@ -97,7 +97,6 @@ function get_webserver_user()
     } else {
         return trim($group);
     }
-
 }
 
 /**
@@ -155,11 +154,11 @@ function cleanup(string $group)
 /**
  * @param bool $before
  *
- * @return int
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return int
  */
 function toggle_site_status(bool $before)
 {

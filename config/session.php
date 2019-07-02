@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 require_once INCL_DIR . 'function_common.php';
+require_once CONFIG_DIR . 'functions.php';
 
 use Delight\Cookie\Session;
 use Pu239\Settings;

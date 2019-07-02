@@ -1,4 +1,6 @@
 ### 01 Jul, 2019
+update: move config functions to functions.php  
+add: missing class files  
 fix: trim on null functions.php  
 update: require authentication for staff pages if user is remembered  
 update: remove $CURUSER from public pages, the rest to follow  
