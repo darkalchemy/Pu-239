@@ -1,4 +1,5 @@
 ### 01 Jul, 2019
+fix: missing argument view_message.php  
 fix: cast to int view_message.php  
 update: move config functions to functions.php  
 add: missing class files  

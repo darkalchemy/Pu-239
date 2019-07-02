@@ -83,7 +83,7 @@ $HTMLOUT .= "
                         <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$pm_id}'>
                             <input type='hidden' name='action' value='move'>
-                            " . get_all_boxes((int) $message['location']) . "
+                            " . get_all_boxes((int) $message['location'], $user['id']) . "
                             <input type='submit' class='button is-small margin10' value='{$lang['pm_viewmsg_move']}'>
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=delete&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_delete']}</a>" . ($message['draft'] === 'no' ? "
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_sdraft']}</a>" . (($id < 1 || $message['sender'] === $user['id']) ? '' : "
