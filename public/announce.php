@@ -19,6 +19,7 @@ $dt = TIME_NOW;
 $info_hash = $peer_id = $compact = $no_peer_id = '';
 $torrent_updateset = $snatched_values = $user_updateset = [];
 global $container, $site_config;
+
 $ratio_free = $site_config['site']['ratio_free'];
 extract($_GET);
 unset($_GET);

@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
 use Delight\Auth\Auth;
@@ -27,7 +27,7 @@ $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 $fluent = $container->get(Database::class);
@@ -38,7 +38,7 @@ if ($action === 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
     $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
-    if (!($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
+    if (!($user['avatarpos'] == 0 || $user['avatarpos'] != 1)) {
         $avatar = validate_url($_POST['avatar']);
     }
     if (!empty($avatar)) {
@@ -49,11 +49,11 @@ if ($action === 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid=' . sqlesc($CURUSER['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid=' . sqlesc($user['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
-    if (!empty($avatar) && !($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
+    if (!empty($avatar) && !($user['avatarpos'] == 0 || $user['avatarpos'] != 1)) {
         $updateset[] = 'avatar = ' . sqlesc($avatar);
     }
     $updateset[] = 'avatars = ' . sqlesc($avatars);
@@ -67,7 +67,7 @@ if ($action === 'avatar') {
     $user_cache['avatars'] = $avatars;
     $action = 'avatar';
 } elseif ($action === 'signature') {
-    if (isset($_POST['info']) && (($info = $_POST['info']) != $CURUSER['info'])) {
+    if (isset($_POST['info']) && (($info = $_POST['info']) != $user['info'])) {
         $updateset[] = 'info = ' . sqlesc($info);
         $curuser_cache['info'] = $info;
         $user_cache['info'] = $info;
@@ -82,7 +82,7 @@ if ($action === 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
-        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid=' . sqlesc($CURUSER['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid=' . sqlesc($user['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
         $curuser_cache['signature'] = ('[img]' . $signature . "[/img]\n");
         $user_cache['signature'] = ('[img]' . $signature . "[/img]\n");
@@ -107,7 +107,7 @@ if ($action === 'avatar') {
         try {
             $auth->changePassword($current_pass, $password);
 
-            $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW);
+            $cache->set('forced_logout_' . $user['id'], TIME_NOW);
             stderr('Success', 'Password has been changed. You will now be able to login with your new password.');
         } catch (NotLoggedInException $e) {
             stderr('Error', 'Not logged in');
@@ -124,7 +124,7 @@ if ($action === 'avatar') {
         }
     }
 
-    if ($email != $CURUSER['email']) {
+    if ($email != $user['email']) {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_not_valid_email']);
@@ -136,7 +136,7 @@ if ($action === 'avatar') {
         $cur_passhash = $fluent->from('users')
                                ->select(null)
                                ->select('password')
-                               ->where('id = ?', $CURUSER['id'])
+                               ->where('id = ?', $user['id'])
                                ->fetch('password');
 
         if (!password_verify($chmailpass, $cur_passhash)) {
@@ -145,7 +145,7 @@ if ($action === 'avatar') {
         $changedemail = 1;
     }
     if (get_parked() == '1') {
-        if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $CURUSER['parked']) {
+        if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $user['parked']) {
             $updateset[] = 'parked = ' . sqlesc($parked);
             $curuser_cache['parked'] = $parked;
             $user_cache['parked'] = $parked;
@@ -157,22 +157,22 @@ if ($action === 'avatar') {
         $curuser_cache['anonymous'] = $anonymous;
         $user_cache['anonymous'] = $anonymous;
     }
-    if (isset($_POST['hidecur']) && ($hidecur = $_POST['hidecur']) != $CURUSER['hidecur']) {
+    if (isset($_POST['hidecur']) && ($hidecur = $_POST['hidecur']) != $user['hidecur']) {
         $updateset[] = 'hidecur = ' . sqlesc($hidecur);
         $curuser_cache['hidecur'] = $hidecur;
         $user_cache['hidecur'] = $hidecur;
     }
-    if (isset($_POST['show_email']) && ($show_email = $_POST['show_email']) != $CURUSER['show_email']) {
+    if (isset($_POST['show_email']) && ($show_email = $_POST['show_email']) != $user['show_email']) {
         $updateset[] = 'show_email= ' . sqlesc($show_email);
         $curuser_cache['show_email'] = $show_email;
         $user_cache['show_email'] = $show_email;
     }
-    if (isset($_POST['paranoia']) && ($paranoia = $_POST['paranoia']) != $CURUSER['paranoia']) {
+    if (isset($_POST['paranoia']) && ($paranoia = $_POST['paranoia']) != $user['paranoia']) {
         $updateset[] = 'paranoia= ' . sqlesc($paranoia);
         $curuser_cache['paranoia'] = $paranoia;
         $user_cache['paranoia'] = $paranoia;
     }
-    if (isset($_POST['changeq']) && (($changeq = (int) $_POST['changeq']) != $CURUSER['passhint']) && is_valid_id($changeq)) {
+    if (isset($_POST['changeq']) && (($changeq = (int) $_POST['changeq']) != $user['passhint']) && is_valid_id($changeq)) {
         $updateset[] = 'passhint = ' . sqlesc($changeq);
         $curuser_cache['passhint'] = $changeq;
         $user_cache['passhint'] = $changeq;
@@ -181,7 +181,7 @@ if ($action === 'avatar') {
         try {
             if ($auth->reconfirmPassword($_POST['chmailpass'])) {
                 $auth->changeEmail($_POST['email'], function ($selector, $token) {
-                    global $site_config, $lang, $CURUSER, $email;
+                    global $site_config, $lang, $user, $email;
 
                     $url = $site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
@@ -191,7 +191,7 @@ if ($action === 'avatar') {
                         '<#IP_ADDRESS#>',
                         '<#CHANGE_LINK#>',
                     ], [
-                        $CURUSER['username'],
+                        $user['username'],
                         $site_config['site']['name'],
                         $email,
                         getip(),
@@ -216,7 +216,7 @@ if ($action === 'avatar') {
         }
         $dt = TIME_NOW;
         $subject = $lang['takeeditcp_email_alert'];
-        $msg = "{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $CURUSER['id'] . '][b]' . htmlsafechars($CURUSER['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($CURUSER['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}";
+        $msg = "{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($user['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}";
         $pmstaff = $fluent->from('users')
                           ->select(null)
                           ->select('id')
@@ -253,7 +253,7 @@ if ($action === 'avatar') {
     $updateset[] = 'notifs = ' . sqlesc($notifs) . '';
     $curuser_cache['notifs'] = $notifs;
     $user_cache['notifs'] = $notifs;
-    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, (int) $_POST['torrentsperpage'])) != $CURUSER['torrentsperpage'])) {
+    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, (int) $_POST['torrentsperpage'])) != $user['torrentsperpage'])) {
         $updateset[] = "torrentsperpage = $torrentspp";
     }
     $curuser_cache['torrentsperpage'] = $torrentspp;
@@ -279,14 +279,14 @@ if ($action === 'avatar') {
         $clrbits2 |= user_options_2::BROWSE_ICONS;
     }
 
-    if (isset($_POST['categorie_icon']) && (($categorie_icon = (int) $_POST['categorie_icon']) != $CURUSER['categorie_icon']) && is_valid_id($categorie_icon)) {
+    if (isset($_POST['categorie_icon']) && (($categorie_icon = (int) $_POST['categorie_icon']) != $user['categorie_icon']) && is_valid_id($categorie_icon)) {
         $updateset[] = 'categorie_icon = ' . sqlesc($categorie_icon);
         $curuser_cache['categorie_icon'] = $categorie_icon;
         $user_cache['categorie_icon'] = $categorie_icon;
     }
     $action = 'torrents';
 } elseif ($action === 'personal') {
-    if (isset($_POST['title']) && $CURUSER['class'] >= UC_VIP && ($title = $_POST['title']) != $CURUSER['title']) {
+    if (isset($_POST['title']) && $user['class'] >= UC_VIP && ($title = $_POST['title']) != $user['title']) {
         $notallow = [
             'sysop',
             'administrator',
@@ -303,49 +303,49 @@ if ($action === 'avatar') {
         $curuser_cache['title'] = $title;
         $user_cache['title'] = $title;
     }
-    if (isset($_POST['stylesheet']) && (($stylesheet = (int) $_POST['stylesheet']) != $CURUSER['stylesheet']) && is_valid_id($stylesheet)) {
+    if (isset($_POST['stylesheet']) && (($stylesheet = (int) $_POST['stylesheet']) != $user['stylesheet']) && is_valid_id($stylesheet)) {
         $updateset[] = 'stylesheet = ' . sqlesc($stylesheet);
         $curuser_cache['stylesheet'] = $stylesheet;
         $user_cache['stylesheet'] = $stylesheet;
     }
-    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, (int) $_POST['topicsperpage'])) != $CURUSER['topicsperpage'])) {
+    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, (int) $_POST['topicsperpage'])) != $user['topicsperpage'])) {
         $updateset[] = "topicsperpage = $topicspp";
         $curuser_cache['topicsperpage'] = $topicspp;
         $user_cache['topicsperpage'] = $topicspp;
     }
-    if (isset($_POST['postsperpage']) && (($postspp = min(100, (int) $_POST['postsperpage'])) != $CURUSER['postsperpage'])) {
+    if (isset($_POST['postsperpage']) && (($postspp = min(100, (int) $_POST['postsperpage'])) != $user['postsperpage'])) {
         $updateset[] = "postsperpage = $postspp";
         $curuser_cache['postsperpage'] = $postspp;
         $user_cache['postsperpage'] = $postspp;
     }
-    if (isset($_POST['ajaxchat_height']) && (($ajaxchat_heightpp = $_POST['ajaxchat_height']) != $CURUSER['ajaxchat_height'])) {
+    if (isset($_POST['ajaxchat_height']) && (($ajaxchat_heightpp = $_POST['ajaxchat_height']) != $user['ajaxchat_height'])) {
         $updateset[] = "ajaxchat_height = $ajaxchat_heightpp";
         $curuser_cache['ajaxchat_height'] = $ajaxchat_heightpp;
         $user_cache['ajaxchat_height'] = $ajaxchat_heightpp;
     }
-    if (isset($_POST['forum_sort']) && ($forum_sort = $_POST['forum_sort']) != $CURUSER['forum_sort']) {
+    if (isset($_POST['forum_sort']) && ($forum_sort = $_POST['forum_sort']) != $user['forum_sort']) {
         $updateset[] = 'forum_sort= ' . sqlesc($forum_sort);
         $curuser_cache['forum_sort'] = $forum_sort;
         $user_cache['forum_sort'] = $forum_sort;
     }
-    if (isset($_POST['use_12_hour']) && ($is_12_hour = $_POST['use_12_hour']) != $CURUSER['use_12_hour']) {
+    if (isset($_POST['use_12_hour']) && ($is_12_hour = $_POST['use_12_hour']) != $user['use_12_hour']) {
         $updateset[] = 'use_12_hour = ' . sqlesc($is_12_hour);
         $curuser_cache['use_12_hour'] = $is_12_hour;
         $user_cache['use_12_hour'] = $is_12_hour;
         $session = $container->get(Session::class);
         $session->set('use_12_hour', $is_12_hour);
     }
-    if (isset($_POST['fontsize']) && ($fontsize = $_POST['fontsize']) != $CURUSER['font_size']) {
+    if (isset($_POST['fontsize']) && ($fontsize = $_POST['fontsize']) != $user['font_size']) {
         $updateset[] = 'font_size = ' . sqlesc($fontsize);
         $curuser_cache['font_size'] = $fontsize;
         $user_cache['font_size'] = $fontsize;
     }
-    if (isset($_POST['gender']) && ($gender = $_POST['gender']) != $CURUSER['gender']) {
+    if (isset($_POST['gender']) && ($gender = $_POST['gender']) != $user['gender']) {
         $updateset[] = 'gender = ' . sqlesc($gender);
         $curuser_cache['gender'] = $gender;
         $user_cache['gender'] = $gender;
     }
-    if ($CURUSER['birthday'] === '1970-01-01') {
+    if ($user['birthday'] === '1970-01-01') {
         $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : 0;
         $updateset[] = 'birthday = ' . sqlesc($birthday);
         $curuser_cache['birthday'] = $birthday;
@@ -354,24 +354,24 @@ if ($action === 'avatar') {
     }
     $action = 'personal';
 } elseif ($action === 'social') {
-    if (isset($_POST['skype']) && ($skype = $_POST['skype']) != $CURUSER['skype']) {
+    if (isset($_POST['skype']) && ($skype = $_POST['skype']) != $user['skype']) {
         $updateset[] = 'skype= ' . sqlesc($skype);
         $curuser_cache['skype'] = $skype;
         $user_cache['skype'] = $skype;
     }
-    if (isset($_POST['website']) && ($website = $_POST['website']) != $CURUSER['website']) {
+    if (isset($_POST['website']) && ($website = $_POST['website']) != $user['website']) {
         $updateset[] = 'website= ' . sqlesc($website);
         $curuser_cache['website'] = $website;
         $user_cache['website'] = $website;
     }
     $action = 'social';
 } elseif ($action === 'location') {
-    if (isset($_POST['country']) && (($country = (int) $_POST['country']) != $CURUSER['country']) && is_valid_id($country)) {
+    if (isset($_POST['country']) && (($country = (int) $_POST['country']) != $user['country']) && is_valid_id($country)) {
         $updateset[] = "country = $country";
         $curuser_cache['country'] = $country;
         $user_cache['country'] = $country;
     }
-    if (isset($_POST['language']) && (($language = (int) $_POST['language']) != $CURUSER['language'])) {
+    if (isset($_POST['language']) && (($language = (int) $_POST['language']) != $user['language'])) {
         $updateset[] = 'language = ' . sqlesc($language);
         $curuser_cache['language'] = $language;
         $user_cache['language'] = $language;
@@ -403,7 +403,7 @@ if ($action === 'avatar') {
 
     $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
     $emailnotif = 'no';
-    if (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false) {
+    if (!empty($user['notifs']) && strpos($user['notifs'], '[email]') !== false) {
         $emailnotif = 'yes';
     }
 
@@ -433,7 +433,7 @@ if ($action === 'avatar') {
     $updateset[] = "savepms = '$savepms'";
     $curuser_cache['savepms'] = $savepms;
     $user_cache['savepms'] = $savepms;
-    if (isset($_POST['subscription_pm']) && ($subscription_pm = $_POST['subscription_pm']) != $CURUSER['subscription_pm']) {
+    if (isset($_POST['subscription_pm']) && ($subscription_pm = $_POST['subscription_pm']) != $user['subscription_pm']) {
         $updateset[] = 'subscription_pm = ' . sqlesc($subscription_pm);
         $curuser_cache['subscription_pm'] = $subscription_pm;
         $user_cache['subscription_pm'] = $subscription_pm;
@@ -442,18 +442,18 @@ if ($action === 'avatar') {
 }
 
 if ($user_cache) {
-    $cache->update_row('user_' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
+    $cache->update_row('user_' . $user['id'], $user_cache, $site_config['expires']['user_cache']);
 }
 
 if (!empty($updateset)) {
-    sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
 }
 if ($setbits || $clrbits) {
-    $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($CURUSER['id']);
+    $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($user['id']);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 if ($setbits2 || $clrbits2) {
-    $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id=' . sqlesc($CURUSER['id']);
+    $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id=' . sqlesc($user['id']);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 
@@ -461,10 +461,10 @@ $opt = $fluent->from('users')
               ->select(null)
               ->select('opt1')
               ->select('opt2')
-              ->where('id = ?', $CURUSER['id'])
+              ->where('id = ?', $user['id'])
               ->fetch();
 
-$cache->update_row('user_' . $CURUSER['id'], [
+$cache->update_row('user_' . $user['id'], [
     'opt1' => $opt['opt1'],
     'opt2' => $opt['opt2'],
 ], $site_config['expires']['user_cache']);

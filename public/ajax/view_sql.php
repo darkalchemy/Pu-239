@@ -5,8 +5,8 @@ declare(strict_types = 1);
 use Pu239\Session;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
-check_user_status();
-if (empty($CURUSER) || $CURUSER['class'] < UC_MAX) {
+$user = check_user_status();
+if (empty($user) || $user['class'] < UC_MAX) {
     global $container;
 
     $session = $container->get(Session::class);
@@ -84,9 +84,9 @@ function adminer_object()
          */
         public function credentials()
         {
-            global $site_config, $CURUSER;
+            global $site_config, $user;
 
-            if (in_array($CURUSER['id'], $site_config['adminer']['allowed_ids'])) {
+            if (in_array($user['id'], $site_config['adminer']['allowed_ids'])) {
                 return [
                     'localhost',
                     $site_config['db']['username'],

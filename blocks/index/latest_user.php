@@ -6,8 +6,8 @@ use Pu239\User;
 
 global $container, $lang, $site_config;
 
-$user = $container->get(User::class);
-$userid = $user->get_latest_user();
+$user_class = $container->get(User::class);
+$userid = $user_class->get_latest_user();
 if (!empty($userid)) {
     $latestuser = format_username((int) $userid);
 } else {

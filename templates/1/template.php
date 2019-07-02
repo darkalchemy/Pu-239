@@ -177,6 +177,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
             $messages = $session->get($notif);
             if (!empty($messages)) {
                 foreach ($messages as $message) {
+                    $show[] = $message;
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                     $htmlout .= "
                     <div class='notification $notif has-text-centered size_6'>
@@ -350,7 +351,7 @@ function stdfoot(array $stdfoot = [])
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
-        <i class='icon-angle-circled-up' style='font-size:48px'></i>
+        <i class='icon-angle-circled-up responsive-icon'></i>
     </a>
     <script>
         $bg_image;

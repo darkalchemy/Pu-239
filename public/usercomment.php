@@ -12,9 +12,9 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_comments.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $stdhead = [
     'css' => [
@@ -26,7 +26,7 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$HTMLOUT = $user = '';
+$HTMLOUT = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
 $fluent = $container->get(Database::class);
@@ -46,7 +46,7 @@ if ($action === 'add') {
             stderr('Error', 'Comment body cannot be empty!');
         }
         $values = [
-            'user' => $CURUSER['id'],
+            'user' => $user['id'],
             'userid' => $userid,
             'added' => TIME_NOW,
             'text' => $body,
@@ -116,7 +116,7 @@ if ($action === 'add') {
     if (!$arr) {
         stderr('Error', 'Invalid ID.');
     }
-    if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+    if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -128,7 +128,7 @@ if ($action === 'add') {
         $set = [
             'text' => $body,
             'editedat' => TIME_NOW,
-            'editedby' => $CURUSER['id'],
+            'editedby' => $user['id'],
         ];
         $fluent->update('usercomments')
                ->set($set)
@@ -170,7 +170,7 @@ if ($action === 'add') {
     if ($arr) {
         $userid = (int) $arr['userid'];
     }
-    if ($arr['id'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+    if ($arr['id'] != $user['id'] && $user['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
     $deleted = $fluent->deleteFrom('usercomments')
@@ -197,7 +197,7 @@ if ($action === 'add') {
     }
     die();
 } elseif ($action === 'vieworiginal') {
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($user['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
     $commentid = (int) $_GET['cid'];

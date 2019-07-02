@@ -12,9 +12,9 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $stdfoot = [
     'js' => [
@@ -29,9 +29,9 @@ $htmlout = '';
  * @param        $userid
  * @param string $variant
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -238,11 +238,11 @@ function bookmarktable($res, $userid, $variant = 'index')
     return $htmlout;
 }
 
-$userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
+$userid = isset($_GET['id']) ? (int) $_GET['id'] : $user['id'];
 if (!is_valid_id($userid)) {
     stderr($lang['bookmarks_err'], $lang['bookmark_invalidid']);
 }
-if ($userid != $CURUSER['id']) {
+if ($userid != $user['id']) {
     stderr($lang['bookmarks_err'], "{$lang['bookmarks_denied']}<a href='{$site_config['paths']['baseurl']}/sharemarks.php?id={$userid}'>{$lang['bookmarks_here']}</a>");
 }
 $htmlout .= '
@@ -261,7 +261,7 @@ $count = $fluent->from('bookmarks')
                 ->select('COUNT(id) AS count')
                 ->where('userid = ?', $userid)
                 ->fetch('count');
-$torrentsperpage = $CURUSER['torrentsperpage'];
+$torrentsperpage = $user['torrentsperpage'];
 if (empty($torrentsperpage)) {
     $torrentsperpage = 25;
 }

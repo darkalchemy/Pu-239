@@ -13,19 +13,19 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('catalogue'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 /**
  * @param $text
  * @param $char
  * @param $link
  *
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return mixed|string
  */
@@ -38,22 +38,23 @@ function readMore($text, $char, $link)
 }
 
 /**
- * @param $array
+ * @param array $array
+ * @param int   $class
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return string
  */
-function peer_list($array)
+function peer_list(array $array, int $class)
 {
-    global $CURUSER, $lang;
+    global $lang;
 
     $heading = "
         <tr>
             <th>{$lang['catol_user']}</th>";
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($class >= UC_STAFF) {
         $heading .= "
             <th>{$lang['catol_port']}&amp;{$lang['catol_ip']}</th>";
     }
@@ -70,9 +71,9 @@ function peer_list($array)
         $body .= '
         <tr>
             <td>' . format_username((int) $p['p_uid']) . '</td>';
-        if ($CURUSER['class'] >= UC_STAFF) {
+        if ($class >= UC_STAFF) {
             $body .= '
-            <td>' . ($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
+            <td>' . ($class >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
         }
         $body .= '
             <td>' . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . '</td>
@@ -198,7 +199,7 @@ if (!empty($rows)) {
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = $images_class->find_images($row['imdb_id']);
         }
-        if ($row['anonymous'] === 'yes' && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
+        if ($row['anonymous'] === 'yes' && ($user['class'] < UC_STAFF || $row['owner'] === $user['id'])) {
             $uploader = get_anonymous_name();
         } else {
             $uploader = format_username((int) $row['owner']);
@@ -248,7 +249,7 @@ if (!empty($rows)) {
         </div>
         <div class='w-100'>
             <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
-            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : main_div("
+            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['id'], $user['class']) : main_div("
             <p class='has-text-centered'>{$lang['catol_no_info_show']}</p>", '', 'padding20')) . '
         </div>';
         $htmlout .= main_div($div, 'top20', 'padding20');

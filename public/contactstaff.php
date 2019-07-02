@@ -10,9 +10,9 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
-global $container, $CURUSER;
+global $container;
 
 $stdhead = [
     'css' => [
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!$fail) {
-        $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+        $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($user['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         if (sql_query($sql)) {
             $cache->delete('staff_mess_');
             $session->set('is-success', $lang['contactstaff_success_msg']);

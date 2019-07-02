@@ -4,22 +4,23 @@ declare(strict_types = 1);
 
 use Pu239\User;
 
-global $container, $CURUSER, $site_config;
+$user = check_user_status();
+global $container, $site_config;
 
 $subject = $friends = '';
 
 $res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked
-                            FROM messages AS m LEFT JOIN friends AS f ON f.userid=' . sqlesc($CURUSER['id']) . ' AND f.friendid=m.sender
-                            LEFT JOIN blocks AS b ON b.userid=' . sqlesc($CURUSER['id']) . ' AND b.blockid=m.sender WHERE m.id=' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($CURUSER['id']) . ' OR (sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                            FROM messages AS m LEFT JOIN friends AS f ON f.userid=' . sqlesc($user['id']) . ' AND f.friendid=m.sender
+                            LEFT JOIN blocks AS b ON b.userid=' . sqlesc($user['id']) . ' AND b.blockid=m.sender WHERE m.id=' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($user['id']) . ' OR (sender = ' . sqlesc($user['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $message = mysqli_fetch_assoc($res);
 if (!$message) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
 $users_class = $container->get(User::class);
-$arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $CURUSER['id'] ? (int) $message['receiver'] : (int) $message['sender']);
+$arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $user['id'] ? (int) $message['receiver'] : (int) $message['sender']);
 $id = $arr_user_stuff['id'];
-sql_query('UPDATE messages SET unread = "no" WHERE id=' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-$cache->decrement('inbox_' . $CURUSER['id']);
+sql_query('UPDATE messages SET unread = "no" WHERE id=' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+$cache->decrement('inbox_' . $user['id']);
 if ($message['friend'] > 0) {
     $friends = '
                     <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
@@ -44,7 +45,7 @@ $avatar = get_avatar($arr_user_stuff);
 
 if ($message['location'] > 1) {
     //== get name of PM box if not in or out
-    $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid=' . sqlesc($user['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_box_name = mysqli_fetch_row($res_box_name);
     if (mysqli_num_rows($res) === 0) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
@@ -68,8 +69,8 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' . ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username((int) $arr_user_stuff['id'])) . "{$friends}
-                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date((int) $message['added'], '') . (((int) $message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-danger'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
+                    <span>" . ($message['sender'] === $user['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' . ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username((int) $arr_user_stuff['id'])) . "{$friends}
+                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date((int) $message['added'], '') . (((int) $message['sender'] === $user['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-danger'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>
@@ -85,7 +86,7 @@ $HTMLOUT .= "
                             " . get_all_boxes($message['location']) . "
                             <input type='submit' class='button is-small margin10' value='{$lang['pm_viewmsg_move']}'>
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=delete&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_delete']}</a>" . ($message['draft'] === 'no' ? "
-                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_sdraft']}</a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_sdraft']}</a>" . (($id < 1 || $message['sender'] === $user['id']) ? '' : "
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_reply']}</a>
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=forward&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_fwd']}</a>") : "
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_dedit']}</a>
@@ -96,6 +97,6 @@ $HTMLOUT .= "
             </tr>
         </table>
         <div class='has-text-centered top20 bottom20'>
-            " . insertJumpTo(0) . '
+            " . insertJumpTo(0, $user['id']) . '
         </div>
     </div>';

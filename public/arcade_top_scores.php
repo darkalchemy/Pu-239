@@ -5,8 +5,8 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
-global $CURUSER, $site_config;
+$user = check_user_status();
+global $site_config;
 
 $lang = load_language('global');
 $HTMLOUT = "
@@ -49,7 +49,7 @@ foreach ($list as $gname) {
         while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
             $at_username = format_username((int) $at_score_arr['user_id']);
             $HTMLOUT .= '
-                    <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
+                    <tr' . ($at_score_arr['user_id'] == $user['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
                         <td>0</td>
                         <td>' . $at_username . '</td>
                         <td>' . (int) $at_score_arr['level'] . '</td>
@@ -67,7 +67,7 @@ foreach ($list as $gname) {
             $rankrow = mysqli_fetch_row($ranking);
 
             $HTMLOUT .= '
-                    <tr' . ($score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
+                    <tr' . ($score_arr['user_id'] == $user['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
                         <td>' . number_format($rankrow[0] + 1) . '</td>
                         <td>' . $username . '</td>
                         <td>' . (int) $score_arr['level'] . '</td>
@@ -75,7 +75,7 @@ foreach ($list as $gname) {
                     </tr>';
         }
         //=== get members high score if any
-        $sql = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id=' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
+        $sql = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id=' . sqlesc($user['id']) . ' ORDER BY score DESC LIMIT 1';
         $member_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
         if (mysqli_num_rows($member_score_res) != 0) {
@@ -97,7 +97,7 @@ foreach ($list as $gname) {
 }
 
 //=== total games played:
-$sql = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id=' . $CURUSER['id'];
+$sql = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id=' . $user['id'];
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_totals = mysqli_fetch_assoc($result);
 

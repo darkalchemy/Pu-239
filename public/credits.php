@@ -6,9 +6,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('credits'));
-global $CURUSER, $site_config;
+global $site_config;
 
 $HTMLOUT = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
@@ -26,7 +26,7 @@ if (!in_array($action, $act_validation)) {
     stderr('Error', 'Unknown action.');
 }
 
-if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
+if (isset($_POST['action']) === 'add' && $user['class'] >= UC_SYSOP) {
     $name = ($_POST['name']);
     $description = ($_POST['description']);
     $category = ($_POST['category']);
@@ -38,7 +38,7 @@ if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
     die();
 }
 
-if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
+if ($action === 'delete' && $user['class'] >= UC_SYSOP) {
     if (!$id) {
         stderr($lang['credits_error'], $lang['credits_error2']);
     }
@@ -47,7 +47,7 @@ if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     die();
 }
 
-if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
+if ($action === 'edit' && $user['class'] >= UC_SYSOP) {
     $id = (int) $_GET['id'];
     $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
@@ -93,7 +93,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     }
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
     die();
-} elseif ($action === 'update' && $CURUSER['class'] >= UC_SYSOP) {
+} elseif ($action === 'update' && $user['class'] >= UC_SYSOP) {
     $id = (int) $_GET['id'];
     if (!is_valid_id($id)) {
         stderr('Error', 'Invalid ID!');
@@ -179,7 +179,7 @@ if (empty($credits)) {
         $body .= "
     <tr>
         <td><a target='_blank' class='is-link' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
-        if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
+        if ($user['class'] >= UC_ADMINISTRATOR) {
             $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
         }
 
@@ -192,7 +192,7 @@ if (empty($credits)) {
 }
 $HTMLOUT .= main_table($body, $heading);
 
-if ($CURUSER['class'] >= UC_MAX) {
+if ($user['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
     <h2 class='has-text-centered top20'>{$lang['credits_add']}</h2>

@@ -9,7 +9,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bt_client.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int) $_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
@@ -20,14 +20,15 @@ $HTMLOUT = '';
  * @param $name
  * @param $arr
  * @param $torrent
+ * @param mixed $user
  *
  * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
-function dltable($name, $arr, $torrent)
+function dltable($name, $arr, $torrent, $user)
 {
-    global $site_config, $CURUSER, $lang;
+    global $site_config, $lang;
 
     if (!count($arr)) {
         return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>", '', 'padding20 has-text-centered');
@@ -47,13 +48,13 @@ function dltable($name, $arr, $torrent)
             <th>{$lang['peerslist_client']}</th>
         </tr>";
     $now = TIME_NOW;
-    $mod = $CURUSER['class'] >= UC_STAFF;
+    $mod = $user['class'] >= UC_STAFF;
     $body = '';
     foreach ($arr as $e) {
         $body .= '
         <tr>';
         if ($e['username']) {
-            if ((($e['tanonymous'] === 'yes' && $e['owner'] === $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
+            if ((($e['tanonymous'] === 'yes' && $e['owner'] === $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $user['id'] != $e['userid']) && $user['class'] < UC_STAFF) {
                 $username = get_anonymous_name();
                 $body .= "
             <td><b>$username</b></td>";
@@ -181,6 +182,6 @@ usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
 $HTMLOUT .= "
     <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($torrent['name']) . '</a></h1>';
-$HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $torrent);
-$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $torrent);
+$HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $torrent, $user);
+$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $torrent, $user);
 echo stdhead($lang['peerslist_stdhead']) . wrapper($HTMLOUT) . stdfoot();

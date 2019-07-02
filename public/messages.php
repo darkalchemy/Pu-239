@@ -15,7 +15,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
+$user = check_user_status();
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -30,10 +30,10 @@ $stdfoot = [
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
-global $CURUSER, $site_config;
+global $site_config;
 
-$maxbox = 100 * ($CURUSER['class'] + 1);
-$maxboxes = 5 * ($CURUSER['class'] + 1);
+$maxbox = 100 * ($user['class'] + 1);
+$maxboxes = 5 * ($user['class'] + 1);
 
 $returnto = !empty($_GET['returnto']) ? $_GET['returnto'] : (!empty($_POST['returnto']) ? $_POST['returnto'] : '/index.php');
 $possible_actions = [
@@ -51,20 +51,20 @@ $possible_actions = [
     'move_or_delete_multi',
     'send_message',
 ];
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'view_mailbox'));
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'view_mailbox');
 if (!in_array($action, $possible_actions)) {
     stderr($lang['pm_error'], $lang['pm_error_ruffian']);
 }
 
-$change_pm_number = (isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : (isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 0));
-$page = (isset($_GET['page']) ? (int) $_GET['page'] : 0);
-$perpage = (isset($_GET['perpage']) ? (int) $_GET['perpage'] : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 15));
-$mailbox = (isset($_GET['box']) ? (int) $_GET['box'] : (isset($_POST['box']) ? (int) $_POST['box'] : 1));
-$pm_id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0));
-$save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
-$urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
-$desc_asc = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
-$desc_asc_2 = (isset($_GET['DESC']) ? 'ascending' : 'descending');
+$change_pm_number = isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : (isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 0);
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+$perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : ($user['pms_per_page'] > 0 ? $user['pms_per_page'] : 15);
+$mailbox = isset($_GET['box']) ? (int) $_GET['box'] : (isset($_POST['box']) ? (int) $_POST['box'] : 1);
+$pm_id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
+$save = (isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0';
+$urgent = (isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no';
+$desc_asc = isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : '');
+$desc_asc_2 = isset($_GET['DESC']) ? 'ascending' : 'descending';
 $spacer = '&#160;&#160;&#160;&#160;';
 $good_order_by = [
     'username',
@@ -94,8 +94,8 @@ $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : 20);
-    sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user_' . $CURUSER['id'], [
+    sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $cache->update_row('user_' . $user['id'], [
         'pms_per_page' => $change_pm_number,
     ], $site_config['expires']['user_cache']);
     if (isset($_GET['edit_mail_boxes'])) {
@@ -115,16 +115,16 @@ if (isset($_GET['show_pm_avatar'])) {
     }
 
     if ($setbits || $clrbits) {
-        $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($CURUSER['id']);
+        $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($user['id']);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
     $opt2 = $fluent->from('users')
                    ->select(null)
                    ->select('opt2')
-                   ->where('id = ?', $CURUSER['id'])
+                   ->where('id = ?', $user['id'])
                    ->fetch('opt2');
 
-    $cache->update_row('user_' . $CURUSER['id'], [
+    $cache->update_row('user_' . $user['id'], [
         'opt2' => $opt2,
     ], $site_config['expires']['user_cache']);
 
@@ -206,6 +206,7 @@ switch ($action) {
 
 /**
  * @param int $box
+ * @param int $userid
  *
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
@@ -213,25 +214,25 @@ switch ($action) {
  *
  * @return string
  */
-function get_all_boxes($box = 1)
+function get_all_boxes(int $box, int $userid)
 {
-    global $container, $site_config, $lang, $CURUSER;
+    global $container, $site_config, $lang;
 
     $cache = $container->get(Cache::class);
-    $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
+    $get_all_boxes = $cache->get('get_all_boxes_' . $userid);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $fluent = $container->get(Database::class);
         $get_all_boxes = $fluent->from('pmboxes')
                                 ->select(null)
                                 ->select('boxnumber')
                                 ->select('name')
-                                ->where('userid=?', $CURUSER['id'])
+                                ->where('userid=?', $userid)
                                 ->orderBy('boxnumber')
                                 ->fetchAll();
 
-        $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
+        $cache->set('get_all_boxes_' . $userid, $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
-    $box = (int) $box;
+
     $boxes = "
         <select name='boxx' class='margin10'>
             <option value='10000'>{$lang['pm_search_move_to']}</option>" . ($box !== 1 ? "
@@ -252,22 +253,23 @@ function get_all_boxes($box = 1)
 }
 
 /**
- * @param $mailbox
+ * @param int $mailbox
+ * @param int $userid
  *
  * @throws NotFoundException
  * @throws DependencyException
  *
  * @return bool|mixed|string
  */
-function insertJumpTo($mailbox)
+function insertJumpTo(int $mailbox, int $userid)
 {
-    global $container, $site_config, $lang, $CURUSER;
+    global $container, $site_config, $lang;
 
     $cache = $container->get(Cache::class);
-    $cache->delete('insertJumpTo_' . $CURUSER['id']);
-    $insertJumpTo = $cache->get('insertJumpTo_' . $CURUSER['id']);
+    $cache->delete('insertJumpTo_' . $userid);
+    $insertJumpTo = $cache->get('insertJumpTo_' . $userid);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
-        $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($userid) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '
             <form action="messages.php" method="get" accept-charset="utf-8">
                 <input type="hidden" name="action" value="view_mailbox">
@@ -284,7 +286,7 @@ function insertJumpTo($mailbox)
         $insertJumpTo .= '
                 </select>
             </form>';
-        $cache->set('insertJumpTo_' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
+        $cache->set('insertJumpTo_' . $userid, $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }
 
     return $insertJumpTo;

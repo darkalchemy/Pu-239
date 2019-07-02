@@ -8,9 +8,9 @@ use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('takerate'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 if (empty($_POST['id']) && empty($_GET['id'])) {
     die();
@@ -18,9 +18,6 @@ if (empty($_POST['id']) && empty($_GET['id'])) {
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (int) $_POST['id'];
 if (!is_valid_id($id)) {
     stderr('Error', 'Bad Id', 'bottom20');
-}
-if (!isset($CURUSER)) {
-    stderr('Error', 'Your not logged in', 'bottom20');
 }
 $fluent = $container->get(Database::class);
 $torrent = $fluent->from('torrents')
@@ -38,7 +35,7 @@ $thanks = $fluent->from('thankyou')
                  ->select(null)
                  ->select('tid')
                  ->where('torid = ?', $id)
-                 ->where('uid = ?', $CURUSER['id'])
+                 ->where('uid = ?', $user['id'])
                  ->fetch('tid');
 
 if (!empty($thanks)) {
@@ -46,7 +43,7 @@ if (!empty($thanks)) {
 }
 $text = ':thankyou:';
 $values = [
-    'uid' => $CURUSER['id'],
+    'uid' => $user['id'],
     'torid' => $id,
     'thank_date' => TIME_NOW,
 ];
@@ -54,7 +51,7 @@ $fluent->insertInto('thankyou')
        ->values($values)
        ->execute();
 $values = [
-    'user' => $CURUSER['id'],
+    'user' => $user['id'],
     'torrent' => $id,
     'added' => TIME_NOW,
     'text' => $text,
@@ -83,7 +80,7 @@ if ($site_config['bonus']['on']) {
     ];
     $fluent->update('users')
            ->set($set)
-           ->where('id = ?', $CURUSER['id'])
+           ->where('id = ?', $user['id'])
            ->execute();
 }
 $session = $container->get(Session::class);

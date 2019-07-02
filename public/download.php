@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Session;
@@ -16,7 +15,7 @@ require_once INCL_DIR . 'function_happyhour.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 $lang = array_merge(load_language('global'), load_language('download'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
@@ -34,8 +33,7 @@ if (!empty($T_Pass)) {
         die("Permission denied, you're account is parked");
     }
 } else {
-    check_user_status();
-    $user = $CURUSER;
+    $user = check_user_status();
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
 $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
@@ -88,7 +86,7 @@ if ($site_config['bonus']['on'] && $row['owner'] != $user['id']) {
     }
 }
 $update = [
-    'hits' => new Literal('hits + 1'),
+    'hits' => $row['hits'] + 1,
 ];
 $torrent_class->update($update, $id);
 

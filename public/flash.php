@@ -5,12 +5,12 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $site_config, $CURUSER;
+global $site_config;
 
 $scores = '';
-$player = $CURUSER['id'];
+$player = $user['id'];
 
 $all_our_games = $site_config['arcade']['games'];
 
@@ -29,10 +29,10 @@ if (isset($_GET['gameURI'])) {
         stderr('Error', 'Could not find game!');
     }
 }
-if (!isset($CURUSER['gameheight']) || $CURUSER['gameheight'] === 0) {
+if (!isset($user['gameheight']) || $user['gameheight'] === 0) {
     $game_height = 800;
 } else {
-    $game_height = $CURUSER['gameheight'];
+    $game_height = $user['gameheight'];
 }
 $game_width = $game_height;
 
@@ -91,7 +91,7 @@ if (mysqli_num_rows($res) > 0) {
         $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score>' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
-                <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
+                <tr' . ($at_score_arr['user_id'] == $user['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
                     <td>0</td>
                     <td>' . $at_username . '</td>
                     <td>' . (int) $at_score_arr['level'] . '</td>
@@ -112,7 +112,7 @@ if (mysqli_num_rows($res) > 0) {
                     <td>' . number_format((float) $row['score']) . '</td>
                 </tr>';
     }
-    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND user_id=' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND user_id=' . sqlesc($user['id']) . ' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
 
     if (mysqli_num_rows($member_score_res) > 0) {
         $member_score_arr = mysqli_fetch_assoc($member_score_res);
@@ -125,7 +125,7 @@ if (mysqli_num_rows($res) > 0) {
             $HTMLOUT .= '
                 <tr>
                     <td>' . $member_rank . '</td>
-                    <td>' . format_username((int) $CURUSER['id']) . '</td>
+                    <td>' . format_username($user['id']) . '</td>
                     <td>' . (int) $row['level'] . '</td>
                     <td>' . number_format((int) $member_score_arr['score']) . '</td>
                 </tr>';

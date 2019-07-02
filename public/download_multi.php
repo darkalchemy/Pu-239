@@ -11,18 +11,18 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_common.php';
-check_user_status();
+$curuser = check_user_status();
 $lang = array_merge(load_language('global'), load_language('index'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
-$userid = isset($_GET['userid']) ? (int) $_GET['userid'] : $CURUSER['id'];
+$userid = isset($_GET['userid']) ? (int) $_GET['userid'] : $curuser['id'];
 $yes_no = [
     'yes',
     'no',
 ];
 $users_class = $container->get(User::class);
 $torrents_class = $container->get(Torrent::class);
-if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
+if ($curuser['id'] === $userid || $curuser['class'] >= UC_ADMINISTRATOR) {
     $session = $container->get(Session::class);
     $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);

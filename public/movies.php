@@ -11,7 +11,7 @@ require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_bluray.php';
 require_once INCL_DIR . 'function_fanart.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
 $image = placeholder_image();
 global $site_config;
@@ -70,7 +70,7 @@ switch ($list) {
                     if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
                         $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : (!empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['paths']['images_baseurl'] . 'noposter.png');
                         $airtime = strtotime($tv['airstamp']);
-                        $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
+                        $use_12_hour = !empty($user['use_12_hour']) ? $user['use_12_hour'] : $site_config['site']['use_12_hour'];
                         $body[] = [
                             'poster' => url_proxy($poster, true, 250),
                             'placeholder' => url_proxy($poster, true, 250, null, 20),

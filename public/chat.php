@@ -5,11 +5,11 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('chat'));
-global $CURUSER, $site_config;
+global $site_config;
 
-$nick = $CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999));
+$nick = $user ? $user['username'] : ('Guest' . random_int(1000, 9999));
 $irc_url = 'irc.p2p-network.net';
 $irc_channel = '#pu-239';
 $HTMLOUT = "

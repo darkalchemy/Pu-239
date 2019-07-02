@@ -3032,7 +3032,6 @@ KEY `expires` (`expires`)
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `poster` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `category` int(10) unsigned NOT NULL DEFAULT 0,
   `added` datetime DEFAULT CURRENT_TIMESTAMP,
   `userid` int(10) unsigned NOT NULL DEFAULT 0,
@@ -3171,6 +3170,13 @@ KEY `expires` (`expires`)
         'info' => 'Add message column',
         'date' => '27 Jun, 2019',
         'query' => 'ALTER TABLE `bugs` ADD COLUMN `comment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AFTER `problem`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1562020369,
+        'info' => 'Add unique index',
+        'date' => '01 Jul, 2019',
+        'query' => 'ALTER TABLE `read_posts` ADD UNIQUE INDEX `userid_topicid` (`user_id`,`topic_id`)',
         'flush' => false,
     ],
 ];

@@ -2,9 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
+use Pu239\Session;
+use Pu239\User;
 
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'function_html.php';
@@ -19,31 +22,43 @@ require_once INCL_DIR . 'function_staff.php';
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  */
-function class_check($class = 0, $staff = true)
+function class_check(int $class = UC_STAFF, bool $staff = true)
 {
-    global $CURUSER, $site_config;
+    global $container, $site_config;
 
-    if (!$CURUSER) {
+    $auth = $container->get(Auth::class);
+    if ($auth->isRemembered()) {
+        $auth->logOutEverywhere();
+        $session = $container->get(Session::class);
+        $session->set('is-danger', 'Please confirm your identity.');
+        header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
+        die();
+    }
+    $user_class = $container->get(User::class);
+    $userid = $auth->getUserId();
+    if (empty($userid)) {
         header("Location: {$site_config['paths']['baseurl']}/404.html");
         die();
     }
 
-    if ($CURUSER['class'] >= $class) {
+    $user = $user_class->getUserFromId($userid);
+    if (empty($user)) {
+        header("Location: {$site_config['paths']['baseurl']}/404.html");
+        die();
+    }
+    if ($user['class'] >= $class) {
         if ($staff) {
-            if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']))) {
+            if (($user['class'] > UC_MAX) || (!in_array($user['id'], $site_config['is_staff']))) {
                 $ip = getip();
-                $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
+                $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=user]{$user['username']}[/color][/url] - {$ip}[br]Class {$user['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
                 $subject = 'Warning Class Check System!';
                 if (user_exists($site_config['chatbot']['id'])) {
                     $post_info = auto_post($subject, $body);
-                    sql_query('UPDATE users SET class = ' . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-                    global $container;
-                    $cache = $container->get(Cache::class);
-                    $cache->update_row('user_' . $CURUSER['id'], [
-                        'class' => 0,
+                    $update = [
+                        'class' => UC_MIN,
                         'enabled' => 'no',
-                    ], $site_config['expires']['user_cache']);
-
+                    ];
+                    $user_class->update($update, $userid);
                     write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
                     $HTMLOUT = doc_head() . "
     <meta property='og:title' content='Error!'>
@@ -60,7 +75,7 @@ function class_check($class = 0, $staff = true)
         }
     } else {
         if (!$staff) {
-            write_info("{$CURUSER['username']} attempted to access a staff page");
+            write_info("{$user['username']} attempted to access a staff page");
             stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name((int) $class) . 's and above. Read FAQ.');
         } else {
             header("Location: {$site_config['paths']['baseurl']}/404.html");
@@ -72,8 +87,8 @@ function class_check($class = 0, $staff = true)
 /**
  * @param $script
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int
  */

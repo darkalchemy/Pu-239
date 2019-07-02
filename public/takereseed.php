@@ -7,16 +7,16 @@ use Pu239\Message;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
-check_user_status();
+$user = check_user_status();
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10' : 'owner';
 $reseedid = (int) $_POST['reseedid'];
 $uploader = (int) $_POST['uploader'];
 $name = $_POST['name'];
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $dt = TIME_NOW;
 $subject = 'Request reseed!';
-$msg = "@{$CURUSER['username']} asked for a reseed on [url={$site_config['paths']['baseurl']}/details.php?id={$reseedid}][class=has-text-success]{$name}[/class][/url]![br][br]Thank You!";
+$msg = "@{$user['username']} asked for a reseed on [url={$site_config['paths']['baseurl']}/details.php?id={$reseedid}][class=has-text-success]{$name}[/class][/url]![br][br]Thank You!";
 $msgs_buffer = [];
 if ($pm_what === 'last10') {
     $res = sql_query('SELECT s.userid, s.torrentid FROM snatched AS s WHERE s.torrentid =' . sqlesc($reseedid) . " AND s.seeder = 'yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);
@@ -51,9 +51,9 @@ $cache->update_row('torrent_details_' . $reseedid, [
     'last_reseed' => $dt,
 ], $site_config['expires']['torrent_details']);
 if ($site_config['bonus']['on']) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
-    $cache->update_row('user_' . $CURUSER['id'], [
+    sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($user['seedbonus'] - 10);
+    $cache->update_row('user_' . $user['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }

@@ -2,14 +2,15 @@
 
 declare(strict_types = 1);
 
-global $container, $lang, $CURUSER, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
 $num_result = $and_member = '';
 $keywords = isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '';
 $member = isset($_POST['member']) ? htmlsafechars($_POST['member']) : '';
 $all_boxes = isset($_POST['all_boxes']) ? (int) $_POST['all_boxes'] : '';
 $sender_reciever = $mailbox >= 1 ? 'sender' : 'receiver';
-$what_in_out = $mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']);
+$what_in_out = $mailbox >= 1 ? 'AND receiver = ' . sqlesc($user['id']) : 'AND sender = ' . sqlesc($user['id']);
 $location = isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox;
 $limit = isset($_POST['limit']) ? (int) $_POST['limit'] : 25;
 $as_list_post = isset($_POST['as_list_post']) ? (int) $_POST['as_list_post'] : 2;
@@ -45,7 +46,7 @@ if ($member_sys) {
     $the_username = '<span>System</span>';
 }
 
-$res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($user['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= $top_links . '
         <h1>' . $lang['pm_search_title'] . '</h1>
@@ -62,7 +63,7 @@ $body = '
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_box'] . '</span></td>
-                    <td>' . get_all_boxes($box) . '</td>
+                    <td>' . get_all_boxes($box, $user['id']) . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_allbox'] . '</span></td>
@@ -129,11 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $search = preg_replace(' / \b(' . implode(' | ', $remove_me) . ')\b / ', '', $keywords);
     switch (true) {
         case !$keywords && $member:
-            $res_search = sql_query('SELECT * FROM messages WHERE sender = ' . sqlesc($arr_userid['id']) . " $location AND receiver = " . sqlesc($CURUSER['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
+            $res_search = sql_query('SELECT * FROM messages WHERE sender = ' . sqlesc($arr_userid['id']) . " $location AND receiver = " . sqlesc($user['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
             break;
 
         case !$keywords && $member_sys:
-            $res_search = sql_query("SELECT * FROM messages WHERE sender = 0 $location AND receiver = " . sqlesc($CURUSER['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
+            $res_search = sql_query("SELECT * FROM messages WHERE sender = 0 $location AND receiver = " . sqlesc($user['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
             break;
 
         case $subject && !$text:
@@ -228,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'><span class='left10 right10'>Select All </span> ";
         }
         $results .= "
-            <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'>" . get_all_boxes($box) . " or
+            <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'>" . get_all_boxes($box, $user['id']) . " or
             <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
         </div>
     </form>";

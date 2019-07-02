@@ -7,17 +7,17 @@ use Pu239\Peer;
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('index'));
 
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 header('Content-Type: application/json');
-if (!empty($CURUSER)) {
-    $upped = mksize($CURUSER['uploaded']);
-    $downed = mksize($CURUSER['downloaded']);
+if (!empty($user)) {
+    $upped = mksize($user['uploaded']);
+    $downed = mksize($user['downloaded']);
     $peer = $container->get(Peer::class);
-    $seed = $peer->getPeersFromUserId($CURUSER['id']);
+    $seed = $peer->getPeersFromUserId($user['id']);
 
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
@@ -36,14 +36,14 @@ if (!empty($CURUSER)) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    if ($CURUSER['override_class'] != 255) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name((int) $CURUSER['override_class']) . '</b></a>';
-    } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name((int) $CURUSER['class']) . '</b></a>';
+    if ($user['override_class'] != 255) {
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($user['override_class']) . '</b></a>';
+    } elseif ($user['class'] >= UC_STAFF) {
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($user['class']) . '</b></a>';
     } else {
-        $usrclass = get_user_class_name((int) $CURUSER['class']);
+        $usrclass = get_user_class_name($user['class']);
     }
-    $member_reputation = get_reputation($CURUSER);
+    $member_reputation = get_reputation($user);
 
     $StatusBar = "
     <span class='navbar-start'>{$lang['gl_pstats']}</span>
@@ -58,21 +58,21 @@ if (!empty($CURUSER)) {
 
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_invites']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/invite.php'>{$CURUSER['invites']}</a></span>
+        <span><a href='{$site_config['paths']['baseurl']}/invite.php'>{$user['invites']}</a></span>
     </span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_karma']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format((float) $CURUSER['seedbonus']) . "</a></span>
+        <span><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format((float) $user['seedbonus']) . "</a></span>
     </span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_achpoints']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $CURUSER['achpoints'] . "</a></span>
+        <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}'>" . $user['achpoints'] . "</a></span>
     </span>
     <br>
     <span class='navbar-start' id='hide_html'>{$lang['gl_tstats']}</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_shareratio']}</span>
-        <span>" . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</span>
+        <span>" . member_ratio($user['uploaded'], $user['downloaded']) . '</span>
     </span>';
 
     if ($site_config['site']['ratio_free']) {
@@ -93,7 +93,7 @@ if (!empty($CURUSER)) {
     </span>";
     }
 
-    $got_moods = ($CURUSER['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
+    $got_moods = ($user['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
     $StatusBar .= "
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_seed_torrents']}</span>
@@ -107,14 +107,14 @@ if (!empty($CURUSER)) {
         <span class='navbar-start'>{$lang['gl_connectable']}</span>
         <span>{$connectable}</span>
     </span>
-    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_blocks'] === 'yes' ? "
+    " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' ? "
     <br>
     <span class='navbar-start'>{$lang['gl_userblocks']}</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_myblocks']}</span>
         <span><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></span>" : '') . '
     </span>
-    ' . ($CURUSER['class'] >= UC_STAFF || $got_moods ? "
+    ' . ($user['class'] >= UC_STAFF || $got_moods ? "
     <span class='level is-marginless'>
         <span class='navbar-start'>{$lang['gl_myunlocks']}</span>
         <span><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></span>" : '') . '

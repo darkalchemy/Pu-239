@@ -5,12 +5,12 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('achievementlist'));
 //$doUpdate = false;
-global $CURUSER, $site_config;
+global $site_config;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $user['class'] >= UC_MAX) {
     $clienticon = htmlsafechars(trim($_POST['clienticon']));
     $achievname = htmlsafechars(trim($_POST['achievname']));
     $notes = htmlsafechars($_POST['notes']);
@@ -51,7 +51,7 @@ if (mysqli_num_rows($res) === 0) {
 }
 $HTMLOUT .= main_table($body, $heading);
 
-if ($CURUSER['class'] >= UC_MAX) {
+if ($user['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <h2>{$lang['achlst_add_an_ach_lst']}</h2>
     <form method='post' action='achievementlist.php' accept-charset='utf-8'>" . main_table("

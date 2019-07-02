@@ -12,9 +12,9 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 flood_limit('comments');
 $action = !empty($_GET['action']) ? htmlsafechars($_GET['action']) : (!empty($_POST['action']) ? htmlsafechars($_POST['action']) : 0);
@@ -83,13 +83,13 @@ if ($action === 'add') {
         $owner = isset($arr['owner']) ? $arr['owner'] : 0;
         $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no';
         $arr['comments'] = isset($arr['comments']) ? $arr['comments'] : 0;
-        if ($CURUSER['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
+        if ($user['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
             $anon = 'yes';
         } else {
             $anon = 'no';
         }
         $values = [
-            'user' => $CURUSER['id'],
+            'user' => $user['id'],
             'torrent' => $id,
             'added' => TIME_NOW,
             'text' => $body,
@@ -104,13 +104,13 @@ if ($action === 'add') {
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
         if ($site_config['bonus']['on']) {
-            sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
             $update['comments'] = ($arr['comments'] + 1);
             $cache->update_row('torrent_details_' . $id, [
                 'comments' => $update['comments'],
             ], 0);
-            $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus']['per_comment']);
-            $cache->update_row('user_' . $CURUSER['id'], [
+            $update['seedbonus'] = ($user['seedbonus'] + $site_config['bonus']['per_comment']);
+            $cache->update_row('user_' . $user['id'], [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }
@@ -186,7 +186,7 @@ if ($action === 'add') {
     if (!$arr) {
         stderr($lang['comment_error'], "{$lang['comment_invalid_id']}.");
     }
-    if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+    if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
         stderr($lang['comment_error'], $lang['comment_denied']);
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -196,8 +196,8 @@ if ($action === 'add') {
         }
         $text = htmlsafechars($body);
         $editedat = TIME_NOW;
-        if (isset($_POST['lasteditedby']) || $CURUSER['class'] < UC_STAFF) {
-            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        if (isset($_POST['lasteditedby']) || $user['class'] < UC_STAFF) {
+            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($user['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('latest_comments_');
         } else {
             sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = 0 WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
@@ -215,7 +215,7 @@ if ($action === 'add') {
       <input type='hidden' name='cid' value='$commentid'>";
     $HTMLOUT .= BBcode($arr['text']);
     $HTMLOUT .= '
-      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby"> Show Last Edited By<br><br>' : '') . '
+      <br>' . ($user['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby"> Show Last Edited By<br><br>' : '') . '
         <div class="has-text-centered margin20">
             <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '">
         </div>
@@ -223,7 +223,7 @@ if ($action === 'add') {
     echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'delete') {
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($user['class'] < UC_STAFF) {
         stderr($lang['comment_error'], $lang['comment_denied']);
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
@@ -248,14 +248,14 @@ if ($action === 'add') {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id=" . sqlesc($id));
     }
     if ($site_config['bonus']['on']) {
-        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         $arr['comments'] = isset($arr['comments']) ? (int) $arr['comments'] : 0;
         $update['comments'] = ($arr['comments'] - 1);
         $cache->update_row('torrent_details_' . $id, [
             'comments' => $update['comments'],
         ], 0);
-        $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus']['per_comment']);
-        $cache->update_row('user_' . $CURUSER['id'], [
+        $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_comment']);
+        $cache->update_row('user_' . $user['id'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
     }
@@ -263,7 +263,7 @@ if ($action === 'add') {
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");
     die();
 } elseif ($action === 'vieworiginal') {
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($user['class'] < UC_STAFF) {
         stderr($lang['comment_error'], $lang['comment_denied']);
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;

@@ -9,9 +9,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $stdhead = [
     'css' => [
@@ -30,7 +30,7 @@ if (empty($id)) {
 }
 $id = (int) $id;
 $cache = $container->get(Cache::class);
-if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
+if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $user['class'] >= UC_STAFF) {
     $cache->delete('editedby_' . $id);
     $returl = "details.php?id=$id";
     if (isset($_POST['returnto'])) {
@@ -46,18 +46,18 @@ $row = $fluent->from('torrents')
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }
-if (!isset($CURUSER) || ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < UC_STAFF)) {
+if (!isset($user) || ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF)) {
     stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
 }
 $HTMLOUT = $currently_editing = $subs_list = '';
 
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $currently_editing = $cache->get('editedby_' . $id);
     if ($currently_editing === false || is_null($currently_editing)) {
-        $currently_editing = $CURUSER['username'];
+        $currently_editing = $user['username'];
         $cache->set('editedby_' . $id, $currently_editing, $site_config['expires']['ismoddin']);
     }
-    if ($currently_editing != $CURUSER['username']) {
+    if ($currently_editing != $user['username']) {
         $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $currently_editing . '</span> is currently editing this torrent!</h1>';
     }
 }
@@ -122,15 +122,15 @@ $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] === 'scene' ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] === 'p2p' ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] === 'none' ? ' selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
 $HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
 }
 $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
-if ($CURUSER['class'] >= $site_config['allowed']['upload']) {
+if ($user['class'] >= $site_config['allowed']['upload']) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5'>No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars((string) $row['nukereason']) . "' class='w-100'>", 1);
 }
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1'> Remove Freeleech" : "
     <select name='free_length'>
     <option value='0'>------</option>
@@ -161,7 +161,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
 }
 
-if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
+if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     if ($row['allow_comments'] === 'yes') {
         $messc = '&#160;Comments are allowed for everyone on this torrent!';
     } else {
@@ -175,7 +175,7 @@ if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     <option value='yes'>Yes</option><option value='no'>No</option></select>{$messc}</td></tr>\n";
 }
 
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (($row['sticky']) === 'yes' ? ' checked' : '') . " value='yes'>Sticky this torrent !", 1);
     $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (($row['anonymous'] === 'yes') ? ' checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
     $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip'" . (($row['vip'] == 1) ? ' checked' : '') . " value='1'> If this one is checked, only VIPs can download this torrent", 1);

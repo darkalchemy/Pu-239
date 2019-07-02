@@ -10,7 +10,7 @@ check_user_status();
 $lang = load_language('global');
 global $container;
 
-$action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
+$action = isset($_POST['action']) ? htmlsafechars($_POST['action']) : '';
 if ($action === 'download') {
     $id = isset($_POST['sid']) ? (int) $_POST['sid'] : 0;
     if ($id == 0) {

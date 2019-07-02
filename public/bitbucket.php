@@ -9,9 +9,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $session = $container->get(Session::class);
 if (!$site_config['bucket']['allowed']) {
@@ -29,8 +29,8 @@ $formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
-$PICSALT = $SaLt . $CURUSER['username'];
-$USERSALT = substr(md5($SaLty . $CURUSER['id']), 0, 6);
+$PICSALT = $SaLt . $user['username'];
+$USERSALT = substr(md5($SaLty . $user['id']), 0, 6);
 make_year(BITBUCKET_DIR);
 make_month(BITBUCKET_DIR);
 
@@ -56,13 +56,13 @@ if (isset($_GET['delete'])) {
     }
 }
 
-if (!empty($_GET['avatar']) && $_GET['avatar'] != $CURUSER['avatar']) {
+if (!empty($_GET['avatar']) && $_GET['avatar'] != $user['avatar']) {
     $type = isset($_GET['type']) && $_GET['type'] == 1 ? 1 : 2;
     $update = ['avatar' => trim(strip_tags($_GET['avatar']))];
     $users_class = $container->get(User::class);
-    $users_class->update($update, $CURUSER['id']);
+    $users_class->update($update, $user['id']);
     header("Location: {$site_config['paths']['baseurl']}/bitbucket.php?images=$type&updated=avatar");
-} elseif (!empty($_GET['avatar']) && $_GET['avatar'] === $CURUSER['avatar']) {
+} elseif (!empty($_GET['avatar']) && $_GET['avatar'] === $user['avatar']) {
     $session->set('is-warning', 'This is already your avatar!');
 }
 
@@ -70,7 +70,7 @@ if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', "
         [class=has-text-centered]
             [h3]{$lang['bitbucket_updated']}[/h3]
-            [img width=150]" . url_proxy($CURUSER['avatar'], true, 150) . '[/img]
+            [img width=150]" . url_proxy($user['avatar'], true, 150) . '[/img]
         [/class]');
 }
 

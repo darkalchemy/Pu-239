@@ -8,11 +8,11 @@ use Pu239\Session;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('achievementbonus'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-$id = (int) $CURUSER['id'];
+$id = $user['id'];
 $min = 1;
 $max = 38;
 $rand = (int) random_int((int) $min, (int) $max);

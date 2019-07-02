@@ -11,7 +11,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_comments.php';
 
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 $start = microtime(true);
@@ -29,27 +29,26 @@ use Pu239\Session;
 use Pu239\Snatched;
 use Pu239\User;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $lang, $site_config;
 
 $snatched = $container->get(Snatched::class);
 $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
-$id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
+$id = !empty($_GET['id']) ? (int) $_GET['id'] : $user['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
 }
 $users_class = $container->get(User::class);
-$user = $users_class->getUserFromId($id);
 if (empty($user)) {
     stderr($lang['userdetails_error'], $lang['userdetails_invalid']);
 } elseif ($user['status'] === 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
-} elseif ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id']) {
+} elseif ($user['paranoia'] == 3 && $user['class'] < UC_STAFF && $user['id'] != $user['id']) {
     stderr($lang['userdetails_error'], '<span><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
        ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '"></span>');
     die();
 }
-if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
+if (isset($_GET['delete_hit_and_run']) && $user['class'] >= UC_STAFF) {
     $delete_me = isset($_GET['delete_hit_and_run']) ? (int) $_GET['delete_hit_and_run'] : 0;
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
@@ -65,11 +64,11 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     die();
 }
 $session = $container->get(Session::class);
-if (isset($_GET['force_logout']) && $CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW);
+if (isset($_GET['force_logout']) && $user['id'] != $user['id'] && $user['class'] >= UC_STAFF) {
+    $cache->set('forced_logout_' . $user['id'], TIME_NOW);
     $session->set('is-success', 'This user will be forced to logout on next page view');
 }
-if ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) {
+if ($user['class'] >= UC_STAFF || $user['id'] == $user['id']) {
     $auth = $container->get(Auth::class);
     $ip = $auth->getIpAddress();
     $addr = gethostbyaddr($ip) . "($ip)";
@@ -85,7 +84,7 @@ if ($lastseen == 0 || $user['perms'] & PERMS_STEALTH) {
 } else {
     $lastseen = get_date((int) $user['last_access'], '', 0, 1);
 }
-if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['id'] === $CURUSER['id']) || ($user['class'] < $site_config['allowed']['enable_invincible']) && $CURUSER['class'] >= $site_config['allowed']['enable_invincible']) && isset($_GET['invincible'])) {
+if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['id'] === $user['id']) || ($user['class'] < $site_config['allowed']['enable_invincible']) && $user['class'] >= $site_config['allowed']['enable_invincible']) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] === 'yes') {
         invincible($user['id'], true, true);
@@ -95,7 +94,7 @@ if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['i
         invincible($user['id'], false, false);
     }
 }
-if ((($user['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_STAFF) && $CURUSER['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
+if ((($user['class'] >= UC_STAFF || $user['id'] == $user['id']) || ($user['class'] < UC_STAFF) && $user['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
     require_once INCL_DIR . 'stealth.php';
     if ($_GET['stealth'] === 'yes') {
         stealth($user['id']);
@@ -111,14 +110,14 @@ foreach ($countries as $cntry) {
         break;
     }
 }
-if (!(isset($_GET['hit'])) && $CURUSER['id'] !== $user['id']) {
+if (!(isset($_GET['hit'])) && $user['id'] !== $user['id']) {
     $update = [
         'hits' => $user['hits'] + 1,
     ];
     $users_class->update($update, $user['id']);
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
-if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id'])) {
+if (($user['opt1'] & user_options::ANONYMOUS) && ($user['class'] < UC_STAFF && $user['id'] != $user['id'])) {
     $HTMLOUT .= "
     <div class='table-wrapper'>
         <table class='table table-bordered table-striped two'>
@@ -146,7 +145,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                         <input type='submit' value='{$lang['userdetails_sendmess']}'>
                     </form>";
-    if ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id']) {
+    if ($user['class'] < UC_STAFF && $user['id'] != $user['id']) {
         echo stdhead($lang['userdetails_anonymoususer']) . $HTMLOUT . stdfoot();
     }
     $HTMLOUT .= '
@@ -156,14 +155,14 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     </div>';
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
-if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
+if ($user['id'] != $user['id'] && $user['class'] >= UC_STAFF) {
     $suspended .= ($user['suspended'] === 'yes' ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
 }
-if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
+if ($user['id'] != $user['id'] && $user['class'] >= UC_STAFF) {
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users">' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
 }
-$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
+$perms .= ($user['class'] >= UC_STAFF ? (($user['perms'] & PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
+$stealth .= ($user['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
 $enabled = $user['enabled'] === 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
@@ -171,14 +170,14 @@ $h1 = "
                 <h1 class='has-text-centered'>" . format_username((int) $user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
 if (!$enabled) {
     $h1 .= $lang['userdetails_disabled'];
-} elseif ($CURUSER['id'] != $user['id']) {
+} elseif ($user['id'] != $user['id']) {
     $friend = $cache->get('Friends_' . $user['id']);
     if ($friend === false || is_null($friend)) {
         $friend = $fluent->from('friends')
                          ->select(null)
                          ->select('COUNT(id) AS count')
                          ->where('userid = ?', $user['id'])
-                         ->where('friendid = ?', $CURUSER['id'])
+                         ->where('friendid = ?', $user['id'])
                          ->fetch('count');
         $cache->set('Friends_' . $user['id'], $friend, $site_config['expires']['user_friends']);
     }
@@ -188,7 +187,7 @@ if (!$enabled) {
                         ->select(null)
                         ->select('COUNT(id) AS count')
                         ->where('userid = ?', $user['id'])
-                        ->where('blockid = ?', $CURUSER['id'])
+                        ->where('blockid = ?', $user['id'])
                         ->fetch('count');
         $cache->set('Blocks_' . $user['id'], $block, $site_config['expires']['user_blocks']);
     }
@@ -204,7 +203,7 @@ if (!$enabled) {
     }
 }
 
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $shitty = '';
     $shit_list = $cache->get('shit_list_' . $user['id']);
     if ($shit_list === false || is_null($shit_list)) {
@@ -212,7 +211,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                           ->select(null)
                           ->select('suspect')
                           ->where('userid = ?', $user['id'])
-                          ->where('suspect = ?', $CURUSER['id'])
+                          ->where('suspect = ?', $user['id'])
                           ->fetchAll();
         $cache->set('shit_list_' . $user['id'], $shit_list, $site_config['expires']['shit_list']);
     }
@@ -221,13 +220,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 Remove from your
                 <img class='tooltipper right5' src='{$site_config['paths']['images_baseurl']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit'>
             </a></li>";
-    } elseif ($CURUSER['id'] != $user['id']) {
+    } elseif ($user['id'] != $user['id']) {
         $shitty_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$user['id']}&amp;return_to='{$_SERVER['PHP_SELF']}?id={$user['id']}'>
                 {$lang['userdetails_shit3']}
             </a></li>";
     }
 }
-if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_SYSOP) {
+if ($user['donor'] && $user['id'] == $user['id'] || $user['class'] >= UC_SYSOP) {
     $donoruntil = (int) $user['donoruntil'];
     if ($donoruntil === 0) {
         $HTMLOUT .= '';
@@ -239,11 +238,11 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_S
             </div>";
     }
 }
-if ($CURUSER['id'] == $user['id']) {
+if ($user['id'] == $user['id']) {
     $edit_profile = "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></li>
         <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></li>";
 }
-if ($CURUSER['id'] != $user['id']) {
+if ($user['id'] != $user['id']) {
     $sharemark_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/sharemarks.php?id=${user['id']}'>{$lang['userdetails_sharemarks']}</a></li>";
 }
 $HTMLOUT .= "
@@ -252,7 +251,7 @@ $HTMLOUT .= "
         $sharemark_link
         $shitty_link
         $friend_links
-        $edit_profile" . ($CURUSER['class'] >= UC_MAX ? $user['perms'] & PERMS_NO_IP ? "
+        $edit_profile" . ($user['class'] >= UC_MAX ? $user['perms'] & PERMS_NO_IP ? "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & PERMS_BYPASS_BAN) ? "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
         <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
@@ -263,10 +262,10 @@ if ($stealth) {
     $session->set('is-info', htmlsafechars((string) $user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
-$HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? "
+$HTMLOUT .= ($user['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '');
-$HTMLOUT .= $CURUSER['class'] >= UC_SYSOP ? "
+$HTMLOUT .= $user['class'] >= UC_SYSOP ? "
             <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$user['id']}'>Reset Password</a></li>
             <li class='margin10'><a class='has-text-danger tooltipper' title='Force this user to Logout' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;force_logout=yes'>Force Logout</a></li>" : '';
 $HTMLOUT .= '
@@ -281,7 +280,7 @@ $HTMLOUT .= "
                 <li class='top20'><a href='#general'>{$lang['userdetails_general']}</a></li>
                 <li class='top20'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
                 <li class='top20'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
+if (($user['class'] >= UC_STAFF && $user['class'] < $user['class']) || $user['class'] >= UC_MAX) {
     $HTMLOUT .= "
                 <li class='top20'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
@@ -292,10 +291,10 @@ $HTMLOUT .= "
                 <div id='torrents' class='table-wrapper'>";
 
 $table_data = '';
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
     require_once BLOCK_DIR . 'userdetails/flush.php';
 }
-if ($user['id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_ADMINISTRATOR) {
+if ($user['id'] === $user['id'] || $user['class'] >= UC_ADMINISTRATOR) {
     $table_data .= "
         <tr>
             <td class='rowhead'>Download Torrents</td>
@@ -307,7 +306,7 @@ if ($user['id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_ADMINISTRATOR) {
                     <li class='right10'>
                         <a href='{$site_config['paths']['baseurl']}/download_multi.php?owner=true&amp;userid=${user['id']}' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have uploaded'>Uploaded Torrents</a>
                     </li>";
-    if ($user['id'] === $CURUSER['id'] && $CURUSER['class'] >= UC_ADMINISTRATOR) {
+    if ($user['id'] === $user['id'] && $user['class'] >= UC_ADMINISTRATOR) {
         $table_data .= "
                     <li class='right10'>
                         <a href='{$site_config['paths']['baseurl']}/download_multi.php?getall=yes' class='button is-small tooltipper' title='Download <i><b>all active</b></i> torrents'>Live Torrents</a>
@@ -321,25 +320,25 @@ if ($user['id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_ADMINISTRATOR) {
             </td>
         </tr>';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
     require_once BLOCK_DIR . 'userdetails/traffic.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/shareratio.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/seedtimeratio.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
     require_once BLOCK_DIR . 'userdetails/connectable.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
     require_once BLOCK_DIR . 'userdetails/torrents_block.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
     require_once BLOCK_DIR . 'userdetails/completed.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
     require_once BLOCK_DIR . 'userdetails/snatched_staff.php';
 }
 
@@ -350,7 +349,7 @@ $HTMLOUT .= "
                 <div id='general' class='table-wrapper'>
                     <table class='table table-bordered table-striped five'>";
 
-if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
+if (($user['id'] !== $user['id']) && ($user['class'] >= UC_STAFF)) {
     $the_flip_box = "
         <a id='watched_user'></a>
         <a class='is-link tooltipper' href='#watched_user' onclick=\"flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"flipBox('3')\" src='{$site_config['paths']['images_baseurl']}panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
@@ -399,46 +398,46 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
     }
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
     require_once BLOCK_DIR . 'userdetails/showfriends.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
     require_once BLOCK_DIR . 'userdetails/joined.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
     require_once BLOCK_DIR . 'userdetails/onlinetime.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
     require_once BLOCK_DIR . 'userdetails/browser.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
     require_once BLOCK_DIR . 'userdetails/birthday.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
     require_once BLOCK_DIR . 'userdetails/contactinfo.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
     require_once BLOCK_DIR . 'userdetails/iphistory.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
     require_once BLOCK_DIR . 'userdetails/avatar.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
     require_once BLOCK_DIR . 'userdetails/userclass.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
     require_once BLOCK_DIR . 'userdetails/gender.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
     require_once BLOCK_DIR . 'userdetails/userinfo.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
     require_once BLOCK_DIR . 'userdetails/report.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
     require_once BLOCK_DIR . 'userdetails/userstatus.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
     require_once BLOCK_DIR . 'userdetails/showpm.php';
 }
 $HTMLOUT .= '</table></div>';
@@ -456,39 +455,39 @@ $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</t
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '">
        <span class="tip">' . htmlsafechars((string) $user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
     require_once BLOCK_DIR . 'userdetails/irc.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
     require_once BLOCK_DIR . 'userdetails/reputation.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
     require_once BLOCK_DIR . 'userdetails/userhits.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
     require_once BLOCK_DIR . 'userdetails/freestuffs.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/comments.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
     require_once BLOCK_DIR . 'userdetails/forumposts.php';
 }
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
     require_once BLOCK_DIR . 'userdetails/invitedby.php';
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='comments' class='table-wrapper'>";
-if ($CURUSER['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
+if ($user['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/usercomments.php';
 }
 $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] >= UC_MAX) {
+if (($user['class'] >= UC_STAFF && $user['class'] < $user['class']) || $user['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <form method='post' action='./staffpanel.php?tool=modtask' accept-charset='utf-8'>
         <input type='hidden' name='action' value='edituser'>
@@ -526,7 +525,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                       <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . htmlsafechars((string) $user['website']) . "'></td>
                 </tr>";
 
-    if ($CURUSER['class'] >= UC_MAX) {
+    if ($user['class'] >= UC_MAX) {
         $donor = $user['donor'] === 'yes';
         $HTMLOUT .= "
                 <tr>
@@ -578,16 +577,16 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                     </td>
                 </tr>';
     }
-    if ($CURUSER['class'] === UC_STAFF && $user['class'] > UC_VIP) {
+    if ($user['class'] === UC_STAFF && $user['class'] > UC_VIP) {
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}'>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='3' class='has-text-left'><select name='class' class='w-100'>";
-        if ($CURUSER['class'] >= UC_MAX) {
+        if ($user['class'] >= UC_MAX) {
             $maxclass = UC_MAX;
-        } elseif ($CURUSER['class'] === UC_STAFF) {
+        } elseif ($user['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
         } else {
-            $maxclass = $CURUSER['class'] - 1;
+            $maxclass = $user['class'] - 1;
         }
         for ($i = 0; $i <= $maxclass; ++$i) {
             $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
@@ -599,7 +598,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ($user['support'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ($user['support'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_supportfor']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea></td></tr>";
     $modcomment = htmlsafechars((string) $user['modcomment']);
-    if ($CURUSER['class'] < UC_MAX) {
+    if ($user['class'] < UC_MAX) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' readonly='readonly'>$modcomment</textarea></td></tr>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment'>$modcomment</textarea></td></tr>";
@@ -610,7 +609,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea></td></tr>";
 
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='3' class='has-text-left'><input name='enabled' value='yes' type='radio'" . ($enabled ? ' checked' : '') . ">{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead'>{$lang['userdetails_freeleech_slots']}</td>
@@ -619,7 +618,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                     </td>
                 </tr>";
     }
-    if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
+    if ($user['class'] >= UC_ADMINISTRATOR) {
         $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
                 <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
@@ -642,7 +641,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
                <td class='has-text-left' width='20%'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -665,7 +664,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $uploadpos = $user['uploadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$uploadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_upos']}</td>
                <td class='has-text-left' width='20%'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -688,7 +687,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $sendpmpos = $user['sendpmpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_pmpos']}</td>
                <td class='has-text-left' width='20%'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -711,7 +710,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $chatpost = $user['chatpost'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$chatpost ? ' rowspan="2"' : '') . ">{$lang['userdetails_chatpos']}</td>
                <td class='has-text-left' width='20%'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -734,7 +733,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $avatarpos = $user['avatarpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$avatarpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_avatarpos']}</td>
           <td class='has-text-left' width='20%'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -757,7 +756,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $immunity = $user['immunity'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$immunity ? ' rowspan="2"' : '') . ">{$lang['userdetails_immunity']}</td>
                <td class='has-text-left' width='20%'>" . ($immunity ? "<input name='immunity' value='42' type='radio'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
@@ -780,7 +779,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $leechwarn = $user['leechwarn'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$leechwarn ? ' rowspan="2"' : '') . ">{$lang['userdetails_leechwarn']}</td>
                <td class='has-text-left' width='20%'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
@@ -803,7 +802,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $warned = $user['warned'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? ' rowspan="2"' : '') . ">{$lang['userdetails_warned']}</td>
                <td class='has-text-left' width='20%'>" . ($warned ? "<input name='warned' value='42' type='radio'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
@@ -826,7 +825,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $game_access = $user['game_access'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$game_access ? ' rowspan="2"' : '') . ">{$lang['userdetails_games']}</td>
            <td class='has-text-left' width='20%'>" . ($game_access ? "<input name='game_access' value='42' type='radio'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -849,7 +848,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
 
-    if ($CURUSER['class'] >= UC_MAX) {
+    if ($user['class'] >= UC_MAX) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     }
 
@@ -858,11 +857,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1'><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1'><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='seedbonus' value='" . (int) $user['seedbonus'] . "'></td></tr>";
     }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
+    if ($user['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_rep_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='reputation' value='" . (int) $user['reputation'] . "'></td></tr>";
     }
 
@@ -923,7 +922,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                       <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='checkbox'" . (($user['opt1'] & user_options::FORUM_POST) ? ' checked' : '') . ">{$lang['userdetails_yes']}</td>
                 </tr>-->";
 
-    if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
+    if ($user['class'] >= UC_ADMINISTRATOR) {
         $HTMLOUT .= "<tr>
          <td class='rowhead'>{$lang['userdetails_addupload']}</td>
          <td class='has-text-centered'>

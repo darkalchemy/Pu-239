@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Casino;
@@ -15,7 +14,7 @@ use Pu239\User;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('casino'));
 global $container, $site_config;
 
@@ -53,8 +52,6 @@ $delold = 1; //== Clear bets once finished
 
 $fluent = $container->get(Database::class);
 $users_class = $container->get(User::class);
-$auth = $container->get(Auth::class);
-$user = $users_class->getUserFromId($auth->getUserId());
 $casino = $container->get(Casino::class);
 $casino_bets = $container->get(CasinoBets::class);
 $session = $container->get(Session::class);

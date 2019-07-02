@@ -11,13 +11,13 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('staffbox'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $dt = TIME_NOW;
 $session = $container->get(Session::class);
-if ($CURUSER['class'] < UC_STAFF) {
+if ($user['class'] < UC_STAFF) {
     $session->set('is-danger', $lang['staffbox_class']);
     header('Location: ' . $site_config['paths']['baseurl']);
     die();
@@ -69,8 +69,8 @@ switch ($do) {
             $msg = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
 
             $msgs_buffer[] = [
-                'sender' => $CURUSER['id'],
-                'poster' => $CURUSER['id'],
+                'sender' => $user['id'],
+                'poster' => $user['id'],
                 'receiver' => $a['sender'],
                 'added' => $dt,
                 'msg' => $msg,
@@ -78,7 +78,7 @@ switch ($do) {
             ];
 
             $message = ', answer=' . sqlesc($message);
-            if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
+            if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($user['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 $session->set('is-success', $lang['staffbox_setanswered_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -117,7 +117,7 @@ switch ($do) {
                         <div class='has-text-centered top20'>
                             <select name='do'>
                                 <option value='setanswered' " . ($a['answeredby'] > 0 ? 'disabled' : '') . ">{$lang['staffbox_pm_reply']}</option>
-                                <option value='restart' " . ($a['answeredby'] != $CURUSER['id'] ? 'disabled' : '') . ">{$lang['staffbox_pm_restart']}</option>
+                                <option value='restart' " . ($a['answeredby'] != $user['id'] ? 'disabled' : '') . ">{$lang['staffbox_pm_restart']}</option>
                                 <option value='delete'>{$lang['staffbox_pm_delete']}</option>
                             </select>
                             <input type='hidden' name='reply' value='1'>

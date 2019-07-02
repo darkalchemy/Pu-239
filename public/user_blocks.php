@@ -7,28 +7,27 @@ use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
+$curuser = check_user_status();
 $lang = load_language('global');
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 $session = $container->get(Session::class);
-if (isset($_GET['id'])) {
+$users_class = $container->get(User::class);
+$cache = $container->get(Cache::class);
+if (isset($_GET['id']) && is_valid_id((int) $_GET['id']) && $curuser['class'] >= UC_STAFF) {
     $id = (int) $_GET['id'];
 } else {
-    $id = $auth->getUserId();
+    $id = $curuser['id'];
 }
-if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
-    $id = $auth->getUserId();
-}
-$cache = $container->get(Cache::class);
-$user = $cache->get('user_' . $id);
+$user = $users_class->getUserFromId($id);
 if ($user['class'] < UC_STAFF && $user['got_blocks'] === 'no') {
-    $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
+    $session->set('is-link', 'You will have to unlock this before you can access it.');
     header('Location: ' . $site_config['paths']['baseurl'] . '/index.php');
     die();
 }

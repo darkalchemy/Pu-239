@@ -12,7 +12,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $stdfoot = [
     'js' => [
@@ -25,6 +25,7 @@ $htmlout = '';
 /**
  * @param        $res
  * @param        $userid
+ * @param        $user
  * @param string $variant
  *
  * @throws DependencyException
@@ -33,9 +34,9 @@ $htmlout = '';
  *
  * @return string
  */
-function sharetable($res, $userid, $variant = 'index')
+function sharetable($res, $userid, $user, $variant = 'index')
 {
-    global $container, $site_config, $CURUSER, $lang;
+    global $container, $site_config, $lang;
     $htmlout = "
         <div class='has-text-centered bottom20'>
             {$lang['bookmarks_icon']}
@@ -49,7 +50,7 @@ function sharetable($res, $userid, $variant = 'index')
             <th>Type</th>
             <th>Name</th>';
     //$userid=(int) $_GET['id'];
-    if ($CURUSER['id'] === $userid) {
+    if ($user['id'] === $userid) {
         $heading .= ($variant === 'index' ? '
             <th>Download</th>' : '') . '
             <th>Delete</th>';
@@ -207,7 +208,7 @@ function sharetable($res, $userid, $variant = 'index')
     return $htmlout;
 }
 
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($userid)) {
@@ -231,7 +232,7 @@ $count = $fluent->from('bookmarks')
                 ->where('userid = ?', $userid)
                 ->fetch('count');
 
-$torrentsperpage = $CURUSER['torrentsperpage'];
+$torrentsperpage = $user['torrentsperpage'];
 if (empty($torrentsperpage)) {
     $torrentsperpage = 25;
 }
@@ -267,7 +268,7 @@ if ($count) {
                          ->fetchAll();
 
     $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
-    $htmlout .= sharetable($sharemarks, $userid, 'index');
+    $htmlout .= sharetable($sharemarks, $userid, $user, 'index');
     $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
 $users_class = $container->get(User::class);

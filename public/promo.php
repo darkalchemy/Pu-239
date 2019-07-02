@@ -10,13 +10,10 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('signup'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-if (!$CURUSER) {
-    get_template();
-}
 $HTMLOUT = '';
 $fluent = $container->get(Database::class);
 $session = $container->get(Session::class);
@@ -50,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         'days_valid' => $days_valid,
         'max_users' => $max_users,
         'link' => $token,
-        'creator' => $CURUSER['id'],
+        'creator' => $user['id'],
         'bonus_upload' => $bonus_upload,
         'bonus_invites' => $bonus_invites,
         'bonus_karma' => $bonus_karma,
@@ -84,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         }
     }
 } elseif ($do === 'addpromo') {
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($user['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $HTMLOUT .= '
@@ -178,7 +175,7 @@ if (empty($_POST)) {
                 </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>';
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($user['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $r = $fluent->from('promo')

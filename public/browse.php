@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_searchcloud.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
-global $container, $site_config, $CURUSER;
+$user = check_user_status();
+global $container, $site_config;
 
 $users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
@@ -33,7 +33,7 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $set = [
         'last_browse' => TIME_NOW,
     ];
-    $users_class->update($set, $CURUSER['id']);
+    $users_class->update($set, $user['id']);
     header("Location: {$site_config['paths']['baseurl']}/browse.php");
     die();
 }
@@ -51,7 +51,7 @@ $query = $fluent->from('torrents AS t')
                 ->select('f.addedup')
                 ->select('f.addedfree')
                 ->leftJoin('users AS u ON t.owner = u.id')
-                ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $CURUSER['id']);
+                ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $user['id']);
 
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
@@ -131,7 +131,7 @@ if (!empty($_GET['today']) && $_GET['today']) {
 $queryed = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
 if ($queryed === 1) {
     $addparam .= 'incldead=1&amp;';
-    if (!isset($CURUSER) || $CURUSER['class'] < UC_ADMINISTRATOR) {
+    if (!isset($user) || $user['class'] < UC_ADMINISTRATOR) {
         $count->where('t.banned != "yes"');
         $query->where('t.banned != "yes"');
     }
@@ -163,14 +163,14 @@ if (isset($_GET['vip'])) {
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
     $count->where('s.to_go IS NULL')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id'])
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id'])
           ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $CURUSER['id']);
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
 }
 
 $cats = [];
@@ -313,7 +313,7 @@ if (!empty($title)) {
     $title = $lang['browse_search'] . $title;
 }
 $count = $count->fetch('count');
-$torrentsperpage = $CURUSER['torrentsperpage'];
+$torrentsperpage = $user['torrentsperpage'];
 if (!$torrentsperpage) {
     $torrentsperpage = 25;
 }
@@ -334,7 +334,7 @@ if ($count > 0) {
           ->offset($pager['pdo']['offset'])
           ->fetchAll();
 }
-if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
+if ($user['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
 }
 
@@ -347,7 +347,7 @@ if ($today) {
 
 require_once PARTIALS_DIR . 'categories.php';
 
-if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
+if ($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
         <a href='{$site_config['paths']['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small'></a>
         <br>";
@@ -355,7 +355,7 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $set = [
         'last_browse' => TIME_NOW,
     ];
-    $users_class->update($set, $CURUSER['id']);
+    $users_class->update($set, $user['id']);
 }
 
 $vip = ((isset($_GET['vip'])) ? (int) $_GET['vip'] : '');

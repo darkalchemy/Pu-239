@@ -112,7 +112,7 @@ function format_rss($data, ?string $torrent_pass)
     $rssdescr = $site_config['site']['name'] . ' RSS Feed - Please Donate';
     $feed = isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web';
     $url = urlencode($site_config['paths']['baseurl'] . $_SERVER['REQUEST_URI']);
-    $br = '<br />';
+    $br = ''; // '<br />'; TODO
     $date = date(DATE_RSS, TIME_NOW);
 
     $rss = '<?xml version="1.0" encoding="UTF-8"?>

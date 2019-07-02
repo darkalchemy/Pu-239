@@ -1256,6 +1256,10 @@ ul li ul li {
     }
 }
 
+.responsive-icon {
+    font-size: 48px;
+}
+
 @media (max-width: 1087px) {
     #parallax {
         display: flex;
@@ -1276,11 +1280,19 @@ ul li ul li {
         order: 3;
         width: 100%;
     }
+
+    .responsive-icon {
+        font-size: 40px;
+    }
 }
 
 @media (max-width: 875px) {
     .searchbar {
         display: none;
+    }
+
+    .responsive-icon {
+        font-size: 32px;
     }
 }
 
@@ -1362,6 +1374,10 @@ ul li ul li {
 
     .level-left.is-wrapped ul {
         display: inline-block;
+    }
+
+    .responsive-icon {
+        font-size: 24px;
     }
 }
 

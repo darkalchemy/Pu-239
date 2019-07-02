@@ -10,8 +10,8 @@ use Pu239\User;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
-global $container, $CURUSER;
+$curuser = check_user_status();
+global $container;
 
 $posted_action = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 $valid_actions = [
@@ -42,15 +42,15 @@ switch ($action) {
         $peers_class = $container->get(Peer::class);
         $snatched_class->flush($id);
         $count = $peers_class->flush($id);
-        if ($id === $CURUSER['id']) {
+        if ($id === $curuser['id']) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}]{$CURUSER['username']}[/url] flushed {$count} torrents.",
+                'txt' => "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url] flushed {$count} torrents.",
             ];
-        } elseif ($id !== $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
+        } elseif ($id !== $curuser['id'] && $curuser['class'] >= UC_STAFF) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => "Staff Flush: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}]{$CURUSER['username']}[/url] flushed {$count} torrents for [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]",
+                'txt' => "Staff Flush: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url] flushed {$count} torrents for [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]",
             ];
         }
         $fluent = $container->get(Database::class);
@@ -60,37 +60,37 @@ switch ($action) {
         break;
 
     case 'staff_notes':
-        if ($CURUSER['class'] < UC_STAFF) {
+        if ($curuser['class'] < UC_STAFF) {
             stderr('Error', 'How did you get here?');
         }
         $posted_notes = isset($_POST['new_staff_note']) ? htmlsafechars($_POST['new_staff_note']) : '';
-        if ($id !== $CURUSER['id'] && $CURUSER['class'] > $user['class']) {
+        if ($id !== $curuser['id'] && $curuser['class'] > $user['class']) {
             $update = [
                 'staff_notes' => $posted_notes,
             ];
             $users_class->update($update, $id);
-            write_log("{$CURUSER['username']} edited member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] staff notes. Changes made:<br>Was:<br>" . htmlsafechars((string) $user['staff_notes']) . '<br>is now:<br>' . $posted_notes);
+            write_log("{$curuser['username']} edited member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] staff notes. Changes made:<br>Was:<br>" . htmlsafechars((string) $user['staff_notes']) . '<br>is now:<br>' . $posted_notes);
         }
         header('Location: ' . $referer);
         break;
 
     case 'watched_user':
-        if ($CURUSER['class'] < UC_STAFF) {
+        if ($curuser['class'] < UC_STAFF) {
             stderr('Error', 'How did you get here?');
         }
 
         $posted = isset($_POST['watched_reason']) ? htmlsafechars($_POST['watched_reason']) : '';
-        if ($id !== $CURUSER['id'] || $CURUSER['class'] < $user['class']) {
+        if ($id !== $curuser['id'] || $curuser['class'] < $user['class']) {
             if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] === 'yes' && $user['watched_user'] == 0) {
                 $update['watched_user'] = TIME_NOW;
-                write_log("{$CURUSER['username']} added member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] to watched users.");
+                write_log("{$curuser['username']} added member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] to watched users.");
             } elseif (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] === 'no' && $user['watched_user'] > 0) {
                 $update['watched_user'] = 0;
-                write_log("{$CURUSER['username']} removed member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] from watched users. <br>{$user['username']} had been on the list since " . get_date((int) $user['watched_user'], 'LONG'));
+                write_log("{$curuser['username']} removed member [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] from watched users. <br>{$user['username']} had been on the list since " . get_date((int) $user['watched_user'], 'LONG'));
             }
             if ($_POST['watched_reason'] !== $user['watched_user_reason']) {
                 $update['watched_user_reason'] = $posted;
-                write_log("{$CURUSER['username']} changed watched user text for: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] Changes made:<br>Text was:<br>" . htmlsafechars((string) $user['watched_user_reason']) . '<br>Is now:<br>' . $posted);
+                write_log("{$curuser['username']} changed watched user text for: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url] Changes made:<br>Text was:<br>" . htmlsafechars((string) $user['watched_user_reason']) . '<br>Is now:<br>' . $posted);
             }
             if (!empty($update)) {
                 $users_class->update($update, $id);

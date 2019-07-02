@@ -10,9 +10,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('report'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $stdhead = [
     'css' => [
@@ -64,7 +64,7 @@ if (isset($_POST['do_it'])) {
     $previous = $fluent->from('reports')
                        ->select(null)
                        ->select('id')
-                       ->where('reported_by = ?', $CURUSER['id'])
+                       ->where('reported_by = ?', $user['id'])
                        ->where('reporting_what = ?', $id)
                        ->where('reporting_type = ?', $type)
                        ->fetch('id');
@@ -74,7 +74,7 @@ if (isset($_POST['do_it'])) {
     }
 
     $values = [
-        'reported_by' => $CURUSER['id'],
+        'reported_by' => $user['id'],
         'reporting_what' => $id,
         'reporting_type' => $type,
         'reason' => $reason,

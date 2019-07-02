@@ -10,9 +10,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('invite_code'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $stdfoot = [
     'js' => [
@@ -30,7 +30,7 @@ $valid_actions = [
     'resend',
 ];
 $do = (($do && in_array($do, $valid_actions, true)) ? $do : '') or header('Location: ?do=view_page');
-if ($CURUSER['suspended'] === 'yes') {
+if ($user['suspended'] === 'yes') {
     stderr('Sorry', 'Your account is suspended');
 }
 
@@ -44,7 +44,7 @@ if ($do === 'view_page') {
                   ->select('downloaded')
                   ->select('status')
                   ->where('join_type = "invite"')
-                  ->where('invitedby = ?', $CURUSER['id']);
+                  ->where('invitedby = ?', $user['id']);
 
     foreach ($sql as $row) {
         $rows[] = $row;
@@ -86,7 +86,7 @@ if ($do === 'view_page') {
 
     $HTMLOUT .= main_table($body, $heading);
     $body = $heading = '';
-    $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'Pending'") or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($user['id']) . " AND status = 'Pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
     $HTMLOUT .= "<h1 class='has-text-centered top20'>{$lang['invites_codes']}</h1>";
     if (!$num_row) {
@@ -123,10 +123,10 @@ if ($do === 'view_page') {
                         </td>
                         <td class='has-text-centered'>" . get_date((int) $fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$CURUSER['id']}' class='tooltipper' title='Delete'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='Delete'>
                                 <i class='icon-trash-empty icon has-text-danger'></i>
                             </a>" . (!empty($fetch_assoc['email']) ? "
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=resend&amp;id={$secret}&amp;sender={$CURUSER['id']}' class='tooltipper' title='Resend'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=resend&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='Resend'>
                                 <i class='icon-mail icon has-text-success'></i>
                             </a>" : '') . "
                         </td>
@@ -148,10 +148,10 @@ if ($do === 'view_page') {
     echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($do === 'create_invite') {
-    if ($CURUSER['invites'] <= 0) {
+    if ($user['invites'] <= 0) {
         stderr($lang['invites_error'], $lang['invites_noinvite']);
     }
-    if ($CURUSER['invite_rights'] === 'no' || $CURUSER['suspended'] === 'yes') {
+    if ($user['invite_rights'] === 'no' || $user['suspended'] === 'yes') {
         stderr($lang['invites_deny'], $lang['invites_disabled']);
     }
     $count = $fluent->from('invite_codes')
@@ -165,7 +165,7 @@ if ($do === 'view_page') {
     $token = make_password(32);
 
     $values = [
-        'sender' => $CURUSER['id'],
+        'sender' => $user['id'],
         'code' => $token,
         'added' => TIME_NOW,
     ];
@@ -174,15 +174,15 @@ if ($do === 'view_page') {
            ->execute();
 
     $set = [
-        'invites' => $CURUSER['invites'] - 1,
+        'invites' => $user['invites'] - 1,
     ];
     $fluent->update('users')
            ->set($set)
-           ->where('id = ?', $CURUSER['id'])
+           ->where('id = ?', $user['id'])
            ->execute();
 
-    $update['invites'] = ($CURUSER['invites'] - 1);
-    $cache->update_row('user_' . $CURUSER['id'], [
+    $update['invites'] = ($user['invites'] - 1);
+    $cache->update_row('user_' . $user['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
@@ -195,7 +195,7 @@ if ($do === 'view_page') {
         $email = htmlsafechars($code['email']);
         $invite = htmlsafechars($code['code']);
         $secret = $code['id'];
-        $body = get_body($site_config['site']['name'], htmlspecialchars($CURUSER['username']), $email, $secret, $invite);
+        $body = get_body($site_config['site']['name'], htmlspecialchars($user['username']), $email, $secret, $invite);
         if (send_mail($code['email'], "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
             $session = $container->get(Session::class);
             $session->set('is-success', $lang['invites_confirmation']);
@@ -227,7 +227,7 @@ if ($do === 'view_page') {
                ->where('code = ?', $_POST['code'])
                ->execute();
 
-        $inviter = htmlsafechars($CURUSER['username']);
+        $inviter = htmlsafechars($user['username']);
         $title = $site_config['site']['name'];
         $body = get_body($title, $inviter, $email, $secret, $invite);
         if (send_mail($email, "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
@@ -243,7 +243,7 @@ if ($do === 'view_page') {
     }
     $fetch = $fluent->from('invite_codes')
                     ->where('id = ?', $id)
-                    ->where('sender = ?', $CURUSER['id'])
+                    ->where('sender = ?', $user['id'])
                     ->where('status = "Pending"')
                     ->fetch();
 
@@ -275,32 +275,32 @@ if ($do === 'view_page') {
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } elseif ($do === 'delete_invite') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
-    $query = sql_query('SELECT * FROM invite_codes WHERE id=' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
+    $query = sql_query('SELECT * FROM invite_codes WHERE id=' . sqlesc($id) . ' AND sender = ' . sqlesc($user['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_noexsist']);
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $CURUSER['id'] . '&amp;sure=yes"><span class="has-text-danger">here</span></a> to delete it or <a href="' . $_SERVER['PHP_SELF'] . '?do=view_page"><span class="has-text-success"> here</span></a> to go back.');
+        stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $user['id'] . '&amp;sure=yes"><span class="has-text-danger">here</span></a> to delete it or <a href="' . $_SERVER['PHP_SELF'] . '?do=view_page"><span class="has-text-success"> here</span></a> to go back.');
     }
     $fluent->deleteFrom('invite_codes')
            ->where('id = ?', $id)
-           ->where('sender = ?', $CURUSER['id'])
+           ->where('sender = ?', $user['id'])
            ->where('status = "Pending"')
            ->execute();
 
     $set = [
-        'invites' => $CURUSER['invites'] + 1,
+        'invites' => $user['invites'] + 1,
     ];
 
     $fluent->update('users')
            ->set($set)
-           ->where('id = ?', $CURUSER['id'])
+           ->where('id = ?', $user['id'])
            ->execute();
-    $update['invites'] = ($CURUSER['invites'] + 1);
+    $update['invites'] = ($user['invites'] + 1);
 
-    $cache->update_row('user_' . $CURUSER['id'], [
+    $cache->update_row('user_' . $user['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
@@ -310,16 +310,16 @@ if ($do === 'view_page') {
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
 
-    $select = sql_query('SELECT id, username FROM users WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $select = sql_query('SELECT id, username FROM users WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($select);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_errorid']);
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr($lang['invites_confirm1'], $lang['invites_sure1'] . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $CURUSER['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
+        stderr($lang['invites_confirm1'], $lang['invites_sure1'] . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $user['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
     }
-    sql_query('UPDATE users SET status = "confirmed" WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET status = "confirmed" WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($user['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
 
     $cache->update_row('user_' . $userid, [
         'status' => 'confirmed',

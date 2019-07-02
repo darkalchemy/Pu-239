@@ -8,16 +8,16 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
-$id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
-if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
-    $id = $CURUSER['id'];
+$id = (isset($_GET['id']) ? $_GET['id'] : $user['id']);
+if (!is_valid_id($id) || $user['class'] < UC_STAFF) {
+    $id = $user['id'];
 }
-$got_moods = ($CURUSER['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
-if ($CURUSER['class'] < UC_STAFF && $got_moods) {
+$got_moods = $user['opt2'] & user_options_2::GOT_MOODS === user_options_2::GOT_MOODS;
+if ($user['class'] < UC_STAFF && $got_moods) {
     stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
     die();
 }
@@ -25,11 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateset = [];
     $setbits = $clrbits = 0;
     if (isset($_POST['unlock_user_moods'])) {
-        $setbits |= UNLOCK_MORE_MOODS;
-    } // Unlock bonus moods
-    else {
-        $clrbits |= UNLOCK_MORE_MOODS;
-    } // lock bonus moods
+        $setbits |= UNLOCK_MORE_MOODS; // Unlock bonus moods
+    } else {
+        $clrbits |= UNLOCK_MORE_MOODS; // lock bonus moods
+    }
 
     if (isset($_POST['perms_stealth'])) {
         $setbits |= PERMS_STEALTH; // stealth on
@@ -53,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ' . $_SERVER['PHP_SELF']);
     die();
 }
-$checkbox_unlock_moods = (($CURUSER['perms'] & UNLOCK_MORE_MOODS) ? ' checked' : '');
-$checkbox_unlock_stealth = (($CURUSER['perms'] & PERMS_STEALTH) ? ' checked' : '');
+$checkbox_unlock_moods = $user['perms'] & UNLOCK_MORE_MOODS ? ' checked' : '';
+$checkbox_unlock_stealth = $user['perms'] & PERMS_STEALTH ? ' checked' : '';
 
 $HTMLOUT = '
             <div class="bg-02 top20">

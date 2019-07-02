@@ -6,7 +6,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('achievement_history'));
 $HTMLOUT = '';
 $id = (int) $_GET['id'];
@@ -25,9 +25,9 @@ $row = mysqli_fetch_row($res);
 $count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "?id=$id&amp;");
-global $CURUSER, $site_config;
+global $site_config;
 
-if ($id === $CURUSER['id']) {
+if ($id === $user['id']) {
     $HTMLOUT .= "
     <div class='w-100'>
         <ul class='level-center padding20 bg-06'>
@@ -51,7 +51,7 @@ $HTMLOUT .= "
     <div class='has-text-centered'>
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username((int) $arr['id']) . "</h1>
         <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
-if ($id === $CURUSER['id']) {
+if ($id === $user['id']) {
     $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}{$lang['achievement_history_pa']}{$spentpoints}{$lang['achievement_history_ps']}</a>";
 }
 $HTMLOUT .= '</h2>

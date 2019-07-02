@@ -8,16 +8,16 @@ use Pu239\Message;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$curuser = check_user_status();
 $lang = array_merge(load_language('global'), load_language('friends'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
-$userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
+$userid = isset($_GET['id']) ? (int) $_GET['id'] : $curuser['id'];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 if (!is_valid_id($userid)) {
     stderr($lang['friends_error'], $lang['friends_invalid_id']);
 }
-if ($userid != $CURUSER['id']) {
+if ($userid != $curuser['id']) {
     stderr($lang['friends_error'], $lang['friends_no_access']);
 }
 $dt = TIME_NOW;
@@ -33,7 +33,7 @@ if ($action === 'add') {
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
-    if ($CURUSER['id'] == $targetid) {
+    if ($curuser['id'] == $targetid) {
         stderr('Error', 'Ye cant add yerself nugget.');
     }
     if ($type === 'friend') {
@@ -93,7 +93,7 @@ if ($action === 'confirm') {
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
-    $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
+    $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
         stderr('Confirm Friend', "Do you really want to confirm this person? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
@@ -102,7 +102,7 @@ if ($action === 'confirm') {
     }
     if ($type === 'friend') {
         sql_query('INSERT INTO friends VALUES (0, ' . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'yes') ON DUPLICATE KEY UPDATE userid=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE friends SET confirmed = 'yes' WHERE userid=" . sqlesc($targetid) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE friends SET confirmed = 'yes' WHERE userid=" . sqlesc($targetid) . ' AND friendid=' . sqlesc($curuser['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
         $cache->delete('Friends_' . $userid);
         $cache->delete('Blocks_' . $targetid);
@@ -130,7 +130,7 @@ if ($action === 'confirm') {
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
-    $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
+    $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
         stderr("Delete $type Request", "Do you really want to delete this friend request? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
@@ -155,7 +155,7 @@ if ($action === 'confirm') {
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
-    $hash = md5('c@@me' . $CURUSER['id'] . $targetid . $type . 'confirm' . 'sa7t');
+    $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
         stderr("Delete $type", "Do you really want to delete a $type? Click\n<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>here</b></a> if you are sure.", null);
     }
@@ -192,7 +192,7 @@ $res = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__
 $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friends_no_user']);
 $HTMLOUT = '';
 $i = 0;
-$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid=u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid=u.id WHERE friendid=' . sqlesc($curuser['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";

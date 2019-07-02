@@ -9,9 +9,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('snatches'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
@@ -76,7 +76,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
     $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : $lang['snatches_unknown']);
-    $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
+    $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($user['class'] < UC_STAFF && $arr['userid'] != $user['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>

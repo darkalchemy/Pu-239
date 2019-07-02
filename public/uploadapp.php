@@ -10,9 +10,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $HTMLOUT = '';
 
@@ -20,9 +20,9 @@ $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 $messages_class = $container->get(Message::class);
 if (isset($_POST['form']) != 1) {
-    $res = sql_query('SELECT status FROM uploadapp WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT status FROM uploadapp WHERE userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    if ($CURUSER['class'] >= $site_config['allowed']['upload']) {
+    if ($user['class'] >= $site_config['allowed']['upload']) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
     } elseif ($arr['status'] === 'pending') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
@@ -33,11 +33,11 @@ if (isset($_POST['form']) != 1) {
         <h1>{$lang['uploadapp_application']}</h1>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
-        $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
+        $ratio = member_ratio($user['uploaded'], $user['downloaded']);
         $connect = $fluent->from('peers')
                           ->select(null)
                           ->select('connectable')
-                          ->where('userid = ?', $CURUSER['id'])
+                          ->where('userid = ?', $user['id'])
                           ->fetch();
         if (!empty($connect)) {
             $Conn_Y = 'yes';
@@ -53,13 +53,13 @@ if (isset($_POST['form']) != 1) {
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_username']}</td>
                     <td>
-                        <input name='userid' type='hidden' value='" . (int) $CURUSER['id'] . "'>
-                        {$CURUSER['username']}
+                        <input name='userid' type='hidden' value='" . (int) $user['id'] . "'>
+                        {$user['username']}
                      </td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_joined']}</td>
-                    <td>" . get_date((int) $CURUSER['registered'], '', 0, 1) . "</td>
+                    <td>" . get_date((int) $user['registered'], '', 0, 1) . "</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
@@ -189,7 +189,7 @@ if (isset($_POST['form']) != 1) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
     } else {
         $subject = 'Uploader application';
-        $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
+        $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "][b]{$user['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
         $dt = TIME_NOW;
         $subres = $fluent->from('users')
                          ->select(null)

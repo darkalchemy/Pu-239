@@ -5,9 +5,10 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $CURUSER, $container, $site_config;
+$user = check_user_status();
+global $container, $site_config;
 
-if ($CURUSER) {
+if ($user) {
     $cache = $container->get(Cache::class);
     $lottery_info = $cache->get('lottery_info_');
     if ($lottery_info === false || is_null($lottery_info)) {

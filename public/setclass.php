@@ -8,12 +8,12 @@ use Pu239\User;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('setclass'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $HTMLOUT = '';
-if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
+if ($user['class'] < UC_STAFF || $user['override_class'] != 255) {
     stderr('Error', 'whats the story?');
 }
 if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
@@ -23,10 +23,10 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
         'override_class' => $newclass,
     ];
     $users_class = $container->get(User::class);
-    $users_class->update($set, $CURUSER['id']);
+    $users_class->update($set, $user['id']);
     $fluent = $container->get(Database::class);
     $fluent->deleteFrom('ajax_chat_online')
-           ->where('userID = ?', $CURUSER['id'])
+           ->where('userID = ?', $user['id'])
            ->execute();
     header("Location: {$site_config['paths']['baseurl']}/" . $returnto);
     die();
@@ -36,14 +36,14 @@ $HTMLOUT .= "
 <h2 class='has-text-centered'>{$lang['set_class_allow']}</h2>
 <form method='get' action='{$site_config['paths']['baseurl']}/setclass.php' accept-charset='utf-8'>
     <input type='hidden' name='action' value='editclass'>
-    <input type='hidden' name='returnto' value='userdetails.php?id=" . (int) $CURUSER['id'] . "'>";
+    <input type='hidden' name='returnto' value='userdetails.php?id=" . $user['id'] . "'>";
 
 $text = "
     <div class='has-text-centered padding20'>
         <label for='name'>Class</label>
         <span class='margin20'>
             <select id='class' name='class'>";
-$maxclass = $CURUSER['class'] - 1;
+$maxclass = $user['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name((int) $i)) != '') {
         $text .= "

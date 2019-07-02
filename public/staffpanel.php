@@ -12,7 +12,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
 require_once BIN_DIR . 'uglify.php';
 require_once BIN_DIR . 'functions.php';
-check_user_status();
+$user = check_user_status();
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -29,11 +29,8 @@ $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-if (!$CURUSER) {
-    stderr($lang['spanel_error'], $lang['spanel_access_denied']);
-}
 $cache = $container->get(Cache::class);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
@@ -53,7 +50,7 @@ class_check(UC_STAFF);
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null);
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 $tool = !empty($_GET['tool']) ? $_GET['tool'] : (!empty($_POST['tool']) ? $_POST['tool'] : null);
-write_info("{$CURUSER['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
+write_info("{$user['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
 $staff_tools = [
     'modtask' => 'modtask',
     'iphistory' => 'iphistory',
@@ -79,11 +76,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
     $session = $container->get(Session::class);
-    if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX) {
+    if ($action === 'delete' && is_valid_id($id) && $user['class'] >= UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
-        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
-        if ($CURUSER['class'] < $arr['av_class']) {
+        if ($user['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
         }
         if (!$sure) {
@@ -96,22 +93,22 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->delete('staff_panels_5');
         $cache->delete('staff_panels_4');
         if (mysqli_affected_rows($mysqli)) {
-            if ($CURUSER['class'] <= UC_MAX) {
+            if ($user['class'] <= UC_MAX) {
                 $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
-                $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
-                write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
+                $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
+                write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user_bbcode");
             }
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
-    } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
+    } elseif (($action === 'flush' && $user['class'] >= UC_SYSOP)) {
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'uglify' && $CURUSER['class'] >= UC_SYSOP)) {
+    } elseif (($action === 'uglify' && $user['class'] >= UC_SYSOP)) {
         toggle_site_status(true);
         $result = run_uglify();
         toggle_site_status(false);
@@ -124,14 +121,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {
+    } elseif (($action === 'clear_ajaxchat' && $user['class'] >= UC_SYSOP)) {
         $fluent->deleteFrom('ajax_chat_messages')
                ->where('id>0')
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'toggle_status' && $CURUSER['class'] >= UC_SYSOP)) {
+    } elseif (($action === 'toggle_status' && $user['class'] >= UC_SYSOP)) {
         if (toggle_site_status($site_config['site']['online'])) {
             $session->set('is-success', 'Site is Online.');
         } else {
@@ -139,7 +136,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'add' && $CURUSER['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] >= UC_MAX)) {
+    } elseif (($action === 'add' && $user['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $user['class'] >= UC_MAX)) {
         $names = [
             'page_name',
             'file_name',
@@ -155,7 +152,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         foreach ($names as $name) {
             ${$name} = (isset($_POST[$name]) ? $_POST[$name] : ($action === 'edit' ? $arr[$name] : ''));
         }
-        if ($action === 'edit' && $CURUSER['class'] < $arr['av_class']) {
+        if ($action === 'edit' && $user['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -199,7 +196,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         $description,
                         $type,
                         (int) $_POST['av_class'],
-                        (int) $CURUSER['id'],
+                        $user['id'],
                         TIME_NOW,
                         $navbar,
                     ])) . ')');
@@ -245,11 +242,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     }
                 }
                 if (empty($errors)) {
-                    if ($CURUSER['class'] <= UC_MAX) {
+                    if ($user['class'] <= UC_MAX) {
                         $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = $action === 'add' ? 'added' : 'edited';
-                        $user = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
-                        write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
+                        $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
+                        write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user_bbcode");
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
                     header('Location: ' . $_SERVER['PHP_SELF']);
@@ -357,7 +354,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     } else {
         $add_button = '';
-        if ($CURUSER['class'] >= UC_SYSOP) {
+        if ($user['class'] >= UC_SYSOP) {
             $add_button = "
                 <ul class='level-center bg-06'>
                     <li class='margin10'>
@@ -380,7 +377,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $res = sql_query('SELECT s.*, u.username
                                 FROM staffpanel AS s
                                 LEFT JOIN users AS u ON u.id=s.added_by
-                                WHERE s.av_class <= ' . sqlesc($CURUSER['class']) . '
+                                WHERE s.av_class <= ' . sqlesc($user['class']) . '
                                 ORDER BY s.av_class DESC, s.page_name') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $db_classes = $unique_classes = $mysql_data = [];
@@ -392,7 +389,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
             $i = 1;
             $HTMLOUT .= "{$add_button}
-            <h1 class='has-text-centered'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
+            <h1 class='has-text-centered'>{$lang['spanel_welcome']} {$user['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
 
             $header = "
                     <tr>
@@ -400,7 +397,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <th><div class='has-text-centered'>Show in Navbar</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_added_by']}</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_date_added']}</div></th>";
-            if ($CURUSER['class'] >= UC_MAX) {
+            if ($user['class'] >= UC_MAX) {
                 $header .= "
                         <th><div class='has-text-centered'>{$lang['spanel_links']}</div></th>";
             }
@@ -441,7 +438,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                                 <span>" . get_date((int) $arr['added'], 'DATE', 0, 1) . '</span>
                             </div>
                         </td>';
-                if ($CURUSER['class'] >= UC_MAX) {
+                if ($user['class'] >= UC_MAX) {
                     $body .= "
                         <td>
                             <div class='level-center'>

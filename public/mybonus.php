@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Bonuslog;
 use Pu239\Database;
@@ -18,7 +17,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_event.php';
 require_once INCL_DIR . 'function_bonus.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 global $container, $site_config;
 
@@ -59,8 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bonusgift = isset($post['bonusgift']) ? (int) $post['bonusgift'] : 0;
     $title = isset($post['title']) ? htmlsafechars(trim($post['title'])) : '';
     $users_class = $container->get(User::class);
-    $auth = $container->get(Auth::class);
-    $user = $users_class->getUserFromId($auth->getUserId());
     $bonuslog = $container->get(Bonuslog::class);
 
     if (in_array($option, $traffic1) && $art === 'traffic') {
@@ -104,10 +101,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         set_event(1, $dt, $end, $User['id'], $message);
                         $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
                         $values = [
-                            'donation' => $excess,
+                            'donation' => $donate,
                             'type' => $options[$option]['art'],
                             'added_at' => $dt,
                             'user_id' => $user['id'],
+                        ];
+                        $update = [
+                            'pointspool' => $excess,
                         ];
                     } else {
                         $values = [
@@ -116,7 +116,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'added_at' => $dt,
                             'user_id' => $user['id'],
                         ];
+                        $update = [
+                            'pointspool' => (int) $options[$option]['pointspool'] + $donate,
+                        ];
                     }
+                    $fluent->update('bonus')
+                           ->set($update)
+                           ->where('id = ?', $post['option'])
+                           ->execute();
                     $bonuslog->insert($values);
                     $session->set('is-success', ':woot: You donated ' . number_format($donate) . " Karma to the [b]{$options[$option]['bonusname']}[/b] fund");
                 } else {

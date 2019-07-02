@@ -13,10 +13,13 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-if (!$CURUSER) {
-    get_template();
+get_template();
+$auth = $container->get(Auth::class);
+if ($auth->isLoggedIn()) {
+    $auth->logOutEverywhere();
+    $auth->destroySession();
 }
 if (!$site_config['mail']['smtp_enable']) {
     stderr('Error', 'Mail functions have not been enabled.');

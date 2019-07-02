@@ -9,7 +9,7 @@ use Pu239\PollVoter;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? (int) $_GET['pollid'] : false;
 if (!is_valid_id($poll_id)) {
@@ -17,12 +17,12 @@ if (!is_valid_id($poll_id)) {
 }
 $vote_cast = [];
 $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $fluent = $container->get(Database::class);
 $poll_data = $fluent->from('polls')
                     ->where('polls.pid = ?', $poll_id)
-                    ->leftJoin('poll_voters ON polls.pid=poll_voters.poll_id AND poll_voters.user_id = ?', $CURUSER['id'])
+                    ->leftJoin('poll_voters ON polls.pid=poll_voters.poll_id AND poll_voters.user_id = ?', $user['id'])
                     ->fetch();
 
 if (empty($poll_data)) {
@@ -56,7 +56,7 @@ if (!$_POST['nullvote']) {
         stderr('ERROR', 'No vote');
     }
     $values = [
-        'user_id' => $CURUSER['id'],
+        'user_id' => $user['id'],
         'poll_id' => $poll_data['pid'],
         'vote_date' => TIME_NOW,
     ];
@@ -75,9 +75,9 @@ if (!$_POST['nullvote']) {
     $choices = addslashes(serialize($poll_answers));
     $votes = $poll_data['votes'] + 1;
     $cache = $container->get(Cache::class);
-    $cache->update_row('poll_data_' . $CURUSER['id'], [
+    $cache->update_row('poll_data_' . $user['id'], [
         'votes' => $votes,
-        'user_id' => $CURUSER['id'],
+        'user_id' => $user['id'],
         'vote_date' => TIME_NOW,
         'choices' => $choices,
     ], $site_config['expires']['poll_data']);
@@ -96,15 +96,15 @@ if (!$_POST['nullvote']) {
     }
 } else {
     $values = [
-        'user_id' => $CURUSER['id'],
+        'user_id' => $user['id'],
         'poll_id' => $poll_data['pid'],
         'vote_date' => TIME_NOW,
     ];
     $vid = $pollvoter_class->add($values);
     $votes = $poll_data['votes'] + 1;
-    $cache->update_row('poll_data_' . $CURUSER['id'], [
+    $cache->update_row('poll_data_' . $user['id'], [
         'votes' => $votes,
-        'user_id' => $CURUSER['id'],
+        'user_id' => $user['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
 

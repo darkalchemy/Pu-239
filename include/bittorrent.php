@@ -79,8 +79,8 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -213,9 +213,9 @@ function userlogin()
 }
 */
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -306,9 +306,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -336,9 +336,9 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -848,6 +848,8 @@ function force_logout(int $userid)
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return int
  */
 function check_user_status(string $type = 'browse')
 {
@@ -877,6 +879,9 @@ function check_user_status(string $type = 'browse')
         header("Location: {$site_config['paths']['baseurl']}/login.php" . $returnto);
         die();
     }
+    $user_class = $container->get(User::class);
+
+    return $user_class->getUserFromId($auth->getUserId());
 }
 
 /**
@@ -903,9 +908,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -982,9 +987,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1024,18 +1029,18 @@ function bubble($link, $text, $title = false)
         <span class='dt-tooltipper-large size_5 has-text-primary' data-tooltip-content='#{$id}'>
             $link
         </span>
-        <span class='tooltip_templates'>
-            <span id='$id'>";
+        <div class='tooltip_templates'>
+            <div id='$id'>";
     if ($title) {
         $bubble .= "
-                <span class='size_6 is-success has-text-centered bottom20'>
+                <div class='size_6 has-text-success has-text-centered bottom20'>
                     $title
-                </span>";
+                </div>";
     }
     $bubble .= "
                 $text
-            </span>
-        </span>";
+            </div>
+        </div>";
 
     return $bubble;
 }
@@ -1222,9 +1227,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1265,9 +1270,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1301,8 +1306,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1370,9 +1375,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1401,9 +1406,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -1456,9 +1461,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */
@@ -1526,9 +1531,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

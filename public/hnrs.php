@@ -15,24 +15,25 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
+$user = check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('userdetails'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-if ($CURUSER['class'] < UC_MIN) {
+if ($user['class'] < UC_MIN) {
     stderr('Sorry', 'You must be at least a User.');
 }
 
-if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
+if (isset($_GET['id']) && $user['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
+    $users_class = $container->get(User::class);
+    $user_stuff = $users_class->getUserFromId($userid);
 } else {
-    $userid = $CURUSER['id'];
+    $userid = $user['id'];
+    $user_stuff = $user;
 }
-$users_class = $container->get(User::class);
-$user_stuff = $users_class->getUserFromId($userid);
 $diff = $user_stuff['uploaded'] - $user_stuff['downloaded'];
-if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
+if ($user['id'] === $userid || $user['class'] >= UC_ADMINISTRATOR) {
     $bp = $user_stuff['seedbonus'];
 } else {
     $bp = 0;
@@ -173,19 +174,19 @@ if (count($hnrs) > 0) {
     foreach ($hnrs as $a) {
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
-            case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
+            case $user['class'] <= $site_config['hnr_config']['firstclass']:
                 $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
                 $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                 break;
 
-            case $CURUSER['class'] < $site_config['hnr_config']['secondclass']:
+            case $user['class'] < $site_config['hnr_config']['secondclass']:
                 $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
                 $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                 break;
 
-            case $CURUSER['class'] >= $site_config['hnr_config']['thirdclass']:
+            case $user['class'] >= $site_config['hnr_config']['thirdclass']:
                 $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
                 $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
@@ -238,7 +239,7 @@ if (count($hnrs) > 0) {
         }
 
         $dl_speed = mksize($dl_speed);
-        $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] != $userid ? " [<a href='" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
+        $checkbox_for_delete = ($user['class'] >= UC_STAFF && $user['id'] != $userid ? " [<a href='" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
         $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' class='tooltipper' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
         $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['paths']['images_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' class='tooltipper' title='{$lang['userdetails_c_hitrun1']}'>" : '');
         $needs_seed = time() < $a['hit_and_run'] + 86400 ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
@@ -278,12 +279,12 @@ if (count($hnrs) > 0) {
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
         $sucks = $buyout == '' ? "Seed for $need_to_seed" : "or<br>Seed for $need_to_seed";
         $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
-        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
+        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$user['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
         $body .= "
         <tr>
             <td style='padding: 5px'>$caticon</td>
             <td><a class='is-link' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>

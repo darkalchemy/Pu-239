@@ -10,9 +10,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $stdhead = [
     'css' => [
@@ -27,11 +27,11 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $has_request = $descr = '';
-if ($CURUSER['class'] < $site_config['allowed']['upload'] || $CURUSER['uploadpos'] != 1 || $CURUSER['suspended'] === 'yes') {
+if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $cache = $container->get(Cache::class);
-$upload_vars = $cache->get('user_upload_variables_' . $CURUSER['id']);
+$upload_vars = $cache->get('user_upload_variables_' . $user['id']);
 $poster = $youtube = $strip = $uplver = $allow_comments = $free_length = $half_length = $tags = $description = $body = '';
 if (!empty($upload_vars)) {
     $upload_vars = unserialize($upload_vars);
@@ -103,7 +103,7 @@ $res_offers = $fluent->from('offers')
                      ->select(null)
                      ->select('id')
                      ->select('offer_name')
-                     ->where('offered_by_user_id = ?', $CURUSER['id'])
+                     ->where('offered_by_user_id = ?', $user['id'])
                      ->where('status = "approved"')
                      ->orderBy('offer_name')
                      ->fetchAll();
@@ -260,10 +260,10 @@ $rg = "
             </select>';
 $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
 $HTMLOUT .= tr($lang['upload_anonymous'], "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
-if ($CURUSER['class'] >= $site_config['allowed']['torrents_disable_comments']) {
+if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     $HTMLOUT .= tr($lang['upload_comment'], "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments === 'yes' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
 }
-if ($CURUSER['class'] >= UC_UPLOADER) {
+if ($user['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
     <tr>
         <td class='rowhead'>{$lang['upload_free']}</td>
@@ -296,7 +296,7 @@ if ($CURUSER['class'] >= UC_UPLOADER) {
 }
 require_once PARTIALS_DIR . 'genres.php';
 
-if ($CURUSER['class'] >= UC_UPLOADER) {
+if ($user['class'] >= UC_UPLOADER) {
     $HTMLOUT .= tr($lang['upload_vip'], "<div class='level-left'><input type='checkbox' name='vip' id='vip' value='1'" . ($vip == 1 ? ' checked' : '') . "><label for='vip' class='left5'>{$lang['upload_vip_msg']}</label></div>", 1);
 }
 $HTMLOUT .= "

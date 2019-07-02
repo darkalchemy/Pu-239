@@ -1,3 +1,9 @@
+### 01 Jul, 2019
+update: require authentication for staff pages if user is remembered  
+update: remove $CURUSER from public pages, the rest to follow  
+fix: read last post update  
+fix: freeleech, doubleupload, halfdownload not updating correctly mybonus.php  
+
 ### 29 Jun, 2019
 update: style bugs.php  
 fix: clear fllslot_ when adding  

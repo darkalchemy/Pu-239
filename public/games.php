@@ -7,16 +7,16 @@ use Pu239\Database;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $HTMLOUT = '';
-if ($CURUSER['class'] < $site_config['allowed']['play']) {
+if ($user['class'] < $site_config['allowed']['play']) {
     stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play these games!');
 }
 
-if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
+if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['suspended'] === 'yes') {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 
@@ -36,7 +36,7 @@ $casino_count = $fluent->from('casino')
                        ->select(null)
                        ->select('COUNT(userid) AS count')
                        ->where('deposit > 0')
-                       ->where('userid != ?', $CURUSER['id'])
+                       ->where('userid != ?', $user['id'])
                        ->fetch('count');
 if ($casino_count > 0) {
     $color9 = 'green';

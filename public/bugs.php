@@ -13,10 +13,10 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$curuser = check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $possible_actions = [
     'viewbug',
@@ -35,7 +35,7 @@ $cache = $container->get(Cache::class);
 $session = $container->get(Session::class);
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($CURUSER['class'] < UC_MAX) {
+        if ($curuser['class'] < UC_MAX) {
             stderr($lang['stderr_error'], $lang['stderr_only_coder']);
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
@@ -74,7 +74,7 @@ if ($action === 'viewbug') {
         $messages_class->insert($msgs_buffer);
         $update = [
             'status' => $status,
-            'staff' => $CURUSER['id'],
+            'staff' => $curuser['id'],
             'comment' => !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '',
         ];
         $fluent->update('bugs')
@@ -88,7 +88,7 @@ if ($action === 'viewbug') {
     if (!$id || !is_valid_id($id)) {
         stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
     }
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($curuser['class'] < UC_STAFF) {
         stderr($lang['stderr_error'], 'Only staff can view bugs.');
     }
     $bug = $fluent->from('bugs AS b')
@@ -186,7 +186,7 @@ if ($action === 'viewbug') {
             <a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a>
         </div>";
 } elseif ($action === 'bugs') {
-    if ($CURUSER['class'] < UC_STAFF) {
+    if ($curuser['class'] < UC_STAFF) {
         stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
     }
     $count = $fluent->from('bugs')
@@ -290,7 +290,7 @@ if ($action === 'viewbug') {
             'title' => $title,
             'priority' => $priority,
             'problem' => $problem,
-            'sender' => $CURUSER['id'],
+            'sender' => $curuser['id'],
             'added' => $dt,
         ];
         $result = $fluent->insertInto('bugs')

@@ -14,9 +14,9 @@ require_once INCL_DIR . 'function_comments.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
-global $site_config, $CURUSER;
+global $site_config;
 
 $stdhead = [
     'css' => [
@@ -30,7 +30,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $count2 = '';
-if ($CURUSER['class'] < (UC_MIN + 1)) {
+if ($user['class'] < (UC_MIN + 1)) {
     stderr('Error!', 'Sorry, you need to rank up!');
 }
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
@@ -95,7 +95,7 @@ switch ($action) {
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['requested_by_user_id'] !== $user['id'] && $user['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         $set = [
@@ -123,7 +123,7 @@ switch ($action) {
         $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('user_id = ?', $user['id'])
                         ->where('request_id = ?', $id)
                         ->fetch('vote');
 
@@ -133,7 +133,7 @@ switch ($action) {
             $yes_or_no = $vote === 1 ? 'yes' : 'no';
             $values = [
                 'request_id' => $id,
-                'user_id' => $CURUSER['id'],
+                'user_id' => $user['id'],
                 'vote' => $yes_or_no,
             ];
             $fluent->insertInto('request_votes')
@@ -238,7 +238,7 @@ switch ($action) {
         $voted = $fluent->from('request_votes')
                         ->select(null)
                         ->select('vote')
-                        ->where('user_id = ?', $CURUSER['id'])
+                        ->where('user_id = ?', $user['id'])
                         ->where('request_id = ?', $id)
                         ->fetch('vote');
 
@@ -265,7 +265,7 @@ switch ($action) {
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars((string) $arr['request_name']) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  <td colspan="2"><h1>' . htmlsafechars((string) $arr['request_name']) . ($user['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
   [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
@@ -370,15 +370,15 @@ switch ($action) {
                 'description' => $body,
                 'category' => $category,
                 'added' => TIME_NOW,
-                'requested_by_user_id' => $CURUSER['id'],
+                'requested_by_user_id' => $user['id'],
                 'link' => $link,
             ];
             $new_request_id = $fluent->insertInto('requests')
                                      ->values($values)
                                      ->execute();
 
-            $color = get_user_class_name((int) $CURUSER['class'], true);
-            $msg = "[{$color}]{$CURUSER['username']}[/{$color}] posted a new request: [url={$site_config['paths']['baseurl']}/requests.php?action=request_details&id={$new_request_id}]{$request_name}[/url]";
+            $color = get_user_class_name($user['class'], true);
+            $msg = "[{$color}]{$user['username']}[/{$color}] posted a new request: [url={$site_config['paths']['baseurl']}/requests.php?action=request_details&id={$new_request_id}]{$request_name}[/url]";
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&new=1&id=' . $new_request_id);
             die();
@@ -466,7 +466,7 @@ switch ($action) {
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['requested_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['requested_by_user_id'] !== $user['id'] && $user['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
@@ -504,7 +504,7 @@ switch ($action) {
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
         $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
 
-        if ($CURUSER['class'] < UC_STAFF && $CURUSER['id'] !== $edit_arr['requested_by_user_id']) {
+        if ($user['class'] < UC_STAFF && $user['id'] !== $edit_arr['requested_by_user_id']) {
             stderr('Error!', 'This is not your request to edit!');
         }
         $filled_by = '';
@@ -592,7 +592,7 @@ switch ($action) {
                 stderr('Error', 'Comment body cannot be empty!');
             }
             $values = [
-                'user' => $CURUSER['id'],
+                'user' => $user['id'],
                 'request' => $id,
                 'added' => TIME_NOW,
                 'text' => $body,
@@ -660,7 +660,7 @@ switch ($action) {
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : $arr['text']));
@@ -671,7 +671,7 @@ switch ($action) {
             $set = [
                 'text' => $body,
                 'editedat' => TIME_NOW,
-                'editedby' => $CURUSER['id'],
+                'editedby' => $user['id'],
             ];
             $fluent->update('comments')
                    ->set($set)
@@ -680,8 +680,8 @@ switch ($action) {
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
-        if ($CURUSER['id'] == $arr['user']) {
-            $avatar = get_avatar($CURUSER);
+        if ($user['id'] == $arr['user']) {
+            $avatar = get_avatar($user);
         } else {
             $arr_user = $users_class->getUserFromId($arr['user']);
             $avatar = get_avatar($arr_user);
@@ -721,11 +721,11 @@ switch ($action) {
         if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         $set = [
-            'editedby' => $CURUSER['id'],
+            'editedby' => $user['id'],
             'editedat' => TIME_NOW,
             'ori_text' => $arr['text'],
             'text' => $_POST['body'],
@@ -752,7 +752,7 @@ switch ($action) {
         if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
@@ -775,7 +775,7 @@ switch ($action) {
         break;
 
     case 'vieworiginal':
-        if ($CURUSER['class'] < UC_STAFF) {
+        if ($user['class'] < UC_STAFF) {
             stderr($lang['comment_error'], $lang['comment_denied']);
         }
         if (!is_valid_id($comment_id)) {

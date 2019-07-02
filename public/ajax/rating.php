@@ -6,9 +6,9 @@ use Pu239\Cache;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $container, $CURUSER;
+global $container;
 
 if (empty($_POST)) {
     return null;
@@ -16,11 +16,11 @@ if (empty($_POST)) {
 
 $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
 $rate = isset($_POST['rate']) ? (int) $_POST['rate'] : 0;
-$uid = $CURUSER['id'];
+$uid = $user['id'];
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 $what = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
 $ref = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
-$completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $CURUSER['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
+$completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $user['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what === 'torrent' && $completecount == 0) {
     return false;
@@ -31,7 +31,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
     if (sql_query('INSERT INTO rating(' . $what . ',rating, user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
         $table = ($what === 'torrent' ? 'torrents' : 'topics');
         sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id=' . sqlesc($id));
-        $cache->delete('rating_' . $what . '_' . $id . '_' . $CURUSER['id']);
+        $cache->delete('rating_' . $what . '_' . $id . '_' . $user['id']);
         if ($what === 'torrent') {
             $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $r_f = mysqli_fetch_assoc($f_r);
@@ -44,13 +44,13 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         }
         if ($site_config['bonus']['on']) {
             $amount = ($what === 'torrent' ? $site_config['bonus']['per_rating'] : $site_config['bonus']['per_topic']);
-            sql_query("UPDATE users SET seedbonus = seedbonus + $amount WHERE id=" . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-            $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
-            $cache->update_row('user_' . $CURUSER['id'], [
+            sql_query("UPDATE users SET seedbonus = seedbonus + $amount WHERE id=" . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+            $update['seedbonus'] = ($user['seedbonus'] + $amount);
+            $cache->update_row('user_' . $user['id'], [
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }
-        $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
+        $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $user['id'];
         $qy1 = $fluent->from('rating')
                       ->select(null)
                       ->select('SUM(rating) AS sum')
@@ -62,7 +62,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
                       ->select('id AS rated')
                       ->select('rating')
                       ->where("$what = ?", $id)
-                      ->where('user = ?', $CURUSER['id'])
+                      ->where('user = ?', $user['id'])
                       ->fetchAll();
 
         $rating_cache = array_merge($qy1[0], $qy2[0]);

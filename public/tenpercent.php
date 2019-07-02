@@ -9,13 +9,13 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
-$uploaded = (int) $CURUSER['uploaded'];
-$downloaded = (int) $CURUSER['downloaded'];
-$newuploaded = (int) ($uploaded * 1.1);
+$uploaded = $user['uploaded'];
+$downloaded = $user['downloaded'];
+$newuploaded = $uploaded * 1.1;
 if ($downloaded > 0) {
     $ratio = number_format($uploaded / $downloaded, 3);
     $newratio = number_format($newuploaded / $downloaded, 3);
@@ -26,7 +26,7 @@ if ($downloaded > 0) {
     $ratio = $newratio = $ratiochange = '---';
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($CURUSER['tenpercent'] === 'yes') {
+    if ($user['tenpercent'] === 'yes') {
         stderr('Used', 'It appears that you have already used your 10% addition.');
     }
     $sure = (isset($_POST['sure']) ? intval($_POST['sure']) : '');
@@ -36,15 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dt = TIME_NOW;
     $subject = '10% Addition';
     $msg = 'Today, ' . get_date((int) $dt, 'LONG', 0, 1) . ', you have increased your total upload amount by 10% from [b]' . mksize($uploaded) . '[/b] to [b]' . mksize($newuploaded) . '[/b], which brings your ratio to [b]' . $newratio . '[/b].';
-    $res = sql_query("UPDATE users SET uploaded = uploaded * 1.1, tenpercent = 'yes' WHERE id=" . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['uploaded'] = ($CURUSER['uploaded'] * 1.1);
+    $res = sql_query("UPDATE users SET uploaded = uploaded * 1.1, tenpercent = 'yes' WHERE id=" . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['uploaded'] = $user['uploaded'] * 1.1;
     $cache = $container->get(Cache::class);
-    $cache->update_row('user_' . $CURUSER['id'], [
+    $cache->update_row('user_' . $user['id'], [
         'tenpercent' => 'yes',
         'uploaded' => $update['uploaded'],
     ], $site_config['expires']['user_cache']);
     $msgs_buffer[] = [
-        'receiver' => $CURUSER['id'],
+        'receiver' => $user['id'],
         'added' => $dt,
         'msg' => $msg,
         'subject' => $subject,
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 $HTMLOUT = '';
-if ($CURUSER['tenpercent'] === 'no') {
+if ($user['tenpercent'] === 'no') {
     $HTMLOUT .= '
   <script>
   /*<![CDATA[*/
@@ -71,7 +71,7 @@ if ($CURUSER['tenpercent'] === 'no') {
   /*]]>*/
   </script>';
 }
-if ($CURUSER['tenpercent'] === 'yes') {
+if ($user['tenpercent'] === 'yes') {
     stderr('Oops', 'It appears that you have already used your 10% addition');
     die();
 }

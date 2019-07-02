@@ -24,26 +24,24 @@ $type = 0;
 $data = $_POST;
 extract($_POST);
 unset($_POST);
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
     $owner_id = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
+    $user = $users_class->getUserFromId($owner_id);
 } else {
-    check_user_status();
-    $owner_id = $CURUSER['id'];
-    $cache->set('user_upload_variables_' . $owner_id, serialize($data), 3600);
+    $user = check_user_status();
+    $cache->set('user_upload_variables_' . $user['id'], serialize($data), 3600);
 }
 
 $dt = TIME_NOW;
-$user_data = $users_class->getUserFromId($owner_id);
-
 ini_set('upload_max_filesize', (string) $site_config['site']['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 $session = $container->get(Session::class);
-if ($user_data['class'] < $site_config['allowed']['upload'] || $user_data['uploadpos'] != 1 || $user_data['suspended'] === 'yes') {
+if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['suspended'] === 'yes') {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
     why_die($lang['not_authorized']);
@@ -70,7 +68,7 @@ if (!empty($uplver) && $uplver === 'yes') {
     $anon = get_anonymous_name();
 } else {
     $anonymous = 'no';
-    $anon = $user_data['username'];
+    $anon = $user['username'];
 }
 if (!empty($allow_comments) && $allow_comments === 'yes') {
     $allow_comments = 'no';
@@ -396,7 +394,7 @@ clear_image_cache();
 if (!empty($uplver) && $uplver === 'yes') {
     $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
-    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
+    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user['username']);
 }
 $messages = "{$site_config['site']['name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['paths']['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -405,8 +403,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -430,7 +428,7 @@ if (!bencdec::encode_file($dir, $dict)) {
 @unlink($tmpname);
 
 if ($site_config['bonus']['on']) {
-    $seedbonus = $user_data['seedbonus'];
+    $seedbonus = $user['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_upload']) . ', numuploads = numuploads + 1  WHERE id=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus']['per_upload']);
     $cache->update_row('user_' . $owner_id, [
@@ -457,7 +455,7 @@ if ($offer > 0) {
     if (!empty($msgs_buffer)) {
         $messages_class->insert($msgs_buffer);
     }
-    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user_data['username']);
+    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
     $filled = 1;
 }
 $filled = 0;
@@ -480,15 +478,15 @@ if ($request > 0) {
         $set = [
             'seedbonus' => $update['seedbonus'] + $site_config['bonus']['per_request'],
         ];
-        $users_class->update($set, $user_data['id']);
+        $users_class->update($set, $user['id']);
     }
     sql_query('UPDATE requests SET filled_by_user_id=' . sqlesc($owner_id) . ', filled_torrent_id=' . sqlesc($id) . ' WHERE id=' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
-    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user_data['username']);
+    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user['username']);
     $filled = 1;
 }
 if ($filled == 0) {
-    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
+    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user['username']));
 }
 
 $notify = $users_class->get_notifications($catid);

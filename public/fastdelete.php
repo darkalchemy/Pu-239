@@ -10,11 +10,11 @@ use Pu239\Torrent;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
-if ($CURUSER['class'] < UC_STAFF) {
+if ($user['class'] < UC_STAFF) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
 }
 
@@ -48,11 +48,11 @@ if (!$sure) {
 $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($tid['id']);
 $torrents_class->remove_torrent($tid['info_hash']);
-if ($CURUSER['id'] != $tid['owner']) {
-    $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");
+if ($user['id'] != $tid['owner']) {
+    $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$user['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (2, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
-write_log("{$lang['fastdelete_log_first']} {$tid['name']} {$lang['fastdelete_log_last']} {$CURUSER['username']}");
+write_log("{$lang['fastdelete_log_first']} {$tid['name']} {$lang['fastdelete_log_last']} {$user['username']}");
 $cache = $container->get(Cache::class);
 if ($site_config['bonus']['on']) {
     $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks

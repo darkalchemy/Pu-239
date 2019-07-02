@@ -9,11 +9,11 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('reputation');
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
-$is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
+$is_mod = $user['class'] >= UC_STAFF ? true : false;
 
 $closewindow = true;
 require_once CACHE_DIR . 'rep_settings_cache.php';
@@ -89,12 +89,12 @@ if (!mysqli_num_rows($forum)) {
 
 $res = mysqli_fetch_assoc($forum) or sqlerr(__LINE__, __FILE__);
 if (isset($res['minclassread'])) {
-    if ($CURUSER['class'] < $res['minclassread']) {
+    if ($user['class'] < $res['minclassread']) {
         rep_output('Wrong Permissions');
     }
 }
 
-$repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+$repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$user['id']}") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
     rep_output('You have already added Rep to this ' . $this_rep . '!');
 }
@@ -107,13 +107,13 @@ if (!$is_mod) {
     }
 
     $flood = sql_query('SELECT dateadd, userid FROM reputation 
-                                    WHERE whoadded = ' . sqlesc($CURUSER['id']) . ' 
+                                    WHERE whoadded = ' . sqlesc($user['id']) . ' 
                                     ORDER BY dateadd DESC
                                     LIMIT 0 , ' . sqlesc($klimit)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($flood)) {
         $i = 0;
         while ($check = mysqli_fetch_assoc($flood)) {
-            if (($i < $GVARS['rep_repeat']) && ($check['userid'] == $CURUSER['id'])) { //$res['userid'] ) )
+            if (($i < $GVARS['rep_repeat']) && ($check['userid'] == $user['id'])) { //$res['userid'] ) )
                 rep_output($lang['info_cannot_rate_own']);
             }
             if ((($i + 1) == $GVARS['rep_maxperday']) && (($check['dateadd'] + 86400) > TIME_NOW)) {
@@ -123,9 +123,9 @@ if (!$is_mod) {
         }
     }
 }
-$r = sql_query('SELECT COUNT(id) FROM posts WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+$r = sql_query('SELECT COUNT(id) FROM posts WHERE user_id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
 $a = mysqli_fetch_row($r);
-$CURUSER['posts'] = $a[0];
+$user['posts'] = $a[0];
 
 $reason = '';
 if (isset($input['reason']) && !empty($input['reason'])) {
@@ -140,10 +140,10 @@ if (isset($input['reason']) && !empty($input['reason'])) {
 }
 
 if (isset($input['do']) && $input['do'] === 'addrep') {
-    if ($res['userid'] == $CURUSER['id']) { // sneaky bastiges!
+    if ($res['userid'] == $user['id']) { // sneaky bastiges!
         rep_output($lang['info_cannot_rate_own']);
     }
-    $score = fetch_reppower($CURUSER, $input['reputation']);
+    $score = fetch_reppower($user, $input['reputation']);
     $res['reputation'] += $score;
     sql_query('UPDATE users SET reputation = ' . (int) $res['reputation'] . ' WHERE id=' . sqlesc($res['userid'])) or sqlerr(__FILE__, __LINE__);
     $cache = $container->get(Cache::class);
@@ -153,7 +153,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => sqlesc($score),
-        'whoadded' => sqlesc($CURUSER['id']),
+        'whoadded' => sqlesc($user['id']),
         'reason' => sqlesc($reason),
         'dateadd' => sqlesc(TIME_NOW),
         'locale' => sqlesc($rep_locale),
@@ -164,7 +164,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     sql_query('INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['paths']['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
 } else {
-    if ($res['userid'] == $CURUSER['id']) { // same as him!
+    if ($res['userid'] == $user['id']) { // same as him!
         // check for fish!
         $query1 = sql_query('SELECT r.*, leftby.id AS leftby_id, leftby.username AS leftby_name
                                         FROM reputation AS r
@@ -231,7 +231,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
             default:
                 $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
-        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
+        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $user['reputation']);
         $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>

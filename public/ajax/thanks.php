@@ -9,8 +9,8 @@ use Pu239\Session;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status();
-global $container, $CURUSER;
+$user = check_user_status();
+global $container;
 
 $session = $container->get(Session::class);
 if (empty($_POST)) {
@@ -19,13 +19,13 @@ if (empty($_POST)) {
     die();
 }
 
-if (!isset($CURUSER)) {
+if (!isset($user)) {
     $session->set('is-warning', "You can't add a thank you on your own torrent");
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
-$uid = (int) $CURUSER['id'];
+$uid = $user['id'];
 $tid = isset($_POST['tid']) ? (int) $_POST['tid'] : (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
@@ -35,9 +35,9 @@ $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
  * @param int  $tid
  * @param bool $ajax
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|string
  */

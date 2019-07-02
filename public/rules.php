@@ -7,13 +7,13 @@ use Delight\Auth\Auth;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 if (!$auth->isLoggedIn()) {
     get_template();
 } else {
-    check_user_status();
+    $user = check_user_status();
 }
 
 $lang = array_merge(load_language('global'), load_language('rules'));
@@ -64,7 +64,7 @@ $main_div = "
                                 <li>{$lang['rules_forum_body11']}</li>
                             </ul>
                         </div>
-                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < $site_config['allowed']['upload'] ? ' round5-bottom' : '') . "'>
+                        <p class='accordion-toggle has-text-black" . (isset($user) && $user['class'] < $site_config['allowed']['upload'] ? ' round5-bottom' : '') . "'>
                             {$lang['rules_avatar_header']}<span class='is-blue'>{$lang['rules_avatar_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
@@ -75,9 +75,9 @@ $main_div = "
                             </ul>
                         </div>";
 
-if (isset($CURUSER) && $CURUSER['class'] >= $site_config['allowed']['upload']) {
+if (isset($user) && $user['class'] >= $site_config['allowed']['upload']) {
     $main_div .= "
-                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
+                        <p class='accordion-toggle has-text-black" . ($user['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='is-blue'>{$lang['rules_uploading_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
@@ -95,7 +95,7 @@ if (isset($CURUSER) && $CURUSER['class'] >= $site_config['allowed']['upload']) {
                             </ul>
                         </div>";
 }
-if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
+if (isset($user) && $user['class'] >= UC_STAFF) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black'>
                             {$lang['rules_moderating_header']}<span class='is-blue'>{$lang['rules_moderating_header_sub']}</span>

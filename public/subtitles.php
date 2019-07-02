@@ -8,9 +8,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $HTMLOUT = '';
 
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $new_name = md5((string) TIME_NOW);
             $filename = "$new_name.$ext";
             $date = TIME_NOW;
-            $owner = $CURUSER['id'];
+            $owner = $user['id'];
             $values = [
                 'name' => $releasename,
                 'filename' => $filename,
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (empty($arr)) {
                     stderr('Sorry', 'There is no subtitle with that id');
                 }
-                if ($CURUSER['id'] != $arr['owner'] && $CURUSER['class'] < UC_STAFF) {
+                if ($user['id'] != $arr['owner'] && $user['class'] < UC_STAFF) {
                     stderr('Error', "You're not the owner! How did that happen?\n");
                 }
                 $updateset = [];
@@ -310,7 +310,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <tr><td>Hits : <b>' . $arr['hits'] . '</b></td></tr>
         <tr>
             <td>Uploader : ' . format_username($arr['owner']);
-        if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
+        if ($arr['owner'] == $user['id'] || $user['class'] > UC_STAFF) {
             $body .= "
                 <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>
                     <i class='icon icon-edit' aria-hidden='true'></i>
@@ -459,7 +459,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <td class='has-text-centered'>" . $arr['hits'] . "</td>
         <td class='has-text-centered'>" . ($arr['fps'] === 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
         <td class='has-text-centered'>" . ($arr['cds'] === 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</td>';
-            if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
+            if ($arr['owner'] == $user['id'] || $user['class'] > UC_STAFF) {
                 $body .= "
         <td class='has-text-centered'>
             <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>

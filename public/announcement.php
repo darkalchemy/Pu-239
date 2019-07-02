@@ -6,8 +6,8 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
-global $CURUSER, $site_config;
+$user = check_user_status();
+global $site_config;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
@@ -17,7 +17,7 @@ $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
         FROM users AS u
         LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
-        WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
+        WHERE u.id = ' . sqlesc($user['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] = 0;
@@ -54,14 +54,14 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
             $row['curr_ann_body'] = $ann_row['body'];
             // Create additional set for main UPDATE query.
             $add_set = 'curr_ann_id=' . sqlesc($ann_row['main_id']);
-            $cache->update_row('user_' . $CURUSER['id'], [
+            $cache->update_row('user_' . $user['id'], [
                 'curr_ann_id' => $ann_row['main_id'],
             ], $site_config['expires']['user_cache']);
             $status = 2;
         } else {
             // Announcement not valid for member...
             $add_set = 'curr_ann_last_check = ' . sqlesc($dt);
-            $cache->update_row('user_' . $CURUSER['id'], [
+            $cache->update_row('user_' . $user['id'], [
                 'curr_ann_last_check' => $dt,
             ], $site_config['expires']['user_cache']);
             $status = 1;
@@ -78,7 +78,7 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
     } else {
         // No Main Result Set. Set last update to now...
         $add_set = 'curr_ann_last_check = ' . sqlesc($dt);
-        $cache->update_row('user_' . $CURUSER['id'], [
+        $cache->update_row('user_' . $user['id'], [
             'curr_ann_last_check' => $dt,
         ], $site_config['expires']['user_cache']);
     }

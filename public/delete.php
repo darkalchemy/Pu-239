@@ -11,9 +11,9 @@ use Pu239\Torrent;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('delete'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 if (empty($_GET['id']) && empty($_POST['id'])) {
     stderr($lang['delete_failed'], $lang['delete_missing_data']);
@@ -40,7 +40,7 @@ $row = $fluent->from('torrents AS t')
 if (!$row) {
     stderr($lang['delete_failed'], $lang['delete_not_exist']);
 }
-if ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < UC_STAFF) {
+if ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF) {
     stderr($lang['delete_failed'], $lang['delete_not_owner']);
 }
 $rt = (int) $_POST['reasontype'];
@@ -69,7 +69,7 @@ $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($row['id']);
 $torrents_class->remove_torrent($row['info_hash']);
 
-write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
+write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$user['username']} ($reasonstr)\n");
 if ($site_config['bonus']['on']) {
     $dt = sqlesc($dt - (14 * 86400));
     if ($row['added'] > $dt) {
@@ -82,7 +82,7 @@ if ($site_config['bonus']['on']) {
     }
 }
 $msg = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
-if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
+if ($user['id'] != $row['owner'] && ($user['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
     $subject = 'Torrent Deleted';
     $msgs_buffer[] = [
         'receiver' => $row['owner'],

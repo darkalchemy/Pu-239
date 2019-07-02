@@ -324,13 +324,13 @@ $postid = 0;
 while ($post = mysqli_fetch_assoc($res)) {
     $posts[] = $post;
     if ($post['post_id'] > $postid) {
-        $postid = $post['post_id'];
+        $postid = (int) $post['post_id'];
     }
 }
 if ($_forum_sort === 'DESC') {
     $posts = array_reverse($posts);
 }
-$may_post = ($CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no');
+$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no';
 
 $likes = $att_str = '';
 $likers = $user_likes = [];
@@ -632,10 +632,12 @@ $values = [
     'topic_id' => $topic_id,
     'last_post_read' => $postid,
 ];
-$fluent->insertInto('read_posts')
-       ->values($values)
+$update = [
+    'last_post_read' => $postid,
+];
+$fluent->insertInto('read_posts', $values)
+       ->onDuplicateKeyUpdate($update)
        ->execute();
-
 $cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $HTMLOUT .= '

@@ -8,13 +8,13 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('viewnfo'));
 
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $id = (int) $_GET['id'];
-if ($CURUSER['class'] === UC_MIN) {
+if ($user['class'] === UC_MIN) {
     stderr('error', 'Need to rank up');
 } elseif (!is_valid_id($id)) {
     stderr('error', 'Invalid ID');

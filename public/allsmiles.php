@@ -5,9 +5,9 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $ontainer, $CURUSER, $site_config;
+global $ontainer, $site_config;
 
 $body_class = 'background-16 skin-2';
 $htmlout = doc_head() . "
@@ -55,7 +55,7 @@ foreach ($customsmilies as $code => $url) {
             </span>
         </span>";
 }
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $staff_smilies = $container->get('staff_smilies');
     foreach ($staff_smilies as $code => $url) {
         $list3 .= "
@@ -75,7 +75,7 @@ $list = "
             $list1
         </div>";
 
-if ($CURUSER['smile_until'] != '0') {
+if ($user['smile_until'] != '0') {
     $list .= "
         <h1>Custom Smilies</h1>
         <div class='level-center bg-04 round10 margin20'>
@@ -83,7 +83,7 @@ if ($CURUSER['smile_until'] != '0') {
         </div>";
 }
 
-if ($CURUSER['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $list .= "
         <h1>Staff Smilies</h1>
         <div class='level-center bg-04 round10 margin20'>

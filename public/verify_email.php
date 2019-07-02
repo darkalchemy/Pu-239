@@ -47,4 +47,4 @@ try {
     stderr('Error', 'Too many requests');
 }
 
-header("Refresh: 0; url={$site_config['paths']['baseurl']}/usercp.php?action=security");
+header("Location: {$site_config['paths']['baseurl']}/usercp.php?action=security");

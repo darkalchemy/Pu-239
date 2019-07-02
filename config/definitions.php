@@ -27,6 +27,7 @@ use Pu239\ImageProxy;
 use Pu239\IP;
 use Pu239\Message;
 use Pu239\Mood;
+use Pu239\Notify;
 use Pu239\Peer;
 use Pu239\Phpzip;
 use Pu239\Poll;
@@ -39,6 +40,7 @@ use Pu239\Settings;
 use Pu239\Sitelog;
 use Pu239\Snatched;
 use Pu239\Torrent;
+use Pu239\Upcoming;
 use Pu239\User;
 use Pu239\Userblock;
 use Pu239\Usersachiev;
@@ -69,6 +71,7 @@ return [
     Jobby::class => autowire(),
     Message::class => autowire(),
     Mood::class => autowire(),
+    Notify::class => autowire(),
     Parsedown::class => autowire(),
     Peer::class => autowire(),
     Phpzip::class => autowire(),
@@ -82,6 +85,7 @@ return [
     Sitelog::class => autowire(),
     Snatched::class => autowire(),
     Torrent::class => autowire(),
+    Upcoming::class => autowire(),
     Userblock::class => autowire(),
     User::class => autowire(),
     Usersachiev::class => autowire(),

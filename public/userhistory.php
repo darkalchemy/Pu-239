@@ -9,33 +9,35 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$curuser = check_user_status();
 $lang = array_merge(load_language('global'), load_language('userhistory'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config, $curuser;
 
-$userid = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
+$userid = !empty($_GET['id']) ? (int) $_GET['id'] : $curuser['id'];
+if ($userid != $curuser['id']) {
+    $users_class = $container->get(User::class);
+    $user = $users_class->getUserFromId($userid);
+}
 if (!is_valid_id($userid)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_invalidid']);
 }
-if ($CURUSER['class'] == UC_MIN || ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_STAFF)) {
+if ($curuser['class'] == UC_MIN || ($curuser['id'] != $userid && $curuser['class'] < UC_STAFF)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_perms']);
 }
 $page = isset($_GET['page']) ? $_GET['page'] : '';
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'viewposts';
 $perpage = 25;
 $HTMLOUT = '';
-$users_class = $container->get(User::class);
 if ($action === 'viewposts') {
     $select_is = 'COUNT(DISTINCT p.id)';
     $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id';
-    $where_is = 'p.user_id=' . sqlesc($userid) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class']);
+    $where_is = 'p.user_id=' . sqlesc($userid) . ' AND f.min_class_read <= ' . sqlesc($curuser['class']);
     $order_is = 'p.id DESC';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_noposts']);
     $postcount = (int) $arr[0];
     $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
-    $user = $users_class->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {
@@ -63,7 +65,7 @@ if ($action === 'viewposts') {
         $dt = TIME_NOW - $site_config['forum_config']['readpost_expiry'];
         $newposts = 0;
         if ($arr['added'] > $dt) {
-            $newposts = ($arr['last_post_read'] < $arr['last_post']) && $CURUSER['id'] == $userid;
+            $newposts = ($arr['last_post_read'] < $arr['last_post']) && $curuser['id'] == $userid;
         }
         $added = get_date((int) $arr['added'], '');
         $title = "
@@ -109,7 +111,6 @@ if ($action === 'viewposts') {
     $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
     $commentcount = (int) $arr[0];
     $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
-    $user = $users_class->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {

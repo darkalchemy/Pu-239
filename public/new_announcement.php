@@ -6,7 +6,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -18,9 +18,9 @@ $stdfoot = [
     ],
 ];
 $lang = load_language('global');
-global $CURUSER, $site_config;
+global $site_config;
 
-if ($CURUSER['class'] < UC_MAX) {
+if ($user['class'] < UC_MAX) {
     stderr('Error', "You're not authorised");
 }
 
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $expires = TIME_NOW + (86400 * $expiry); // 86400 seconds in one day.
         $created = TIME_NOW;
-        $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
+        $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($user['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
         sql_query($query);
         if (mysqli_affected_rows($mysqli)) {
             stderr('Success', 'Announcement was successfully created');

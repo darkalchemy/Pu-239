@@ -5,9 +5,9 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('global');
-global $CURUSER, $site_config;
+global $site_config;
 
 $html = '';
 $lottery_config = [];
@@ -28,20 +28,20 @@ $valid = [
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
 
-if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
+if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['suspended'] === 'yes') {
     stderr('Error', 'Your gaming rights have been disabled.');
     die();
 }
 switch (true) {
-    case $do === 'config' && $CURUSER['class'] >= $valid['config']['minclass']:
+    case $do === 'config' && $user['class'] >= $valid['config']['minclass']:
         require_once $valid['config']['file'];
         break;
 
-    case $do === 'viewtickets' && $CURUSER['class'] >= $valid['viewtickets']['minclass']:
+    case $do === 'viewtickets' && $user['class'] >= $valid['viewtickets']['minclass']:
         require_once $valid['viewtickets']['file'];
         break;
 
-    case $do === 'tickets' && $CURUSER['class'] >= $valid['tickets']['minclass']:
+    case $do === 'tickets' && $user['class'] >= $valid['tickets']['minclass']:
         require_once $valid['tickets']['file'];
         break;
 
@@ -57,7 +57,7 @@ switch (true) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment', 'bottom20');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', '<div>Lottery started on <b>' . get_date((int) $lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date((int) $lottery_config['end_date'], 'LONG') . '</b> remaining <span>' . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span></div>
-       <div class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
+       <div class='top10'>" . ($user['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -69,13 +69,13 @@ switch (true) {
                 $last_winners[] = format_username((int) $aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', '<ul><li>Last winners: ' . implode(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
-        <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
+        <p>' . ($user['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
         } else {
             $html .= main_div("
                         <div class='padding20 has-text-centered'>
                             <div class='bottom20'>
                                 Nobody has won, because nobody has played yet :)
-                            </div>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
+                            </div>" . ($user['class'] >= $valid['config']['minclass'] ? "
                             <a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : '
                             <span>Nothing Configured ATM Sorry.</span>') . '
                         </div>');

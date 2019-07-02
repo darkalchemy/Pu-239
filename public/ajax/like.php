@@ -9,7 +9,7 @@ use Pu239\Database;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-check_user_status('like');
+$user = check_user_status('like');
 
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
@@ -22,18 +22,19 @@ $fields = [
     'torrent' => 'torrents',
 ];
 
-comment_like_unlike($fields);
+comment_like_unlike($fields, $user);
 
 /**
- * @param $fields
+ * @param array $fields
+ * @param array $user
  *
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
-function comment_like_unlike($fields)
+function comment_like_unlike(array $fields, array $user)
 {
-    global $container, $CURUSER;
+    global $container, $user;
 
     $id = $type = $current = '';
     extract($_POST);
@@ -52,7 +53,7 @@ function comment_like_unlike($fields)
         $type = 'comment';
     }
 
-    $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id=' . sqlesc($CURUSER['id']) . " AND {$type}_id=" . sqlesc($id);
+    $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id=' . sqlesc($user['id']) . " AND {$type}_id=" . sqlesc($id);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_assoc($res);
     $table = 'comments';
@@ -62,7 +63,7 @@ function comment_like_unlike($fields)
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
     if ($data['count'] == 0 && $current === 'Like') {
-        $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
+        $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($user['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id=" . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -71,7 +72,7 @@ function comment_like_unlike($fields)
         $data['label'] = 'Unlike';
         $data['list'] = 'you like this';
     } elseif ($data['count'] == 1 && $current === 'Unlike') {
-        $sql = "DELETE FROM likes WHERE {$type}_id=" . sqlesc($id) . ' AND user_id=' . sqlesc($CURUSER['id']);
+        $sql = "DELETE FROM likes WHERE {$type}_id=" . sqlesc($id) . ' AND user_id=' . sqlesc($user['id']);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id=" . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -89,7 +90,7 @@ function comment_like_unlike($fields)
                   ->select(null)
                   ->select('user_id')
                   ->where("{$type}_id = ?", $id)
-                  ->where('user_id != ?', $CURUSER['id']);
+                  ->where('user_id != ?', $user['id']);
     foreach ($sql as $row) {
         $rows[] = format_username((int) $row['user_id']);
     }

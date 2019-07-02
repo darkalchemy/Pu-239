@@ -8,9 +8,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('announce_history'));
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 stderr('Error', 'This page is not completed.');
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
@@ -19,7 +19,7 @@ $fluent = $container->get(Database::class);
 $query1 = sprintf('SELECT m.main_id, m.subject, m.body
             FROM announcement_main AS m 
             LEFT JOIN announcement_process AS p ON m.main_id=p.main_id AND p.user_id=%s 
-            WHERE p.status = 2', sqlesc($CURUSER['id']));
+            WHERE p.status = 2', sqlesc($user['id']));
 $result = sql_query($query1);
 $ann_list = [];
 while ($x = mysqli_fetch_array($result)) {

@@ -37,8 +37,8 @@ if (ctype_digit($class)) {
     $query1 .= " AND class=$class";
     $q1 .= ($q1 ? '&amp;' : '') . "class=$class";
 }
-$HTMLOUT = '';
-$HTMLOUT .= "
+
+$HTMLOUT = "
     <h1 class='has-text-centered'>Search {$lang['head_users']}</h1>";
 $div = "
     <form method='get' action='users.php?' accept-charset='utf-8'>

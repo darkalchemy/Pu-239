@@ -9,9 +9,9 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
-global $container, $CURUSER, $site_config;
+global $container, $site_config;
 
 $HTMLOUT = '';
 $fluent = $container->get(Database::class);
@@ -24,7 +24,7 @@ $select = $fluent->from('torrents AS t')
                  ->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
                  ->select('u.class')
                  ->select('u.username')
-                 ->where('s.userid = ?', $CURUSER['id'])
+                 ->where('s.userid = ?', $user['id'])
                  ->leftJoin('snatched AS s ON t.id = s.torrentid')
                  ->leftJoin('users AS u ON t.owner = u.id');
 
@@ -68,11 +68,11 @@ if (isset($_GET['sort'], $_GET['type'])) {
                      ->orderBy('t.added DESC');
     $pagerlink = '';
 }
-$count = $count->where('owner = ?', $CURUSER['id'])
+$count = $count->where('owner = ?', $user['id'])
                ->where('banned != "yes"')
                ->fetch('count');
 
-$select = $select->where('owner = ?', $CURUSER['id'])
+$select = $select->where('owner = ?', $user['id'])
                  ->where('banned != "yes"');
 
 if (!$count) {
@@ -88,4 +88,4 @@ if (!$count) {
     $HTMLOUT .= torrenttable($select, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($CURUSER['username'] . "'s torrents") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($user['username'] . "'s torrents") . wrapper($HTMLOUT) . stdfoot();

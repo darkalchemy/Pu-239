@@ -7,13 +7,13 @@ use Delight\Auth\Auth;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $container, $site_config, $CURUSER;
+global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 if (!$auth->isLoggedIn()) {
     get_template();
 } else {
-    check_user_status();
+    $user = check_user_status();
 }
 
 $lang = array_merge(load_language('global'), load_language('faq'));
@@ -100,9 +100,9 @@ $HTMLOUT .= main_div("
                         <div id='answer_2_text'>
                                 {$lang['faq_userinfo_body']}
                                 {$lang['faq_promotion_header']}
-                                {$lang['faq_promotion_body']} <a class='is-link' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.</p>
+                                {$lang['faq_promotion_body']} " . (isset($user) ? "<a class='is-link' href='userdetails.php?id={$user['id']}'>{$lang['faq_details_page']}</a>" : '') . '.
                             </div>
-                        </div>", 'top20');
+                        </div>', 'top20');
 
 $HTMLOUT .= main_div("
                         <h2 class='has-text-centered padtop10' id='answer_3'>{$lang['faq_stats_header']}</h2>
@@ -121,7 +121,7 @@ $next_para = "
                         <div id='answer_5_text'>
                             {$lang['faq_downloading_body']}";
 
-if ($CURUSER) {
+if ($user) {
     $byratio = 0;
     $byul = 0;
 
@@ -148,9 +148,9 @@ if ($CURUSER) {
         return $r;
     }
 
-    if ($CURUSER['class'] < UC_VIP) {
-        $gigs = $CURUSER['uploaded'] / (1024 * 1024 * 1024);
-        $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
+    if (isset($user) && $user['class'] < UC_VIP) {
+        $gigs = $user['uploaded'] / (1024 * 1024 * 1024);
+        $ratio = (($user['downloaded'] > 0) ? ($user['uploaded'] / $user['downloaded']) : 0);
         if (($ratio > 0 && $ratio < 0.5) || $gigs < 5) {
             $wait = 48;
             if ($ratio > 0 && $ratio < 0.5) {
@@ -187,10 +187,12 @@ if ($CURUSER) {
             $wait = 0;
         }
     }
-    $next_para .= "{$lang['faq_in']}<a class='is-link' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
+    if (isset($user)) {
+        $next_para .= "{$lang['faq_in']}<a class='is-link' href='userdetails.php?id={$user['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
+    }
     if (isset($wait)) {
         $byboth = $byratio && $byul;
-        $next_para .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])) . '.)');
+        $next_para .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($user['uploaded'], $user['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($user['uploaded'], $user['downloaded'])) . '.)');
     } else {
         $next_para .= $lang['faq_nodelay'];
     }

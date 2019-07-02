@@ -5,11 +5,11 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-global $CURUSER, $site_config;
+global $site_config;
 
-if ($CURUSER['class'] < $site_config['allowed']['play']) {
+if ($user['class'] < $site_config['allowed']['play']) {
     stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
     exit;
 }

@@ -14,7 +14,6 @@ global $site_config;
 
 $lang = array_merge(load_language('global'), load_language('login'));
 get_template();
-
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();

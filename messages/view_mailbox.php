@@ -1,14 +1,13 @@
 <?php
 
 declare(strict_types = 1);
-global $CURUSER;
-
+$user = check_user_status();
 require_once INCL_DIR . 'function_users.php';
-$show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
+$show_pm_avatar = ($user['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 
 if ($mailbox > 1) {
     //== get name of PM box if not in or out
-    $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid=' . sqlesc($user['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_box_name = mysqli_fetch_row($res_box_name);
     if (mysqli_num_rows($res_box_name) === 0) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
@@ -20,7 +19,7 @@ if ($mailbox > 1) {
 }
 //==== get count from PM boxs & get image & % box full
 //=== get stuff for the pager
-$res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . sqlesc($CURUSER['id']) . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($CURUSER['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
+$res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . sqlesc($user['id']) . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . sqlesc($user['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($user['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
 $messages = (int) $arr_count[0];
 //==== get count from PM boxs & get image & % box full
@@ -37,9 +36,9 @@ $LIMIT = $pager['limit'];
 //=== get message info we need to display then all nice and tidy like \o/
 $res = sql_query('SELECT m.id AS message_id, m.poster, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
                             LEFT JOIN users AS u ON u.id=m.' . ($mailbox === $site_config['pm']['sent'] ? 'receiver' : 'sender') . '
-                            LEFT JOIN friends AS f ON f.userid=' . $CURUSER['id'] . ' AND f.friendid=m.sender
-                            LEFT JOIN blocks AS b ON b.userid=' . $CURUSER['id'] . ' AND b.blockid=m.sender
-                            WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . $CURUSER['id'] . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . $CURUSER['id'] . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . $CURUSER['id'] . ' AND location = ' . sqlesc($mailbox))) . '
+                            LEFT JOIN friends AS f ON f.userid=' . $user['id'] . ' AND f.friendid=m.sender
+                            LEFT JOIN blocks AS b ON b.userid=' . $user['id'] . ' AND b.blockid=m.sender
+                            WHERE ' . ($mailbox === $site_config['pm']['inbox'] ? 'receiver = ' . $user['id'] . ' AND location = 1' : ($mailbox === $site_config['pm']['sent'] ? 'sender = ' . $user['id'] . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . $user['id'] . ' AND location = ' . sqlesc($mailbox))) . '
                             ORDER BY ' . $order_by . (isset($_GET['ASC']) ? ' ' : ' DESC ') . $LIMIT) or sqlerr(__FILE__, __LINE__);
 //=== Start Page
 //echo stdhead(htmlsafechars($mailbox_name));
@@ -52,7 +51,7 @@ $HTMLOUT .= "
             <span class='size_7 left20 right20 has-text-weight-bold'>{$mailbox_name}</span>
             <span class='size_2'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
          </div>
-        <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox) . $other_box_info . ($messages > $perpage ? $menu_top : '') . "
+        <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox, $user['id']) . $other_box_info . ($messages > $perpage ? $menu_top : '') . "
         <form action='messages.php' method='post' name='checkme' accept-charset='utf-8'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20'>
@@ -87,7 +86,7 @@ if (mysqli_num_rows($res) === 0) {
         </tr>";
 } else {
     while ($row = mysqli_fetch_assoc($res)) {
-        if ($mailbox === $site_config['pm']['drafts'] || $row['id'] == 0 || $row['sender'] == $CURUSER['id'] || $row['poster'] == $CURUSER['id']) {
+        if ($mailbox === $site_config['pm']['drafts'] || $row['id'] == 0 || $row['sender'] == $user['id'] || $row['poster'] == $user['id']) {
             $friends = '';
         } else {
             if ($row['friend'] > 0) {
@@ -119,7 +118,7 @@ if (mysqli_num_rows($res) === 0) {
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
                     <td class="min-350"><a class="is-link"  href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
-                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($CURUSER['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $CURUSER['id'] ? ' [' . format_username((int) $row['poster']) . ']' : '') . '</td>
+                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($user['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $user['id'] ? ' [' . format_username((int) $row['poster']) . ']' : '') . '</td>
                     <td class="has-text-centered w-15 mw-150">' . get_date((int) $row['added'], '') . '</td>
                     <td class="has-text-centered">
                         <input type="checkbox" name="pm[]" value="' . (int) $row['message_id'] . '">
@@ -131,7 +130,7 @@ if (mysqli_num_rows($res) === 0) {
 $per_page_drop_down = '<form action="messages.php" method="post"><select name="amount_per_page" onchange="location=this.options[this.selectedIndex].value;" accept-charset="utf-8">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($user['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '"></form>';
@@ -148,7 +147,7 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
             <div class='level-center-center'>
-                <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'> " . get_all_boxes($mailbox) . " or
+                <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'> " . get_all_boxes($mailbox, $user['id']) . " or
                 <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
             </div>
         </td>
