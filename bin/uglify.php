@@ -13,7 +13,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once BIN_DIR . 'functions.php';
 
-if (php_sapi_name() == 'cli') {
+if (php_sapi_name() === 'cli') {
     toggle_site_status(true);
     run_uglify($argv);
     toggle_site_status(false);
@@ -38,7 +38,7 @@ function run_uglify($argv = [])
     if (empty($BLOCKS)) {
         return 'BLOCKS are empty';
     }
-    if (php_sapi_name() == 'cli') {
+    if (php_sapi_name() === 'cli') {
         $site_config['cache']['driver'] = 'memory';
     }
     foreach ($argv as $arg) {
@@ -82,7 +82,7 @@ function run_uglify($argv = [])
     }
 
     foreach ($styles as $folder) {
-        if (php_sapi_name() == 'cli') {
+        if (php_sapi_name() === 'cli') {
             echo "Processing Template: {$folder}\n";
         }
         get_default_border($folder);
@@ -396,7 +396,7 @@ function run_uglify($argv = [])
         write_file($update, $pages);
     }
 
-    if (php_sapi_name() == 'cli') {
+    if (php_sapi_name() === 'cli') {
         echo "All CSS and Javascript files processed\n";
     }
     foreach ($argv as $arg) {
@@ -609,7 +609,7 @@ function can_delete(string $file, bool $delete)
             } else {
                 $msg = "{$br}Unable to modify file:{$file}.{$br}Please check your permissions.{$br}sudo chown -R $user_group .{$br}sudo php bin/set_perms.php\n";
             }
-            if (php_sapi_name() == 'cli') {
+            if (php_sapi_name() === 'cli') {
                 die($msg);
             } else {
                 stderr('Error', $msg);

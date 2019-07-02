@@ -1575,7 +1575,7 @@ function get_random_useragent()
 function clear_di_cache()
 {
     if (file_exists(DI_CACHE_DIR)) {
-        if (php_sapi_name() == 'cli') {
+        if (php_sapi_name() === 'cli') {
             passthru('sudo rm -r ' . DI_CACHE_DIR);
         } else {
             if (file_exists(DI_CACHE_DIR . 'CompiledContainer.php')) {

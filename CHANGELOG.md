@@ -1,4 +1,5 @@
 ### 01 Jul, 2019
+fix: trim on null functions.php  
 update: require authentication for staff pages if user is remembered  
 update: remove $CURUSER from public pages, the rest to follow  
 fix: read last post update  

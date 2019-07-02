@@ -8,11 +8,11 @@ use Pu239\Cache;
 use Pu239\Database;
 
 /**
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_styles()
 {
@@ -36,11 +36,11 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
- * @throws NotFoundException
+ * @return array
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array
+ * @throws NotFoundException
  */
 function get_classes(array $styles, bool $create)
 {
@@ -84,17 +84,20 @@ function get_classes(array $styles, bool $create)
  */
 function get_webserver_user()
 {
-    if (php_sapi_name() == 'cli') {
-        $group = trim(`ps -ef | egrep '(httpd|apache2|apache|nginx)' | grep -v \`whoami\` | grep -v root | head -n1 | awk '{print $1}'`);
+    global $site_config;
+
+    if (php_sapi_name() === 'cli') {
+        $group = shell_exec("ps -ef | egrep '(httpd|apache2|apache|nginx)' | grep -v \`whoami\` | grep -v root | head -n1 | awk '{print $1}'");
     } else {
         $group = posix_getpwuid(posix_geteuid());
         $group = $group['name'];
     }
     if (empty($group)) {
-        $group = 'www-data';
+        return $site_config['webserver']['username'];
+    } else {
+        return trim($group);
     }
 
-    return $group;
 }
 
 /**
@@ -102,7 +105,7 @@ function get_webserver_user()
  */
 function get_username()
 {
-    if (php_sapi_name() == 'cli') {
+    if (php_sapi_name() === 'cli') {
         $user = null;
         $commands = [
             trim(`logname`),
@@ -131,10 +134,18 @@ function cleanup(string $group)
     global $site_config;
 
     if (file_exists($site_config['files']['path'])) {
-        chown($site_config['files']['path'], $group);
-        chgrp($site_config['files']['path'], $group);
+        if (php_sapi_name() === 'cli') {
+            passthru("sudo chown -R $group:$group " . $site_config['files']['path']);
+        } else {
+            try {
+                chown($site_config['files']['path'], $group);
+                chgrp($site_config['files']['path'], $group);
+            } catch (Exception $exception) {
+                // TODO logger
+            }
+        }
     }
-    if (php_sapi_name() == 'cli') {
+    if (php_sapi_name() === 'cli') {
         if (file_exists(DI_CACHE_DIR)) {
             passthru("sudo chown -R $group:$group " . DI_CACHE_DIR);
         }
@@ -144,11 +155,11 @@ function cleanup(string $group)
 /**
  * @param bool $before
  *
- * @throws NotFoundException
+ * @return int
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return int
+ * @throws NotFoundException
  */
 function toggle_site_status(bool $before)
 {

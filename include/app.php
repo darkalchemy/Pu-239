@@ -10,9 +10,8 @@ use SlashTrace\SlashTrace;
 
 date_default_timezone_set('UTC');
 
-$production = PRODUCTION;
 $builder = new ContainerBuilder();
-if ($production) {
+if (PRODUCTION) {
     $builder->enableCompilation(DI_CACHE_DIR);
 }
 $builder->addDefinitions(CONFIG_DIR . '/config.php');
