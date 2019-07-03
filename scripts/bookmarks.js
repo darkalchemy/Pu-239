@@ -6,15 +6,11 @@ $('.bookmarks').on('click', function () {
         context: this,
         data: {
             tid: this.dataset.tid,
-            csrf: this.dataset.csrf,
             remove: this.dataset.remove,
             private: this.dataset.private
         },
         success: function (data) {
-            if (data['fail'] === 'csrf') {
-                $(this).html('CSRF');
-                $(this).tooltipster('content', 'Invalid CSRF, try refreshing the page.');
-            } else if (data['fail'] === 'invalid') {
+            if (data['fail'] === 'invalid') {
                 $(this).html('?');
                 $(this).tooltipster('content', 'Invalid data received, try refreshing the page.');
             } else if (data['fail'] === 'fail') {

@@ -13,21 +13,15 @@ declare(strict_types = 1);
 $users = [];
 $users = $this->_cache->get('chat_users_list');
 if ($users === false || is_null($users)) {
-    $sql = 'SELECT id, class FROM users';
-    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    while ($user = mysqli_fetch_assoc($res)) {
-        $id = $class = '';
-        extract($user);
-        $users[$id]['userRole'] = $class;
-        $users[$id]['channels'] = [
-            0,
-            1,
-            2,
-            3,
-            4,
-        ];
-        if ($class >= UC_ADMINISTRATOR) {
-            $users[$id]['channels'] = [
+    $all_users = $this->_fluent->from('users')
+                           ->select(null)
+                           ->select('id')
+                           ->select('class');
+
+    foreach ($all_users as $user) {
+        $users[$user['id']]['userRole'] = $user['class'];
+        if ($user['class'] >= UC_ADMINISTRATOR) {
+            $users[$user['id']]['channels'] = [
                 0,
                 1,
                 2,
@@ -36,14 +30,22 @@ if ($users === false || is_null($users)) {
                 5,
                 6,
             ];
-        } elseif ($class >= UC_STAFF) {
-            $users[$id]['channels'] = [
+        } elseif ($user['class'] >= UC_STAFF) {
+            $users[$user['id']]['channels'] = [
                 0,
                 1,
                 2,
                 3,
                 4,
                 5,
+            ];
+        } else {
+            $users[$user['id']]['channels'] = [
+                0,
+                1,
+                2,
+                3,
+                4,
             ];
         }
     }

@@ -9,9 +9,10 @@ use Pu239\Database;
 require_once __DIR__ . '/../../include/bittorrent.php';
 $lang = load_language('bookmark');
 global $container;
-$private = false;
-extract($_POST);
 
+$private = $_POST['private'];
+$remove = $_POST['remove'];
+$tid = $_POST['tid'];
 header('content-type: application/json');
 if (empty($tid)) {
     echo json_encode(['fail' => 'invalid']);

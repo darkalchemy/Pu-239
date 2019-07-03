@@ -3,9 +3,12 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Comment;
 use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;
+use Pu239\Torrent;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -16,7 +19,10 @@ $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 global $container, $site_config;
 
-flood_limit('comments');
+$comments = $container->get(Comment::class);
+$user_class = $container->get(User::class);
+$torrents = $container->get(Torrent::class);
+//flood_limit('comments');
 $action = !empty($_GET['action']) ? htmlsafechars($_GET['action']) : (!empty($_POST['action']) ? htmlsafechars($_POST['action']) : 0);
 $stdhead = [
     'css' => [
@@ -80,7 +86,7 @@ if ($action === 'add') {
         if (!$body) {
             stderr($lang['comment_error'], $lang['comment_body']);
         }
-        $owner = isset($arr['owner']) ? $arr['owner'] : 0;
+        $owner = isset($arr['owner']) ? (int) $arr['owner'] : 0;
         $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no';
         $arr['comments'] = isset($arr['comments']) ? $arr['comments'] : 0;
         if ($user['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
@@ -104,19 +110,18 @@ if ($action === 'add') {
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
         if ($site_config['bonus']['on']) {
-            sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-            $update['comments'] = ($arr['comments'] + 1);
-            $cache->update_row('torrent_details_' . $id, [
-                'comments' => $update['comments'],
-            ], 0);
-            $update['seedbonus'] = ($user['seedbonus'] + $site_config['bonus']['per_comment']);
-            $cache->update_row('user_' . $user['id'], [
-                'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['user_cache']);
+            $update = [
+                'seedbonus' => $user['seedbonus'] + $site_config['bonus']['per_comment'],
+            ];
+            $user_class->update($update, $user['id']);
+            $torrent_comments = $torrents->get_items(['comments'], $id);
+            $update = [
+                'comments' => $torrent_comments + 1,
+            ];
+            $torrents->update($update, $id);
         }
-        $cpm = sql_query('SELECT commentpm FROM users WHERE id=' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
-        $cpm_r = mysqli_fetch_assoc($cpm);
-        if ($cpm_r['commentpm'] === 'yes') {
+        $cpm_r = $user_class->get_item('commentpm', $owner);
+        if ($cpm_r === 'yes') {
             $dt = TIME_NOW;
             $subby = 'Someone has left a comment';
             $msg = "You have received a comment on your torrent [url={$site_config['paths']['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].';
@@ -144,7 +149,7 @@ if ($action === 'add') {
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
-      <br><form name='compose' method='post' action='comment.php?action=add' accept-charset='utf-8'>
+      <br><form name='compose' method='post' action='{$_SERVER['PHP_SELF']}?action=add' accept-charset='utf-8'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name'>";
     $HTMLOUT .= BBcode($body);
@@ -195,13 +200,20 @@ if ($action === 'add') {
             stderr($lang['comment_error'], $lang['comment_body']);
         }
         $text = htmlsafechars($body);
-        $editedat = TIME_NOW;
         if (isset($_POST['lasteditedby']) || $user['class'] < UC_STAFF) {
-            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($user['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-            $cache->delete('latest_comments_');
+            $update = [
+                'text' => $text,
+                'editedat' => TIME_NOW,
+                'editedby' => $user['id'],
+            ];
+            $comments->update($update, $commentid);
         } else {
-            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = 0 WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-            $cache->delete('latest_comments_');
+            $update = [
+                'text' => $text,
+                'editedat' => TIME_NOW,
+                'editedby' => 2,
+            ];
+            $comments->update($update, $commentid);
         }
         $session->set('is-success', 'The comment has been updated');
         header("Refresh: 0; url=$locale_link.php?id=" . (int) $arr['tid'] . "$extra_link&viewcomm=$commentid#comm$commentid");
@@ -209,7 +221,7 @@ if ($action === 'add') {
     }
     $HTMLOUT = '';
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
-      <form method='post' action='comment.php?action=edit&amp;cid=$commentid' accept-charset='utf-8'>
+      <form method='post' action='{$_SERVER['PHP_SELF']}?action=edit&amp;cid=$commentid' accept-charset='utf-8'>
       <input type='hidden' name='locale' value='$name'>
        <input type='hidden' name='tid' value='" . (int) $arr['tid'] . "'>
       <input type='hidden' name='cid' value='$commentid'>";
@@ -233,31 +245,29 @@ if ($action === 'add') {
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
-        stderr($lang['comment_delete'], $lang['comment_about_delete'] . "<br><a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
+        stderr($lang['comment_delete'], $lang['comment_about_delete'] . " <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
           <span class='has-text-success'>here</span></a> {$lang['comment_delete_sure']}");
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     $id = 0;
     if ($arr) {
-        $id = $arr[$locale];
+        $id = (int) $arr[$locale];
     }
-    sql_query('DELETE FROM comments WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-    $cache->delete('latest_comments_');
-    if ($id && mysqli_affected_rows($mysqli) > 0) {
+    $deleted = $comments->delete($commentid);
+    if ($id && $deleted) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id=" . sqlesc($id));
     }
     if ($site_config['bonus']['on']) {
-        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_comment']) . ' WHERE id =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-        $arr['comments'] = isset($arr['comments']) ? (int) $arr['comments'] : 0;
-        $update['comments'] = ($arr['comments'] - 1);
-        $cache->update_row('torrent_details_' . $id, [
-            'comments' => $update['comments'],
-        ], 0);
-        $update['seedbonus'] = ($user['seedbonus'] - $site_config['bonus']['per_comment']);
-        $cache->update_row('user_' . $user['id'], [
-            'seedbonus' => $update['seedbonus'],
-        ], $site_config['expires']['user_cache']);
+        $torrent_comments = $torrents->get_items(['comments'], $tid);
+        $update = [
+            'seedbonus' => $user['seedbonus'] - $site_config['bonus']['per_comment'],
+        ];
+        $user_class->update($update, $user['id']);
+        $update = [
+            'comments' => $torrent_comments > 0 ? $torrent_comments - 1 : 0,
+        ];
+        $torrents->update($update, $id);
     }
     $session->set('is-success', 'The comment has been deleted');
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");

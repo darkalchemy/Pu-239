@@ -7,7 +7,9 @@ use Pu239\Comment;
 use Pu239\Image;
 use Pu239\User;
 
-global $container, $lang, $site_config, $CURUSER;
+$user = check_user_status();
+global $container, $lang, $site_config;
+
 $comment = $container->get(Comment::class);
 $comments = $comment->get_comments();
 $posted_comments .= "
@@ -29,35 +31,32 @@ $posted_comments .= "
 $images_class = $container->get(Image::class);
 $users_class = $container->get(User::class);
 foreach ($comments as $comment) {
-    $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = $genre = '';
-    $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = $imdb_id = '';
-    extract($comment);
-    $torrname = htmlsafechars($name);
-    $user = $anonymous === 'yes' ? 'Anonymous' : format_username((int) $user);
-    if (empty($poster) && !empty($imdb_id)) {
-        $poster = $images_class->find_images($imdb_id);
+    $torrname = format_comment($comment['name']);
+    $formatted = $anonymous === 'yes' ? 'Anonymous' : format_username((int) $comment['user']);
+    if (empty($comment['poster']) && !empty($imdb_id)) {
+        $comment['poster'] = $images_class->find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='' class='tooltip-poster'>";
-    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || (int) $owner === $CURUSER['id'])) {
+    $comment['poster'] = empty($comment['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($comment['poster'], true, 250) . "' alt='' class='tooltip-poster'>";
+    if ($anonymous === 'yes' && ($user['class'] < UC_STAFF || (int) $comment['owner'] === $user['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $users_data = $users_class->getUserFromId((int) $owner);
-        $username = !empty($users_data['username']) ? htmlsafechars($users_data['username']) : 'unknown';
-        $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . $username . '</span>';
+        $users_data = $users_class->getUserFromId((int) $comment['owner']);
+        $username = !empty($users_data['username']) ? format_comment($users_data['username']) : 'unknown';
+        $uploader = "<span class='" . get_user_class_name((int) $comment['class'], true) . "'>" . $username . '</span>';
     }
 
-    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
+    $caticon = !empty($comment['image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . $comment['image'] . "' class='tooltipper' alt='" . format_comment($comment['cat']) . "' title='" . format_comment($comment['cat']) . "' height='20px' width='auto'>" : format_comment($comment['cat']);
 
     $posted_comments .= "
                         <tr>
                             <td class='has-text-centered'>$caticon</td>
                             <td>";
-    $block_id = "comment_id_{$comment_id}";
-    $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, false, $comment_id);
+    $block_id = "comment_id_{$comment['comment_id']}";
+    $posted_comments .= torrent_tooltip(format_comment($comment['text']), $comment['id'], $block_id, $comment['name'], $comment['poster'], $uploader, $added, $size, $comment['seeders'], $comment['leechers'], $comment['imdb_id'], $comment['rating'], $comment['year'], $comment['subtitles'], $genre, false, $comment['comment_id']);
     $posted_comments .= "
-                            <td class='has-text-centered'>$user</td>
+                            <td class='has-text-centered'>$formatted</td>
                             <td class='has-text-centered'>" . get_date((int) $added, 'LONG') . "</td>
-                            <td class='has-text-centered'>" . number_format($user_likes) . '</td>
+                            <td class='has-text-centered'>" . number_format($comment['user_likes']) . '</td>
                         </tr>';
 }
 

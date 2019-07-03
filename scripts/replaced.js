@@ -74,7 +74,6 @@ $('.mlike').on('click', function () {
         data: {
             type: this.dataset.type,
             id: this.dataset.id,
-            csrf: this.dataset.csrf,
             current: $(this).html()
         },
         success: function (data) {

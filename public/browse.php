@@ -20,6 +20,8 @@ $users_class = $container->get(User::class);
 $fluent = $container->get(Database::class);
 $hide_simple = '';
 $hide_advanced = "class='hidden'";
+$today = isset($_GET['today']) ? $_GET['today'] : 0;
+unset($_GET['today']);
 if (!empty($_GET)) {
     if (!empty($_GET['sns'])) {
         unset($_GET['incldead'], $_GET['vip'], $_GET['only_free'], $_GET['unsnatched'], $_GET['sna'], $_GET['sd'], $_GET['sg'], $_GET['so'], $_GET['sys'], $_GET['sye'], $_GET['srs'], $_GET['sre'], $_GET['si'], $_GET['ss'], $_GET['sp'], $_GET['spf'], $_GET['st'], $_GET['sr']);
@@ -120,8 +122,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $pagerlink = '';
 }
 
-$today = 0;
-if (!empty($_GET['today']) && $_GET['today']) {
+if ($today) {
     $count->where('t.added >= ?', strtotime('today midnight'));
     $query->where('t.added >= ?', strtotime('today midnight'));
     $addparam .= 'today=1&amp;';

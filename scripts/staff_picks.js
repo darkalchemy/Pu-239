@@ -6,15 +6,11 @@ $('.staff_pick').on('click', function () {
         context: this,
         data: {
             id: this.dataset.id,
-            csrf: this.dataset.csrf,
             pick: this.dataset.pick
         },
         success: function (data) {
             var el = document.querySelector('#staff_pick_' + this.dataset.id);
-            if (data['staff_pick'] === 'csrf') {
-                $(this).html('CSRF');
-                $(this).tooltipster('content', 'Invalid CSRF, try refreshing the page.');
-            } else if (data['staff_pick'] === 'invalid') {
+            if (data['staff_pick'] === 'invalid') {
                 $(this).html('?');
                 $(this).tooltipster('content', 'Invalid data received, try refreshing the page.');
             } else if (data['staff_pick'] === 'fail') {

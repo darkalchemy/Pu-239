@@ -96,6 +96,7 @@ $lang = [
     'index_stats_powerusers' => 'Power Users',
     'index_stats_banned' => 'Disabled',
     'index_stats_uploaders' => 'Uploaders',
+    'index_stats_vips' => 'VIPs',
     'index_stats_moderators' => 'Moderators',
     'index_stats_admin' => 'Administrators',
     'index_stats_sysops' => 'Sysops',

@@ -1,3 +1,8 @@
+### 02 Jul, 2019
+fix: security issue using extract()  
+fix: deleting torrent comments  
+fix: search cloud  
+
 ### 01 Jul, 2019
 fix: missing argument view_message.php  
 fix: cast to int view_message.php  

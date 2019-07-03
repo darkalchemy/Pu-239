@@ -18,14 +18,34 @@ require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
-$torrent_pass = $auth = $strip = $bot = $owner_id = $csrf = $name = $url = $isbn = $poster = $MAX_FILE_SIZE = $youtube = $tags = $description = $body = $release_group = $free_length = $half_length = '';
-$music = $movie = $game = $apps = $subs = $genre = [];
-$type = 0;
-$data = $_POST;
-extract($_POST);
-unset($_POST);
 global $container, $site_config;
 
+$data = $_POST;
+$torrent_pass = $data['torrent_pass'];
+$auth = $data['auth'];
+$strip = $data['strip'];
+$bot = $data['bot'];
+$owner_id = $data['owner_id'];
+$csrf = $data['csrf'];
+$name = $data['name'];
+$url = $data['url'];
+$isbn = $data['isbn'];
+$poster = $data['poster'];
+$MAX_FILE_SIZE = $data['MAX_FILE_SIZE'];
+$youtube = $data['youtube'];
+$tags = $data['tags'];
+$description = $data['description'];
+$body = $data['body'];
+$release_group = $data['release_group'];
+$free_length = $data['free_length'];
+$half_length = $data['half_length'];
+$music = $data['music'];
+$movie = $data['movie'];
+$game = $data['game'];
+$apps = $data['apps'];
+$subs = $data['subs'];
+$genre = $data['genre'];
+$type = $data['type'];
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
@@ -403,8 +423,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

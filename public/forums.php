@@ -196,8 +196,8 @@ $more_options = '
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
 <input type="file" size="30" name="attachment[]"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy tootlipper" title="Zip Files">
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy tooltipper" title="Rar Failes"><br>
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy tooltipper" title="Zip Files">
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy tooltipper" title="Rar Files"><br>
 <div id="attach_more" style="display:none">
 <input type="file" size="30" name="attachment[]"><br>
 <input type="file" size="30" name="attachment[]"><br>
@@ -482,12 +482,12 @@ switch ($action) {
 
                     if ($last_post_arr['tan'] === 'yes') {
                         if ($user['class'] < UC_STAFF && $last_post_arr['user_id'] != $user['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -506,7 +506,7 @@ switch ($action) {
                                     ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link">' . htmlsafechars($arr['name']) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link tooltipper">' . htmlsafechars($arr['name']) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }
@@ -525,12 +525,12 @@ switch ($action) {
                                 <span class="level-right">
                                     <span class="left10">
                                         <a href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . $forum_id . '">
-                                            <i class="icon-edit icon"></i>
+                                            <i class="icon-edit icon tooltipper" title="Edit Forum"></i>
                                         </a>
                                     </span>
                                     <span>
                                         <a href="javascript:confirm_delete(\'' . $forum_id . '\');">
-                                            <i class="icon-trash-empty icon has-text-danger"></i>
+                                            <i class="icon-trash-empty icon has-text-danger tooltipper" title="Delete Forum"></i>
                                         </a>
                                     </span>
                                 </span>

@@ -12,8 +12,6 @@ require_once INCL_DIR . 'function_trivia.php';
 $lang = array_merge(load_language('global'), load_language('trivia'));
 global $container;
 
-extract($_POST);
-
 header('content-type: application/json');
 $auth = $container->get(Auth::class);
 $current_user = $auth->getUserId();

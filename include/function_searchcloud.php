@@ -96,9 +96,8 @@ function searchcloud_insert(string $word, string $column)
     } else {
         $cache->delete('searchcloud_');
     }
-
     $values = [
-        'searchedfor' => substr($word, 255),
+        'searchedfor' => substr($word, 0, 255),
         'search_column' => $column,
         'howmuch' => $howmuch,
     ];
@@ -106,7 +105,6 @@ function searchcloud_insert(string $word, string $column)
         'howmuch' => new Literal('VALUES(howmuch)'),
         'search_column' => new Literal('VALUES(search_column)'),
     ];
-
     $seachcloud_class = $container->get(Searchcloud::class);
     $seachcloud_class->insert($values, $update);
 }
@@ -125,8 +123,8 @@ function cloud()
     $big = 80;
     $tags = searchcloud();
     if (!empty($tags)) {
-        $minimum_count = $tags['min'];
-        $maximum_count = $tags['max'];
+        $minimum_count = isset($tags['min']) ? $tags['min'] : 0;
+        $maximum_count = isset($tags['max']) ? $tags['max'] : 0;
         $spread = $maximum_count - $minimum_count;
         if ($spread == 0) {
             $spread = 1;

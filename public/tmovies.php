@@ -77,7 +77,7 @@ if (!empty($_GET['sre'])) {
            ->orderBy('t.rating DESC');
 }
 $count = $count->fetch('count');
-$perpage = 1;
+$perpage = 25;
 $addparam = !empty($addparam) ? '?' . implode('&amp;', $addparam) . '&amp;' : '?';
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/tmovies.php{$addparam}");
 $select->limit($pager['pdo']['limit'])

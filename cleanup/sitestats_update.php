@@ -30,7 +30,7 @@ function sitestats_update($data)
                     ->select('class')
                     ->select('enabled');
 
-    $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = 0;
+    $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
     foreach ($users as $user) {
         $unverified += $user['status'] === 'pending' ? 1 : 0;
         $donors += $user['donor'] === 'yes' ? 1 : 0;
@@ -41,6 +41,7 @@ function sitestats_update($data)
         $disabled += $user['enabled'] === 'no' ? 1 : 0;
         $powerusers += $user['class'] === UC_POWER_USER ? 1 : 0;
         $uploaders += $user['class'] === UC_UPLOADER ? 1 : 0;
+        $vips += $user['class'] === UC_VIP ? 1 : 0;
         $moderators += $user['class'] === UC_MODERATOR ? 1 : 0;
         $administrators += $user['class'] === UC_ADMINISTRATOR ? 1 : 0;
         $sysops += $user['class'] === UC_SYSOP ? 1 : 0;
@@ -115,6 +116,7 @@ function sitestats_update($data)
         'powerusers' => $powerusers,
         'disabled' => $disabled,
         'uploaders' => $uploaders,
+        'vips' => $vips,
         'moderators' => $moderators,
         'administrators' => $administrators,
         'sysops' => $sysops,

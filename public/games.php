@@ -26,7 +26,7 @@ $color1 = $color2 = $color3 = $color4 = $color5 = $color6 = $color7 = $color8 = 
 $sql = "SELECT game_id FROM blackjack WHERE status = 'waiting' ORDER BY game_id";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 while ($count = mysqli_fetch_array($res)) {
-    extract($count);
+    $game_id = $count['game_id'];
     ${'color' . $game_id} = 'has-text-success';
 }
 

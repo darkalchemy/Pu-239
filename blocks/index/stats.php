@@ -12,10 +12,11 @@ if ($stats_cache === false || is_null($stats_cache)) {
     return;
 }
 $users = [
-    "<tr><td>{$lang['index_stats_regged']}</td><td class='w-15 has-text-centered'>{$stats_cache['regusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_online']}</td><td class='w-15 has-text-centered'>{$stats_cache['numactive']}</td></tr>",
+    "<tr><td>{$lang['index_stats_regged']}</td><td class='w-15 has-text-centered'>{$stats_cache['regusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_powerusers']}</td><td class='w-15 has-text-centered'>{$stats_cache['powerusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_uploaders']}</td><td class='w-15 has-text-centered'>{$stats_cache['uploaders']}</td></tr>",
+    "<tr><td>{$lang['index_stats_vips']}</td><td class='w-15 has-text-centered'>{$stats_cache['vips']}</td></tr>",
     "<tr><td>{$lang['index_stats_moderators']}</td><td class='w-15 has-text-centered'>{$stats_cache['moderators']}</td></tr>",
     "<tr><td>{$lang['index_stats_admin']}</td><td class='w-15 has-text-centered'>{$stats_cache['administrators']}</td></tr>",
     "<tr><td>{$lang['index_stats_sysops']}</td><td class='w-15 has-text-centered'>{$stats_cache['sysops']}</td></tr>",
@@ -55,9 +56,9 @@ $site_stats .= "
     <a id='stats-hash'></a>
     <div class='flex-grid'>
         <div class='col'>" . wrap_this($users) . "</div>
+        <div class='col'>" . wrap_this($torrents) . "</div>
         <div class='col'>" . wrap_this($gender) . "</div>
-        <div class='col'>" . wrap_this($forums) . "</div>
-        <div class='col'>" . wrap_this($torrents) . '</div>
+        <div class='col'>" . wrap_this($forums) . '</div>
     </div>';
 
 /**

@@ -11,7 +11,6 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status('like');
 
-$check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
     'comment' => 'comments',
     'topic' => 'topics',
@@ -34,11 +33,11 @@ comment_like_unlike($fields, $user);
  */
 function comment_like_unlike(array $fields, array $user)
 {
-    global $container, $user;
+    global $container;
 
-    $id = $type = $current = '';
-    extract($_POST);
-    $id = (int) $id;
+    $id = (int) $_POST['id'];
+    $type = $_POST['type'];
+    $current = $_POST['current'];
     header('content-type: application/json');
     if (!array_key_exists($type, $fields)) {
         echo json_encode(['label' => 'Invalid Data Type']);

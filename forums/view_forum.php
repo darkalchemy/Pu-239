@@ -371,10 +371,10 @@ if (!empty($topic_arrs)) {
 
         $content .= '
         <tr>
-		    <td>
+		    <td class="has-text-centered">
                 <img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper icon">
             </td>
-    		<td>' . $icon . '</td>
+    		<td class="has-text-centered">' . $icon . '</td>
 	    	<td>
 		        <div class="level">
 		            <span class="right10">
@@ -394,11 +394,11 @@ if (!empty($topic_arrs)) {
     		<td class="has-text-centered">' . $thread_starter . '</td>
 	    	<td class="has-text-centered">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		    <td class="has-text-centered">' . number_format($topic_arr['views']) . '</td>
-    		<td>
+    		<td class="has-text-centered">
                 <span style="white-space:nowrap;">' . get_date((int) $arr_post_stuff['added'], '') . '</span><br>
-        		<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '
+        		<a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '
             </td>
-    		<td>' . $post_status_image . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
+    		<td class="has-text-centered">' . $post_status_image . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
 	        	<img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon"></a>
             </td>
 		</tr>';
@@ -419,14 +419,14 @@ $heading = $body = '';
 if (!empty($content)) {
     $heading = '
         <tr>
-		    <th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"  class="tooltipper icon"></th>
-		    <th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"  class="tooltipper icon"></th>
-		    <th>' . $lang['fe_topic'] . '</th>
-		    <th>' . $lang['fe_started_by'] . '</th>
-		    <th>' . $lang['fe_replies'] . '</th>
-		    <th>' . $lang['fe_views'] . '</th>
-		    <th>' . $lang['fe_last_post'] . '</th>
-		    <th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" class="tooltipper icon"></th>
+		    <th class="has-text-centered"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"  class="tooltipper icon"></th>
+		    <th class="has-text-centered"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"  class="tooltipper icon"></th>
+		    <th class="has-text-centered">' . $lang['fe_topic'] . '</th>
+		    <th class="has-text-centered">' . $lang['fe_started_by'] . '</th>
+		    <th class="has-text-centered">' . $lang['fe_replies'] . '</th>
+		    <th class="has-text-centered">' . $lang['fe_views'] . '</th>
+		    <th class="has-text-centered">' . $lang['fe_last_post'] . '</th>
+		    <th class="has-text-centered"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" class="tooltipper icon"></th>
 		</tr>';
 }
 $table = main_table($content, $heading);

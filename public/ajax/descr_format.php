@@ -6,11 +6,10 @@ use Pu239\Torrent;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
-extract($_POST);
 header('content-type: application/json');
 global $container;
 
-$tid = is_numeric($tid) ? (int) $tid : '';
+$tid = (int) $_POST['tid'];
 if (!empty($tid)) {
     $torrents_class = $container->get(Torrent::class);
     $descr = $torrents_class->format_descr($tid);

@@ -1173,7 +1173,7 @@ ul li ul li {
     width: calc(50% - .625em);
 }
 
-.flex-grid .col:not(:last-child) {
+.flex-grid .col:nth-child(2) {
     margin-bottom: 1.25em;
 }
 
@@ -1378,6 +1378,10 @@ ul li ul li {
 
     .responsive-icon {
         font-size: 24px;
+    }
+
+    .flex-grid .col:not(:last-child) {
+        margin-bottom: 1.25em;
     }
 }
 

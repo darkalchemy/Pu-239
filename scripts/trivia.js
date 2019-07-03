@@ -4,7 +4,6 @@ function get_trivia_question() {
     var button = document.querySelector('#button');
     button.disabled = true;
 
-    var csrf = el.dataset.csrf;
     var qid = el.dataset.qid;
     var gamenum = el.dataset.gamenum;
     content.innerHTML = '<div class="padding20">Looking up Trivia Questions, please be patient.</div>';
@@ -14,14 +13,11 @@ function get_trivia_question() {
         type: 'POST',
         dataType: 'json',
         data: {
-            csrf: csrf,
             qid: qid,
             gamenum: gamenum
         },
         success: function (data) {
-            if (data['fail'] === 'csrf') {
-                content.innerHTML = '<div class="padding20">CSRF Failure, try refreshing the page</div>';
-            } else if (data['fail'] === 'invalid') {
+            if (data['fail'] === 'invalid') {
                 content.innerHTML = '<div class="padding20">Trivia Lookup Failed.</div>';
             } else {
                 content.innerHTML = data['content'];
@@ -85,7 +81,6 @@ function process_trivia(elem) {
     var el = document.querySelector('#' + elem);
     var content = document.querySelector('#trivia_content');
 
-    var csrf = el.dataset.csrf;
     var qid = el.dataset.qid;
     var gamenum = el.dataset.gamenum;
     var answer = el.dataset.answer;
@@ -98,14 +93,11 @@ function process_trivia(elem) {
         context: this,
         data: {
             answer: answer,
-            csrf: csrf,
             qid: qid,
             gamenum: gamenum
         },
         success: function (data) {
-            if (data['fail'] === 'csrf') {
-                content.innerHTML = '<span class="has-text-centered">CSRF Failure, try refreshing the page</span>';
-            } else if (data['fail'] === 'invalid') {
+            if (data['fail'] === 'invalid') {
                 content.innerHTML = '<span class="has-text-centered">Trivia Lookup Failed.</span>';
             } else {
                 content.innerHTML = data['content'];

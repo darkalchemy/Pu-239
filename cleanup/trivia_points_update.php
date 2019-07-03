@@ -38,14 +38,12 @@ function trivia_points_update($data)
                       ->select('t.user_id')
                       ->select('COUNT(t.correct) AS correct')
                       ->select('u.seedbonus')
-                      ->select('u.username')
                       ->select('u.modcomment')
                       ->innerJoin('users AS  u ON t.user_id = u.id')
                       ->where('t.correct = 1')
                       ->where('gamenum = ?', $gamenum)
                       ->groupBy('t.user_id')
                       ->groupBy('u.seedbonus')
-                      ->groupBy('u.username')
                       ->groupBy('u.modcomment')
                       ->orderBy('correct DESC')
                       ->limit(10)
@@ -55,10 +53,11 @@ function trivia_points_update($data)
         $users_class = $container->get(User::class);
         $subject = 'Trivia Bonus Points Award.';
         foreach ($results as $winners) {
-            $user_id = $seedbonus = $correct = 0;
-            $modcomment = '';
-            extract($winners);
-            $points = 0;
+            $user_id = $winners['user_id'];
+            $seedbonus = $winners['seedbonus'];
+            $correct = $winners['correct'];
+            $modcomment = $winners['modcomment'];
+            $points = $winners['points'];
             switch ($i) {
                 case 1:
                     $points = 10 * $correct;

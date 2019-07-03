@@ -19,9 +19,7 @@ $possible_extensions = [
     'txt',
 ];
 $session = $container->get(Session::class);
-$name = $body = $type = '';
-extract($_POST);
-$id = (int) $id;
+$id = (int) $_POST['id'];
 if (!is_valid_id($id)) {
     $session->set('is-warning', $lang['takedit_no_data']);
     header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -95,11 +93,10 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     $updateset[] = "nfo = ''";
     $torrent_cache['nfo'] = '';
 }
-
 foreach ([
-    $type,
-    $body,
-    $name,
+    $_POST['type'],
+    $_POST['body'],
+    $_POST['name'],
 ] as $x) {
     if (empty($x)) {
         $session->set('is-warning', $lang['takedit_no_data']);

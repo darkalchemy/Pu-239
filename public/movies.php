@@ -24,8 +24,7 @@ $lists = [
     'tvmaze',
     'bluray',
 ];
-
-extract($_GET);
+$list = $_GET['list'];
 if (empty($list) || !in_array($list, $lists)) {
     $list = 'upcoming';
 }

@@ -21,8 +21,6 @@ $torrent_updateset = $snatched_values = $user_updateset = [];
 global $container, $site_config;
 
 $ratio_free = $site_config['site']['ratio_free'];
-extract($_GET);
-unset($_GET);
 if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
     err('Invalid Torrent Pass');
 }
@@ -37,8 +35,10 @@ foreach ([
     'left',
     'compact',
 ] as $x) {
-    if (!isset(${$x})) {
+    if (!isset($_GET[$x])) {
         err("Missing key: $x");
+    } else {
+        $$x = $_GET[$x];
     }
 }
 
@@ -64,7 +64,7 @@ foreach ([
     'numwant',
     'num_want',
 ] as $x) {
-    if (isset(${$x})) {
+    if (isset($_GET[$x])) {
         $rsize = (int) ${$x};
         break;
     }
@@ -81,7 +81,7 @@ if ($left < 0) {
 if (!$port || $port > 0xffff) {
     err('invalid port');
 }
-if (!isset($event)) {
+if (!isset($_GET['event'])) {
     $event = '';
 }
 $seeder = $left === 0 ? 'yes' : 'no';

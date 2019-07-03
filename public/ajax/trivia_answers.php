@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
 
@@ -10,14 +9,14 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_trivia.php';
 $lang = array_merge(load_language('global'), load_language('trivia'));
+$user = check_user_status();
 global $container;
 
-$gamenum = $qid = 0;
-
-extract($_POST);
 header('content-type: application/json');
-$auth = $container->get(Auth::class);
-$current_user = $auth->getUserId();
+$gamenum = (int) $_POST['gamenum'];
+$qid = (int) $_POST['qid'];
+$answer = $_POST['answer'];
+$userid = $user['id'];
 $fluent = $container->get(Database::class);
 $correct_answer = $fluent->from('triviaq')
                          ->select('canswer')
@@ -25,7 +24,7 @@ $correct_answer = $fluent->from('triviaq')
                          ->fetch('canswer');
 
 $user = $fluent->from('triviausers')
-               ->where('user_id = ?', $current_user)
+               ->where('user_id = ?', $userid)
                ->where('qid = ?', $qid)
                ->where('gamenum = ?', $gamenum)
                ->fetch();
@@ -40,7 +39,7 @@ if (!empty($user)) {
     }
 } else {
     $values = [
-        'user_id' => $current_user,
+        'user_id' => $userid,
         'gamenum' => $gamenum,
         'qid' => $qid,
         'date' => date('Y-m-d H:i:s'),

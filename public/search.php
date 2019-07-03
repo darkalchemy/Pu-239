@@ -10,10 +10,11 @@ require_once __DIR__ . '/../include/bittorrent.php';
 $lang = load_language('global');
 global $container, $site_config;
 
-$torrent_pass = $auth = $bot = $owner_id = '';
-extract($_POST);
-unset($_POST);
-
+$torrent_pass = $_POST['torrent_pass'];
+$auth = $_POST['auth'];
+$bot = $_POST['bot'];
+$owner_id = $_POST['owner_id'];
+$search = $_POST['search'];
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
     $users_class = $container->get(User::class);
     $userid = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
@@ -30,7 +31,6 @@ if (empty($userid)) {
     die();
 }
 
-$table = $body = $heading = '';
 if (!empty($search)) {
     $fluent = $container->get(Database::class);
     $results = $fluent->from('torrents')

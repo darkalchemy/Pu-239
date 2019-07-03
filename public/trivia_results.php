@@ -47,8 +47,8 @@ while ($result = mysqli_fetch_assoc($res)) {
                         <tbody>";
 
         while ($player = mysqli_fetch_assoc($query)) {
-            $correct = $incorrect = 0;
-            extract($player);
+            $correct = $player['correct'];
+            $incorrect = $player['incorrect'];
             $table .= '
                         <tr>
                             <td>' . format_username((int) $user_id) . '</td>

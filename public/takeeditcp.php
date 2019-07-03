@@ -35,9 +35,9 @@ $cache = $container->get(Cache::class);
 $session = $container->get(Session::class);
 
 if ($action === 'avatar') {
-    $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
-    $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
-    $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
+    $avatars = isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no';
+    $offensive_avatar = isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no';
+    $view_offensive_avatar = isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no';
     if (!($user['avatarpos'] == 0 || $user['avatarpos'] != 1)) {
         $avatar = validate_url($_POST['avatar']);
     }
@@ -49,7 +49,7 @@ if ($action === 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid=' . sqlesc($user['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($user['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
@@ -72,7 +72,7 @@ if ($action === 'avatar') {
         $curuser_cache['info'] = $info;
         $user_cache['info'] = $info;
     }
-    $signatures = (isset($_POST['signatures']) && $_POST['signatures'] === 'yes' ? 'yes' : 'no');
+    $signatures = isset($_POST['signatures']) && $_POST['signatures'] === 'yes' ? 'yes' : 'no';
     $signature = validate_url($_POST['signature']);
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
@@ -92,20 +92,18 @@ if ($action === 'avatar') {
     $user_cache['signatures'] = $signatures;
     $action = 'signature';
 } elseif ($action === 'security') {
-    $email = $passagain = $chmailpass = $confirm_password = $current_pass = '';
-    extract($_POST);
-    if (!empty($password)) {
-        if ($password !== $confirm_password) {
+    if (!empty($_POST['password'])) {
+        if ($_POST['password'] !== $_POST['confirm_password']) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
-        if (empty($current_pass)) {
+        if (empty($_POST['current_pass'])) {
             stderr($lang['takeeditcp_err'], 'Current Password can not be empty!');
         }
-        if ($password === $current_pass) {
+        if ($_POST['password'] === $_POST['current_pass']) {
             stderr($lang['takeeditcp_err'], 'New password can not be the same as the old password!');
         }
         try {
-            $auth->changePassword($current_pass, $password);
+            $auth->changePassword($_POST['current_pass'], $_POST['password']);
 
             $cache->set('forced_logout_' . $user['id'], TIME_NOW);
             stderr('Success', 'Password has been changed. You will now be able to login with your new password.');
@@ -118,14 +116,14 @@ if ($action === 'avatar') {
         }
     }
 
-    if (!empty($chmailpass)) {
-        if (strlen($chmailpass) > 72) {
+    if (!empty($_POST['chmailpass'])) {
+        if (strlen($_POST['chmailpass']) > 72) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
         }
     }
 
-    if ($email != $user['email']) {
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if ($_POST['email'] != $user['email']) {
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_not_valid_email']);
         }
@@ -139,7 +137,7 @@ if ($action === 'avatar') {
                                ->where('id = ?', $user['id'])
                                ->fetch('password');
 
-        if (!password_verify($chmailpass, $cur_passhash)) {
+        if (!password_verify($_POST['chmailpass'], $cur_passhash)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
         $changedemail = 1;

@@ -131,4 +131,54 @@ class Comment
 
         return $comments;
     }
+
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    public function delete(int $id)
+    {
+        $result = $this->fluent->deleteFrom('comments')
+                               ->where('id = ?', $id)
+                               ->execute();
+
+        $this->cache->delete('latest_comments_');
+
+        return $result;
+    }
+
+    /**
+     * @param array $set
+     * @param int   $id
+     *
+     * @throws Exception
+     */
+    public function update(array $set, int $id)
+    {
+        $this->fluent->update('comments')
+                     ->set($set)
+                     ->where('id = ?', $id)
+                     ->execute();
+
+        $this->cache->delete('latest_comments_');
+    }
+
+    /**
+     * @param array $values
+     *
+     * @throws Exception
+     *
+     * @return bool|int
+     */
+    public function add(array $values)
+    {
+        $id = $this->fluent->insertInto('comments')
+                           ->values($values)
+                           ->execute();
+
+        return $id;
+    }
 }

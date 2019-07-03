@@ -18,9 +18,26 @@ if (!empty($torrents)) {
             <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
                 <div id='icarousel' class='icarousel'>";
 
-    foreach ($torrents as $scroller) {
-        $imdb_id = $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
-        extract($scroller);
+    foreach ($torrents as $last) {
+        $imdb_id = $last['imdb_id'];
+        $subtitles = $last['subtitles'];
+        $year = $last['year'];
+        $rating = $last['rating'];
+        $owner = $last['owner'];
+        $anonymous = $last['anonymous'];
+        $name = $last['name'];
+        $poster = $last['poster'];
+        $seeders = $last['seeders'];
+        $leechers = $last['leechers'];
+        $size = $last['size'];
+        $added = $last['added'];
+        $class = $last['class'];
+        $username = $last['username'];
+        $id = $last['id'];
+        $cat = $last['cat'];
+        $image = $last['image'];
+        $times_completed = $last['times_completed'];
+        $genre = $last['genre'];
 
         if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = '<span>' . get_anonymous_name() . '</span>';

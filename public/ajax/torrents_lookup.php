@@ -12,7 +12,6 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $lang = array_merge(load_language('global'), load_language('userdetails'));
-extract($_POST);
 header('content-type: application/json');
 global $container;
 
@@ -23,9 +22,9 @@ if (empty($current_user)) {
     die();
 }
 $isStaff = in_array($current_user, $site_config['is_staff']);
-$uid = (int) $uid;
+$uid = (int) $_POST['uid'];
 $hasAccess = $current_user === $uid || $isStaff ? true : false;
-
+$type = $_POST['type'];
 if ($type === 'torrents' && $hasAccess) {
     $torrents = get_uploaded($uid);
     if (!$torrents) {
@@ -104,9 +103,9 @@ die();
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -166,9 +165,9 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -218,9 +217,9 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -270,9 +269,9 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -310,9 +309,9 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -468,8 +467,8 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */

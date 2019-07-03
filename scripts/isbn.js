@@ -24,15 +24,12 @@ function get_isbn(isbn, name, tid) {
         timeout: 7500,
         context: this,
         data: {
-            csrf: csrf,
             isbn: isbn,
             name: name,
             tid: tid
         },
         success: function (data) {
-            if (data['fail'] === 'csrf') {
-                e.innerHTML = 'CSRF Failure, try refreshing the page';
-            } else if (data['fail'] === 'invalid') {
+            if (data['fail'] === 'invalid') {
                 e.innerHTML = 'Google Books Lookup Failed.';
             } else {
                 e.remove();
@@ -43,14 +40,11 @@ function get_isbn(isbn, name, tid) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
-                if (count >= 8) {
-                    e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
-                } else {
-                    e.remove();
-                    get_isbn(csrf, isbn, name, tid);
-                }
+                e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                el.appendChild(e);
             } else {
                 e.innerHTML = 'Another *unknown* was returned';
+                el.appendChild(e);
             }
         }
     });

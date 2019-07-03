@@ -52,7 +52,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 if ($child_boards) {
                     $child_boards .= ', ';
                 }
-                $child_boards .= '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="click to view!" class="is-link">' . htmlsafechars($arr['name']) . '</a>';
+                $child_boards .= '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="click to view!" class="is-link tooltipper">' . htmlsafechars($arr['name']) . '</a>';
             }
             $child_boards_cache['child_boards'] = $child_boards;
             $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['sv_child_boards']);
@@ -84,18 +84,18 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         if ($last_post_arr['tan'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
             } else {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . get_anonymous_name() . ' [' . format_username((int) $last_post_arr['user_id']) . ']</span><br>
-		in &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
+		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
             }
         } else {
             $last_post = '' . $lang['fe_last_post_by'] . ': ' . format_username((int) $last_post_arr['user_id']) . '</span><br>
-		in &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
+		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
         }
