@@ -2,22 +2,16 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
-use Pu239\User;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
+$user = check_user_status();
+
 header('content-type: application/json');
 global $container;
 
-$auth = $container->get(Auth::class);
-$current_user = $auth->getUserId();
-if (!empty($current_user)) {
-    $users_class = $container->get(User::class);
-    $class = $users_class->get_item('class', $current_user);
-}
-if (empty($current_user) || $class < UC_STAFF) {
+if (empty($user) || $user['class'] < UC_STAFF) {
     echo json_encode(['show_in_navbar' => 'class']);
     die();
 }

@@ -35,9 +35,9 @@ $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
  * @param int  $tid
  * @param bool $ajax
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return false|string
  */

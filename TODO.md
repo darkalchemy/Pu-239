@@ -1,9 +1,11 @@
 In no particular order  
 
-fix: forum topic rating
+check: thanks  
+fix: forum topic rating  
 update admin/shit_list.php  
 finish: casino.php rewrite  
-remove the need for using global $mysqli
+remove the need for using global $mysqli  
+remove the need for using global $CURUSER  
 
 update forced_logout_ to new user system  
 find and update all users "Pending"  

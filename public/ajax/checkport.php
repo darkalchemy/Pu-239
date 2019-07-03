@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 
+check_user_status();
 if (empty($_POST['ip']) || empty($_POST['port'])) {
     return false;
 }

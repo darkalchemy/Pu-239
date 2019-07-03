@@ -3,12 +3,13 @@
 declare(strict_types = 1);
 
 require_once __DIR__ . '/../../include/bittorrent.php';
+$user = check_user_status();
 if (empty($_POST['uid'])) {
     return false;
 }
 
-$uid = (int) $_POST['uid'];
-$sql = 'SELECT INET6_NTOA(ip) AS ip, port, agent FROM peers WHERE userid=' . sqlesc($uid) . ' GROUP BY ip, port';
+$uid = $user['class'] < UC_STAFF ? $user['id'] : (int) $_POST['uid'];
+$sql = 'SELECT INET6_NTOA(ip) AS ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';

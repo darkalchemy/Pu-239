@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
@@ -11,21 +10,18 @@ use Pu239\Database;
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 header('content-type: application/json');
 global $container;
 
-$auth = $container->get(Auth::class);
-$current_user = $auth->getUserId();
-if (empty($current_user)) {
+if (empty($user)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }
-$isStaff = in_array($current_user, $site_config['is_staff']);
-$uid = (int) $_POST['uid'];
-$hasAccess = $current_user === $uid || $isStaff ? true : false;
+$uid = $user['class'] < UC_STAFF ? $user['id'] : (int) $_POST['uid'];
 $type = $_POST['type'];
-if ($type === 'torrents' && $hasAccess) {
+if ($type === 'torrents') {
     $torrents = get_uploaded($uid);
     if (!$torrents) {
         echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
@@ -39,7 +35,7 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
         die();
     }
-} elseif ($type === 'seeding' && $hasAccess) {
+} elseif ($type === 'seeding') {
     $torrents = get_seeding($uid);
     if (!$torrents) {
         echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
@@ -53,7 +49,7 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
         die();
     }
-} elseif ($type === 'leeching' && $hasAccess) {
+} elseif ($type === 'leeching') {
     $torrents = get_leeching($uid);
     if (!$torrents) {
         echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
@@ -67,7 +63,7 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
         die();
     }
-} elseif ($type === 'snatched' && $hasAccess) {
+} elseif ($type === 'snatched') {
     $torrents = get_snatched($uid);
     if (!$torrents) {
         echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
@@ -81,7 +77,7 @@ if ($type === 'torrents' && $hasAccess) {
         echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
         die();
     }
-} elseif ($type === 'snatched_staff' && $isStaff) {
+} elseif ($type === 'snatched_staff' && $user['class'] >= UC_STAFF) {
     $torrents = get_snatched_staff($uid);
     if (!$torrents) {
         echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
@@ -103,9 +99,9 @@ die();
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -165,9 +161,9 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -217,9 +213,9 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -269,9 +265,9 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -309,9 +305,9 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -467,8 +463,8 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

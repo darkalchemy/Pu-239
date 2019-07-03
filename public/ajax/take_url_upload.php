@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\ImageProxy;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
@@ -11,16 +10,15 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 $lang = load_language('bitbucket');
+$user = check_user_status();
 global $container, $site_config;
 
-$auth = $container->get(Auth::class);
-$userid = $auth->getUserId();
 header('content-type: application/json');
-if (empty($userid)) {
+if (empty($user['id'])) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();
 }
-$username = $auth->getUsername();
+$username = $user['username'];
 $url = $_POST['url'];
 if (!filter_var($url, FILTER_VALIDATE_URL)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_url']]);
@@ -37,7 +35,7 @@ $str = implode('|', $formats);
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
 $PICSALT = $SaLt . $username;
-$USERSALT = substr(md5($SaLty . $userid), 0, 6);
+$USERSALT = substr(md5($SaLty . $user['id']), 0, 6);
 $rand = make_password();
 $temppath = CACHE_DIR . $rand;
 make_year(BITBUCKET_DIR);

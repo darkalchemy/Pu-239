@@ -7,7 +7,6 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Session;
-use Pu239\User;
 
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'function_html.php';
@@ -26,6 +25,11 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
 {
     global $container, $site_config;
 
+    $user = check_user_status();
+    if (empty($user)) {
+        header("Location: {$site_config['paths']['baseurl']}/404.html");
+        die();
+    }
     $auth = $container->get(Auth::class);
     if ($auth->isRemembered()) {
         $auth->logOutEverywhere();
@@ -34,18 +38,8 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
         header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
         die();
     }
-    $user_class = $container->get(User::class);
-    $userid = $auth->getUserId();
-    if (empty($userid)) {
-        header("Location: {$site_config['paths']['baseurl']}/404.html");
-        die();
-    }
-
-    $user = $user_class->getUserFromId($userid);
-    if (empty($user)) {
-        header("Location: {$site_config['paths']['baseurl']}/404.html");
-        die();
-    }
+    $user_class = $user['class'];
+    $userid = $user['id'];
     if ($user['class'] >= $class) {
         if ($staff) {
             if (($user['class'] > UC_MAX) || (!in_array($user['id'], $site_config['is_staff']))) {
@@ -87,8 +81,8 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
 /**
  * @param $script
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int
  */

@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\ImageProxy;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
@@ -10,17 +9,16 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-check_user_status();
+$user = check_user_status();
 $lang = load_language('bitbucket');
 global $container, $site_config;
 
-$auth = $container->get(Auth::class);
-$userid = $auth->getUserId();
-if (empty($userid)) {
+header('content-type: application/json');
+if (empty($user['id'])) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();
 }
-$username = $auth->getUsername();
+$username = $user['username'];
 $SaLt = $site_config['salt']['one'];
 $SaLty = $site_config['salt']['two'];
 $skey = $site_config['salt']['three'];
@@ -31,11 +29,10 @@ $str = implode('|', $formats);
 $bucketdir = BITBUCKET_DIR . $folders . '/';
 $bucketlink = $folders . '/';
 $PICSALT = $SaLt . $username;
-$USERSALT = substr(md5($SaLty . $userid), 0, 6);
+$USERSALT = substr(md5($SaLty . $user['id']), 0, 6);
 make_year(BITBUCKET_DIR);
 make_month(BITBUCKET_DIR);
 
-header('content-type: application/json');
 $image_proxy = $container->get(ImageProxy::class);
 for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file_' . $i]['name']);

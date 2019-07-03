@@ -2,20 +2,18 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_trivia.php';
+$curuser = check_user_status();
 $lang = array_merge(load_language('global'), load_language('trivia'));
 global $container;
 
 header('content-type: application/json');
-$auth = $container->get(Auth::class);
-$current_user = $auth->getUserId();
-if (empty($current_user)) {
+if (empty($curuser)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }
@@ -32,7 +30,7 @@ if (empty($data)) {
 }
 $fluent = $container->get(Database::class);
 $user = $fluent->from('triviausers')
-               ->where('user_id = ?', $current_user)
+               ->where('user_id = ?', $curuser['id'])
                ->where('qid = ?', $qid)
                ->where('gamenum = ?', $gamenum)
                ->fetch();

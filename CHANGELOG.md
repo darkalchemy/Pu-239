@@ -1,3 +1,6 @@
+### 03 Jul, 2019
+update: all publicly accessible pages, with exceptions, must authenticate user status  
+
 ### 02 Jul, 2019
 remove: site settings mysqldump_path and gzip_path  
 fix: security issue using extract()  

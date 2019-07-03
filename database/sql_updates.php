@@ -3186,5 +3186,4 @@ KEY `expires` (`expires`)
         'query' => 'DELETE FROM `site_config` WHERE `name` = "gzip_path" OR  `name` = "mysqldump_path"',
         'flush' => true,
     ],
-
 ];

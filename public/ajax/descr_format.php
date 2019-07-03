@@ -6,6 +6,7 @@ use Pu239\Torrent;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
+check_user_status();
 header('content-type: application/json');
 global $container;
 

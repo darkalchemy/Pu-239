@@ -28,7 +28,7 @@ if (!isset($action)) {
     header('Location: ' . $referer);
     die();
 }
-$id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+$id = $curuser['class'] < UC_STAFF ? $curuser['id'] : (int) $_POST['id'];
 if ($id === 0) {
     $session->set('is-danger', 'Invalid User ID');
     header('Location: ' . $referer);

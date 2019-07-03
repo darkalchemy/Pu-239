@@ -15,7 +15,7 @@ if ($is_valid !== true) {
     die();
 }
 
-$checkname = sqlesc(strip_tags($_GET['wantusername']));
+$checkname = sqlesc(htmlsafechars($_GET['wantusername']));
 $sql = "SELECT username FROM users WHERE username = $checkname";
 $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);

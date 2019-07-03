@@ -7,6 +7,7 @@ use Pu239\Image;
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_get_images.php';
+check_user_status();
 $url = htmlsafechars($_POST['url']);
 $tid = !empty($_POST['tid']) ? (int) strip_tags($_POST['tid']) : null;
 $image = !empty($_POST['image']) ? htmlsafechars($_POST['image']) : null;

@@ -95,8 +95,8 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_gzippath']}</td>
-                                <td>" . GZIP ."</td>
-                                <td>" . (is_file(GZIP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . GZIP . '</td>
+                                <td>' . (is_file(GZIP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
@@ -113,8 +113,8 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
-                                <td>" . MYSQLDUMP . "</td>
-                                <td>" . (is_file(MYSQLDUMP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . MYSQLDUMP . '</td>
+                                <td>' . (is_file(MYSQLDUMP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
