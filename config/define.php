@@ -38,6 +38,8 @@ define('UPLOADSUB_DIR', ROOT_DIR . 'uploadsub' . DIRECTORY_SEPARATOR);
 define('DI_CACHE_DIR', DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . 'shm' . DIRECTORY_SEPARATOR . 'php-di' . DIRECTORY_SEPARATOR);
 define('PRODUCTION', false);
 
+define('MYSQLDUMP', '/usr/bin/mysqldump');
+define('GZIP', '/bin/gzip');
 const PERMS_NO_IP = 0x1; // 1
 const PERMS_BYPASS_BAN = 0x2; // 2
 const UNLOCK_MORE_MOODS = 0x4; // 4

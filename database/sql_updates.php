@@ -3179,4 +3179,12 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `read_posts` ADD UNIQUE INDEX `userid_topicid` (`user_id`,`topic_id`)',
         'flush' => false,
     ],
+    [
+        'id' => 1562113446,
+        'info' => 'Delete settings',
+        'date' => '02 Jul, 2019',
+        'query' => 'DELETE FROM `site_config` WHERE `name` = "gzip_path" OR  `name` = "mysqldump_path"',
+        'flush' => true,
+    ],
+
 ];

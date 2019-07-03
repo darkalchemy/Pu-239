@@ -95,8 +95,8 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_gzippath']}</td>
-                                <td>{$site_config['backup']['gzip_path']}</td>
-                                <td>" . (is_file($site_config['backup']['gzip_path']) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . GZIP ."</td>
+                                <td>" . (is_file(GZIP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
@@ -113,8 +113,8 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
-                                <td>{$site_config['backup']['mysqldump_path']}</td>
-                                <td>" . (is_file($site_config['backup']['mysqldump_path']) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . MYSQLDUMP . "</td>
+                                <td>" . (is_file(MYSQLDUMP) ? "<div class='has-text-centered is-success'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-danger'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
@@ -152,9 +152,9 @@ if (empty($mode)) {
     make_dir($bdir, 0774);
     $filepath = $bdir . $ext;
     if ($site_config['backup']['use_gzip']) {
-        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db | gzip -q9>{$filepath}.gz");
+        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db | gzip -q9>{$filepath}.gz");
     } else {
-        exec("{$site_config['backup']['mysqldump_path']} -h $host -u'{$user}' -p'{$pass}' $db>$filepath");
+        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db>$filepath");
     }
     $values = [
         'name' => $ext . ($site_config['backup']['use_gzip'] ? '.gz' : ''),

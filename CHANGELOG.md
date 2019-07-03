@@ -1,4 +1,5 @@
 ### 02 Jul, 2019
+remove: site settings mysqldump_path and gzip_path  
 fix: security issue using extract()  
 fix: deleting torrent comments  
 fix: search cloud  
