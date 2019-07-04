@@ -36,7 +36,7 @@ function get_file_name($file)
         case 'categories_js':
             return "{$site_config['paths']['baseurl']}/js/1/categories_5ad7e17e.js";
         case 'browse_js':
-            return "{$site_config['paths']['baseurl']}/js/1/browse_04c96126.js";
+            return "{$site_config['paths']['baseurl']}/js/1/browse_0995b15c.js";
         case 'scroller_js':
             return "{$site_config['paths']['baseurl']}/js/1/scroller_7313b84f.js";
         case 'glider_js':

@@ -232,79 +232,84 @@ foreach ($valid_search as $search) {
             searchcloud_insert($cleaned, $column);
         }
         $addparam .= "{$search}=" . urlencode((string) $cleaned) . '&amp;';
-        if ($search === 'sns' || $search === 'sna') {
-            $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $query->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        }
-        if ($search === 'sd') {
-            $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $query->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        }
-        if ($search === 'sg') {
-            $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-            $query->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        }
-        if ($search === 'so') {
-            $count->where('u.username = ?', $cleaned);
-            $query->where('u.username = ?', $cleaned);
-        }
-        if ($search === 'sys') {
-            $count->where('t.year >= ?', (int) $_GET['sys']);
-            $query->where('t.year >= ?', (int) $_GET['sys']);
-        }
-        if ($search === 'sye') {
-            $count->where('t.year <= ?', (int) $_GET['sye']);
-            $query->where('t.year <= ?', (int) $_GET['sye']);
-        }
-        if ($search === 'srs') {
-            $count->where('t.rating >= ?', (float) $_GET['srs']);
-            $query->where('t.rating >= ?', (float) $_GET['srs']);
-        }
-        if ($search === 'sre') {
-            $count->where('t.rating <= ?', (float) $_GET['sre']);
-            $query->where('t.rating <= ?', (float) $_GET['sre']);
-        }
-        if ($search === 'si') {
-            $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
-            if (!empty($match[1])) {
-                $count->where('t.imdb_id = ?', $match[1]);
-                $query->where('t.imdb_id = ?', $match[1]);
+        if ($search === 'sns') {
+            $count->where('name LIKE ?', "%$cleaned%");
+            $query->where('name LIKE ?', "%$cleaned%");
+        } else {
+            if ($search === 'sna') {
+                $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
-        }
-        if ($search === 'ss') {
-            $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
-            if (!empty($match[1])) {
-                $count->where('t.isbn = ?', $match[1]);
-                $query->where('t.isbn = ?', $match[1]);
+            if ($search === 'sd') {
+                $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
-        }
-        if ($search === 'sp') {
-            $count->where('p.name = ?', $cleaned)
-                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-            $query->where('p.name = ?', $cleaned)
-                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-        }
-        if ($search === 'spf') {
-            $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-            $query->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                  ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                  ->innerJoin('person AS p ON i.person_id = p.imdb_id');
-        }
-        if ($search === 'sr') {
-            $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                  ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
-            $query->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                  ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
-        }
-        if ($search === 'st') {
-            $subs = explode(' ', $cleaned);
-            foreach ($subs as $sub) {
-                $count->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-                $query->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+            if ($search === 'sg') {
+                $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+            }
+            if ($search === 'so') {
+                $count->where('u.username = ?', $cleaned);
+                $query->where('u.username = ?', $cleaned);
+            }
+            if ($search === 'sys') {
+                $count->where('t.year >= ?', (int) $_GET['sys']);
+                $query->where('t.year >= ?', (int) $_GET['sys']);
+            }
+            if ($search === 'sye') {
+                $count->where('t.year <= ?', (int) $_GET['sye']);
+                $query->where('t.year <= ?', (int) $_GET['sye']);
+            }
+            if ($search === 'srs') {
+                $count->where('t.rating >= ?', (float) $_GET['srs']);
+                $query->where('t.rating >= ?', (float) $_GET['srs']);
+            }
+            if ($search === 'sre') {
+                $count->where('t.rating <= ?', (float) $_GET['sre']);
+                $query->where('t.rating <= ?', (float) $_GET['sre']);
+            }
+            if ($search === 'si') {
+                $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
+                if (!empty($match[1])) {
+                    $count->where('t.imdb_id = ?', $match[1]);
+                    $query->where('t.imdb_id = ?', $match[1]);
+                }
+            }
+            if ($search === 'ss') {
+                $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
+                if (!empty($match[1])) {
+                    $count->where('t.isbn = ?', $match[1]);
+                    $query->where('t.isbn = ?', $match[1]);
+                }
+            }
+            if ($search === 'sp') {
+                $count->where('p.name = ?', $cleaned)
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                $query->where('p.name = ?', $cleaned)
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+            }
+            if ($search === 'spf') {
+                $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                $query->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+            }
+            if ($search === 'sr') {
+                $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                      ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+                $query->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                      ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+            }
+            if ($search === 'st') {
+                $subs = explode(' ', $cleaned);
+                foreach ($subs as $sub) {
+                    $count->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                    $query->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                }
             }
         }
     }
@@ -331,7 +336,7 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['paths']['baseurl']}/browse.php?" . $addparam);
-    $query->limit($pager['pdo']['limit'])
+    $query = $query->limit($pager['pdo']['limit'])
           ->offset($pager['pdo']['offset'])
           ->fetchAll();
 }
@@ -404,7 +409,7 @@ $HTMLOUT .= main_div("
                         <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search_adv' name='sna' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sna']) ? $_GET['sna'] : '') . "' onkeyup='autosearch(event)'>
+                                <input name='sna' type='text' placeholder='{$lang['search_name_fuzzy']}' class='search w-100' value='" . (!empty($_GET['sna']) ? $_GET['sna'] : '') . "'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_description']}</div>

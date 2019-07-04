@@ -10,7 +10,6 @@ suggcont.style.display = 'none';
 function autosearch(event) {
     if (event.key !== 13) {
         let el = document.querySelector('#' + event.target.id);
-        let csrf = el.dataset.csrf;
         let keyword = el.value;
         let lastChar = keyword.slice(-1);
         if (lastChar !== ' ' && keyword.length >= min_length) {
@@ -19,7 +18,6 @@ function autosearch(event) {
                 type: 'POST',
                 data: {
                     keyword: keyword,
-                    csrf: csrf
                 },
                 success: function (data) {
                     $('#autocomplete').slideDown('slow', function () {

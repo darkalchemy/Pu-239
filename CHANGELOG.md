@@ -1,4 +1,6 @@
 ### 03 Jul, 2019
+update: simple search uses LIKE(), advanced search uses fuzzy browse.php  
+update: allow get or post request to search.php  
 update: all publicly accessible pages, with exceptions, must authenticate user status  
 
 ### 02 Jul, 2019

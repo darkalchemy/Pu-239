@@ -10,11 +10,11 @@ require_once __DIR__ . '/../include/bittorrent.php';
 $lang = load_language('global');
 global $container, $site_config;
 
-$torrent_pass = $_POST['torrent_pass'];
-$auth = $_POST['auth'];
-$bot = $_POST['bot'];
-$owner_id = $_POST['owner_id'];
-$search = $_POST['search'];
+$data = array_merge($_GET, $_POST);
+$torrent_pass = $data['torrent_pass'];  // user torrent_pass
+$auth = $data['auth'];                  // users 'auth' key
+$bot = $data['bot'];                    // users useranem
+$search = $data['search'];              // search term
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
     $users_class = $container->get(User::class);
     $userid = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
