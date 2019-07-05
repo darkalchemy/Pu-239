@@ -14,6 +14,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
+require_once INCL_DIR . 'function_password.php';
 class_check(UC_STAFF);
 $lang = array_merge($lang, load_language('modtask'));
 

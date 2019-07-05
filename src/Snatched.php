@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use PDOStatement;
 
 /**
@@ -42,13 +41,11 @@ class Snatched
      * @param int $userid
      * @param int $tid
      *
+     * @return bool|mixed
      * @throws Exception
-     *
-     * @return mixed
      */
     public function get_snatched(int $userid, int $tid)
     {
-        $this->cache->delete("snatches_{$userid}_{$tid}");
         $snatches = $this->cache->get("snatches_{$userid}_{$tid}");
         if ($snatches === false || is_null($snatches)) {
             $snatches = $this->fluent->from('snatched AS a')
@@ -70,9 +67,6 @@ class Snatched
                                      ->where('a.torrentid = ?', $tid)
                                      ->where('a.userid = ?', $userid)
                                      ->fetch();
-            if (!empty($snatches)) {
-                $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
-            }
         }
 
         return $snatches;
@@ -97,7 +91,6 @@ class Snatched
      * @param int   $userid
      *
      * @throws Exception
-     * @throws UnbegunTransaction
      */
     public function update(array $set, int $tid, int $userid)
     {
@@ -107,24 +100,23 @@ class Snatched
                      ->where('userid = ?', $userid)
                      ->execute();
 
-        $this->cache->update_row("snatches_{$userid}_{$tid}", $set);
     }
 
     /**
      * @param array $set
      * @param int   $id
      *
+     * @return bool|int|PDOStatement
      * @throws Exception
-     * @throws UnbegunTransaction
      */
     public function update_by_id(array $set, int $id)
     {
-        $this->fluent->update('snatched')
-                     ->set($set)
-                     ->where('id = ?', $id)
-                     ->execute();
+        $result = $this->fluent->update('snatched')
+                               ->set($set)
+                               ->where('id = ?', $id)
+                               ->execute();
 
-        $this->cache->update_row("snatches_{$userid}_{$tid}", $set);
+        return $result;
     }
 
     /**
@@ -142,9 +134,9 @@ class Snatched
     /**
      * @param int $userid
      *
+     * @return bool|int|PDOStatement
      * @throws Exception
      *
-     * @return bool|int|PDOStatement
      */
     public function flush(int $userid)
     {
@@ -159,9 +151,9 @@ class Snatched
     /**
      * @param array $hnr
      *
+     * @return array
      * @throws Exception
      *
-     * @return array
      */
     public function get_hit_and_runs(array $hnr)
     {
@@ -229,9 +221,9 @@ class Snatched
     }
 
     /**
+     * @return array|bool
      * @throws Exception
      *
-     * @return array|bool
      */
     public function get_user_to_remove_hnr()
     {
@@ -251,9 +243,9 @@ class Snatched
     }
 
     /**
+     * @return array|bool
      * @throws Exception
      *
-     * @return array|bool
      */
     public function get_user_to_add_hnr()
     {

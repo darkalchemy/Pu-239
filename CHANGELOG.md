@@ -1,3 +1,8 @@
+### 05 Jul, 2019
+fix: add missing require_once INCL_DIR . 'function_password.php' modtask.php  
+fix: check for empty index function_torrenttable.php  
+remove: cacheing user snatched history - no need  
+
 ### 03 Jul, 2019
 update: simple search uses LIKE(), advanced search uses fuzzy browse.php  
 update: allow get or post request to search.php  

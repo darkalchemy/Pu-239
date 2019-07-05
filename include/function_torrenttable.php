@@ -61,29 +61,31 @@ function torrenttable($res, $variant = 'index')
     $free_display = '';
     if (!empty($free)) {
         foreach ($free as $fl) {
-            switch ($fl['modifier']) {
-                case 1:
-                    $free_display = '[Free]';
-                    break;
+            if (!empty($fl['modifier'])) {
+                switch ($fl['modifier']) {
+                    case 1:
+                        $free_display = '[Free]';
+                        break;
 
-                case 2:
-                    $free_display = '[Double]';
-                    break;
+                    case 2:
+                        $free_display = '[Double]';
+                        break;
 
-                case 3:
-                    $free_display = '[Free and Double]';
-                    break;
+                    case 3:
+                        $free_display = '[Free and Double]';
+                        break;
 
-                case 4:
-                    $free_display = '[Silver]';
-                    break;
-            }
-            $all_free_tag = $fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' 
+                    case 4:
+                        $free_display = '[Silver]';
+                        break;
+                }
+                $all_free_tag = $fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' 
             <a class="info" href="#">
             <b>' . $free_display . '</b>
             <span>' . ($fl['expires'] != 1 ? '
             Expires: ' . get_date((int) $fl['expires'], 'DATE') . '<br>
             (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '';
+            }
         }
     }
     foreach ($_GET as $key => $var) {
