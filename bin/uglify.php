@@ -583,7 +583,7 @@ function get_default_border($folder)
         }
     }
     can_delete(BIN_DIR . 'pu239.css', true);
-    exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
+    passthru('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 }
 
 /**

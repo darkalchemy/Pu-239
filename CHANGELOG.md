@@ -1,4 +1,6 @@
 ### 06 Jul, 2019
+update: check if path exists before removing  
+update: check email during signup  
 fix: check if empty user first like.php  
 fix: undefined function  
 fix: undefined var announce.php  
