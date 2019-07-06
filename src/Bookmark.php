@@ -8,6 +8,7 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Bookmark.
+ * @package Pu239
  */
 class Bookmark
 {

@@ -6,6 +6,7 @@ namespace Pu239;
 
 /**
  * Class Session.
+ * @package Pu239
  */
 class Session
 {

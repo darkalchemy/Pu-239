@@ -1,6 +1,6 @@
-function check_name() {
-    wantusername = document.getElementById('username').value;
-    var url = '../ajax/namecheck.php?wantusername=' + encodeURI(wantusername);
+function check_email() {
+    wantemail = document.getElementById('email').value;
+    var url = '../ajax/emailcheck.php?wantemail=' + encodeURI(wantemail);
     try {
         request = new ActiveXObject('Msxml2.XMLHTTP');
     } catch (e) {
@@ -14,15 +14,15 @@ function check_name() {
         request = new XMLHttpRequest();
     }
     request.open('GET', url, true);
-    request.onreadystatechange = namecheck;
+    request.onreadystatechange = emailcheck;
     request.send(null);
 }
 
-function namecheck() {
+function emailcheck() {
     if (request.readyState === 4) {
         if (request.status === 200) {
             var response = request.responseText;
-            document.getElementById('namecheck').innerHTML = response;
+            document.getElementById('emailcheck').innerHTML = response;
             document.getElementById('submit').disabled = response.includes('danger');
         }
     }

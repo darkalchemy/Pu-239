@@ -44,6 +44,7 @@ use Pu239\Upcoming;
 use Pu239\User;
 use Pu239\Userblock;
 use Pu239\Usersachiev;
+use Pu239\Wiki;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use SlashTrace\EventHandler\DebugHandler;
 use SlashTrace\Sentry\SentryHandler;
@@ -89,6 +90,7 @@ return [
     Userblock::class => autowire(),
     User::class => autowire(),
     Usersachiev::class => autowire(),
+    Wiki::class => autowire(),
     Auth::class => DI\factory(function (ContainerInterface $c) {
         $pdo = $c->get(PDO::class);
         $auth = new Auth($pdo, null, null, PRODUCTION);

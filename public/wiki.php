@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-use Pu239\Database;
 use Pu239\Session;
+use Pu239\Wiki;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -70,27 +70,15 @@ function navmenu()
     return $ret;
 }
 
-/**
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
- * @throws \Envms\FluentPDO\Exception
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
- *
- * @return string|void
- */
 function wikimenu()
 {
     global $container, $site_config, $lang;
 
-    $fluent = $container->get(Database::class);
-    $name = $fluent->from('wiki')
-                   ->select(null)
-                   ->select('name')
-                   ->orderBy('id DESC')
-                   ->limit(1)
-                   ->fetch('name');
+    $wiki = $container->get(Wiki::class);
+    $name = $wiki->get_last();
 
-    return main_div("<div class='padding20'>
+    return main_div("
+        <div class='padding20'>
             <ul>
             <span class='size_6'>{$lang['wiki_permissions']}:</span>
             <li>{$lang['wiki_read_user']}</li>
@@ -104,7 +92,7 @@ function wikimenu()
 
 global $site_config, $container;
 
-$fluent = $container->get(Database::class);
+$wiki = $container->get(Wiki::class);
 $session = $container->get(Session::class);
 $action = 'article';
 $mode = '';
@@ -117,22 +105,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'userid' => $user['id'],
             'time' => TIME_NOW,
         ];
-        $fluent->insertInto('wiki')
-               ->values($values)
-               ->execute();
+        $wiki->add($values);
         $session->set('is-success', 'Wiki article added');
     } elseif (isset($_POST['article-edit'])) {
-        $id = $_POST['article-id'];
+        $id = (int) $_POST['article-id'];
         $update = [
             'name' => htmlsafechars($_POST['article-name']),
             'body' => htmlsafechars($_POST['body']),
             'lastedit' => TIME_NOW,
             'lastedituser' => $user['id'],
         ];
-        $fluent->update('wiki')
-               ->set($update)
-               ->where('id = ?', $id)
-               ->execute();
+        $wiki->update($update, $id);
         $session->set('is-success', 'Wiki article edited');
     } elseif (isset($_POST['wiki'])) {
         $name = htmlsafechars(urldecode($_POST['article']));
@@ -170,38 +153,34 @@ if (isset($_GET['action'])) {
 
 if ($action === 'article') {
     if (!empty($mode) && !empty($name)) {
-        $result = $fluent->from('wiki');
         if ($mode === 'name') {
-            $result->where('name = ?', $name);
+            $results = $wiki->get_by_name($name);
         } else {
-            $result->where('id = ?', $id);
+            $results = $wiki->get_by_id($id);
         }
-        $result->fetchAll();
     } else {
-        $result = $fluent->from('wiki')
-                         ->orderBy('GREATEST(time, lastedit) DESC')
-                         ->fetchAll();
+        $results = $wiki->get_latest();
     }
-    if (!empty($result)) {
+    if (!empty($results)) {
         $HTMLOUT .= navmenu();
         $edit = '';
         $HTMLOUT .= '
         <div id="wiki-container">
             <div id="wiki-row">';
-        foreach ($result as $wiki) {
-            if ($wiki['lastedit']) {
-                $edit = '<div class="left10 top20">Last Updated by: ' . format_username($wiki['lastedituser']) . ' - ' . get_date($wiki['lastedit'], 'LONG') . '</div>';
+        foreach ($results as $result) {
+            if ($result['lastedit']) {
+                $edit = '<div class="left10 top20">Last Updated by: ' . format_username($result['lastedituser']) . ' - ' . get_date($result['lastedit'], 'LONG') . '</div>';
             }
             $div = '
                     <h1 class="has-text-centered">
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($result['name']) . '">' . htmlsafechars($result['name']) . '</a>
                     </h1>
-                    <div class="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
-                        <div class="w-100 padding20 round10 bg-02">' . format_comment($wiki['body']) . '</div>
+                    <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($result['userid']) . '</div>' : '') . '
+                        <div class="w-100 padding20 round10 bg-02">' . format_comment($result['body']) . '</div>
                     </div>' . $edit;
-            $div .= ($user['class'] >= UC_STAFF || $user['id'] === $wiki['userid'] ? '
+            $div .= ($user['class'] >= UC_STAFF || $user['id'] === $result['userid'] ? '
                     <div class="has-text-centered">
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
                     </div>' : '');
             $HTMLOUT .= main_div($div, 'bottom20');
         }
@@ -210,29 +189,25 @@ if ($action === 'article') {
         </div>';
     } else {
         if (!empty($name)) {
-            $result = $fluent->from('wiki')
-                             ->where('name LIKE ?', "%{$name}%")
-                             ->orderBy('GREATEST(time, lastedit) DESC')
-                             ->limit(25)
-                             ->fetchAll();
+            $results = $wiki->get_by_name($name);
         }
-        if (!empty($result)) {
+        if (!empty($results)) {
             $HTMLOUT .= navmenu() . "<h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . '</b></h2>';
-            foreach ($result as $wiki) {
+            foreach ($results as $result) {
                 $HTMLOUT .= main_div('
                     <div class="padding20">
-                        <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . " </a></h2>
-                        <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
-                        <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                        <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>
+                        <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . " </a></h2>
+                        <div>{$lang['wiki_added_by']}: " . format_username($result['userid']) . '</div>
+                        <div>Added on: ' . get_date($result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
+                        <div>Last Edited on: ' . get_date($result['lastedit'], 'LONG') . '</div>
                     </div>' : '</div>'), 'top20');
             }
         } else {
-            stderr($lang['wiki_error'], $lang['wiki_no_art_found']);
+            $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_no_art_found']);
         }
     }
 }
-$wiki = 0;
+
 if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' accept-charset='utf-8'>
@@ -243,9 +218,7 @@ if ($action === 'add') {
             </form>";
 }
 if ($action === 'edit') {
-    $result = $fluent->from('wiki')
-                     ->where('id = ?', $id)
-                     ->fetch();
+    $result = $wiki->get_by_id($id);
     if (($user['class'] >= UC_STAFF) || ($user['id'] === $result['userid'])) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' accept-charset='utf-8'>
@@ -256,32 +229,29 @@ if ($action === 'edit') {
                 </div>
             </form> ";
     } else {
-        stderr($lang['wiki_error'], $lang['wiki_access_denied']);
+        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_access_denied']);
     }
 }
 if ($action === 'sort') {
-    $result = $fluent->from('wiki')
-                     ->where('name LIKE ?', "%{$letter}%")
-                     ->orderBy('name')
-                     ->fetchAll();
-    if (!empty($result)) {
+    $results = $wiki->get_by_name($letter);
+    if (!empty($results)) {
         $HTMLOUT .= navmenu();
         $div = " <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b> " . htmlsafechars($letter) . "</b></h2>
         <div class='w-100 padding20 round10 bg-02'> ";
-        foreach ($result as $wiki) {
+        foreach ($results as $result) {
             $div .= '
             <div class="padding20 bottom10 round10 bg-02">
-                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
-                <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
-                <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : '') . '
+                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . htmlsafechars($result['name']) . "</a></h2>
+                <div>{$lang['wiki_added_by']}: " . format_username($result['userid']) . '</div>
+                <div>Added on: ' . get_date($result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
+                <div>Last Edited on: ' . get_date($result['lastedit'], 'LONG') . '</div>' : '') . '
             </div>';
         }
         $div .= '
         </div>';
         $HTMLOUT .= main_div($div);
     } else {
-        stderr($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b> $letter</b> found.");
+        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b> $letter</b> found.");
     }
 }
 $HTMLOUT .= '</div>';

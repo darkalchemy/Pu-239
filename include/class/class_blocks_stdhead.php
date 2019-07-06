@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 /**
  * Class block_stdhead.
+ * @package Pu239
  */
 class block_stdhead
 {

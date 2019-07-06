@@ -13,6 +13,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * Class Torrent.
+ * @package Pu239
  */
 class Torrent
 {

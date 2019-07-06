@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Forum.
+ * @package Pu239
  */
 class Forum
 {

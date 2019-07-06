@@ -8,6 +8,7 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Userblock.
+ * @package Pu239
  */
 class Userblock
 {

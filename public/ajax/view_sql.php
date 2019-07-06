@@ -36,8 +36,9 @@ function adminer_object()
     ];
 
     /**
-     * Class AdminerCustomization.
-     */
+ * Class AdminerCustomization.
+ * @package Pu239
+ */
     class AdminerCustomization extends AdminerPlugin
     {
         /**

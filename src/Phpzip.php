@@ -8,6 +8,7 @@ use ZipArchive;
 
 /**
  * Class Phpzip.
+ * @package Pu239
  */
 class Phpzip extends ZipArchive
 {

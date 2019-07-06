@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 /**
  * Class user_options.
+ * @package Pu239
  */
 class user_options
 {

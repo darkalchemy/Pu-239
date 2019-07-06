@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 /**
  * Class Chmod.
+ * @package Pu239
  */
 class Chmod
 {

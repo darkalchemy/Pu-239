@@ -7,12 +7,12 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws Exception
+ * @return string|void
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string|void
+ * @throws Exception
  */
 function breadcrumbs()
 {
@@ -154,11 +154,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
+ * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool|string
+ * @throws NotFoundException
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -205,11 +205,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
+ * @return bool|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool|string
+ * @throws NotFoundException
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -354,6 +354,10 @@ function get_actionpage($lang, $queries, $path)
         $queries_1 = '&amp;' . $ids[0] . '=' . $ids[1];
     } elseif ($path === '/forums.php' && $list[0] === 'action' && $list[1] === 'search') {
         $title = $lang['search_forum'];
+    } elseif ($list[1] === 'sort') {
+        $ids = explode('=', $queries[1]);
+        //$queries_1 = '&amp;' . $ids[0] . '=' . $ids[1];
+        $queries[0] = '';
     }
     if (!empty($list[1]) && empty($title)) {
         $title = !empty($lang[$list[1]]) ? $lang[$list[1]] : '';
@@ -408,11 +412,11 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws NotFoundException
+ * @return mixed|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return mixed|string
+ * @throws NotFoundException
  */
 function get_mailbox_name($mailbox)
 {

@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Post.
+ * @package Pu239
  */
 class Post
 {

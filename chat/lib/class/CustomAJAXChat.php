@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 /**
  * Class CustomAJAXChat.
+ * @package Pu239
  */
 class CustomAJAXChat extends AJAXChat
 {

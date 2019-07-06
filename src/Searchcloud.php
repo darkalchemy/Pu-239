@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Searchcloud.
+ * @package Pu239
  */
 class Searchcloud
 {

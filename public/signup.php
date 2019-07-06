@@ -151,33 +151,34 @@ $disabled = !empty($email) ? 'disabled' : 'required';
 if (!empty($email)) {
     $email_form = "<input type='hidden' name='email' class='w-100' value='{$email}'>{$email}";
 } else {
-    $email_form = "<input type='email' name='email' class='w-100' autocomplete='on'>" . ($site_config['signup']['email_confirm'] ? "
+    $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' autocomplete='on' required>
+                   <div id='emailcheck'></div>" . ($site_config['signup']['email_confirm'] ? "
                     <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
 }
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
 $body = "          
             <h1 class='has-text-centered'>$title</h1>
             <div class='columns'>                    
-                <div class='column is-one-quarter'>{$lang['signup_uname']}</div>
+                <div class='column is-one-quarter has-text-left'>{$lang['signup_uname']}</div>
                 <div class='column'>
-                    <input type='text' name='username' id='username' class='w-100' onblur='checkit();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
+                    <input type='text' name='username' id='username' class='w-100' onblur='check_name();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                     <div id='namecheck'></div>
                 </div>
             </div>
             <div class='columns'>                    
-                <div class='column is-one-quarter'>{$lang['signup_pass']}</div>
+                <div class='column is-one-quarter has-text-left'>{$lang['signup_pass']}</div>
                 <div class='column'>
                     <input type='password' id='password' name='password' class='w-100' autocomplete='on' required minlength='8'>
                 </div>
             </div>
             <div class='columns'>                    
-                <div class='column is-one-quarter'>{$lang['signup_passa']}</div>
+                <div class='column is-one-quarter has-text-left'>{$lang['signup_passa']}</div>
                 <div class='column'>
                     <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' required minlength='8'>
                 </div>
             </div>
             <div class='columns'>                    
-                <div class='column is-one-quarter'>{$lang['signup_email']}</div>
+                <div class='column is-one-quarter has-text-left'>{$lang['signup_email']}</div>
                 <div class='column'>
                     $email_form
                 </div>

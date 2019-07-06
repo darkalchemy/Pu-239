@@ -245,6 +245,7 @@ function run_uglify($argv = [])
             ],
             'check_username_js' => [
                 SCRIPTS_DIR . 'check_username.js',
+                SCRIPTS_DIR . 'check_email.js',
             ],
             'check_password_js' => [
                 SCRIPTS_DIR . 'check_password.js',

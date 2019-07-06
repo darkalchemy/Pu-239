@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Person.
+ * @package Pu239
  */
 class Person
 {

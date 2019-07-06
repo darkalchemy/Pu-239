@@ -8,6 +8,7 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Sitelog.
+ * @package Pu239
  */
 class Sitelog
 {

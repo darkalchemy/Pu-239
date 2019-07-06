@@ -29,6 +29,7 @@ use function urlencode;
 
 /**
  * Class User.
+ * @package Pu239
  */
 class User
 {
@@ -731,5 +732,39 @@ class User
                 ]);
             }
         }
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function get_count_by_email(string $email)
+    {
+        $count = $this->fluent->from('users')
+                        ->select(null)
+                        ->select('COUNT(id) AS count')
+                        ->where('email = ?', $email)
+                        ->fetch('count');
+
+        return $count;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function get_count_by_username(string $username)
+    {
+        $count = $this->fluent->from('users')
+                              ->select(null)
+                              ->select('COUNT(id) AS count')
+                              ->where('username = ?', $username)
+                              ->fetch('count');
+
+        return $count;
     }
 }

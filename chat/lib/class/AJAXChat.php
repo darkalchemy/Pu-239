@@ -26,6 +26,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * Class AJAXChat.
+ * @package Pu239
  */
 class AJAXChat
 {

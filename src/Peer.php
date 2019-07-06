@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Peer.
+ * @package Pu239
  */
 class Peer
 {

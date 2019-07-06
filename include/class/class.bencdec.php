@@ -207,6 +207,7 @@ returning false
 
 /**
  * Class bencdec.
+ * @package Pu239
  */
 class bencdec
 {

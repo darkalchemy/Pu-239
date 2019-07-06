@@ -13,6 +13,7 @@ declare(strict_types = 1);
 
 /**
  * Class AJAXChatEncoding.
+ * @package Pu239
  */
 class AJAXChatEncoding
 {

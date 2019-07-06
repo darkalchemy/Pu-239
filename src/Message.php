@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Message.
+ * @package Pu239
  */
 class Message
 {

@@ -13,6 +13,7 @@ declare(strict_types = 1);
 
 /**
  * Class AJAXChatTemplate.
+ * @package Pu239
  */
 class AJAXChatTemplate
 {

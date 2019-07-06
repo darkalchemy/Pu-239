@@ -2,11 +2,6 @@
 
 declare(strict_types = 1);
 
-/**
- * @param $file
- *
- * @return string|null
- */
 function get_file_name($file)
 {
     global $site_config;
@@ -19,13 +14,13 @@ function get_file_name($file)
         case 'css':
             return "{$site_config['paths']['baseurl']}/css/1/css_61037d46.css";
         case 'vendor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
+            return "{$site_config['paths']['baseurl']}/css/1/vendor_be4865c2.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_6e319729.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_8ada161c.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_73fae811.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_6759fd71.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_408a3529.js";
         case 'vendor_js':
@@ -61,7 +56,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_9f34df56.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_cc12be69.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':
@@ -75,7 +70,7 @@ function get_file_name($file)
         case 'checkport_js':
             return "{$site_config['paths']['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':
-            return "{$site_config['paths']['baseurl']}/js/1/check_username_14044cdf.js";
+            return "{$site_config['paths']['baseurl']}/js/1/check_username_e6e47ded.js";
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':

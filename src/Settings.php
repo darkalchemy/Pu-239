@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Settings.
+ * @package Pu239
  */
 class Settings
 {

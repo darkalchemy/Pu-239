@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 /**
  * Class block_userdetails.
+ * @package Pu239
  */
 class block_userdetails
 {

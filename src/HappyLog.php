@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class HappyLog.
+ * @package Pu239
  */
 class HappyLog
 {

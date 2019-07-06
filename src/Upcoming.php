@@ -9,6 +9,7 @@ use Envms\FluentPDO\Literal;
 
 /**
  * Class Upcoming.
+ * @package Pu239
  */
 class Upcoming
 {

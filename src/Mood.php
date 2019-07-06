@@ -8,6 +8,7 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Mood.
+ * @package Pu239
  */
 class Mood
 {

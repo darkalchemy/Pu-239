@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 /**
  * Class CustomAJAXChatInterface.
+ * @package Pu239
  */
 class CustomAJAXChatInterface extends CustomAJAXChat
 {

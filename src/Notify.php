@@ -8,6 +8,7 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Notify.
+ * @package Pu239
  */
 class Notify
 {
