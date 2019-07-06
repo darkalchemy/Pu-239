@@ -21,7 +21,7 @@ if ($auth->isLoggedIn()) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
-    if (is_array($_POST['email']) || is_array($_POST['password']) || is_array($_POST['remember'])) {
+    if (is_array($_POST['email']) || is_array($_POST['password']) || isset($_POST['remember']) && is_array($_POST['remember'])) {
         write_log($_POST['email'] . ' has tried to login using invalid data. ' . json_encode($_POST));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
