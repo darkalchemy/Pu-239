@@ -77,13 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mark_of_cain' => 'no',
                 'seedtime' => $_POST['seed'],
             ];
-            $snatched_class->update($set, $_POST['tid'], $_POST['userid']);
+            $snatched_class->update($set, (int) $_POST['tid'], (int) $_POST['userid']);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'seedbonus' => $user_stuff['seedbonus'] - $cost,
                 'bonuscomment' => $bonuscomment,
             ];
-            $users_class->update($set, $_POST['userid']);
+            $users_class->update($set, (int) $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
             $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
         } elseif (!empty($_POST['bytes'])) {
@@ -99,13 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mark_of_cain' => 'no',
                 'uploaded' => $snatched['downloaded'],
             ];
-            $snatched_class->update($set, $_POST['tid'], $_POST['userid']);
+            $snatched_class->update($set, (int) $_POST['tid'], (int) $_POST['userid']);
             $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'uploaded' => $user_stuff['uploaded'] - $bytes,
                 'bonuscomment' => $bonuscomment,
             ];
-            $users_class->update($set, $_POST['userid']);
+            $users_class->update($set, (int) $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
             $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
         }

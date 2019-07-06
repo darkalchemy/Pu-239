@@ -21,7 +21,9 @@ $fields = [
     'torrent' => 'torrents',
 ];
 
-comment_like_unlike($fields, $user);
+if (!empty($user) && is_array($user)) {
+    comment_like_unlike($fields, $user);
+}
 
 /**
  * @param array $fields

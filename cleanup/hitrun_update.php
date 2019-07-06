@@ -5,6 +5,14 @@ declare(strict_types = 1);
 use Pu239\Snatched;
 use Pu239\User;
 
+/**
+ * @param $data
+ *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function hitrun_update($data)
 {
     global $container, $site_config;

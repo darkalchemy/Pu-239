@@ -12,8 +12,8 @@ use Pu239\Searchcloud;
 /**
  * @param int $limit
  *
+ * @throws NotFoundException*@throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return array|bool
  */

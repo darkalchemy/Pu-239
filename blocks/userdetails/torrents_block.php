@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 use Pu239\Session;
 
-global $container, $CURUSER, $lang, $user;
+$curuser = check_user_status();
+global $container, $lang, $user;
 
 $session = $container->get(Session::class);
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_STAFF) {
+if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['id'] === $user['id'] || $curuser['class'] >= UC_STAFF) {
     $table_data .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_uploaded_t']}</td>

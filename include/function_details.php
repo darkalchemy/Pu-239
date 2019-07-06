@@ -10,9 +10,9 @@ use Pu239\Database;
 /**
  * @param $imdb_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -48,15 +48,15 @@ function get_banner($imdb_id)
 /**
  * @param $imdb_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
 function get_poster($imdb_id)
 {
-    global $container;
+    global $container, $site_config;
 
     $cache = $container->get(Cache::class);
     if (!empty($imdb_id)) {
@@ -69,7 +69,6 @@ function get_poster($imdb_id)
                              ->where('type = "poster"')
                              ->where('imdb_id=?', $imdb_id)
                              ->fetchAll();
-
             $cache->set('posters_' . $imdb_id, $images, 86400);
         }
 
@@ -80,5 +79,5 @@ function get_poster($imdb_id)
         }
     }
 
-    return false;
+    return $site_config['paths']['images_baseurl'] . '/noposter.png';
 }

@@ -2,18 +2,14 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
-use Pu239\User;
 
 global $container;
 
 $fluent = $container->get(Database::class);
 $cache = $container->get(CACHE::class);
-$users_class = $container->get(User::class);
-$auth = $container->get(Auth::class);
-$user = $users_class->getUserFromId($auth->getUserId());
+$user = check_user_status();
 $ratio = 1;
 if ($user['uploaded'] !== 0 && $user['downloaded'] !== 0) {
     $ratio = $user['uploaded'] / $user['downloaded'];

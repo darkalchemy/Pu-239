@@ -6,6 +6,9 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 
+/**
+ * Class Notify.
+ */
 class Notify
 {
     protected $fluent;
@@ -37,7 +40,10 @@ class Notify
                                ->where('id = ?', $upcomingid)
                                ->where('userid = ?', $userid)
                                ->execute();
-        $this->delete_cache($upcomingid, $userid);
+        $this->cache->deleteMulti([
+            'usernotify_' . $userid,
+            'usernotifies_' . $userid,
+        ]);
 
         return $result;
     }
@@ -53,17 +59,35 @@ class Notify
     public function add(int $upcomingid, int $userid)
     {
         $values = [
-            'recipeid' => $upcomingid, 'userid' => $userid,
+            'recipeid' => $upcomingid,
+            'userid' => $userid,
         ];
         $id = $this->fluent->insertInto('upcoming')
-            ->values($values)
-            ->ignore()
-            ->execute();
-        $this->delete_cache($upcomingid, $userid);
+                           ->values($values)
+                           ->ignore()
+                           ->execute();
 
         return $id;
     }
 
+    /**
+     * @param int $upcomingid
+     * @param int $userid
+     */
+    public function delete_cache(int $upcomingid, int $userid)
+    {
+        $this->cache->delete('usernotify_' . $userid);
+        $this->cache->delete('usernotifies_' . $userid);
+        $this->cache->delete('notify_requests_' . $upcomingid);
+    }
+
+    /**
+     * @param int $upcomingid
+     *
+     * @throws Exception
+     *
+     * @return bool|mixed
+     */
     public function get(int $upcomingid)
     {
         $count = $this->cache->get('notify_requests_' . $upcomingid);
@@ -78,12 +102,5 @@ class Notify
         }
 
         return $count;
-    }
-
-    public function delete_cache(int $upcomingid, int $userid)
-    {
-        $this->cache->delete('usernotify_' . $userid);
-        $this->cache->delete('usernotifies_' . $userid);
-        $this->cache->delete('notify_requests_' . $upcomingid);
     }
 }

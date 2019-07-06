@@ -2,6 +2,11 @@
 
 declare(strict_types = 1);
 
+/**
+ * @param $file
+ *
+ * @return string|null
+ */
 function get_file_name($file)
 {
     global $site_config;

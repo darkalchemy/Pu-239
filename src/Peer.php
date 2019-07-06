@@ -276,4 +276,60 @@ class Peer
 
         return $result;
     }
+
+    /**
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_count()
+    {
+        $count = $this->fluent->from('peers')
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->fetch('count');
+
+        return $count;
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_peers(int $limit, int $offset)
+    {
+        $results = $this->fluent->from('peers AS p')
+                                ->select(null)
+                                ->select('p.id')
+                                ->select('p.userid')
+                                ->select('p.torrent')
+                                ->select('p.torrent_pass')
+                                ->select('LEFT(p.peer_id, 8) AS peer_id')
+                                ->select('INET6_NTOA(p.ip) AS ip')
+                                ->select('p.port')
+                                ->select('p.uploaded')
+                                ->select('p.downloaded')
+                                ->select('p.to_go')
+                                ->select('p.seeder')
+                                ->select('p.started')
+                                ->select('p.last_action')
+                                ->select('p.connectable')
+                                ->select('p.agent')
+                                ->select('p.finishedat')
+                                ->select('p.downloadoffset')
+                                ->select('p.uploadoffset')
+                                ->select('t.name')
+                                ->select('t.size')
+                                ->leftJoin('torrents AS t ON p.torrent = t.id')
+                                ->orderBy('p.started')
+                                ->limit($limit)
+                                ->offset($offset)
+                                ->fetchAll();
+
+        return $results;
+    }
 }

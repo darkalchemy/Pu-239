@@ -196,6 +196,16 @@ if ($action === 'viewbug') {
     $perpage = 25;
     $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/bugs.php?action=bugs&amp;');
     $bugs = $fluent->from('bugs AS b')
+                   ->select(null)
+                   ->select('b.id')
+                   ->select('b.sender')
+                   ->select('b.added')
+                   ->select('b.priority')
+                   ->select('b.problem')
+                   ->select('b.comment')
+                   ->select('b.status')
+                   ->select('b.staff')
+                   ->select('b.title')
                    ->select('u.username')
                    ->select('u.class')
                    ->select('s.username AS st')
@@ -204,8 +214,7 @@ if ($action === 'viewbug') {
                    ->leftJoin('users AS s ON b.staff = s.id')
                    ->orderBy('b.added DESC')
                    ->limit($pager['pdo']['limit'])
-                   ->offset($pager['pdo']['offset'])
-                   ->fetchAll();
+                   ->offset($pager['pdo']['offset']);
 
     $na_count = $fluent->from('bugs')
                        ->select(null)

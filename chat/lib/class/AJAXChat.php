@@ -3240,6 +3240,10 @@ class AJAXChat
         }
     }
 
+    /**
+     * @param $name
+     * @param $arguments
+     */
     public static function __callStatic($name, $arguments)
     {
         // TODO: Implement __callStatic() method.

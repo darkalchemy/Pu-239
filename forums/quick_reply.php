@@ -2,6 +2,11 @@
 
 declare(strict_types = 1);
 require_once INCL_DIR . 'function_bbcode.php';
+/**
+ * @param int $topic_id
+ *
+ * @return string
+ */
 function quick_reply(int $topic_id)
 {
     global $site_config, $lang;

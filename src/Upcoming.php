@@ -6,8 +6,10 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use Envms\FluentPDO\Literal;
-use Envms\FluentPDO\Queries\Select;
 
+/**
+ * Class Upcoming.
+ */
 class Upcoming
 {
     protected $fluent;
@@ -130,28 +132,36 @@ class Upcoming
      *
      * @throws Exception
      *
-     * @return Select
+     * @return array|bool
      */
     public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all)
     {
-        $result = $this->fluent->from('upcoming AS r')
+        $results = $this->fluent->from('upcoming AS r')
                                ->select('u.username')
                                ->select('c.name as cat')
-                               ->select('c.image');
+                               ->select('c.image')
+                               ->select('p.name AS parent_name')
+                               ->leftJoin('users AS u ON r.userid = u.id')
+                               ->leftJoin('categories AS c ON r.category = c.id')
+                               ->leftJoin('categories AS p ON c.parent_id = p.id')
+                               ->limit($limit)
+                               ->offset($offset);
         if (!$all) {
-            $result->where('r.status != ?', 'uploaded');
+            $results->where('r.status != ?', 'uploaded');
         }
-        $result->leftJoin('users AS u ON r.userid = u.id')
-               ->leftJoin('categories AS c ON r.category = c.id')
-               ->limit($limit)
-               ->offset($offset);
         if (!empty($orderby)) {
             $order = $orderby . ($desc ? ' DESC' : '');
-            $result->orderBy($order);
+            $results->orderBy($order);
         }
-        $result->orderBy('r.userid')
-               ->fetchAll();
+        $results = $results->orderBy('r.userid');
+        $cooker = [];
+        foreach ($results as $result) {
+            if (!empty($result['parent_name'])) {
+                $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
+            }
+            $cooker[] = $result;
+        }
 
-        return $result;
+        return $cooker;
     }
 }

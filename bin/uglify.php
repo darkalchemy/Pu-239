@@ -545,6 +545,16 @@ function get_file_name($file)
     file_put_contents($update, $output . PHP_EOL);
 }
 
+/**
+ * @param $folder
+ *
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_default_border($folder)
 {
     $contents = file_get_contents(TEMPLATE_DIR . "{$folder}/variables.css");

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 $BLOCKS = [
     'ie_user_alert' => 1,
     'news_on' => 1,

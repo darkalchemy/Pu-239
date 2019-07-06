@@ -24,9 +24,9 @@ $lists = [
     'tvmaze',
     'bluray',
 ];
-$list = $_GET['list'];
-if (empty($list) || !in_array($list, $lists)) {
-    $list = 'upcoming';
+$list = 'upcoming';
+if (!empty($_GET['list']) && in_array($_GET['list'], $lists)) {
+    $list = $_GET['list'];
 }
 
 switch ($list) {

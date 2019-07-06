@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-use Pu239\Database;
+use Pu239\Peer;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -14,12 +14,8 @@ $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 global $container, $site_config;
 
-$fluent = $container->get(Database::class);
-$count = $fluent->from('peers')
-                ->select(null)
-                ->select('COUNT(id) AS count')
-                ->fetch('count');
-
+$peer = $container->get(Peer::class);
+$count = $peer->get_count();
 $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
@@ -28,9 +24,8 @@ $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, LEFT(p.peer_id, 8) AS peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id=p.userid LEFT JOIN torrents AS t ON t.id=p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
-$result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($result) != 0) {
+$results = $peer->get_peers($pager['pdo']['limit'], $pager['pdo']['offset']);
+if (!empty($results)) {
     $heading = "
     <tr>
         <th>{$lang['wpeers_user']}</th>
@@ -48,9 +43,10 @@ if (mysqli_num_rows($result) != 0) {
         <th>{$lang['wpeers_upoff']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
         <th>{$lang['wpeers_dnoff']}</th>") . "
         <th>{$lang['wpeers_togo']}</th>
+        <th>{$lang['wpeers_size']}</th>
     </tr>";
     $body = '';
-    while ($row = mysqli_fetch_assoc($result)) {
+    foreach ($results as $row) {
         $smallname = substr(htmlsafechars($row['name']), 0, 25);
         if ($smallname != htmlsafechars($row['name'])) {
             $smallname .= '...';
@@ -60,18 +56,19 @@ if (mysqli_num_rows($result) != 0) {
         <td>' . format_username((int) $row['userid']) . '</td>
         <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
-        <td>' . htmlsafechars($row['port']) . '</td>
+        <td>' . $row['port'] . '</td>
         <td>' . htmlsafechars(str_replace('/', "\n", trim($row['agent']))) . '</td>
         <td>' . htmlsafechars(str_replace('-', '', $row['peer_id'])) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
+        <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
+        <td>' . mksize($row['downloaded']) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . get_date((int) $row['started'], 'DATE') . '</td>
         <td>' . get_date((int) $row['last_action'], 'DATE', 0, 1) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
-        <td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
+        <td>' . mksize($row['uploadoffset']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
+        <td>' . mksize($row['downloadoffset']) . '</td>') . '
+        <td>' . mksize($row['to_go']) . '</td>
+        <td>' . mksize($row['size']) . '</td>
     </tr>';
     }
 

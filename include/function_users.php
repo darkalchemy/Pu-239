@@ -606,6 +606,15 @@ function member_ratio(float $up, float $down)
     return $ratio;
 }
 
+/**
+ * @param float $up
+ * @param float $down
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string
+ */
 function get_user_ratio_image(float $up, float $down)
 {
     global $site_config;

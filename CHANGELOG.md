@@ -1,3 +1,21 @@
+### 06 Jul, 2019
+fix: check if empty user first like.php  
+fix: undefined function  
+fix: undefined var announce.php  
+fix: cast to int hnrs.php  
+fix: undefined var movies.php  
+fix: undexfined index takeedit.php  
+fix: undefined var takeupload.php  
+fix: undefined var trivia_results.php  
+revert: adminer.php - should not be edited  
+update: view_peers.php  
+add: missing strict  
+add: missing docblock  
+remove: duplicate auth check verify_email.php  
+fix: incorrect usage $user/$CURUSER userdetails.php  
+update: begin replace htmlsafechars with format_comment when string is for output  
+fix: return noposter.png instead of false  
+
 ### 05 Jul, 2019
 fix: add missing require_once INCL_DIR . 'function_password.php' modtask.php  
 fix: check for empty index function_torrenttable.php  

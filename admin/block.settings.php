@@ -94,7 +94,7 @@ $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updated = [];
     $filename = CACHE_DIR . 'block_settings_cache.php';
-    $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
+    $block_out = '<' . "?php\n\n\declare(strict_types = 1);\n\n$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
         $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . (int) $v . ",\n";

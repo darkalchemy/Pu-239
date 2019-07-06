@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Jobby\Jobby;
 
 require_once __DIR__ . '/../include/bittorrent.php';

@@ -33,10 +33,6 @@ try {
     }
     $cache = $container->get(Cache::class);
     $userid = $auth->getUserId();
-    if ($auth->isLoggedIn()) {
-        $auth->logOutEverywhere();
-        $auth->destroySession();
-    }
 } catch (InvalidSelectorTokenPairException $e) {
     stderr('Error', 'Invalid token');
 } catch (TokenExpiredException $e) {

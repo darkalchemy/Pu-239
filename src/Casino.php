@@ -6,6 +6,9 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 
+/**
+ * Class Casino.
+ */
 class Casino
 {
     protected $fluent;

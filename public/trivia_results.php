@@ -51,7 +51,7 @@ while ($result = mysqli_fetch_assoc($res)) {
             $incorrect = $player['incorrect'];
             $table .= '
                         <tr>
-                            <td>' . format_username((int) $user_id) . '</td>
+                            <td>' . format_username((int) $player['user_id']) . '</td>
                             <td>' . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                             <td>$correct</td>
                             <td>$incorrect</td>

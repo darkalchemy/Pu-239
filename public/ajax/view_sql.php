@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 require_once __DIR__ . '/../../include/bittorrent.php';
+require_once CLASS_DIR . 'class_check.php';
 $user = check_user_status();
 class_check(UC_MAX);
 
@@ -67,7 +68,7 @@ function adminer_object()
         {
             global $site_config;
 
-            return "{$site_config['db']['database']}";
+            return $site_config['db']['database'];
         }
 
         /**

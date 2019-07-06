@@ -21,31 +21,34 @@ require_once INCL_DIR . 'function_bbcode.php';
 global $container, $site_config;
 
 $data = $_POST;
-$torrent_pass = $data['torrent_pass'];
-$auth = $data['auth'];
-$strip = $data['strip'];
-$bot = $data['bot'];
-$owner_id = $data['owner_id'];
-$csrf = $data['csrf'];
-$name = $data['name'];
-$url = $data['url'];
-$isbn = $data['isbn'];
-$poster = $data['poster'];
-$MAX_FILE_SIZE = $data['MAX_FILE_SIZE'];
-$youtube = $data['youtube'];
-$tags = $data['tags'];
-$description = $data['description'];
-$body = $data['body'];
-$release_group = $data['release_group'];
-$free_length = $data['free_length'];
-$half_length = $data['half_length'];
-$music = $data['music'];
-$movie = $data['movie'];
-$game = $data['game'];
-$apps = $data['apps'];
-$subs = $data['subs'];
-$genre = $data['genre'];
-$type = $data['type'];
+$torrent_pass = isset($data['torrent_pass']) ? $data['torrent_pass'] : '';
+$auth = isset($data['auth']) ? $data['auth'] : '';
+$bot = isset($data['bot']) ? $data['bot'] : '';
+$strip = isset($data['strip']) && is_bool($data['strip']) ? (bool) $data['strip'] : false;
+$name = isset($data['name']) ? htmlsafechars($data['name']) : '';
+$url = isset($data['url']) ? htmlsafechars($data['url']) : '';
+$isbn = isset($data['isbn']) ? htmlsafechars($data['isbn']) : '';
+$poster = isset($data['poster']) ? htmlsafechars($data['poster']) : '';
+$youtube = isset($data['youtube']) ? htmlsafechars($data['youtube']) : '';
+$tags = isset($data['tags']) ? htmlsafechars($data['tags']) : '';
+$description = isset($data['description']) ? htmlsafechars($data['description']) : '';
+$body = isset($data['body']) ? htmlsafechars($data['body']) : '';
+$release_group = isset($data['release_group']) ? htmlsafechars($data['release_group']) : '';
+$free_length = isset($data['free_length']) && is_valid_id((int) $data['free_length']) ? (int) $data['free_length'] : 0;
+$half_length = isset($data['half_length']) && is_valid_id((int) $data['half_length']) ? (int) $data['half_length'] : 0;
+$music = isset($data['music']) && is_array($data['music']) ? $data['music'] : [];
+$movie = isset($data['movie']) && is_array($data['movie']) ? $data['movie'] : [];
+$game = isset($data['game']) && is_array($data['game']) ? $data['game'] : [];
+$apps = isset($data['apps']) && is_array($data['apps']) ? $data['apps'] : [];
+$subs = isset($data['subs']) && is_array($data['subs']) ? $data['subs'] : [];
+$genre = isset($data['genre']) ? $data['genre'] : '';
+$catid = isset($data['type']) && is_valid_id((int) $data['type']) ? (int) $data['type'] : 0;
+$request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int) $data['request'] : 0;
+$offer = isset($data['offer']) && is_valid_id((int) $data['offer']) ? (int) $data['offer'] : 0;
+$uplver = isset($data['uplver']) && $data['uplver'] === 'yes' ? 'yes' : 'no';
+$allow_comments = isset($data['allow_comments']) && $data['allow_comments'] === 'yes' ? 'yes' : 'no';
+$descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
+
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
@@ -53,6 +56,7 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
     $user = $users_class->getUserFromId($owner_id);
 } else {
     $user = check_user_status();
+    $owner_id = $user['id'];
     $cache->set('user_upload_variables_' . $user['id'], serialize($data), 3600);
 }
 
@@ -66,16 +70,14 @@ if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 
     $session->set('is-warning', $lang['not_authorized']);
     why_die($lang['not_authorized']);
 }
-if (empty($body) || empty($type) || empty($name) || empty($_FILES['file'])) {
+if (empty($body) || empty($catid) || empty($name) || empty($_FILES['file'])) {
     $session->set('is-warning', $lang['takeupload_no_formdata']);
     why_die($lang['takeupload_no_formdata']);
 }
-$url = strip_tags(!empty($url) ? trim($url) : '');
 if (!empty($url)) {
     preg_match('/(tt\d{7})/i', $url, $imdb);
     $imdb = !empty($imdb[1]) ? $imdb[1] : '';
 }
-$poster = strip_tags(!empty($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
@@ -83,19 +85,12 @@ if (empty($fname)) {
     why_die($lang['takeupload_no_filename']);
 }
 
-if (!empty($uplver) && $uplver === 'yes') {
+if ($uplver === 'yes') {
     $anonymous = 'yes';
     $anon = get_anonymous_name();
 } else {
     $anonymous = 'no';
     $anon = $user['username'];
-}
-if (!empty($allow_comments) && $allow_comments === 'yes') {
-    $allow_comments = 'no';
-    $disallow = 'Yes';
-} else {
-    $allow_comments = 'yes';
-    $disallow = 'No';
 }
 
 if (!empty($music)) {
@@ -106,8 +101,6 @@ if (!empty($music)) {
     $genre = implode(',', $game);
 } elseif (!empty($apps)) {
     $genre = implode(',', $apps);
-} else {
-    $genre = '';
 }
 $nfo = '';
 
@@ -138,52 +131,45 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         '',
     ], file_get_contents($nfofilename));
     $nfo = $nfo_content;
-    if (!empty($strip) && $strip) {
+    if ($strip) {
         $nfo = preg_replace('`/[^\\x20-\\x7e\\x0a\\x0d]`', ' ', $nfo);
         $nfo = preg_replace('`[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\xff]`', '', $nfo);
     }
 }
 
 $free2 = 0;
-if (!empty($free_length) && ($free_length = (int) $free_length)) {
-    if ($free_length == 255) {
+if (!empty($free_length)) {
+    if ($free_length === 255) {
         $free2 = 1;
-    } elseif ($free_length == 42) {
-        $free2 = (86400 + $dt);
+    } elseif ($free_length === 42) {
+        $free2 = 86400 + $dt;
     } else {
-        $free2 = ($dt + $free_length * 604800);
+        $free2 = $dt + $free_length * 604800;
     }
 }
 
 $silver = 0;
-if (!empty($half_length) && ($half_length = (int) $half_length)) {
-    if ($half_length == 255) {
+if (!empty($half_length)) {
+    if ($half_length === 255) {
         $silver = 1;
-    } elseif ($half_length == 42) {
-        $silver = (86400 + $dt);
+    } elseif ($half_length === 42) {
+        $silver = 86400 + $dt;
     } else {
-        $silver = ($dt + $half_length * 604800);
+        $silver = $dt + $half_length * 604800;
     }
 }
 
 $freetorrent = !empty($freetorrent) && is_valid_id($freetorrent) ? (int) $freetorrent : 0;
-$descr = strip_tags(!empty($body) ? trim($body) : '');
-if (!$descr) {
-    if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
-        $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
-    } else {
-        $session->set('is-warning', $lang['takeupload_no_descr']);
-        why_die($lang['takeupload_no_descr']);
-    }
+if (!$descr && !empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
+    $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
+} else {
+    $session->set('is-warning', $lang['takeupload_no_descr']);
+    why_die($lang['takeupload_no_descr']);
 }
-$description = strip_tags(!empty($description) ? trim($description) : '');
-$catid = (int) $type;
 if (!is_valid_id($catid)) {
     $session->set('is-warning', $lang['takeupload_no_cat']);
     why_die($lang['takeupload_no_cat']);
 }
-$request = (((!empty($request) && is_valid_id($request)) ? (int) $request : 0));
-$offer = (((!empty($offer) && is_valid_id($offer)) ? (int) $offer : 0));
 $subs = !empty($subs) ? implode('|', $subs) : '';
 $release_group_array = [
     'scene' => 1,
@@ -194,20 +180,14 @@ $release_group = !empty($release_group) && !empty($release_group_array[$release_
 
 if (!empty($youtube) && preg_match('#' . $site_config['youtube']['pattern'] . '#i', $youtube, $temp_youtube)) {
     $youtube = $temp_youtube[0];
-} else {
-    $youtube = '';
 }
-
-$tags = strip_tags(!empty($tags) ? trim($tags) : '');
 
 if (!validfilename($fname)) {
     $session->set('is-warning', $lang['takeupload_invalid']);
     why_die($lang['takeupload_invalid']);
 }
 
-if (empty($isbn)) {
-    $isbn = '';
-} else {
+if (!empty($isbn)) {
     $isbn = str_replace([
         '-',
         ' ',
@@ -423,8 +403,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -537,6 +517,9 @@ $cache->delete('user_upload_variables_' . $owner_id);
 $session->set('is-success', $lang['takeupload_success']);
 header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id&uploaded=1");
 
+/**
+ * @param string $why
+ */
 function why_die(string $why)
 {
     if (!empty($_SERVER['HTTP_REFERER'])) {

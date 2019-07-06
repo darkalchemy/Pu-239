@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Image;
 use Pu239\Torrent;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @param        $text
@@ -194,6 +195,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -201,7 +203,7 @@ function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploade
 {
     global $site_config, $times_completed, $cat;
 
-    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
+    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($image) . "' class='tooltipper' alt='" . format_comment($cat) . "' title='" . format_comment($cat) . "' height='20px' width='auto'>" : format_comment($cat);
     $content = "
                     <tr>
                         <td class='has-text-centered'>$caticon</td>

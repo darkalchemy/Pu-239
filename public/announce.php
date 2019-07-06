@@ -11,20 +11,18 @@ use Pu239\User;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
+require_once INCL_DIR . 'function_common.php';
+file_put_contents('/var/log/nginx/announce.log', $_SERVER['QUERY_STRING'] . PHP_EOL, FILE_APPEND);
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 
 $dt = TIME_NOW;
-$info_hash = $peer_id = $compact = $no_peer_id = '';
+$no_peer_id = '';
 $torrent_updateset = $snatched_values = $user_updateset = [];
 global $container, $site_config;
 
 $ratio_free = $site_config['site']['ratio_free'];
-if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
-    err('Invalid Torrent Pass');
-}
-
 foreach ([
     'torrent_pass',
     'info_hash',
@@ -37,21 +35,32 @@ foreach ([
 ] as $x) {
     if (!isset($_GET[$x])) {
         err("Missing key: $x");
-    } else {
-        $$x = $_GET[$x];
     }
 }
+$torrent_pass = $_GET['torrent_pass'];
+$info_hash = $_GET['info_hash'];
+$peer_id = $_GET['peer_id'];
+$port = $_GET['port'];
+$downloaded = $_GET['downloaded'];
+$uploaded = $_GET['uploaded'];
+$left = $_GET['left'];
+$compact = $_GET['compact'];
+if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
+    err('Invalid Torrent Pass');
+}
 
-foreach ([
+$strings = [
     'info_hash',
     'peer_id',
-] as $x) {
+];
+foreach ($strings as $x) {
     if (strlen(${$x}) != 20) {
         err("Invalid $x (" . strlen(${$x}) . ' - ' . urlencode(${$x}) . ')');
     }
 }
 unset($x);
-$realip = $ip = $_SERVER['REMOTE_ADDR'];
+$realip = $ip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $_SERVER['REMOTE_ADDR'];
+
 $port = (int) $port;
 $downloaded = (int) $downloaded;
 $uploaded = (int) $uploaded;
@@ -59,16 +68,18 @@ $real_downloaded = $downloaded;
 $real_uploaded = $uploaded;
 $left = (int) $left;
 $rsize = 30;
+
 foreach ([
     'num want',
     'numwant',
     'num_want',
 ] as $x) {
     if (isset($_GET[$x])) {
-        $rsize = (int) ${$x};
+        $rsize = (int) $_GET[$x];
         break;
     }
 }
+
 if ($uploaded < 0) {
     err('invalid uploaded (less than 0)');
 }
@@ -81,9 +92,7 @@ if ($left < 0) {
 if (!$port || $port > 0xffff) {
     err('invalid port');
 }
-if (!isset($_GET['event'])) {
-    $event = '';
-}
+$event = isset($_GET['event']) ? $_GET['event'] : '';
 $seeder = $left === 0 ? 'yes' : 'no';
 $torrents_class = $container->get(Torrent::class);
 $torrent = $torrents_class->get_torrent_from_hash($info_hash);
@@ -488,7 +497,6 @@ if ($seeder === 'yes') {
         'lastseed' => $dt,
     ], 1800);
 }
-
 if (!empty($torrent_updateset)) {
     $torrents_class->update($torrent_updateset, $torrent['id']);
 }

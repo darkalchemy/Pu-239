@@ -204,12 +204,12 @@ if (isset($_POST['free_length']) && $free_length = (int) $_POST['free_length']) 
     }
     $updateset[] = 'free = ' . sqlesc($free);
     $torrent_cache['free'] = $free;
-    write_log("Torrent $id ($name) set Free for " . ($free != 1 ? 'Until ' . get_date((int) $free, 'DATE') : 'Unlimited') . " by {$user[username]}");
+    write_log("Torrent $id ($name) set Free for " . ($free != 1 ? 'Until ' . get_date((int) $free, 'DATE') : 'Unlimited') . " by {$user['username']}");
 }
 if (isset($_POST['fl']) && ($_POST['fl'] == 1)) {
     $updateset[] = "free = '0'";
     $torrent_cache['free'] = '0';
-    write_log("Torrent $id ($name) No Longer Free. Removed by {$user[username]}");
+    write_log("Torrent $id ($name) No Longer Free. Removed by {$user['username']}");
 }
 
 if (isset($_POST['half_length']) && ($half_length = (int) $_POST['half_length'])) {
@@ -222,12 +222,12 @@ if (isset($_POST['half_length']) && ($half_length = (int) $_POST['half_length'])
     }
     $updateset[] = 'silver = ' . sqlesc($silver);
     $torrent_cache['silver'] = $silver;
-    write_log("Torrent $id ($name) set Half leech for " . ($silver != 1 ? 'Until ' . get_date((int) $silver, 'DATE') : 'Unlimited') . " by {$user[username]}");
+    write_log("Torrent $id ($name) set Half leech for " . ($silver != 1 ? 'Until ' . get_date((int) $silver, 'DATE') : 'Unlimited') . " by {$user['username']}");
 }
 if (isset($_POST['slvr']) && ($_POST['slvr'] == 1)) {
     $updateset[] = "silver = '0'";
     $torrent_cache['silver'] = '0';
-    write_log("Torrent $id ($name) No Longer Half leech. Removed by {$user[username]}");
+    write_log("Torrent $id ($name) No Longer Half leech. Removed by {$user['username']}");
 }
 
 if ((isset($_POST['allow_comments'])) && (($allow_comments = $_POST['allow_comments']) != $fetch_assoc['allow_comments'])) {

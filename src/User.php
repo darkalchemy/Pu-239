@@ -20,6 +20,7 @@ use Delight\Auth\UserAlreadyExistsException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Envms\FluentPDO\Exception;
+use Envms\FluentPDO\Queries\Select;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use PDOStatement;
 use Psr\Container\ContainerInterface;
@@ -185,6 +186,14 @@ class User
         return $user;
     }
 
+    /**
+     * @param array $items
+     * @param array $where
+     *
+     * @throws Exception
+     *
+     * @return array|bool|Select
+     */
     public function search(array $items, array $where)
     {
         $users = $this->fluent->from('users')
@@ -195,7 +204,6 @@ class User
         foreach ($where as $key => $value) {
             $users = $users->where($key . ' ?', $value);
         }
-        //dd($users);
         $users = $users->fetchAll();
 
         return $users;

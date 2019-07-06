@@ -70,6 +70,14 @@ function navmenu()
     return $ret;
 }
 
+/**
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ *
+ * @return string|void
+ */
 function wikimenu()
 {
     global $container, $site_config, $lang;

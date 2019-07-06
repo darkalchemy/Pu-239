@@ -13,7 +13,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 global $container, $site_config;
 
 header('Content-Type: application/json');
-if (!empty($user)) {
+if (!empty($user) && is_array($user)) {
     $upped = mksize($user['uploaded']);
     $downed = mksize($user['downloaded']);
     $peer = $container->get(Peer::class);
