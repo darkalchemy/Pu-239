@@ -11,7 +11,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
 $lang = load_language('global');
-$poll_id = isset($_GET['pollid']) ? (int) $_GET['pollid'] : false;
+$poll_id = isset($_GET['pollid']) ? (int) $_GET['pollid'] : 0;
 if (!is_valid_id($poll_id)) {
     stderr('ERROR', 'No poll with that ID');
 }
@@ -66,9 +66,11 @@ if (!$_POST['nullvote']) {
     }
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
-            ++$poll_answers[$question_id]['votes'][$choice_id];
-            if ($poll_answers[$question_id]['votes'][$choice_id] < 1) {
-                $poll_answers[$question_id]['votes'][$choice_id] = 1;
+            if (is_numeric($choice_id)) {
+                ++$poll_answers[$question_id]['votes'][$choice_id];
+                if ($poll_answers[$question_id]['votes'][$choice_id] < 1) {
+                    $poll_answers[$question_id]['votes'][$choice_id] = 1;
+                }
             }
         }
     }

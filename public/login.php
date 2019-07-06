@@ -40,10 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (!empty($_POST['returnto'])) {
-            header("Location: {$site_config['paths']['baseurl']}" . urldecode($_POST['returnto']));
-        } else {
-            header("Location: {$site_config['paths']['baseurl']}");
+            $returnto = explode('?', urldecode($_POST['returnto']));
+            if (file_exists(ROOT_DIR . trim('/', $returnto[0]))) {
+                header("Location: {$site_config['paths']['baseurl']}" . urlencode(urldecode($_POST['returnto'])));
+                die();
+            }
         }
+        header("Location: {$site_config['paths']['baseurl']}");
         die();
     } else {
         unset($_POST);
@@ -52,10 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $stdfoot = [];
 $return_to = '';
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto'])) {
-    $returnto = urlencode(urldecode($_GET['returnto']));
-    $return_to = "
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto']) && !is_array($_GET['returnto'])) {
+    $return = explode('?', urldecode($_GET['returnto']));
+    if (file_exists(ROOT_DIR . trim('/', $return[0]))) {
+        $returnto = urlencode(urldecode($_GET['returnto']));
+        $return_to = "
                         <input type='hidden' name='returnto' value='$returnto'>";
+    }
 }
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;

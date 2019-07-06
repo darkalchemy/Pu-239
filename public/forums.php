@@ -41,7 +41,7 @@ $fluent->update('users')
        ->where('id = ?', $user['id'])
        ->execute();
 
-$posted_action = strip_tags((isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '')));
+$posted_action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
 if ($user['class'] >= UC_STAFF) {
     $valid_actions = [
         'forum',

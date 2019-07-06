@@ -20,7 +20,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $sure = '';
-$do = isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : '');
+$do = isset($_GET['do']) && !is_array($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) && !is_array($_POST['do']) ? htmlsafechars($_POST['do']) : '');
 $valid_actions = [
     'create_invite',
     'delete_invite',

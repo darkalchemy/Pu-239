@@ -31,7 +31,7 @@ $arr = $fluent->from('forums')
               ->limit(1)
               ->fetch();
 
-$forum_name = htmlsafechars($arr['name']);
+$forum_name = !empty($arr['name']) ? htmlsafechars($arr['name']) : '';
 
 $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {

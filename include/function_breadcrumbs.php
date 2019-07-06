@@ -265,7 +265,7 @@ function get_infopage($lang, $queries, $path)
         $title = $lang['view_app'];
     } elseif ($list[0] === 'name') {
         $title = $lang['index'];
-    } elseif ($list[0] === 'page') {
+    } elseif ($list[0] === 'page' && is_numeric($list[1])) {
         $page = $list[1] + 1;
         $title = $lang['page'] . " $page";
     } elseif ($list[0] === 'letter') {
