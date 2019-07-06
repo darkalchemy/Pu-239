@@ -10,7 +10,7 @@ use Pu239\User;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
-global $site_config;
+global $container, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('login'));
 get_template();
@@ -20,8 +20,12 @@ if ($auth->isLoggedIn()) {
     $auth->destroySession();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    global $container, $site_config;
-
+    $session = $container->get(Session::class);
+    if (is_array($_POST['email']) || is_array($_POST['password']) || is_array($_POST['remember'])) {
+        write_log($_POST['email'] . ' has tried to login using invalid data. ' . json_encode($_POST));
+        header("Location: {$_SERVER['PHP_SELF']}");
+        die();
+    }
     $user = $container->get(User::class);
     if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
         $userid = $auth->getUserId();
@@ -31,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = $ips_class->get_ip_count($userid, 3, 'login');
             if ($count > $site_config['site']['limit_ips_count']) {
                 $user->logout($userid, false);
-                $session = $container->get(Session::class);
                 $session->set('is-danger', 'You have exceeded the maximum number of IPs allowed');
                 stderr('Error', "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
             }

@@ -24,7 +24,7 @@ $builder->useAnnotations(false);
 try {
     $container = $builder->build();
 } catch (Exception $e) {
-    //TODO Logger;
+    die("try 'composer install', then check that definitions.php matches src directory");
 }
 require_once CONFIG_DIR . 'session.php';
 $container->get(SlashTrace::class);

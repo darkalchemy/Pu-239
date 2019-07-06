@@ -99,7 +99,7 @@ return [
     }),
     PDO::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
-        $dsn = !$env['db']['use_socket'] ? "{$env['db']['type']}:host={$env['db']['host']};port={$env['db']['port']};dbname={$env['db']['database']};charset=utf8mb4" : "{$env['db']['type']}:unix_socket={$env['db']['socket']};dbname={$env['db']['database']};charset=utf8mb4";
+        $dsn = !$env['db']['use_socket'] ? "{$env['db']['type']}:host={$env['db']['host']};port={$env['db']['port']};dbname={$env['db']['database']};charset={$env['db']['charset']}" : "{$env['db']['type']}:unix_socket={$env['db']['socket']};dbname={$env['db']['database']};charset={$env['db']['charset']}";
         $username = $env['db']['username'];
         $password = $env['db']['password'];
         $attributes = $env['db']['attributes'];
@@ -132,7 +132,6 @@ return [
         if ($mysqli->connect_error) {
             die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
         }
-
         return $mysqli;
     }),
     Redis::class => DI\factory(function (ContainerInterface $c) {

@@ -1,4 +1,6 @@
 ### 06 Jul, 2019
+update: faq.php rules.php  
+update: check if user creds are vaild  
 update: check if path exists before removing  
 update: check email during signup  
 fix: check if empty user first like.php  
