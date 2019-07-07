@@ -7,32 +7,40 @@ use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\User;
+use Rakit\Validation\Validator;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
-$torrent_pass = isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '';
 global $container, $site_config;
 
-if (!empty($torrent_pass)) {
-    if (strlen($torrent_pass) != 64) {
+$validator = $container->get(Validator::class);
+$validation = $validator->validate($_GET, [
+    'torrent_pass' => 'required|alpha_num:between:64,64',
+]);
+if ($validation->fails()) {
+    if (!isset($_GET['torrent_pass'])) {
+        format_rss("Your link doesn't have a torrent pass", null);
+    } elseif (strlen($_GET['torrent_pass']) != 64) {
         format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
     } else {
-        $users_class = $container->get(User::class);
-        $user = $users_class->get_user_from_torrent_pass($torrent_pass);
-        if (!$user) {
-            format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
-        } elseif ($user['enabled'] === 'no') {
-            format_rss("Permission denied, you're account is disabled", null);
-        } elseif ($user['parked'] === 'yes') {
-            format_rss("Permission denied, you're account is parked", null);
-        } elseif ($user['downloadpos'] != 1) {
-            format_rss('Your download privileges have been removed.', null);
-        }
+        format_rss("Your link doesn't have a valid torrent pass", null);
     }
 } else {
-    format_rss("Your link doesn't have a torrent pass", null);
+    $users_class = $container->get(User::class);
+    $torrent_pass = $_GET['torrent_pass'];
+    $user = $users_class->get_user_from_torrent_pass($torrent_pass);
+    if (!$user) {
+        format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
+    } elseif ($user['enabled'] === 'no') {
+        format_rss("Permission denied, you're account is disabled", null);
+    } elseif ($user['parked'] === 'yes') {
+        format_rss("Permission denied, you're account is parked", null);
+    } elseif ($user['downloadpos'] != 1) {
+        format_rss('Your download privileges have been removed.', null);
+    }
 }
+
 $cats = isset($_GET['cats']) ? $_GET['cats'] : '';
 if ($cats) {
     $cats = explode(',', $cats);

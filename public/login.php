@@ -16,12 +16,13 @@ global $container, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('login'));
 get_template();
-$auth = $container->get(Auth::class);
-if ($auth->isLoggedIn()) {
-    $auth->logOutEverywhere();
-    $auth->destroySession();
-}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $auth = $container->get(Auth::class);
+    if ($auth->isLoggedIn()) {
+        $auth->logOutEverywhere();
+        $auth->destroySession();
+        stderr('Error', 'You were already logged in, you have now been logged out, everywhere.');
+    }
     $session = $container->get(Session::class);
     $validator = $container->get(Validator::class);
     $post = $_POST;
