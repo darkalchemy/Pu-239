@@ -30,7 +30,7 @@ $HTMLOUT = '';
 $auth = $container->get(Auth::class);
 $user = $container->get(User::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (is_array($_POST['email'])) {
+    if (empty($_POST['email']) || is_array($_POST['email'])) {
         write_log('Someone has tried to recover using invalid data. ' . json_encode($_POST));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
@@ -41,7 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email']);
         $user->create_reset($email, $lang);
     }
-} elseif (!empty($_GET)) {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (!isset($_GET['selector'], $_GET['token'])) {
+        write_log('Someone has tried to recover using invalid data. ' . json_encode($_GET));
+        header("Location: {$_SERVER['PHP_SELF']}");
+        die();
+    }
     try {
         $auth->canResetPasswordOrThrow($_GET['selector'], $_GET['token']);
         $stdfoot = array_merge_recursive($stdfoot, [

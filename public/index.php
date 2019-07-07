@@ -69,6 +69,7 @@ $left_column = [
 $center_column = [
     'ajaxchat',
     'torrents_scroller',
+    'cooker',
     'torrents_mow',
     'staffpicks',
     'torrents_top',
@@ -137,7 +138,7 @@ if (in_array('staffpicks', $available_columns) && $user['blocks']['index_page'] 
 } else {
     $remove_columns[] = 'staffpicks';
 }
-
+include_once $dir . 'upcoming.php';
 if (in_array('latest_user', $available_columns) && $user['blocks']['index_page'] & block_index::LATEST_USER && $BLOCKS['latest_user_on']) {
     include_once $dir . 'latest_user.php';
 } else {
