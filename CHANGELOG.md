@@ -1,3 +1,6 @@
+### 07 Jul, 2019
+update: remove cooker/upcoming  
+
 ### 06 Jul, 2019
 update: cleanup  
 update: check if user input is valid and not an array  
