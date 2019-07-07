@@ -17,14 +17,19 @@ global $container, $site_config;
 $validator = $container->get(Validator::class);
 $validation = $validator->validate($_GET, [
     'torrent_pass' => 'required|alpha_num:between:64,64',
+    'count' => 'required|in:15,30,50,100',
+    'bm' => 'required|in:0,1',
+    'type' => 'required|in:dl,web',
+    'cats' => 'regex:/^(\d+,?)*$/',
 ]);
+dd($validation);
 if ($validation->fails()) {
     if (!isset($_GET['torrent_pass'])) {
         format_rss("Your link doesn't have a torrent pass", null);
     } elseif (strlen($_GET['torrent_pass']) != 64) {
         format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
     } else {
-        format_rss("Your link doesn't have a valid torrent pass", null);
+        format_rss("Your link isn't a valid rss link.", null);
     }
 } else {
     $users_class = $container->get(User::class);

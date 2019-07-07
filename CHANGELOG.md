@@ -1,5 +1,5 @@
 ### 07 Jul, 2019
-update: validate torrent_pass rss.php  
+update: validate input rss.php  
 update: force user logout login.php  
 update: proper validation recover.php login.php signup.php  
 update: rules.php faq.php useragreement.php  
