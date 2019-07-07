@@ -32,13 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invite_id = !empty($post['invite_id']) ? (int) $post['invite_id'] : null;
     $invite_code = !empty($post['invite_code']) ? htmlsafechars($post['invite_code']) : null;
     $email = isset($post['email']) && !is_array($post['email']) ? $post['email'] : '';
+    $username = isset($post['username']) && !is_array($post['username']) ? $post['username'] : '';
     $password = isset($post['password']) && !is_array($post['password']) ? $post['password'] : '';
-    $token = isset($post['token']) && !is_array($post['token']) ? $post['token'] : '';
-    if (!empty($email) && !empty($password) && !empty($token)) {
+    $confirm_password = isset($post['confirm_password']) && !is_array($post['confirm_password']) ? $post['confirm_password'] : '';
+    if (!empty($email) && !empty($username) && !empty($password) && $password === $confirm_password) {
         $data = [
             'email' => $email,
             'password' => $password,
-            'token' => $token,
+            'username' => $username,
         ];
         $user = $container->get(User::class);
         $userid = $user->add($data, $lang);
