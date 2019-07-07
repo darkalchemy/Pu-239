@@ -1077,14 +1077,18 @@ function plural(int $int)
 }
 
 /**
- * @param      $username
- * @param bool $ajax
+ * @param string $username
+ * @param bool   $ajax
  *
- * @return bool
- * @throws Exception
- *
+ * @return bool|string
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  */
-function valid_username($username, $ajax = false)
+function valid_username(string $username, bool $ajax = false)
 {
     global $site_config, $lang;
 

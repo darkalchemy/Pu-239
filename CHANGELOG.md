@@ -1,4 +1,5 @@
 ### 06 Jul, 2019
+update: cleanup  
 update: check if user input is valid and not an array  
 update: faq.php rules.php  
 update: check if user creds are vaild  

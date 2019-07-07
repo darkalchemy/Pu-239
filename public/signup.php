@@ -31,8 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $promo = !empty($post['promo']) ? htmlsafechars($post['promo']) : null;
     $invite_id = !empty($post['invite_id']) ? (int) $post['invite_id'] : null;
     $invite_code = !empty($post['invite_code']) ? htmlsafechars($post['invite_code']) : null;
-    $user = $container->get(User::class);
-    $userid = $user->add($post, $lang);
+    $email = isset($post['email']) && !is_array($post['email']) ? $post['email'] : '';
+    $password = isset($post['password']) && !is_array($post['password']) ? $post['password'] : '';
+    $token = isset($post['token']) && !is_array($post['token']) ? $post['token'] : '';
+    if (!empty($email) && !empty($password) && !empty($token)) {
+        $data = [
+            'email' => $email,
+            'password' => $password,
+            'token' => $token,
+        ];
+        $user = $container->get(User::class);
+        $userid = $user->add($data, $lang);
+    }
     if (!empty($userid)) {
         insert_update_ip('register', $userid);
         if (!empty($invite_id) && !empty($invite_code)) {

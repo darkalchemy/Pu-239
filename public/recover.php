@@ -31,7 +31,7 @@ $auth = $container->get(Auth::class);
 $user = $container->get(User::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (is_array($_POST['email'])) {
-        write_log($_POST['email'] . ' has tried to login using invalid data. ' . json_encode($_POST));
+        write_log('Someone has tried to recover using invalid data. ' . json_encode($_POST));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }

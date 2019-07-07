@@ -10,7 +10,7 @@ if (empty($_GET['wantemail'])) {
 require_once __DIR__ . '/../../include/bittorrent.php';
 global $container;
 
-if (!validemail($_GET['wantemail'])) {
+if (is_array($_GET['wantemail']) || !validemail($_GET['wantemail'])) {
     echo "<span class='has-text-danger'>Invalid Email Address</span>";
     die();
 }
