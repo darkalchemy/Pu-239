@@ -1,4 +1,5 @@
 ### 07 Jul, 2019
+update: README  
 update: validate input rss.php  
 update: force user logout login.php  
 update: proper validation recover.php login.php signup.php  

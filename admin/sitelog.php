@@ -40,19 +40,16 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<b>{$lang['text_logempty']}</b>";
+    $HTMLOUT .= main_div($lang['text_logempty'], '', 'has-text-centered padding20');
 } else {
-    $HTMLOUT .= "
-        <table class='table table-bordered'>
-            <thead>
+    $heading = "
                 <tr>
                     <th>{$lang['header_date']}</th>
                     <th>{$lang['header_event']}</th>
-                </tr>
-            </thead>
-            <tbody>";
+                </tr>";
     $log_events = [];
     $colors = [];
+    $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $txt = substr($arr['txt'], 0, 50);
         if (!in_array($txt, $log_events)) {
@@ -68,7 +65,7 @@ if (mysqli_num_rows($res) == 0) {
 
         $date = get_date((int) $arr['added'], 'LONG', 0, 1);
 
-        $HTMLOUT .= "
+        $body .= "
                 <tr class='table'>
                     <td style='background-color: {$color};'>
                         <span class='has-text-black'>{$date}</span>
@@ -78,9 +75,7 @@ if (mysqli_num_rows($res) == 0) {
                     </td>
                 </tr>';
     }
-    $HTMLOUT .= '
-            </tbody>
-        </table>';
+    $HTMLOUT .= main_table($body, $heading);
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];

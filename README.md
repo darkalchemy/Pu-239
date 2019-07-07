@@ -1,19 +1,21 @@
 # Pu-239 v0.7
 
 ## Goals:
-1. Update to PHP 7.3 - default settings - Done
+1. Update to PHP 7.3 - default settings
 2. Error free with MySQL 8.0 strict mode - default settings - Mostly Done
-3. Remove merged bootstrap - Done
-4. Update jquery - Done
+3. Remove merged bootstrap
+4. Update jquery
 5. Update all javascript files to remove jquery dependency
-6. Merge, mininify and gzip css/js files to reduce size and requests(not as important if http2 is enabled) - Done
-7. Replace manual concat/gzip of css/js file with uglifyjs - Done
-8. Optimize all images for web - Done
-9. Remove js from head and relocate to body
-10. Remove Simple Captcha - Done
+6. Merge, mininify and gzip css/js files to reduce size and requests(not as important if http2 is enabled)
+7. Replace manual concat/gzip of css/js file with uglifyjs
+8. Optimize all images for web
+9. Remove js from head and relocate to body - Mostly done
+10. Remove Simple Captcha
 11. Fully responsive and mobile ready
-12. Drag and Drop Image Upload - Done
-13. Use unix sockets for all local server connections - Done
+12. Drag and Drop Image Upload
+13. Allow use of unix sockets for all local server connections
+14. Proper validation of user input - In progress
+15. Replace mysql with PDO/FluentPDO - In progress
 
 This is a fork of U-232 V4.  
 PHP 7.2+ is required.  
@@ -74,7 +76,7 @@ innodb_file_per_table = 1
 max_allowed_packet = 128M ## this may need to be increased as your user count increases
 
 # add/modify this in [mysqld] to stop autoincrement on insert ignore(optional)
-innodb_autoinc_lock_mode = 0
+innodb_autoinc_lock_mode = 3
 
 # set timezone to UTC to match PHP
 default_time_zone='+00:00'
