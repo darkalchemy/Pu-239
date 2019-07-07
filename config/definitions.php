@@ -45,6 +45,7 @@ use Pu239\User;
 use Pu239\Userblock;
 use Pu239\Usersachiev;
 use Pu239\Wiki;
+use Rakit\Validation\Validator;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use SlashTrace\EventHandler\DebugHandler;
 use SlashTrace\Sentry\SentryHandler;
@@ -196,5 +197,9 @@ return [
         }
 
         return null;
+    }),
+    Validator::class => DI\factory(function () {
+        $validator = new Validator;
+        return $validator;
     }),
 ];

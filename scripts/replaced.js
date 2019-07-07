@@ -1,8 +1,8 @@
-var v_offset = 250;
-var animate_duration = 750;
-var easing = 'swing';
-var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+let v_offset = 250;
+let animate_duration = 750;
+let easing = 'swing';
+let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 function SelectAll(id) {
     document.getElementById(id).focus();
@@ -10,8 +10,8 @@ function SelectAll(id) {
 }
 
 function togglepic(bu, picid, formid) {
-    var pic = document.getElementById(picid);
-    var form = document.getElementById(formid);
+    let pic = document.getElementById(picid);
+    let form = document.getElementById(formid);
     if (pic.src === bu + '/images/plus.gif') {
         pic.src = bu + '/images/minus.gif';
         form.value = 'minus';
@@ -35,11 +35,11 @@ function SmileIT(smile, form, text) {
 }
 
 function refrClock() {
-    var d = new Date();
-    var s = d.getSeconds();
-    var m = d.getMinutes();
-    var h = d.getHours();
-    var am_pm;
+    let d = new Date();
+    let s = d.getSeconds();
+    let m = d.getMinutes();
+    let h = d.getHours();
+    let am_pm;
     if (s < 10) {
         s = '0' + s;
     }
@@ -93,7 +93,7 @@ function do_rate(rate, id, what) {
             what: what
         },
         success: function (data) {
-            var el = $('#rated');
+            var el = document.getElementById('rated');
             el.addClass('star-ratings-css').removeClass('rating');
             el.html(data);
             $('.star-ratings-css-top').tooltipster({
@@ -113,8 +113,8 @@ $(function () {
     if ($('#clock').length) {
         refrClock();
     }
-    var help_open = $('#help_open');
-    if (help_open.length) {
+    let help_open = document.getElementById('help_open');
+    if (help_open) {
         help_open.click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {
             });
@@ -122,8 +122,8 @@ $(function () {
             $('#help_close').show();
         });
     }
-    var help_close = $('#help_close');
-    if (help_close.length) {
+    let help_close = document.getElementById('help_close');
+    if (help_close) {
         help_close.click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {
             });
@@ -190,21 +190,21 @@ $(function () {
             timerY: 10
         });
     }
-    var ie_alert = $('#IE_ALERT');
-    if (ie_alert.length) {
+    let ie_alert = document.getElementById('ie_alert');
+    if (ie_alert) {
         if (navigator.userAgent.search('MSIE') >= 0) {
             ie_alert.slideToggle(animate_duration, easing, function () {
             });
         }
     }
-    var menuwrapper = $('#menuWrapper');
+    let menuwrapper = $('#menuWrapper');
     $(window).resize(function () {
         var windowWidth = $(window).width();
         if (windowWidth > 768) {
             menuwrapper.show();
         }
     });
-    var navbar = $('#navbar');
+    let navbar = $('#navbar');
     $('#hamburger').click(function (event) {
         event.preventDefault();
         navbar.addClass('showNav');
@@ -234,24 +234,24 @@ $(function () {
             });
         });
     }
-    var tzcheckdst = $('#tz-checkdst');
-    if (tzcheckdst.length) {
+    let tzcheckdst = document.getElementById('tz-checkdst');
+    if (tzcheckdst) {
         if (!tzcheckdst.is(':checked')) {
             $('#tz-checkmanual').show();
         }
-    }
-    tzcheckdst.click(function () {
-        $('#tz-checkmanual').slideToggle(animate_duration, easing, function () {
+        tzcheckdst.click(function () {
+            $('#tz-checkmanual').slideToggle(animate_duration, easing, function () {
+            });
         });
-    });
+    }
     $('li a[href=".' + this.location.pathname + this.location.search + '"]').addClass('is_active');
-    var checkThemAll = $('#checkThemAll');
-    if (checkThemAll.length) checkThemAll.change(function () {
+    let checkThemAll = document.getElementById('checkThemAll');
+    if (checkThemAll) checkThemAll.change(function () {
         $('input:checkbox').prop('checked', $(this).prop('checked'));
     });
-    var checkAll = $('#checkAll');
-    var checkbox_container = $('#checkbox_container');
-    if (checkAll.length) {
+    let checkAll = document.getElementById('checkAll');
+    let checkbox_container = document.getElementById('checkbox_container');
+    if (checkAll) {
         checkAll.change(function () {
             checkbox_container.find(':checkbox').prop('checked', $(this).prop('checked'));
         });
@@ -266,8 +266,8 @@ $(function () {
             }
         });
     }
-    var defcat = $('#defcat');
-    if (defcat.length) {
+    let defcat = document.getElementById('defcat');
+    if (defcat) {
         $('#cat_open').click(function () {
             $('#defcat').slideToggle(animate_duration, function () {
             });
@@ -283,7 +283,7 @@ $(function () {
             });
         }, 15e3);
     }
-    var accordion = $('#accordion');
+    let accordion = $('#accordion');
     if (accordion.length) {
         accordion.find('.accordion-toggle').click(function () {
             $(this).next().slideToggle(animate_duration);
@@ -293,7 +293,10 @@ $(function () {
     $('a[href^=\\#]:not([href=\\#])').click(function (e) {
         if (location.pathname.replace(/^\//, '') === this.pathname.replace(/^\//, '') || location.hostname === this.hostname) {
             e.preventDefault();
-            var headerHeight = navbar.outerHeight() + 10;
+            let headerHeight = 15;
+            if (navbar.length) {
+                headerHeight = navbar.outerHeight() + 15;
+            }
             var target = $(this).attr('href');
             var scrollToPosition = $(target).offset().top - headerHeight;
             $('html, body').animate({
@@ -307,7 +310,10 @@ $(function () {
         }
     });
     if (window.location.hash) {
-        var headerHeight = navbar.outerHeight() + 10;
+        let headerHeight = 15;
+        if (navbar.length) {
+            headerHeight = navbar.outerHeight() + 15;
+        }
         var scrollToPosition = $(window.location.hash).offset().top - headerHeight;
         $('html, body').animate({
             scrollTop: scrollToPosition
@@ -320,15 +326,15 @@ $(function () {
         document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';
     }
 
-    var iframe_ajaxchat = document.getElementById('iframe_ajaxchat');
+    let iframe_ajaxchat = document.getElementById('iframe_ajaxchat');
     if (iframe_ajaxchat) {
         iframe_ajaxchat.style.height = chat_height;
     }
 });
 
 
-var ojvid = $('.object-fit-video');
-var vidWidth = ojvid.width();
+let ojvid = $('.object-fit-video');
+let vidWidth = ojvid.width();
 ojvid.height(vidWidth * .184);
 ojvid.css('visibility', 'visible');
 

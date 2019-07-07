@@ -318,6 +318,7 @@ class User
                 autoshout($message);
             }
 
+            $this->session->set('is-success', 'You have successfully registered. Please login');
             $this->cache->set('latestuser_', format_username($userid), $this->site_config['expires']['latestuser']);
             write_log('User account ' . $userid . ' (' . htmlsafechars($values['username']) . ') was created');
         }

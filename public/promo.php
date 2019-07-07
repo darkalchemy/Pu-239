@@ -113,13 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             </tr>
             <tr>
                 <td class='has-text-centered'>
-                    <input type='number' name='bonus_upload' class='w-100' placeholder='How many Gigabytes?' min='10' value='10' required>
+                    <input type='number' name='bonus_upload' class='w-100' placeholder='How many Gigabytes?' min='10' max='1000' value='10' required>
                 </td>
                 <td class='has-text-centered'>
-                    <input type='number' name='bonus_invites' class='w-100' min='1' value='1' required>
+                    <input type='number' name='bonus_invites' class='w-100' min='1' max='10' value='1' required>
                 </td>
                 <td class='has-text-centered'>
-                    <input type='number' name='bonus_karma' class='w-100' min='1000' value='1000' required>
+                    <input type='number' name='bonus_karma' class='w-100' min='1000' max='100000' value='10000' required>
                 </td>
             </tr>
             <tr>

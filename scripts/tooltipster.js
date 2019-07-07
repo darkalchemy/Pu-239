@@ -1,12 +1,12 @@
-var animate_duration = 500;
-var animation = 'grow';
-var update_animation = 'rotate';
-var short = 250;
-var long = 500;
-var distance = 12;
-var width = window.innerWidth * .75;
-var maxWidth = Math.min(width, 600);
-var sides = ['bottom', 'top', 'right', 'left'];
+let animation_duration = 500;
+let animation = 'grow';
+let update_animation = 'rotate';
+let short = 250;
+let long = 500;
+let distance = 12;
+let width = window.innerWidth * .75;
+let maxWidth = Math.min(width, 600);
+let sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {
     $('.tooltipper').tooltipster({
@@ -14,7 +14,7 @@ $(function () {
         side: sides,
         interactive: false,
         animation: animation,
-        animationDuration: animate_duration,
+        animationDuration: animation_duration,
         delay: short,
         arrow: true,
         contentAsHTML: true,
@@ -30,7 +30,7 @@ function initAll() {
         theme: 'tooltipster-borderless',
         interactive: true,
         animation: animation,
-        animationDuration: animate_duration,
+        animationDuration: animation_duration,
         delay: long,
         arrow: true,
         contentAsHTML: true,
@@ -55,7 +55,7 @@ function initAll() {
         side: sides,
         interactive: true,
         animation: animation,
-        animationDuration: animate_duration,
+        animationDuration: animation_duration,
         dealy: short,
         arrow: true,
         contentAsHTML: true,
@@ -66,7 +66,7 @@ function initAll() {
         side: sides,
         interactive: false,
         animation: animation,
-        animationDuration: animate_duration,
+        animationDuration: animation_duration,
         delay: long,
         arrow: true,
         contentAsHTML: true,
@@ -93,7 +93,7 @@ function initAll() {
         contentAsHTML: true,
         interactive: true,
         animation: animation,
-        animationDuration: animate_duration,
+        animationDuration: animation_duration,
         delay: long,
         updateAnimation: update_animation,
         arrow: true,
@@ -102,12 +102,9 @@ function initAll() {
         maxWidth: maxWidth,
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {
-            var $origin = $(helper.origin);
-            var el = document.querySelector('#base_usermenu');
+            let $origin = $(helper.origin);
             if ($origin.data('loaded') !== true) {
-                $.post('../ajax/ajax_tooltips.php', {
-                    csrf_token: el.dataset.csrf
-                }, function (data) {
+                $.post('../ajax/ajax_tooltips.php', {}, function (data) {
                     if (instance.content() === '') return false;
                     instance.content(data);
                     $origin.data('loaded', true);

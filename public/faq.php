@@ -2,12 +2,20 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 global $container, $site_config;
 
-$user = check_user_status();
+$auth = $container->get(Auth::class);
+if (!$auth->isLoggedIn()) {
+    get_template();
+    $user['id'] = $user['class'] = $user['uploaded'] = $user['downloaded'] = 0;
+} else {
+    $user = check_user_status();
+}
 $lang = array_merge(load_language('global'), load_language('faq'));
 $HTMLOUT = "
             <div class='bordered'>

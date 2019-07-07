@@ -38,6 +38,7 @@
         "php-curl-class/php-curl-class": "^8.5",
         "php-di/php-di": "^6.0",
         "phpmailer/phpmailer": "^6.0",
+        "rakit/validation": "^1.1",
         "scriptotek/google-books": "^0.2.4",
         "sebastian/version": "^2.0",
         "slashtrace/slashtrace": "^1.1",

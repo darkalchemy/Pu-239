@@ -19,11 +19,7 @@ if (!$auth->isLoggedIn()) {
 $lang = array_merge(load_language('global'), load_language('useragreement'));
 
 $HTMLOUT = "
-    <div class='portlet padbottom20 has-text-centered'>
-        <h1>{$site_config['site']['name']} {$lang['frame_usragrmnt']}</h1>
-        <div class='text-justify'>
-            {$lang['text_usragrmnt']}
-        </div>
-    </div>";
+        <h1 class='has-text-centered'>{$site_config['site']['name']} {$lang['frame_usragrmnt']}</h1>";
+$HTMLOUT .= main_div($lang['text_usragrmnt'], 'has-text-justified', 'padding20');
 
-echo stdhead($lang['stdhead_usragrmnt']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['stdhead_usragrmnt']) . wrapper($HTMLOUT) . stdfoot();

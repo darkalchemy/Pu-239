@@ -84,6 +84,7 @@ $lang = [
     'uploadapp.php' => 'Uploaders App',
     'user_blocks.php' => 'User Blocks',
     'user_unlocks.php' => 'User Unlocks',
+    'useragreement.php' => 'Users Agreement',
     'usercomment.php' => 'User Comments',
     'usercp.php' => 'User Control Panel',
     'userdetails.php' => 'User Details',

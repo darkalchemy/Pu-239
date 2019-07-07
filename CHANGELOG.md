@@ -1,4 +1,8 @@
 ### 07 Jul, 2019
+update: proper validation recover.php login.php signup.php  
+update: rules.php faq.php useragreement.php  
+add: rakit/validation class  
+fix: signup.php  
 update: remove cooker/upcoming  
 
 ### 06 Jul, 2019

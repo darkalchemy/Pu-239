@@ -6,10 +6,12 @@ use Delight\Auth\Auth;
 use Pu239\IP;
 use Pu239\Session;
 use Pu239\User;
+use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_returnto.php';
 global $container, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('login'));
@@ -21,13 +23,21 @@ if ($auth->isLoggedIn()) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
-    if (empty($_POST['email']) || empty($_POST['password']) || is_array($_POST['email']) || is_array($_POST['password']) || (isset($_POST['remember']) && is_array($_POST['remember']))) {
-        write_log('Someone has tried to login using invalid data. ' . json_encode($_POST));
+    $validator = $container->get(Validator::class);
+    $post = $_POST;
+    unset($_POST, $_GET, $_FILES);
+    $validation = $validator->validate($post, [
+        'email' => 'required|email',
+        'password' => 'required',
+        'remember' => 'digits:1',
+    ]);
+    if ($validation->fails()) {
+        write_log(getip() . ' has tried to login using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
     $user = $container->get(User::class);
-    if ($user->login(htmlsafechars($_POST['email']), htmlsafechars($_POST['password']), (int) isset($_POST['remember']) ? 1 : 0, $lang)) {
+    if ($user->login($post['email'], $post['password'], (int) isset($post['remember']) ? 1 : 0, $lang)) {
         $userid = $auth->getUserId();
         insert_update_ip('login', $userid);
         if ($site_config['site']['limit_ips']) {
@@ -39,17 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 stderr('Error', "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
             }
         }
-        if (!empty($_POST['returnto'])) {
-            $returnto = explode('?', urldecode($_POST['returnto']));
-            if (file_exists(ROOT_DIR . trim('/', $returnto[0]))) {
-                header("Location: {$site_config['paths']['baseurl']}" . urldecode($_POST['returnto']));
+        if (!empty($post['returnto'])) {
+            $returnto = get_return_to($post['returnto']);
+            if (!empty($returnto)) {
+                header("Location: {$returnto}");
                 die();
             }
         }
         header("Location: {$site_config['paths']['baseurl']}");
         die();
     } else {
-        unset($_POST);
+        unset($_POST, $_GET, $_FILES);
     }
 }
 

@@ -8,6 +8,7 @@ use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;
 use Pu239\User;
+use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
@@ -25,27 +26,38 @@ if ($auth->isLoggedIn()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $validator = $container->get(Validator::class);
     $session->set('signup_variables', serialize($_POST));
     $post = $_POST;
-    unset($_POST);
-    $promo = !empty($post['promo']) ? htmlsafechars($post['promo']) : null;
-    $invite_id = !empty($post['invite_id']) ? (int) $post['invite_id'] : null;
-    $invite_code = !empty($post['invite_code']) ? htmlsafechars($post['invite_code']) : null;
-    $email = isset($post['email']) && !is_array($post['email']) ? $post['email'] : '';
-    $username = isset($post['username']) && !is_array($post['username']) ? $post['username'] : '';
-    $password = isset($post['password']) && !is_array($post['password']) ? $post['password'] : '';
-    $confirm_password = isset($post['confirm_password']) && !is_array($post['confirm_password']) ? $post['confirm_password'] : '';
-    if (!empty($email) && !empty($username) && !empty($password) && $password === $confirm_password) {
+    unset($_POST, $_GET, $_FILES);
+    $validation = $validator->validate($post, [
+        'username' => 'required|between:3,64',
+        'email' => 'required|email',
+        'password' => 'required|min:8',
+        'confirm_password' => 'required|same:password',
+        'promo' => 'alpha_num:between:64,64',
+        'invite_id' => 'integer',
+        'invite_code' => 'alpha_num:between:64,64',
+    ]);
+    if ($validation->fails()) {
+        write_log(getip() . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
+        header("Location: {$_SERVER['PHP_SELF']}");
+        die();
+    } else {
         $data = [
-            'email' => $email,
-            'password' => $password,
-            'username' => $username,
+            'email' => $post['email'],
+            'password' => $post['password'],
+            'username' => $post['username'],
         ];
         $user = $container->get(User::class);
         $userid = $user->add($data, $lang);
     }
+
     if (!empty($userid)) {
         insert_update_ip('register', $userid);
+        $invite_id = !empty($post['invite_id']) ? (int) $post['invite_id'] : 0;
+        $invite_code = !empty($post['invite_code']) ? $post['invite_code'] : '';
+        $promo = !empty($post['promo']) ? $post['promo'] : '';
         if (!empty($invite_id) && !empty($invite_code)) {
             $email = validate_invite($invite_id, $invite_code);
             if (!empty($email)) {
@@ -94,22 +106,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user->update($set, $userid);
             }
         }
-
-        if (!empty($inviter)) {
-            $set = [
-                'receiver' => $userid,
-                'status' => 'Confirmed',
-            ];
-            $fluent->update('invite_codes')
-                   ->set($set)
-                   ->where('sender = ?', $inviter)
-                   ->where('id = ?', $invite_id)
-                   ->execute();
-        }
-        $session->unset('signup_variables');
-        header("Location: {$site_config['paths']['baseurl']}/login.php");
-        die();
     }
+
+    if (!empty($inviter)) {
+        $set = [
+            'receiver' => $userid,
+            'status' => 'Confirmed',
+        ];
+        $fluent->update('invite_codes')
+               ->set($set)
+               ->where('sender = ?', $inviter)
+               ->where('id = ?', $invite_id)
+               ->execute();
+    }
+    $session->unset('signup_variables');
+    header("Location: {$site_config['paths']['baseurl']}/login.php");
+    die();
 }
 $invite = $email = '';
 $promo = false;

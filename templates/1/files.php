@@ -22,7 +22,7 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_6759fd71.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_408a3529.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_569af4c9.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
@@ -64,7 +64,7 @@ function get_file_name($file)
         case 'lightbox_js':
             return "{$site_config['paths']['baseurl']}/js/1/lightbox_1de13332.js";
         case 'tooltipster_js':
-            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_0b6f0297.js";
+            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_2882366f.js";
         case 'site_config_js':
             return "{$site_config['paths']['baseurl']}/js/1/site_config_07db2f4b.js";
         case 'checkport_js':
