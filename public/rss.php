@@ -22,7 +22,7 @@ $validation = $validator->validate($_GET, [
     'type' => 'required|in:dl,web',
     'cats' => 'regex:/^(\d+,?)*$/',
 ]);
-dd($validation);
+
 if ($validation->fails()) {
     if (!isset($_GET['torrent_pass'])) {
         format_rss("Your link doesn't have a torrent pass", null);
