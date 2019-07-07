@@ -3185,5 +3185,11 @@ KEY `expires` (`expires`)
         'date' => '02 Jul, 2019',
         'query' => 'DELETE FROM `site_config` WHERE `name` = "gzip_path" OR  `name` = "mysqldump_path"',
         'flush' => true,
+    ],[
+        'id' => 1562499322,
+        'info' => 'Add unique index',
+        'date' => '07 Jul, 2019',
+        'query' => 'ALTER TABLE `poll_voters` ADD UNIQUE INDEX `userid_pollid` (`user_id`,`poll_id`)',
+        'flush' => false,
     ],
 ];
