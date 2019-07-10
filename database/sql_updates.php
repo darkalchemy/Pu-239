@@ -3240,6 +3240,6 @@ KEY `expires` (`expires`)
         'info' => 'Drop poll table',
         'date' => '10 Jul, 2019',
         'query' => 'DROP table poll',
-        'flush' => false,
+        'flush' => true,
     ],
 ];

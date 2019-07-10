@@ -33,9 +33,7 @@ function parse_poll()
         return false;
     }
 
-    $member_voted = 0;
-    $total_votes = 0;
-
+    $member_voted = $total_votes = 0;
     if ($poll_data['user_id']) {
         $member_voted = 1;
     }
@@ -50,7 +48,7 @@ function parse_poll()
         $poll_footer = 'You created this poll and are not allowed to vote';
     }
 
-    if ($GVARS['allow_result_view'] == 1) {
+    if ($GVARS['allow_result_view'] === 1) {
         if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
             $check = 1;
             $poll_footer = '';
@@ -171,7 +169,7 @@ function poll_header($pid = '', $poll_q = '')
     <a id='poll-hash'></a>
     <div id='poll' class='box'>
         <div class='bordered'>
-            <div class='alt_bordered bg-00'>
+            <div class='alt_bordered bg-00 padding20'>
                 <form action='{$site_config['paths']['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post' accept-charset='utf-8'>";
 
     return $HTMLOUT;
@@ -206,11 +204,11 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
     global $site_config;
 
     return "
-        <div class='bottom20 bg-02 round10 padding10'>
-            <div class='bg-02 round10 padding10'>
+        <div class='bottom20 bg-02 round5 padding10'>
+            <div class='bg-00 round5 padding10'>
                 $answer
             </div>
-            <div class='level-center-center'>
+            <div class='level-center-center top10'>
                 <img src='{$site_config['paths']['images_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' alt=''>
                 [$percentage%]
             </div>
@@ -228,10 +226,10 @@ function poll_show_rendered_question($question = '', $choice_html = '')
 {
     return "
         <div class='has-text-centered'>
-            <div class='round10'>
-                <span class='size_5'>
+            <div class='round5'>
+                <h2>
                     $question
-                </span>
+                </h2>
             </div>
             $choice_html
         </div>";

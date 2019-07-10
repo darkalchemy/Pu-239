@@ -1,4 +1,5 @@
 ### 10 Jul, 2019
+update: styling  
 update: database files  
 update: staff panel add user  
 fix: forum poll votes    

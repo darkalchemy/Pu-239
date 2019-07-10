@@ -72,7 +72,7 @@ $active_users_24 .= "
                     <div class='top10 bottom10 level-item is-wrapped top10 bottom10 padding20'>
                         {$active24['activeusers24']}
                     </div>
-                    <div class='bg-00 padding10 bottom10 has-text-centered round5 size_3'>
+                    <div class='bg-00 padding10 has-text-centered round5 size_3'>
                         {$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}
                     </div>
                 </div>
