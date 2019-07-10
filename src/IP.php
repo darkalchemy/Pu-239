@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class IP.
- * @package Pu239
  */
 class IP
 {

@@ -19,7 +19,7 @@ function happyhour_update($data)
     $time_start = microtime(true);
     require_once INCL_DIR . 'function_happyhour.php';
     $f = $site_config['paths']['happyhour'];
-    $happy = unserialize(file_get_contents($f));
+    $happy = json_decode(file_get_contents($f), true);
     $happyHour = strtotime($happy['time']);
     $curDate = TIME_NOW;
     $happyEnd = $happyHour + 3600;

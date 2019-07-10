@@ -36,7 +36,7 @@ function happyHour($action)
         return $happyHour;
     }
     $file = $site_config['paths']['happyhour'];
-    $happy = unserialize(file_get_contents($file));
+    $happy = json_decode(file_get_contents($file), true);
     $happyHour = strtotime($happy['time']);
     $happyDate = $happyHour;
     $curDate = TIME_NOW;
@@ -88,7 +88,7 @@ function happyCheck($action, $id = null)
     global $site_config;
 
     $file = $site_config['paths']['happyhour'];
-    $happy = unserialize(file_get_contents($file));
+    $happy = json_decode(file_get_contents($file), true);
     $happycheck = $happy['catid'];
     if ($action === 'check') {
         return $happycheck['id'];
@@ -112,7 +112,7 @@ function happyFile($act)
     global $site_config;
 
     $file = $site_config['paths']['happyhour'];
-    $happy = unserialize(file_get_contents($file));
+    $happy = json_decode(file_get_contents($file), true);
     if ($act === 'set') {
         $array_happy = [
             'time' => happyHour('generate'),
@@ -127,7 +127,7 @@ function happyFile($act)
         ];
     }
     if (!empty($array_happy)) {
-        $array_happy = serialize($array_happy);
+        $array_happy = json_encode($array_happy);
         $file = $site_config['paths']['happyhour'];
         $file = fopen($file, 'w');
         ftruncate($file, 0);

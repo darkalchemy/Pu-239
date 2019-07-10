@@ -7,8 +7,7 @@ namespace Pu239;
 use Envms\FluentPDO\Exception;
 
 /**
- * Class Wiki
- * @package Pu239
+ * Class Wiki.
  */
 class Wiki
 {
@@ -25,8 +24,9 @@ class Wiki
     }
 
     /**
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_last()
     {
@@ -69,8 +69,9 @@ class Wiki
     /**
      * @param string $name
      *
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_by_name(string $name)
     {
@@ -85,8 +86,9 @@ class Wiki
     /**
      * @param int $id
      *
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_by_id(int $id)
     {
@@ -98,8 +100,9 @@ class Wiki
     }
 
     /**
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_latest()
     {

@@ -23,7 +23,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Cache.
- * @package Pu239
  */
 class Cache extends TransactionalStore
 {

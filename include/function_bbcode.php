@@ -181,22 +181,25 @@ function format_urls($s)
 }
 
 /**
- * @param      $text
- * @param bool $strip_html
- * @param bool $urls
- * @param bool $images
+ * @param string|null $text
+ * @param bool        $strip_html
+ * @param bool        $urls
+ * @param bool        $images
  *
- * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */
-function format_comment($text, $strip_html = true, $urls = true, $images = true)
+function format_comment(?string $text, bool $strip_html = true, bool $urls = true, bool $images = true)
 {
     global $site_config;
 
+    if (empty($text)) {
+        return null;
+    }
     $image = placeholder_image();
     $s = $text;
     unset($text);
@@ -434,8 +437,8 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $i = 0;
         foreach ($matches[1] as $match) {
             preg_match('/width=[\'|"](\d+)[\'|"] height=[\'|"](\d+)[\'|"]/', $matches[2][$i++], $dimensions);
-            $width = !empty($dimensions[1]) ? $dimensions[1] : null;
-            $height = !empty($dimensions[2]) ? $dimensions[2] : null;
+            $width = !empty($dimensions[1]) ? (int) $dimensions[1] : null;
+            $height = !empty($dimensions[2]) ? (int) $dimensions[2] : null;
             $s = str_replace($match, url_proxy($match, true, $width, $height), $s);
         }
 

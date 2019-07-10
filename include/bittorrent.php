@@ -72,30 +72,36 @@ if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_C
  */
 function htmlsafechars(string $txt, bool $strip = true)
 {
-    $txt = $strip ? strip_tags($txt) : $txt;
-    $txt = htmlspecialchars(trim($txt), ENT_QUOTES, 'UTF-8');
+    $txt = trim($txt);
+    $txt = $strip ? filter_var($txt, FILTER_SANITIZE_STRING) : filter_var($txt, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     return $txt;
 }
 
 /**
- * @return string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function getip()
 {
-    global $CURUSER, $site_config, $container;
+    global $site_config, $container;
 
     $auth = $container->get(Auth::class);
     $ip = $auth->getIpAddress();
+    $userid = $auth->getUserId();
+    if ($userid) {
+        $user_class = $container->get(User::class);
+        $user = $user_class->getUserFromId($userid);
+        $no_log_ip = isset($user) && $user['perms'] & PERMS_NO_IP;
+        if (!$site_config['site']['ip_logging'] || $no_log_ip) {
+            return '10.0.0.2';
+        }
+    }
     if (!validip($ip)) {
         $ip = '10.0.0.1';
-    }
-    $no_log_ip = isset($CURUSER) && $CURUSER['perms'] & PERMS_NO_IP;
-    if ($site_config['site']['ip_logging'] && !$no_log_ip) {
-        return $ip;
     }
 
     return $ip;
@@ -213,11 +219,11 @@ function userlogin()
 }
 */
 /**
- * @return mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return mixed
  */
 function get_stylesheet()
 {
@@ -306,11 +312,11 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function make_freeslots(int $userid, string $key, bool $clear)
 {
@@ -336,11 +342,11 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
- * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function genrelist(bool $grouped)
 {
@@ -416,26 +422,26 @@ function mksize($size)
     }
 
     return round($size, [
-            0,
-            0,
-            1,
-            2,
-            2,
-            3,
-            3,
-            4,
-            4,
-        ][$i]) . ' ' . [
-            'B',
-            'kB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
-            'EB',
-            'ZB',
-            'YB',
-        ][$i];
+        0,
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+    ][$i]) . ' ' . [
+        'B',
+        'kB',
+        'MB',
+        'GB',
+        'TB',
+        'PB',
+        'EB',
+        'ZB',
+        'YB',
+    ][$i];
 }
 
 /**
@@ -450,11 +456,11 @@ function mkprettytime($s)
     }
     $t = [];
     foreach ([
-                 '60:sec',
-                 '60:min',
-                 '24:hour',
-                 '0:day',
-             ] as $x) {
+        '60:sec',
+        '60:min',
+        '24:hour',
+        '0:day',
+    ] as $x) {
         $y = explode(':', $x);
         if ($y[0] > 1) {
             $v = $s % $y[0];
@@ -627,9 +633,9 @@ function CutName(string $txt, int $len = 40)
 /**
  * @param string $file
  *
- * @return array
  * @throws Exception
  *
+ * @return array
  */
 function load_language($file = '')
 {
@@ -795,25 +801,35 @@ function replace_unicode_strings($text)
 }
 
 /**
- * @throws Exception
+ * @param $user
+ *
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  */
-function parked()
+function parked($user)
 {
-    global $CURUSER;
-
-    if ($CURUSER['parked'] == 'yes') {
+    if ($user['parked'] == 'yes') {
         stderr('Error', '<b>Your account is currently parked.</b>');
     }
 }
 
 /**
- * @throws Exception
+ * @param $user
+ *
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  */
-function suspended()
+function suspended($user)
 {
-    global $CURUSER;
-
-    if ($CURUSER['suspended'] == 'yes') {
+    if ($user['suspended'] == 'yes') {
         stderr('Error', '<b>Your account is currently suspended.</b>');
     }
 }
@@ -844,14 +860,15 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @return int
+ * @throws AuthError
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  *
- * @throws AuthError
+ * @return bool|mixed|User
  */
 function check_user_status(string $type = 'browse')
 {
@@ -859,9 +876,6 @@ function check_user_status(string $type = 'browse')
 
     $auth = $container->get(Auth::class);
     if ($auth->isLoggedIn()) {
-        referer();
-        parked();
-        suspended();
         $user = $container->get(User::class);
         $userid = $auth->id();
         insert_update_ip($type, $userid);
@@ -873,7 +887,13 @@ function check_user_status(string $type = 'browse')
         $session->set('scheme', get_scheme());
         $GLOBALS['CURUSER'] = $users_data;
         get_template();
-    } else {
+        $user_class = $container->get(User::class);
+        $user = $user_class->getUserFromId($auth->getUserId());
+        referer();
+        parked($user);
+        suspended($user);
+    }
+    if (empty($user)) {
         $returnto = '';
         if (!empty($_SERVER['REQUEST_URI'])) {
             $returnto = '?returnto=' . urlencode($_SERVER['REQUEST_URI']);
@@ -881,9 +901,8 @@ function check_user_status(string $type = 'browse')
         header("Location: {$site_config['paths']['baseurl']}/login.php" . $returnto);
         die();
     }
-    $user_class = $container->get(User::class);
 
-    return $user_class->getUserFromId($auth->getUserId());
+    return $user;
 }
 
 /**
@@ -910,11 +929,11 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @return bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool
  */
 function user_exists($user_id)
 {
@@ -989,11 +1008,11 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function countries()
 {
@@ -1080,13 +1099,14 @@ function plural(int $int)
  * @param string $username
  * @param bool   $ajax
  *
- * @return bool|string
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
 function valid_username(string $username, bool $ajax = false)
 {
@@ -1127,9 +1147,9 @@ function valid_username(string $username, bool $ajax = false)
 /**
  * @param bool $celebrate
  *
- * @return bool
  * @throws Exception
  *
+ * @return bool
  */
 function Christmas($celebrate = true)
 {
@@ -1177,12 +1197,12 @@ function get_anonymous_name()
  * @param int|null $height
  * @param int|null $quality
  *
- * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
+ * @return string
  */
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
@@ -1233,11 +1253,11 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @return bool|mixed|null
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed|null
  */
 function get_show_id(string $name)
 {
@@ -1276,11 +1296,11 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @return bool|mixed|null
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed|null
  */
 function get_show_id_by_imdb(string $imdbid)
 {
@@ -1312,10 +1332,10 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @return false|mixed|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return false|mixed|string
  */
 function time24to12($timestamp, $sec = false)
 {
@@ -1381,11 +1401,11 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @return bool
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool
  */
 function insert_update_ip(string $type, int $userid)
 {
@@ -1412,11 +1432,11 @@ function insert_update_ip(string $type, int $userid)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @return bool|mixed|string
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|string
  */
 function fetch(string $url, bool $fresh = true, bool $async = false)
 {
@@ -1467,11 +1487,11 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @return mixed|string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return mixed|string
  */
 function get_body_image(bool $details)
 {
@@ -1537,11 +1557,11 @@ function get_body_image(bool $details)
 }
 
 /**
- * @return bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed
  */
 function get_random_useragent()
 {

@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class FailedLogin.
- * @package Pu239
  */
 class FailedLogin
 {

@@ -50,7 +50,7 @@ if (!$_POST['nullvote']) {
             }
         }
     }
-    $poll_answers = unserialize(stripslashes($poll_data['choices']));
+    $poll_answers = json_decode($poll_data['choices'], true);
     reset($poll_answers);
     if (!empty($vote_cast) && count($vote_cast) < count($poll_answers)) {
         stderr('ERROR', 'No vote');
@@ -74,7 +74,7 @@ if (!$_POST['nullvote']) {
             }
         }
     }
-    $choices = addslashes(serialize($poll_answers));
+    $choices = json_encode($poll_answers);
     $votes = $poll_data['votes'] + 1;
     $cache = $container->get(Cache::class);
     $cache->update_row('poll_data_' . $user['id'], [

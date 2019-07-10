@@ -1,3 +1,17 @@
+### 10 Jul, 2019
+update: staff panel add user  
+fix: forum poll votes    
+fix: cast to int function_bbcode.php  
+update: disable AJAX Chat if site is disabled  
+fix: incorrect global used friends.php  
+update: pass user instead of global $CURUSER torrentable_functions.php  
+remove: hidden input ssl login.php  
+fix: check for imdb before using it  
+update: remove package from doc block  
+update: serialize/unserialize to json_encode/json_decode for readability, you will need to delete files in dir_list  
+update: README  
+update: index page torrent blocks  
+
 ### 07 Jul, 2019
 update: README  
 update: validate input rss.php  

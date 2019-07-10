@@ -133,6 +133,7 @@ return [
         if ($mysqli->connect_error) {
             die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
         }
+
         return $mysqli;
     }),
     Redis::class => DI\factory(function (ContainerInterface $c) {
@@ -199,7 +200,8 @@ return [
         return null;
     }),
     Validator::class => DI\factory(function () {
-        $validator = new Validator;
+        $validator = new Validator();
+
         return $validator;
     }),
 ];

@@ -26,8 +26,8 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */

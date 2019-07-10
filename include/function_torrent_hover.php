@@ -6,7 +6,6 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Image;
 use Pu239\Torrent;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @param        $text
@@ -174,46 +173,21 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     return $content;
 }
 
-/**
- * @param      $text
- * @param      $id
- * @param      $block_id
- * @param      $name
- * @param      $poster
- * @param      $uploader
- * @param      $added
- * @param      $size
- * @param      $seeders
- * @param      $leechers
- * @param      $imdb_id
- * @param      $rating
- * @param      $year
- * @param      $subtitles
- * @param      $genre
- * @param bool $icons
- *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
- *
- * @return string
- */
-function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
+function torrent_tooltip_wrapper(array $data)
 {
-    global $site_config, $times_completed, $cat;
+    global $site_config;
 
-    $caticon = !empty($image) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($image) . "' class='tooltipper' alt='" . format_comment($cat) . "' title='" . format_comment($cat) . "' height='20px' width='auto'>" : format_comment($cat);
+    $caticon = !empty($data['image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($data['image']) . "' class='tooltipper' alt='" . format_comment($data['cat']) . "' title='" . format_comment($data['cat']) . "' height='20px' width='auto'>" : format_comment($data['cat']);
     $content = "
                     <tr>
                         <td class='has-text-centered'>$caticon</td>
                         <td>
-                            <a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>
-                                " . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons) . "
+                            <a href='{$site_config['paths']['baseurl']}/details.php?id={$data['id']}'>
+                                " . torrent_tooltip($data['text'], $data['id'], $data['block_id'], $data['name'], $data['poster'], $data['uploader'], $data['added'], $data['size'], $data['seeders'], $data['leechers'], $data['imdb_id'], $data['rating'], $data['year'], $data['subtitles'], $data['genre']) . "
                             </a>
-                        <td class='has-text-centered'>{$times_completed}</td>
-                        <td class='has-text-centered'>{$seeders}</td>
-                        <td class='has-text-centered'>{$leechers}</td>
+                        <td class='has-text-centered'>{$data['times_completed']}</td>
+                        <td class='has-text-centered'>{$data['seeders']}</td>
+                        <td class='has-text-centered'>{$data['leechers']}</td>
                     </tr>";
 
     return $content;

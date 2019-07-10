@@ -8,7 +8,6 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Bonuslog.
- * @package Pu239
  */
 class Bonuslog
 {

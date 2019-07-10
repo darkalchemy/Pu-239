@@ -27,7 +27,7 @@ if ($auth->isLoggedIn()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validator = $container->get(Validator::class);
-    $session->set('signup_variables', serialize($_POST));
+    $session->set('signup_variables', json_encode($_POST));
     $post = $_POST;
     unset($_POST, $_GET, $_FILES);
     $validation = $validator->validate($post, [
@@ -164,7 +164,7 @@ $signup_vars = [
 
 $signup_vars = $session->get('signup_variables');
 if (!empty($signup_vars)) {
-    $signup_vars = unserialize($signup_vars);
+    $signup_vars = json_decode($signup_vars, true);
 }
 
 $HTMLOUT = "

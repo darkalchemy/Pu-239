@@ -59,7 +59,7 @@ function parse_poll()
 
     if ($check === 1) {
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
-        $poll_answers = unserialize(stripslashes($poll_data['choices']));
+        $poll_answers = json_decode($poll_data['choices'], true);
         reset($poll_answers);
         $tv_poll = 0;
         foreach ($poll_answers as $id => $data) {
@@ -70,7 +70,7 @@ function parse_poll()
             foreach ($poll_answers[$id]['votes'] as $number) {
                 $tv_poll += intval($number);
             }
-            // Get the choises from the unserialised array
+            // Get the choises from the json array
             foreach ($data['choice'] as $choice_id => $text) {
                 $choice = htmlsafechars($text);
                 $votes = intval($data['votes'][$choice_id]);
@@ -94,7 +94,7 @@ function parse_poll()
         //$htmlout .= poll_show_no_guest_view();
         $htmlout .= show_total_votes($total_votes);
     } else {
-        $poll_answers = unserialize(stripslashes($poll_data['choices']));
+        $poll_answers = json_decode($poll_data['choices'], true);
         //output poll form
         $htmlout .= poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
         foreach ($poll_answers as $id => $data) {

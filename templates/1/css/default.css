@@ -827,6 +827,10 @@ textarea {
     max-width: 50%;
 }
 
+.min-100 {
+    min-width: 100px !important;
+}
+
 .min-150 {
     min-width: 150px !important;
 }

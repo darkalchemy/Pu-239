@@ -115,7 +115,7 @@ function update_poll()
         stderr($lang['poll_up_sys_err'], $lang['poll_up_no_data']);
     }
     $set = [
-        'choices' => serialize($poll_data),
+        'choices' => json_encode($poll_data),
         'starter_id' => $CURUSER['id'],
         'votes' => $total_votes,
         'poll_question' => $poll_title,
@@ -153,7 +153,7 @@ function insert_new_poll()
 
     $values = [
         'start_date' => TIME_NOW,
-        'choices' => serialize($poll_data),
+        'choices' => json_encode($poll_data),
         'starter_id' => $CURUSER['id'],
         'votes' => 0,
         'poll_question' => $poll_title,
@@ -210,7 +210,7 @@ function edit_poll_form($stdfoot)
     if (empty($poll_data)) {
         return $lang['poll_epf_no_poll'];
     }
-    $poll_answers = $poll_data['choices'] ? unserialize(stripslashes($poll_data['choices'])) : [];
+    $poll_answers = $poll_data['choices'] ? json_decode($poll_data['choices'], true) : [];
     foreach ($poll_answers as $question_id => $data) {
         $poll_questions .= "\t{$question_id} : '" . str_replace("'", '&#39;', $data['question']) . "',\n";
         $data['multi'] = isset($data['multi']) ? (int) $data['multi'] : 0;

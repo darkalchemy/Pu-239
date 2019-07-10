@@ -14,7 +14,7 @@ global $site_config, $CURUSER;
 $HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
-    $data = unserialize(file_get_contents($file_data));
+    $data = json_decode(file_get_contents($file_data), true);
     $exist = true;
 } else {
     $exist = false;
@@ -41,7 +41,7 @@ foreach ($directories as $path) {
     }
 }
 if (!$exist || (isset($_POST['update']) && ($_POST['update'] === 'Update'))) {
-    $data = serialize($fetch_set);
+    $data = json_encode($fetch_set);
     $session = $container->get(Session::class);
     if (file_put_contents($file_data, $data)) {
         $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");

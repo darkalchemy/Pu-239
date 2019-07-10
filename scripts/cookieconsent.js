@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     window.cookieconsent.initialise({
+        'cookie': {
+            'domain': '',
+        },
         'palette': {
             'popup': {
                 'background': 'rgba(0, 0, 0, .8)',

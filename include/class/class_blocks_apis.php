@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 /**
  * Class block_index.
- * @package Pu239
  */
 class block_apis
 {

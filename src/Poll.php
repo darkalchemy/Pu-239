@@ -9,7 +9,6 @@ use PDOStatement;
 
 /**
  * Class Poll.
- * @package Pu239
  */
 class Poll
 {

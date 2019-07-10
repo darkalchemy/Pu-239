@@ -245,8 +245,8 @@ $(function () {
         });
     }
     $('li a[href=".' + this.location.pathname + this.location.search + '"]').addClass('is_active');
-    let checkThemAll = document.getElementById('checkThemAll');
-    if (checkThemAll) checkThemAll.change(function () {
+    let checkThemAll = $('#checkThemAll');
+    if (checkThemAll.length) checkThemAll.change(function () {
         $('input:checkbox').prop('checked', $(this).prop('checked'));
     });
     let checkAll = document.getElementById('checkAll');

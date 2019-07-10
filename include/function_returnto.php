@@ -9,9 +9,10 @@ use Rakit\Validation\Validator;
 /**
  * @param string $partial_url
  *
- * @return bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
+ *
+ * @return bool|mixed
  */
 function get_return_to(string $partial_url)
 {

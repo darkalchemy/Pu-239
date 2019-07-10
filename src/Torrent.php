@@ -13,7 +13,6 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * Class Torrent.
- * @package Pu239
  */
 class Torrent
 {
@@ -276,8 +275,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -311,8 +310,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -492,7 +491,7 @@ class Torrent
             $scrollers = [];
             foreach ($torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 if (!empty($torrent['poster'])) {
                     $scrollers[] = $torrent;
@@ -582,7 +581,7 @@ class Torrent
             $sliders = [];
             foreach ($torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 if (empty($torrent['poster'])) {
                     $posters = $this->cache->get('posters_' . $torrent['imdb_id']);
@@ -684,17 +683,20 @@ class Torrent
                                         ->select('p.name AS parent_name')
                                         ->select('c.name AS cat')
                                         ->select('c.image')
+                                        ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
                                         ->leftJoin('users AS u ON t.owner = u.id')
                                         ->leftJoin('categories AS c ON t.category = c.id')
-                                        ->leftJoin('categories AS p ON c.parent_id=p.id')
+                                        ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                        ->leftJoin('class_config AS z ON u.class = z.value')
                                         ->where('t.staff_picks != 0')
                                         ->where('visible = "yes"')
+                                        ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
                                         ->orderBy('t.staff_picks DESC')
                                         ->limit($this->site_config['latest']['staff_picks']);
 
             foreach ($staff_picks as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 $torrents[] = $torrent;
             }
@@ -744,16 +746,19 @@ class Torrent
                                          ->select('p.name AS parent_name')
                                          ->select('c.name AS cat')
                                          ->select('c.image')
+                                         ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
                                          ->leftJoin('users AS u ON t.owner = u.id')
                                          ->leftJoin('categories AS c ON t.category = c.id')
-                                         ->leftJoin('categories AS p ON c.parent_id=p.id')
+                                         ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                         ->leftJoin('class_config AS z ON u.class = z.value')
                                          ->where('visible = "yes"')
+                                         ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
                                          ->orderBy('t.seeders + t.leechers DESC')
                                          ->limit($this->site_config['latest']['torrents_limit']);
 
             foreach ($top_torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 $torrents[] = $torrent;
             }
@@ -807,10 +812,13 @@ class Torrent
                                             ->select('p.name AS parent_name')
                                             ->select('c.name AS cat')
                                             ->select('c.image')
+                                            ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
                                             ->leftJoin('users AS u ON t.owner = u.id')
+                                            ->leftJoin('class_config AS z ON u.class = z.value')
                                             ->leftJoin('categories AS c ON t.category = c.id')
-                                            ->leftJoin('categories AS p ON c.parent_id=p.id')
-                                            ->where('visible = "yes"');
+                                            ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                            ->where('visible = "yes"')
+                                            ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
             if (!empty($categories)) {
                 $latest_torrents = $latest_torrents->where('category IN (' . $in . ')', $categories);
             }
@@ -819,12 +827,12 @@ class Torrent
 
             foreach ($latest_torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 $torrents[] = $torrent;
             }
             $latest_torrents = $torrents;
-            $this->cache->set('latest_torrents_', $torrents, $this->site_config['expires']['last_torrents']);
+            $this->cache->set('latest_torrents_' . $string, $torrents, $this->site_config['expires']['last_torrents']);
         }
         if (!empty($latest_torrents)) {
             foreach ($latest_torrents as $torrent) {
@@ -869,16 +877,19 @@ class Torrent
                                      ->select('p.name AS parent_name')
                                      ->select('c.name AS cat')
                                      ->select('c.image')
+                                     ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
                                      ->leftJoin('users AS u ON t.owner = u.id')
                                      ->leftJoin('categories AS c ON t.category = c.id')
                                      ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                     ->leftJoin('class_config AS z ON u.class = z.value')
                                      ->leftJoin('avps AS a ON t.id = a.value_u')
                                      ->orderBy('t.seeders + t.leechers DESC')
-                                     ->where('a.arg', 'bestfilmofweek');
+                                     ->where('a.arg', 'bestfilmofweek')
+                                     ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
 
             foreach ($torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
-                    $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+                    $torrent['cat'] = $torrent['parent_name'] . ' :: ' . $torrent['cat'];
                 }
                 $motw[] = $torrent;
             }
@@ -948,10 +959,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
+     * @throws Exception
      *
      * @return false|mixed|string|string[]|null
      */

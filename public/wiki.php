@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Session;
 use Pu239\Wiki;
+use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -98,15 +99,22 @@ $action = 'article';
 $mode = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $validator = $container->get(Validator::class);
     if (isset($_POST['article-add'])) {
-        $values = [
-            'name' => htmlsafechars($_POST['article-name']),
-            'body' => htmlsafechars($_POST['body']),
-            'userid' => $user['id'],
-            'time' => TIME_NOW,
-        ];
-        $wiki->add($values);
-        $session->set('is-success', 'Wiki article added');
+        $validation = $validator->validate($_POST, [
+            'article-name' => 'required|alpha_dash',
+            'article-body' => 'required',
+        ]);
+        if (!$validation->fails()) {
+            $values = [
+                'name' => htmlsafechars($_POST['article-name']),
+                'body' => htmlsafechars($_POST['body']),
+                'userid' => $user['id'],
+                'time' => TIME_NOW,
+            ];
+            $wiki->add($values);
+            $session->set('is-success', 'Wiki article added');
+        }
     } elseif (isset($_POST['article-edit'])) {
         $id = (int) $_POST['article-id'];
         $update = [

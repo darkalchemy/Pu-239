@@ -15,7 +15,6 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 /**
  * Class ImageProxy.
- * @package Pu239
  */
 class ImageProxy
 {

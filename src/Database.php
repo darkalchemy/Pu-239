@@ -10,7 +10,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Database.
- * @package Pu239
  */
 class Database extends Query
 {

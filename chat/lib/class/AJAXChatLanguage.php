@@ -11,7 +11,6 @@ declare(strict_types = 1);
 
 /**
  * Class AJAXChatLanguage.
- * @package Pu239
  */
 class AJAXChatLanguage
 {

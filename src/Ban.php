@@ -10,7 +10,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Ban.
- * @package Pu239
  */
 class Ban
 {

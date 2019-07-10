@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Coin.
- * @package Pu239
  */
 class Coin
 {

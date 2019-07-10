@@ -113,7 +113,9 @@ foreach ($select as $torrent) {
 
     $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
-        $image = $images_class->find_images($torrent['imdb_id'], 'poster');
+        if (!empty($torrent['imdb_id'])) {
+            $image = $images_class->find_images($torrent['imdb_id'], 'poster');
+        }
         if (!empty($image)) {
             $image = url_proxy($image, true);
         } else {

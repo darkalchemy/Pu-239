@@ -8,7 +8,6 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Usersachiev.
- * @package Pu239
  */
 class Usersachiev
 {

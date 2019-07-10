@@ -75,7 +75,7 @@ $main_div = "
                             </ul>
                         </div>";
 
-if ( $user['class'] >= $site_config['allowed']['upload']) {
+if ($user['class'] >= $site_config['allowed']['upload']) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black" . ($user['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='is-blue'>{$lang['rules_uploading_header_sub']}</span>
@@ -95,7 +95,7 @@ if ( $user['class'] >= $site_config['allowed']['upload']) {
                             </ul>
                         </div>";
 }
-if ( $user['class'] >= UC_STAFF) {
+if ($user['class'] >= UC_STAFF) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black'>
                             {$lang['rules_moderating_header']}<span class='is-blue'>{$lang['rules_moderating_header_sub']}</span>

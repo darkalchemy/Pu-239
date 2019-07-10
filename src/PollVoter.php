@@ -8,7 +8,6 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class PollVoter.
- * @package Pu239
  */
 class PollVoter
 {

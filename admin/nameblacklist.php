@@ -10,7 +10,7 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_nameblacklist'));
 global $site_config;
 
-$blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['paths']['nameblacklist']))) ? unserialize(file_get_contents($site_config['paths']['nameblacklist'])) : [];
+$blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(json_decode(file_get_contents($site_config['paths']['nameblacklist']), true)) ? json_decode(file_get_contents($site_config['paths']['nameblacklist']), true) : [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $badnames = isset($_POST['badnames']) && !empty($_POST['badnames']) ? trim($_POST['badnames']) : '';
     if (empty($badnames)) {
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $blacklist[$badnames] = (int) 1;
     }
-    if (file_put_contents($site_config['paths']['nameblacklist'], serialize($blacklist))) {
+    if (file_put_contents($site_config['paths']['nameblacklist'], json_encode($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
         stderr($lang['name_success'], $lang['name_file']);
     } else {

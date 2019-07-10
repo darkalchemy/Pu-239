@@ -57,7 +57,7 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
 } else {
     $user = check_user_status();
     $owner_id = $user['id'];
-    $cache->set('user_upload_variables_' . $user['id'], serialize($data), 3600);
+    $cache->set('user_upload_variables_' . $user['id'], json_encode($data), 3600);
 }
 
 $dt = TIME_NOW;

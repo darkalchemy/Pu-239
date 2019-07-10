@@ -11,7 +11,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Image.
- * @package Pu239
  */
 class Image
 {

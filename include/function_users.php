@@ -710,7 +710,7 @@ function blacklist(string $fo)
     global $site_config;
 
     $badwords = explode('|', $site_config['site']['badwords']);
-    $blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['paths']['nameblacklist']))) ? unserialize(file_get_contents($site_config['paths']['nameblacklist'])) : [];
+    $blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(json_decode(file_get_contents($site_config['paths']['nameblacklist']), true)) ? json_decode(file_get_contents($site_config['paths']['nameblacklist']), true) : [];
     if (isset($blacklist[$fo]) && $blacklist[$fo] == 1 || in_array(strtolower($fo), $badwords)) {
         return false;
     }

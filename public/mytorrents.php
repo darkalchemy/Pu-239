@@ -85,7 +85,7 @@ if (!$count) {
                      ->offset($pager['pdo']['offset'])
                      ->fetchAll();
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= torrenttable($select, 'mytorrents');
+    $HTMLOUT .= torrenttable($select, $user, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead($user['username'] . "'s torrents") . wrapper($HTMLOUT) . stdfoot();

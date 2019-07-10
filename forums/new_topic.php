@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
         }
         $multi_options = isset($_POST['multi_options']) && $_POST['multi_options'] <= $i ? (int) $_POST['multi_options'] : 1;
 
-        $poll_options = serialize($break_down_poll_options);
+        $poll_options = json_encode($break_down_poll_options);
         $values = [
             'user_id' => $CURUSER['id'],
             'question' => $poll_question,

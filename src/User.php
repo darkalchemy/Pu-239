@@ -29,7 +29,6 @@ use function urlencode;
 
 /**
  * Class User.
- * @package Pu239
  */
 class User
 {
@@ -254,7 +253,7 @@ class User
     {
         $userid = false;
         try {
-            if ($this->site_config['signup']['email_confirm'] === true) {
+            if ($this->site_config['signup']['email_confirm'] === true && !isset($values['send_email'])) {
                 $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
                     $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
@@ -738,8 +737,9 @@ class User
     /**
      * @param string $email
      *
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_count_by_email(string $email)
     {
@@ -755,8 +755,9 @@ class User
     /**
      * @param string $username
      *
-     * @return mixed
      * @throws Exception
+     *
+     * @return mixed
      */
     public function get_count_by_username(string $username)
     {

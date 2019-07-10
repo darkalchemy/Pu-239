@@ -194,8 +194,7 @@ switch ($action) {
                 stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
             }
             $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? (int) $_POST['multi_options'] : 1);
-            //=== serialize it and slap it in the DB allready!
-            $poll_options = serialize($break_down_poll_options);
+            $poll_options = json_encode($break_down_poll_options);
             sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')') or sqlerr(__FILE__, __LINE__);
             $poll_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             if (is_valid_id((int) $poll_id)) {
@@ -432,8 +431,7 @@ switch ($action) {
                 stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
             }
             $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? (int) $_POST['multi_options'] : 1);
-            //=== serialize it and slap it in the DB FFS!
-            $poll_options = serialize($break_down_poll_options);
+            $poll_options = json_encode($break_down_poll_options);
             sql_query('UPDATE forum_poll  SET question = ' . sqlesc($poll_question) . ', poll_answers = ' . sqlesc($poll_options) . ', number_of_options = ' . $i . ' , poll_starts = ' . $poll_starts . ' , poll_ends = ' . $poll_ends . ', change_vote = \'' . $change_vote . '\', multi_options = ' . $multi_options . ', poll_closed = \'no\' WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== delete the votes
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
@@ -445,7 +443,7 @@ switch ($action) {
         $res_edit = sql_query('SELECT * FROM forum_poll WHERE id=' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
         $arr_edit = mysqli_fetch_assoc($res_edit);
         $poll_question = strip_tags($arr_edit['question']);
-        $poll_answers = unserialize($arr_edit['poll_answers']);
+        $poll_answers = json_decode($arr_edit['poll_answers'], true);
         $number_of_options = $arr_edit['number_of_options'];
         $poll_starts = (int) $arr_edit['poll_starts'];
         $poll_ends = (int) $arr_edit['poll_ends'];

@@ -4,8 +4,7 @@ $config = PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->setRiskyAllowed(true)
     ->setRules([
-'@PSR1' => true,
-        '@PSR2' => true,
+        '@PSR1'                               => true,
         '@PSR2'                               => true,
         '@Symfony'                            => true,
         'psr4'                                => true,

@@ -1,6 +1,8 @@
 # Pu-239 v0.7
 
-## Goals:
+######I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.14.2 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+
+### Goals:
 1. Update to PHP 7.3 - default settings
 2. Error free with MySQL 8.0 strict mode - default settings - Mostly Done
 3. Remove merged bootstrap
@@ -20,16 +22,16 @@
 This is a fork of U-232 V4.  
 PHP 7.2+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
-[Composer](https://getcomposer.org/download/) is required. Version ^1.8.5.  
-[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.10.0.  
-This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.  
-A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.   
-A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  
-A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be).  
+[Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
+[NPM](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.10.0.  
+This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
+A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process. (Not tested recently)     
+A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
+A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)   
 There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
-#### Please log in as a non-privileged user, NOT root, to install this.  
-### Prior to install:
+##### Please log in as a non-privileged user, NOT root, to install this.  
+#### Prior to install:
 ```
 # required apps
 jpegoptim, optipng, pngquant, gifsicle, imagemagick
@@ -48,7 +50,7 @@ file(FlySystem)
 MySQL, MariaDB or Percona MySQL
 Adminer is included, only user #1 has access, others can be added, by id
 ```
-### To Install:
+#### To Install:
 ```
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
@@ -112,7 +114,7 @@ sudo crontab -e
 php bin/import_tables.php
 ```
 
-### To Update:
+#### To Update:
 ```
 # get the files
 # how you do this step will depend how you did it initially, I personally run in a git repository
@@ -138,11 +140,11 @@ php bin/import_tables.php
 php bin/validate_images.php
 ```
 
-### Making Changes
-After updating composer, npm, changing anything inside the config folder, changing anything inside the staffpanel, you must delete the php-di cache.  
+#### Making Changes
+After updating composer, npm, changing anything inside the config folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
 ```sudo rm -rf /dev/shm/php-di```
  
-### API's 
+#### API's 
 Fanart.tv API provides posters, backgrounds and banners and needs an api key.  
 TMDb API allows upcoming movies and posters and needs an api key.  
 Google API allows up to 1000 api hits instead of 100 per day, api key is optional.  
@@ -150,28 +152,28 @@ IMDb API allow movies and tv lookup, no key needed.
 TVMaze allows tv lookup and posters, no key needed.  
 API keys are set in the Staff Panel -> Site Settings.  
 
-### Making Changes to css/js files  
+#### Making Changes to css/js files  
 Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:  
 ```php bin/uglify.php```
 
-### Production
+#### Production
 Production creates minified javascript and css files when running uglify.php.  
 After changing the setting 'production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
 ```config/define.php define('PRODUCTION', false);```
 
 
-### Cache Engines  
+#### Cache Engines  
 couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
 
-### Image Proxy:  
+#### Image Proxy:  
 An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
 ```$site_config['site']['image_proxy'] = true;```
 
-### Notes: 
+#### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
 
-### Credits:  
+#### Credits:  
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
-### Patrons
+#### Patrons
 Nico

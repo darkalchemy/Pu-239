@@ -121,7 +121,6 @@ $next_para = "
                         <div id='answer_5_text'>
                             {$lang['faq_downloading_body']}";
 
-
 $byratio = 0;
 $byul = 0;
 
@@ -194,7 +193,6 @@ if (isset($wait)) {
 } else {
     $next_para .= $lang['faq_nodelay'];
 }
-
 
 $HTMLOUT .= main_div($next_para . '</div>', 'top20');
 

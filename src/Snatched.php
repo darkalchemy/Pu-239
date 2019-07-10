@@ -9,7 +9,6 @@ use PDOStatement;
 
 /**
  * Class Snatched.
- * @package Pu239
  */
 class Snatched
 {

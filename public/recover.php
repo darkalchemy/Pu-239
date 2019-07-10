@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'token' => 'required|alpha_dash',
         'password' => 'required|min:8',
         'confirm_password' => 'required|same:password',
-    ]);;
+    ]);
     if ($validation->fails()) {
         write_log(getip() . ' has tried to recover using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");

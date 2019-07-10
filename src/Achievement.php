@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Achievement.
- * @package Pu239
  */
 class Achievement
 {

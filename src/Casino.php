@@ -8,7 +8,6 @@ use Envms\FluentPDO\Exception;
 
 /**
  * Class Casino.
- * @package Pu239
  */
 class Casino
 {

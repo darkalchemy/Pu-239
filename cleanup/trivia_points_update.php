@@ -57,6 +57,7 @@ function trivia_points_update($data)
             $seedbonus = $winners['seedbonus'];
             $correct = $winners['correct'];
             $modcomment = $winners['modcomment'];
+            $points = 0;
             switch ($i) {
                 case 1:
                     $points = 10 * $correct;

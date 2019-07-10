@@ -50,7 +50,7 @@ if ($action === 'add') {
         $r = sql_query("SELECT id, confirmed FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $q = mysqli_fetch_assoc($r);
         $subject = 'New Friend Request!';
-        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['paths']['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
+        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]{$curuser['username']}[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['paths']['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
             'receiver' => $targetid,
             'added' => $dt,
@@ -85,7 +85,7 @@ if ($action === 'add') {
 if ($action === 'confirm') {
     $targetid = (int) $_GET['targetid'];
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
-    if (isset($_POST['type'])) {
+    if (isset($_GET['type'])) {
         $type = $_GET['type'] === 'friend' ? 'friend' : 'block';
     } else {
         stderr($lang['friends_error'], 'LoL');
@@ -102,7 +102,7 @@ if ($action === 'confirm') {
     }
     if ($type === 'friend') {
         sql_query('INSERT INTO friends VALUES (0, ' . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'yes') ON DUPLICATE KEY UPDATE userid=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE friends SET confirmed = 'yes' WHERE userid=" . sqlesc($targetid) . ' AND friendid=' . sqlesc($curuser['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE friends SET confirmed = 'yes' WHERE userid = " . sqlesc($targetid) . ' AND friendid = ' . sqlesc($curuser['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
         $cache->delete('Friends_' . $userid);
         $cache->delete('Blocks_' . $targetid);
@@ -110,7 +110,7 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
         $subject = 'You have a new friend!';
-        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['paths']['baseurl']}/friends.php][b]Here[/b][/url]\n ";
+        $msg = "[url={$site_config['paths']['baseurl']}/userdetails.php?id=$userid][b]{$curuser['username']}[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['paths']['baseurl']}/friends.php][b]Here[/b][/url]\n ";
         $msgs_buffer[] = [
             'receiver' => $targetid,
             'added' => $dt,
@@ -138,7 +138,7 @@ if ($action === 'confirm') {
         stderr('Error', 'what are you doing?');
     }
     if ($type === 'friend') {
-        sql_query('DELETE FROM friends WHERE userid=' . sqlesc($targetid) . ' AND friendid=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM friends WHERE userid = ' . sqlesc($targetid) . ' AND friendid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Friends_' . $userid);
         $cache->delete('Friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
@@ -174,7 +174,7 @@ if ($action === 'confirm') {
         stderr('Success', 'Friend was deleted successfully.');
     //mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
     } elseif ($type === 'block') {
-        sql_query('DELETE FROM blocks WHERE userid=' . sqlesc($userid) . ' AND blockid=' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM blocks WHERE userid = ' . sqlesc($userid) . ' AND blockid = ' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
         $cache->delete('Blocks_' . $targetid);
         $frag = 'blocks';
@@ -192,7 +192,7 @@ $res = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__
 $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friends_no_user']);
 $HTMLOUT = '';
 $i = 0;
-$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid=u.id WHERE friendid=' . sqlesc($curuser['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid = ' . sqlesc($curuser['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
@@ -212,7 +212,7 @@ if (mysqli_num_rows($res) == 0) {
         $friendsp .= "<div>{$avatar}<p>{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
-$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid = ' . sqlesc($userid) . " AND f.confirmed = 'no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendreqs = '';
 if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';

@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Class Block.
- * @package Pu239
  */
 class Block
 {

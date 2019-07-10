@@ -34,7 +34,7 @@ $cache = $container->get(Cache::class);
 $upload_vars = $cache->get('user_upload_variables_' . $user['id']);
 $poster = $youtube = $strip = $uplver = $allow_comments = $free_length = $half_length = $tags = $description = $body = '';
 if (!empty($upload_vars)) {
-    $upload_vars = unserialize($upload_vars);
+    $upload_vars = json_decode($upload_vars, true);
 }
 $vars = [
     'url',

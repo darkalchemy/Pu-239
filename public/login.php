@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation = $validator->validate($post, [
         'email' => 'required|email',
         'password' => 'required',
-        'remember' => 'digits:1',
+        'remember' => 'in:1',
     ]);
     if ($validation->fails()) {
         write_log(getip() . ' has tried to login using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
@@ -79,13 +79,11 @@ $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true :
 
 $HTMLOUT = "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' accept-charset='utf-8'>";
-
 $body = "
                 <div class='columns'>                    
                     <div class='column is-one-quarter'>{$lang['login_email']}</div>
                     <div class='column'>
-                        <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['login_email']}' required>" . ($got_ssl ? "
-                        <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
+                        <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['login_email']}' required>
                     </div>
                 </div>
                 <div class='columns'>                    

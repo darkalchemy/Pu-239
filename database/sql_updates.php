@@ -3185,11 +3185,26 @@ KEY `expires` (`expires`)
         'date' => '02 Jul, 2019',
         'query' => 'DELETE FROM `site_config` WHERE `name` = "gzip_path" OR  `name` = "mysqldump_path"',
         'flush' => true,
-    ],[
+    ],
+    [
         'id' => 1562499322,
         'info' => 'Add unique index',
         'date' => '07 Jul, 2019',
         'query' => 'ALTER TABLE `poll_voters` ADD UNIQUE INDEX `userid_pollid` (`user_id`,`poll_id`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1562499323,
+        'info' => 'Add unique index',
+        'date' => '08 Jul, 2019',
+        'query' => 'ALTER TABLE `forum_poll_votes` ADD UNIQUE INDEX `userid_pollid` (`user_id`,`poll_id`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1562737360,
+        'info' => 'Update column definition',
+        'date' => '10 Jul, 2019',
+        'query' => 'ALTER TABLE `forum_poll_votes` MODIFY `options` smallint unsigned NOT NULL DEFAULT 0',
         'flush' => false,
     ],
 ];

@@ -13,7 +13,6 @@ declare(strict_types = 1);
 
 /**
  * Class AJAXChatFileSystem.
- * @package Pu239
  */
 class AJAXChatFileSystem
 {

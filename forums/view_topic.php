@@ -109,7 +109,7 @@ if ($arr['poll_id'] > 0) {
     }
     $change_vote = $arr_poll['change_vote'] === 'no' ? 0 : 1;
     $poll_open = $arr_poll['poll_closed'] === 'yes' || $arr_poll['poll_starts'] > TIME_NOW || ($arr_poll['poll_ends'] != 1356048000 && $arr_poll['poll_ends'] < TIME_NOW) ? 0 : 1;
-    $poll_options = unserialize($arr_poll['poll_answers']);
+    $poll_options = json_decode($arr_poll['poll_answers'], true);
     $multi_options = $arr_poll['multi_options'];
     $total_votes = $fluent->from('forum_poll_votes')
                           ->select(null)

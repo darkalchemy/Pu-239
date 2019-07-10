@@ -132,7 +132,7 @@ if ($today) {
 $queryed = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
 if ($queryed === 1) {
     $addparam .= 'incldead=1&amp;';
-    if (!isset($user) || $user['class'] < UC_ADMINISTRATOR) {
+    if ($user['class'] < UC_ADMINISTRATOR) {
         $count->where('t.banned != "yes"');
         $query->where('t.banned != "yes"');
     }
@@ -319,10 +319,7 @@ if (!empty($title)) {
     $title = $lang['browse_search'] . $title;
 }
 $count = $count->fetch('count');
-$torrentsperpage = $user['torrentsperpage'];
-if (!$torrentsperpage) {
-    $torrentsperpage = 25;
-}
+$torrentsperpage = !empty($user['torrentsperpage']) ? $user['torrentsperpage'] : 25;
 if ($count > 0) {
     if ($addparam != '') {
         if ($pagerlink != '') {
@@ -512,7 +509,7 @@ $HTMLOUT .= "{$new_button}";
 if ($count) {
     $HTMLOUT .= ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagertop']}</div>" : '') . "
-            <div class='table-wrapper top20'>" . torrenttable($query, 'index') . '</div>' . ($count > $torrentsperpage ? "
+            <div class='table-wrapper top20'>" . torrenttable($query, $user, 'index') . '</div>' . ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagerbottom']}</div>" : '');
 } else {
     if (isset($cleansearchstr)) {
