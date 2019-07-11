@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+fix: showing multiple duplicate torrents browse.php  
 update: duplicate posts view_unread_posts.php  
 update: set parked = no when user logs in  
 update: database files  
