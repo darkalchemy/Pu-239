@@ -80,13 +80,13 @@ $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true :
 $HTMLOUT = "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' accept-charset='utf-8'>";
 $body = "
-                <div class='columns'>                    
+                <div class='columns'>
                     <div class='column is-one-quarter'>{$lang['login_email']}</div>
                     <div class='column'>
                         <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['login_email']}' required>
                     </div>
                 </div>
-                <div class='columns'>                    
+                <div class='columns'>
                     <div class='column is-one-quarter'>{$lang['login_password']}</div>
                     <div class='column'>
                         <input type='password' class='w-100' name='password' autocomplete='on' placeholder='{$lang['login_password']}' required>

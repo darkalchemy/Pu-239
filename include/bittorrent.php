@@ -812,7 +812,7 @@ function replace_unicode_strings($text)
  */
 function parked($user)
 {
-    if ($user['parked'] == 'yes') {
+    if ($user['parked'] === 'yes') {
         stderr('Error', '<b>Your account is currently parked.</b>');
     }
 }

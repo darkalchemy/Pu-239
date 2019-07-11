@@ -2,16 +2,19 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Snatched;
 use Pu239\User;
 
 /**
  * @param $data
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws UnbegunTransaction
  */
 function hitrun_update($data)
 {

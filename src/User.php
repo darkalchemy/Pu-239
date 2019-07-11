@@ -488,6 +488,7 @@ class User
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -501,6 +502,10 @@ class User
         try {
             $this->auth->login($email, $password, $duration);
             $userid = $this->auth->getUserId();
+            $update = [
+                'parked' => 'no',
+            ];
+            $this->update($update, $userid);
             $this->cache->delete('user_' . $userid);
 
             return true;

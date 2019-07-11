@@ -51,7 +51,7 @@ if ($action === 'viewbug') {
         $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b][code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b][code]' . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -59,11 +59,11 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b]v[code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b]v[code]' . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 break;
 
             case 'na':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b]v[code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]needs more information.\n\n\n$precomment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b]v[code]' . htmlsafechars(urldecode($bug['problem'])) . "[/code]needs more information.\n\n\n$precomment";
         }
         $msgs_buffer[] = [
             'receiver' => $user['id'],
