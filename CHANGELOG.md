@@ -1,3 +1,6 @@
+### 11 Jul, 2019
+add: site setting to show/hide users torrent pass upload.php  
+
 ### 10 Jul, 2019
 update: styling  
 update: database files  

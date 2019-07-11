@@ -130,6 +130,7 @@ $announce_url = $site_config['announce_urls']['http'][0];
 if ($usessl === 'https') {
     $announce_url = $site_config['announce_urls']['https'][0];
 }
+$announce_url = $announce_url . ($site_config['upload']['show_torrent_pass'] ? '?torrent_pass=' . $user['torrent_pass'] : '');
 $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
