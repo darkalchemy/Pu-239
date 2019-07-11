@@ -23,6 +23,7 @@ foreach ($get as $key => $value) {
 
 if (empty($get['cats']) && !empty($user['notifs'])) {
     $user_cats = explode('][', $user['notifs']);
+    $temp = [];
     foreach ($user_cats as $user_cat) {
         preg_match('/\d+/', $user_cat, $match);
         if (!empty($match[0])) {
