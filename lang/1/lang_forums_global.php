@@ -209,6 +209,7 @@ $lang = [
     'fm_locked_new' => 'Locked new',
     'fm_locked_un-read' => 'Locked un-read',
     'fm_mark_all_as_read' => 'Mark All As Read',
+    'fm_mark_all_as_unread' => 'Mark All As Unread',
     'fm_members_currently_active' => 'Members currently active',
     'fm_my_posts' => 'My Posts',
     'fm_my_subscriptions' => 'My Subscriptions',

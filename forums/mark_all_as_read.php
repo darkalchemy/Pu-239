@@ -2,25 +2,93 @@
 
 declare(strict_types = 1);
 
-global $site_config, $CURUSER;
+use Pu239\Cache;
+use Pu239\Database;
 
-$dt = TIME_NOW - $site_config['forum_config']['readpost_expiry'];
-$last_posts_read_res = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON p.id=t.last_post AND p.added>' . $dt) or sqlerr(__FILE__, __LINE__);
-while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
-    $members_last_posts_read_res = sql_query('SELECT id, last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_posts_read_arr['id'])) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($members_last_posts_read_res) === 0) {
-        sql_query('INSERT INTO read_posts (user_id, topic_id, last_post_read) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($last_posts_read_arr['id']) . ', ' . sqlesc($last_posts_read_arr['last_post']) . ')') or sqlerr(__FILE__, __LINE__);
-        $cache->delete('last_read_post_' . $last_posts_read_arr['id'] . '_' . $CURUSER['id']);
-        $cache->delete('sv_last_read_post_' . $last_posts_read_arr['id'] . '_' . $CURUSER['id']);
+require_once INCL_DIR . 'function_returnto.php';
+$user = check_user_status();
+if ($_GET['action'] === 'mark_all_as_read') {
+    mark_as_read($user);
+    redirect();
+} elseif ($_GET['action'] === 'mark_all_as_unread') {
+    mark_as_unread($user);
+    redirect();
+}
+
+function redirect()
+{
+    $url = !empty($_SERVER['HTTP_REFERER']) ? get_return_to($_SERVER['HTTP_REFERER']) : get_return_to($_SERVER['QUERY_STRING']);
+    if (!empty($url)) {
+        header('Location: ' . $url);
     } else {
-        $members_last_posts_read_arr = mysqli_fetch_assoc($members_last_posts_read_res);
-        if ($members_last_posts_read_arr['last_post_read'] < $last_posts_read_arr['last_post']) {
-            sql_query('UPDATE read_posts SET last_post_read = ' . sqlesc($last_posts_read_arr['last_post']) . ' WHERE id=' . sqlesc($members_last_posts_read_arr['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->delete('last_read_post_' . $last_posts_read_arr['id'] . '_' . $CURUSER['id']);
-            $cache->delete('sv_last_read_post_' . $last_posts_read_arr['id'] . '_' . $CURUSER['id']);
-        }
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?m=1');
+    }
+    die();
+}
+
+function mark_as_read(array $user)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
+    $query = get_topics();
+    foreach ($query as $topic) {
+        $values = [
+            'user_id' => $user['id'],
+            'topic_id' => $topic['id'],
+            'last_post_read' => $topic['last_post'],
+        ];
+        $update = [
+            'last_post_read' => $topic['last_post'],
+        ];
+        $fluent->insertInto('read_posts', $values)
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
+        $cache->delete('last_read_post_' . $topic['id'] . '_' . $user['id']);
+        $cache->delete('sv_last_read_post_' . $topic['id'] . '_' . $user['id']);
     }
 }
 
-header('Location: ' . $_SERVER['PHP_SELF'] . '?m=1');
-die();
+function mark_as_unread(array $user)
+{
+    global $container;
+
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
+    $query = get_topics();
+    foreach ($query as $topic) {
+        $values = [
+            'user_id' => $user['id'],
+            'topic_id' => $topic['id'],
+            'last_post_read' => $topic['first_post'],
+        ];
+        $update = [
+            'last_post_read' => $topic['first_post'],
+        ];
+        $fluent->insertInto('read_posts', $values)
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
+
+        $cache->delete('last_read_post_' . $topic['id'] . '_' . $user['id']);
+        $cache->delete('sv_last_read_post_' . $topic['id'] . '_' . $user['id']);
+    }
+}
+
+function get_topics()
+{
+    global $container, $site_config;
+
+    $dt = TIME_NOW - ($site_config['forum_config']['readpost_expiry'] * 86400);
+    $fluent = $container->get(Database::class);
+    $query = $fluent->from('topics AS t')
+                    ->select(null)
+                    ->select('t.id')
+                    ->select('t.last_post')
+                    ->select('t.first_post - 1 AS first_post')
+                    ->leftJoin('posts AS p ON t.last_post = p.id')
+                    ->where('p.added > ?', $dt)
+                    ->fetchAll();
+
+    return $query;
+}

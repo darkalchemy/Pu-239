@@ -15,9 +15,9 @@ $settings_saved = false;
 $config_id = 1;
 if (isset($_POST['do_it'])) {
     $delete_for_real = isset($_POST['delete_for_real']) ? (int) $_POST['delete_for_real'] : 0;
-    $site_config['forum_config']['min_delete_view_class'] = isset($_POST['min_delete_view_class']) && valid_class($_POST['min_delete_view_class']) ? (int) $_POST['min_delete_view_class'] : 0;
+    $site_config['forum_config']['min_delete_view_class'] = isset($_POST['min_delete_view_class']) && valid_class((int) $_POST['min_delete_view_class']) ? (int) $_POST['min_delete_view_class'] : 0;
     $readpost_expiry = isset($_POST['readpost_expiry']) ? (int) $_POST['readpost_expiry'] : 0;
-    $min_upload_class = isset($_POST['min_upload_class']) && valid_class($_POST['min_upload_class']) ? (int) $_POST['min_upload_class'] : 0;
+    $min_upload_class = isset($_POST['min_upload_class']) && valid_class((int) $_POST['min_upload_class']) ? (int) $_POST['min_upload_class'] : 0;
     $accepted_file_extension = isset($_POST['accepted_file_extension']) ? preg_replace('/\s+/', '|', trim($_POST['accepted_file_extension'])) : '';
     $accepted_file_types = isset($_POST['accepted_file_types']) ? preg_replace('/\s+/', '|', trim($_POST['accepted_file_types'])) : '';
     $max_file_size = isset($_POST['max_file_size']) ? (int) $_POST['max_file_size'] : 0;

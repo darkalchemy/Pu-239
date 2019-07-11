@@ -111,10 +111,11 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 /**
  * @param int $user_cat
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function find_parent(int $user_cat)
 {
@@ -124,5 +125,6 @@ function find_parent(int $user_cat)
             return $cat['parent_id'];
         }
     }
+
     return false;
 }

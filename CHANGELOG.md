@@ -1,4 +1,6 @@
 ### 11 Jul, 2019
+update: send bug report details with bug response  
+fix: read forum posts  
 fix: default user categories categories.php  
 add: site setting to show/hide users torrent pass upload.php  
 

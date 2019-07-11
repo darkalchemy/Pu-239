@@ -274,7 +274,7 @@ function stdfoot(array $stdfoot = [])
                                 <td>' . ($key + 1) . '</td>
                                 <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                 <td>
-                                    <div class='text-justify'>" . format_comment($value['query']) . '</div>
+                                    <div class='text-justify'>" . format_comment($value['query'], false) . '</div>
                                 </td>
                                 <td>' . format_comment($params) . '</td>
                             </tr>';

@@ -9,28 +9,38 @@ $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['vup_unread_po
 $user = check_user_status();
 global $container, $site_config;
 
-$time = $site_config['forum_config']['readpost_expiry'];
 $fluent = $container->get(Database::class);
+$count = $fluent->from('read_posts')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('user_id = ?', $user['id'])
+    ->fetch('count');
+if ($count === 0) {
+    require_once FORUM_DIR . 'mark_all_as_read.php';
+    mark_as_unread($user);
+}
+$time = $site_config['forum_config']['readpost_expiry'];
 $query = $fluent->from('topics AS t')
                 ->select(null)
                 ->select('t.id')
+                ->select('t.first_post')
                 ->select('t.last_post')
-                ->select('r.last_post_read')
+                ->select('IF (r.last_post_read IS NULL, t.first_post, r.last_post_read) AS last_post_read')
                 ->leftJoin('posts AS p ON t.last_post = p.id')
                 ->leftJoin('forums AS f ON t.forum_id = f.id')
                 ->leftJoin('read_posts AS r ON t.id = r.topic_id');
 if ($user['class'] < UC_STAFF) {
-    $query->where("p.status = 'ok'")
-          ->where("t.status = 'ok'");
+    $query = $query->where('p.status = ?', 'ok')
+                   ->where('t.status = ?', 'ok');
 } elseif ($user['class'] < $site_config['forum_config']['min_delete_view_class']) {
-    $query->where("p.status != 'deleted'")
-          ->where("t.status != 'deleted'");
+    $query = $query->where('p.status != ?', 'deleted')
+                   ->where('t.status != ?', 'deleted');
 }
 $query = $query->where('f.min_class_read <= ?', $user['class'])
                ->where('p.added > ?', $time)
                ->where('(r.last_post_read IS NULL OR r.last_post_read < t.last_post)')
+               ->where('r.user_id = ?', $user['id'])
                ->fetchAll();
-
 $count = !empty($query) ? count($query) : 0;
 if ($count === 0) {
     $heading = '

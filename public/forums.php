@@ -60,6 +60,7 @@ if ($user['class'] >= UC_STAFF) {
         'view_unread_posts',
         'view_my_posts',
         'mark_all_as_read',
+        'mark_all_as_unread',
         'clear_unread_post',
         'download_attachment',
         'poll',
@@ -86,6 +87,7 @@ if ($user['class'] >= UC_STAFF) {
         'view_unread_posts',
         'view_my_posts',
         'mark_all_as_read',
+        'mark_all_as_unread',
         'clear_unread_post',
         'download_attachment',
         'poll',
@@ -126,6 +128,9 @@ $mini_menu = "
             </li>" : '') . "
             <li class='margin10'>
         	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_read'>{$lang['fm_mark_all_as_read']}</a>
+        	</li>
+            <li class='margin10'>
+        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_unread'>{$lang['fm_mark_all_as_unread']}</a>
         	</li>" . ($user['class'] >= UC_SYSOP && $action !== 'member_post_history' ? "
             <li class='margin10'>
         	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>{$lang['fm_member_post_history']}</a>
@@ -345,6 +350,7 @@ switch ($action) {
         break;
 
     case 'mark_all_as_read':
+    case 'mark_all_as_unread':
         require_once FORUM_DIR . 'mark_all_as_read.php';
         break;
 

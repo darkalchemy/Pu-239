@@ -51,7 +51,7 @@ if ($action === 'viewbug') {
         $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b][code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -59,11 +59,11 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b]v[code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
                 break;
 
             case 'na':
-                $msg = $comment;
+                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . "[/b]v[code]" . htmlsafechars(urldecode($bug['problem'])) . "[/code]needs more information.\n\n\n$precomment";
         }
         $msgs_buffer[] = [
             'receiver' => $user['id'],
@@ -104,7 +104,7 @@ if ($action === 'viewbug') {
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
-    $comment = !empty($bug['comment']) ? format_comment($bug['comment']) : '';
+    $comment = !empty($bug['comment']) ? htmlsafechars($bug['comment']) : '';
     $problem = !empty($bug['problem']) ? format_comment($bug['problem']) : '';
     switch ($bug['priority']) {
         case 'low':
@@ -146,7 +146,8 @@ if ($action === 'viewbug') {
     }
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
-            <input type='hidden' name='id' value='" . $bug['id'] . "'>";
+            <input type='hidden' name='id' value='" . $bug['id'] . "'>
+            <input type='hidden' name='problem' value='" . urlencode($bug['problem']) . "'>";
     $body = "
             <tr>
                 <td class='rowhead'>{$lang['title']}:</td>

@@ -67,8 +67,8 @@ function debug_pdo()
 /**
  * @param $query
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mysqli_result
  */
@@ -94,8 +94,8 @@ function sql_query($query)
 /**
  * @param $x
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int|string
  */
@@ -116,8 +116,8 @@ function sqlesc($x)
 /**
  * @param $x
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int|string
  */
