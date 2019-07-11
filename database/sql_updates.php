@@ -3249,4 +3249,11 @@ KEY `expires` (`expires`)
         'query' => 'INSERT INTO `site_config` (`parent`, `name`, `type`, `value`) VALUES ("upload", "show_torrent_pass", "bool", false)',
         'flush' => true,
     ],
+    [
+        'id' => 1562880771,
+        'info' => 'Truncate read_post table',
+        'date' => '10 Jul, 2019',
+        'query' => 'TRUNCATE `read_posts`',
+        'flush' => false,
+    ],
 ];

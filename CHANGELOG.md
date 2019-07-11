@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+update: database files  
 update: send bug report details with bug response  
 fix: read forum posts  
 fix: default user categories categories.php  
