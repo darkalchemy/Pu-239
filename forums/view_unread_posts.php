@@ -11,10 +11,10 @@ global $container, $site_config;
 
 $fluent = $container->get(Database::class);
 $count = $fluent->from('read_posts')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('user_id = ?', $user['id'])
-    ->fetch('count');
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->where('user_id = ?', $user['id'])
+                ->fetch('count');
 if ($count === 0) {
     require_once FORUM_DIR . 'mark_all_as_read.php';
     mark_as_unread($user);
@@ -87,6 +87,7 @@ if ($count === 0) {
     $unread = $unread->where('f.min_class_read <= ?', $user['class'])
                      ->where('p.added > ?', $time)
                      ->where('(r.last_post_read IS NULL OR r.last_post_read < t.last_post)')
+                     ->where('r.user_id = ?', $user['id'])
                      ->orderBy('t.last_post DESC')
                      ->limit($pager['pdo']['limit'])
                      ->offset($pager['pdo']['offset'])

@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+update: duplicate posts view_unread_posts.php  
 update: set parked = no when user logs in  
 update: database files  
 update: send bug report details with bug response  
