@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
+
 $grouped = genrelist(true);
 $cats = genrelist(false);
 $catids = $terms = [];
@@ -16,6 +19,21 @@ foreach ($get as $key => $value) {
     if (isset($value) && strlen($value) >= 1) {
         $terms[] = "$key=$value";
     }
+}
+
+if (empty($get['cats']) && !empty($user['notifs'])) {
+    $user_cats = explode('][', $user['notifs']);
+    foreach ($user_cats as $user_cat) {
+        preg_match('/\d+/', $user_cat, $match);
+        if (!empty($match[0])) {
+            $temp[] = (int) $match[0];
+            $parent = find_parent((int) $match[0]);
+            if (!in_array($parent, $temp)) {
+                $temp[] = $parent;
+            }
+        }
+    }
+    $get['cats'] = $temp;
 }
 $cats = !empty($get['cats']) ? (!is_array($get['cats']) ? explode(',', $get['cats']) : $get['cats']) : [];
 asort($cats);
@@ -88,4 +106,23 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
                 </span>
             </span>
         </a>";
+}
+
+/**
+ * @param int $user_cat
+ *
+ * @return bool
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function find_parent(int $user_cat)
+{
+    $cats = genrelist(false);
+    foreach ($cats as $cat) {
+        if ($cat['id'] === $user_cat && $cat['parent_id'] != 0) {
+            return $cat['parent_id'];
+        }
+    }
+    return false;
 }

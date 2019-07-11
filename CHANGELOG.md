@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+fix: default user categories categories.php  
 add: site setting to show/hide users torrent pass upload.php  
 
 ### 10 Jul, 2019
