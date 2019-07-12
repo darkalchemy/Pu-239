@@ -154,7 +154,7 @@ if ($user['class'] > UC_STAFF) {
     $torrent_cache['banned'] = 'no';
 }
 
-if (in_array($category, $site_config['categories']['movie'])) {
+if (in_array($category, $site_config['categories']['movie']) || in_array($category, $site_config['categories']['tv'])) {
     $subs = isset($_POST['subs']) ? implode('|', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;

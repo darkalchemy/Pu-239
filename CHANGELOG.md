@@ -1,4 +1,5 @@
 ### 12 Jul, 2019
+update: allow tv cats to edit subtitles  
 fix: snatches getting mark_of_cain set  
 fix: user offset  
 fix: sort order top donors function_bonus.php  
