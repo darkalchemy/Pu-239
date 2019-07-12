@@ -101,7 +101,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         if (is_array($var)) {
             foreach ($var as $s_var) {
-                $oldlink[] = sprintf('%s=%s', urlencode($key) . '%5B%5D', urlencode($s_var));
+                $oldlink[] = sprintf('%s=%s', urlencode($key) . '%5B%5D', urlencode((string) $s_var));
             }
         } else {
             $oldlink[] = sprintf('%s=%s', urlencode($key), urlencode($var));

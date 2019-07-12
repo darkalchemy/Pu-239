@@ -55,7 +55,7 @@ function delete_torrents_update($data)
     foreach ($never_seeded as $torrent) {
         $torrents_class->delete_by_id((int) $torrent['id']);
         $torrents_class->remove_torrent($torrent['info_hash']);
-        $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
+        $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (never seeded after $hours hours)";
         $values[] = [
             'receiver' => $torrent['owner'],
             'added' => $dt,

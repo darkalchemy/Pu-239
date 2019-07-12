@@ -7,11 +7,11 @@ use DI\NotFoundException;
 use Pu239\Cache;
 
 /**
- * @return mixed|string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return mixed|string
  */
 function rsstfreakinfo()
 {

@@ -29,11 +29,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param null   $is_comment
  * @param string $sticky
  *
- * @return string
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
+ * @return string
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false, $is_comment = null, $sticky = '')
 {
@@ -178,11 +178,12 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 /**
  * @param array $data
  *
- * @return bool|mixed|string
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ *
+ * @return bool|mixed|string
  */
 function torrent_tooltip_wrapper(array $data)
 {

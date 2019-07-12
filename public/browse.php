@@ -175,20 +175,26 @@ if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
 }
 
 $cats = [];
-if (isset($_GET['cats'])) {
+if (!empty($_GET['cats'])) {
     if (is_array($_GET['cats'])) {
         $cats = $_GET['cats'];
     } else {
         $cats = explode(',', $_GET['cats']);
     }
+} elseif (empty($get['cats']) && !empty($user['notifs'])) {
+    $user_cats = explode('][', $user['notifs']);
+    foreach ($user_cats as $user_cat) {
+        preg_match('/\d+/', $user_cat, $match);
+        if (!empty($match[0])) {
+            $cats[] = (int) $match[0];
+        }
+    }
 }
-
 if (!empty($cats)) {
     $addparam .= 'cats=' . implode(',', $cats) . '&amp;';
     $count->where('t.category', $cats);
     $query->where('t.category', $cats);
 }
-
 foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
@@ -334,8 +340,8 @@ if ($count > 0) {
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['paths']['baseurl']}/browse.php?" . $addparam);
     $query = $query->limit($pager['pdo']['limit'])
-          ->offset($pager['pdo']['offset'])
-          ->fetchAll();
+                   ->offset($pager['pdo']['offset'])
+                   ->fetchAll();
 }
 if ($user['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
