@@ -7,11 +7,11 @@ use DI\NotFoundException;
 use Pu239\Cache;
 
 /**
- * @throws DependencyException
+ * @return mixed|string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return mixed|string
+ * @throws DependencyException
  */
 function rsstfreakinfo()
 {
@@ -19,7 +19,6 @@ function rsstfreakinfo()
 
     $cache = $container->get(Cache::class);
     require_once INCL_DIR . 'function_html.php';
-    $html = '';
     $use_limit = true;
     $limit = 5;
     $i = 0;

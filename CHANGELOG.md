@@ -1,4 +1,9 @@
+### 12 Jul, 2019
+update: torrent name width index torrent blocks  
+add: torrent hover cache  
+
 ### 11 Jul, 2019
+fix: get user time offset  
 fix: display server time for < UC_STAFF  
 update: limit tottent title to 450px details.php  
 fix: explicit set $temp  
