@@ -197,13 +197,14 @@ if ($half_down_enabled) {
 
 $top_donators = $cache->get('top_donators1_');
 if ($top_donators === false || is_null($top_donators)) {
-    $top_donators = $fluent->from('bonuslog')
+    $top_donators = $fluent->from('bonuslog AS b')
                            ->select(null)
-                           ->select('user_id')
-                           ->select('SUM(donation) AS total')
-                           ->where('type = "freeleech"')
-                           ->groupBy('user_id')
-                           ->orderBy('total')
+                           ->select('b.user_id')
+                           ->select('SUM(b.donation) AS total')
+                           ->innerJoin('users AS u ON b.user_id = u.id')
+                           ->where('b.type = "freeleech"')
+                           ->groupBy('b.user_id')
+                           ->orderBy('total DESC')
                            ->limit(10)
                            ->fetchAll();
 
@@ -213,14 +214,15 @@ if ($top_donators === false || is_null($top_donators)) {
 $top_donators2 = $cache->get('top_donators2_');
 if ($top_donators2 === false || is_null($top_donators2)) {
     $top_donators2 = $fluent->from('bonuslog')
-                            ->select(null)
-                            ->select('user_id')
-                            ->select('SUM(donation) AS total')
-                            ->where('type = "doubleupload"')
-                            ->groupBy('user_id')
-                            ->orderBy('total')
-                            ->limit(10)
-                            ->fetchAll();
+        ->select(null)
+        ->select('b.user_id')
+        ->select('SUM(b.donation) AS total')
+        ->innerJoin('users AS u ON b.user_id = u.id')
+        ->where('b.type = "doubleupload"')
+        ->groupBy('b.user_id')
+        ->orderBy('total DESC')
+        ->limit(10)
+        ->fetchAll();
     $cache->set('top_donators2_', $top_donators2, 0);
 }
 
@@ -228,11 +230,12 @@ $top_donators3 = $cache->get('top_donators3_');
 if ($top_donators3 === false || is_null($top_donators3)) {
     $top_donators3 = $fluent->from('bonuslog')
                             ->select(null)
-                            ->select('user_id')
-                            ->select('SUM(donation) AS total')
-                            ->where('type = "halfdownload"')
-                            ->groupBy('user_id')
-                            ->orderBy('total')
+                            ->select('b.user_id')
+                            ->select('SUM(b.donation) AS total')
+                            ->innerJoin('users AS u ON b.user_id = u.id')
+                            ->where('b.type = "halfdownload"')
+                            ->groupBy('b.user_id')
+                            ->orderBy('total DESC')
                             ->limit(10)
                             ->fetchAll();
     $cache->set('top_donators3_', $top_donators3, 0);
