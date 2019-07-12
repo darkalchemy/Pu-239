@@ -284,18 +284,18 @@ function stdfoot(array $stdfoot = [])
                     </div>
                 </div>';
         }
-        $uptime = $cache->get('uptime_');
-        if ($uptime === false || is_null($uptime)) {
-            $uptime = explode('up', `uptime`);
-            $cache->set('uptime_', $uptime, 10);
-        }
-        if ($use_12_hour) {
-            $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
-            $now = time24to12(TIME_NOW, true);
-        } else {
-            $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
-            $now = get_date((int) TIME_NOW, 'WITH_SEC', 1, 0);
-        }
+    }
+    $uptime = $cache->get('uptime_');
+    if ($uptime === false || is_null($uptime)) {
+        $uptime = explode('up', `uptime`);
+        $cache->set('uptime_', $uptime, 10);
+    }
+    if ($use_12_hour) {
+        $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
+        $now = time24to12(TIME_NOW, true);
+    } else {
+        $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
+        $now = get_date((int) TIME_NOW, 'WITH_SEC', 1, 0);
     }
     $htmlfoot .= '
                 </div>
@@ -317,7 +317,6 @@ function stdfoot(array $stdfoot = [])
             }
             $php_version = show_php_version();
         }
-
         $htmlfoot .= "
             <div class='site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>

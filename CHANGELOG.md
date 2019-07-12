@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+fix: display server time for < UC_STAFF  
 update: limit tottent title to 450px details.php  
 fix: explicit set $temp  
 fix: showing multiple duplicate torrents browse.php  
