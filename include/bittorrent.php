@@ -584,18 +584,21 @@ function unixstamp_to_human($unix = 0)
     ];
 }
 
-/**
- * @return int
- */
 function get_time_offset()
 {
-    global $site_config, $CURUSER;
+    global $container, $site_config;
 
-    $r = !empty($CURUSER['time_offset']) ? $CURUSER['time_offset'] * 3600 : $site_config['time']['offset'] * 3600;
+    $auth = $container->get(Auth::class);
+    $user_class = $container->get(User::class);
+    $userid = $auth->getUserId();
+    if ($userid) {
+        $user = $user_class->getUserFromId($userid);
+    }
+    $r = isset($user['time_offset']) ? $user['time_offset'] * 3600 : $site_config['time']['offset'] * 3600;
     if ($site_config['time']['adjust']) {
         $r += $site_config['time']['adjust'] * 60;
     }
-    if (isset($CURUSER['dst_in_use']) && $CURUSER['dst_in_use']) {
+    if (isset($user['dst_in_use']) && $user['dst_in_use']) {
         $r += 3600;
     }
 
