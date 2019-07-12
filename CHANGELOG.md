@@ -1,4 +1,5 @@
 ### 12 Jul, 2019
+fix: snatches getting mark_of_cain set  
 fix: user offset  
 fix: sort order top donors function_bonus.php  
 remove: need for session in function_common.php  

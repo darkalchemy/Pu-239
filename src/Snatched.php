@@ -186,7 +186,9 @@ class Snatched
             $users[$snatch['userid']][] = $snatch;
             $cains[] = $snatch['id'];
         }
-        $this->set_cain($cains);
+        if (!empty($cains)) {
+            $this->set_cain($cains);
+        }
 
         return $users;
     }
