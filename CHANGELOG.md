@@ -1,4 +1,5 @@
 ### 12 Jul, 2019
+update: allow comments by default, torrent upload  
 update: torrent name width index torrent blocks  
 add: torrent hover cache  
 

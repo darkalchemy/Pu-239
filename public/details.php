@@ -592,8 +592,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
     }
 } else {
     $comments = "
-        <a id='startcomments'></a>
-        <div class='has-text-centered'>{$lang['details_com_disabled']}</div>";
+        <a id='startcomments'></a>" . main_div($lang['details_com_disabled'], 'has-text-centered', 'padding20');
 }
 if ($user['downloadpos'] === 1 || $owner) {
     $slots = "

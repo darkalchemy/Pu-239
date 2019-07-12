@@ -46,7 +46,7 @@ $catid = isset($data['type']) && is_valid_id((int) $data['type']) ? (int) $data[
 $request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int) $data['request'] : 0;
 $offer = isset($data['offer']) && is_valid_id((int) $data['offer']) ? (int) $data['offer'] : 0;
 $uplver = isset($data['uplver']) && $data['uplver'] === 'yes' ? 'yes' : 'no';
-$allow_comments = isset($data['allow_comments']) && $data['allow_comments'] === 'yes' ? 'yes' : 'no';
+$allow_comments = isset($data['allow_comments']) && $data['allow_comments'] === 'no' ? 'no' : 'yes';
 $descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
 
 $cache = $container->get(Cache::class);
