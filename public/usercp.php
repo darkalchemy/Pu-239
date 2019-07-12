@@ -250,7 +250,7 @@ if ($action === 'avatar') {
                             </table>
                         </div>";
 } elseif ($action === 'location') {
-    $datetime = unixstamp_to_human(TIME_NOW);
+    $datetime = get_date(TIME_NOW, 'LONG');
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped'>
@@ -258,7 +258,7 @@ if ($action === 'avatar') {
                                     <tr>
                                         <th colspan='2'>
                                             <input type='hidden' name='action' value='location'>
-                                            Location Options => Is this the correct time? [{$datetime['hour']}:{$datetime['minute']} {$datetime['ampm']}]
+                                            Location Options => Is this the correct time? $datetime
                                         </th>
                                     </tr>
                                 </thead>

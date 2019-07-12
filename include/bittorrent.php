@@ -564,34 +564,32 @@ function write_log($text)
 }
 
 /**
- * @param int $unix
+ * @throws DependencyException
+ * @throws NotFoundException
  *
- * @return array
+ * @return int
  */
-function unixstamp_to_human($unix = 0)
+function get_userid()
 {
-    $offset = get_time_offset();
-    $tmp = gmdate('j,n,Y,G,i,A', $unix + $offset);
-    list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
+    global $container;
 
-    return [
-        'day' => $day,
-        'month' => $month,
-        'year' => $year,
-        'hour' => $hour,
-        'minute' => $min,
-        'ampm' => $ampm,
-    ];
+    $auth = $container->get(Auth::class);
+    $userid = $auth->getUserId();
+    if ($userid) {
+        return $userid;
+    }
+
+    return 0;
 }
 
 function get_time_offset()
 {
     global $container, $site_config;
 
-    $auth = $container->get(Auth::class);
-    $user_class = $container->get(User::class);
-    $userid = $auth->getUserId();
+    $user = [];
+    $userid = get_userid();
     if ($userid) {
+        $user_class = $container->get(User::class);
         $user = $user_class->getUserFromId($userid);
     }
     $r = isset($user['time_offset']) ? $user['time_offset'] * 3600 : $site_config['time']['offset'] * 3600;

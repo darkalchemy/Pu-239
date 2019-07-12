@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\User;
@@ -37,18 +36,13 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
 {
     global $container, $site_config;
 
-    $user_class = $container->get(User::class);
-    $auth = $container->get(Auth::class);
-    $userid = $auth->getUserId();
+    $user = [];
+    $userid = get_userid();
     if (!empty($userid)) {
+        $user_class = $container->get(User::class);
         $user = $user_class->getUserFromId($userid);
     }
-
-    static $offset_set = 0;
-    static $today_time = 0;
-    static $yesterday_time = 0;
-    static $tomorrow_time = 0;
-
+    $today_time = $yesterday_time = $tomorrow_time = 0;
     $use_12_hour = !empty($user['use_12_hour']) ? $user['use_12_hour'] : $site_config['site']['use_12_hour'];
     $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
     $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
@@ -71,14 +65,11 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
     if (empty($method)) {
         $method = 'LONG';
     }
-    if ($offset_set == 0) {
-        $GLOBALS['offset'] = get_time_offset();
-        if ($site_config['time']['use_relative']) {
-            $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
-            $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
-            $tomorrow_time = gmdate('d,m,Y', ((TIME_NOW + 86400) + $GLOBALS['offset']));
-        }
-        $offset_set = 1;
+    $user_offset = get_time_offset();
+    if ($site_config['time']['use_relative']) {
+        $today_time = gmdate('d,m,Y', (TIME_NOW + $user_offset));
+        $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $user_offset));
+        $tomorrow_time = gmdate('d,m,Y', ((TIME_NOW + 86400) + $user_offset));
     }
     if ($site_config['time']['use_relative'] === 3) {
         $full_relative = 1;
@@ -104,10 +95,10 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
         } elseif ($diff < 3024000) {
             return sprintf('%s weeks ago', (int) ($diff / 604900));
         } else {
-            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
+            return gmdate($time_options[$method], ($date + $user_offset));
         }
     } elseif ($site_config['time']['use_relative'] && $norelative != 1 && !$calc) {
-        $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
+        $this_time = gmdate('d,m,Y', ($date + $user_offset));
         if ($site_config['time']['use_relative'] === 2) {
             $diff = TIME_NOW - $date;
             if ($diff < 3600) {
@@ -120,24 +111,24 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
         }
         if ($this_time == $today_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $user_offset)));
             }
 
-            return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Today', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $user_offset)));
         } elseif ($this_time == $yesterday_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $user_offset)));
             }
 
-            return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Yesterday', gmdate($site_config['time']['use_relative_format'] . $time_string, ($date + $user_offset)));
         } elseif ($this_time == $tomorrow_time) {
             if ($method === 'WITHOUT_SEC') {
-                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
+                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format_without_seconds'] . $time_string_without_seconds, ($date + $user_offset)));
             }
 
-            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format'] . $time_string_without_seconds, ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time']['use_relative_format'] . $time_string_without_seconds, ($date + $user_offset)));
         } else {
-            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
+            return gmdate($time_options[$method], ($date + $user_offset));
         }
     } elseif ($calc) {
         $years = (int) ($date / 31536000);
@@ -169,5 +160,5 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
         }
     }
 
-    return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
+    return gmdate($time_options[$method], ($date + $user_offset));
 }

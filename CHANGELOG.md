@@ -1,4 +1,5 @@
 ### 12 Jul, 2019
+fix: user offset  
 fix: sort order top donors function_bonus.php  
 remove: need for session in function_common.php  
 update: disable check for cookie header announce.php(allows utorrent 2.2.1)  
