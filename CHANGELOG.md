@@ -1,4 +1,5 @@
 ### 11 Jul, 2019
+update: limit tottent title to 450px details.php  
 fix: explicit set $temp  
 fix: showing multiple duplicate torrents browse.php  
 update: duplicate posts view_unread_posts.php  

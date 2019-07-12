@@ -289,7 +289,7 @@ if (!empty($torrent['name'])) {
                 $banner
                 <div class='bg-00 round10 columns padding20 is-gapless level'>
                     <span class='column is-1 size_7 has-text-left padding20'>$previous</span>
-                    <h1 class='column has-text-centered padding20'>" . htmlsafechars((string) $torrent['name']) . "</h1>
+                    <h1 class='column has-text-centered padding20 torrent-name tooltipper' title='" . htmlsafechars((string) $torrent['name']) . "'>" . htmlsafechars((string) $torrent['name']) . "</h1>
                     <span class='column is-1 size_7 has-text-right padding20'>$next</span>
                 </div>
             </div>";
