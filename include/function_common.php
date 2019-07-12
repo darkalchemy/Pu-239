@@ -2,9 +2,10 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
-use Pu239\Session;
+use Pu239\User;
 
 /**
  * @param $ip
@@ -28,6 +29,7 @@ function validip($ip)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return false|mixed|string
  */
@@ -35,14 +37,19 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc
 {
     global $container, $site_config;
 
-    $session = $container->get(Session::class);
+    $user_class = $container->get(User::class);
+    $auth = $container->get(Auth::class);
+    $userid = $auth->getUserId();
+    if (!empty($userid)) {
+        $user = $user_class->getUserFromId($userid);
+    }
 
     static $offset_set = 0;
     static $today_time = 0;
     static $yesterday_time = 0;
     static $tomorrow_time = 0;
 
-    $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') : $site_config['site']['use_12_hour'];
+    $use_12_hour = !empty($user['use_12_hour']) ? $user['use_12_hour'] : $site_config['site']['use_12_hour'];
     $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
     $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
 

@@ -12,8 +12,17 @@ use Pu239\User;
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_common.php';
-file_put_contents('/var/log/nginx/announce.log', $_SERVER['QUERY_STRING'] . PHP_EOL, FILE_APPEND);
-if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+if (isset($_SERVER['HTTP_COOKIE'])) {
+    err('Cookie Set');
+}
+if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    err('Accept Language');
+}
+if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+    err('accept charset');
+}
+// utorrent 2.2.1 sends cookie header to allow utorrent to work with this tracker you must not block if cookie header is set
+if (/*isset($_SERVER['HTTP_COOKIE']) || */isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 

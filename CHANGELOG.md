@@ -1,4 +1,8 @@
 ### 12 Jul, 2019
+remove: need for session in function_common.php  
+update: disable check for cookie header announce.php(allows utorrent 2.2.1)  
+fix: default user categories browse.php  
+update: user message when unseeded new torrent is deleted  
 remove: cache torrent hover  
 update: allow comments by default, torrent upload  
 update: torrent name width index torrent blocks  
@@ -7,7 +11,7 @@ add: torrent hover cache
 ### 11 Jul, 2019
 fix: get user time offset  
 fix: display server time for < UC_STAFF  
-update: limit tottent title to 450px details.php  
+update: limit torrent title to 450px details.php  
 fix: explicit set $temp  
 fix: showing multiple duplicate torrents browse.php  
 update: duplicate posts view_unread_posts.php  
