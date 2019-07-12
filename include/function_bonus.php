@@ -213,7 +213,7 @@ if ($top_donators === false || is_null($top_donators)) {
 
 $top_donators2 = $cache->get('top_donators2_');
 if ($top_donators2 === false || is_null($top_donators2)) {
-    $top_donators2 = $fluent->from('bonuslog')
+    $top_donators2 = $fluent->from('bonuslog as b')
         ->select(null)
         ->select('b.user_id')
         ->select('SUM(b.donation) AS total')
@@ -228,7 +228,7 @@ if ($top_donators2 === false || is_null($top_donators2)) {
 
 $top_donators3 = $cache->get('top_donators3_');
 if ($top_donators3 === false || is_null($top_donators3)) {
-    $top_donators3 = $fluent->from('bonuslog')
+    $top_donators3 = $fluent->from('bonuslog AS b')
                             ->select(null)
                             ->select('b.user_id')
                             ->select('SUM(b.donation) AS total')
