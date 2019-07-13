@@ -21,6 +21,7 @@ if (!empty($torrents)) {
     foreach ($torrents as $last) {
         $imdb_id = $last['imdb_id'];
         $subtitles = $last['subtitles'];
+        $audios = $last['audios'];
         $year = $last['year'];
         $rating = $last['rating'];
         $owner = $last['owner'];
@@ -51,7 +52,7 @@ if (!empty($torrents)) {
                     <div class='slide'>";
         $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
         $block_id = "scroll_id_{$id}";
-        $torrents_scroller .= torrent_tooltip($torrname, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
+        $torrents_scroller .= torrent_tooltip($torrname, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $audios, $genre);
         $torrents_scroller .= '
                     </div>';
     }

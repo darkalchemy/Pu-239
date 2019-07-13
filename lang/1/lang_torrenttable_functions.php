@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 $lang = [
     //torrenttable
+    'torrenttable_download_torrent' => 'Download this Torrent!',
     'torrenttable_never_snatched' => 'You have never Snatched this Torrent',
     'torrenttable_completed' => 'You have completed this Torrent',
     'torrenttable_incomplete' => 'You have snatched this torrent but not completed downloading',

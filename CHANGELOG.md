@@ -1,4 +1,5 @@
 ### 13 Jul, 2019
+update: torrent info browse.php  
 add: include audio languages on tv/movie uploads  
 fix: update personal info without setting birthday  
 fix: db insert for doubleup token used  

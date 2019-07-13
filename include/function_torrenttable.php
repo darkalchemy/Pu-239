@@ -324,7 +324,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $block_id = "torrent_{$id}";
         $sticky = $row['sticky'] === 'yes' ? 'sticky' : '';
-        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $genres, false, null, $sticky);
+        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $row['audios'], $genres, false, null, $sticky);
         $subs = $container->get('subtitles');
         $subs_array = explode('|', $row['subs']);
         $Subs = [];
@@ -339,7 +339,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $subtitles = '';
         if (!empty($Subs)) {
-            $subtitles = "<span class='left10'>" . implode(' ', $Subs) . '</span>';
+            $subtitles = '<span>' . implode(' ', $Subs) . '</span>';
         }
         $audios_array = !empty($row['audios']) ? explode('|', $row['audios']) : [];
         $Audios = [];
@@ -354,15 +354,16 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $audios = '';
         if (!empty($Audios)) {
-            $audios = "<span class='left10'>" . implode(' ', $Audios) . '</span>';
+            $audios = '<span>' . implode(' ', $Audios) . '</span>';
         }
         $htmlout .= $tooltip . "
                         </a>{$icon_string}{$imdb_info}{$user_rating}{$smalldescr}
                     </div>
                     <div class='level left10'>
-                        {$top_icons}{$audios}{$staff_pick}{$subtitles}
+                        {$top_icons}{$staff_pick}
                     </div>
                 </div>
+                <div class='level-wide'>{$audios}{$subtitles}</div>
             </td>";
         $session = $container->get(Session::class);
         $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
@@ -372,7 +373,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "' class='flex-item'>
-                                <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' aria-hidden='true' title='{$lang['torrenttable_download_torrent']}'></i>
                             </a>
                         </div>
                     </div>
@@ -392,7 +393,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "'  class='flex-item'>
-                                <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' aria-hidden='true' title='{$lang['torrenttable_download_torrent']}'></i>
                             </a>
                         </div>
                     </div>
@@ -440,12 +441,12 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                 $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['paths']['baseurl']}/details.php?id=$id&amp;page=0#startcomments'>" . $row['comments'] . '</a></b></td>';
             }
         }
-        $htmlout .= "<td class='has-text-centered'><span style='white-space: nowrap;'>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . '</span></td>';
+        $htmlout .= "<td class='has-text-centered'><div style='max-width: 90px;'>" . get_date((int) $row['added'], 'LONG') . '</div></td>';
         $htmlout .= "<td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . '</td>';
         if ($row['times_completed'] != 1) {
-            $_s = '' . $lang['torrenttable_time_plural'] . '';
+            $_s = $lang['torrenttable_time_plural'];
         } else {
-            $_s = '' . $lang['torrenttable_time_singular'] . '';
+            $_s = $lang['torrenttable_time_singular'];
         }
         $htmlout .= "<td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
         $htmlout .= "<td class='has-text-centered'>$to_go</td>";

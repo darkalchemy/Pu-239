@@ -23,13 +23,13 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return false|mixed|string
  */
-function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
+function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool $calc = false)
 {
     global $container, $site_config;
 

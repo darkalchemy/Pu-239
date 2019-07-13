@@ -24,6 +24,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param        $rating
  * @param        $year
  * @param        $subtitles
+ * @param        $audios
  * @param        $genre
  * @param bool   $icons
  * @param null   $is_comment
@@ -35,11 +36,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  *
  * @return string
  */
-function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false, $is_comment = null, $sticky = '')
+function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $audios, $genre, $icons = false, $is_comment = null, $sticky = '')
 {
     global $container, $site_config, $lang;
 
-    $is_year = $released = $rated = $plot = $show_subs = $show_icons = '';
+    $is_year = $released = $rated = $plot = $show_subs = $show_audios = $show_icons = '';
     if (!empty($imdb_id)) {
         $is_comment = !empty($is_comment) ? '#comm' . $is_comment : '';
         $images_class = $container->get(Image::class);
@@ -108,6 +109,28 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                     </div>';
         }
     }
+    if (!empty($audios)) {
+        $subs = $container->get('subtitles');
+        $audios = explode('|', $audios);
+        $Audios = [];
+        foreach ($audios as $k => $subname) {
+            foreach ($subs as $sub) {
+                if (strtolower($sub['name']) === strtolower($subname)) {
+                    $Audios[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . "'>";
+                }
+            }
+        }
+
+        if (!empty($Subs)) {
+            $show_audios = "
+                                                    <div class='column padding5 is-4'>
+                                                        <span class='size_4 has-text-primary has-text-weight-bold'>Audios:</span>
+                                                    </div>
+                                                    <div class='column padding5 is-8'>
+                                                        <span class='size_4 right10'>" . implode(' ', $Audios) . '</span>
+                                                    </div>';
+        }
+    }
     if ($icons) {
         $show_icons = "
                                     <div class='level'>
@@ -149,7 +172,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_size']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8'>" . mksize($size) . "</div>{$genre}{$show_subs}{$show_icons}
+                                                                <div class='column padding5 is-8'>" . mksize($size) . "</div>{$genre}{$show_subs}{$show_audios}{$show_icons}
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_seeder']}</span>
                                                                 </div>
@@ -198,7 +221,7 @@ function torrent_tooltip_wrapper(array $data)
                         <td class='has-text-centered'>$caticon</td>
                         <td>
                             <a href='{$site_config['paths']['baseurl']}/details.php?id={$data['id']}'>
-                                " . torrent_tooltip($data['text'], $data['id'], $data['block_id'], $data['name'], $data['poster'], $data['uploader'], $data['added'], $data['size'], $data['seeders'], $data['leechers'], $data['imdb_id'], $data['rating'], $data['year'], $data['subtitles'], $data['genre']) . "
+                                " . torrent_tooltip($data['text'], $data['id'], $data['block_id'], $data['name'], $data['poster'], $data['uploader'], $data['added'], $data['size'], $data['seeders'], $data['leechers'], $data['imdb_id'], $data['rating'], $data['year'], $data['subtitles'], $data['audios'], $data['genre']) . "
                             </a>
                         <td class='has-text-centered'>{$data['times_completed']}</td>
                         <td class='has-text-centered'>{$data['seeders']}</td>
