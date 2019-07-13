@@ -343,12 +343,21 @@ if ($action === 'avatar') {
         $curuser_cache['gender'] = $gender;
         $user_cache['gender'] = $gender;
     }
-    if ($user['birthday'] === '1970-01-01') {
+
+    if (empty($user['birthday']) || $user['birthday'] === '1970-01-01') {
         $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : 0;
-        $updateset[] = 'birthday = ' . sqlesc($birthday);
-        $curuser_cache['birthday'] = $birthday;
-        $user_cache['birthday'] = $birthday;
-        $cache->delete('birthdayusers_');
+        if (!empty($birthday)) {
+            $updateset[] = 'birthday = ' . sqlesc($birthday);
+            $curuser_cache['birthday'] = $birthday;
+            $user_cache['birthday'] = $birthday;
+            $cache->delete('birthdayusers_');
+        } else {
+            $birthday = '1970-01-01';
+            $updateset[] = 'birthday = ' . sqlesc($birthday);
+            $curuser_cache['birthday'] = $birthday;
+            $user_cache['birthday'] = $birthday;
+            $cache->delete('birthdayusers_');
+        }
     }
     $action = 'personal';
 } elseif ($action === 'social') {
