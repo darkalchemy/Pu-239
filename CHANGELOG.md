@@ -1,4 +1,5 @@
 ### 12 Jul, 2019
+fix: download torrent as zip  
 update: allow tv cats to edit subtitles  
 fix: snatches getting mark_of_cain set  
 fix: user offset  

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Phpzip;
 use Pu239\Session;
 use Pu239\Snatched;
 use Pu239\Torrent;
@@ -182,25 +183,17 @@ $dict['announce'] = $site_config['announce_urls'][$usessl][0] . '?torrent_pass='
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {
-    $row['name'] = str_replace([
-        ' ',
-        '.',
-        '-',
-    ], '_', $row['name']);
-    $file_name = TORRENTS_DIR . $row['name'] . '.torrent';
-    if (file_put_contents($file_name, $tor)) {
-        $files = $file_name;
-        $zipfile = TORRENTS_DIR . $row['name'] . '.zip';
-        $zip = $container->get(ZipArchive::class);
-        $zip->open($zipfile, ZipArchive::CREATE);
-        $zip->addFromString($zipfile, $tor);
-        $zip->close();
-        $zip->force_download($zipfile);
-        unlink($zipfile);
-        unlink($file_name);
-    } else {
-        stderr('Error', 'Can\'t create the new file, please contact staff', 'bottom20');
+    $zipfile = TORRENTS_DIR . $row['name'] . '.zip';
+    $zip = $container->get(Phpzip::class);
+    $zip->open($zipfile, ZipArchive::CREATE);
+    $fn = TORRENTS_DIR . $row['id'] . '.torrent';
+    if ($tor) {
+        $filename = "[{$site_config['site']['name']}]{$row['filename']}";
+        $zip->addFromString($filename, $tor);
     }
+    $zip->close();
+    $zip->force_download($zipfile);
+    unlink($zipfile);
 } else {
     if ($text) {
         header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['name'] . '.txt"');
