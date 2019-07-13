@@ -302,7 +302,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                 $newgenre[] = "<a href='{$site_config['paths']['baseurl']}/browse.php?{$lookup}sg=" . strtolower(trim($foo)) . "'>" . ucfirst(strtolower(trim($foo))) . '</a>';
             }
             if (!empty($newgenre)) {
-                $icons[] = implode(', ', $newgenre);
+                $icons[] = implode(',&nbsp;', $newgenre);
             }
         }
         $icon_string = implode(' ', array_diff($icons, ['']));
