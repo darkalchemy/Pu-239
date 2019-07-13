@@ -1,4 +1,5 @@
 ### 13 Jul, 2019
+fix: missing index  
 update: torrent info browse.php  
 add: include audio languages on tv/movie uploads  
 fix: update personal info without setting birthday  

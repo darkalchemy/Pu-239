@@ -275,8 +275,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -310,8 +310,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -475,6 +475,7 @@ class Torrent
                                      ->select('t.rating')
                                      ->select('t.year')
                                      ->select('t.subs AS subtitles')
+                                     ->select('t.audios')
                                      ->select('t.newgenre AS genre')
                                      ->select('u.username')
                                      ->select('u.class')
@@ -565,6 +566,7 @@ class Torrent
                                      ->select('t.rating')
                                      ->select('t.year')
                                      ->select('t.subs AS subtitles')
+                                     ->select('t.audios')
                                      ->select('t.newgenre AS genre')
                                      ->select('u.username')
                                      ->select('u.class')
@@ -677,6 +679,7 @@ class Torrent
                                         ->select('t.rating')
                                         ->select('t.year')
                                         ->select('t.subs AS subtitles')
+                                        ->select('t.audios')
                                         ->select('t.newgenre AS genre')
                                         ->select('u.username')
                                         ->select('u.class')
@@ -740,6 +743,7 @@ class Torrent
                                          ->select('t.rating')
                                          ->select('t.year')
                                          ->select('t.subs AS subtitles')
+                                         ->select('t.audios')
                                          ->select('t.newgenre AS genre')
                                          ->select('u.username')
                                          ->select('u.class')
@@ -806,6 +810,7 @@ class Torrent
                                             ->select('t.rating')
                                             ->select('t.year')
                                             ->select('t.subs AS subtitles')
+                                            ->select('t.audios')
                                             ->select('t.newgenre AS genre')
                                             ->select('u.username')
                                             ->select('u.class')
@@ -871,6 +876,7 @@ class Torrent
                                      ->select('t.rating')
                                      ->select('t.year')
                                      ->select('t.subs AS subtitles')
+                                     ->select('t.audios')
                                      ->select('t.newgenre AS genre')
                                      ->select('u.username')
                                      ->select('u.class')
@@ -959,10 +965,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
      * @throws Exception
+     * @throws DependencyException
      *
      * @return false|mixed|string|string[]|null
      */
