@@ -46,7 +46,7 @@ $name = $torrent->get_items(['name'], $id);
 $HTMLOUT .= "
     <h1 class='has-text-centered'>Snatches for torrent</h1>
     <h3 class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>" . htmlsafechars((string) $name) . "</a></h3>
-    <h3 class='has-text-centered'>Currently $count snatch" . ($count === 1 ? '' : 'es') . "</h3>";
+    <h3 class='has-text-centered'>Currently $count snatch" . ($count === 1 ? '' : 'es') . '</h3>';
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

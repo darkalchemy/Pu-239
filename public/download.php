@@ -109,28 +109,19 @@ if (isset($_GET['slot'])) {
             'freeslots' => $user['freeslots'] - 1,
         ];
         $users_class->update($update, $user['id']);
-        if ($used_slot && $slot['doubleup'] === 'yes') {
-            $update = [
-                'free' => 'yes',
-                'addedfree' => $added,
-            ];
-            $fluent->update('freeslots')
-                   ->set($update)
-                   ->where('torrentid = ?', $id)
-                   ->where('userid = ?', $user['id'])
-                   ->where('doubleup = ?', 'yes')
-                   ->execute();
-        } else {
-            $values = [
-                'torrentid' => $id,
-                'userid' => $user['id'],
-                'free' => 'yes',
-                'addedfree' => $added,
-            ];
-            $fluent->insertInto('freeslots')
-                   ->values($values)
-                   ->execute();
-        }
+        $values = [
+            'torrentid' => $id,
+            'userid' => $user['id'],
+            'free' => 'yes',
+            'addedfree' => $added,
+        ];
+        $update = [
+            'free' => 'yes',
+            'addedfree' => $added,
+        ];
+        $fluent->insertInto('freeslots', $values)
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
     } elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
             stderr('Doh!', 'Doubleseed slot already in use.', 'bottom20');
@@ -142,28 +133,19 @@ if (isset($_GET['slot'])) {
             'freeslots' => $user['freeslots'] - 1,
         ];
         $users_class->update($update, $user['id']);
-        if ($used_slot && $slot['free'] === 'yes') {
-            $update = [
-                'doubleup' => 'yes',
-                'addedfree' => $added,
-            ];
-            $fluent->update('freeslots')
-                   ->set($update)
-                   ->where('torrentid = ?', $id)
-                   ->where('userid = ?', $user['id'])
-                   ->where('free = ?', 'yes')
-                   ->execute();
-        } else {
-            $values = [
-                'torrentid' => $id,
-                'userid' => $user['id'],
-                'doubleup' => 'yes',
-                'addedfree' => $added,
-            ];
-            $fluent->insertInto('freeslots')
-                   ->values($values)
-                   ->execute();
-        }
+        $values = [
+            'torrentid' => $id,
+            'userid' => $user['id'],
+            'doubleup' => 'yes',
+            'addedup' => $added,
+        ];
+        $update = [
+            'doubleup' => 'yes',
+            'addedup' => $added,
+        ];
+        $fluent->insertInto('freeslots', $values)
+               ->onDuplicateKeyUpdate($update)
+               ->execute();
     } else {
         stderr('ERROR', 'What\'s up doc?', 'bottom20');
     }

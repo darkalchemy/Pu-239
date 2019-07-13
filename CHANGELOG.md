@@ -1,4 +1,5 @@
 ### 13 Jul, 2019
+fix: db insert for doubleup token used  
 update: times_completed during torrent_update cleanup  
 fix: wrong query string dunction_torrenttable.php  
 update: remove useless code from cron_controller.php  

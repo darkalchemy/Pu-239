@@ -26,15 +26,15 @@ global $container, $site_config;
 
 $ratio_free = $site_config['site']['ratio_free'];
 foreach ([
-             'torrent_pass',
-             'info_hash',
-             'peer_id',
-             'port',
-             'downloaded',
-             'uploaded',
-             'left',
-             'compact',
-         ] as $x) {
+    'torrent_pass',
+    'info_hash',
+    'peer_id',
+    'port',
+    'downloaded',
+    'uploaded',
+    'left',
+    'compact',
+] as $x) {
     if (!isset($_GET[$x])) {
         err("Missing key: $x");
     }
@@ -71,10 +71,10 @@ if (empty($realip)) {
 }
 $clientip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $realip;
 foreach ([
-             'num want',
-             'numwant',
-             'num_want',
-         ] as $x) {
+    'num want',
+    'numwant',
+    'num_want',
+] as $x) {
     if (isset($_GET[$x])) {
         $rsize = (int) $_GET[$x];
         break;
