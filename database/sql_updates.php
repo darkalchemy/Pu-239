@@ -3298,4 +3298,18 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `peers` DROP COLUMN `torrent_pass`',
         'flush' => true,
     ],
+    [
+        'id' => 1563040319,
+        'info' => 'Update user_blocks initial value',
+        'date' => '13 Jul, 2019',
+        'query' => 'ALTER TABLE `user_blocks` MODIFY `index_page` int unsigned NOT NULL DEFAULT 134217727',
+        'flush' => false,
+    ],
+    [
+        'id' => 1563040320,
+        'info' => 'Update user_blocks initial value',
+        'date' => '13 Jul, 2019',
+        'query' => 'UPDATE `user_blocks` SET `index_page` = 134217727 WHERE `index_page` = 33554431',
+        'flush' => true,
+    ],
 ];
