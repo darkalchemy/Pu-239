@@ -114,7 +114,7 @@ foreach ($subs as $s) {
                 <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
                 <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
             </div>';
-    $torrent_audios = explode('|', $row['audios']);
+    $torrent_audios = !empty($row['audios']) ? explode('|', $row['audios']) : [];
     $audios_list .= "
             <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
                 <input name='audios[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $torrent_audios) ? ' checked' : '') . " class='margin20'>
