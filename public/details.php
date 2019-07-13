@@ -331,7 +331,7 @@ $info_block .= tr($lang['details_size'], '<div class="left10">' . mksize($torren
 $info_block .= tr($lang['details_added'], '<div class="left10">' . get_date((int) $torrent['added'], 'LONG') . '</div>', 1);
 $info_block .= tr($lang['details_views'], "<div class='left10'>{$torrent['views']}</div>", 1);
 $info_block .= tr($lang['details_hits'], "<div class='left10'>{$torrent['hits']}</div>", 1);
-$info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
+$info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
 $info_block .= tr($lang['details_peers'], '<div class="left10">' . $torrent['seeders'] . ' seeder' . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}<br>
     <a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='top10 button is-small'>{$lang['details_list']}</a></div>", 1);
 
