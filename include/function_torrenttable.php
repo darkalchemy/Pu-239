@@ -41,12 +41,12 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @return string
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws InvalidManipulation
+ *
+ * @return string
  */
 function torrenttable(array $res, array $curuser, string $variant = 'index')
 {
@@ -341,7 +341,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         if (!empty($Subs)) {
             $subtitles = "<span class='left10'>" . implode(' ', $Subs) . '</span>';
         }
-        $audios_array = explode('|', $row['audios']);
+        $audios_array = !empty($row['audios']) ? explode('|', $row['audios']) : [];
         $Audios = [];
         foreach ($audios_array as $k => $subname) {
             foreach ($subs as $sub) {
