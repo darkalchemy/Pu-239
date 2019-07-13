@@ -28,6 +28,7 @@ function torrents_update($data)
                        ->select('seeders')
                        ->select('leechers')
                        ->select('comments')
+                       ->select('times_completed')
                        ->orderBy('id')
                        ->fetchAll();
 
@@ -42,9 +43,19 @@ function torrents_update($data)
                        ->select('torrent')
                        ->fetchAll();
 
+    $snatches = $fluent->from('snatched AS s')
+                       ->select(null)
+                       ->select('s.torrentid')
+                       ->select('COUNT(s.id) AS count')
+                       ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                       ->where('t.owner != s.userid')
+                       ->where('s.to_go = 0')
+                       ->groupBy('s.torrentid')
+                       ->fetchAll();
+
     $torrents_class = $container->get(Torrent::class);
     foreach ($torrents as $torrent) {
-        $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;
+        $torrent['completed'] = $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;
 
         foreach ($peers as $peer) {
             if ($peer['torrent'] === $torrent['id']) {
@@ -61,12 +72,18 @@ function torrents_update($data)
                 ++$torrent['comments_num'];
             }
         }
+        foreach ($snatches as $snatch) {
+            if ($snatch['torrentid'] === $torrent['id']) {
+                $torrent['completed'] = $snatch['count'];
+            }
+        }
 
-        if ($torrent['seeders'] != $torrent['seeders_num'] || $torrent['leechers'] != $torrent['leechers_num'] || $torrent['comments'] != $torrent['comments_num']) {
+        if ($torrent['completed'] != $torrent['times_completed'] || $torrent['seeders'] != $torrent['seeders_num'] || $torrent['leechers'] != $torrent['leechers_num'] || $torrent['comments'] != $torrent['comments_num']) {
             $set = [
                 'seeders' => $torrent['seeders_num'],
                 'leechers' => $torrent['leechers_num'],
                 'comments' => $torrent['comments_num'],
+                'times_completed' => $torrent['completed'],
             ];
             $torrents_class->update($set, $torrent['id'], true);
         }

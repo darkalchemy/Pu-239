@@ -12,10 +12,12 @@ use Pu239\User;
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_common.php';
-// utorrent 2.2.1 sends cookie header to allow utorrent to work with this tracker you must not block if cookie header is set
-if (/*isset($_SERVER['HTTP_COOKIE']) || */isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-    die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
-}
+
+// utorrent 2.2.1 sends cookie header, to allow utorrent to work with this tracker you must not block if cookie header is set
+//if (/*isset($_SERVER['HTTP_COOKIE']) || */
+//    isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+//    die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
+//}
 
 $dt = TIME_NOW;
 $no_peer_id = '';
@@ -24,15 +26,15 @@ global $container, $site_config;
 
 $ratio_free = $site_config['site']['ratio_free'];
 foreach ([
-    'torrent_pass',
-    'info_hash',
-    'peer_id',
-    'port',
-    'downloaded',
-    'uploaded',
-    'left',
-    'compact',
-] as $x) {
+             'torrent_pass',
+             'info_hash',
+             'peer_id',
+             'port',
+             'downloaded',
+             'uploaded',
+             'left',
+             'compact',
+         ] as $x) {
     if (!isset($_GET[$x])) {
         err("Missing key: $x");
     }
@@ -40,10 +42,13 @@ foreach ([
 $torrent_pass = $_GET['torrent_pass'];
 $info_hash = $_GET['info_hash'];
 $peer_id = $_GET['peer_id'];
-$port = $_GET['port'];
-$downloaded = $_GET['downloaded'];
-$uploaded = $_GET['uploaded'];
-$left = $_GET['left'];
+$port = (int) $_GET['port'];
+$downloaded = (int) $_GET['downloaded'];
+$uploaded = (int) $_GET['uploaded'];
+$left = (int) $_GET['left'];
+$real_downloaded = $downloaded;
+$real_uploaded = $uploaded;
+$rsize = 30;
 $compact = $_GET['compact'];
 if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
     err('Invalid Torrent Pass');
@@ -59,27 +64,22 @@ foreach ($strings as $x) {
     }
 }
 unset($x);
-$realip = $ip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $_SERVER['REMOTE_ADDR'];
-
-$port = (int) $port;
-$downloaded = (int) $downloaded;
-$uploaded = (int) $uploaded;
-$real_downloaded = $downloaded;
-$real_uploaded = $uploaded;
-$left = (int) $left;
-$rsize = 30;
-
+$peer_id = bin2hex($peer_id);
+$realip = $ip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : (validip($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null);
+if (empty($realip)) {
+    err('You\'re reported IP (' . $_SERVER['REMOTE_ADDR'] . ') is invalid and not allowed');
+}
+$clientip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $realip;
 foreach ([
-    'num want',
-    'numwant',
-    'num_want',
-] as $x) {
+             'num want',
+             'numwant',
+             'num_want',
+         ] as $x) {
     if (isset($_GET[$x])) {
         $rsize = (int) $_GET[$x];
         break;
     }
 }
-
 if ($uploaded < 0) {
     err('invalid uploaded (less than 0)');
 }
@@ -113,7 +113,7 @@ if (empty($user)) {
 } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
     err('Your downloading privileges have been disabled! (Read the rules)');
 } elseif ($user['class'] === 0 && $seeder === 'no') {
-    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, true, $peer_id);
+    $count = $peer_class->get_torrent_count($torrent['id'], $user['id'], true, $peer_id);
     if ($count > 3) {
         err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
     }
@@ -153,7 +153,7 @@ if ($site_config['site']['ip_logging']) {
     $added = get_date(TIME_NOW, 'MYSQL', 1, 0);
     if (!$no_log_ip) {
         $values = [
-            'ip' => $ip,
+            'ip' => inet_pton($ip),
             'userid' => $userid,
             'type' => 'announce',
             'last_access' => $added,
@@ -180,25 +180,24 @@ if ($compact != 1) {
 $peers = $peer_class->get_torrent_peers_by_tid($torrent['id']);
 $res = $this_user_torrent = [];
 foreach ($peers as $peer) {
-    if ($port != $peer['port'] || $realip != $peer['ip']) {
+    if ($port != $peer['port'] && $realip != $peer['ip'] && $clientip != $peer['ip']) {
         if ($seeder === 'yes' && $peer['seeder'] === 'no') {
             $res[] = $peer;
         } elseif ($seeder === 'no') {
             $res[] = $peer;
         }
-    } elseif ($port == $peer['port'] && $realip == $peer['ip'] && $peer['peer_id'] == $peer_id) {
+    } elseif ($port === $peer['port'] && ($realip === $peer['ip'] || $clientip === $peer['ip']) && bin2hex($peer['peer_id']) === $peer_id) {
         $this_user_torrent = $peer;
     }
 }
 shuffle($res);
 $res = array_slice($res, 0, $rsize);
-
 $peer = [];
 $peer_num = 0;
 foreach ($res as $row) {
     if ($compact != 1) {
         $row['peer_id'] = str_pad($row['peer_id'], 20);
-        if ($row['peer_id'] === $peer_id) {
+        if (bin2hex($row['peer_id']) === $peer_id) {
             $self = $row;
             continue;
         }
@@ -232,7 +231,7 @@ if ($compact != 1) {
 
 if (!isset($self)) {
     foreach ($peers as $peer) {
-        if (strtolower($peer['peer_id']) === strtolower($peer_id) || strtolower($peer['peer_id']) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
+        if (strtolower(bin2hex($peer['peer_id'])) === strtolower($peer_id) || strtolower(bin2hex($peer['peer_id'])) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
             $userid = $peer['userid'];
             $self = $peer;
         }
@@ -270,15 +269,15 @@ $agentarray = [
 ];
 foreach ($agentarray as $bannedclient) {
     if (strpos($useragent, $bannedclient) !== false) {
-        err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1+ or any other modern torrent client.');
+        err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1 or any other modern torrent client.');
     }
 }
-$announce_wait = $site_config['tracker']['min_interval'];
-if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
-    err("There is a minimum announce time of $announce_wait seconds");
-}
+//$announce_wait = $site_config['tracker']['min_interval'];
+//if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
+//    err("There is a minimum announce time of $announce_wait seconds");
+//}
 if (!isset($self)) {
-    $count = $peer_class->get_torrent_count($torrent['id'], $torrent_pass, false, $peer_id);
+    $count = $peer_class->get_torrent_count($torrent['id'], $userid, false, $peer_id);
     if ($count > 1) {
         err('Connection limit exceeded!');
     }
@@ -406,11 +405,10 @@ if (isset($self) && $event === 'stopped') {
     ]);
     $update = $values;
     $values['torrent'] = $torrent['id'];
-    $values['peer_id'] = $peer_id;
-    $values['ip'] = $realip;
+    $values['peer_id'] = hex2bin($peer_id);
+    $values['ip'] = inet_pton($realip);
     $values['port'] = $port;
     $values['userid'] = $userid;
-    $values['torrent_pass'] = $torrent_pass;
     $updated = $peer_class->insert_update($values, $update);
     unset($values, $update);
     $cache->delete('peers_' . $userid);
@@ -441,8 +439,8 @@ if (isset($self) && $event === 'stopped') {
 } else {
     $values = [
         'torrent' => $torrent['id'],
-        'peer_id' => $peer_id,
-        'ip' => $realip,
+        'peer_id' => hex2bin($peer_id),
+        'ip' => inet_pton($realip),
         'userid' => $userid,
         'port' => $port,
         'connectable' => $connectable,
@@ -455,7 +453,6 @@ if (isset($self) && $event === 'stopped') {
         'agent' => $agent,
         'downloadoffset' => $ratio_free ? 0 : $downloaded,
         'uploadoffset' => $uploaded,
-        'torrent_pass' => $torrent_pass,
     ];
 
     $update = [

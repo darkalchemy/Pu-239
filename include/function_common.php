@@ -13,10 +13,7 @@ use Pu239\User;
  */
 function validip($ip)
 {
-    return filter_var($ip, FILTER_VALIDATE_IP, [
-        'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-        FILTER_FLAG_NO_RES_RANGE,
-    ]) ? true : false;
+    return filter_var($ip, FILTER_VALIDATE_IP,FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) ? true : false;
 }
 
 /**
@@ -26,11 +23,11 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws DependencyException
+ * @return false|mixed|string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return false|mixed|string
+ * @throws DependencyException
  */
 function get_date(int $date, $method, $norelative = 1, $full_relative = 0, $calc = false)
 {

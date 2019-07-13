@@ -47,31 +47,6 @@ function autoclean(string $run)
     $cache->set('cleanup_check_', 'running', 600);
     $now = TIME_NOW;
     $fluent = $container->get(Database::class);
-    $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('id')
-                       ->select('subs');
-    $subs = $container->get('subtitles');
-    foreach ($torrents as $torrent) {
-        $values = [];
-        $tsubs = explode(',', $torrent['subs']);
-        foreach ($tsubs as $tsub) {
-            if (is_numeric($tsub)) {
-                foreach ($subs as $sub) {
-                    if ($sub['id'] == $tsub) {
-                        $values[] = $sub['name'];
-                    }
-                }
-            }
-        }
-        if (!empty($values)) {
-            $set['subs'] = implode('|', $values);
-            $fluent->update('torrents')
-                   ->set($set)
-                   ->where('id = ?', $torrent['id'])
-                   ->execute();
-        }
-    }
     $query = $fluent->from('cleanup');
     if (!empty($run)) {
         $query = $query->where('function_name = ?', $run);
@@ -83,25 +58,6 @@ function autoclean(string $run)
                        ->orderBy('clean_increment ASC');
     }
     $query = $query->fetchAll();
-    if ($site_config['site']['name'] === 'Crafty') {
-        $torrents = $fluent->from('torrents')
-                           ->select(null)
-                           ->select('id')
-                           ->fetchAll();
-        foreach ($torrents as $torrent) {
-            $set = [
-                'last_action' => TIME_NOW,
-                'seeders' => mt_rand(10, 100),
-                'leechers' => mt_rand(3, 50),
-                'visible' => 'yes',
-            ];
-            $fluent->update('torrents')
-                   ->set($set)
-                   ->where('id = ?', $torrent['id'])
-                   ->execute();
-        }
-    }
-
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
     } else {

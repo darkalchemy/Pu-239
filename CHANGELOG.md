@@ -1,3 +1,11 @@
+### 13 Jul, 2019
+update: times_completed during torrent_update cleanup  
+fix: wrong query string dunction_torrenttable.php  
+update: remove useless code from cron_controller.php  
+update: remove torrent_pass from peers table  
+update: change initial sort order to descending when click column to sort browse.php  
+update: generate users torrent_pass/auth/apikey if not already set  
+
 ### 12 Jul, 2019
 fix: download torrent as zip  
 update: allow tv cats to edit subtitles  

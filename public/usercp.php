@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once CLASS_DIR . 'class_user_options.php';
@@ -10,6 +11,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_password.php';
 require_once CACHE_DIR . 'timezones.php';
 
 $user = check_user_status();
@@ -213,6 +215,21 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
+    if (empty($user['torrent_pass'])) {
+        $update['torrent_pass'] = make_password(32);
+    }
+    if (empty($user['auth'])) {
+        $update['auth'] = make_password(32);
+    }
+    if (empty($user['apikey'])) {
+        $update['apikey'] = make_password(32);
+    }
+    if (!empty($update)) {
+        $user_class = $container->get(User::class);
+        $user_class->update($update, $user['id']);
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+        die();
+    }
     $HTMLOUT .= tr('Torrent Pass', '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($user['torrent_pass']) . '" readonly onClick="this.select();"><div class="left10 top10">This is used for downloading and seeding torrents, in your torrent client and your rss reader.</div>', 1);
     $HTMLOUT .= tr('Auth', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['auth']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by an upload script, msg any staff member for the details.</div>', 1);
     $HTMLOUT .= tr('API Key', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['apikey']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)</div>', 1);

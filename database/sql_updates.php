@@ -3286,9 +3286,16 @@ KEY `expires` (`expires`)
     ],
     [
         'id' => 1562887744,
-        'info' => 'Drop templ table',
+        'info' => 'Drop temp table',
         'date' => '11 Jul, 2019',
-        'query' => 'DROP table `tmp_data`',
+        'query' => 'DROP TABLE `tmp_data`',
+        'flush' => true,
+    ],
+    [
+        'id' => 1563020986,
+        'info' => 'Drop column',
+        'date' => '13 Jul, 2019',
+        'query' => 'ALTER TABLE `peers` DROP COLUMN `torrent_pass`',
         'flush' => true,
     ],
 ];

@@ -124,7 +124,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         if (isset($_GET['sort']) && $_GET['sort'] == $i) {
             ${$link} = (isset($_GET['type']) && $_GET['type'] === 'desc') ? 'asc' : 'desc';
         } else {
-            ${$link} = 'asc';
+            ${$link} = 'desc';
         }
         ++$i;
     }
@@ -175,6 +175,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             'id' => $value['id'],
             'name' => $value['name'],
             'image' => $value['image'],
+            'parent_id' => $value['parent_id'],
         ];
     }
     $images_class = $container->get(Image::class);
@@ -199,12 +200,13 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $row['parent_id'] = $change[$row['category']]['parent_id'];
         $id = $row['id'];
         $htmlout .= "
                     <tr>
                     <td class='has-text-centered'>";
         if (isset($row['cat_name'])) {
-            $htmlout .= "<a href='{$site_config['paths']['baseurl']}/browse.php?cat=" . $row['category'] . "'>";
+            $htmlout .= "<a href='{$site_config['paths']['baseurl']}/browse.php?" . (!empty($row['parent_id']) ? "cats[]={$row['parent_id']}&amp;" : '') . "cats[]=" . $row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
                 $htmlout .= "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' class='tooltipper' alt='{$row['cat_name']}' title='{$row['cat_name']}'>";
             } else {

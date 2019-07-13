@@ -7,12 +7,12 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
- * @throws DependencyException
+ * @return string|void
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  *
- * @return string|void
+ * @throws DependencyException
  */
 function breadcrumbs()
 {
@@ -95,6 +95,7 @@ function get_prepage($lang, $url, $referer)
         case '/viewnfo.php':
         case '/filelist.php':
         case '/peerlist.php':
+        case '/snatches.php':
             $links[] = get_basepage($lang, '/browse.php');
             $array = parse_url($referer);
             $path = $array['path'];
@@ -154,11 +155,11 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return bool|string
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_secondarypage($lang, $queries, $path)
 {
@@ -205,11 +206,11 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return bool|string
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return bool|string
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_infopage($lang, $queries, $path)
 {
@@ -412,11 +413,11 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return mixed|string
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return mixed|string
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_mailbox_name($mailbox)
 {

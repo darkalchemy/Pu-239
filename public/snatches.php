@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Database;
 use Pu239\Session;
+use Pu239\Torrent;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -24,26 +25,28 @@ $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr('Error', 'It appears that you have entered an invalid id.');
 }
-$res = sql_query('SELECT id, name FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_assoc($res);
-if (!$arr) {
-    stderr('Error', 'It appears that there is no torrent with that id.');
-}
+
 $fluent = $container->get(Database::class);
-$count = $fluent->from('snatched')
+$count = $fluent->from('snatched AS s')
                 ->select(null)
-                ->select('COUNT(id) AS count')
-                ->where('complete_date != 0')
-                ->where('torrentid = ?', $id)
+                ->select('COUNT(s.id) AS count')
+                ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                ->where('s.torrentid = ?', $id)
+                ->where('t.owner != s.userid')
+                ->where('s.to_go = 0')
                 ->fetch('count');
 
-$perpage = 15;
-$pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
+$perpage = 25;
+$pager = pager($perpage, $count, $site_config['paths']['baseurl'] . "/snatches.php?id=$id&amp;");
 if (!$count) {
-    stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
+    stderr('No snatches', "It appears that there are currently no snatches for this <a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>torrent</a>.");
 }
-$HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
-$HTMLOUT .= "<h3 class='has-text-centered'>Currently $count snatch" . ($count === 1 ? '' : 'es') . "</h3>\n";
+$torrent = $container->get(Torrent::class);
+$name = $torrent->get_items(['name'], $id);
+$HTMLOUT .= "
+    <h1 class='has-text-centered'>Snatches for torrent</h1>
+    <h3 class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>" . htmlsafechars((string) $name) . "</a></h3>
+    <h3 class='has-text-centered'>Currently $count snatch" . ($count === 1 ? '' : 'es') . "</h3>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
@@ -62,15 +65,24 @@ $header = "
             <th class='has-text-centered'>{$lang['snatches_completedat']}</th>
             <th class='has-text-centered'>{$lang['snatches_announced']}</th>
         </tr>";
-$res = sql_query('
-            SELECT s.*, u.paranoia, t.anonymous AS anonymous1, u.anonymous AS anonymous2, size, timesann, owner
-            FROM snatched AS s
-            INNER JOIN users AS u ON s.userid=u.id
-            INNER JOIN torrents AS t ON s.torrentid=t.id
-            WHERE s.complete_date !=0 AND s.torrentid=' . sqlesc($id) . '
-            ORDER BY complete_date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+
+$snatches = $fluent->from('snatched AS s')
+                   ->select('u.paranoia')
+                   ->select('t.anonymous AS anonymous1')
+                   ->select('u.anonymous AS anonymous2')
+                   ->select('t.size')
+                   ->select('t.owner')
+                   ->leftJoin('torrents AS t ON s.torrentid = t.id')
+                   ->leftJoin('users AS u ON s.userid = u.id')
+                   ->where('s.torrentid = ?', $id)
+                   ->where('t.owner != s.userid')
+                   ->where('s.to_go = 0')
+                   ->limit($pager['pdo']['limit'])
+                   ->offset($pager['pdo']['offset'])
+                   ->fetchAll();
+
 $body = '';
-while ($arr = mysqli_fetch_assoc($res)) {
+foreach ($snatches as $arr) {
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
