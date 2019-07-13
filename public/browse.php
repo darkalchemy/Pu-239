@@ -24,7 +24,7 @@ $today = isset($_GET['today']) ? $_GET['today'] : 0;
 unset($_GET['today']);
 if (!empty($_GET)) {
     if (!empty($_GET['sns'])) {
-        unset($_GET['incldead'], $_GET['vip'], $_GET['only_free'], $_GET['unsnatched'], $_GET['sna'], $_GET['sd'], $_GET['sg'], $_GET['so'], $_GET['sys'], $_GET['sye'], $_GET['srs'], $_GET['sre'], $_GET['si'], $_GET['ss'], $_GET['sp'], $_GET['spf'], $_GET['st'], $_GET['sr']);
+        unset($_GET['incldead'], $_GET['vip'], $_GET['only_free'], $_GET['unsnatched'], $_GET['sna'], $_GET['sd'], $_GET['sg'], $_GET['so'], $_GET['sys'], $_GET['sye'], $_GET['srs'], $_GET['sre'], $_GET['si'], $_GET['ss'], $_GET['sp'], $_GET['spf'], $_GET['st'], $_GET['sa'], $_GET['sr']);
     } else {
         unset($_GET['sns']);
         $hide_simple = 'hidden';
@@ -47,12 +47,14 @@ $count = $fluent->from('torrents AS t')
 $query = $fluent->from('torrents AS t')
                 ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
                 ->select('u.username')
+                ->select('cu.username AS checked_by_username')
                 ->select('u.class')
                 ->select('f.doubleup AS doubleslot')
                 ->select('f.free AS freeslot')
                 ->select('f.addedup')
                 ->select('f.addedfree')
                 ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('users AS cu ON t.checked_by = cu.id')
                 ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $user['id']);
 
 $HTMLOUT = $addparam = $new_button = $title = '';
@@ -81,6 +83,7 @@ $valid_search = [
     'spf',
     'sr',
     'st',
+    'sa',
 ];
 if (isset($_GET['sort'], $_GET['type'])) {
     $column = $ascdesc = '';
@@ -315,6 +318,13 @@ foreach ($valid_search as $search) {
                 foreach ($subs as $sub) {
                     $count->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
                     $query->where('MATCH (t.subs) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                }
+            }
+            if ($search === 'sa') {
+                $subs = explode(' ', $cleaned);
+                foreach ($subs as $sub) {
+                    $count->where('MATCH (t.audios) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                    $query->where('MATCH (t.audios) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
                 }
             }
         }

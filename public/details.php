@@ -272,13 +272,29 @@ if (!empty($torrent['subs'])) {
     foreach ($subtitles as $k => $subname) {
         foreach ($subs as $sub) {
             if (strtolower($sub['name']) === strtolower($subname)) {
-                $Subs[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . "'>";
+                $Subs[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . " {$lang['details_subtitle']}'>";
             }
         }
     }
     $subtitles = '';
     if (!empty($Subs)) {
         $subtitles = "<span class='level-left'>" . implode(' ', $Subs) . '</span>';
+    }
+}
+if (!empty($torrent['audios'])) {
+    $subs = $container->get('subtitles');
+    $audios = explode('|', $torrent['audios']);
+    $Audios = [];
+    foreach ($audios as $k => $subname) {
+        foreach ($subs as $sub) {
+            if (strtolower($sub['name']) === strtolower($subname)) {
+                $Audios[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . " {$lang['details_audio']}'>";
+            }
+        }
+    }
+    $audios = '';
+    if (!empty($Audios)) {
+        $audios = "<span class='level-left'>" . implode(' ', $Audios) . '</span>';
     }
 }
 $banner_image = get_banner($torrent['imdb_id']);
@@ -304,6 +320,9 @@ if ($user['class'] >= (UC_MIN + 1) && $torrent['nfosz'] > 0) {
 }
 if (!empty($torrent['subs'])) {
     $info_block .= tr($lang['details_subs'], $subtitles, 1);
+}
+if (!empty($torrent['audios'])) {
+    $info_block .= tr($lang['details_audios'], $audios, 1);
 }
 if ($torrent['visible'] === 'no') {
     $info_block .= tr($lang['details_visible'], '<div class="left10">' . $lang['details_no'] . $lang['details_dead'] . '</div>', 1);

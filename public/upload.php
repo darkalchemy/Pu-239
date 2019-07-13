@@ -26,7 +26,7 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$HTMLOUT = $offers = $subs_list = $has_request = $descr = '';
+$HTMLOUT = $offers = $subs_list = $audios_list = $has_request = $descr = '';
 if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
@@ -134,7 +134,7 @@ $announce_url = $announce_url . ($site_config['upload']['show_torrent_pass'] ? '
 $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
-        <input type='hidden' id='csrf' name='csrf'  data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
+        <input type='hidden' id='csrf' name='csrf' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>
         <div class='has-text-centered margin10'>{$lang['upload_announce_url']}:<br>
             <input type='text' class='has-text-centered w-100' readonly='readonly' value='{$announce_url}' id='announce_url'>
@@ -247,10 +247,21 @@ foreach ($subs as $s) {
 $subs_list .= '
                 </div>';
 
+$audio_list = str_replace([
+    'subs[]',
+    "id='subs'",
+], [
+    'audios[]',
+    "id='audios'",
+], $subs_list);
 $HTMLOUT .= "
             <tr'>
                 <td>{$lang['upload_subtitles']}</td>
                 <td>{$subs_list}</td>
+            </tr>
+            <tr>
+                <td>{$lang['upload_audios']}</td>
+                <td>{$audio_list}</td>
             </tr>";
 
 $rg = "

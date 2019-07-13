@@ -158,6 +158,9 @@ if (in_array($category, $site_config['categories']['movie']) || in_array($catego
     $subs = isset($_POST['subs']) ? implode('|', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;
+    $audios = isset($_POST['audios']) ? implode('|', $_POST['audios']) : '';
+    $updateset[] = 'audios = ' . sqlesc($audios);
+    $torrent_cache['audios'] = $audios;
 }
 
 if (($sticky = (!empty($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {

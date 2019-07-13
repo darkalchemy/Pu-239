@@ -74,7 +74,7 @@ function get_file_name($file)
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':
-            return "{$site_config['paths']['baseurl']}/js/1/upload_8ff4c9c6.js";
+            return "{$site_config['paths']['baseurl']}/js/1/upload_200b0a12.js";
         case 'request_js':
             return "{$site_config['paths']['baseurl']}/js/1/request_14f9d732.js";
         case 'parallax_js':

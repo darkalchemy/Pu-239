@@ -4,6 +4,21 @@ declare(strict_types = 1);
 
 $lang = [
     //torrenttable
+    'torrenttable_never_snatched' => 'You have never Snatched this Torrent',
+    'torrenttable_completed' => 'You have completed this Torrent',
+    'torrenttable_incomplete' => 'You have snatched this torrent but not completed downloading',
+    'torrenttable_staff_pick' => 'Staff Pick!',
+    'torrenttable_voters' => 'of IMDb voters liked this!',
+    'torrenttable_tools' => 'Tools',
+    'torrenttable_sticky' => 'Sticky',
+    'torrenttable_scene' => 'Scene',
+    'torrenttable_vip' => 'This torrent is for VIP user only!',
+    'torrenttable_free' => 'Free Torrent!',
+    'torrenttable_silver' => 'Silver Torrent!',
+    'torrenttable_checked_by' => 'Checked by',
+    'torrenttable_download' => 'Download',
+    'torrenttable_subtitle' => 'Subtitle',
+    'torrenttable_audio' => 'Audio',
     'torrenttable_type' => 'Type',
     'torrenttable_name' => 'Name',
     'torrenttable_subtitles' => 'Subs',

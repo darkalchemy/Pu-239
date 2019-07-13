@@ -3312,4 +3312,18 @@ KEY `expires` (`expires`)
         'query' => 'UPDATE `user_blocks` SET `index_page` = 134217727 WHERE `index_page` = 33554431',
         'flush' => true,
     ],
+    [
+        'id' => 1563040321,
+        'info' => 'Add Column audios',
+        'date' => '13 Jul, 2019',
+        'query' => 'ALTER TABLE `torrents` ADD COLUMN `audios` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `subs`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1563040322,
+        'info' => 'Add fulltext index',
+        'date' => '13 Jul, 2019',
+        'query' => 'ALTER TABLE `torrents` ADD FULLTEXT INDEX `audios`(`audios`)',
+        'flush' => false,
+    ],
 ];

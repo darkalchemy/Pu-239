@@ -1,4 +1,5 @@
 ### 13 Jul, 2019
+add: include audio languages on tv/movie uploads  
 fix: update personal info without setting birthday  
 fix: db insert for doubleup token used  
 update: times_completed during torrent_update cleanup  

@@ -49,8 +49,7 @@ if (!$row) {
 if (!isset($user) || ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF)) {
     stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
 }
-$HTMLOUT = $currently_editing = $subs_list = '';
-
+$HTMLOUT = $currently_editing = $subs_list = $audios_list = '';
 if ($user['class'] >= UC_STAFF) {
     $currently_editing = $cache->get('editedby_' . $id);
     if ($currently_editing === false || is_null($currently_editing)) {
@@ -100,6 +99,8 @@ $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 
 $subs_list .= "
         <div class='level-center'>";
+$audios_list .= "
+        <div class='level-center'>";
 $subs = $container->get('subtitles');
 $s = [
     'name' => '',
@@ -113,12 +114,20 @@ foreach ($subs as $s) {
                 <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
                 <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
             </div>';
+    $torrent_audios = explode('|', $row['audios']);
+    $audios_list .= "
+            <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
+                <input name='audios[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $torrent_audios) ? ' checked' : '') . " class='margin20'>
+                <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
+                <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
+            </div>';
 }
 $subs_list .= '
         </div>';
-
-$HTMLOUT .= tr('Subtitiles', $subs_list, 1);
-
+$audios_list .= '
+        </div>';
+$HTMLOUT .= tr('Subtitles', $subs_list, 1);
+$HTMLOUT .= tr('Audios', $audios_list, 1);
 $rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] === 'scene' ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] === 'p2p' ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] === 'none' ? ' selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
 $HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);

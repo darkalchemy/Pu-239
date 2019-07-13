@@ -40,7 +40,8 @@ $music = isset($data['music']) && is_array($data['music']) ? $data['music'] : []
 $movie = isset($data['movie']) && is_array($data['movie']) ? $data['movie'] : [];
 $game = isset($data['game']) && is_array($data['game']) ? $data['game'] : [];
 $apps = isset($data['apps']) && is_array($data['apps']) ? $data['apps'] : [];
-$subs = isset($data['subs']) && is_array($data['subs']) ? $data['subs'] : [];
+$subs = isset($data['subs']) && is_array($data['subs']) ? implode('|', $subs) : '';
+$audios = isset($data['audios']) && is_array($data['audios']) ? implode('|', $audios) : '';
 $genre = isset($data['genre']) ? $data['genre'] : '';
 $catid = isset($data['type']) && is_valid_id((int) $data['type']) ? (int) $data['type'] : 0;
 $request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int) $data['request'] : 0;
@@ -170,7 +171,6 @@ if (!is_valid_id($catid)) {
     $session->set('is-warning', $lang['takeupload_no_cat']);
     why_die($lang['takeupload_no_cat']);
 }
-$subs = !empty($subs) ? implode('|', $subs) : '';
 $release_group_array = [
     'scene' => 1,
     'p2p' => 1,
@@ -356,6 +356,7 @@ $values = [
     'request' => $request,
     'url' => $url,
     'subs' => $subs,
+    'audio' => $audios,
     'descr' => $descr,
     'ori_descr' => $descr,
     'description' => $description,
@@ -403,10 +404,10 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws NotFoundException
+ * @return string
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function file_list($arr, $id)
 {

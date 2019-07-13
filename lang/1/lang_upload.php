@@ -62,6 +62,7 @@ $lang = [
     'upload_free_8_weeks' => 'Free for 8 weeks',
     'upload_unlimited' => 'Unlimited',
     'upload_subtitles' => 'Subtitles',
+    'upload_audios' => 'Audio Languages',
     'upload_strip' => 'Strip ASCII',
     'upload_what_this' => 'What is this?',
     'upload_offer' => 'My Offers',
