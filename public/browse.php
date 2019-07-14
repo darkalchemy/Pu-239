@@ -381,29 +381,29 @@ $vip = ((isset($_GET['vip'])) ? (int) $_GET['vip'] : '');
 $vip_box = "
                     <select name='vip' class='w-100'>
                         <option value='0'>{$lang['browse_include_vip']}</option>
-                        <option value='1'" . ($vip == 1 ? ' selected' : '') . ">{$lang['browse_no_vip']}</option>
-                        <option value='2'" . ($vip == 2 ? ' selected' : '') . ">{$lang['browse_only_vip']}</option>
+                        <option value='1' " . ($vip == 1 ? 'selected' : '') . ">{$lang['browse_no_vip']}</option>
+                        <option value='2' " . ($vip == 2 ? 'selected' : '') . ">{$lang['browse_only_vip']}</option>
                     </select>";
 
 $deadcheck = "
                     <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>
-                        <option value='1'" . ($queryed == 1 ? ' selected' : '') . ">{$lang['browse_inc_dead']}</option>
-                        <option value='2'" . ($queryed == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
+                        <option value='1' " . ($queryed == 1 ? 'selected' : '') . ">{$lang['browse_inc_dead']}</option>
+                        <option value='2' " . ($queryed == 2 ? 'selected' : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 
 $only_free = ((isset($_GET['only_free'])) ? (int) $_GET['only_free'] : '');
 $only_free_box = "
                     <select name='only_free' class='w-100'>
                         <option value='0'>{$lang['browse_all_free']}</option>
-                        <option value='1'" . ($only_free == 1 ? ' selected' : '') . ">{$lang['browse_only_free']}</option>
+                        <option value='1' " . ($only_free == 1 ? 'selected' : '') . ">{$lang['browse_only_free']}</option>
                     </select>";
 
 $unsnatched = ((isset($_GET['unsnatched'])) ? (int) $_GET['unsnatched'] : '');
 $unsnatched_box = "
                     <select name='unsnatched' class='w-100'>
                         <option value='0'>{$lang['browse_all']}</option>
-                        <option value='1'" . ($unsnatched == 1 ? ' selected' : '') . ">{$lang['browse_all_unsnatched']}</option>
+                        <option value='1' " . ($unsnatched == 1 ? 'selected' : '') . ">{$lang['browse_all_unsnatched']}</option>
                     </select>";
 
 $HTMLOUT .= main_div("
@@ -417,7 +417,7 @@ $HTMLOUT .= main_div("
                         <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_simple_btn']}</span>
                     </div>
                 </div>
-                <div id='advanced' $hide_advanced>
+                <div id='advanced' {$hide_advanced}>
                     <div class='padding20 w-100'>
                         <div class='columns'>
                             <div class='column'>

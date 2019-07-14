@@ -54,7 +54,6 @@ function byteformat($value, $limes = 2, $comma = 0)
 {
     $dh = pow(10, $comma);
     $li = pow(10, $limes);
-    $return_value = $value;
     $unit = $GLOBALS['byteUnits'][0];
     for ($d = 6, $ex = 15; $d >= 1; $d--, $ex -= 3) {
         if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
@@ -83,7 +82,6 @@ function timespanFormat($seconds)
 {
     global $lang;
 
-    $return_string = '';
     $days = floor($seconds / 86400);
     if ($days > 0) {
         $seconds -= $days * 86400;

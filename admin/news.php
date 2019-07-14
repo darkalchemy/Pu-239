@@ -159,9 +159,9 @@ if ($mode === 'delete') {
                             {$lang['news_sticky']}
                         </td>
                         <td>
-                            <input type='radio' " . ($arr['sticky'] === 'yes' ? ' checked' : '') . " name='sticky' value='yes'>
+                            <input type='radio' " . ($arr['sticky'] === 'yes' ? 'checked' : '') . " name='sticky' value='yes'>
                             {$lang['news_yes']}
-                            <input type='radio' " . ($arr['sticky'] === 'no' ? ' checked' : '') . " name='sticky' value='no'>
+                            <input type='radio' " . ($arr['sticky'] === 'no' ? 'checked' : '') . " name='sticky' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -171,9 +171,9 @@ if ($mode === 'delete') {
                         </td>
                         <td>
                             {$lang['news_anonymous']}
-                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? ' checked' : '') . " name='anonymous' value='yes'>
+                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? 'checked' : '') . " name='anonymous' value='yes'>
                             {$lang['news_yes']}
-                            <input type='radio' " . ($arr['anonymous'] === 'no' ? ' checked' : '') . " name='anonymous' value='no'>
+                            <input type='radio' " . ($arr['anonymous'] === 'no' ? 'checked' : '') . " name='anonymous' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>

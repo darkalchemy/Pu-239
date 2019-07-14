@@ -45,7 +45,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     for ($i = 0;; ++$i) {
         if ($c = get_user_class_name((int) $i)) {
             $option .= '
-					<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
+					<option value="' . $i . '" ' . (ctype_digit($class) && $class == $i ? 'selected' : '') . '>' . $c . '</option>';
         } else {
             break;
         }
@@ -70,9 +70,9 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             </div>
             <div class="tabs is-centered is-small padtop10">
                 <ul>' : '';
-        $active = !empty($_GET['letter']) && $_GET['letter'] === $L ? " class='active'" : '';
+        $active = !empty($_GET['letter']) && $_GET['letter'] === $L ? "class='active'" : '';
         $next .= " <li>
-						<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history&amp;letter=" . $L . "'{$active}>" . $L . '</a>
+						<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history&amp;letter=" . $L . "' {$active}>" . $L . '</a>
 					</li>';
         ++$count;
     }
@@ -226,7 +226,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<span style="color: white;font-weight: bold;">' . htmlsafechars((string) $arr['topic_name']) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
-		<td class="forum_head" width="100"><a id="' . $post_id . '"></a></td>
+		<td class="forum_head"><a id="' . $post_id . '"></a></td>
 		<td class="forum_head"><span style="white - space:nowrap;">' . $post_icon . '
 		<a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
 		' . $post_title . ' </a>&nbsp;&nbsp;' . $post_status_image . ' & nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span></td>
@@ -235,8 +235,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt = "' . $lang['fe_bottom'] . '" class="emoticon"></a></span></td>
 		</tr>
 		<tr>
-		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? ' < i>' . get_anonymous_name() . ' </i>' : format_username((int) $member_id)) . ($arr['anonymous'] === 'yes' || empty($user_arr['title']) ? '' : ' < br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
-		<td class="' . $post_status . '" align = "left" valign = "top" colspan="2">' . $body . $edited_by . '</td>
+		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $member_id)) . ($arr['anonymous'] === 'yes' || empty($user_arr['title']) ? '' : ' < br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
+		<td class="' . $post_status . '" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
         </table>';
     }

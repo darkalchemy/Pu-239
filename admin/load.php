@@ -32,7 +32,6 @@ function uptime()
 {
     global $lang;
 
-    $res = '';
     $filename = '/proc/uptime';
     $fd = fopen($filename, 'r');
     if ($fd === false) {
@@ -48,7 +47,6 @@ function uptime()
             1 => $lang['index_load_minute'],
         ];
         $n = 2419200;
-        $periods = [];
         $shown = false;
         $uptime = substr($uptime, 0, strpos($uptime, ' '));
         $res = '';
@@ -81,7 +79,6 @@ function loadavg($return_all = false)
 {
     global $lang;
 
-    $res = '';
     $filename = '/proc/loadavg';
     $fd = fopen($filename, 'r');
     if ($fd === false) {

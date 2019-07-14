@@ -127,7 +127,7 @@ if (!empty($files)) {
                 " . mksize(filesize($file)) . "
             </td>
             <td class='has-text-centered w-10'>
-                <input type='checkbox' name='logs[]' value='" . urlencode($file) . "'" . (!empty($_GET['file']) && $_GET['file'] === $file ? ' checked' : '') . '>
+                <input type='checkbox' name='logs[]' value='" . urlencode($file) . "' " . (!empty($_GET['file']) && $_GET['file'] === $file ? 'checked' : '') . '>
             </td>
         </tr>';
     }

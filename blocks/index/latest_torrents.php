@@ -34,7 +34,7 @@ foreach ($last5torrents as $last) {
     if (empty($last['poster']) && !empty($last['imdb_id'])) {
         $last['poster'] = $images_class->find_images($last['imdb_id']);
     }
-    $last['poster'] = empty($last['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($last['poster'], true, 250) . "' class='tooltip-poster'>";
+    $last['poster'] = empty($last['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$last['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($last['poster'], true, 250) . "' alt='Poster for {$last['name']}' class='tooltip-poster'>";
     if ($last['anonymous'] === 'yes' && ($user['class'] < UC_STAFF || $last['owner'] === $user['id'])) {
         $last['uploader'] = get_anonymous_name();
     } else {

@@ -36,7 +36,7 @@ $body = "
         <tr>
             <td class='rowhead'>{$lang['ad_banemail_email']}</td>
             <td><input type='text' name='email' size='40'></td></tr>
-            <tr><td class='rowhead'align='left'>{$lang['ad_banemail_comment']}</td>
+            <tr><td class='rowhead has-text-left'>{$lang['ad_banemail_comment']}</td>
             <td><input type='text' name='comment' size='40'></td>
         </tr>
         <tr>

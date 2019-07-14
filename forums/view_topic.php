@@ -81,52 +81,52 @@ if ($arr['poll_id'] > 0) {
     $arr_poll = $fluent->from('forum_poll')
                        ->where('id = ?', $arr['poll_id'])
                        ->fetch();
+    if (!empty($arr_poll)) {
+        if ($CURUSER['class'] >= UC_STAFF) {
+            $query = $fluent->from('forum_poll_votes')
+                            ->where('forum_poll_votes.id>0')
+                            ->where('poll_id = ?', $arr['poll_id']);
+            $who_voted = $query ? '<hr>' : 'no votes yet';
+            foreach ($query as $arr_poll_voted) {
+                $who_voted .= format_username((int) $arr_poll_voted['user_id']);
+            }
+        }
 
-    if ($CURUSER['class'] >= UC_STAFF) {
         $query = $fluent->from('forum_poll_votes')
-                        ->where('forum_poll_votes.id>0')
-                        ->where('poll_id = ?', $arr['poll_id']);
-        $who_voted = $query ? '<hr>' : 'no votes yet';
-        foreach ($query as $arr_poll_voted) {
-            $who_voted .= format_username((int) $arr_poll_voted['user_id']);
+                        ->select(null)
+                        ->select('options')
+                        ->where('poll_id = ?', $arr['poll_id'])
+                        ->where('user_id = ?', $CURUSER['id'])
+                        ->fetchAll();
+
+        $voted = 0;
+        $members_vote = 1000;
+        if ($query) {
+            $voted = 1;
+            foreach ($query as $members_vote) {
+                $members_votes[] = $members_vote['options'];
+            }
         }
-    }
+        $change_vote = $arr_poll['change_vote'] === 'no' ? 0 : 1;
+        $poll_open = $arr_poll['poll_closed'] === 'yes' || $arr_poll['poll_starts'] > TIME_NOW || ($arr_poll['poll_ends'] != 1356048000 && $arr_poll['poll_ends'] < TIME_NOW) ? 0 : 1;
+        $poll_options = json_decode($arr_poll['poll_answers'], true);
+        $multi_options = $arr_poll['multi_options'];
+        $total_votes = $fluent->from('forum_poll_votes')
+                              ->select(null)
+                              ->select('COUNT(id) AS count')
+                              ->where('options < 21')
+                              ->where('poll_id = ?', $arr['poll_id'])
+                              ->fetch('count');
 
-    $query = $fluent->from('forum_poll_votes')
-                    ->select(null)
-                    ->select('options')
-                    ->where('poll_id = ?', $arr['poll_id'])
-                    ->where('user_id = ?', $CURUSER['id'])
-                    ->fetchAll();
+        $num_non_votes = $fluent->from('forum_poll_votes')
+                                ->select(null)
+                                ->select('COUNT(id) AS count')
+                                ->where('options > 20')
+                                ->where('poll_id = ?', $arr['poll_id'])
+                                ->fetch('count');
 
-    $voted = 0;
-    $members_vote = 1000;
-    if ($query) {
-        $voted = 1;
-        foreach ($query as $members_vote) {
-            $members_votes[] = $members_vote['options'];
-        }
-    }
-    $change_vote = $arr_poll['change_vote'] === 'no' ? 0 : 1;
-    $poll_open = $arr_poll['poll_closed'] === 'yes' || $arr_poll['poll_starts'] > TIME_NOW || ($arr_poll['poll_ends'] != 1356048000 && $arr_poll['poll_ends'] < TIME_NOW) ? 0 : 1;
-    $poll_options = json_decode($arr_poll['poll_answers'], true);
-    $multi_options = $arr_poll['multi_options'];
-    $total_votes = $fluent->from('forum_poll_votes')
-                          ->select(null)
-                          ->select('COUNT(id) AS count')
-                          ->where('options < 21')
-                          ->where('poll_id = ?', $arr['poll_id'])
-                          ->fetch('count');
-
-    $num_non_votes = $fluent->from('forum_poll_votes')
-                            ->select(null)
-                            ->select('COUNT(id) AS count')
-                            ->where('options > 20')
-                            ->where('poll_id = ?', $arr['poll_id'])
-                            ->fetch('count');
-
-    $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
-    $topic_poll .= ($voted || $poll_open === 0 ? '' : '
+        $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
+        $topic_poll .= ($voted || $poll_open === 0 ? '' : '
     <form action="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
         <input type="hidden" name="topic_id" value="' . $topic_id . '">
         <input type="hidden" name="action_2" value="poll_vote">') . '
@@ -160,26 +160,26 @@ if ($arr['poll_id'] > 0) {
         </div>' . (($voted || $poll_open === 0) ? '' : '
         <div class="has-text-centered bottom20 bg-02 min-350 w-50 round10 padding20">
             <h3 class="bottom20">You may select up to ' . $multi_options . ' option' . plural($multi_options) . '.</h3>');
-    $number_of_options = $arr_poll['number_of_options'];
-    for ($i = 0; $i < $number_of_options; ++$i) {
-        if ($voted) {
-            $vote_count = $fluent->from('forum_poll_votes')
-                                 ->select(null)
-                                 ->select('COUNT(id) AS count')
-                                 ->where('options = ?', $i)
-                                 ->where('poll_id = ?', $arr['poll_id'])
-                                 ->fetch('count');
+        $number_of_options = $arr_poll['number_of_options'];
+        for ($i = 0; $i < $number_of_options; ++$i) {
+            if ($voted) {
+                $vote_count = $fluent->from('forum_poll_votes')
+                                     ->select(null)
+                                     ->select('COUNT(id) AS count')
+                                     ->where('options = ?', $i)
+                                     ->where('poll_id = ?', $arr['poll_id'])
+                                     ->fetch('count');
 
-            $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
-            $math_text = $math . '% with ' . $vote_count . ' vote' . plural($vote_count);
-            $math_image = '
+                $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
+                $math_text = $math . '% with ' . $vote_count . ' vote' . plural($vote_count);
+                $math_image = '
             <div style="padding: 0; background-image: url(' . $site_config['paths']['images_baseurl'] . '/forums/vote_img_bg.gif); background-repeat: repeat-x">
                 <span class="tooltipper" title="' . $math_text . '">
                     <i class="icon-search icon" aria-hidden="true"></i>
                 </span>
             </div>';
-        }
-        $topic_poll .= ($voted || $poll_open === 0 ? '' : '
+            }
+            $topic_poll .= ($voted || $poll_open === 0 ? '' : '
             <span class="level-center-center padding10">
                 <span class="right20">' . ($multi_options === 1 ? '
                     <input type="radio" name="vote" value="' . $i . '" class="right10">' : '
@@ -189,8 +189,8 @@ if ($arr['poll_id'] > 0) {
                     <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/check.gif" alt=" " class="tooltipper emoticon lazy">' . $lang['fe_your_vote'] . '!' : '') . '
                 </span>
             </span>');
-    }
-    $topic_poll .= ($change_vote === 1 && $voted ? '
+        }
+        $topic_poll .= ($change_vote === 1 && $voted ? '
             <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="is-link">
                 <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop_watch.png" alt="" class="tooltipper emoticon lazy"> ' . $lang['fe_reset_your_vote'] . '!
             </a>' : '') . ($voted ? $lang['fe_total_votes'] . ': ' . number_format($total_votes) . $total_non_votes . ($CURUSER['class'] < UC_STAFF ? '' : '<br>
@@ -205,9 +205,10 @@ if ($arr['poll_id'] > 0) {
                 <input type="submit" name="button" class="button is-small" value="' . $lang['fe_vote'] . '!">
             </div>'));
 
-    $topic_poll .= ($voted || $poll_open === 0 ? '' : '
+        $topic_poll .= ($voted || $poll_open === 0 ? '' : '
         </div>') . '
     </form>';
+    }
 }
 $topic_poll = main_div($topic_poll, '', 'has-text-centered padding20');
 if (isset($_GET['search'])) {
@@ -464,7 +465,7 @@ foreach ($posts as $arr) {
     $post_id = $arr['post_id'];
     $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id=' . sqlesc($arr['user_id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($attachments_res) > 0) {
-        $attachments = '<table width="100%"cellspacing="0" cellpadding="5"><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
+        $attachments = '<table><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
         while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
             $attachments .= '<span>' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="tooltipper emoticon lazy"> ' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="tooltipper emoticon lazy"> ') . ' 
 					<a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">

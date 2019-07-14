@@ -46,8 +46,8 @@ if (!empty($sliding_torrents)) {
             $uploader = "<span class='" . get_user_class_name((int) $class, true) . "'>" . $username . '</span>';
         }
 
-        $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow lazy round10'";
-        $poster = "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
+        $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' alt='Poster for {$last['name']}' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' alt='Poster for {$last['name']}' class='noshow lazy round10'";
+        $poster = "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$last['name']}' class='tooltip-poster'>";
 
         $slider .= '
                     <li>';

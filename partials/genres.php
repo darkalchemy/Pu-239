@@ -33,7 +33,7 @@ $body .= "
                         <div class='column'>
                             <div class='level-center-center top20 bottom20'>
                                 <label for='is_none' class='right5'>{$lang['upload_none']}</label>
-                                <input type='radio' name='genre' id='is_none' value='none'" . (empty($row['newgenre']) ? ' checked' : '') . '>
+                                <input type='radio' name='genre' id='is_none' value='none' " . (empty($row['newgenre']) ? 'checked' : '') . '>
                             </div>
                         </div>
                     </div>';

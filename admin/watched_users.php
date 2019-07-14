@@ -137,7 +137,7 @@ if ($how_many > 0) {
     <tr>
         <td><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
         <td><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=username&amp;ASC=' . $ASC . '">' . $lang['watched_username'] . '</a></td>
-        <td class="has-text-left" width="400">' . $lang['watched_suspicion'] . '</td>
+        <td class="has-text-left">' . $lang['watched_suspicion'] . '</td>
         <td class="has-text-centered">' . $lang['watched_stats'] . '</td>
         <td class="has-text-centered"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '

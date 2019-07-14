@@ -672,10 +672,10 @@ switch ($_GET['op']) {
         $body .= "
             <tr>
                 <td>
-                    <img alt='' $size src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                    <img alt='' {$size} src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
                 </td>
                 <td>
-                    <img alt='' $size src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                    <img alt='' {$size} src='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
                 </td>
             </tr>
             <tr>

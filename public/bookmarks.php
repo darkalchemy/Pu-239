@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Database;
-use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -85,7 +84,6 @@ function bookmarktable($res, $userid, $variant = 'index')
             'image' => $value['image'],
         ];
     }
-    $session = $container->get(Session::class);
     $fluent = $container->get(Database::class);
     foreach ($res as $row) {
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);

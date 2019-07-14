@@ -533,9 +533,9 @@ function get_parents(array $cat)
                 <select class='w-75' name='parent_id'>
                     <option value='0'>{$lang['categories_select_parent']}</option>";
     foreach ($parents as $parent) {
-        $selected = !empty($cat) && $parent['id'] === $cat['parent_id'] ? ' selected' : '';
+        $selected = !empty($cat) && $parent['id'] === $cat['parent_id'] ? 'selected' : '';
         $out .= "
-                    <option value='{$parent['id']}'{$selected}>{$parent['name']}</option>";
+                    <option value='{$parent['id']}' {$selected}>{$parent['name']}</option>";
     }
     $out .= '
                 </select>
@@ -554,7 +554,7 @@ function get_parents(array $cat)
  */
 function reorder_cats(bool $redirect = true)
 {
-    global $container, $site_config;
+    global $container;
 
     $fluent = $container->get(Database::class);
 

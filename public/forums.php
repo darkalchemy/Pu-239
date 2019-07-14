@@ -261,7 +261,7 @@ $more_options = '
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
-<td><select name="multi_options"
+<td><select name="multi_options">
 <option value="1" ' . ($multi_options === 1 ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
 ' . $options . '
 </select>' . $lang['fm_allow_members_to_have_more_then_one_selection'] . ' ' . $lang['poll_single_option'] . '}!</td>
@@ -269,8 +269,8 @@ $more_options = '
 <tr>
 <td></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . '>' . $lang['fm_yes'] . '
-<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
+<td><input name="change_vote" value="yes" type="radio" ' . ($change_vote === 'yes' ? 'checked' : '') . '>' . $lang['fm_yes'] . '
+<input name="change_vote" value="no" type="radio" ' . ($change_vote === 'no' ? 'checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
 </td></tr>'), '', '', 'padding20') . '
 </div>';
 $forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
@@ -543,7 +543,7 @@ switch ($action) {
                             </div>' : '
                                 </span>
                             </div>') . '
-                            <div> ' . $forum_description . '</div>' . $child_boards . $now_viewing . '
+                            <div>' . $forum_description . '</div>' . $child_boards . $now_viewing . '
                         </td>
                         <td class="min-150 w-25">
                             <span>' . $post_count . ' ' . $lang['fe_posts'] . '<br>' . $topic_count . ' ' . $lang['fe_topics'] . '</span>

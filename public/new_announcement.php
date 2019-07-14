@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $HTMLOUT = '';
-    $HTMLOUT .= "<table class='main' width='750'>
+    $HTMLOUT .= "<table class='main'>
      <tr>
      <td class='embedded'><div class='has-text-centered'>
      <h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      </div></td></tr></table>";
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
-        $HTMLOUT .= "<table width='700' class='main'>
-     <tr><td class='has-text-centered'><h2><font class='is-primary'>Announcement: 
-     " . htmlsafechars($subject) . "</font></h2></td></tr>
+        $HTMLOUT .= "<table class='main'>
+     <tr><td class='has-text-centered'><h2><span class='is-primary'>Announcement: 
+     " . htmlsafechars($subject) . "</span></h2></td></tr>
      <tr><td class='text'>
      " . format_comment($body) . '<br><hr>Expires: ' . get_date((int) $newtime, 'DATE') . '';
         $HTMLOUT .= '</td></tr></table>';

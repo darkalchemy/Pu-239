@@ -25,7 +25,7 @@ $htmlout = doc_head() . "
             window.close();
         }
     </script>
-    <table class='list' width='100%'>";
+    <table class='list'>";
 $count = 0;
 $ctr = 0;
 foreach ($customsmilies as $code => $url) {

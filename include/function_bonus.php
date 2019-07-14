@@ -201,10 +201,12 @@ if ($top_donators === false || is_null($top_donators)) {
                            ->select(null)
                            ->select('b.user_id')
                            ->select('SUM(b.donation) AS total')
+                           ->select('MIN(b.added_at) AS added')
                            ->innerJoin('users AS u ON b.user_id = u.id')
                            ->where('b.type = "freeleech"')
                            ->groupBy('b.user_id')
                            ->orderBy('total DESC')
+                           ->order('added')
                            ->limit(10)
                            ->fetchAll();
 
@@ -214,15 +216,17 @@ if ($top_donators === false || is_null($top_donators)) {
 $top_donators2 = $cache->get('top_donators2_');
 if ($top_donators2 === false || is_null($top_donators2)) {
     $top_donators2 = $fluent->from('bonuslog as b')
-        ->select(null)
-        ->select('b.user_id')
-        ->select('SUM(b.donation) AS total')
-        ->innerJoin('users AS u ON b.user_id = u.id')
-        ->where('b.type = "doubleupload"')
-        ->groupBy('b.user_id')
-        ->orderBy('total DESC')
-        ->limit(10)
-        ->fetchAll();
+                            ->select(null)
+                            ->select('b.user_id')
+                            ->select('SUM(b.donation) AS total')
+                            ->select('MIN(b.added_at) AS added')
+                            ->innerJoin('users AS u ON b.user_id = u.id')
+                            ->where('b.type = "doubleupload"')
+                            ->groupBy('b.user_id')
+                            ->orderBy('total DESC')
+                            ->order('added')
+                            ->limit(10)
+                            ->fetchAll();
     $cache->set('top_donators2_', $top_donators2, 0);
 }
 
@@ -232,10 +236,12 @@ if ($top_donators3 === false || is_null($top_donators3)) {
                             ->select(null)
                             ->select('b.user_id')
                             ->select('SUM(b.donation) AS total')
+                            ->select('MIN(b.added_at) AS added')
                             ->innerJoin('users AS u ON b.user_id = u.id')
                             ->where('b.type = "halfdownload"')
                             ->groupBy('b.user_id')
                             ->orderBy('total DESC')
+                            ->order('added')
                             ->limit(10)
                             ->fetchAll();
     $cache->set('top_donators3_', $top_donators3, 0);

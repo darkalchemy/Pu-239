@@ -7,6 +7,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Session;
+use Pu239\User;
 
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'function_html.php';
@@ -26,6 +27,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
     global $container, $site_config;
 
     $user = check_user_status();
+    $users_class = $container->get(User::class);
     if (empty($user)) {
         header("Location: {$site_config['paths']['baseurl']}/404.html");
         die();
@@ -38,7 +40,6 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
         header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
         die();
     }
-    $user_class = $user['class'];
     $userid = $user['id'];
     if ($user['class'] >= $class) {
         if ($staff) {
@@ -52,7 +53,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
                         'class' => UC_MIN,
                         'enabled' => 'no',
                     ];
-                    $user_class->update($update, $userid);
+                    $users_class->update($update, $userid);
                     write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
                     $HTMLOUT = doc_head() . "
     <meta property='og:title' content='Error!'>

@@ -116,7 +116,6 @@ function show_views(array $inbound, array $month_names)
     global $container, $site_config, $lang;
 
     $page_title = $lang['stats_ex_ptitle'];
-    $page_detail = $lang['stats_ex_pdetail'];
     $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
     $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
     $human_to_date = getdate($to_time - 86400);

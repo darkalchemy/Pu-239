@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+global $site_config;
+
 $lang = [
     //FORMATS
     'formats_download_title' => 'Downloaded Files',
@@ -170,7 +172,7 @@ This is a parity file, and is often used when downloading from newsgroups. These
 fill in gaps when you're downloading a multi-volume archive and get corrupted or missing parts.
 Open them with <a href='" . url_proxy('https://www.pbclements.co.uk/QuickPar/') . "'>QuickPar</a>.
 <br>",
-    'formats_questions' => "If you have any suggestion/changes <a href='staff.php'><b>PM</b></a> one of the Admins/SysOp!<br>
+    'formats_questions' => "If you have any suggestion/changes <a href='{$site_config['paths']['baseurl']}/staff.php'><b>PM</b></a> one of the Admins/SysOp!<br>
 <br>
 This file was originally written by hussdiesel at filesoup, then edited by Rhomboid and re-edited by us.<br>",
 ];

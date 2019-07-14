@@ -129,7 +129,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($curuser['class'] < UC_STAFF &
         $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <img src='" . url_proxy($user['avatar'], true) . "'>
+                    <img src='" . url_proxy($user['avatar'], true) . "' alt='Avatar'>
                 </td>
             </tr>";
     }
@@ -353,7 +353,7 @@ $HTMLOUT .= "
 if (($curuser['id'] !== $user['id']) && ($curuser['class'] >= UC_STAFF)) {
     $the_flip_box = "
         <a id='watched_user'></a>
-        <a class='is-link tooltipper' href='#watched_user' onclick=\"flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"flipBox('3')\" src='{$site_config['paths']['images_baseurl']}panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
+        <a class='is-link tooltipper' href='#watched_user' onclick=\"flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"flipBox('3')\" src='{$site_config['paths']['images_baseurl']}panel_on.gif' id='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
     $HTMLOUT .= "
                         <tr>
                             <td class='rowhead'>{$lang['userdetails_watched']}</td>
@@ -380,9 +380,9 @@ if (($curuser['id'] !== $user['id']) && ($curuser['class'] >= UC_STAFF)) {
                             </td>
                         </tr>";
 
-    $the_flip_box_4 = '[ <a id="staff_notes"></a><a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="flipBox(\'4\')" src="' . $site_config['paths']['images_baseurl'] . 's/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '"></a> ]';
+    $the_flip_box_4 = '[ <a id="staff_notes"></a><a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'4\')" id="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="flipBox(\'4\')" src="' . $site_config['paths']['images_baseurl'] . 's/panel_on.gif" id="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '"></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
-                            <a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
+                            <a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'6\')" id="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" id="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '"></a>
                             <div class="has-text-left" id="box_6">
                                 <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
                                     <input name="id" type="hidden" value="' . (int) $user['id'] . '">
@@ -394,7 +394,7 @@ if (($curuser['id'] !== $user['id']) && ($curuser['class'] >= UC_STAFF)) {
                                 </form>
                             </div> </td></tr>';
 
-    $the_flip_box_7 = '[ <a id="system_comments"></a><a class="is-link tooltipper" href="#system_comments" onclick="flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . ')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '"></a> ]';
+    $the_flip_box_7 = '[ <a id="system_comments"></a><a class="is-link tooltipper" href="#system_comments" onclick="flipBox(\'7\')"  id="b_7" title="' . $lang['userdetails_open_system'] . ')"><img src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" id="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '"></a> ]';
     if (!empty($user['modcomment'])) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
     }
@@ -645,7 +645,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
-               <td class='has-text-left' width='20%'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='has-text-left'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($downloadpos) {
             if ($user['downloadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -668,7 +668,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $uploadpos = $user['uploadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$uploadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_upos']}</td>
-               <td class='has-text-left' width='20%'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='has-text-left'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($uploadpos) {
             if ($user['uploadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -691,7 +691,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $sendpmpos = $user['sendpmpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_pmpos']}</td>
-               <td class='has-text-left' width='20%'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='has-text-left'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($sendpmpos) {
             if ($user['sendpmpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -714,7 +714,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $chatpost = $user['chatpost'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$chatpost ? ' rowspan="2"' : '') . ">{$lang['userdetails_chatpos']}</td>
-               <td class='has-text-left' width='20%'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='has-text-left'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($chatpost) {
             if ($user['chatpost'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -737,7 +737,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $avatarpos = $user['avatarpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$avatarpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_avatarpos']}</td>
-          <td class='has-text-left' width='20%'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+          <td class='has-text-left'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($avatarpos) {
             if ($user['avatarpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -760,7 +760,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $immunity = $user['immunity'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$immunity ? ' rowspan="2"' : '') . ">{$lang['userdetails_immunity']}</td>
-               <td class='has-text-left' width='20%'>" . ($immunity ? "<input name='immunity' value='42' type='radio'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
+               <td class='has-text-left'>" . ($immunity ? "<input name='immunity' value='42' type='radio'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
         if ($immunity) {
             if ($user['immunity'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -783,7 +783,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $leechwarn = $user['leechwarn'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$leechwarn ? ' rowspan="2"' : '') . ">{$lang['userdetails_leechwarn']}</td>
-               <td class='has-text-left' width='20%'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
+               <td class='has-text-left'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
         if ($leechwarn) {
             if ($user['leechwarn'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -806,7 +806,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $warned = $user['warned'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? ' rowspan="2"' : '') . ">{$lang['userdetails_warned']}</td>
-               <td class='has-text-left' width='20%'>" . ($warned ? "<input name='warned' value='42' type='radio'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
+               <td class='has-text-left'>" . ($warned ? "<input name='warned' value='42' type='radio'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
         if ($warned) {
             if ($user['warned'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -829,7 +829,7 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     if ($curuser['class'] >= UC_STAFF) {
         $game_access = $user['game_access'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$game_access ? ' rowspan="2"' : '') . ">{$lang['userdetails_games']}</td>
-           <td class='has-text-left' width='20%'>" . ($game_access ? "<input name='game_access' value='42' type='radio'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+           <td class='has-text-left'>" . ($game_access ? "<input name='game_access' value='42' type='radio'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($game_access) {
             if ($user['game_access'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';

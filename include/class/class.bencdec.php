@@ -430,7 +430,6 @@ class bencdec
                 return false;
             }
             $dict[$name] = $data;
-            $last_key = $name;
             unset($name, $data);
         }
         ++self::$bdata_position;

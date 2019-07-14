@@ -76,7 +76,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
     global $site_config, $CURUSER;
 
     $terms = !empty($terms) ? '&amp;' . implode('&amp;', $terms) : '';
-    $checked = in_array($cat['id'], $cats) ? ' checked' : '';
+    $checked = in_array($cat['id'], $cats) ? 'checked' : '';
     $list[] = 'cats[]=' . $cat['parent_id'];
     if ($parent === 'child') {
         $js = '';
@@ -88,7 +88,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
                 }
             }
         }
-        $js = ' onclick="return showMe(event);"';
+        $js = 'onclick="return showMe(event);"';
     }
     $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
@@ -103,7 +103,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
         <a href='{$link}'>
             <span class='margin10 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                 <span class='bordered level-center bg-02 cat-image'>
-                    <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox'{$checked}{$js}>$image
+                    <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js}>$image
                 </span>
             </span>
         </a>";

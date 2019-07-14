@@ -2720,8 +2720,6 @@ class AJAXChat
         $xml .= $this->getChatViewMessagesXML();
         $xml .= '</root>';
 
-        $info = $this->getInfoMessagesXML();
-
         return $xml;
     }
 

@@ -319,7 +319,7 @@ function generate_html(array $data)
     }
     $html .= "
             <div class='tooltip_templates'>
-                <div id='movie_{$data['id']}_tooltip' class='round10 tooltip-background'" . (!empty($data['backdrop']) ? " style='background-image: url({$data['backdrop']});'" : '') . ">
+                <div id='movie_{$data['id']}_tooltip' class='round10 tooltip-background' " . (!empty($data['backdrop']) ? "style='background-image: url({$data['backdrop']});'" : '') . ">
                     <div class='columns is-marginless is-paddingless'>
                         <div class='column padding10 is-4'>
                             <span>

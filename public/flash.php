@@ -57,7 +57,7 @@ $HTMLOUT .= "
                 <object style='width: {$game_width}px; height: {$game_height}px;' width='{$game_width}' height='{$game_height}'>
                     <param name='movie' value='./media/flash_games/{$gameURI}'>
                     <param name='quality' value='high'>
-                    <embed src='{$site_config['paths']['baseurl']}/media/flash_games/{$gameURI}' quality='high' type='application/x-shockwave-flash' style='width: {$game_width}px;' height: {$game_height}px; width='{$game_width}' height='{$game_height}'></embed>
+                    <embed src='{$site_config['paths']['baseurl']}/media/flash_games/{$gameURI}' quality='high' type='application/x-shockwave-flash' style='width: {$game_width}px;' height: {$game_height}px; width='{$game_width}' height='{$game_height}'>
                 </object>
             </div>
         </div>";

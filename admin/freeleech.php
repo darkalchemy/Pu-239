@@ -111,18 +111,18 @@ $HTMLOUT .= "
     <td> <table>
  <tr>
  <td>{$lang['freeleech_torr_free']}</td>
- <td><input name='modifier' type='radio' $checked1 value='1'></td>
+ <td><input name='modifier' type='radio' {$checked1} value='1'></td>
  </tr>
  <tr>
  <td>{$lang['freeleech_double_up']}</td>
- <td><input name='modifier' type='radio' $checked2 value='2'></td>
+ <td><input name='modifier' type='radio' {$checked2} value='2'></td>
  </tr>
  <tr>
  <td>{$lang['freeleech_free_double']}</td>
- <td><input name='modifier' type='radio' $checked3 value='3'></td></tr>
+ <td><input name='modifier' type='radio' {$checked3} value='3'></td></tr>
  <tr>
  <td>{$lang['freeleech_torr_silver']}</td>
- <td><input name='modifier' type='radio' $checked4 value='4'></td></tr>
+ <td><input name='modifier' type='radio' {$checked4} value='4'></td></tr>
  </table>
     </td></tr>
     <tr><td class='rowhead'>{$lang['freeleech_expire']}

@@ -3,6 +3,8 @@
 declare(strict_types = 1);
 $user = check_user_status();
 require_once INCL_DIR . 'function_users.php';
+global $site_config;
+
 $show_pm_avatar = ($user['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 
 if ($mailbox > 1) {
@@ -127,7 +129,7 @@ if (mysqli_num_rows($res) === 0) {
     }
 }
 
-$per_page_drop_down = '<form action="messages.php" method="post"><select name="amount_per_page" onchange="location=this.options[this.selectedIndex].value;" accept-charset="utf-8">';
+$per_page_drop_down = '<form action="' . $site_config['paths']['baseurl'] . '/messages.php" method="post"><select name="amount_per_page" onchange="location=this.options[this.selectedIndex].value;" accept-charset="utf-8">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
     $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($user['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';

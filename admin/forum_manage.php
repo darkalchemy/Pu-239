@@ -132,7 +132,7 @@ switch ($action) {
                         <td>{$lang['fm_efp_sub']}</td>
                         <td>
                             <select name='parent_forum'>
-                                <option class='body' value='0'" . ($parent_forum === 0 ? ' selected' : '') . '>' . $lang['fm_efp_select'] . '</option>';
+                                <option class='body' value='0' " . ($parent_forum === 0 ? 'selected' : '') . '>' . $lang['fm_efp_select'] . '</option>';
             $query = $fluent->from('forums')
                             ->select(null)
                             ->select('id')
@@ -141,7 +141,7 @@ switch ($action) {
             foreach ($query as $arr) {
                 if (is_valid_id($arr['id'])) {
                     $body .= "
-                                <option class='body' value='{$arr['id']}'" . ($parent_forum === $arr['id'] ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
+                                <option class='body' value='{$arr['id']}' " . ($parent_forum === $arr['id'] ? 'selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
                 }
             }
             $body .= "

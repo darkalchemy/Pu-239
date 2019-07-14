@@ -102,9 +102,9 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post' accept-charset='utf-8'>
-        <table id='checkbox_container' width='600' style='border-collapse:separate;'>
+        <table id='checkbox_container' style='border-collapse:separate;'>
         <tr>
-            <td class='colhead' width='100%'>{$lang['hnrwarn_form_user']}</td>
+            <td class='colhead'>{$lang['hnrwarn_form_user']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>
@@ -114,8 +114,8 @@ if ($count == 0) {
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
-                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
-                  <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
+                  <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
+                  <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><span class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</span></td>
                   <td nowrap='nowrap'>" . get_user_class_name((int) $a['class']) . "</td>
                   <td nowrap='nowrap'>" . get_date((int) $a['last_access'], 'LONG', 0, 1) . "</td>
                   <td nowrap='nowrap'>" . get_date((int) $a['registered'], 'DATE', 1) . "</td>

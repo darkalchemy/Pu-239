@@ -43,9 +43,9 @@ if ($action === 'do') {
     $HTMLOUT .= '</pre>';
     $HTMLOUT .= '' . $lang['trace_done'] . '</div>';
 } else {
-    $HTMLOUT .= '<body bgcolor="#fff" text="#000000"></body>
-    <p><span size="2">' . $lang['trace_ip'] . '' . $ip . '</span></p>
-    <form method="post" action="' . $_SERVER['PHP_SELF'] . '">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '" accept-charset="utf-8">
+    $HTMLOUT .= '
+    <p><span class="size_3">' . $lang['trace_ip'] . '' . $ip . '</span></p>
+    <form method="post" action="' . $_SERVER['PHP_SELF'] . '" accept-charset="utf-8">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '">
     <input type="hidden" name="action" value="do"><input type="submit" value="' . $lang['trace_submit'] . '" class="button is-small">
    </form>';
     $HTMLOUT .= '<br><b>' . $system . '</b>';

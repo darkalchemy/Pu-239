@@ -4,7 +4,7 @@ declare(strict_types = 1);
 global $user;
 
 if ($user['info']) {
-    $HTMLOUT .= "<tr><td colspan='2' class='text' bgcolor='#F4F4F0'>" . format_comment($user['info']) . "</td></tr>\n";
+    $HTMLOUT .= "<tr><td colspan='2' class='text'>" . format_comment($user['info']) . "</td></tr>\n";
 } else {
     $HTMLOUT .= "<tr><td>Info</td><td>User Info is empty</td></tr>\n";
 }

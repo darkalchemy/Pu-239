@@ -63,7 +63,7 @@ if (!empty($images)) {
             <th class='has-text-centeredtooltipper' title='If image has been fetched and is in your filesystem'>Fetched</th>
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb not empty, when it was updated'>Updated</th>
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb is empty, the last time we looked it up'>Checked</th>
-            <th class='has-text-centered tooltipper' title='Select All''><input type='checkbox' id='checkThemAll' ></th>
+            <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
         </tr>";
     $body = '';
     foreach ($images as $image) {
@@ -71,7 +71,7 @@ if (!empty($images)) {
         <tr>
             <td class='has-text-centered'>
                 <a href='{$image['url']}'>
-                    <img src='" . url_proxy($image['url'], true, 150) . "' class='img-responsive'>
+                    <img src='" . url_proxy($image['url'], true, 150) . "' alt='Poster' class='img-responsive'>
                 </a>
             </td>
             <td class='has-text-centered'>{$image['type']}</td>

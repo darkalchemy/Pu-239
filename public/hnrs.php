@@ -284,7 +284,7 @@ if (count($hnrs) > 0) {
         <tr>
             <td style='padding: 5px'>$caticon</td>
             <td><a class='is-link' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>

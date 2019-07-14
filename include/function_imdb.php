@@ -605,7 +605,7 @@ function get_upcoming()
         return false;
     }
 
-    preg_match_all('/<h4.*<a name=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
+    preg_match_all('/<h4.*<a id=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
     $dates = $timestamp[1];
     $regex = '';
     foreach ($dates as $date) {

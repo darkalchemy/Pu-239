@@ -184,7 +184,7 @@ for ($i = 97; $i < 123; ++$i) {
     $active = !empty($letter) && $letter == chr($i) ? "class='active'" : '';
     $div .= "
             <li>
-                <a href='{$site_config['paths']['baseurl']}/catalog.php?letter=" . chr($i) . "' $active>" . chr($i - 32) . '</a>
+                <a href='{$site_config['paths']['baseurl']}/catalog.php?letter=" . chr($i) . "' {$active}>" . chr($i - 32) . '</a>
             </li>';
 }
 $div .= '

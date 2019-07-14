@@ -61,14 +61,14 @@ $HTMLOUT = '
                 <form action="" method="post" accept-charset="utf-8">
                     <div class="level-center">
                         <div class="w-20">
-                            <span class="bordered level-center bg-02">
+                            <div class="bordered level-center bg-02">
                                 <div class="w-100">Enable Bonus Moods?</div>
                                 <div class="slideThree">
                                     <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . '>
                                     <label for="unlock_user_moods"></label>
                                 </div>
                                 <div class="w-100">Check this option to unlock bonus mood smilies.</div>
-                            </span>
+                            </div>
                         </div>
                         <div class="w-20">
                             <span class="bordered level-center bg-02">

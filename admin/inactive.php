@@ -114,7 +114,7 @@ if ($count_inactive > 0) {
     </script>";
     $HTMLOUT .= "
     <div class='row'><div class='col-md-12'>
-    <h1 class='has-text-centered'>$count{$lang['inactive_accounts']} $days {$lang['inactive_days']}</h2>
+    <h1 class='has-text-centered'>$count{$lang['inactive_accounts']} $days {$lang['inactive_days']}</h1>
     <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
@@ -134,7 +134,7 @@ if ($count_inactive > 0) {
         <td style='max-width:130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a></td>
         <td>' . $ratio . '</td>
         <td>' . $last_seen . "</td>
-        <td bgcolor='#FF0000'><input type='checkbox' name='userid[]' value='" . (int) $arr['id'] . "'></td></tr>
+        <td><input type='checkbox' name='userid[]' value='" . (int) $arr['id'] . "'></td></tr>
         ";
     }
     $HTMLOUT .= "<tr>
@@ -148,7 +148,7 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead' style='color:red;'>{$lang['inactive_lastmail']} " . format_username((int) $date['userid']) . " {$lang['inactive_on']} <b>" . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>{$lang['inactive_lastmail']} " . format_username((int) $date['userid']) . " {$lang['inactive_on']} <b>" . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
         }
     }
     $HTMLOUT .= '</table></form>';

@@ -2,10 +2,12 @@
 
 declare(strict_types = 1);
 
+global $site_config;
+
 $lang = [
     //upload errors
     'upload_sorry' => 'Sorry...',
-    'upload_no_auth' => "You are not authorized to upload torrents.  (See <a href='faq.php#up'>Uploading</a> in the FAQ.)",
+    'upload_no_auth' => "You are not authorized to upload torrents.  (See <a href='{$site_config['paths']['baseurl']}/faq.php#up'>Uploading</a> in the FAQ.)",
     'upload_announce_url' => "The tracker's announce url is",
     'upload_delete' => 'Delete',
     //upload options

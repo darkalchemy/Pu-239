@@ -41,7 +41,6 @@ function round_time($ts)
     $hours -= $days * 24;
     $weeks = floor($days / 7);
     $days -= $weeks * 7;
-    $t = '';
     if ($weeks > 0) {
         return "$weeks week" . ($weeks > 1 ? 's' : '');
     }

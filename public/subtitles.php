@@ -146,7 +146,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         }
     }
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>" . ($mode === 'upload' ? 'New Subtitle' : 'Edit Subtitle</h1><h2 class="has-text-centered">' . htmlsafechars($arr['name'])) . "</h2>
+    <h1 class='has-text-centered'>" . ($mode === 'upload' ? 'New Subtitle' : 'Edit Subtitle</h1><h2 class="has-text-centered">' . htmlsafechars($arr['name'])) . "</h1>
     <form enctype='multipart/form-data' method='post' action='subtitles.php' accept-charset='utf-8'>";
     $body = '';
     if ($mode === 'upload') {

@@ -310,7 +310,7 @@ $drop_down = '
 
 $h1_thingie .= (isset($_GET['GB']) ? ($_GET['GB'] === 1 ? '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['bonusmanager_h1_karma'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_karma1'] . '</h2>') : '');
-$h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
 $HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site']['name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;

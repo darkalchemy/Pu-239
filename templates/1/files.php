@@ -12,15 +12,15 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ff332dd3.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_61037d46.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_5b7cf5c1.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_4b73eb71.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_edcdc313.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_371967e1.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_bf23d62c.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_603e6983.js";
         case 'vendor_js':
@@ -42,7 +42,7 @@ function get_file_name($file)
         case 'glider_js':
             return "{$site_config['paths']['baseurl']}/js/1/glider_1e06ee07.js";
         case 'userdetails_js':
-            return "{$site_config['paths']['baseurl']}/js/1/userdetails_15f714f6.js";
+            return "{$site_config['paths']['baseurl']}/js/1/userdetails_233a26f9.js";
         case 'cookieconsent_js':
             return "{$site_config['paths']['baseurl']}/js/1/cookieconsent_657538f3.js";
         case 'invite_js':
@@ -56,7 +56,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_4a029645.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_547df96b.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

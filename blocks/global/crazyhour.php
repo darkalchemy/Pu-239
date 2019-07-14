@@ -40,7 +40,6 @@ function crazyhour()
         }
         $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
     }
-    $cimg = '<img src="' . $site_config['paths']['images_baseurl'] . 'cat_free.gif" alt="FREE!">';
     if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
         $cz_lock = $cache->set('crazyhour_lock_', 1, 10);
         if ($cz_lock !== false) {

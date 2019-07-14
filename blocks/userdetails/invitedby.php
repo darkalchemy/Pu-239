@@ -40,7 +40,7 @@ $inviteted_by_this_member = '';
 if (mysqli_num_rows($rez_invited) < 1) {
     $inviteted_by_this_member .= 'No invitees yet.';
 } else {
-    $inviteted_by_this_member .= '<table width="100%">
+    $inviteted_by_this_member .= '<table>
         <td class="colhead"><b>' . $lang['userdetails_email'] . 'l</b></td>
         <td class="colhead"><b>' . $lang['userdetails_uploaded'] . '</b></td>
         ' . ($site_config['site']['ratio_free'] ? '' : '<td class="colhead"><b>' . $lang['userdetails_downloaded'] . '</b></td>') . '
@@ -52,11 +52,11 @@ if (mysqli_num_rows($rez_invited) < 1) {
         <td>' . mksize($arr_invited['uploaded']) . '</td>
         ' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
         <td>' . member_ratio((int) $arr_invited['uploaded'], (int) $arr_invited['downloaded']) . '</td>
-        <td>' . ($arr_invited['status'] === 'confirmed' ? '<span style="color: lime;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
+        <td>' . ($arr_invited['status'] === 'confirmed' ? '<span class="has-text-success">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span class="has-text-danger">' . $lang['userdetails_pending'] . '</span></td></tr>');
     }
     $inviteted_by_this_member .= '</table>';
 }
 
-$the_flip_box_5 = '[ <a name="invites"></a><a class="is-linl" href="#invites" onclick="flipBox(\'5\')" name="b_5" title="' . $lang['userdetails_open_close_inv'] . '">' . $lang['userdetails_inv_view'] . '<img onclick="flipBox(\'5\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" name="b_5" style="vertical-align:middle;"  width="8" height="8" alt="' . $lang['userdetails_open_close_inv1'] . '" title="' . $lang['userdetails_open_close_inv1'] . '" /></a> ] [ <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int) $user['id'] . '" title="' . $lang['userdetails_inv_click'] . '">' . $lang['userdetails_inv_viewt'] . '</a> ]';
-$HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invitees'] . '</td><td>' . (mysqli_num_rows($rez_invited) > 0 ? $the_flip_box_5 . '<div id="box_5" style="display:none">
+$the_flip_box_5 = '[ <a name="invites"></a><a class="is-linl" href="#invites" onclick="flipBox(\'5\')" id="b_5" title="' . $lang['userdetails_open_close_inv'] . '">' . $lang['userdetails_inv_view'] . '<img onclick="flipBox(\'5\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" id="b_5" style="vertical-align:middle;"  width="8" height="8" alt="' . $lang['userdetails_open_close_inv1'] . '" title="' . $lang['userdetails_open_close_inv1'] . '" /></a> ] [ <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int) $user['id'] . '" title="' . $lang['userdetails_inv_click'] . '">' . $lang['userdetails_inv_viewt'] . '</a> ]';
+$HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invitees'] . '</td><td>' . (mysqli_num_rows($rez_invited) > 0 ? $the_flip_box_5 . '<div id="box_5" style="display: none">
     <br>' . $inviteted_by_this_member . '</div>' : $lang['userdetails_no_invitees']) . '</td></tr>';

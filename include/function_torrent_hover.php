@@ -138,13 +138,13 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                         <div>$icons</div>
                                     </div>";
     }
-    $background = !empty($background) ? " style='background-image: url({$background});'" : '';
+    $background = !empty($background) ? "style='background-image: url({$background});'" : '';
     $torrent_hover = "
                             <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1{$is_comment}'>
                                 <div class='dt-tooltipper-large torrent-name $sticky' data-tooltip-content='#{$block_id}_tooltip'>
                                     $text
                                     <div class='tooltip_templates'>
-                                        <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>
+                                        <div id='{$block_id}_tooltip' class='round10 tooltip-background' {$background}>
                                             <div class='tooltip-torrent padding10'>
                                                 <div class='columns is-marginless is-paddingless'>
                                                     <div class='column padding10 is-4'>

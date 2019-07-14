@@ -275,10 +275,10 @@ function insertJumpTo(int $mailbox, int $userid)
                 <input type="hidden" name="action" value="view_mailbox">
                 <label for="box" class="right10">' . $lang['pm_jump_to'] . '</label>
                 <select id="box" name="box" onchange="location=this.options[this.selectedIndex].value;">
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted_box'] . '</option>';
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox === 1 ? 'selected' : '') . '>' . $lang['pm_inbox'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox === -1 ? 'selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox === -2 ? 'selected' : '') . '>' . $lang['pm_drafts'] . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . $lang['pm_deleted_box'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
                     <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';

@@ -51,10 +51,10 @@ $htmlout = doc_head() . "
     </head>
     <body>
     <div>
-    <table width='300'>
+    <table>
     <!--Error pic layout-->
     <tr>
-    <td width='300' height='50'><!--Error 404 EmptyCell-->&#160;</td>
+    <td><!--Error 404 EmptyCell-->&#160;</td>
     </tr>
     <tr>
     <td height='520'><img src='{$site_config['paths']['images_baseurl']}error404.png' alt='Error Not Found' width='300' height='520' usemap='#Map'></td>

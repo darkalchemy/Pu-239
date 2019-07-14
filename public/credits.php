@@ -55,7 +55,7 @@ if ($action === 'edit' && $user['class'] >= UC_SYSOP) {
     }
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' accept-charset='utf-8'>
-  <table width='50%'>
+  <table>
     <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
     <td class='rowhead'>{$lang['credits_description']}</td>" . "<td style='padding: 0'>
     <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "'></td></tr>\n" . "<tr>
@@ -183,7 +183,7 @@ if (empty($credits)) {
             $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
         }
 
-        $body .= "<br><font class='small'>" . htmlsafechars($descr) . '</font></td>
+        $body .= "<br><span class='small'>" . htmlsafechars($descr) . '</span></td>
         <td><b>' . htmlsafechars($category) . '</b></td>
         <td><b>' . format_comment($status) . '</b></td>
         <td>' . htmlsafechars($credit) . '</td>
@@ -235,7 +235,7 @@ if ($user['class'] >= UC_MAX) {
     </tr>
     <tr>
         <td>{$lang['credits_credits1']}</td>
-        <td><input name='credit' type='text' class='w-100' maxlength='120'><br><font class='small'>{$lang['credits_val']}</font></td>
+        <td><input name='credit' type='text' class='w-100' maxlength='120'><br><span class='small'>{$lang['credits_val']}</span></td>
     </tr>
     <tr>
         <td colspan='2' class='has-text-centered'>

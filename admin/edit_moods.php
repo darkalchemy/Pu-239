@@ -43,7 +43,7 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
             <tr><td class='colhead'>{$lang['moods_image']}</td>
             <td><input type='text' name='image' size='40' value ='" . htmlsafechars($edit_mood['arr']['image']) . "'></td></tr>
             <tr><td class='colhead'>{$lang['moods_bonus']}</td>
-            <td><input type='checkbox' name='bonus'" . ($edit_mood['arr']['bonus'] ? ' checked' : '') . "></td></tr>
+            <td><input type='checkbox' name='bonus' " . ($edit_mood['arr']['bonus'] ? 'checked' : '') . "></td></tr>
             <tr><td colspan='2' class='has-text-centered'>
             <input type='hidden' name='id' value='" . (int) $edit_mood['id'] . "'>
             <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small'>

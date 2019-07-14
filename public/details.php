@@ -261,7 +261,7 @@ if (!empty($torrent['youtube'])) {
         $youtube = "
             <a id='youtube-hash'></a>
             <div class='responsive-container'>
-                <iframe width='1920' height='1080' src='https://www.youtube.com/embed/{$youtube_id}?enablejsapi=1autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
+                <iframe width='1920' height='1080' src='https://www.youtube.com/embed/{$youtube_id}?enablejsapi=1autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
             </div>";
     }
 }
@@ -546,7 +546,7 @@ if ($moderator) {
 $audit .= tr($lang['details_thanks'], "
         <noscript>
             <iframe id='thanked' src ='{$site_config['paths']['baseurl']}/ajax/thanks.php?torrentid={$id}'>
-                <p>Your browser does not support iframes. And it has Javascript disabled!</p>
+                Your browser does not support iframes. And it has Javascript disabled!
             </iframe>
         </noscript>
         <div id='thanks_holder' data-tid='{$torrent['id']}' class='left10'></div>", 1);
@@ -567,14 +567,14 @@ $audit .= tr('Request Reseed', "
                     <input type='hidden' name='uploader' value='" . (int) $owner . "'>
                     <input type='hidden' name='reseedid' value='$id'>
                     <input type='hidden' name='name' value='{$torrent['name']}'>
-                    <input type='submit' class='button is-small'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM'>
+                    <input type='submit' class='button is-small' " . (($next_reseed > $dt) ? 'disabled' : '') . " value='SendPM'>
                 </span>
             </div>
         </form>", 1);
 if ($torrent['allow_comments'] === 'yes' || $moderator) {
     $comments = '';
     $add_comment = "
-    <a name='startcomments'></a>
+    <a id='startcomments'></a>
     <div class='has-text-centered'>
         <h2>Leave a Comment</h2>
         <a href='{$site_config['paths']['baseurl']}/takethankyou.php?id={$torrent['id']}'>
@@ -654,7 +654,7 @@ if ($user['downloadpos'] === 1 || $owner) {
     $Free_Slot_Text = $freeslot_text;
     $slots .= main_table("
                     <tr>
-                        <td class='rowhead' width='3%'>{$lang['details_download']}</td>
+                        <td class='rowhead w-1'>{$lang['details_download']}</td>
                         <td>
                             <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "'>" . htmlsafechars($torrent['filename']) . "</a><br>{$Free_Slot}
                         </td>

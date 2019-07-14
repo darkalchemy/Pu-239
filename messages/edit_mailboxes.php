@@ -272,7 +272,7 @@ $body .= '
 $HTMLOUT .= main_table($body);
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
 $HTMLOUT .= '
-        <form action="messages.php" method="post" accept-charset="utf-8">
+        <form action="' . $site_config['paths']['baseurl'] . '/messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="edit_boxes">';
 $HTMLOUT .= main_table($all_my_boxes);
@@ -294,32 +294,32 @@ $HTMLOUT .= main_table('
         <td><span>' . $lang['pm_edmail_av'] . '</span></td>
         <td>
         <select name="show_pm_avatar">
-        <option value="yes"' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
-        <option value="no"' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
+        <option value="yes" ' . ($show_pm_avatar ? 'selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
+        <option value="no" ' . (!$show_pm_avatar ? 'selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
         </select>' . $lang['pm_edmail_show_av_box'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_accept'] . '</span></td>
         <td>
-        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_all'] . '
-        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'friends' ? ' checked' : '') . ' value="friends">' . $lang['pm_edmail_friend'] . '
-        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'no' ? ' checked' : '') . ' value="no">' . $lang['pm_edmail_staff'] . '</td>
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_all'] . '
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'friends' ? 'checked' : '') . ' value="friends">' . $lang['pm_edmail_friend'] . '
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'no' ? 'checked' : '') . ' value="no">' . $lang['pm_edmail_staff'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_save'] . '</span></td>
-        <td><input type="checkbox" name="save_pms"' . ($CURUSER['savepms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_default'] . '</td>
+        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_default'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_del_pms'] . '</span></td>
-        <td><input type="checkbox" name="deletepms"' . ($CURUSER['deletepms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_default_r'] . '</td>
+        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_default_r'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_email_notif'] . '</span></td>
-        <td><input type="checkbox" name="pmnotif"' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
+        <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? 'checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
     </tr>
     <tr>
         <td></td>
-        <td><input type="checkbox" name="emailnotif"' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
+        <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? 'checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
     </tr>
     <tr>
         <td><span>' . $lang['pm_edmail_cats'] . '</span></td>

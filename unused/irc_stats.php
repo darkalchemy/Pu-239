@@ -28,7 +28,6 @@ function calctime($val)
     $hours = (int) ($val / 3600);
     $val -= $hours * 3600;
     $mins = (int) ($val / 60);
-    $secs = $val - ($mins * 60);
 
     return "$days days, $hours hrs, $mins minutes";
 }

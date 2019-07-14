@@ -128,15 +128,15 @@ $audios_list .= '
         </div>';
 $HTMLOUT .= tr('Subtitles', $subs_list, 1);
 $HTMLOUT .= tr('Audios', $audios_list, 1);
-$rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] === 'scene' ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] === 'p2p' ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] === 'none' ? ' selected' : '') . ">None</option> \n</select>\n";
+$rg = "<select name='release_group'>\n<option value='scene' " . ($row['release_group'] === 'scene' ? 'selected' : '') . ">Scene</option>\n<option value='p2p' " . ($row['release_group'] === 'p2p' ? 'selected' : '') . ">p2p</option>\n<option value='none' " . ($row['release_group'] === 'none' ? 'selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
-$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
+$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible' " . (($row['visible']) === 'yes' ? 'checked' : '') . " value='1'> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
 if ($user['class'] >= UC_STAFF) {
-    $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
+    $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned' " . (($row['banned']) === 'yes' ? 'checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
 }
 $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
 if ($user['class'] >= $site_config['allowed']['upload']) {
-    $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5'>No", 1);
+    $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked' " . ($row['nuked'] === 'yes' ? 'checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked' " . ($row['nuked'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars((string) $row['nukereason']) . "' class='w-100'>", 1);
 }
 if ($user['class'] >= UC_STAFF) {

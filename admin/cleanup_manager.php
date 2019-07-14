@@ -160,7 +160,7 @@ function cleanup_show_main()
         $on_off = $row['clean_on'] != 1 ? "<i class='icon-toggle-off icon has-text-danger'></i>" : "<i class='icon-toggle-on icon has-text-success'></i>";
         $htmlout .= "
         <tr>
-            <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
+            <td{$row['_class']}><div>{$row['clean_title']}{$row['_title']}</div><div class='size_3'>{$row['clean_desc']}</div></td>
             <td class='has-text-centered'>" . mkprettytime($row['clean_increment']) . "</td>
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>
@@ -245,11 +245,11 @@ function cleanup_show_edit()
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' $logyes type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' $logno type='radio'>{$lang['cleanup_show_no']}</div>
+    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' {$logyes} type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' {$logno} type='radio'>{$lang['cleanup_show_no']}</div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio'> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' {$cleanon} type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' {$cleanoff} type='radio'> {$lang['cleanup_show_no']}
     </div>
 
     <div style='text-align:center;'>

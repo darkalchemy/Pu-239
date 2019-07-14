@@ -124,7 +124,7 @@ $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added 
 //=== default page
 $HTMLOUT .= $message . '
    <legend>' . $lang['shitlist_message1'] . '' . htmlsafechars($CURUSER['username']) . '</legend>
-   <table width="950" class="table table-bordered">
+   <table class="table table-bordered">
    <tr>
      <td class="colhead" colspan="4">
      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . $lang['shitlist_message2'] . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "></td>
@@ -149,8 +149,8 @@ if (mysqli_num_rows($res) == 0) {
 
       <b> [ ' . get_user_class_name((int) $shit_list['class']) . ' ]</b><br>
 
-      <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
-      <a class="is-link" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
+      <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif" alt="Delete">' . $lang['shitlist_remove2'] . '</span></a>
+      <a class="is-link" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif" alt="Message">' . $lang['shitlist_send2'] . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
       <b>' . $lang['shitlist_joined'] . '</b> ' . get_date((int) $shit_list['added'], '') . '
       [ ' . get_date((int) $shit_list['added'], '', 0, 1) . ' ]
@@ -163,5 +163,5 @@ if (mysqli_num_rows($res) == 0) {
     }
 }
 $HTMLOUT .= (($i % 2 == 0) ? '<td class="one" colspan="2"></td></tr>' : '');
-$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'btn_search.gif"><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
+$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'btn_search.gif" alt="Search"><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
 echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . wrapper($HTMLOUT) . stdfoot();
