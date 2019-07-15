@@ -51,14 +51,14 @@ if ($arr_post['staff_lock'] === 1) {
 $edited_by = $CURUSER['id'];
 $body = isset($_POST['body']) ? $_POST['body'] : $arr_post['body'];
 if ($can_edit) {
-    $topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : $arr_post['topic_name']);
-    $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : $arr_post['topic_desc']);
+    $topic_name = isset($_POST['topic_name']) ? htmlsafechars($_POST['topic_name']) : htmlsafechars($arr_post['topic_name']);
+    $topic_desc = isset($_POST['topic_desc']) ? htmlsafechars($_POST['topic_desc']) : htmlsafechars($arr_post['topic_desc']);
 }
-$post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : $arr_post['post_title']);
+$post_title = isset($_POST['post_title']) ? htmlsafechars($_POST['post_title']) : htmlsafechars($arr_post['post_title']);
 $icon = isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']);
 $show_bbcode = isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode'];
 $bb_code = $show_bbcode;
-$edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
+$edit_reason = isset($_POST['edit_reason']) ? htmlsafechars($_POST['edit_reason']) : '';
 $show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] >= $site_config['allowed']['show_edited_by'] && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
 if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
@@ -118,8 +118,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                 <div class='column round10 bg-02 left10'>" . format_comment($arr_post['body']) . '</div>
             </div>
         </div>', (!empty($arr_post['post_history']) ? 'bottom20' : '')) . $arr_post['post_history'];
-
-    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc(TIME_NOW) . ', post_history = ' . sqlesc($post_history) . ' WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE posts SET body = ' . sqlesc(htmlsafechars($body)) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc(TIME_NOW) . ', post_history = ' . sqlesc($post_history) . ' WHERE id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     if ($can_edit) {

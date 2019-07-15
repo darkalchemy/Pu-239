@@ -1,6 +1,11 @@
+### 15 Jul, 2019
+fix: display php code
+
+### 14 Jul, 2019
+fix: typo blocks cache
+update: genreal cleanup
+
 ### 13 Jul, 2019
-fix: typo blocks cache  
-update: genreal cleanup  
 fix: missing index  
 update: torrent info browse.php  
 add: include audio languages on tv/movie uploads  

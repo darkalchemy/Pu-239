@@ -175,8 +175,6 @@ function islocal($link)
  */
 function format_urls($s)
 {
-    $s = htmlspecialchars_decode($s);
-
     return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", 'islocal', $s);
 }
 
@@ -214,9 +212,8 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     //$s = str_replace('&amp;', '&', $s);
     if ($strip_html) {
         $s = strip_tags($s);
-        //$s = htmlsafechars($s);
     }
-
+    $s = format_code($s);
     $s = check_BBcode($s);
     $bb_code_in = [
         '/\s*\[table\](.*?)\[\/table\]\n?/is',
@@ -356,8 +353,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         '<div dir="rtl">\1</div>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
-
-    if (preg_match("#function\s*\((.*?)\|\|#is", $s)) {
+    if (preg_match("#function\s*\((.*?)\|\|#ismU", $s)) {
         $s = str_replace([
             '&nbsp;',
             ':',
@@ -392,12 +388,10 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
             $s = preg_replace("/@$tmp/", $username . ' ', $s);
         }
     }
-
     preg_match_all('/key\s*=\s*(\d{10})/', $s, $match);
     foreach ($match[1] as $tmp) {
         $s = str_replace($tmp, get_date((int) $tmp, ''), $s);
     }
-
     if ($urls) {
         $s = format_urls($s);
     }
@@ -406,10 +400,8 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         // [url]http://www.example.com[/url]
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
     }
-
     // Dynamic Vars
     $s = dynamic_user_vars($s);
-
     // [pre]Preformatted[/pre]
     if (stripos($s, '[pre]') !== false) {
         $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<pre>\\1</pre>', $s);
@@ -441,10 +433,8 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
             $height = !empty($dimensions[2]) ? (int) $dimensions[2] : null;
             $s = str_replace($match, url_proxy($match, true, $width, $height), $s);
         }
-
         // [img] proxied local images
         $s = preg_replace("#\[img\](.*" . preg_quote($site_config['paths']['images_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy"></a>', $s);
-
         // [img] local images
         $s = preg_replace("#\[img\](.*" . preg_quote($site_config['paths']['images_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x"></a>', $s);
     }
@@ -484,7 +474,6 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     }
 
     $s = format_quotes($s);
-    $s = format_code($s);
     $s = str_replace([
         "\r\n",
         "\r",
@@ -525,9 +514,12 @@ function format_code(string $s)
                 return $s;
             }
         }
+        preg_match_all('#\[php\](.*)?\[/php\]#ismU', $s, $matches);
+        foreach ($matches[1] as $match) {
+            $s = str_replace(htmlspecialchars($match), $match, $s);
+        }
         $s = str_replace('[code]', "<div><fieldset class='code'><legend>code</legend>", $s);
         $s = str_replace('[/code]', '</fieldset></div>', $s);
-        $s = html_entity_decode($s);
     }
 
     return $s;

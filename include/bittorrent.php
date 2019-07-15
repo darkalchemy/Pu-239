@@ -73,6 +73,7 @@ if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_C
 function htmlsafechars(string $txt, bool $strip = true)
 {
     $txt = trim($txt);
+    $txt = htmlentities($txt, ENT_QUOTES);
     $txt = $strip ? filter_var($txt, FILTER_SANITIZE_STRING) : filter_var($txt, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     return $txt;
