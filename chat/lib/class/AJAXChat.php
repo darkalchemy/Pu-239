@@ -2359,7 +2359,7 @@ class AJAXChat
             return false;
         }
 
-        $gift = $textParts[2];
+        $gift = (int) $textParts[2];
         $cur_user_data = $this->_user->getUserFromId($this->getUserID());
 
         $frombonus = $cur_user_data['seedbonus'];
