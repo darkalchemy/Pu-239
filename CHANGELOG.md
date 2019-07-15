@@ -1,4 +1,5 @@
 ### 15 Jul, 2019
+fix: typo takeupload.php  
 fix: add try catch ImageProxy.php  
 fix: check if empty view_topic.php  
 fix: typo  
