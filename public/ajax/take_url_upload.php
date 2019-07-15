@@ -9,8 +9,8 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
-$lang = load_language('bitbucket');
 $user = check_user_status();
+$lang = load_language('bitbucket');
 global $container, $site_config;
 
 header('content-type: application/json');
@@ -18,13 +18,13 @@ if (empty($user['id'])) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
     die();
 }
-$username = $user['username'];
+
 $url = $_POST['url'];
 if (!filter_var($url, FILTER_VALIDATE_URL)) {
     echo json_encode(['msg' => $lang['bitbucket_invalid_url']]);
     die();
 }
-
+$username = $user['username'];
 $SaLt = $site_config['salt']['one'];
 $SaLty = $site_config['salt']['two'];
 $skey = $site_config['salt']['three'];

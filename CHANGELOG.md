@@ -1,4 +1,5 @@
 ### 15 Jul, 2019
+fix: drag and drop image upload  
 fix: cast to int AJAXChat.php  
 fix: typo takeupload.php  
 fix: add try catch ImageProxy.php  
