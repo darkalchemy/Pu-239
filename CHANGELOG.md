@@ -1,9 +1,10 @@
 ### 15 Jul, 2019
-fix: display php code
+fix: typo  
+fix: display php code  
 
 ### 14 Jul, 2019
-fix: typo blocks cache
-update: genreal cleanup
+fix: typo blocks cache  
+update: genreal cleanup  
 
 ### 13 Jul, 2019
 fix: missing index  
