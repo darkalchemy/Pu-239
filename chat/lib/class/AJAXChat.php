@@ -2436,7 +2436,7 @@ class AJAXChat
             return false;
         }
 
-        $gift = $textParts[2];
+        $gift = (int) $textParts[2];
         $cur_user_data = $this->_user->getUserFromId($this->getUserID());
         $fromrep = $cur_user_data['reputation'];
         if ((int) $gift > (int) $fromrep) {
