@@ -1,4 +1,6 @@
 ### 15 Jul, 2019
+fix: add try catch ImageProxy.php  
+fix: check if empty view_topic.php  
 fix: typo  
 fix: display php code  
 

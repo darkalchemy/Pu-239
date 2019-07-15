@@ -50,7 +50,7 @@ $arr = $fluent->from('topics AS t')
               ->where("{$where}t.id = ?", $topic_id)
               ->fetch();
 
-if ($CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
+if (empty($arr) || $CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 

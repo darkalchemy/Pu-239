@@ -78,10 +78,14 @@ class ImageProxy
         if (!file_put_contents($path, $image)) {
             return false;
         }
-        if (!exif_imagetype($path)) {
-            unlink($path);
+        try {
+            if (!exif_imagetype($path)) {
+                unlink($path);
 
-            return false;
+                return false;
+            }
+        } catch (Exception $e) {
+            // TODO
         }
         if ($this->optimize($path, false, false)) {
             $this->set_permissions($path);
