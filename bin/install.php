@@ -8,6 +8,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\PDO_Importer;
 
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
@@ -125,16 +126,16 @@ $auth = $container->get(Auth::class);
 $pdo = $container->get(PDO::class);
 $cache->flushDB();
 $sources = [
-    'schema' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'schema.sql.gz'),
-    'data' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'data.sql.gz'),
-    'trivia' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'trivia.sql.gz'),
-    'tvmaze' => file_get_contents('compress.zlib://' . DATABASE_DIR . 'tvmaze.sql.gz'),
+    'schema' => DATABASE_DIR . 'schema.sql.gz',
+    'data' => DATABASE_DIR . 'data.sql.gz',
+    'trivia' => DATABASE_DIR . 'trivia.sql.gz',
+    'tvmaze' => DATABASE_DIR . 'tvmaze.sql.gz',
 ];
 
 foreach ($sources as $name => $source) {
     echo 'Importing: ' . $name . "\n";
-    $result = $pdo->exec($source);
-    if ($result != 0) {
+    exec("gunzip < '$source' | /usr/bin/mysql -u'{$site_config['db']['username']}' -h '{$site_config['db']['host']}' -p'{$site_config['db']['password']}' {$site_config['db']['database']}", $output, $status);
+    if ($status != 0) {
         die("There was an error while working with database, at step: {$name}\n");
     }
 }

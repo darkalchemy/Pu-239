@@ -1,3 +1,7 @@
+### 16 Jul, 2019
+revert: installer to use mysql to import db files  
+update: remove date info from db files  
+
 ### 15 Jul, 2019
 fix: user torrent blocks userdetailes.php  
 fix: drag and drop image upload  
