@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "amnuts/opcache-gui",
-            "version": "v2.4.1",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amnuts/opcache-gui.git",
-                "reference": "3f1591471dbf6b26af6c956bbb9df8e0d1f1258c"
+                "reference": "22d360c359bd493737723b879d10ef9a2343fa6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amnuts/opcache-gui/zipball/3f1591471dbf6b26af6c956bbb9df8e0d1f1258c",
-                "reference": "3f1591471dbf6b26af6c956bbb9df8e0d1f1258c",
+                "url": "https://api.github.com/repos/amnuts/opcache-gui/zipball/22d360c359bd493737723b879d10ef9a2343fa6c",
+                "reference": "22d360c359bd493737723b879d10ef9a2343fa6c",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "interface",
                 "opcodes"
             ],
-            "time": "2019-07-12T00:50:59+00:00"
+            "time": "2019-07-13T16:26:40+00:00"
         },
         {
             "name": "aura/sql",

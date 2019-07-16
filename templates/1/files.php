@@ -12,7 +12,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_ff332dd3.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_5b7cf5c1.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_cc50bc1c.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':
@@ -42,7 +42,7 @@ function get_file_name($file)
         case 'glider_js':
             return "{$site_config['paths']['baseurl']}/js/1/glider_1e06ee07.js";
         case 'userdetails_js':
-            return "{$site_config['paths']['baseurl']}/js/1/userdetails_233a26f9.js";
+            return "{$site_config['paths']['baseurl']}/js/1/userdetails_fddd0a3e.js";
         case 'cookieconsent_js':
             return "{$site_config['paths']['baseurl']}/js/1/cookieconsent_657538f3.js";
         case 'invite_js':
@@ -62,7 +62,7 @@ function get_file_name($file)
         case 'user_search_js':
             return "{$site_config['paths']['baseurl']}/js/1/user_search_79ba3068.js";
         case 'lightbox_js':
-            return "{$site_config['paths']['baseurl']}/js/1/lightbox_1de13332.js";
+            return "{$site_config['paths']['baseurl']}/js/1/lightbox_dab5af27.js";
         case 'tooltipster_js':
             return "{$site_config['paths']['baseurl']}/js/1/tooltipster_2882366f.js";
         case 'site_config_js':

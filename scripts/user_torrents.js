@@ -29,7 +29,7 @@ function get_torrents(uid, type) {
     let div = document.createElement('div');
     div.classList.add('has-text-centered');
     div.innerHTML = 'Looking up your torrents, please be patient.';
-    selel.appendChild(e);
+    selel.appendChild(div);
 
     $.ajax({
         url: './ajax/torrents_lookup.php',
@@ -49,7 +49,7 @@ function get_torrents(uid, type) {
                 div.remove();
                 let cnode = document.createElement('div');
                 cnode.innerHTML = data['content'];
-                div.appendChild(cnode);
+                selel.appendChild(cnode);
             }
         }
     });
