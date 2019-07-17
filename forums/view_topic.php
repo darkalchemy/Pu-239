@@ -376,7 +376,7 @@ $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
 $like_button = " < div class='level-right margin10'>
                     <span class='tot-{$arr['topic_id']} left10'>{
         $att_str}</span>
-                    <span data - id='{$arr['topic_id']}' data - type = 'topic' data - csrf = '" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
+                    <span data-id='{$arr['topic_id']}' data-type = 'topic' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
                 </div>';
 
 $locked_or_reply_button = $locked === 'yes' ? "
@@ -435,26 +435,27 @@ foreach ($posts as $arr) {
     $usersdata = $users_class->getUserFromId((int) $arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
-    $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy"> ';
-    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title']) . '</span>' : '';
+    $post_id = $arr['post_id'];
+    $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ';
+    $post_title = !empty($arr['post_title']) ? htmlsafechars($arr['post_title']) : 'Post: #' . $post_id . ', ';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy'>" : '';
-    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, (int) $arr['post_id'], ($arr['anonymous'] === 'yes' ? true : false)) : '';
+    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, (int) $post_id, ($arr['anonymous'] === 'yes' ? true : false)) : '';
     $attachments = $edited_by = '';
     if ($arr['edit_date'] > 0) {
         if ($arr['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
 				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $post_id . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             } else {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username((int) $arr['edited_by']) . ']
 				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $post_id . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
         } else {
             $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' ' . format_username((int) $arr['edited_by']) . '
 				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $post_id . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
     }
     $body = $arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']);
@@ -462,7 +463,6 @@ foreach ($posts as $arr) {
         $body = highlightWords($body, $search);
         $post_title = highlightWords($post_title, $search);
     }
-    $post_id = $arr['post_id'];
     $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id=' . sqlesc($arr['user_id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($attachments_res) > 0) {
         $attachments = '<table><tr><td><span>' . $lang['fe_attachments'] . ':</span><hr>';
@@ -497,16 +497,16 @@ foreach ($posts as $arr) {
     $likers = $user_likes = [];
     $count = 0;
     if ($arr['user_likes'] > 0) {
-        $user_likes = $cache->get('posts_user_likes_' . $arr['post_id']);
+        $user_likes = $cache->get('posts_user_likes_' . $post_id);
         if ($user_likes === false || is_null($user_likes)) {
             $query = $fluent->from('likes')
                             ->select(null)
                             ->select('user_id')
-                            ->where('post_id = ?', $arr['post_id']);
+                            ->where('post_id = ?', $post_id);
             foreach ($query as $userid) {
                 $user_likes[] = $userid['user_id'];
             }
-            $cache->set('posts_user_likes_' . $arr['post_id'], $user_likes, 86400);
+            $cache->set('posts_user_likes_' . $post_id, $user_likes, 86400);
         }
         if ($user_likes) {
             foreach ($user_likes as $userid) {
@@ -544,7 +544,6 @@ foreach ($posts as $arr) {
         default:
             $show_status = '';
     }
-
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
             <td colspan="3">' . $show_status . '
@@ -616,8 +615,8 @@ foreach ($posts as $arr) {
                     ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy">' : '') . '
                     ') . '
                     <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon lazy"> ' . $lang['vt_send_message'] . "</a>
-                    <span data-id='{$arr['post_id']}' data-type='post' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
-                    <span class='tot-{$arr['post_id']} left10'>{$att_str}</span>
+                    <span data-id='{$post_id}' data-type='post' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
+                    <span class='tot-{$post_id} left10'>{$att_str}</span>
                 </td>
             </tr>", '', 'top20 h-100');
     $attachments = '';
