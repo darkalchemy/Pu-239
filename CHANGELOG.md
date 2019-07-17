@@ -1,3 +1,10 @@
+### 17 Jul, 2019
+fix: log viewer, large files are still not fixed  
+fix: bad '&' used  
+fix: missing method  
+fix: missing index 'isbn' takeedit.php  
+add: line-height for input, select, textarea  
+
 ### 16 Jul, 2019
 revert: installer to use mysql to import db files  
 update: remove date info from db files  

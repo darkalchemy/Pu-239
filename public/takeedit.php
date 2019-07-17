@@ -44,7 +44,7 @@ function valid_torrent_name($torrent_name)
 }
 
 $nfoaction = '';
-$select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$select_torrent = sql_query('SELECT name, descr, isbn, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
 if ($user['id'] != $fetch_assoc['owner'] && $user['class'] < UC_STAFF) {

@@ -37,7 +37,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
         $auth->logOutEverywhere();
         $session = $container->get(Session::class);
         $session->set('is-danger', 'Please confirm your identity.');
-        header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
+        header("Location: {$site_config['paths']['baseurl']}{$_SERVER['REQUEST_URI']}");
         die();
     }
     $userid = $user['id'];

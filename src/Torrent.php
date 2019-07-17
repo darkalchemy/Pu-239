@@ -979,12 +979,14 @@ class Torrent
             $torrent = $this->get($torrentid);
             if (!empty($torrent)) {
                 $descr = $torrent['descr'];
-                if (!preg_match('/\[pre\].*\[\/pre\]/isU', $descr)) {
-                    $descr = '[pre]' . $descr . '[/pre]';
+                if (!empty($descr)) {
+                    if (!preg_match('/\[pre\].*\[\/pre\]/isU', $descr)) {
+                        $descr = '[pre]' . $descr . '[/pre]';
+                    }
+                    require_once INCL_DIR . 'function_bbcode.php';
+                    $descr = format_comment($descr);
+                    $this->cache->set('torrent_descr_' . $torrentid, $descr, 86400);
                 }
-                require_once INCL_DIR . 'function_bbcode.php';
-                $descr = mb_convert_encoding(format_comment($descr), 'UTF-8');
-                $this->cache->set('torrent_descr_' . $torrentid, $descr, 86400);
             }
         }
 

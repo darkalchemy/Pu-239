@@ -24,7 +24,7 @@ $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$results = $peer->get_peers($pager['pdo']['limit'], $pager['pdo']['offset']);
+$results = $peer->get_all_peers($pager['pdo']['limit'], $pager['pdo']['offset']);
 if (!empty($results)) {
     $heading = "
     <tr>

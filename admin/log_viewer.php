@@ -39,13 +39,16 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $content = trim($content);
 
     $date_formats = "(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?|\[\w+ \w+ \d+ \d{2}:\d{2}:\d{2}\.\d+ \d{4}\])";
-    if (!preg_match('/(sqlerr|access\.log|cron.*\.log|images.*\.log|announce\.log)/i', $file)) {
+    if (!preg_match('/(sqlerr|slow\-fpm\.log|access\.log|cron.*\.log|images.*\.log|announce\.log)/i', $file)) {
         preg_match_all('!' . $date_formats . '!iU', $content, $matches);
         if (!empty($matches[1])) {
             $contents = $matches[1];
         } else {
             $contents = explode("\n", $content);
         }
+    } elseif (preg_match('/slow\-fpm\.log/', $name)) {
+        $contents = preg_split('!(\[\d+\-\w+\-\d{4}\s+\d{2}:\d{2}:\d{2}\])!iU', $content, PREG_SPLIT_DELIM_CAPTURE);
+        $state = 'pre';
     } elseif (preg_match('/access\.log/', $name)) {
         preg_match_all('!(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*?)!iU', $content, $matches);
         if (!empty($matches[1])) {
@@ -79,7 +82,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
 
     $HTMLOUT = main_div("
         <div class='bg-00 round10'>
-            <h1 class='has-text-centered'>Viewing Log: $file</h1>$content
+            <div class='size_7 has-text-centered padding20'>Viewing Log: $file</div>$content
         </div>", 'bottom20');
 }
 
@@ -95,7 +98,8 @@ foreach ($paths as $path) {
         ];
         foreach ($objects as $name => $object) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
-            if (in_array($ext, $exts)) {
+            $size = filesize($name);
+            if (in_array($ext, $exts) && $size != 0) {
                 $files[] = $name;
             }
         }

@@ -199,7 +199,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         return null;
     }
     $image = placeholder_image();
-    $s = $text;
+    $s = mb_convert_encoding(htmlspecialchars_decode($text), 'UTF-8');
     unset($text);
 
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
@@ -403,15 +403,15 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     // Dynamic Vars
     $s = dynamic_user_vars($s);
     // [pre]Preformatted[/pre]
-    if (stripos($s, '[pre]') !== false) {
+    if (stripos($s, '[pre]') !== false && stripos($s, '[/pre]') !== false) {
         $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<pre>\\1</pre>', $s);
     }
     // [nfo]NFO-preformatted[/nfo]
-    if (stripos($s, '[nfo]') !== false) {
+    if (stripos($s, '[nfo]') !== false && stripos($s, '[/nfo]') !== false) {
         $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<pre style='font-family: \"MS Linedraw; font-size: 10pt; line-height: 10pt;\"'>\\1</pre>", $s);
     }
     //==Media tag
-    if (stripos($s, '[media=') !== false) {
+    if (stripos($s, '[media=') !== false && stripos($s, '[media=') !== false) {
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     $show_image = $images ? 'img-responsive' : 'is_hidden';
