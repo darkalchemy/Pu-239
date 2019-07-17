@@ -165,7 +165,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . htmlspecialchars_decode($url) . '" target="_blank">' . $lshort . '</a>';
 }
 
 /**
@@ -199,7 +199,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         return null;
     }
     $image = placeholder_image();
-    $s = mb_convert_encoding(htmlspecialchars_decode($text), 'UTF-8');
+    $s = mb_convert_encoding($text, 'UTF-8');
     unset($text);
 
     // This fixes the extraneous ;) smilies problem. When there was an html escaped

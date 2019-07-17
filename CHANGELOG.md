@@ -1,4 +1,5 @@
 ### 17 Jul, 2019
+update: clean url without breaking code blocks  
 add: post id to forum posts  
 fix: log viewer, large files are still not fixed  
 fix: bad '&' used  
