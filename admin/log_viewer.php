@@ -11,7 +11,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config;
 
-$HTMLOUT = '';
+$HTMLOUT = $content = '';
 $count = 0;
 $perpage = 50;
 $state = 'div';
@@ -30,10 +30,10 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $name = basename($file);
     $uncompress = $ext === 'gz' ? 'compress.zlib://' : '';
 
-    if (file_exists($file)) {
+    if (file_exists($file) && is_readable($file)) {
         $content = file_get_contents($uncompress . $file);
     } else {
-        $content = '<b>' . $file . '</b> does not exist';
+        $content = '<b>' . $file . '</b> does not exist or is not readable';
     }
 
     $content = trim($content);
@@ -99,7 +99,7 @@ foreach ($paths as $path) {
         foreach ($objects as $name => $object) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             $size = filesize($name);
-            if (in_array($ext, $exts) && $size != 0) {
+            if (in_array($ext, $exts) && $size != 0 && is_readable($name)) {
                 $files[] = $name;
             }
         }

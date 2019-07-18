@@ -8,7 +8,6 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
-use Pu239\PDO_Importer;
 
 if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");

@@ -1,4 +1,5 @@
 ### 17 Jul, 2019
+fix: check if file is readable before reading log_viewer.php  
 update: clean url without breaking code blocks  
 add: post id to forum posts  
 fix: log viewer, large files are still not fixed  
