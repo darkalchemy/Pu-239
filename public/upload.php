@@ -137,7 +137,7 @@ $HTMLOUT .= "
         <input type='hidden' id='csrf' name='csrf' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>
         <div class='has-text-centered margin10'>{$lang['upload_announce_url']}:<br>
-            <input type='text' class='has-text-centered w-100' readonly='readonly' value='{$announce_url}' id='announce_url'>
+            <input type='text' class='has-text-centered w-100' readonly='readonly' value='{$announce_url}' id='announce_url' onClick=\"this.select();\">
         </div>
         <div class='banner_container has-text-centered w-100'></div>
         <table class='table table-bordered table-striped top20'>";

@@ -72,6 +72,9 @@ $possible_actions = [
     'api',
     'personal',
     'default',
+    'reset_torrent_pass',
+    'reset_auth_key',
+    'reset_api_key',
 ];
 $session = $container->get(Session::class);
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : 'default';
@@ -81,11 +84,32 @@ if (!in_array($action, $possible_actions)) {
 if (isset($_GET['edited'])) {
     $session->set('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
 }
+if ($action === 'reset_torrent_pass') {
+    $update['torrent_pass'] = make_password(32);
+    $user_class = $container->get(User::class);
+    $user_class->update($update, $user['id']);
+    header('Location: ' . $site_config['paths']['baseurl'] . '/usercp.php?action=api');
+    die();
+}
+if ($action === 'reset_auth_key') {
+    $update['auth'] = make_password(32);
+    $user_class = $container->get(User::class);
+    $user_class->update($update, $user['id']);
+    header('Location: ' . $site_config['paths']['baseurl'] . '/usercp.php?action=api');
+    die();
+}
+if ($action === 'reset_api_key') {
+    $update['apikey'] = make_password(32);
+    $user_class = $container->get(User::class);
+    $user_class->update($update, $user['id']);
+    header('Location: ' . $site_config['paths']['baseurl'] . '/usercp.php?action=api');
+    die();
+}
 
 $avatar = get_avatar($user);
 $HTMLOUT .= "
             <div class='w-100'>
-                <form method='post' action='takeeditcp.php' accept-charset='utf-8'>
+                <form method='post' action='{$site_config['paths']['baseurl']}/takeeditcp.php' accept-charset='utf-8'>
                     <div class='bottom20'>
                         <ul class='level-center bg-06'>
                             <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
@@ -229,9 +253,9 @@ if ($action === 'avatar') {
         header('Location: ' . $_SERVER['REQUEST_URI']);
         die();
     }
-    $HTMLOUT .= tr('Torrent Pass', '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($user['torrent_pass']) . '" readonly onClick="this.select();"><div class="left10 top10">This is used for downloading and seeding torrents, in your torrent client and your rss reader.</div>', 1);
-    $HTMLOUT .= tr('Auth', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['auth']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by an upload script, msg any staff member for the details.</div>', 1);
-    $HTMLOUT .= tr('API Key', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['apikey']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)</div>', 1);
+    $HTMLOUT .= tr('Torrent Pass' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_torrent_pass' class='button is-small'>Reset</a></div>", '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($user['torrent_pass']) . '" readonly onClick="this.select();"><div class="left10 top10">This is used for downloading and seeding torrents, in your torrent client and your rss reader.</div>', 1);
+    $HTMLOUT .= tr('Auth' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_auth_key' class='button is-small'>Reset</a></div>", '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['auth']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by an upload script, msg any staff member for the details.</div>', 1);
+    $HTMLOUT .= tr('API Key' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_api_key' class='button is-small'>Reset</a></div>", '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['apikey']) . '" readonly onClick="this.select();"><div class="left10 top10">This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)</div>', 1);
     $HTMLOUT .= '
                                 </tbody>
                             </table>
