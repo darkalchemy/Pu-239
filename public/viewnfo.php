@@ -38,18 +38,18 @@ if ($site_config['nfo']['as_image']) {
     $image = $nfo2png->nfo2png_ttf($nfo['nfo'], $nfo['id'], '000', '0f0');
     if (!empty($image)) {
         $HTMLOUT .= main_div("
-        <div class='has-text-centered w-50 padding20'>
-            <img src='{$site_config['paths']['nfos_baseurl']}$image' alt='{$nfo['name']}' class=' round10 w-100'>
+        <div class='has-text-centered w-50 min-600'>
+            <img src='{$site_config['paths']['nfos_baseurl']}$image' alt='{$nfo['name']}' class='round10 w-100 top20 bottom20'>
         </div>");
     }
 }
 if (empty($image)) {
     $div = "
-        <div class='size_5 has-text-centered w-50 padding20'>
+        <div class='size_5 has-text-centered w-50 min-600'>
             <div class='bottom20'>
                 {$lang['text_forbest']}<a href='" . url_proxy('https://www.fontpalace.com/font-download/MS+LineDraw/') . "' target='_blank'>{$lang['text_linedraw']}</a>{$lang['text_font']}
             </div>
-            <pre class='pre round10 noselect has-text-white has-text-left bg-dark h-100 w-100 has-text-green'>" . format_urls(strip_tags($nfo['nfo'])) . '</pre>
+            <pre class='pre round10 noselect has-text-white has-text-left bg-dark w-100 has-text-green top20 bottom20'>" . format_urls(strip_tags($nfo['nfo'])) . '</pre>
         </div';
 
     $HTMLOUT .= main_div($div);

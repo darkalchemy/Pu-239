@@ -1,4 +1,6 @@
 ### 21 Jul, 2019
+update: style nfo viewer  
+fix: index page comments block  
 add: missing path from config_example.php  
 add: linedraw.ttf font  
 update: db files  

@@ -32,12 +32,12 @@ $images_class = $container->get(Image::class);
 $users_class = $container->get(User::class);
 foreach ($comments as $comment) {
     $torrname = format_comment($comment['name']);
-    $formatted = $anonymous === 'yes' ? 'Anonymous' : format_username((int) $comment['user']);
+    $formatted = $comment['anonymous'] === 'yes' ? 'Anonymous' : format_username((int) $comment['user']);
     if (empty($comment['poster']) && !empty($imdb_id)) {
         $comment['poster'] = $images_class->find_images($imdb_id);
     }
     $comment['poster'] = empty($comment['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($comment['poster'], true, 250) . "' alt='' class='tooltip-poster'>";
-    if ($anonymous === 'yes' && ($user['class'] < UC_STAFF || (int) $comment['owner'] === $user['id'])) {
+    if ($comment['anonymous'] === 'yes' && ($user['class'] < UC_STAFF || (int) $comment['owner'] === $user['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $users_data = $users_class->getUserFromId((int) $comment['owner']);
@@ -52,7 +52,7 @@ foreach ($comments as $comment) {
                             <td class='has-text-centered'>$caticon</td>
                             <td>";
     $block_id = "comment_id_{$comment['comment_id']}";
-    $posted_comments .= torrent_tooltip(format_comment($comment['text']), $comment['id'], $block_id, $comment['name'], $comment['poster'], $uploader, $added, $size, $comment['seeders'], $comment['leechers'], $comment['imdb_id'], $comment['rating'], $comment['year'], $comment['subtitles'], $comment['audios'], $genre, false, $comment['comment_id']);
+    $posted_comments .= torrent_tooltip(format_comment($comment['text']), $comment['id'], $block_id, $comment['name'], $comment['poster'], $uploader, $added, $comment['size'], $comment['seeders'], $comment['leechers'], $comment['imdb_id'], $comment['rating'], $comment['year'], $comment['subtitles'], $comment['audios'], $comment['genre'], false, $comment['comment_id']);
     $posted_comments .= "
                             <td class='has-text-centered'>$formatted</td>
                             <td class='has-text-centered'>" . get_date((int) $added, 'LONG') . "</td>
