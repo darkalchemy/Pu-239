@@ -2,8 +2,11 @@
 
 declare(strict_types = 1);
 
-global $site_config, $CURUSER;
+use Pu239\User;
 
+global $container, $site_config, $CURUSER;
+
+$users_class = $container->get(User::class);
 $colour = $post_status_image = $option = $next = '';
 $ASC_DESC = isset($_GET['ASC_DESC']) && $_GET['ASC_DESC'] === 'ASC' ? 'ASC ' : 'DESC ';
 $member_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
@@ -110,7 +113,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			<tr>
 				<td>' . format_username((int) $row['id']) . '</td>
 				<td>' . get_date((int) $row['registered'], '') . '</td>
-				<td>' . ($row['perms'] < PERMS_STEALTH ? get_date((int) $row['last_access'], '') : 'Never') . '</td>
+				<td>' . (!get_anonymous((int) $row['id']) ? get_date((int) $row['last_access'], '') : 'Never') . '</td>
 				<td>' . get_user_class_name((int) $row['class']) . '</td>
 				<td>' . $country . '</td>
 				<td>
@@ -126,7 +129,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 } else {
     $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
-    $count = $arr_count[0];
+    $count = (int) $arr_count[0];
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '<br><div style="font-weight: bold;">' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/subscribe.gif" alt="" class="emoticon"></div>' : '<br><div style="font-weight: bold;">' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/unsubscribe.gif" alt="" class="emoticon"></div>') : '');
@@ -215,7 +218,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
         $body = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
         $post_id = (int) $arr['post_id'];
-        $user_arr = $users_class->getUserFromId($arr['user_id']);
+        $user_arr = $users_class->getUserFromId((int) $arr['user_id']);
         $HTMLOUT .= '
         <table class="table table-bordered table-striped">
         <tr>

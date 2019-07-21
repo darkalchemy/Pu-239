@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once FORUM_DIR . 'quick_reply.php';
+require_once INCL_DIR . 'function_users.php';
 
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
@@ -246,7 +247,7 @@ $values = [
 $fluent->deleteFrom('now_viewing')
        ->where('user_id = ?', $CURUSER['id'])
        ->execute();
-if ($user['anonymous_until'] < TIME_NOW && $user['perms'] < PERMS_STEALTH) {
+if (!get_anonymous($CURUSER['id'])) {
     $fluent->insertInto('now_viewing')
            ->values($values)
            ->execute();
@@ -262,7 +263,9 @@ if ($topic_users_cache === false || is_null($topic_users_cache)) {
                     ->select('users.perms')
                     ->innerJoin('users ON now_viewing.user_id=users.id')
                     ->where('topic_id = ?', $topic_id)
-                    ->where('users.perms < ?', PERMS_STEALTH);
+                    ->where('users.anonymous_until < ?', TIME_NOW)
+                    ->where('users.perms < ?', PERMS_STEALTH)
+                    ->where('users.paranoia < ?', 2);
 
     foreach ($query as $row) {
         $list[] = format_username((int) $row['user_id']);
@@ -475,7 +478,7 @@ foreach ($posts as $arr) {
         }
         $attachments .= '</td></tr></table>';
     }
-    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] != 'yes' && !($usersdata['perms'] & PERMS_STEALTH) ? format_comment($usersdata['signature']) : '';
+    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] != 'yes' && !get_anonymous($usersdata['id']) ? format_comment($usersdata['signature']) : '';
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
         case 'ok':
@@ -589,7 +592,7 @@ foreach ($posts as $arr) {
                         <div class="column round10 bg-02 is-2-widescreen is-12-mobile has-text-centered">
                             ' . $avatar . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
 			                <span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name((int) $usersdata['class'])) . '</span><br>
-                            ' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format((float) $usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+                            ' . ($usersdata['last_access'] > TIME_NOW - 300 && !get_anonymous($usersdata['id']) ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format((float) $usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
 			                <ul class="level-center">
 			                    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
 			                </ul>' : '') . '

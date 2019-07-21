@@ -73,7 +73,7 @@ function DoStaff($staff_array, $staffclass)
         $flag = !empty($flagpic) ? "<img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'>" : '';
         $body .= '
                         <td>' . format_username((int) $staff['id']) . "</td>
-                        <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>" . "
+                        <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($staff['last_access'] > $dt && get_anonymous($staff['id']) ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>" . "
                         <td><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='Personal Message'></i></a></td>" . "
                         <td>$flag</td>
                     </tr>";

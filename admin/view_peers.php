@@ -8,6 +8,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'function_bt_client.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_viewpeers'));
@@ -20,7 +21,7 @@ $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
     <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . $lang['wpeers_peer'] . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
-$pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
+$pager = pager($peersperpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
@@ -33,7 +34,6 @@ if (!empty($results)) {
         <th>{$lang['wpeers_ip']}</th>
         <th>{$lang['wpeers_port']}</th>
         <th>{$lang['wpeers_client']}</th>
-        <th>{$lang['wpeers_peer_id']}</th>
         <th>{$lang['wpeers_up']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
         <th>{$lang['wpeers_dn']}</th>") . "
         <th>{$lang['wpeers_con']}</th>
@@ -48,7 +48,7 @@ if (!empty($results)) {
     $body = '';
     foreach ($results as $row) {
         $smallname = substr(htmlsafechars($row['name']), 0, 25);
-        if ($smallname != htmlsafechars($row['name'])) {
+        if (strlen($smallname) === 25) {
             $smallname .= '...';
         }
         $body .= '
@@ -57,14 +57,13 @@ if (!empty($results)) {
         <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . $row['port'] . '</td>
-        <td>' . htmlsafechars(str_replace('/', "\n", trim($row['agent']))) . '</td>
-        <td>' . htmlsafechars(str_replace('-', '', $row['peer_id'])) . '</td>
+        <td>' . htmlsafechars(getagent($row['agent'], $row['peer_id'])) . '</td>
         <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td>' . mksize($row['downloaded']) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td>' . get_date((int) $row['started'], 'DATE') . '</td>
-        <td>' . get_date((int) $row['last_action'], 'DATE', 0, 1) . '</td>
+        <td>' . get_date((int) $row['started'], 'DATE', 0, 1) . '</td>
+        <td>' . get_date((int) $row['ts'], 'DATE', 0, 1) . '</td>
         <td>' . mksize($row['uploadoffset']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td>' . mksize($row['downloadoffset']) . '</td>') . '
         <td>' . mksize($row['to_go']) . '</td>

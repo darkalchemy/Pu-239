@@ -23,6 +23,7 @@ if ($active24 === false || is_null($active24)) {
                     ->where('last_access > ?', $dt)
                     ->where('anonymous_until < ?', TIME_NOW)
                     ->where('perms < ?', PERMS_STEALTH)
+                    ->where('paranoia < ?', 2)
                     ->where('id != 2')
                     ->orderBy('username')
                     ->fetchAll();

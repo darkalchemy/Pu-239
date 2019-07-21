@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+merge: user['perms'] user['anonymous_until'] user['paranoia'] into 1 function check_anonymous()  
 update: allow user to reset torrent_pass, auth, api_key  
 add: anonymous users to site stats  
 update: anonymous_until to 28 days mybonus.php  

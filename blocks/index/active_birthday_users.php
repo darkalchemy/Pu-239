@@ -20,6 +20,7 @@ if ($birthday === false || is_null($birthday)) {
                     ->where('DAYOFMONTH(birthday) = ?', $current_date['mday'])
                     ->where('perms < ?', PERMS_STEALTH)
                     ->where('anonymous_until < ?', TIME_NOW)
+                    ->where('paranoia < ?', 2)
                     ->orderBy('username')
                     ->fetchAll();
 

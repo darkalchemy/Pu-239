@@ -18,7 +18,7 @@ if ($class === '-' || !ctype_digit($class)) {
     $class = '';
 }
 if ($search != '' || $class) {
-    $query1 = 'username LIKE ' . sqlesc("%$search%") . " AND status = 0 AND verified = 1 AND anonymous_until = 0";
+    $query1 = 'username LIKE ' . sqlesc("%$search%") . ' AND status = 0 AND verified = 1 AND anonymous_until = 0';
     if ($search) {
         $q1 = 'search = ' . htmlsafechars($search);
     }

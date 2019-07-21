@@ -737,3 +737,24 @@ function make_dir(string $dir, int $octal)
 
     return false;
 }
+
+/**
+ * @param int $userid
+ *
+ * @return bool
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
+function get_anonymous(int $userid)
+{
+    global $container;
+
+    $user_class = $container->get(User::class);
+    $user = $user_class->getUserFromId($userid);
+    if ($user['perms'] >= PERMS_STEALTH || $user['anonymous_until'] > TIME_NOW || $user['paranoia'] >= 2) {
+        return true;
+    }
+
+    return false;
+}

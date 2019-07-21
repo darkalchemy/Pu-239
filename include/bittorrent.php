@@ -80,9 +80,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return string
  */
@@ -220,9 +220,9 @@ function userlogin()
 }
 */
 /**
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -313,9 +313,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -343,9 +343,9 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -413,36 +413,44 @@ function unesc($x)
 }
 
 /**
- * @param $size
+ * @param int    $bytes
+ * @param int    $decimals
+ * @param string $system
  *
  * @return string
  */
-function mksize($size)
+function mksize(int $bytes, int $decimals = 2, string $system = 'metric')
 {
-    for ($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {
-    }
+    $mod = ($system === 'binary') ? 1024 : 1000;
 
-    return round($size, [
-        0,
-        0,
-        1,
-        2,
-        2,
-        3,
-        3,
-        4,
-        4,
-    ][$i]) . ' ' . [
-        'B',
-        'kB',
-        'MB',
-        'GB',
-        'TB',
-        'PB',
-        'EB',
-        'ZB',
-        'YB',
-    ][$i];
+    $units = [
+        'binary' => [
+            'B',
+            'KiB',
+            'MiB',
+            'GiB',
+            'TiB',
+            'PiB',
+            'EiB',
+            'ZiB',
+            'YiB',
+        ],
+        'metric' => [
+            'B',
+            'kB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+            'EB',
+            'ZB',
+            'YB',
+        ],
+    ];
+
+    $factor = floor((strlen((string) $bytes) - 1) / 3);
+
+    return sprintf("%.{$decimals}f%s", $bytes / pow($mod, $factor), $units[$system][$factor]);
 }
 
 /**
@@ -868,12 +876,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @throws AuthError
- * @throws DependencyException
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws AuthError
+ * @throws DependencyException
  *
  * @return bool|mixed|User
  */
@@ -888,7 +896,7 @@ function check_user_status(string $type = 'browse')
         insert_update_ip($type, $userid);
         force_logout($userid);
         $users_data = $user_class->getUserFromId($userid);
-        if ($users_data['anonymous_until'] < TIME_NOW || $users_data['perms'] >= PERMS_STEALTH) {
+        if (!get_anonymous($userid)) {
             $user_class->update_last_access($userid);
         }
         $session = $container->get(Session::class);
@@ -936,9 +944,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1015,9 +1023,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -1106,12 +1114,12 @@ function plural(int $int)
  * @param string $username
  * @param bool   $ajax
  *
- * @throws DependencyException
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return bool|string
  */
@@ -1260,9 +1268,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1303,9 +1311,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1408,9 +1416,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return bool
  */
@@ -1439,9 +1447,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool   $fresh
  * @param bool   $async
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -1494,9 +1502,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1564,9 +1572,9 @@ function get_body_image(bool $details)
 }
 
 /**
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

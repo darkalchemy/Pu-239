@@ -183,11 +183,11 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function isChatOpen()
     {
@@ -225,11 +225,11 @@ class AJAXChat
     }
 
     /**
-     * @return mixed|null
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return mixed|null
      */
     public function getUserRole()
     {
@@ -321,9 +321,9 @@ class AJAXChat
     /**
      * @param null $userID
      *
-     * @return bool
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return bool
      */
     public function isUserOnline($userID = null)
     {
@@ -341,9 +341,9 @@ class AJAXChat
      * @param null $key
      * @param null $value
      *
-     * @return array|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return array|null
      */
     public function getOnlineUsersData($channelIDs = null, $key = null, $value = null)
     {
@@ -469,11 +469,11 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function hasAccessTo($view)
     {
@@ -497,9 +497,9 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function login()
     {
@@ -562,9 +562,9 @@ class AJAXChat
     /**
      * @param null $userName
      *
-     * @return bool
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return bool
      */
     public function isUserNameInUse($userName = null)
     {
@@ -626,9 +626,9 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return bool
      */
     public function isMaxUsersLoggedIn()
     {
@@ -776,9 +776,9 @@ class AJAXChat
     /**
      * @param $channelName
      *
-     * @return mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return mixed|null
      */
     public function getChannelIDFromChannelName($channelName)
     {
@@ -970,9 +970,9 @@ class AJAXChat
     /**
      * @param string $userName
      *
-     * @return bool|int|mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return bool|int|mixed|null
      */
     public function getIDFromName(string $userName)
     {
@@ -992,13 +992,13 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @return bool
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws AuthError
+     *
+     * @return bool
      */
     public function validateChannel($channelID)
     {
@@ -1031,11 +1031,11 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function isAllowedToCreatePrivateChannel()
     {
@@ -1047,10 +1047,10 @@ class AJAXChat
     }
 
     /**
-     * @return array|null
      * @throws DependencyException
-     *
      * @throws NotFoundException
+     *
+     * @return array|null
      */
     public function getInvitations()
     {
@@ -1179,9 +1179,9 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @return int|string|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return int|string|null
      */
     public function getChannelNameFromChannelID($channelID)
     {
@@ -1205,9 +1205,9 @@ class AJAXChat
     /**
      * @param $userID
      *
-     * @return mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return mixed|null
      */
     public function getNameFromID($userID)
     {
@@ -1286,13 +1286,13 @@ class AJAXChat
     }
 
     /**
-     * @return mixed|string|null
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws AuthError
+     *
+     * @return mixed|string|null
      */
     public function getValidRequestChannelID()
     {
@@ -1318,9 +1318,9 @@ class AJAXChat
     }
 
     /**
-     * @return int|string|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return int|string|null
      */
     public function getChannelName()
     {
@@ -1411,9 +1411,9 @@ class AJAXChat
     /**
      * @param $messageID
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function deleteMessage($messageID)
     {
@@ -1508,11 +1508,11 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function isAllowedToWriteMessage()
     {
@@ -1524,9 +1524,9 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function floodControl()
     {
@@ -1770,11 +1770,11 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function isAllowedToSendPrivateMessage()
     {
@@ -1986,11 +1986,11 @@ class AJAXChat
     }
 
     /**
-     * @return bool
      * @throws AuthError
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
      */
     public function isAllowedToListHiddenUsers()
     {
@@ -2004,9 +2004,9 @@ class AJAXChat
     /**
      * @param null $channelIDs
      *
-     * @return array|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return array|null
      */
     public function getOnlineUsers($channelIDs = null)
     {
@@ -2071,9 +2071,9 @@ class AJAXChat
     /**
      * @param $userID
      *
-     * @return mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return mixed|null
      */
     public function getChannelFromID($userID)
     {
@@ -2111,9 +2111,9 @@ class AJAXChat
     /**
      * @param $userID
      *
-     * @return mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return mixed|null
      */
     public function getIPFromID($userID)
     {
@@ -2158,9 +2158,9 @@ class AJAXChat
     /**
      * @param $sides
      *
-     * @return int
      * @throws Exception
      *
+     * @return int
      */
     public function rollDice($sides)
     {
@@ -2335,10 +2335,10 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @return bool
      * @throws UnbegunTransaction
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function insertParsedMessageGift($textParts)
     {
@@ -2395,9 +2395,9 @@ class AJAXChat
     /**
      * @param $userID
      *
-     * @return mixed|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return mixed|null
      */
     public function getRoleFromID($userID)
     {
@@ -2412,10 +2412,10 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @return bool
      * @throws UnbegunTransaction
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function insertParsedMessageRep($textParts)
     {
@@ -2528,9 +2528,9 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function insertParsedMessageSeen($textParts)
     {
@@ -2616,14 +2616,14 @@ class AJAXChat
      * @param $text
      * @param $textParts
      *
-     * @return bool
      * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function parseCustomCommands($text, $textParts)
     {
@@ -2682,14 +2682,14 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return string
      */
     public function getXMLMessages()
     {
@@ -2706,12 +2706,12 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
-     *
      * @throws InvalidManipulation
+     *
+     * @return string
      */
     public function getChatViewXMLMessages()
     {
@@ -2777,9 +2777,9 @@ class AJAXChat
     /**
      * @param $channelIDs
      *
-     * @return string
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return string
      */
     public function getChatViewOnlineUsersXML($channelIDs)
     {
@@ -2803,12 +2803,12 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
-     *
      * @throws InvalidManipulation
+     *
+     * @return string
      */
     public function getChatViewMessagesXML()
     {
@@ -2846,10 +2846,10 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws DependencyException
-     *
      * @throws NotFoundException
+     *
+     * @return string
      */
     public function getMessageCondition()
     {
@@ -2906,14 +2906,14 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return string
      */
     public function getTeaserViewXMLMessages()
     {
@@ -2927,14 +2927,14 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return string
      */
     public function getTeaserViewMessagesXML()
     {
@@ -2984,13 +2984,13 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws AuthError
+     *
+     * @return string
      */
     public function getTeaserMessageCondition()
     {
@@ -3008,14 +3008,14 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return string
      */
     public function getLogsViewXMLMessages()
     {
@@ -3029,14 +3029,14 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return string
      */
     public function getLogsViewMessagesXML()
     {
@@ -3082,13 +3082,13 @@ class AJAXChat
     }
 
     /**
-     * @return string
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws AuthError
+     *
+     * @return string
      */
     public function getLogsViewCondition()
     {
@@ -3282,9 +3282,9 @@ class AJAXChat
     /**
      * @param null $channelIDs
      *
-     * @return array|null
      * @throws \Envms\FluentPDO\Exception
      *
+     * @return array|null
      */
     public function getOnlineUserIDs($channelIDs = null)
     {

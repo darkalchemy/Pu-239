@@ -54,7 +54,7 @@ function dltable($name, $arr, $torrent, $user)
         $body .= '
         <tr>';
         if ($e['username']) {
-            if ((($e['tanonymous'] === 'yes' && $e['owner'] === $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $user['id'] != $e['userid']) && $user['class'] < UC_STAFF) {
+            if ((($e['tanonymous'] === 'yes' && $e['owner'] === $e['userid'] || $e['anonymous_until'] > TIME_NOW || $e['paranoia'] >= 2) && $user['id'] != $e['userid']) && $user['class'] < UC_STAFF) {
                 $username = get_anonymous_name();
                 $body .= "
             <td><b>$username</b></td>";
@@ -117,7 +117,7 @@ $peers = $fluent->from('peers AS p')
                 ->select('p.userid')
                 ->select('p.peer_id')
                 ->select('u.username')
-                ->select('u.anonymous')
+                ->select('u.anonymous_until')
                 ->select('u.paranoia')
                 ->innerJoin('torrents AS t ON t.id = p.torrent')
                 ->leftJoin('users AS u ON u.id = p.userid')

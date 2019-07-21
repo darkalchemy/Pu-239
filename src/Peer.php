@@ -128,28 +128,36 @@ class Peer
      */
     public function get_all_peers(int $limit, int $offset)
     {
-        $peers = $this->cache->get('torrent_peers_all_');
+        $peers = $this->cache->get('torrent_peers_all_' . $limit . '_' . $offset);
         if ($peers === false || is_null($peers)) {
-            $peers = $this->fluent->from('peers')
+            $peers = $this->fluent->from('peers AS p')
                                   ->select(null)
-                                  ->select('id')
-                                  ->select('seeder')
-                                  ->select('peer_id')
-                                  ->select('INET6_NTOA(ip) AS ip')
-                                  ->select('port')
-                                  ->select('uploaded')
-                                  ->select('downloaded')
-                                  ->select('userid')
-                                  ->select('(UNIX_TIMESTAMP(NOW()) - last_action) AS announcetime')
-                                  ->select('last_action AS ts')
+                                  ->select('p.id')
+                                  ->select('p.seeder')
+                                  ->select('p.peer_id')
+                                  ->select('INET6_NTOA(p.ip) AS ip')
+                                  ->select('p.port')
+                                  ->select('p.uploaded')
+                                  ->select('p.downloaded')
+                                  ->select('p.userid')
+                                  ->select('p.agent')
+                                  ->select('p.to_go')
+                                  ->select('p.uploadoffset')
+                                  ->select('p.downloadoffset')
+                                  ->select('p.started')
+                                  ->select('t.size')
+                                  ->select('(UNIX_TIMESTAMP(NOW()) - p.last_action) AS announcetime')
+                                  ->select('p.last_action AS ts')
                                   ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
-                                  ->select('prev_action AS prevts')
-                                  ->orderBy('id')
+                                  ->select('p.prev_action AS prevts')
+                                  ->select('t.name')
+                                  ->leftJoin('torrents AS t On p.torrent = t.id')
+                                  ->orderBy('p.id')
                                   ->limit($limit)
                                   ->offset($offset)
                                   ->fetchAll();
 
-            $this->cache->set('torrent_peers_all_', $peers, 60);
+            $this->cache->set('torrent_peers_all_' . $limit . '_' . $offset, $peers, 60);
         }
 
         return $peers;

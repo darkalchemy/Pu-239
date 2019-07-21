@@ -566,6 +566,7 @@ switch ($action) {
             $query = $fluent->from('now_viewing')
                             ->where('users.perms < ?', PERMS_STEALTH)
                             ->where('users.anonymous_until < ?', TIME_NOW)
+                            ->where('users.paranoia < 2')
                             ->innerJoin('users ON now_viewing.user_id = users.id');
 
             foreach ($query as $row) {
