@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+add: missing path from config_example.php  
 add: linedraw.ttf font  
 update: db files  
 add: search by audio  
