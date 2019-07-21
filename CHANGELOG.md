@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+update: db files  
 add: search by audio  
 add: site setting to view nfo's as images  
 update: ensure path is writable before writing  goaccess_update.php  
