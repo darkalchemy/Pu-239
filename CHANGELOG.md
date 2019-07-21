@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+add: linedraw.ttf font  
 update: db files  
 add: search by audio  
 add: site setting to view nfo's as images  
