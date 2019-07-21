@@ -634,9 +634,9 @@ function get_images(array $cat)
                 <select class='w-75' name='cat_image'>
                     <option value='0'>{$lang['categories_edit_select']}</option>";
         foreach ($files as $file) {
-            $selected = !empty($cat) && $file == $cat['image'] ? ' selected' : '';
+            $selected = !empty($cat) && $file == $cat['image'] ? 'selected' : '';
             $select .= "
-                    <option value='" . htmlsafechars($file) . "'{$selected}>" . htmlsafechars($file) . '</option>';
+                    <option value='" . htmlsafechars($file) . "' {$selected}>" . htmlsafechars($file) . '</option>';
         }
         $select .= "
                 </select>

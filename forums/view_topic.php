@@ -331,7 +331,7 @@ while ($post = mysqli_fetch_assoc($res)) {
 if ($_forum_sort === 'DESC') {
     $posts = array_reverse($posts);
 }
-$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no';
+$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['status'] !== 5;
 
 $likes = $att_str = '';
 $likers = $user_likes = [];

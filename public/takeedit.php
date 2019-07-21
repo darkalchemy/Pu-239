@@ -63,7 +63,7 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
-    if ($_FILES['nfo']['size'] == 0) {
+    if ($_FILES['nfo']['size'] === 0) {
         $session->set('is-warning', '0-byte NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
@@ -80,14 +80,17 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     }
     if (is_uploaded_file($_FILES['nfo']['tmp_name']) && filesize($_FILES['nfo']['tmp_name']) > 0) {
         $nfo_content = str_ireplace([
+            "\xEF\xBB\xBF",
             "\x0d\x0d\x0a",
             "\xb0",
         ], [
+            '',
             "\x0d\x0a",
             '',
         ], file_get_contents($_FILES['nfo']['tmp_name']));
         $updateset[] = 'nfo = ' . sqlesc($nfo_content);
         $torrent_cache['nfo'] = $nfo_content;
+        unlink(NFO_DIR . $id . '.png');
     }
 } elseif ($nfoaction === 'remove') {
     $updateset[] = "nfo = ''";

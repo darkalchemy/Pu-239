@@ -172,7 +172,7 @@ $select = "
 foreach ($keys as $key) {
     $key = empty($key) ? 'null' : $key;
     $select .= "
-                <option value='{$key}'" . ($key === $home ? ' selected' : '') . ">{$key}</option>";
+                <option value='{$key}' " . ($key === $home ? 'selected' : '') . ">{$key}</option>";
 }
 $select .= '
             </select>
@@ -207,11 +207,11 @@ foreach ($keys as $key) {
                 <td>
                     <div class='top5 bottom5'>
                         <select name='{$row['id']}_type' class='w-100'>
-                            <option value='bool'" . ($row['type'] === 'bool' ? ' selected' : '') . ">Boolean</option>
-                            <option value='int'" . ($row['type'] === 'int' ? ' selected' : '') . ">Integer</option>
-                            <option value='float'" . ($row['type'] === 'float' ? ' selected' : '') . ">Float</option>
-                            <option value='string'" . ($row['type'] === 'string' ? ' selected' : '') . ">String</option>
-                            <option value='array'" . ($row['type'] === 'array' ? ' selected' : '') . '>Array</option>
+                            <option value='bool' " . ($row['type'] === 'bool' ? 'selected' : '') . ">Boolean</option>
+                            <option value='int' " . ($row['type'] === 'int' ? 'selected' : '') . ">Integer</option>
+                            <option value='float' " . ($row['type'] === 'float' ? 'selected' : '') . ">Float</option>
+                            <option value='string' " . ($row['type'] === 'string' ? 'selected' : '') . ">String</option>
+                            <option value='array' " . ($row['type'] === 'array' ? 'selected' : '') . '>Array</option>
                         </select>
                     </div>
                 </td>
@@ -220,8 +220,8 @@ foreach ($keys as $key) {
                 $body .= "
                     <div class='top5 bottom5'>
                         <select name='{$row['id']}_value' class='w-100'>
-                            <option value='0'" . (!$row['value'] ? ' selected' : '') . ">False</option>
-                            <option value='1'" . ($row['value'] ? ' selected' : '') . '>True</option>
+                            <option value='0' " . (!$row['value'] ? 'selected' : '') . ">False</option>
+                            <option value='1' " . ($row['value'] ? 'selected' : '') . '>True</option>
                         </select>
                     </div>';
             } elseif ($row['type'] === 'int') {

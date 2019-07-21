@@ -9,6 +9,7 @@ use Delight\Auth\TooManyRequestsException;
 use Delight\Auth\UserAlreadyExistsException;
 use Pu239\Cache;
 use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -26,13 +27,6 @@ if (empty($_GET['selector']) || empty($_GET['token'])) {
 }
 try {
     $emails = $auth->confirmEmail($_GET['selector'], $_GET['token']);
-    if (empty($emails[0])) {
-        $session->set('is-success', 'Your email has been confirmed');
-    } else {
-        $session->set('is-success', "Your email has been changed to {$emails[1]}");
-    }
-    $cache = $container->get(Cache::class);
-    $userid = $auth->getUserId();
 } catch (InvalidSelectorTokenPairException $e) {
     stderr('Error', 'Invalid token');
 } catch (TokenExpiredException $e) {
@@ -42,5 +36,12 @@ try {
 } catch (TooManyRequestsException $e) {
     stderr('Error', 'Too many requests');
 }
-
+if (empty($emails[0])) {
+    $session->set('is-success', 'Your email has been confirmed');
+} else {
+    $session->set('is-success', "Your email has been changed to {$emails[1]}");
+}
+$cache = $container->get(Cache::class);
+$userid = $auth->getUserId();
+$user_class = $container->get(User::class);
 header("Location: {$site_config['paths']['baseurl']}/usercp.php?action=security");

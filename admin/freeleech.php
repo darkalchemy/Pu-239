@@ -101,7 +101,7 @@ if (isset($free) && (count($free) < 1)) {
     }
     $HTMLOUT .= main_table($body, $heading);
 }
-$checked = ' checked';
+$checked = 'checked';
 
 $HTMLOUT .= "
     <h2 class='has-text-centered'>{$lang['freeleech_set_free']}</h2>

@@ -364,7 +364,7 @@ class AJAXChat
                                  ->orderBy('LOWER(o.userName)');
 
             foreach ($sql as $row) {
-                $row['pmCount'] = $this->_message->get_count($row['userID']);
+                $row['pmCount'] = $this->_message->get_count($row['userID'], $this->_siteConfig['pm']['inbox'], true);
                 array_push($this->_onlineUsersData, $row);
             }
         }
@@ -2189,7 +2189,7 @@ class AJAXChat
                 $uploaded = '[color=#00FF00]' . mksize($stats['uploaded']) . '[/color]';
                 $downloaded = '[color=#00FF00]' . mksize($stats['downloaded']) . '[/color]';
                 $userClass = get_user_class_name((int) $stats['class']);
-                $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $enabled = $stats['status'] === 0 && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
                 $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
                     case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
@@ -2295,7 +2295,7 @@ class AJAXChat
                 $str .= isset($stats['donor']) && $stats['donor'] === 'yes' ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'star.png[/img]' : '';
                 $str .= isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'alertred.png[/img]' : '';
                 $str .= isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'alertblue.png[/img]' : '';
-                $str .= isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'disabled.gif[/img]' : '';
+                $str .= isset($stats['enabled']) && $stats['status'] != 0 ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'disabled.gif[/img]' : '';
                 $str .= isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'warned.png[/img]' : '';
                 $str .= isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['paths']['chat_images_baseurl'] . 'pirate.png[/img]' : '';
 
@@ -2635,7 +2635,7 @@ class AJAXChat
                     $this->insertChatBotMessage(0, $text);
                     $this->insertChatBotMessage(5, $text);
 
-                    $sql = "SELECT id FROM users WHERE enabled = 'yes'";
+                    $sql = 'SELECT id FROM users WHERE status = 0';
                     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                     while ($id = mysqli_fetch_assoc($res)) {
                         $ids[] = $id;

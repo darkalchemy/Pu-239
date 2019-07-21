@@ -42,7 +42,7 @@ $users_class = $container->get(User::class);
 $user = $users_class->getUserFromId($id);
 if (empty($user)) {
     stderr($lang['userdetails_error'], $lang['userdetails_invalid']);
-} elseif ($user['status'] === 'pending') {
+} elseif ($user['verified'] === 0) {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 } elseif ($user['paranoia'] == 3 && $curuser['class'] < UC_STAFF && $user['id'] != $curuser['id']) {
     stderr($lang['userdetails_error'], '<span><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
@@ -157,15 +157,15 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($curuser['class'] < UC_STAFF &
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
 if ($curuser['id'] != $user['id'] && $curuser['class'] >= UC_STAFF) {
-    $suspended .= ($user['suspended'] === 'yes' ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
+    $suspended .= ($user['status'] === 5 ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
 }
 if ($curuser['id'] != $user['id'] && $curuser['class'] >= UC_STAFF) {
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users">' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
 }
 $perms .= ($curuser['class'] >= UC_STAFF ? (($user['perms'] & PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
 $stealth .= ($curuser['class'] >= UC_STAFF ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
-$enabled = $user['enabled'] === 'yes';
-$parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
+$enabled = $user['status'] === 0;
+$parked = $user['status'] === 1 ? $lang['userdetails_parked'] : '';
 
 $h1 = "
                 <h1 class='has-text-centered'>" . format_username((int) $user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
@@ -365,8 +365,8 @@ if (($curuser['id'] !== $user['id']) && ($curuser['class'] >= UC_STAFF)) {
                                         <input name='id' type='hidden' value='{$user['id']}'>
                                         <input type='hidden' value='watched_user' name='action'>
                                         {$lang['userdetails_add_watch']}
-                                        <input type='radio' class='right5' value='yes' name='add_to_watched_users'" . ($user['watched_user'] > 0 ? ' checked' : '') . ">{$lang['userdetails_yes1']}
-                                        <input type='radio' class='right5' value='no' name='add_to_watched_users'" . ($user['watched_user'] == 0 ? ' checked' : '') . "'>{$lang['userdetails_no1']}<br>
+                                        <input type='radio' class='right5' value='yes' name='add_to_watched_users' " . ($user['watched_user'] > 0 ? 'checked' : '') . ">{$lang['userdetails_yes1']}
+                                        <input type='radio' class='right5' value='no' name='add_to_watched_users' " . ($user['watched_user'] == 0 ? 'checked' : '') . "'>{$lang['userdetails_no1']}<br>
                                         <div id='desc_text'>
                                             * {$lang['userdetails_watch_change1']}<br>
                                             {$lang['userdetails_watch_change2']}
@@ -506,12 +506,12 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     $HTMLOUT .= "<tr>
     <td class='rowhead'>{$lang['userdetails_signature_rights']}</td>
     <td colspan='3' class='has-text-left'>
-        <input name='signature_post' value='yes' type='radio'" . ($user['signature_post'] === 'yes' ? '    checked' : '') . "> {$lang['userdetails_yes']} 
-        <input name='signature_post' value='no' type='radio'" . ($user['signature_post'] === 'no' ? ' checked' : '') . "> {$lang['userdetails_disable_signature']}
+        <input name='signature_post' value='yes' type='radio' " . ($user['signature_post'] === 'yes' ? 'checked' : '') . "> {$lang['userdetails_yes']} 
+        <input name='signature_post' value='no' type='radio' " . ($user['signature_post'] === 'no' ? 'checked' : '') . "> {$lang['userdetails_disable_signature']}
     </td></tr>
    <!--<tr><td class='rowhead'>{$lang['userdetails_view_signature']}</td>
-   <td colspan='3' class='has-text-left'><input name='signatures' value='yes' type='radio'" . ($user['signatures'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}
-   <input name='signatures' value='no' type='radio'" . ($user['signatures'] === 'no' ? ' checked' : '') . "></td>
+   <td colspan='3' class='has-text-left'><input name='signatures' value='yes' type='radio' " . ($user['signatures'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}
+   <input name='signatures' value='no' type='radio' " . ($user['signatures'] === 'no' ? 'checked' : '') . "></td>
    </tr>-->
                <tr>
                       <td class='rowhead'>{$lang['userdetails_signature']}</td>
@@ -590,13 +590,13 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
             $maxclass = $curuser['class'] - 1;
         }
         for ($i = 0; $i <= $maxclass; ++$i) {
-            $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+            $HTMLOUT .= "<option value='$i' " . ($user['class'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
         }
         $HTMLOUT .= '</select></td></tr>';
     }
     $supportfor = htmlsafechars((string) $user['supportfor']);
-    //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='checkbox' name='support' value='yes'" . (($user['opt1'] & user_options::SUPPORT) ? " checked" : "") . ">{$lang['userdetails_yes']}</td></tr>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ($user['support'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ($user['support'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
+    //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='checkbox' name='support' value='yes' " . (($user['opt1'] & user_options::SUPPORT) ? "checked" : "") . ">{$lang['userdetails_yes']}</td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes' " . ($user['support'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}<input type='radio' name='support' value='no' " . ($user['support'] === 'no' ? 'checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_supportfor']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea></td></tr>";
     $modcomment = htmlsafechars((string) $user['modcomment']);
     if ($curuser['class'] < UC_MAX) {
@@ -607,9 +607,39 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_add_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='addcomment'></textarea></td></tr>";
 
     $bonuscomment = htmlsafechars((string) $user['bonuscomment']);
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea></td></tr>";
+    $HTMLOUT .= "
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_bonus_comment']}</td>
+            <td colspan='3' class='has-text-left'>
+                <textarea class='w-100' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_enabled']}</td>
+            <td colspan='3' class='has-text-left'>
+                <input name='status' value='0' type='radio' " . ($enabled ? 'checked' : '') . ">{$lang['userdetails_yes']} 
+                <input name='status' value='2' type='radio' " . (!$enabled ? 'checked' : '') . ">{$lang['userdetails_no']}
+            </td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_park']}</td>
+            <td colspan='3' class='has-text-left'>
+                <input name='status' value='1' type='radio' " . ($user['status'] === 1 ? 'checked' : '') . ">{$lang['userdetails_yes']}
+            </td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_suspended']}</td>
+            <td colspan='3' class='has-text-left'>
+                <input name='status' value='5' type='radio' " . ($user['status'] === 5 ? 'checked' : '') . ">{$lang['userdetails_yes']}
+                <br>{$lang['userdetails_suspended_reason']}<br>
+                <input type='text' class='w-100 top10' name='suspended_reason'>
+            </td>
+        </tr>";
 
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='3' class='has-text-left'><input name='enabled' value='yes' type='radio'" . ($enabled ? ' checked' : '') . ">{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
+    $HTMLOUT .= '<tr>
+                      <td class="rowhead">' . $lang['userdetails_hnr'] . '</td>
+                      <td colspan="3" class="has-text-left"><input type="text" class="w-100" name="hit_and_run_total" value="' . (int) $user['hit_and_run_total'] . '"></td>
+                </tr>';
     if ($curuser['class'] >= UC_STAFF) {
         $HTMLOUT .= "
                 <tr>
@@ -850,10 +880,9 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
     }
 
     if ($curuser['class'] >= UC_MAX) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] === 'no' ? 'checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     }
 
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_park']}</td><td colspan='3' class='has-text-left'><input name='parked' value='yes' type='radio'" . ($user['parked'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']} <input name='parked' value='no' type='radio'" . ($user['parked'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><input type='checkbox' name='reset_torrent_pass' value='1'><span class='small left10'>{$lang['userdetails_pass_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1'><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1'><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
@@ -866,61 +895,44 @@ if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $cu
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_rep_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='reputation' value='" . (int) $user['reputation'] . "'></td></tr>";
     }
 
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_invright']}</td><td colspan='3' class='has-text-left'><input type='radio' name='invite_on' value='yes'" . ($user['invite_on'] === 'yes' ? ' checked' : '') . "> {$lang['userdetails_yes']}<input type='radio' name='invite_on' value='no'" . ($user['invite_on'] === 'no' ? ' checked' : '') . "> {$lang['userdetails_no']}</td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_invright']}</td><td colspan='3' class='has-text-left'><input type='radio' name='invite_on' value='yes' " . ($user['invite_on'] === 'yes' ? 'checked' : '') . "> {$lang['userdetails_yes']}<input type='radio' name='invite_on' value='no' " . ($user['invite_on'] === 'no' ? 'checked' : '') . "> {$lang['userdetails_no']}</td></tr>";
 
     $HTMLOUT .= "<tr><td class='rowhead'><b>{$lang['userdetails_invites']}</b></td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='invites' value='" . (int) $user['invites'] . "'></td></tr>";
 
     $HTMLOUT .= "<tr>
                   <td class='rowhead'>{$lang['userdetails_avatar_rights']}</td>
-                  <td colspan='3' class='has-text-left'><input name='view_offensive_avatar' value='yes' type='radio'" . ($user['view_offensive_avatar'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}
-                  <input name='view_offensive_avatar' value='no' type='radio'" . ($user['view_offensive_avatar'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']} </td>
+                  <td colspan='3' class='has-text-left'><input name='view_offensive_avatar' value='yes' type='radio' " . ($user['view_offensive_avatar'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}
+                  <input name='view_offensive_avatar' value='no' type='radio' " . ($user['view_offensive_avatar'] === 'no' ? 'checked' : '') . ">{$lang['userdetails_no']} </td>
                  </tr>
                  <tr>
                   <td class='rowhead'>{$lang['userdetails_offensive']}</td>
-                  <td colspan='3' class='has-text-left'><input name='offensive_avatar' value='yes' type='radio'" . ($user['offensive_avatar'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}
-                  <input name='offensive_avatar' value='no' type='radio'" . ($user['offensive_avatar'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_no']} </td>
+                  <td colspan='3' class='has-text-left'><input name='offensive_avatar' value='yes' type='radio' " . ($user['offensive_avatar'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}
+                  <input name='offensive_avatar' value='no' type='radio' " . ($user['offensive_avatar'] === 'no' ? 'checked' : '') . ">{$lang['userdetails_no']} </td>
                 </tr>
                 <tr>
                   <td class='rowhead'>{$lang['userdetails_view_offensive']}</td>
-                  <td colspan='3' class='has-text-left'><input name='avatar_rights' value='yes' type='radio'" . ($user['avatar_rights'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}
-                  <input name='avatar_rights' value='no' type='radio'" . ($user['avatar_rights'] == 'no' ? ' checked' : '') . ">{$lang['userdetails_no']} </td>
+                  <td colspan='3' class='has-text-left'><input name='avatar_rights' value='yes' type='radio' " . ($user['avatar_rights'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}
+                  <input name='avatar_rights' value='no' type='radio' " . ($user['avatar_rights'] == 'no' ? 'checked' : '') . ">{$lang['userdetails_no']} </td>
                </tr>";
-    $HTMLOUT .= '<tr>
-                      <td class="rowhead">' . $lang['userdetails_hnr'] . '</td>
-                      <td colspan="3" class="has-text-left"><input type="text" class="w-100" name="hit_and_run_total" value="' . (int) $user['hit_and_run_total'] . '"></td>
-                </tr>
-                 <tr>
-                     <td class="rowhead">' . $lang['userdetails_suspended'] . '</td>
-                     <td colspan="3" class="has-text-left"><input name="suspended" value="yes" type="radio"' . ($user['suspended'] === 'yes' ? ' checked' : '') . '>' . $lang['userdetails_yes'] . '
-                     <input name="suspended" value="no" type="radio"' . ($user['suspended'] === 'no' ? ' checked' : '') . '>' . $lang['userdetails_no'] . '
-        ' . $lang['userdetails_suspended_reason'] . '<br>
-                    <input type="text" class="w-100" name="suspended_reason"></td>
-                   </tr>
-                <!--<tr>
-                      <td class="rowhead">' . $lang['userdetails_suspended'] . '</td>
-                      <td colspan="3" class="has-text-left"><input name="suspended" value="yes" type="checkbox"' . (($user['opt1'] & user_options::SUSPENDED) ? ' checked' : '') . '>' . $lang['userdetails_yes'] . '
-                              ' . $lang['userdetails_suspended_reason'] . '<br>
-                      <input type="text" class="w-100" name="suspended_reason"></td>
-                </tr>-->
-      ';
+
     $HTMLOUT .= "<tr>
                       <td class='rowhead'>{$lang['userdetails_paranoia']}</td>
                       <td colspan='3' class='has-text-left'>
                       <select name='paranoia' class='w-100'>
-                      <option value='0'" . ($user['paranoia'] == 0 ? ' selected' : '') . ">{$lang['userdetails_paranoia_0']}</option>
-                      <option value='1'" . ($user['paranoia'] == 1 ? ' selected' : '') . ">{$lang['userdetails_paranoia_1']}</option>
-                      <option value='2'" . ($user['paranoia'] == 2 ? ' selected' : '') . ">{$lang['userdetails_paranoia_2']}</option>
-                      <option value='3'" . ($user['paranoia'] == 3 ? ' selected' : '') . ">{$lang['userdetails_paranoia_3']}</option>
+                      <option value='0' " . ($user['paranoia'] == 0 ? 'selected' : '') . ">{$lang['userdetails_paranoia_0']}</option>
+                      <option value='1' " . ($user['paranoia'] == 1 ? 'selected' : '') . ">{$lang['userdetails_paranoia_1']}</option>
+                      <option value='2' " . ($user['paranoia'] == 2 ? 'selected' : '') . ">{$lang['userdetails_paranoia_2']}</option>
+                      <option value='3' " . ($user['paranoia'] == 3 ? 'selected' : '') . ">{$lang['userdetails_paranoia_3']}</option>
                       </select></td>
                 </tr>
                  <tr>
                      <td class='rowhead'>{$lang['userdetails_forum_rights']}</td>
-                     <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='radio'" . ($user['forum_post'] === 'yes' ? ' checked' : '') . ">{$lang['userdetails_yes']}
-                     <input name='forum_post' value='no' type='radio'" . ($user['forum_post'] === 'no' ? ' checked' : '') . ">{$lang['userdetails_forums_no']}</td>
+                     <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='radio' " . ($user['forum_post'] === 'yes' ? 'checked' : '') . ">{$lang['userdetails_yes']}
+                     <input name='forum_post' value='no' type='radio' " . ($user['forum_post'] === 'no' ? 'checked' : '') . ">{$lang['userdetails_forums_no']}</td>
                     </tr>
                 <!--<tr>
                       <td class='rowhead'>{$lang['userdetails_forum_rights']}</td>
-                      <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='checkbox'" . (($user['opt1'] & user_options::FORUM_POST) ? ' checked' : '') . ">{$lang['userdetails_yes']}</td>
+                      <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='checkbox' " . (($user['opt1'] & user_options::FORUM_POST) ? 'checked' : '') . ">{$lang['userdetails_yes']}</td>
                 </tr>-->";
 
     if ($curuser['class'] >= UC_ADMINISTRATOR) {

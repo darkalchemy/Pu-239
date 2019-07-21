@@ -18,7 +18,7 @@ function achievement_karma_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
-    $res = sql_query("SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE enabled = 'yes' AND u.seedbonus >= 250 AND a.bonus >= 0") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT u.id, u.seedbonus, a.bonus FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE status = 0 AND u.seedbonus >= 250 AND a.bonus >= 0') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;

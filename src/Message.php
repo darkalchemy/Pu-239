@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Envms\FluentPDO\Queries\Select;
 use PDOStatement;
 use Psr\Container\ContainerInterface;
 
@@ -150,33 +151,42 @@ class Message
     }
 
     /**
-     * @param int $userid
-     * @param int $location
+     * @param int  $userid
+     * @param int  $location
+     * @param bool $unread
      *
      * @throws Exception
      *
-     * @return bool|mixed
+     * @return int
      */
-    public function get_count(int $userid, int $location = 1)
+    public function get_count(int $userid, int $location, bool $unread)
     {
-        $pmCount = false;
-        if ($location === 1) {
+        $pmCount = 0;
+        if ($location === $this->site_config['pm']['inbox'] && $unread) {
             $pmCount = $this->cache->get('inbox_' . $userid);
         }
         if ($pmCount === false || is_null($pmCount)) {
             $pmCount = $this->fluent->from('messages')
                                     ->select(null)
-                                    ->select('COUNT(id) AS count')
-                                    ->where('receiver = ?', $userid)
-                                    ->where('unread = ?', 'yes')
-                                    ->where('location = ?', $location)
-                                    ->fetch('count');
-        }
-        if ($location === 1) {
-            $this->cache->set('inbox_' . $userid, $pmCount, $this->site_config['expires']['unread']);
+                                    ->select('COUNT(id) AS count');
+            if ($location === $this->site_config['pm']['sent']) {
+                $pmCount = $pmCount->where('sender = ?', $userid)
+                                   ->where('location = ?', $this->site_config['pm']['inbox']);
+            } else {
+                $pmCount = $pmCount->where('receiver = ?', $userid)
+                                   ->where('location = ?', $location);
+            }
+            if ($unread) {
+                $pmCount = $pmCount->where('unread = "yes"');
+            }
+            $pmCount = $pmCount->where('draft = "no"')
+                               ->fetch('count');
+            if ($location === $this->site_config['pm']['inbox'] && $unread) {
+                $this->cache->set('inbox_' . $userid, $pmCount, $this->site_config['expires']['unread']);
+            }
         }
 
-        return $pmCount;
+        return is_int($pmCount) ? $pmCount : 0;
     }
 
     /**
@@ -191,22 +201,22 @@ class Message
         $messages_1 = $this->fluent->from('messages')
                                    ->select(null)
                                    ->select('receiver')
-                                   ->where('location = 0')
+                                   ->where('location = ?', $this->site_config['pm']['deleted'])
                                    ->where('added <= ?', $dt);
 
         $this->fluent->delete('messages')
-                     ->where('location = 0')
+                     ->where('location = ?', $this->site_config['pm']['deleted'])
                      ->where('added <= ?', $dt)
                      ->execute();
 
         $messages_2 = $this->fluent->from('messages')
                                    ->select(null)
                                    ->select('receiver')
-                                   ->where('location = 1')
+                                   ->where('location = ?', $this->site_config['pm']['inbox'])
                                    ->where('added <= ?', $dt);
 
         $this->fluent->delete('messages')
-                     ->where('location = 1')
+                     ->where('location = ?', $this->site_config['pm']['inbox'])
                      ->where('added <= ?', $dt)
                      ->execute();
 
@@ -221,5 +231,54 @@ class Message
         }
 
         return $i;
+    }
+
+    /**
+     * @param int    $userid
+     * @param int    $location
+     * @param int    $limit
+     * @param int    $offset
+     * @param string $orderby
+     *
+     * @throws Exception
+     *
+     * @return array|bool|Select
+     */
+    public function get_messages(int $userid, int $location, int $limit, int $offset, string $orderby)
+    {
+        $messages = $this->fluent->from('messages AS m');
+        if ($location === $this->site_config['pm']['sent']) {
+            $messages = $messages->where('sender = ?', $userid)
+                                 ->where('location = ?', $this->site_config['pm']['inbox']);
+        } else {
+            $messages = $messages->where('receiver = ?', $userid)
+                                 ->where('location = ?', $location);
+        }
+        $messages = $messages->select(null)
+                             ->select('m.poster')
+                             ->select('m.sender')
+                             ->select('m.receiver')
+                             ->select('m.added')
+                             ->select('m.subject')
+                             ->select('m.unread')
+                             ->select('m.urgent')
+                             ->select('m.id AS message_id')
+                             ->select('f.id AS friend')
+                             ->select('b.id AS blocked')
+                             ->select('u.id');
+        if ($location === $this->site_config['pm']['sent']) {
+            $messages = $messages->leftJoin('users AS u ON m.receiver = u.id');
+        } else {
+            $messages = $messages->leftJoin('users AS u ON m.sender = u.id');
+        }
+        $messages = $messages->leftJoin('users AS u ON ')
+                             ->leftJoin('friends AS f ON m.sender = f.friendid')
+                             ->leftJoin('blocks AS b ON m.sender = b.blockid')
+                             ->limit($limit)
+                             ->offset($offset)
+                             ->orderBy($orderby)
+                             ->fetchAll();
+
+        return $messages;
     }
 }

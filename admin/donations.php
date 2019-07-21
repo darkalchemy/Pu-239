@@ -20,7 +20,7 @@ if (isset($_GET['total_donors'])) {
     if ($total_donors != '1') {
         stderr($lang['donate_err'], $lang['donate_err1']);
     }
-    $res = sql_query("SELECT COUNT(id) FROM users WHERE total_donated != '0.00' AND enabled='yes'") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT COUNT(id) FROM users WHERE total_donated != '0.00' AND status = 0") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_array($res);
     $count = $row[0];
     $perpage = 15;

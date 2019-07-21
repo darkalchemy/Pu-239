@@ -303,7 +303,7 @@ if (isset($_POST['msg_to_analyze'])) {
             foreach ($users as $arr) {
                 if ($arr['username'] !== '') {
                     if ($arr['invitedby'] > 0) {
-                        $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
+                        $res_inviter = sql_query('SELECT id, username, class, donor, leechwarn, chatpost, pirate, king, warned, status FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
                         $arr_inviter = mysqli_fetch_array($res_inviter);
                         $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter['id']) : $lang['mega_open']);
                     } else {

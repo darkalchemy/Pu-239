@@ -81,7 +81,7 @@ $HTMLOUT .= tr($lang['edit_nfo'], "
 if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&lt;') !== false)) {
     $c = '';
 } else {
-    $c = ' checked';
+    $c = 'checked';
 }
 $HTMLOUT .= tr($lang['edit_description'], BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1, 'is-paddingless');
 $s = "
@@ -90,7 +90,7 @@ $cats = genrelist(true);
 foreach ($cats as $cat) {
     foreach ($cat['children'] as $subrow) {
         $s .= "
-        <option value='{$subrow['id']}'" . ($subrow['id'] == $row['category'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($subrow['name']) . '</option>';
+        <option value='{$subrow['id']}' " . ($subrow['id'] == $row['category'] ? 'selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($subrow['name']) . '</option>';
     }
 }
 $s .= '
@@ -110,14 +110,14 @@ foreach ($subs as $s) {
     $torrent_subs = explode('|', $row['subs']);
     $subs_list .= "
             <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
-                <input name='subs[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $torrent_subs) ? ' checked' : '') . " class='margin20'>
+                <input name='subs[]' type='checkbox' value='{$s['name']}' " . (in_array($s['name'], $torrent_subs) ? 'checked' : '') . " class='margin20'>
                 <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
                 <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
             </div>';
     $torrent_audios = !empty($row['audios']) ? explode('|', $row['audios']) : [];
     $audios_list .= "
             <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
-                <input name='audios[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $torrent_audios) ? ' checked' : '') . " class='margin20'>
+                <input name='audios[]' type='checkbox' value='{$s['name']}' " . (in_array($s['name'], $torrent_audios) ? 'checked' : '') . " class='margin20'>
                 <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
                 <span class='margin20'>" . htmlsafechars($s['name']) . '</span>
             </div>';
@@ -185,9 +185,9 @@ if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
 }
 
 if ($user['class'] >= UC_STAFF) {
-    $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (($row['sticky']) === 'yes' ? ' checked' : '') . " value='yes'>Sticky this torrent !", 1);
-    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (($row['anonymous'] === 'yes') ? ' checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
-    $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip'" . (($row['vip'] == 1) ? ' checked' : '') . " value='1'> If this one is checked, only VIPs can download this torrent", 1);
+    $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky' " . (($row['sticky']) === 'yes' ? 'checked' : '') . " value='yes'>Sticky this torrent !", 1);
+    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous' " . (($row['anonymous'] === 'yes') ? 'checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
+    $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip' " . (($row['vip'] == 1) ? 'checked' : '') . " value='1'> If this one is checked, only VIPs can download this torrent", 1);
 }
 
 require_once PARTIALS_DIR . 'genres.php';

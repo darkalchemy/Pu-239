@@ -71,7 +71,7 @@ switch ($action) {
                 stderr($lang['gl_error'], $lang['gl_bad_id']);
                 break;
 
-            case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes': //=== not alowed to post
+            case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5: //=== not alowed to post
                 stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
 
@@ -142,7 +142,7 @@ switch ($action) {
                 stderr($lang['gl_error'], $lang['gl_bad_id']);
                 break;
 
-            case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes': //=== not alowed to vote
+            case $CURUSER['class'] < $arr_poll['min_class_write'] || $CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5: //=== not alowed to vote
                 stderr($lang['gl_error'], '' . $lang['poll_you_are_not_permitted_to_vote_here'] . '.  <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . $lang['fe_back_to_topic'] . '</a>');
                 break;
 

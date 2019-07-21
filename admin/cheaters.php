@@ -25,7 +25,7 @@ if (isset($_POST['nowarned']) && $_POST['nowarned'] === 'nowarned') {
         sql_query('DELETE FROM cheaters WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['remove'])) . ')') or sqlerr(__FILE__, __LINE__);
     }
     if (!empty($_POST['desact'])) {
-        sql_query("UPDATE users SET enabled = 'no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['desact'])) . ')') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET status = 2 WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['desact'])) . ')') or sqlerr(__FILE__, __LINE__);
         $this->cache->deleteMulti($_POST['desact']);
     }
 }

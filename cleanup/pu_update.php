@@ -60,7 +60,7 @@ function pu_update($data)
         $where = [
             'class =' => $class_config['prev_class_value'],
             'uploaded / NULLIF(downloaded, 0) >' => $class_config['low_ratio'],
-            'enabled = ' => 'yes',
+            'status = ' => 0,
             'registered < ' => $class_config['time'],
             'uploaded >= ' => $class_config['uploaded'],
         ];

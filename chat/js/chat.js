@@ -1029,7 +1029,7 @@ var ajaxChat = {
                 + ' \');" title="Private Message this user in AJAX Chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
-                + '<li class="disc"><a target="_blank" href="../messages.php?action=send_message&amp;receiver='
+                + '<li class="disc"><a target="_parent" href="../messages.php?action=send_message&amp;receiver='
                 + userID
                 + '" title="Private Message this user using site messages.">'
                 + 'PM User '
@@ -1057,12 +1057,12 @@ var ajaxChat = {
                 + '\');" title="Revoke an Invitation to this user to your private channel.">'
                 + this.lang['userMenuUninvite']
                 + '</a></li>'
-                + '<li class="disc"><a target="_blank" href="../userdetails.php?id='
+                + '<li class="disc"><a target="_parent" href="../userdetails.php?id='
                 + userID
                 + '&amp;hit=1" title="Open this users profile.">'
                 + 'Users Profile '
                 + '</a></li>'
-                + '<li class="disc"><a target="_blank" href="../browse.php?search='
+                + '<li class="disc"><a target="_parent" href="../browse.php?search='
                 + encodedUserName
                 + '&amp;searchin=owner&amp;incldead=1&amp;vip=0" title="View this users uploads.">'
                 + 'Users Uploads '
@@ -1099,7 +1099,7 @@ var ajaxChat = {
                     + '</a></li>';
             }
         } else {
-            menu = '<li class="disc"><a target="_blank" href="../messages.php" title="How many unread site PMs you have.">'
+            menu = '<li class="disc"><a target="_parent" href="../messages.php" title="How many unread site PMs you have.">'
                 + 'Unread PM (<span id="pmcount">0</span>)</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/who\');">'
                 + this.lang['userMenuWho']
@@ -2376,7 +2376,7 @@ var ajaxChat = {
     replaceCommandWhois: function (textParts) {
         return '<span class="chatBotMessage">'
             + this.lang['whois'].replace(/%s/, textParts[1]) + ' '
-            + '<a title="Geolocation" target="_blank" href="http://www.infosniper.net/index.php?ip_address=' + textParts[2] + '">'
+            + '<a title="Geolocation" target="_parent" href="http://www.infosniper.net/index.php?ip_address=' + textParts[2] + '">'
             + textParts[2]
             + '</a>'
             + '</span>';

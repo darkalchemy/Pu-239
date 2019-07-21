@@ -122,7 +122,7 @@ switch ($action) {
             $query = $fluent->from('over_forums');
             foreach ($query as $arr) {
                 $body .= "
-                                <option class='body' value='{$arr['id']}'" . ($forum['forum_id'] === $arr['id'] ? ' selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
+                                <option class='body' value='{$arr['id']}' " . ($forum['forum_id'] === $arr['id'] ? 'selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
             }
             $body .= "
                             </select>
@@ -154,7 +154,7 @@ switch ($action) {
                             <select name='min_class_read'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_read'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+                                <option class='body' value='{$i}' " . ($forum['min_class_read'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -166,7 +166,7 @@ switch ($action) {
                             <select name='min_class_write'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_write'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+                                <option class='body' value='{$i}' " . ($forum['min_class_write'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -178,7 +178,7 @@ switch ($action) {
                             <select name='min_class_create'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['min_class_create'] === $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+                                <option class='body' value='{$i}' " . ($forum['min_class_create'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $body .= "
                             </select>
@@ -192,7 +192,7 @@ switch ($action) {
             $maxclass = $count++;
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
-                                <option class='body' value='{$i}'" . ($forum['sort'] === $i ? ' selected' : '') . ">$i</option>";
+                                <option class='body' value='{$i}' " . ($forum['sort'] === $i ? 'selected' : '') . ">$i</option>";
             }
             $body .= '
                             </select>

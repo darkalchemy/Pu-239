@@ -645,8 +645,8 @@ function get_month_dropdown(array $now_date, $i = 0)
         $lang['rep_ad_month_dec'],
     ];
     foreach ($month as $k => $m) {
-        $return .= "\t<option value='" . $k . "'";
-        $return .= (($k + $i) == $now_date['mon']) ? ' selected' : '';
+        $return .= "\t<option value='" . $k . "' ";
+        $return .= (($k + $i) == $now_date['mon']) ? 'selected' : '';
         $return .= '>' . $m . "</option>\n";
     }
 

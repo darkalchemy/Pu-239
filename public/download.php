@@ -26,16 +26,21 @@ $cache = $container->get(Cache::class);
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) === 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $user = $users_class->get_user_from_torrent_pass($T_Pass);
-    if (!$user) {
-        die($lang['download_passkey']);
-    } elseif ($user['enabled'] === 'no') {
-        die("Permission denied, you're account is disabled");
-    } elseif ($user['parked'] === 'yes') {
-        die("Permission denied, you're account is parked");
-    }
 } else {
     $user = check_user_status();
 }
+if (!$user) {
+    die($lang['download_passkey']);
+} elseif ($user['status'] === 5) {
+    die("Permission denied, you're account is suspended");
+} elseif ($user['status'] === 2) {
+    die("Permission denied, you're account is disabled");
+} elseif ($user['status'] === 1) {
+    die("Permission denied, you're account is parked");
+} elseif ($user['downloadpos'] != 1) {
+    die('Your download privileges have been removed.');
+}
+
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
 $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
@@ -48,7 +53,7 @@ $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff', 'bottom20');
 }
-if (($user['downloadpos'] === 0 || $user['can_leech'] === 0 || $user['downloadpos'] > 1 || $user['suspended'] === 'yes') && !$user['id'] === $row['owner']) {
+if (($user['downloadpos'] === 0 || $user['can_leech'] === 0 || $user['downloadpos'] > 1 || $user['status'] === 5) && !$user['id'] === $row['owner']) {
     stderr('Error', 'Your download rights have been disabled.', 'bottom20');
 }
 if ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {

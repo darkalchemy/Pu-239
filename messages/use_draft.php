@@ -31,7 +31,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
             stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
         }
         $receiver = intval($arr_receiver['id']);
-        if ($CURUSER['suspended'] === 'yes') {
+        if ($CURUSER['status'] === 5) {
             $res = sql_query('SELECT class FROM users WHERE id=' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
             $row = mysqli_fetch_assoc($res);
             if ($row['class'] < UC_STAFF) {
@@ -138,7 +138,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
-        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . '> 
+        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'checked' : '') . '> 
         <span style="font-weight: bold;color:red;">' . $lang['pm_send_mark'] . '</span>' : '') . '
         <input type="submit" class="button is-small" name="buttonval" value="' . $save_or_edit . '"></td>
     </tr>

@@ -15,7 +15,7 @@ function achievement_corrupt_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
-    $res = sql_query("SELECT u.id, u.corrupt, a.corrupt FROM users AS u LEFT JOIN usersachiev AS a ON u.id=a.userid WHERE enabled = 'yes' AND u.corrupt >= 1 AND a.corrupt = 0") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT u.id, u.corrupt, a.corrupt FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.status = 0 AND u.corrupt >= 1 AND a.corrupt = 0') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'New Achievement Earned!';

@@ -30,7 +30,7 @@ $valid_actions = [
     'resend',
 ];
 $do = (($do && in_array($do, $valid_actions, true)) ? $do : '') or header('Location: ?do=view_page');
-if ($user['suspended'] === 'yes') {
+if ($user['status'] === 5) {
     stderr('Sorry', 'Your account is suspended');
 }
 
@@ -151,7 +151,7 @@ if ($do === 'view_page') {
     if ($user['invites'] <= 0) {
         stderr($lang['invites_error'], $lang['invites_noinvite']);
     }
-    if ($user['invite_rights'] === 'no' || $user['suspended'] === 'yes') {
+    if ($user['invite_rights'] === 'no' || $user['status'] === 5) {
         stderr($lang['invites_deny'], $lang['invites_disabled']);
     }
     $count = $fluent->from('invite_codes')

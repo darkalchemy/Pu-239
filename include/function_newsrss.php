@@ -40,8 +40,15 @@ function foxnews_shout($links = [])
                 $xml = fetch($feed);
                 $cache->set('foxnewsrss_' . $hash, $xml, 300);
             }
+            if (empty($xml)) {
+                return;
+            }
             $doc = new DOMDocument();
-            @$doc->loadXML($xml);
+            try {
+                $doc->loadXML($xml);
+            } catch (Exception $e) {
+                return;
+            }
             $items = $doc->getElementsByTagName('item');
             $pubs = [];
             foreach ($items as $item) {
@@ -111,8 +118,15 @@ function tfreak_shout($links = [])
             $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
             $cache->set('tfreaknewsrss_', $xml, 300);
         }
+        if (empty($xml)) {
+            return;
+        }
         $doc = new DOMDocument();
-        @$doc->loadXML($xml);
+        try {
+            $doc->loadXML($xml);
+        } catch (Exception $e) {
+            return;
+        }
         $items = $doc->getElementsByTagName('item');
         $pubs = [];
         foreach ($items as $item) {
@@ -186,6 +200,9 @@ function github_shout($links = [])
             if ($rss === false || is_null($rss)) {
                 $rss = fetch($feed);
                 $cache->set('githubcommitrss_' . $hash, $rss, 300);
+            }
+            if (empty($rss)) {
+                return;
             }
             libxml_use_internal_errors(true);
             $xml = simplexml_load_string($rss);

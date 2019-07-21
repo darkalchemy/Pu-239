@@ -12,13 +12,13 @@ $sanity_check = isset($_GET['sanity_check']) ? (int) $_GET['sanity_check'] : 0;
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.status, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
 $can_delete = $arr_post['user_id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF;
 if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
     stderr($lang['gl_error'], $lang['fe_topic_not_found']);
 }
-if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5) {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 if (!$can_delete) {

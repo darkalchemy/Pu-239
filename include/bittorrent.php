@@ -80,9 +80,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -166,7 +166,7 @@ function userlogin()
             require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
             $set = [
-                'enabled' => 'no',
+                'status' => 2,
                 'class' => 0,
             ];
             $users_class->update($set, $users_data['id']);
@@ -220,9 +220,9 @@ function userlogin()
 }
 */
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -313,9 +313,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -343,9 +343,9 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -565,8 +565,8 @@ function write_log($text)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int
  */
@@ -805,34 +805,40 @@ function replace_unicode_strings($text)
 /**
  * @param $user
  *
- * @throws AuthError
  * @throws DependencyException
- * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
  */
 function parked($user)
 {
-    if ($user['parked'] === 'yes') {
-        stderr('Error', '<b>Your account is currently parked.</b>');
+    global $container, $site_config;
+
+    if ($user['status'] === 1) {
+        $session = $container->get(Session::class);
+        $session->set('is-warning', 'Your account is currently parked.');
+        if (!preg_match('/(usercp|takeeditcp)/', $_SERVER['REQUEST_URI'])) {
+            header('Location: ' . $site_config['paths']['baseurl'] . '/usercp.php?action=security');
+            die();
+        }
     }
 }
 
 /**
  * @param $user
  *
- * @throws AuthError
  * @throws DependencyException
- * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
  */
 function suspended($user)
 {
-    if ($user['suspended'] == 'yes') {
-        stderr('Error', '<b>Your account is currently suspended.</b>');
+    global $container, $site_config;
+
+    if ($user['status'] === 5) {
+        $session = $container->get(Session::class);
+        $session->set('is-warning', 'Your account is currently suspended.');
+        if (!preg_match('/messages/', $_SERVER['REQUEST_URI'])) {
+            header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php');
+            die();
+        }
     }
 }
 
@@ -864,7 +870,6 @@ function force_logout(int $userid)
  *
  * @throws AuthError
  * @throws DependencyException
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
@@ -931,9 +936,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1010,9 +1015,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -1101,12 +1106,12 @@ function plural(int $int)
  * @param string $username
  * @param bool   $ajax
  *
- * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws AuthError
  *
  * @return bool|string
  */
@@ -1255,9 +1260,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1298,9 +1303,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1334,8 +1339,8 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1403,9 +1408,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -1434,9 +1439,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -1489,9 +1494,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1559,9 +1564,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

@@ -299,8 +299,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         Show in Navbar
                     </td>
                     <td>
-                        <input name='navbar' value='1' type='radio'" . ($navbar == 1 ? ' checked' : '') . "><span class='left5'>Yes</span><br>
-                        <input name='navbar' value='0' type='radio'" . ($navbar == 0 ? ' checked' : '') . "><span class='left5'>No</span>
+                        <input name='navbar' value='1' type='radio' " . ($navbar == 1 ? 'checked' : '') . "><span class='left5'>Yes</span><br>
+                        <input name='navbar' value='0' type='radio' " . ($navbar == 0 ? 'checked' : '') . "><span class='left5'>No</span>
                     </td>
                 </tr>";
 
@@ -318,7 +318,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <select name='type'>";
         foreach ($types as $type) {
             $body .= '
-                            <option value="' . $type . '"' . ($arr['type'] === $type ? ' selected' : '') . '>' . ucfirst($type) . '</option>';
+                            <option value="' . $type . '" ' . ($arr['type'] === $type ? 'selected' : '') . '>' . ucfirst($type) . '</option>';
         }
         $body .= "
                         </select>
@@ -333,7 +333,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="' . $class . '"' . ($arr['av_class'] == $class ? ' selected' : '') . '>' . get_user_class_name((int) $class) . '</option>';
+                           <option value="' . $class . '" ' . ($arr['av_class'] == $class ? 'selected' : '') . '>' . get_user_class_name((int) $class) . '</option>';
         }
         $body .= '
                         </select>

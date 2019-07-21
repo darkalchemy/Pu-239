@@ -42,7 +42,7 @@ if (!$torrent_pass) {
 }
 $users_class = $container->get(User::class);
 $user = $users_class->get_user_from_torrent_pass($torrent_pass);
-if (empty($user) || $user['enabled'] === 'no' || $user['parked'] === 'yes' || $user['downloadpos'] != 1) {
+if (empty($user) || $user['status'] > 0 || $user['downloadpos'] != 1) {
     err('scrape user error');
 }
 $numhash = 1;

@@ -21,16 +21,6 @@ function get_anonymous()
 }
 
 /**
- * @return mixed
- */
-function get_parked()
-{
-    global $CURUSER;
-
-    return $CURUSER['parked_until'];
-}
-
-/**
  * @param string $msg
  * @param int    $channel
  * @param int    $ttl
@@ -68,8 +58,8 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param int    $post_id
  * @param bool   $anonymous
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -325,8 +315,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
@@ -468,8 +458,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -538,7 +528,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
         $tooltip = "class='" . get_user_class_name((int) ($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
 
-    $username = $users_data['enabled'] != 'yes' ? '<s>' . htmlsafechars($users_data['username']) . '</s>' : $tag . htmlsafechars($users_data['username']);
+    $username = $users_data['status'] > 1 ? '<s>' . htmlsafechars($users_data['username']) . '</s>' : $tag . htmlsafechars($users_data['username']);
     $str = "
                 <span>$tip<a href='{$site_config['paths']['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>{$username}</span></a>";
 
@@ -550,7 +540,8 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
         $str .= $users_data['pirate'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="Pirate"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'pirate.png" alt="Pirate"></span>' : '';
         $str .= $users_data['warned'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertred.png" alt="Warned"></span>' : '';
         $str .= $users_data['leechwarn'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Leech Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertblue.png" alt="Leech Warned"></span>' : '';
-        $str .= $users_data['enabled'] != 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="Disabled"></span>' : '';
+        $str .= $users_data['status'] > 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="Disabled"></span>' : '';
+        $str .= $users_data['status'] === 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Parked"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="Parked"></span>' : '';
         $str .= $users_data['downloadpos'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Download Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'downloadpos.gif" alt="Download Disabled"></span>' : '';
         $str .= $users_data['chatpost'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Shout Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'warned.png" alt="No Chat"></span>' : '';
         if (Christmas()) {
@@ -610,8 +601,8 @@ function member_ratio(float $up, float $down)
  * @param float $up
  * @param float $down
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -660,10 +651,10 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return bool|mixed|string|null
  */
@@ -743,10 +734,16 @@ function clr_forums_cache(int $post_id)
 /**
  * @param string $dir
  * @param int    $octal
+ *
+ * @return bool
  */
 function make_dir(string $dir, int $octal)
 {
-    if (!is_dir($dir)) {
-        mkdir($dir, $octal, true);
+    if (is_dir($dir)) {
+        return true;
+    } elseif (mkdir($dir, $octal, true)) {
+        return true;
     }
+
+    return false;
 }

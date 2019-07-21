@@ -325,7 +325,7 @@ foreach ($forums as $arr_forums) {
                 <tr>
                     <td class="has-no-border">
                         <div class="is-flex level-left">
-                            <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox"' . ($selected_forums ? ' checked' : '') . ' value="1">
+                            <input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked' : '') . ' value="1">
                             <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="is-link tooltipper left10" title="' . htmlsafechars($arr_forums['description']) . '">' . htmlsafechars($arr_forums['name']) . '
                             </a>
                         </div>
@@ -343,28 +343,28 @@ $search_in_forums .= '
             </table>';
 $search_when_drop_down = '
         <select name="search_when">
-            <option class="body" value="0"' . ($search_when === 0 ? ' selected' : '') . '>' . $lang['sea_no_time_frame'] . '</option>
-            <option class="body" value="604800"' . ($search_when === 604800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_week_ago'], '1') . '</option>
-            <option class="body" value="1209600"' . ($search_when === 1209600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '2') . '</option>
-            <option class="body" value="1814400"' . ($search_when === 1814400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '3') . '</option>
-            <option class="body" value="2419200"' . ($search_when === 2419200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_month_ago'], '1') . '</option>
-            <option class="body" value="4838400"' . ($search_when === 4838400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '2') . '</option>
-            <option class="body" value="7257600"' . ($search_when === 7257600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '3') . '</option>
-            <option class="body" value="9676800"' . ($search_when === 9676800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '4') . '</option>
-            <option class="body" value="12096000"' . ($search_when === 12096000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '5') . '</option>
-            <option class="body" value="14515200"' . ($search_when === 14515200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '6') . '</option>
-            <option class="body" value="16934400"' . ($search_when === 16934400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '7') . '</option>
-            <option class="body" value="19353600"' . ($search_when === 19353600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '8') . '</option>
-            <option class="body" value="21772800"' . ($search_when === 21772800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '9') . '</option>
-            <option class="body" value="24192000"' . ($search_when === 24192000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '10') . '</option>
-            <option class="body" value="26611200"' . ($search_when === 26611200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '11') . '</option>
-            <option class="body" value="30800000"' . ($search_when === 30800000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_year_ago'], '1') . '</option>
+            <option class="body" value="0" ' . ($search_when === 0 ? 'selected' : '') . '>' . $lang['sea_no_time_frame'] . '</option>
+            <option class="body" value="604800" ' . ($search_when === 604800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_week_ago'], '1') . '</option>
+            <option class="body" value="1209600" ' . ($search_when === 1209600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '2') . '</option>
+            <option class="body" value="1814400" ' . ($search_when === 1814400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '3') . '</option>
+            <option class="body" value="2419200" ' . ($search_when === 2419200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_month_ago'], '1') . '</option>
+            <option class="body" value="4838400" ' . ($search_when === 4838400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '2') . '</option>
+            <option class="body" value="7257600" ' . ($search_when === 7257600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '3') . '</option>
+            <option class="body" value="9676800" ' . ($search_when === 9676800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '4') . '</option>
+            <option class="body" value="12096000" ' . ($search_when === 12096000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '5') . '</option>
+            <option class="body" value="14515200" ' . ($search_when === 14515200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '6') . '</option>
+            <option class="body" value="16934400" ' . ($search_when === 16934400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '7') . '</option>
+            <option class="body" value="19353600" ' . ($search_when === 19353600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '8') . '</option>
+            <option class="body" value="21772800" ' . ($search_when === 21772800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '9') . '</option>
+            <option class="body" value="24192000" ' . ($search_when === 24192000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '10') . '</option>
+            <option class="body" value="26611200" ' . ($search_when === 26611200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '11') . '</option>
+            <option class="body" value="30800000" ' . ($search_when === 30800000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_year_ago'], '1') . '</option>
             <option class="body" value="0">' . $lang['sea_13.73_billion_years_ago'] . '</option>
         </select>';
 $sort_by_drop_down = '
         <select name="sort_by">
-            <option class="body" value="relevance"' . ($sort_by === 'relevance' ? ' selected' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
-            <option class="body" value="date"' . ($sort_by === 'date' ? ' selected' : '') . '>' . $lang['sea_post_date'] . '</option>
+            <option class="body" value="relevance" ' . ($sort_by === 'relevance' ? 'selected' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
+            <option class="body" value="date" ' . ($sort_by === 'date' ? 'selected' : '') . '>' . $lang['sea_post_date'] . '</option>
         </select>';
 $HTMLOUT .= $mini_menu . '
         <h1 class="has-text-centered">' . $lang['sea_forums'] . '</h1>
@@ -376,11 +376,11 @@ $table_body = '
                     </td>
                     <td>
                         <div class="level-left is-flex">
-                            <input type="radio" id="search_title" name="search_what" value="title"' . ($search_what === 'title' ? ' checked' : '') . '>
+                            <input type="radio" id="search_title" name="search_what" value="title" ' . ($search_what === 'title' ? 'checked' : '') . '>
                             <label for="search_title" class="left5">Title(s)</label>
-                            <input type="radio" id="search_body" name="search_what" value="body"' . ($search_what === 'body' ? ' checked' : '') . ' class="left10">
+                            <input type="radio" id="search_body" name="search_what" value="body" ' . ($search_what === 'body' ? 'checked' : '') . ' class="left10">
                             <label for="search_body" class="left5">Body Text</label>
-                            <input type="radio" id="search_all" name="search_what" value="all"' . ($search_what === 'all' ? ' checked' : '') . ' class="left10">
+                            <input type="radio" id="search_all" name="search_what" value="all" ' . ($search_what === 'all' ? 'checked' : '') . ' class="left10">
                             <label for="search_all" class="left5">All</label>
                         </div>
                     </td>
@@ -415,9 +415,9 @@ $table_body = '
                     </td>
                     <td>' . $sort_by_drop_down . '
                         <div class="level-left is-flex top10">
-                            <input type="radio" id="asc_asc" name="asc_desc" value="ASC"' . ($asc_desc === 'ASC' ? ' checked' : '') . '>
+                            <input type="radio" id="asc_asc" name="asc_desc" value="ASC" ' . ($asc_desc === 'ASC' ? 'checked' : '') . '>
                             <label for="asc_asc" class="left5">' . $lang['sea_ascending'] . '</label>
-                            <input type="radio" id="asc_desc" name="asc_desc" value="DESC"' . ($asc_desc === 'DESC' ? ' checked' : '') . ' class="left10">
+                            <input type="radio" id="asc_desc" name="asc_desc" value="DESC" ' . ($asc_desc === 'DESC' ? 'checked' : '') . ' class="left10">
                             <label for="asc_desc" class="left5">' . $lang['sea_descending'] . '</label>
                         </div>
                     </td>
@@ -432,9 +432,9 @@ $table_body = '
                 <tr>
                     <td colspan="2" class="has-text-centered">
                         <div class="level-center-center is-flex">
-                            <input type="radio" id="show_list" name="show_as" value="list"' . ($show_as === 'list' ? ' checked' : '') . '>
+                            <input type="radio" id="show_list" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked' : '') . '>
                             <label for="show_list" class="left5">' . $lang['sea_results_as_list'] . '</label>
-                            <input type="radio" id="show_GETs" name="show_as" value="posts"' . ($show_as === 'posts' ? ' checked' : '') . ' class="left10">
+                            <input type="radio" id="show_GETs" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked' : '') . ' class="left10">
                             <label for="show_GETs" class="left5">' . $lang['sea_results_as_posts'] . '</label>
                         </div>
                         <input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '">

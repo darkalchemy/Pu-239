@@ -14,7 +14,7 @@ $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_ge
 return [
     'env' => [
         'mail' => [
-            'smtp_enable' => true,
+            'smtp_enable' => false,
             'smtp_host' => 'smtp.gmail.com',
             'smtp_auth' => true,
             'smtp_username' => 'gmail username',

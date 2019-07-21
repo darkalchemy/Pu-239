@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     $modcomment = !empty($user['modcomment']) ? $user['modcomment'] : '';
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
-
+    $update = $useredit = $msgs = [];
     if ($user['id'] !== $CURUSER['id']) {
         if ($CURUSER['class'] === UC_MAX) {
             $modcomment = $post['modcomment'];
@@ -147,15 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
                 'subject' => $subject,
             ];
         }
-    }
-    if ((isset($post['enabled'])) && (($enabled = $post['enabled']) !== $user['enabled'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . ' ' . ($enabled === 'yes' ? $lang['modtask_enabled'] : $lang['modtask_disabled']) . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
-        $update['enabled'] = $enabled;
-        $useredit[] = $lang['modtask_enabled_disabled'] . $enabled;
-        $fluent->deleteFrom('ajax_chat_online')
-               ->where('userID = ?', $userid)
-               ->execute();
-        $cache->set('forced_logout_' . $userid, $dt);
     }
     if (isset($post['downloadpos']) && ($downloadpos = (int) $post['downloadpos'])) {
         $disable_pm = '';
@@ -408,10 +399,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             $useredit[] = $lang['modtask_download_altered'] . mksize($downloadtoadd) . $lang['modtask_to'] . mksize($newdownload);
         }
     }
-    if ((isset($post['title'])) && (($title = $post['title']) !== ($curtitle = $user['title']))) {
-        $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_custom_title']}'" . $title . "'{$lang['modtask_gl_from']}'" . $curtitle . "' {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
-        $update['title'] = $title;
-        $useredit[] = $lang['modtask_custom_title_altered'];
+    if (isset($post['title'])) {
+        $curtitle = !empty($user['title']) ? $user['title'] : '';
+        $title = $post['title'];
+        if ($title != $curtitle) {
+            $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_custom_title']}'" . $title . "'{$lang['modtask_gl_from']}'" . $curtitle . "' {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+            $update['title'] = $title;
+            $useredit[] = $lang['modtask_custom_title_altered'];
+        }
     }
     if (!empty($post['reset_torrent_pass'])) {
         $newtorrentpass = make_password(32);
@@ -431,7 +426,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $update['apikey'] = $newapikey;
         $useredit[] = "{$lang['modtask_apikey']} {$user['apikey']} {$lang['modtask_reset']} $newapikey";
     }
-    if ((isset($post['seedbonus'])) && (($seedbonus = (int) $post['seedbonus']) !== $user['seedbonus'])) {
+    if ((isset($post['seedbonus'])) && (($seedbonus = (int) $post['seedbonus']) !== (int) $user['seedbonus'])) {
         $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $user['seedbonus'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
         $update['seedbonus'] = $seedbonus;
         $useredit[] = $lang['modtask_seedbonus_total'];
@@ -532,7 +527,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $subject,
         ];
     }
     if (isset($post['game_access']) && ($game_access = (int) $post['game_access'])) {
@@ -596,7 +591,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $subject,
         ];
     }
     if ((isset($post['highspeed'])) && (($highspeed = $post['highspeed']) !== $user['highspeed'])) {
@@ -618,7 +613,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $subject,
         ];
     }
     if ((isset($post['can_leech'])) && (($can_leech = (int) $post['can_leech']) !== $user['can_leech'])) {
@@ -640,7 +635,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $subject,
         ];
     }
     if ((isset($post['wait_time'])) && (($wait_time = $post['wait_time']) !== $user['wait_time'])) {
@@ -658,54 +653,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         $update['torrents_limit'] = $torrents_limit;
         $useredit[] = $lang['modtask_torrent_adjusted'];
     }
-    if ((isset($post['parked'])) && (($parked = $post['parked']) !== $user['parked'])) {
-        if ($parked === 'yes') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_parked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        } elseif ($parked === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unparked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
-        } else {
-            stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
-        }
-        $update['parked'] = $parked;
-        $useredit[] = $lang['modtask_parked_acc'] . $parked;
-    }
-    if ((isset($post['suspended'])) && (($suspended = $post['suspended']) !== $user['suspended'])) {
-        $suspended_reason = $post['suspended_reason'];
-        if (!$suspended_reason) {
-            stderr($lang['modtask_error'], $lang['modtask_suspend_err']);
-        }
-        if ($post['suspended'] === 'yes') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_suspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . $suspended_reason . ".\n" . $modcomment;
+    if (isset($post['status'])) {
+        $status = (int) $post['status'];
+        $userstatus = $user['status'];
+        if ($status === 0) {
+            $update['status'] = 0;
+            $update['parked_until'] = 0;
+            $update['downloadpos'] = 1;
+            $update['uploadpos'] = 1;
+            $update['sendpmpos'] = 1;
+            $update['game_access'] = 1;
+            $update['forum_post'] = 'yes';
+            $update['invite_on'] = 'yes';
+            $update['chatpost'] = 1;
+        } elseif ($status === 2 || $status === 3) {
             $update['downloadpos'] = 0;
             $update['uploadpos'] = 0;
+            $update['game_access'] = 0;
             $update['forum_post'] = 'no';
             $update['invite_on'] = 'no';
-            $update['chatpost'] = 'no';
+            $update['chatpost'] = 0;
+        }
+        if ($status === 1) {
+            $update['status'] = 1;
+            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_parked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+            $useredit[] = $lang['modtask_parked_acc'] . 'yes';
+        } elseif ($status === 2) {
+            $update['status'] = 2;
+            $modcomment = get_date($dt, 'DATE', 1) . ' ' . $lang['modtask_disabled'] . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+            $useredit[] = $lang['modtask_enabled_disabled'] . 'no';
+            $fluent->deleteFrom('ajax_chat_online')
+                   ->where('userID = ?', $userid)
+                   ->execute();
+            $cache->set('forced_logout_' . $userid, $dt);
+        } elseif ($status === 5) {
+            $update['status'] = 5;
+            $suspended_reason = $post['suspended_reason'];
+            if (!$suspended_reason) {
+                stderr($lang['modtask_error'], $lang['modtask_suspend_err']);
+            }
+            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_suspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . $suspended_reason . ".\n" . $modcomment;
             $useredit[] = $lang['modtask_suspended_yes'];
             $subject = $lang['modtask_suspend_title'];
             $msg = $lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n{$suspended_reason}.\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5'];
-            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['paths']['baseurl'] . ' / userdetails . php ? id = ' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . $suspended_reason;
+            $body = "{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . $suspended_reason;
             auto_post($lang['modtask_suspend_title'], $body);
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+        } else {
+            if ($userstatus === 1) {
+                $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unparked_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+                $useredit[] = $lang['modtask_parked_acc'] . 'no';
+            } elseif ($userstatus === 2) {
+                $modcomment = get_date($dt, 'DATE', 1) . ' ' . $lang['modtask_enabled'] . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+                $useredit[] = $lang['modtask_enabled_disabled'] . 'yes';
+            } elseif ($userstatus === 5) {
+                $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unsuspend_by'] . $CURUSER['username'] . ".\n" . $modcomment;
+                $useredit[] = $lang['modtask_suspended_no'];
+                $subject = $lang['modtask_unsuspend_title'];
+                $msg = $lang['modtask_unsuspend_msg'] . $username . ".\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5'];
+                $msgs[] = [
+                    'poster' => $CURUSER['id'],
+                    'receiver' => $userid,
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
+            }
         }
-        if ($post['suspended'] === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . $lang['modtask_unsuspend_by'] . $CURUSER['username'] . $lang['modtask_suspend_reason'] . $suspended_reason . ".\n" . $modcomment;
-            $update['downloadpos'] = 1;
-            $update['uploadpos'] = 1;
-            $update['forum_post'] = 'yes';
-            $update['invite_on'] = 'yes';
-            $update['chatpost'] = 'yes';
-            $useredit[] = $lang['modtask_suspended_no'];
-            $subject = $lang['modtask_unsuspend_title'];
-            $msg = $lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n{$suspended_reason}. \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site']['name'] . $lang['modtask_suspend_msg5'];
-        }
-        $update['suspended'] = $post['suspended'];
-        $msgs[] = [
-            'poster' => $CURUSER['id'],
-            'receiver' => $userid,
-            'added' => $dt,
-            'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
-        ];
     }
     if ((isset($post['hit_and_run_total'])) && (($hit_and_run_total = (int) $post['hit_and_run_total']) !== $user['hit_and_run_total'])) {
         $modcomment = get_date($dt, 'DATE', 1) . "{$lang['modtask_hit_run_set']} $hit_and_run_total{$lang['modtask_gl_was']}" . (int) $user['hit_and_run_total'] . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
@@ -725,7 +745,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $lang['modtask_post_rights'],
         ];
         $update['forum_post'] = $forum_post;
         $useredit[] = $lang['modtask_post_enabled'] . $forum_post;
@@ -743,7 +763,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'receiver' => $userid,
             'added' => $dt,
             'msg' => $msg,
-            'subject' => $lang['modtask_cls_change'],
+            'subject' => $lang['modtask_signature_rights'],
         ];
         $update['signature_post'] = $signature_post;
         $useredit[] = $lang['modtask_signature_rights_enabled'] . $signature_post;
@@ -802,7 +822,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     if (!empty($update)) {
         $update['modcomment'] = $modcomment;
         $users_class->update($update, $userid);
-        if ($post['enabled'] !== 'yes') {
+        if ($post['status'] !== 0) {
             $cache->delete('user_' . $userid);
         }
         if ((isset($post['class'])) && (($class = $post['class']) !== $user['class'])) {

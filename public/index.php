@@ -31,7 +31,7 @@ $HTMLOUT = '';
 global $container, $site_config;
 
 $messages_class = $container->get(Message::class);
-$unread = (int) $messages_class->get_count($user['id']);
+$unread = $messages_class->get_count($user['id'], $site_config['pm']['inbox'], true);
 
 if ($unread >= 1) {
     $session = $container->get(Session::class);
@@ -96,7 +96,7 @@ $tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 $remove_columns = $user['class'] < UC_STAFF ? $site_config['site']['staff_blocks'] : [];
 $torrents_class = $container->get(Torrent::class);
-$available_columns = array_diff($available_columns, $remove_columns);
+$available_columns = $user['status'] === 0 ? array_diff($available_columns, $remove_columns) : [];
 $dir = BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR;
 if (in_array('glide', $available_columns) && $torrents_class->get_torrent_count() >= 10 && $user['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
     $stdfoot = array_merge_recursive($stdfoot, [

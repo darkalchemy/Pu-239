@@ -51,7 +51,7 @@ switch ($action) {
             stderr($lang['bonusmanager_up_err'], $lang['bonusmanager_up_err1']);
         }
         $bonus_added = $GB / 1073741824;
-        $res_GB = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
+        $res_GB = sql_query('SELECT id, uploaded, modcomment FROM users WHERE status = 0 AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_GB) > 0) {
             while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
@@ -87,7 +87,7 @@ switch ($action) {
         if ($karma < 100 || $karma > 5000) {
             stderr($lang['bonusmanager_karma_err'], $lang['bonusmanager_karma_err1']);
         }
-        $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
+        $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE status = 0 AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_karma) > 0) {
             $msg = $lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_karma_addedmsg2'];
@@ -123,7 +123,7 @@ switch ($action) {
         if ($freeslots < 1 || $freeslots > 50) {
             stderr($lang['bonusmanager_freeslots_err'], $lang['bonusmanager_freeslots_err1']);
         }
-        $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
+        $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE status = 0 AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_freeslots) > 0) {
             $msg = $lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_freeslots_addedmsg2'];
@@ -159,7 +159,7 @@ switch ($action) {
         if ($invites < 1 || $invites > 50) {
             stderr($lang['bonusmanager_invite_err'], $lang['bonusmanager_invite_err1']);
         }
-        $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = "yes" AND suspended = "no" AND invite_on = "yes" AND class IN ' . $free_for);
+        $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE status = 0 AND invite_on = "yes" AND class IN ' . $free_for);
         $pm_buffer = $users_buffer = [];
         if (mysqli_num_rows($res_invites) > 0) {
             $msg = $lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site']['name'] . $lang['bonusmanager_invite_addedmsg2'];
@@ -197,7 +197,7 @@ switch ($action) {
         if (!isset($_POST['body'])) {
             stderr($lang['bonusmanager_pm_err'], $lang['bonusmanager_pm_err2']);
         }
-        $res_pms = sql_query('SELECT id FROM users WHERE enabled = "yes" AND suspended = "no" AND class IN ' . $free_for);
+        $res_pms = sql_query('SELECT id FROM users WHERE status = 0 AND class IN ' . $free_for);
         $pm_values = [];
         if (mysqli_num_rows($res_pms) > 0) {
             while ($arr_pms = mysqli_fetch_assoc($res_pms)) {

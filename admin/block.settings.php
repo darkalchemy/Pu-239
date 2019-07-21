@@ -794,6 +794,6 @@ function template_out($matches)
     }
 
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . (!empty($BLOCKS[$matches[1]]) && $BLOCKS[$matches[1]] == 1 ? ' checked' : '') . "> 
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1' " . (!empty($BLOCKS[$matches[1]]) && $BLOCKS[$matches[1]] == 1 ? 'checked' : '') . "> 
     <label for='{$matches[1]}'></label>";
 }

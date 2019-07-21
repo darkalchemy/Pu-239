@@ -30,7 +30,17 @@ if (empty($userid)) {
     echo json_encode(['msg' => 'invalid user credentials']);
     die();
 }
-
+$status = $users_class->get_item('status', $userid);
+if ($status === 5) {
+    echo json_encode(['msg' => "Permission denied, you're account is suspended"]);
+    die();
+} elseif ($status === 2) {
+    echo json_encode(['msg' => "Permission denied, you're account is disabled"]);
+    die();
+} elseif ($status === 1) {
+    echo json_encode(['msg' => "Permission denied, you're account is parked"]);
+    die();
+}
 if (!empty($search)) {
     $fluent = $container->get(Database::class);
     $results = $fluent->from('torrents')

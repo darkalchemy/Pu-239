@@ -86,10 +86,10 @@ if ($ip) {
         $orderby = 'access DESC';
     }
     $query1 = "SELECT * FROM (
-          SELECT u.id, u.username, INET6_NTOA(u.ip) AS ip, INET6_NTOA(u.ip) AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          SELECT u.id, u.username, INET6_NTOA(u.ip) AS ip, INET6_NTOA(u.ip) AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.status, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           WHERE $where1
-          UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.registered, u.class, u.uploaded, u.downloaded, u.donor, u.status, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           RIGHT JOIN ips ON u.id=ips.userid
           WHERE $where2

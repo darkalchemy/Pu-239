@@ -53,7 +53,7 @@ if (isset($_GET['view']) && $_GET['view'] === 't') {
     $view = isset($_GET['t']) ? strip_tags($_GET['t']) : '';
     // Top Torrents
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Active Torrents</h2></div>";
-    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added LIMIT 10");
+    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'yes' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added LIMIT 10");
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
@@ -82,7 +82,7 @@ if (isset($_GET['view']) && $_GET['view'] === 't') {
         $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Most Snatched Torrents</h2></div>";
-    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT 10");
+    $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id=p.torrent WHERE p.seeder = 'yes' GROUP BY t.id ORDER BY times_completed DESC LIMIT 10");
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
@@ -117,20 +117,10 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
     $view = isset($_GET['c']) ? strip_tags($_GET['c']) : '';
     // Top Countries
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (users)</h2></div>";
-    $arr = $fluent->from('countries AS c')
-                  ->select(null)
-                  ->select('c.name')
-                  ->select('c.flagpic')
-                  ->select('COUNT(u.country) AS num')
-                  ->leftJoin('users AS u ON c.id = u.country')
-                  ->groupBy('c.name')
-                  ->groupBy('c.flagpic')
-                  ->orderBy('num')
-                  ->limit(10)
-                  ->fetchAll();
-
-    $counted = !empty($arr) ? count($arr) : 0;
+    $result = sql_query('SELECT name, flagpic, COUNT(users.country) AS num FROM countries LEFT JOIN users ON countries.id = users.country GROUP BY name, flagpic ORDER BY num DESC LIMIT 10');
+    $counted = mysqli_num_rows($result);
     if ($counted == '10') {
+        $arr = mysql_fetch_rowsarr($result);
         $name1 = $arr[0]['name'];
         $num1 = $arr[0]['num'];
         $name2 = $arr[1]['name'];
@@ -156,19 +146,8 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
         $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (total uploaded)</h2></div>";
-    $result = $fluent->from('countries AS c')
-                     ->select(null)
-                     ->select('c.name')
-                     ->select('c.flagpic')
-                     ->select('sum(u.uploaded) AS ul')
-                     ->where('u.enabled = "yes"')
-                     ->leftJoin('users AS u ON c.id = u.country')
-                     ->groupBy('c.name')
-                     ->groupBy('c.flagpic')
-                     ->orderBy('ul')
-                     ->limit(10)
-                     ->fetchAll();
-    $counted = !empty($result) ? count($result) : 0;
+    $result = sql_query('SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.status = 0 GROUP BY c.name, c.flagpic ORDER BY ul DESC LIMIT 10');
+    $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
         $name1 = $arr[0]['name'];
@@ -200,7 +179,7 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
 }
 // Default display / Top Users
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Uploaders</h2></div>";
-$result = sql_query("SELECT username, uploaded FROM users WHERE enabled = 'yes' ORDER BY uploaded DESC LIMIT 10");
+$result = sql_query('SELECT username, uploaded FROM users WHERE status = 0 ORDER BY uploaded DESC, registered LIMIT 10');
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -229,7 +208,7 @@ if ($counted == '10') {
     $HTMLOUT .= main_div('<h4>Insufficient Uploaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Downloaders</h2></div>";
-$result = sql_query("SELECT username, downloaded FROM users WHERE enabled = 'yes' ORDER BY downloaded DESC LIMIT 10");
+$result = sql_query('SELECT username, downloaded FROM users WHERE status = 0 ORDER BY downloaded DESC, registered LIMIT 10');
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -258,7 +237,7 @@ if ($counted == '10') {
     $HTMLOUT .= main_div('<h4>Insufficient Downloaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
-$result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - registered) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
+$result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . ' - registered) AS upspeed FROM users WHERE status = 0 ORDER BY upspeed DESC LIMIT 10');
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -287,7 +266,7 @@ if ($counted == '10') {
     $HTMLOUT .= main_div('<h4>Insufficient Uploaders (' . $counted . ')</h4>', 'top20', 'padding20');
 }
 $table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
-$result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - registered) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
+$result = sql_query('SELECT username, downloaded / (' . TIME_NOW . ' - registered) AS downspeed FROM users WHERE status = 0 ORDER BY downspeed DESC LIMIT 10');
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);

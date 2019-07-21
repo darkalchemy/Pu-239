@@ -93,7 +93,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $LIMIT = $pager['limit'];
     $HTMLOUT .= ($count > $perpage ? $menu_top : '');
     if ($arr_count[0] > 0) {
-        $res = sql_query('SELECT u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.registered, u.last_access, u.perms, c.name, c.flagpic FROM users AS u FORCE INDEX (username) LEFT JOIN countries AS c ON u.country=c.id WHERE ' . $query . ' ORDER BY u.username ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT u.id, u.username, u.class, u.donor, u.warned, u.status, u.chatpost, u.leechwarn, u.pirate, u.king, u.registered, u.last_access, u.perms, c.name, c.flagpic FROM users AS u FORCE INDEX (username) LEFT JOIN countries AS c ON u.country=c.id WHERE ' . $query . ' ORDER BY u.username ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
         $heading = '
 			<tr>
 				<th>' . $lang['fmp_member'] . '</th>

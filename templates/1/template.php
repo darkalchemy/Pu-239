@@ -42,10 +42,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
             $session->set('is-danger', 'Site is currently offline, only staff can access site.');
         }
     }
-    if (!empty($CURUSER) && $CURUSER['enabled'] !== 'yes') {
-        $user = $container->get(User::class);
-        $user->logout($CURUSER['id'], true);
-    }
+    //if (!empty($CURUSER) && $CURUSER['status'] > 0) {
+    //    $user = $container->get(User::class);
+    //    $user->logout($CURUSER['id'], true);
+    //}
     if (empty($title)) {
         $title = $site_config['site']['name'];
     } else {

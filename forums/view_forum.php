@@ -37,7 +37,7 @@ $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['class'] >= $arr['min_class_create'] && $CURUSER['forum_post'] == 'yes' && $CURUSER['suspended'] == 'no';
+$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['class'] >= $arr['min_class_create'] && $CURUSER['forum_post'] == 'yes' && $CURUSER['status'] != 5;
 
 $query = $fluent->from('forums')
                 ->select(null)
@@ -264,7 +264,7 @@ if (!empty($topic_arrs)) {
         }
 
         $res_post_stuff = sql_query('SELECT p.id AS last_post_id, p.added, p.user_id,  p.status, p.anonymous,
-												u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king
+												u.id, u.username, u.class, u.donor, u.status, u.warned, u.chatpost, u.leechwarn, u.pirate, u.king
 												FROM posts AS p 
 												LEFT JOIN users AS u ON p.user_id=u.id 
 												WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' p.status != \'deleted\'  AND' : '')) . '  topic_id=' . sqlesc($topic_id) . '
@@ -304,7 +304,7 @@ if (!empty($topic_arrs)) {
         $last_post_id = (int) $arr_post_stuff['last_post_id'];
 
         $first_post_res = sql_query('SELECT p.id AS first_post_id, p.added, p.icon, p.body, p.anonymous, p.user_id,
-												u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king
+												u.id, u.username, u.class, u.donor, u.warned, u.status, u.chatpost, u.leechwarn, u.pirate, u.king
 												FROM posts AS p
 												LEFT JOIN users AS u ON p.user_id=u.id
 												WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' p.status != \'deleted\'  AND' : '')) . '

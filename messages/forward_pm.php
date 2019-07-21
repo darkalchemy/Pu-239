@@ -31,7 +31,7 @@ if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
 }
 
-if ($CURUSER['suspended'] === 'yes') {
+if ($CURUSER['status'] === 5) {
     if ($to_user['class'] < UC_STAFF) {
         stderr($lang['pm_error'], $lang['pm_forwardpm_account']);
     }

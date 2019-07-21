@@ -142,11 +142,16 @@ if ($action === 'avatar') {
         }
         $changedemail = 1;
     }
-    if (get_parked() == '1') {
-        if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $user['parked']) {
-            $updateset[] = 'parked = ' . sqlesc($parked);
-            $curuser_cache['parked'] = $parked;
-            $user_cache['parked'] = $parked;
+    if ($user['status'] === 1) {
+        if (isset($_POST['parked'])) {
+            if ($_POST['parked'] === 'no') {
+                $updateset[] = 'status = 0';
+                $updateset[] = 'parked_until = 0';
+                $curuser_cache['status'] = 0;
+                $curuser_cache['parked_until'] = 0;
+                $user_cache['status'] = 0;
+                $user_cache['parked_until'] = 0;
+            }
         }
     }
     if (get_anonymous() != '0') {

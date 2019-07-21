@@ -167,7 +167,7 @@ $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {
     foreach ($boxes as $row) {
-        $messages = $messages_class->get_count($CURUSER['id'], $row['boxnumber']);
+        $messages = $messages_class->get_count($CURUSER['id'], $row['boxnumber'], false);
         $all_my_boxes .= '
                     <tr>
                         <td colspan="2">
@@ -203,7 +203,7 @@ if (!empty($boxes)) {
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '"' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -224,7 +224,7 @@ if (!empty($category_set)) {
 
             $categories .= "
                 <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                    <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>$image
+                    <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? 'checked' : '') . " value='yes'>$image
                 </span>";
         } else {
             if ($i++ > 0) {

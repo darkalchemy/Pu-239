@@ -13,7 +13,7 @@ if (!is_valid_id($forum_id)) {
 }
 global $container, $CURUSER, $site_config;
 
-if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5) {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 $topic_name = isset($_POST['topic_name']) ? htmlsafechars($_POST['topic_name']) : '';

@@ -8,7 +8,7 @@ global $CURUSER, $container, $lang, $site_config;
 
 if ($site_config['alerts']['message'] && $CURUSER) {
     $messages_class = $container->get(Message::class);
-    $unread = $messages_class->get_count($CURUSER['id']);
+    $unread = $messages_class->get_count($CURUSER['id'], $site_config['pm']['inbox'], true);
 
     if (!empty($unread)) {
         $htmlout .= "

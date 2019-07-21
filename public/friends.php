@@ -192,7 +192,7 @@ $res = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__
 $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friends_no_user']);
 $HTMLOUT = '';
 $i = 0;
-$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid = ' . sqlesc($curuser['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid = ' . sqlesc($curuser['id']) . " AND f.confirmed = 'no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
@@ -212,7 +212,7 @@ if (mysqli_num_rows($res) == 0) {
         $friendsp .= "<div>{$avatar}<p>{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
-$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid = ' . sqlesc($userid) . " AND f.confirmed = 'no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid = ' . sqlesc($userid) . " AND f.confirmed = 'no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendreqs = '';
 if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';
@@ -232,7 +232,7 @@ if (mysqli_num_rows($res) == 0) {
     $friendreqs .= '</table>';
 }
 $i = 0;
-$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed = 'yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous, u.title, u.donor, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed = 'yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friends = '';
 if (mysqli_num_rows($res) == 0) {
     $friends = '<em>Your friends list is empty.</em>';
@@ -253,7 +253,7 @@ if (mysqli_num_rows($res) == 0) {
     }
 }
 
-$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid=u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid=u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
     $blocks = "{$lang['friends_blocks_empty']}<em>.</em>";

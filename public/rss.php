@@ -37,12 +37,16 @@ if ($validation->fails()) {
     $user = $users_class->get_user_from_torrent_pass($torrent_pass);
     if (!$user) {
         format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
-    } elseif ($user['enabled'] === 'no') {
+    } elseif ($user['status'] === 2) {
         format_rss("Permission denied, you're account is disabled", null);
-    } elseif ($user['parked'] === 'yes') {
+    } elseif ($user['status'] === 1) {
         format_rss("Permission denied, you're account is parked", null);
     } elseif ($user['downloadpos'] != 1) {
         format_rss('Your download privileges have been removed.', null);
+    } elseif ($user['status'] === 5) {
+        format_rss("Permission denied, you're account is suspended", null);
+    } elseif ($user['status'] != 0) {
+        format_rss("Permission denied, you're account is disabled for other reasons", null);
     }
 }
 

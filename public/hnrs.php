@@ -43,7 +43,7 @@ $ratio_fix = $fluent->from('bonus')
                     ->select(null)
                     ->select('points')
                     ->where('bonusname = "Ratio Fix"')
-                    ->where('enabled = "yes"')
+                    ->where('status = 0')
                     ->fetch('points');
 
 $cost = (!$ratio_fix) ? 0 : (int) $ratio_fix;

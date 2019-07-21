@@ -45,7 +45,7 @@ $res = sql_query('SELECT delete_for_real, min_delete_view_class, readpost_expiry
 $arr = mysqli_fetch_array($res);
 $weeks = 1;
 for ($i = 7; $i <= 365; $i = $i + 7) {
-    $time_drop_down .= '<option class="body" value="' . $i . '"' . ($arr['readpost_expiry'] == $i ? ' selected' : '') . '>' . $weeks . ' ' . $lang['forum_config_week'] . plural($weeks) . '</option>';
+    $time_drop_down .= '<option class="body" value="' . $i . '" ' . ($arr['readpost_expiry'] == $i ? 'selected' : '') . '>' . $weeks . ' ' . $lang['forum_config_week'] . plural($weeks) . '</option>';
     $weeks = $weeks + 1;
 }
 $accepted_file_extension = (!empty($arr['accepted_file_extension'])) ? str_replace('|', ' ', $arr['accepted_file_extension']) : [];
@@ -116,7 +116,7 @@ function member_class_drop_down($member_class)
 {
     $member_class_drop_down = '';
     for ($i = 0; $i <= UC_MAX; ++$i) {
-        $member_class_drop_down .= '<option class="body" value="' . $i . '"' . ($member_class == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+        $member_class_drop_down .= '<option class="body" value="' . $i . '" ' . ($member_class == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
     }
 
     return $member_class_drop_down;

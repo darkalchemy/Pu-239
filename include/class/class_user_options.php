@@ -7,7 +7,6 @@ declare(strict_types = 1);
  */
 class user_options
 {
-    const ENABLED = 0x1; // 1
     const DONOR = 0x2; // 2  exclude
     const DELETEPMS = 0x4; // 4
     const SAVEPMS = 0x8; // 8. exclude

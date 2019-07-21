@@ -73,7 +73,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
             <form name='bonusmanage' method='post' action='{$_SERVER['PHP_SELF']}?tool=bonusmanage&amp;action=bonusmanage' accept-charset='utf-8'>
                 <td><input name='id' type='hidden' value='" . (int) $arr['id'] . "'>" . (int) $arr['id'] . "</td>
                 <td><input type='number' name='orderid' value='" . (int) $arr['orderid'] . "' class='w-100'></td>
-                <td><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . '></td>
+                <td><input name='enabled' type='checkbox' " . ($arr['enabled'] === 'yes' ? 'checked' : '') . '></td>
                 <td>' . htmlsafechars($arr['bonusname']) . "</td>
                 <td><input type='number' name='bonuspoints' value='" . (int) $arr['points'] . "' class='w-100'></td>
                 <td><input type='number' name='pointspool' value='" . (int) $arr['pointspool'] . "' class='w-100'></td>

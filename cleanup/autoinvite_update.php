@@ -24,7 +24,7 @@ function autoinvite_update($data)
     $ratiocheck = 1.0;
     $dt = TIME_NOW;
     $joined = ($dt - 86400 * 90);
-    $res = sql_query('SELECT id, uploaded, invites, downloaded, modcomment FROM users WHERE invites = 1 AND class = ' . UC_MIN . " AND uploaded / downloaded <= $ratiocheck AND enabled = 'yes' AND registered < $joined") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, uploaded, invites, downloaded, modcomment FROM users WHERE invites = 1 AND class = ' . UC_MIN . " AND uploaded / downloaded <= $ratiocheck AND status = 0 AND registered < $joined") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Auto Invites';

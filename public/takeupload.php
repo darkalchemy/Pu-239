@@ -66,7 +66,7 @@ ini_set('upload_max_filesize', (string) $site_config['site']['max_torrent_size']
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 $session = $container->get(Session::class);
-if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['suspended'] === 'yes') {
+if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['status'] === 5) {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
     why_die($lang['not_authorized']);
@@ -125,9 +125,11 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         why_die($lang['takeupload_nfo_failed']);
     }
     $nfo_content = str_ireplace([
+        "\xEF\xBB\xBF",
         "\x0d\x0d\x0a",
         "\xb0",
     ], [
+        '',
         "\x0d\x0a",
         '',
     ], file_get_contents($nfofilename));

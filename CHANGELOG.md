@@ -1,3 +1,19 @@
+### 21 Jul, 2019
+add: search by audio  
+add: site setting to view nfo's as images  
+update: ensure path is writable before writing  goaccess_update.php  
+update: check if empty before using function_newsrss.php  
+update: add try/cache function_newsrss.php  
+remove: get_parked()  
+update: default to allow comments  
+update: user 'status' to track enabled, parked, normal user  
+update: catch statements not reached verify_email.php  
+update: messages.php  
+update: view_mailbox.php  
+update: log out current browser only when checking user status  
+update: set smtp_enable default to false  
+update: links in AJAX Chat reload current window instead of new window  
+
 ### 17 Jul, 2019
 fix: check if file is readable before reading log_viewer.php  
 update: clean url without breaking code blocks  

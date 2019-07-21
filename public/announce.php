@@ -104,11 +104,13 @@ $user = $users_class->get_user_from_torrent_pass($torrent_pass);
 $peer_class = $container->get(Peer::class);
 if (empty($user)) {
     err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
-} elseif ($user['enabled'] === 'no') {
+} elseif ($user['status'] === 5) {
+    err("Permission denied, you're account has been suspended");
+} elseif ($user['status'] === 2) {
     err("Permission denied, you're account is disabled");
 } elseif ($left > 0 && $torrent['vip'] === 1 && $user['class'] < UC_VIP) {
     err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a VIP By Donating to our site. Donating ensures we stay online to provide you with more Excellent Torrents!');
-} elseif ($user['parked'] === 'yes') {
+} elseif ($user['status'] === 1) {
     err('Your account is parked! (Read the FAQ)');
 } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
     err('Your downloading privileges have been disabled! (Read the rules)');

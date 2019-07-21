@@ -218,7 +218,7 @@ if ($id !== 0) {
     for ($i = 0;; ++$i) {
         if ($c = get_user_class_name((int) $i)) {
             $HTMLOUT .= '
-                    <option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected' : '') . '>' . $c . '</option>';
+                    <option value="' . $i . '" ' . (ctype_digit($class) && $class == $i ? 'selected' : '') . '>' . $c . '</option>';
         } else {
             break;
         }

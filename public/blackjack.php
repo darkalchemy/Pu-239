@@ -21,7 +21,7 @@ if ($user['class'] < $site_config['allowed']['play']) {
     stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
 }
 
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['suspended'] === 'yes') {
+if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 
@@ -962,9 +962,9 @@ if ($game) {
                         </tr>
                 </table>';
     // site stats
-    $sql = "SELECT id, bjwins * 1024 * 1024 * 1024 AS wins, bjlosses * 1024 * 1024 * 1024 AS losses, (bjwins - bjlosses) * 1024 * 1024 * 1024 AS sum
+    $sql = 'SELECT id, bjwins * 1024 * 1024 * 1024 AS wins, bjlosses * 1024 * 1024 * 1024 AS losses, (bjwins - bjlosses) * 1024 * 1024 * 1024 AS sum
                 FROM users
-                WHERE enabled = 'yes' AND (bjwins>0 OR bjlosses>0) ORDER BY sum DESC LIMIT 20";
+                WHERE status = 0 AND (bjwins>0 OR bjlosses>0) ORDER BY sum DESC LIMIT 20';
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res)) {
         $bjusers[] = $row;

@@ -128,7 +128,7 @@ switch ($action) {
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+                $over_forums .= '<option class="body" value="' . $i . '" ' . ($row['min_class_view'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
             <td><span class="has-text-weight-bold">' . $lang['ad_over_sort'] . '</span></td>
@@ -141,7 +141,7 @@ switch ($action) {
 
             $maxclass = $count + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $sorted .= '<option class="body" value="' . $i . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . $i . '</option>';
+                $sorted .= '<option class="body" value="' . $i . '" ' . ($row['sort'] == $i ? 'selected' : '') . '>' . $i . '</option>';
             }
             $HTMLOUT .= $sorted . '</select></td></tr>
             <tr>

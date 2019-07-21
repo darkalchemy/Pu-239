@@ -454,6 +454,10 @@ $HTMLOUT .= main_div("
                                 <div class='has-text-centered bottom10'>{$lang['browse_genre']}</div>
                                 <input name='sg' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['sg']) ? $_GET['sg'] : '') . "'>
                             </div>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_audio']}</div>
+                                <input name='sa' type='text' placeholder='{$lang['search_audio']}' class='search w-100' value='" . (!empty($_GET['sa']) ? $_GET['sa'] : '') . "'>
+                            </div>
                         </div>
                         <div class='columns'>
                             <div class='column'>

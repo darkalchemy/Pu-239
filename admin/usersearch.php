@@ -61,7 +61,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['rt']) && $search['rt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['rt']) && $search['rt'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -78,7 +78,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['st']) && $search['st'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['st']) && $search['st'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -99,7 +99,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['as']) && $search['as'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['as']) && $search['as'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -119,7 +119,7 @@ $class = isset($search['c']) ? (int) $search['c'] : '';
 for ($i = 2;; ++$i) {
     if ($c = get_user_class_name((int) $i - 2)) {
         $body .= "
-                    <option value='$i'" . (isset($class) && $class == $i ? ' selected' : '') . ">$c</option>";
+                    <option value='$i' " . (isset($class) && $class == $i ? 'selected' : '') . ">$c</option>";
     } else {
         break;
     }
@@ -140,7 +140,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['dt']) && $search['dt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['dt']) && $search['dt'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -159,7 +159,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['ult']) && $search['ult'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['ult']) && $search['ult'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -176,7 +176,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['do']) && $search['do'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['do']) && $search['do'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -194,7 +194,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['lst']) && $search['lst'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['lst']) && $search['lst'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -212,7 +212,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['dlt']) && $search['dlt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['dlt']) && $search['dlt'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -229,7 +229,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (isset($search['w']) && $search['w'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i' " . (isset($search['w']) && $search['w'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -240,10 +240,10 @@ $body .= "
             <td></td>
             <td>{$lang['usersearch_active']}</td>
             <td>
-                <input name='ac' type='checkbox' value='1'" . (isset($search['ac']) ? ' checked' : '') . ">
+                <input name='ac' type='checkbox' value='1' " . (isset($search['ac']) ? 'checked' : '') . ">
             </td>
             <td>{$lang['usersearch_banned']}</td>
-            <td><input name='dip' type='checkbox' value='1'" . (isset($search['dip']) ? ' checked' : '') . "></td>
+            <td><input name='dip' type='checkbox' value='1' " . (isset($search['dip']) ? 'checked' : '') . "></td>
         </tr>
         <tr>
             <td colspan='6' class='has-text-centered'><input name='submit' type='submit' class='button is-small margin20'></td>
@@ -663,9 +663,9 @@ if (!empty($search)) {
         $accountstatus = (int) $search['as'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
         if ($accountstatus === 1) {
-            $where_is .= " u.enabled = 'yes'";
+            $where_is .= ' u.status = 0';
         } else {
-            $where_is .= " u.enabled = 'no'";
+            $where_is .= ' u.status = 2';
         }
         $q1 .= ($q1 ? '&amp;' : '') . "as=$accountstatus";
     }
@@ -697,7 +697,7 @@ if (!empty($search)) {
     if (!empty($disabled)) {
         $distinct = 'DISTINCT ';
         $join_is .= ' LEFT JOIN users AS u2 ON u.ip = u2.ip';
-        $where_is .= ((!empty($where_is)) ? ' AND ' : '') . "u2.enabled = 'no'";
+        $where_is .= ((!empty($where_is)) ? ' AND ' : '') . "u2.status = 2";
         $q1 .= ($q1 ? '&amp;' : '') . "dip=$disabled";
     }
     */
@@ -714,7 +714,7 @@ if (!empty($search)) {
     $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (empty($where_is) ? '' : " WHERE $where_is ");
     $querypm = 'FROM ' . $from_is . (empty($where_is) ? ' ' : " WHERE $where_is ");
     $announcement_query = "SELECT u.id FROM $from_is " . (empty($where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
-    $select_is = 'u.id, u.username, u.email, u.status, u.registered, u.last_access, u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned, INET6_NTOA(i.ip) AS ip, i.type';
+    $select_is = 'u.id, u.username, u.email, u.status, u.registered, u.last_access, u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.status, u.warned, INET6_NTOA(i.ip) AS ip, i.type';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
@@ -791,8 +791,8 @@ if (!empty($search)) {
             <td>' . htmlsafechars($user['email']) . '</td>
             <td>' . get_date((int) $user['registered'], '') . '</td>
             <td>' . get_date((int) $user['last_access'], '', 0, 1) . '</td>
-            <td>' . htmlsafechars($user['status']) . '</td>
-            <td>' . htmlsafechars($user['enabled']) . '</td>
+            <td>' . $user['status'] . '</td>
+            <td>' . $user['status'] . '</td>
             <td>' . ratios($pul, $pdl) . '</td>
             <td>' . number_format($pul / 1048576) . '</td>
             <td>' . number_format($pdl / 1048576) . '</td>

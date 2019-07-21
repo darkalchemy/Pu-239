@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'disable' && (!empty($_POST['userid']))) {
-        sql_query("UPDATE users SET enabled = 'no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
+        sql_query('UPDATE users SET status = 2 WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
         $session->set('is-success', $lang['inactive_disabled']);
     }
 
@@ -84,12 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 $dt = TIME_NOW - ($days * 86400);
-$res = sql_query('SELECT COUNT(id) FROM users WHERE last_access<' . sqlesc($dt) . " AND status = 'confirmed' AND enabled = 'yes' ORDER BY last_access DESC");
+$res = sql_query('SELECT COUNT(id) FROM users WHERE last_access<' . sqlesc($dt) . ' AND verified = 1 AND status = 0 ORDER BY last_access DESC');
 $row = mysqli_fetch_array($res);
 $count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=inactive&amp;');
-$res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access < ' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access < ' . sqlesc($dt) . " AND verified = 1 AND status = 0 ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $count_inactive = mysqli_num_rows($res);
 if ($count_inactive > 0) {
     if ($count > $perpage) {

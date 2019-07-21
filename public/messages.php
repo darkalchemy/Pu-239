@@ -7,6 +7,7 @@ use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Session;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -107,31 +108,20 @@ if (isset($_GET['change_pm_number'])) {
 }
 
 if (isset($_GET['show_pm_avatar'])) {
-    $setbits = $clrbits = 0;
     if ($_GET['show_pm_avatar'] === 'yes') {
-        $setbits |= user_options_2::SHOW_PM_AVATAR;
+        $opt2 = $user['opt2'] | user_options_2::SHOW_PM_AVATAR;
     } else {
-        $clrbits |= user_options_2::SHOW_PM_AVATAR;
+        $opt2 = $user['opt2'] & ~user_options_2::SHOW_PM_AVATAR;
     }
-
-    if ($setbits || $clrbits) {
-        $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($user['id']);
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    }
-    $opt2 = $fluent->from('users')
-                   ->select(null)
-                   ->select('opt2')
-                   ->where('id = ?', $user['id'])
-                   ->fetch('opt2');
-
-    $cache->update_row('user_' . $user['id'], [
+    $update = [
         'opt2' => $opt2,
-    ], $site_config['expires']['user_cache']);
-
+    ];
+    $user_class = $container->get(User::class);
+    $user_class->update($update, $user['id']);
     if (isset($_GET['edit_mail_boxes'])) {
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=edit_mailboxes&avatar=1');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailboxes');
     } else {
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&avatar=1&box=' . $mailbox);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&box=' . $mailbox);
     }
     die();
 }
@@ -208,9 +198,9 @@ switch ($action) {
  * @param int $box
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -256,8 +246,8 @@ function get_all_boxes(int $box, int $userid)
  * @param int $mailbox
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -281,7 +271,7 @@ function insertJumpTo(int $mailbox, int $userid)
                     <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . $lang['pm_deleted_box'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ($mailbox === (int) $row['boxnumber'] ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
         $insertJumpTo .= '
                 </select>

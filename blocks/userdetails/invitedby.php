@@ -35,7 +35,7 @@ if ($invite_by > 0 && $type === 'invite') {
             <td><b>' . $lang['userdetails_iopen_s'] . '</b></td>
         </tr>';
 }
-$rez_invited = sql_query('SELECT id, class, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($user['id']) . ' ORDER BY registered') or sqlerr(__FILE__, __LINE__);
+$rez_invited = sql_query('SELECT id, class, username, email, uploaded, downloaded, status, warned, status, donor, email, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($user['id']) . ' ORDER BY registered') or sqlerr(__FILE__, __LINE__);
 $inviteted_by_this_member = '';
 if (mysqli_num_rows($rez_invited) < 1) {
     $inviteted_by_this_member .= 'No invitees yet.';

@@ -52,6 +52,7 @@ $folders = [
     ROOT_DIR . 'uploads/',
     CHAT_DIR . 'js/',
     IMAGES_DIR,
+    NFO_DIR,
     VENDOR_DIR,
     NODE_DIR,
 ];
@@ -77,7 +78,7 @@ foreach ($paths as $path) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
             if (is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
-                if (preg_match('#' . IMAGES_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
+                if (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
                 } else {
                     chown($name, $user);
@@ -86,7 +87,7 @@ foreach ($paths as $path) {
                 chmod($name, 0774);
                 ++$i;
             } elseif (!is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
-                if (preg_match('#' . IMAGES_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
+                if (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
                     chmod($name, 0774);
                 } else {

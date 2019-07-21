@@ -17,7 +17,7 @@ $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
         FROM users AS u
         LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
-        WHERE u.id = ' . sqlesc($user['id']) . ' AND u.enabled = "yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
+        WHERE u.id = ' . sqlesc($user['id']) . ' AND u.status = 0') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] = 0;
@@ -31,7 +31,7 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
     $query = sprintf('
                 SELECT m.*,p.process_id
                 FROM announcement_main AS m
-                LEFT JOIN announcement_process AS p ON m.main_id=p.main_id AND p.user_id=%s
+                LEFT JOIN announcement_process AS p ON m.main_id = p.main_id AND p.user_id = %s
                 WHERE p.process_id IS NULL OR p.status = 0
                 ORDER BY m.main_id
                 LIMIT 1', sqlesc($row['id']));

@@ -67,7 +67,7 @@ $body = '
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_allbox'] . '</span></td>
-                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked' : '') . '>' . $lang['pm_search_ignored'] . '</td>
+                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? 'checked' : '') . '>' . $lang['pm_search_ignored'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_member_by'] . '</span></td>
@@ -75,41 +75,41 @@ $body = '
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_system'] . '</span></td>
-                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? ' checked' : '') . '>' . $lang['pm_search_system_only'] . '</td>
+                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? 'checked' : '') . '>' . $lang['pm_search_system_only'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_in'] . '</span></td>
-                    <td><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked' : '') . '>' . $lang['pm_search_subject'] . '
-                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked' : '') . '>' . $lang['pm_search_msgtext'] . '</td>
+                    <td><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? 'checked' : '') . '>' . $lang['pm_search_subject'] . '
+                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? 'checked' : '') . '>' . $lang['pm_search_msgtext'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_sortby'] . '</span></td>
                     <td>
                     <select name="sort">
-                        <option value="relevance" ' . ($sort === 'relevance' ? ' selected' : '') . '>' . $lang['pm_search_relevance'] . '</option>
-                        <option value="subject" ' . ($sort === 'subject' ? ' selected' : '') . '>' . $lang['pm_search_subject'] . '</option>
-                        <option value="added" ' . ($sort === 'added' ? ' selected' : '') . '>' . $lang['pm_search_added'] . '</option>
-                        <option value="' . $sender_reciever . '" ' . ($sort === $sender_reciever ? ' selected="selected' : '') . '>' . $lang['pm_search_member'] . ' </option>
+                        <option value="relevance" ' . ($sort === 'relevance' ? 'selected' : '') . '>' . $lang['pm_search_relevance'] . '</option>
+                        <option value="subject" ' . ($sort === 'subject' ? 'selected' : '') . '>' . $lang['pm_search_subject'] . '</option>
+                        <option value="added" ' . ($sort === 'added' ? 'selected' : '') . '>' . $lang['pm_search_added'] . '</option>
+                        <option value="' . $sender_reciever . '" ' . ($sort === $sender_reciever ? 'selected' : '') . '>' . $lang['pm_search_member'] . ' </option>
                     </select>
-                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? ' checked' : '') . '>' . $lang['pm_search_asc'] . ' < input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked' : '') . '>' . $lang['pm_search_desc'] . ' </td>
+                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? 'checked' : '') . '>' . $lang['pm_search_asc'] . ' < input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? 'checked' : '') . '>' . $lang['pm_search_desc'] . ' </td>
                 </tr>
                 <tr>
                     <td><span> ' . $lang['pm_search_show'] . ' </span></td>
                     <td>
                     <select name="limit">
-                        <option value="25"' . (($limit == 25 || !$limit) ? ' selected' : '') . '>' . $lang['pm_search_25'] . ' </option>
-                        <option value="50"' . ($limit == 50 ? ' selected' : '') . '>' . $lang['pm_search_50'] . ' </option>
-                        <option value="75"' . ($limit == 75 ? ' selected' : '') . '>' . $lang['pm_search_75'] . ' </option>
-                        <option value="100"' . ($limit == 100 ? ' selected' : '') . '>' . $lang['pm_search_100'] . ' </option>
-                        <option value="150"' . ($limit == 150 ? ' selected' : '') . '>' . $lang['pm_search_150'] . ' </option>
-                        <option value="200"' . ($limit == 200 ? ' selected' : '') . '>' . $lang['pm_search_200'] . ' </option>
-                        <option value="1000"' . ($limit == 1000 ? ' selected' : '') . '>' . $lang['pm_search_allres'] . ' </option>
+                        <option value="25" ' . (($limit == 25 || !$limit) ? 'selected' : '') . '>' . $lang['pm_search_25'] . ' </option>
+                        <option value="50" ' . ($limit == 50 ? 'selected' : '') . '>' . $lang['pm_search_50'] . ' </option>
+                        <option value="75" ' . ($limit == 75 ? 'selected' : '') . '>' . $lang['pm_search_75'] . ' </option>
+                        <option value="100" ' . ($limit == 100 ? 'selected' : '') . '>' . $lang['pm_search_100'] . ' </option>
+                        <option value="150" ' . ($limit == 150 ? 'selected' : '') . '>' . $lang['pm_search_150'] . ' </option>
+                        <option value="200" ' . ($limit == 200 ? 'selected' : '') . '>' . $lang['pm_search_200'] . ' </option>
+                        <option value="1000" ' . ($limit == 1000 ? 'selected' : '') . '>' . $lang['pm_search_allres'] . ' </option>
                     </select></td>
                 </tr> ' . ($limit < 100 ? '
                 <tr>
                     <td><span> ' . $lang['pm_search_display'] . ' </span></td>
-                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked' : '') . '><span> ' . $lang['pm_search_list'] . ' </span>
-                    <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked' : '') . '><span> ' . $lang['pm_search_message'] . ' </span></td>
+                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? 'checked' : '') . '><span> ' . $lang['pm_search_list'] . ' </span>
+                    <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? 'checked' : '') . '><span> ' . $lang['pm_search_message'] . ' </span></td>
                 </tr> ' : '') . ' < tr class="no_hover">
                     <td colspan="2" class="has-text-centered margin20">
                     <input type="submit" class="button is-small" name="change" value="' . $lang['pm_search_btn'] . '"></td>

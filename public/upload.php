@@ -27,7 +27,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $audios_list = $has_request = $descr = '';
-if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['suspended'] === 'yes') {
+if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['status'] === 5) {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $cache = $container->get(Cache::class);
@@ -91,7 +91,7 @@ if ($res_request) {
                         <option value='0'>{$lang['upload_request']}</option>";
     foreach ($res_request as $arr_request) {
         $has_request .= "
-                        <option value='{$arr_request['id']}'" . ($request == $arr_request['id'] ? ' selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
+                        <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
     }
     $has_request .= "
                     </select>{$lang['upload_request_msg']}
@@ -117,7 +117,7 @@ if ($res_offers) {
                         <option value='0'>{$lang['upload_offer']}</option>";
     foreach ($res_offers as $arr_offer) {
         $offers .= "
-                        <option value='{$arr_offer['id']}'" . ($offer == $arr_offer['id'] ? ' selected' : '') . '>' . htmlsafechars($arr_offer['offer_name']) . '</option>';
+                        <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['offer_name']) . '</option>';
     }
     $offers .= "
                     </select>{$lang['upload_offer_msg']}:
@@ -214,7 +214,7 @@ $HTMLOUT .= "
                 <td>{$lang['upload_strip']}</td>
                 <td>
                     <div class='level-left'>
-                        <input type='checkbox' name='strip' id='strip' value='strip'" . ($strip === 'strip' ? ' checked' : '') . ">
+                        <input type='checkbox' name='strip' id='strip' value='strip' " . ($strip === 'strip' ? 'checked' : '') . ">
                         <label for='strip' class='left5'>
                             <a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>{$lang['upload_what_this']}</a>
                         </label>
@@ -239,7 +239,7 @@ $s = [
 foreach ($subs as $s) {
     $subs_list .= "
                     <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
-                        <input name='subs[]' type='checkbox' value='{$s['name']}'" . (in_array($s['name'], $has_subs) ? ' checked' : '') . " class='margin20'>
+                        <input name='subs[]' type='checkbox' value='{$s['name']}' " . (in_array($s['name'], $has_subs) ? 'checked' : '') . " class='margin20'>
                         <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='" . htmlsafechars($s['name']) . "'>
                         <span class='has-text-centered margin20'>" . htmlsafechars($s['name']) . '</span>
                     </div>';
@@ -267,13 +267,17 @@ $HTMLOUT .= "
 $rg = "
             <select name='release_group' class='w-100'>
                 <option value='none'>{$lang['upload_none']}</option>
-                <option value='p2p'" . ($release_group === 'p2p' ? ' selected' : '') . ">p2p</option>
-                <option value='scene'" . ($release_group === 'scene' ? ' selected' : '') . '>Scene</option>
+                <option value='p2p' " . ($release_group === 'p2p' ? 'selected' : '') . ">p2p</option>
+                <option value='scene' " . ($release_group === 'scene' ? 'selected' : '') . '>Scene</option>
             </select>';
 $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
-$HTMLOUT .= tr($lang['upload_anonymous'], "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
+$HTMLOUT .= tr($lang['upload_anonymous'], "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1' " . ($uplver ? 'checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
-    $HTMLOUT .= tr($lang['upload_comment'], "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments != 'no' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
+    $HTMLOUT .= tr($lang['upload_comment'], "
+    <select name='allow_comments'>
+        <option value='yes' " . ($allow_comments === 'yes' ? 'selected' : '') . ">Yes</option>
+        <option value='no' " . ($allow_comments === 'no' ? 'selected' : '') . '>No</option>
+    </select>', 1);
 }
 if ($user['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
@@ -282,12 +286,12 @@ if ($user['class'] >= UC_UPLOADER) {
         <td>
             <select name='free_length' class='w-100'>
                 <option value='0'>{$lang['upload_not_free']}</option>
-                <option value='42'" . ($free_length == '42' ? ' selected' : '') . ">{$lang['upload_free_1_day']}</option>
-                <option value='1'" . ($free_length == '1' ? ' selected' : '') . ">{$lang['upload_free_1_week']}</option>
-                <option value='2'" . ($free_length == '2' ? ' selected' : '') . ">{$lang['upload_free_2_weeks']}</option>
-                <option value='4'" . ($free_length == '4' ? ' selected' : '') . ">{$lang['upload_free_4_weeks']}</option>
-                <option value='8'" . ($free_length == '8' ? ' selected' : '') . ">{$lang['upload_free_8_weeks']}</option>
-                <option value='255'" . ($free_length == '255' ? ' selected' : '') . ">{$lang['upload_unlimited']}</option>
+                <option value='42' " . ($free_length == '42' ? 'selected' : '') . ">{$lang['upload_free_1_day']}</option>
+                <option value='1' " . ($free_length == '1' ? 'selected' : '') . ">{$lang['upload_free_1_week']}</option>
+                <option value='2' " . ($free_length == '2' ? 'selected' : '') . ">{$lang['upload_free_2_weeks']}</option>
+                <option value='4' " . ($free_length == '4' ? 'selected' : '') . ">{$lang['upload_free_4_weeks']}</option>
+                <option value='8' " . ($free_length == '8' ? 'selected' : '') . ">{$lang['upload_free_8_weeks']}</option>
+                <option value='255' " . ($free_length == '255' ? 'selected' : '') . ">{$lang['upload_unlimited']}</option>
             </select>
         </td>
     </tr>
@@ -296,12 +300,12 @@ if ($user['class'] >= UC_UPLOADER) {
         <td>
             <select name='half_length' class='w-100'>
                 <option value='0'>{$lang['upload_not_silver']}</option>
-                <option value='42'" . ($half_length == '42' ? ' selected' : '') . ">{$lang['upload_silver_1_day']}</option>
-                <option value='1'" . ($half_length == '1' ? ' selected' : '') . ">{$lang['upload_silver_1_week']}</option>
-                <option value='2'" . ($half_length == '2' ? ' selected' : '') . ">{$lang['upload_silver_2_weeks']}</option>
-                <option value='4'" . ($half_length == '4' ? ' selected' : '') . ">{$lang['upload_silver_4_weeks']}</option>
-                <option value='8'" . ($half_length == '8' ? ' selected' : '') . ">{$lang['upload_silver_8_weeks']}</option>
-                <option value='255'" . ($half_length == '255' ? ' selected' : '') . ">{$lang['upload_unlimited']}</option>
+                <option value='42' " . ($half_length == '42' ? 'selected' : '') . ">{$lang['upload_silver_1_day']}</option>
+                <option value='1' " . ($half_length == '1' ? 'selected' : '') . ">{$lang['upload_silver_1_week']}</option>
+                <option value='2' " . ($half_length == '2' ? 'selected' : '') . ">{$lang['upload_silver_2_weeks']}</option>
+                <option value='4' " . ($half_length == '4' ? 'selected' : '') . ">{$lang['upload_silver_4_weeks']}</option>
+                <option value='8' " . ($half_length == '8' ? 'selected' : '') . ">{$lang['upload_silver_8_weeks']}</option>
+                <option value='255' " . ($half_length == '255' ? 'selected' : '') . ">{$lang['upload_unlimited']}</option>
             </select>
         </td>
     </tr>";
@@ -309,7 +313,7 @@ if ($user['class'] >= UC_UPLOADER) {
 require_once PARTIALS_DIR . 'genres.php';
 
 if ($user['class'] >= UC_UPLOADER) {
-    $HTMLOUT .= tr($lang['upload_vip'], "<div class='level-left'><input type='checkbox' name='vip' id='vip' value='1'" . ($vip == 1 ? ' checked' : '') . "><label for='vip' class='left5'>{$lang['upload_vip_msg']}</label></div>", 1);
+    $HTMLOUT .= tr($lang['upload_vip'], "<div class='level-left'><input type='checkbox' name='vip' id='vip' value='1' " . ($vip == 1 ? 'checked' : '') . "><label for='vip' class='left5'>{$lang['upload_vip_msg']}</label></div>", 1);
 }
 $HTMLOUT .= "
         <tr>

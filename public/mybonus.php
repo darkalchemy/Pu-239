@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Bonuslog;
 use Pu239\Database;
@@ -20,6 +21,9 @@ require_once INCL_DIR . 'function_bonus.php';
 $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 global $container, $site_config;
+
+$auth = $container->get(Auth::class);
+$auth->isSuspended();
 
 if (!$site_config['bonus']['on']) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
@@ -59,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = isset($post['title']) ? htmlsafechars(trim($post['title'])) : '';
     $users_class = $container->get(User::class);
     $bonuslog = $container->get(Bonuslog::class);
+    $auth = $container->get(Auth::class);
 
     if (in_array($option, $traffic1) && $art === 'traffic') {
         if ($options[$option]['enabled'] === 'yes') {
@@ -355,12 +360,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($art === 'parked') {
-        if ($user['parked'] === 'yes' && $user['parked_until'] > $dt) {
-            $session->set('is-warning', 'Your profile is already parked.');
-        } elseif ($options[$option]['enabled'] === 'yes') {
+        if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $set = [
-                    'parked' => 'yes',
+                    'status' => 1,
                     'parked_until' => $user['parked_until'] === 0 ? $dt + 365 * 86400 : $user['parked_until'] + 365 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for  1 Year Parked Profile.\n" . $user['bonuscomment'],

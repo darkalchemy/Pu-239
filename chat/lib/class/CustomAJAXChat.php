@@ -28,7 +28,7 @@ class CustomAJAXChat extends AJAXChat
     {
         $user = $this->_user->getUserFromId($this->getUserID());
 
-        if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
+        if (!empty($user) && $user['status'] === 0 && $user['chatpost'] === 1) {
             $userData['userID'] = $user['id'];
             $userData['userName'] = $this->trimUserName($user['username']);
             $userData['userClass'] = get_user_class_name((int) $user['class']);
@@ -69,7 +69,7 @@ class CustomAJAXChat extends AJAXChat
             $this->addInfoMessage('errorBanned');
         }
 
-        if ($user['enabled'] !== 'yes') {
+        if ($user['status'] > 0) {
             $this->_session->destroy();
         }
 

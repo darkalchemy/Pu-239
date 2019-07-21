@@ -126,7 +126,7 @@ $ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC'
 $i = 1;
 $HTMLOUT .= $H1_thingie;
 
-$res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, status, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $HTMLOUT .= '
@@ -148,7 +148,7 @@ if ($how_many > 0) {
     while ($arr = @mysqli_fetch_assoc($res)) {
         $invitor_arr = [];
         if ($arr['invitedby'] != 0) {
-            $invitor_res = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
+            $invitor_res = sql_query('SELECT id, username, donor, class, status, warned, leechwarn, chatpost, pirate, king FROM users WHERE id=' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
             $invitor_arr = mysqli_fetch_assoc($invitor_res);
         }
         $the_flip_box = '

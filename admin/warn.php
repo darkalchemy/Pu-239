@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $CURUSER;
 
     if ($act === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
-        $res_del = sql_query('SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE id IN (' . implode(', ', $_uids) . ') ORDER BY username DESC');
+        $res_del = sql_query('SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, status FROM users WHERE id IN (' . implode(', ', $_uids) . ') ORDER BY username DESC');
         if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
@@ -53,10 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         global $container;
 
         $cache = $container->get(Cache::class);
-        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query('UPDATE users SET status = 2, modcomment=CONCAT(' . sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user_' . $uid, [
-                    'enabled' => 'no',
+                    'status' => 2,
                 ], $site_config['expires']['user_cache']);
             }
             $d = mysqli_affected_rows($mysqli);
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 switch ($do) {
     case 'disabled':
-        $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, registered, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
+        $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, registered, last_access FROM users WHERE status = 2 ORDER BY last_access DESC ";
         $title = $lang['warn_disable_title'];
         $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;?do=warned\">{$lang['warn_warned_users']}</a>";
         break;

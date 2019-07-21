@@ -28,7 +28,7 @@ $valid = [
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
 
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['suspended'] === 'yes') {
+if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
     stderr('Error', 'Your gaming rights have been disabled.');
     die();
 }

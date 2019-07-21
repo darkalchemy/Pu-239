@@ -62,7 +62,7 @@ if (empty($user)) {
 if ($user['class'] < $site_config['allowed']['play']) {
     stderr('Error!', 'Sorry, you must be a ' . [$site_config['allowed']['play']] . ' to play in the casino!', 'bottom20');
 }
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['suspended'] === 'yes') {
+if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
     stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20');
     die();
 }

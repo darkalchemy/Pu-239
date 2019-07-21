@@ -22,7 +22,7 @@ function achievement_bday_update($data)
     $maxdt4 = ($dt - 86400 * 1460); // 4 years
     $maxdt5 = ($dt - 86400 * 1825); // 5 years
     $maxdt6 = ($dt - 86400 * 2190); // 6 years
-    $res = sql_query("SELECT u.id, u.registered, a.bday FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.enabled = 'yes' AND u.registered < $maxdt") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT u.id, u.registered, a.bday FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.status = 0 AND u.registered < $maxdt") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'New Achievement Earned!';

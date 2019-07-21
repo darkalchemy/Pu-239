@@ -116,7 +116,7 @@ switch ($action2) {
 } //=== end switch
 //=== get stuff ready for page
 $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added AS shit_list_added,
-                  u.username, u.id, u.registered, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, u.avatar, u.donor, u.warned, u.enabled, u.suspended, u.last_access, u.offensive_avatar, u.avatar_rights
+                  u.username, u.id, u.registered, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, u.avatar, u.donor, u.warned, u.status, u.last_access, u.offensive_avatar, u.avatar_rights
                   FROM shit_list AS s
                   LEFT JOIN users AS u ON s.suspect = u.id
                   WHERE s.userid=' . sqlesc($CURUSER['id']) . '

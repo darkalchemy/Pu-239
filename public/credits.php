@@ -66,7 +66,7 @@ if ($action === 'edit' && $user['class'] >= UC_SYSOP) {
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="category"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $v) {
-                $HTMLOUT .= "<option value='$v" . ($mod['category'] == $v ? ' selected' : '') . "'>$v</option>";
+                $HTMLOUT .= "<option value='$v' " . ($mod['category'] == $v ? 'selected' : '') . ">$v</option>";
             }
         }
 
@@ -80,7 +80,7 @@ if ($action === 'edit' && $user['class'] >= UC_SYSOP) {
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="status"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $y) {
-                $HTMLOUT .= "<option value='$y" . ($mod['status'] == $y ? ' selected' : '') . "'>$y</option>";
+                $HTMLOUT .= "<option value='$y' " . ($mod['status'] == $y ? 'selected' : '') . ">$y</option>";
             }
         }
 

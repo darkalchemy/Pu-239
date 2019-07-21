@@ -32,7 +32,7 @@ function leechwarn_update($data)
                   ->select(null)
                   ->select('id')
                   ->select('modcomment')
-                  ->where('enabled = ?', 'yes')
+                  ->where('status = 0')
                   ->where('class = ?', UC_MIN)
                   ->where('leechwarn = 0')
                   ->where('uploaded / downloaded < ?', $minratio)
@@ -83,7 +83,7 @@ function leechwarn_update($data)
                   ->select('modcomment')
                   ->where('leechwarn>1')
                   ->where('downloadpos = 0')
-                  ->where('uploaded / downloaded>= ? ', $minratio);
+                  ->where('uploaded / downloaded >= ? ', $minratio);
 
     $subject = 'Auto leech warning removed';
     $msg = "Your warning for a low ratio has been removed and your downloads enabled. We highly recommend you to keep your ratio positive to avoid being automatically warned again.\n";
@@ -125,7 +125,7 @@ function leechwarn_update($data)
         $modcomment = get_date((int) $dt, 'DATE', 1) . " - User disabled - Low ratio.\n" . $modcomment;
         $set = [
             'leechwarn' => 0,
-            'enabled' => 'no',
+            'status' => 0,
             'modcomment' => $modcomment,
         ];
 

@@ -138,11 +138,11 @@ foreach ($questions as $question) {
         <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' accept-charset='utf-8'>
             <input type='hidden' name='id' value='{$question['qid']}'>
             <h2 class='has-text-centered'>#{$question['qid']}: <span class='has-text-weight-bold is-warning'>{$question['question']}</span></h2>
-            <p class='level-center-center'><input name='canswer1' type='checkbox'" . ($question['canswer'] === 'answer1' ? ' checked' : '') . " class='right5'><input name='answer1' type='text' class='w-75' value='{$question['answer1']}'></p>
-            <p class='level-center-center'><input name='canswer2' type='checkbox'" . ($question['canswer'] === 'answer2' ? ' checked' : '') . " class='right5'><input name='answer2' type='text' class='w-75' value='{$question['answer2']}'></p>
-            <p class='level-center-center'><input name='canswer3' type='checkbox'" . ($question['canswer'] === 'answer3' ? ' checked' : '') . " class='right5'><input name='answer3' type='text' class='w-75' value='{$question['answer3']}'></p>
-            <p class='level-center-center'><input name='canswer4' type='checkbox'" . ($question['canswer'] === 'answer4' ? ' checked' : '') . " class='right5'><input name='answer4' type='text' class='w-75' value='{$question['answer4']}'></p>
-            <p class='level-center-center'><input name='canswer5' type='checkbox'" . ($question['canswer'] === 'answer5' ? ' checked' : '') . " class='right5'><input name='answer5' type='text' class='w-75' value='{$question['answer5']}'></p>
+            <p class='level-center-center'><input name='canswer1' type='checkbox' " . ($question['canswer'] === 'answer1' ? 'checked' : '') . " class='right5'><input name='answer1' type='text' class='w-75' value='{$question['answer1']}'></p>
+            <p class='level-center-center'><input name='canswer2' type='checkbox' " . ($question['canswer'] === 'answer2' ? 'checked' : '') . " class='right5'><input name='answer2' type='text' class='w-75' value='{$question['answer2']}'></p>
+            <p class='level-center-center'><input name='canswer3' type='checkbox' " . ($question['canswer'] === 'answer3' ? 'checked' : '') . " class='right5'><input name='answer3' type='text' class='w-75' value='{$question['answer3']}'></p>
+            <p class='level-center-center'><input name='canswer4' type='checkbox' " . ($question['canswer'] === 'answer4' ? 'checked' : '') . " class='right5'><input name='answer4' type='text' class='w-75' value='{$question['answer4']}'></p>
+            <p class='level-center-center'><input name='canswer5' type='checkbox' " . ($question['canswer'] === 'answer5' ? 'checked' : '') . " class='right5'><input name='answer5' type='text' class='w-75' value='{$question['answer5']}'></p>
             <div class='margin20 has-text-centered'>
                 <input type='submit' name='update' class='button is-small' value='{$lang['triviaconfig_update']}'>
                 <input type='submit' name='delete' class='button is-small' value='{$lang['triviaconfig_delete']}'>

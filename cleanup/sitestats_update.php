@@ -24,21 +24,21 @@ function sitestats_update($data)
     $users = $fluent->from('users')
                     ->select(null)
                     ->select('status')
+                    ->select('verified')
                     ->select('donor')
                     ->select('last_access')
                     ->select('gender')
-                    ->select('class')
-                    ->select('enabled');
+                    ->select('class');
 
     $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
     foreach ($users as $user) {
-        $unverified += $user['status'] === 'pending' ? 1 : 0;
+        $unverified += $user['verified'] === 'no' ? 1 : 0;
         $donors += $user['donor'] === 'yes' ? 1 : 0;
         $numactive += $user['last_access'] >= $dt ? 1 : 0;
         $gender_na += $user['gender'] === 'NA' ? 1 : 0;
         $gender_male += $user['gender'] === 'Male' ? 1 : 0;
         $gender_female += $user['gender'] === 'Female' ? 1 : 0;
-        $disabled += $user['enabled'] === 'no' ? 1 : 0;
+        $disabled += $user['status'] === 2 ? 1 : 0;
         $powerusers += $user['class'] === UC_POWER_USER ? 1 : 0;
         $uploaders += $user['class'] === UC_UPLOADER ? 1 : 0;
         $vips += $user['class'] === UC_VIP ? 1 : 0;

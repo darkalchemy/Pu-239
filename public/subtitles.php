@@ -165,7 +165,7 @@ if ($mode === 'upload' || $mode === 'edit') {
                     <option value=''>- Select -</option>";
     foreach ($subs as $sub) {
         $body .= "
-                    <option value='{$sub['id']}'" . ($mode === 'edit' && $arr['lang'] == $sub['id'] ? ' selected' : '') . ">{$sub['name']}</option>";
+                    <option value='{$sub['id']}' " . ($mode === 'edit' && $arr['lang'] == $sub['id'] ? 'selected' : '') . ">{$sub['name']}</option>";
     }
     $body .= "
                 </select>

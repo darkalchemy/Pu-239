@@ -15,7 +15,7 @@ function achievement_up_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
-    $res = sql_query("SELECT u.id, u.numuploads, a.ul FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.enabled = 'yes' AND u.numuploads >= 1") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT u.id, u.numuploads, a.ul FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.status = 0 AND u.numuploads >= 1') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;

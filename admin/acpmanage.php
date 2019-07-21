@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
-        sql_query("UPDATE users SET enabled = 'yes' WHERE id IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET status = 0 WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ') AND status = 2') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $id, [
-            'enabled' => 'yes',
+            'status' => 0,
         ], $site_config['expires']['user_cache']);
     } elseif ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
@@ -59,23 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
 $disabled = $fluent->from('users')
                    ->select(null)
                    ->select('COUNT(id) AS count')
-                   ->where('enabled = "no"')
+                   ->where('status = 2')
                    ->fetch('count');
 $pending = $fluent->from('users')
                   ->select(null)
                   ->select('COUNT(id) AS count')
-                  ->where('status = "pending"')
+                  ->where('verified = 0')
                   ->fetch('count');
 $count = $fluent->from('users')
                 ->select(null)
                 ->select('COUNT(id) AS count')
-                ->where('enabled = "no" OR status = "pending"')
+                ->where('status = 2 OR verified = 0')
                 ->fetch('count');
 $disabled = number_format($disabled);
 $pending = number_format($pending);
 $perpage = 25;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
-$res = sql_query("SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
+$res = sql_query("SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, status, verified FROM users WHERE status = 2 OR verified = 0 ORDER BY username DESC {$pager['limit']}");
 if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -105,8 +105,8 @@ if (mysqli_num_rows($res) != 0) {
         $added = get_date((int) $arr['registered'], 'LONG', 0, 1);
         $last_access = get_date((int) $arr['last_access'], 'LONG', 0, 1);
         $class = get_user_class_name((int) $arr['class']);
-        $status = htmlsafechars($arr['status']);
-        $enabled = htmlsafechars($arr['enabled']);
+        $status = $arr['status'] == 0 ? 'Enabled' : 'Disabled';
+        $enabled = $arr['status'] == 0 ? 'Enabled' : 'Disabled';
         $HTMLOUT .= "
         <tr>
             <td>

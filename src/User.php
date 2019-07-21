@@ -229,7 +229,6 @@ class User
                                ->where('auth = ?', $auth)
                                ->where('torrent_pass = ?', $torrent_pass)
                                ->where('uploadpos = 1')
-                               ->where('suspended = "no"')
                                ->fetch('id');
 
         return $userid;
@@ -330,8 +329,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -360,7 +359,7 @@ class User
         $ids = $this->fluent->from('users')
                             ->select(null)
                             ->select('id')
-                            ->where('enabled = "yes"')
+                            ->where('status = 0')
                             ->fetchAll();
 
         return $ids;
@@ -488,7 +487,6 @@ class User
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -502,10 +500,6 @@ class User
         try {
             $this->auth->login($email, $password, $duration);
             $userid = $this->auth->getUserId();
-            $update = [
-                'parked' => 'no',
-            ];
-            $this->update($update, $userid);
             $this->cache->delete('user_' . $userid);
 
             return true;
@@ -656,7 +650,7 @@ class User
         $group1 = $this->fluent->from('users')
                                ->select(null)
                                ->select('id')
-                               ->where('status != 0')
+                               ->where('verified != 0')
                                ->where('class < ?', $class)
                                ->where('registered < ?', $registered)
                                ->where('id != ?', $botid)
@@ -666,7 +660,6 @@ class User
                                ->select(null)
                                ->select('id')
                                ->where('immunity = "no"')
-                               ->where('parked = "no"')
                                ->where('status = 0')
                                ->where('class < ?', $class)
                                ->where('last_access < ?', $last_access)
@@ -677,8 +670,7 @@ class User
                                ->select(null)
                                ->select('id')
                                ->where('immunity = "no"')
-                               ->where('parked = "yes"')
-                               ->where('status = 0')
+                               ->where('status = 1')
                                ->where('class < ?', $class)
                                ->where('last_access < ?', $parked)
                                ->where('id != ?', $botid)
@@ -749,10 +741,10 @@ class User
     public function get_count_by_email(string $email)
     {
         $count = $this->fluent->from('users')
-                        ->select(null)
-                        ->select('COUNT(id) AS count')
-                        ->where('email = ?', $email)
-                        ->fetch('count');
+                              ->select(null)
+                              ->select('COUNT(id) AS count')
+                              ->where('email = ?', $email)
+                              ->fetch('count');
 
         return $count;
     }

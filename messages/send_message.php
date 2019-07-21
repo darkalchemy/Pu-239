@@ -32,7 +32,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if (!isset($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_send_nobody']);
     }
-    if ($CURUSER['suspended'] === 'yes') {
+    if ($CURUSER['status'] === 5) {
         $row = $users_class->getUserFromId($receiver);
         if ($row['class'] < UC_STAFF) {
             stderr($lang['pm_error'], $lang['pm_send_your_acc']);
@@ -197,11 +197,11 @@ $HTMLOUT .= '
                 <td colspan="2">
                     <div class="has-text-centered">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '
-                        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . '> 
+                        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'checked' : '') . '> 
                         <span class="right10">' . $lang['pm_send_mark'] . '</span>' : '');
 if ($replyto) {
     $HTMLOUT .= '
-                        <input type="checkbox" name="delete" value="' . $replyto . '"' . ($CURUSER['deletepms'] === 'yes' ? ' checked' : '') . '>' . $lang['pm_send_delete'];
+                        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . '>' . $lang['pm_send_delete'];
 }
 $disabled = empty($receiver) && empty($returnto) ? ' disabled' : '';
 $HTMLOUT .= '

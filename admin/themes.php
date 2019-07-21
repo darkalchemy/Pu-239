@@ -67,7 +67,7 @@ if (isset($_GET['act'])) {
                     <select name='class' class='w-100'>";
         for ($i = 0; $i <= UC_MAX; ++$i) {
             $body .= "
-                        <option value='$i'" . ($template['min_class_to_view'] == $i ? ' selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
+                        <option value='$i' " . ($template['min_class_to_view'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
         }
         $body .= "
                     </select>

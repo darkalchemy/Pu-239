@@ -52,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ' . $_SERVER['PHP_SELF']);
     die();
 }
-$checkbox_unlock_moods = $user['perms'] & UNLOCK_MORE_MOODS ? ' checked' : '';
-$checkbox_unlock_stealth = $user['perms'] & PERMS_STEALTH ? ' checked' : '';
+$checkbox_unlock_moods = $user['perms'] & UNLOCK_MORE_MOODS ? 'checked' : '';
+$checkbox_unlock_stealth = $user['perms'] & PERMS_STEALTH ? 'checked' : '';
 
 $HTMLOUT = '
             <div class="bg-02 top20">
@@ -64,7 +64,7 @@ $HTMLOUT = '
                             <div class="bordered level-center bg-02">
                                 <div class="w-100">Enable Bonus Moods?</div>
                                 <div class="slideThree">
-                                    <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . '>
+                                    <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes" ' . $checkbox_unlock_moods . '>
                                     <label for="unlock_user_moods"></label>
                                 </div>
                                 <div class="w-100">Check this option to unlock bonus mood smilies.</div>
@@ -74,7 +74,7 @@ $HTMLOUT = '
                             <span class="bordered level-center bg-02">
                                 <div class="w-100">User Stealth Mode?</div>
                                 <div class="slideThree">
-                                    <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . '>
+                                    <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes" ' . $checkbox_unlock_stealth . '>
                                     <label for="perms_stealth"></label>
                                 </div>
                                 <div class="w-100">Check this option to unlock Stealth Mode.</div>

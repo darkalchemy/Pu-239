@@ -34,10 +34,10 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
     }
     $auth = $container->get(Auth::class);
     if ($auth->isRemembered()) {
-        $auth->logOutEverywhere();
+        $auth->logOut();
         $session = $container->get(Session::class);
         $session->set('is-danger', 'Please confirm your identity.');
-        header("Location: {$site_config['paths']['baseurl']}{$_SERVER['REQUEST_URI']}");
+        header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
         die();
     }
     $userid = $user['id'];
@@ -51,7 +51,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
                     $post_info = auto_post($subject, $body);
                     $update = [
                         'class' => UC_MIN,
-                        'enabled' => 'no',
+                        'status' => 2,
                     ];
                     $users_class->update($update, $userid);
                     write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
