@@ -415,7 +415,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $set = [
-                    'anonymous_until' => $user['anonymous_until'] === 0 ? $dt + 14 * 86400 : $user['anonymous_until'] + 14 * 86400,
+                    'anonymous_until' => $user['anonymous_until'] === 0 ? $dt + 28 * 86400 : $user['anonymous_until'] + 28 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 14 Days Anonymous Profile.\n" . $user['bonuscomment'],
                 ];

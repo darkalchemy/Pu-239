@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+update: anonymous_until to 28 days mybonus.php  
 remove: anonymous from users table  
 update: hide anonymous users from all user lists  
 update: style nfo viewer  
