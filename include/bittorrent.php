@@ -883,24 +883,24 @@ function check_user_status(string $type = 'browse')
 
     $auth = $container->get(Auth::class);
     if ($auth->isLoggedIn()) {
-        $user = $container->get(User::class);
+        $user_class = $container->get(User::class);
         $userid = $auth->id();
         insert_update_ip($type, $userid);
         force_logout($userid);
-        $users_data = $user->getUserFromId($userid);
-        $user->update_last_access($userid);
+        $users_data = $user_class->getUserFromId($userid);
+        if ($users_data['anonymous_until'] < TIME_NOW || $users_data['perms'] >= PERMS_STEALTH) {
+            $user_class->update_last_access($userid);
+        }
         $session = $container->get(Session::class);
         $session->set('UserRole', $users_data['class']);
         $session->set('scheme', get_scheme());
         $GLOBALS['CURUSER'] = $users_data;
         get_template();
-        $user_class = $container->get(User::class);
-        $user = $user_class->getUserFromId($auth->getUserId());
         referer();
-        parked($user);
-        suspended($user);
+        parked($users_data);
+        suspended($users_data);
     }
-    if (empty($user)) {
+    if (empty($users_data)) {
         $returnto = '';
         if (!empty($_SERVER['REQUEST_URI'])) {
             $returnto = '?returnto=' . urlencode($_SERVER['REQUEST_URI']);
@@ -909,7 +909,7 @@ function check_user_status(string $type = 'browse')
         die();
     }
 
-    return $user;
+    return $users_data;
 }
 
 /**

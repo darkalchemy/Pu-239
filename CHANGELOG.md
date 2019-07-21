@@ -1,4 +1,6 @@
 ### 21 Jul, 2019
+remove: anonymous from users table  
+update: hide anonymous users from all user lists  
 update: style nfo viewer  
 fix: index page comments block  
 add: missing path from config_example.php  

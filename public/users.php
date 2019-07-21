@@ -18,9 +18,9 @@ if ($class === '-' || !ctype_digit($class)) {
     $class = '';
 }
 if ($search != '' || $class) {
-    $query1 = 'username LIKE ' . sqlesc("%$search%") . " AND status = 'confirmed' AND anonymous_until = 0";
+    $query1 = 'username LIKE ' . sqlesc("%$search%") . " AND status = 0 AND verified = 1 AND anonymous_until = 0";
     if ($search) {
-        $q1 = 'search=' . htmlsafechars($search);
+        $q1 = 'search = ' . htmlsafechars($search);
     }
 } else {
     $letter = isset($_GET['letter']) ? trim((string) $_GET['letter']) : '';
@@ -30,11 +30,11 @@ if ($search != '' || $class) {
     if ($letter == '' || strpos('abcdefghijklmnopqrstuvwxyz0123456789', $letter) === false) {
         $letter = '';
     }
-    $query1 = "username LIKE '$letter%' AND status = 'confirmed' AND anonymous_until = 0";
-    $q1 = "letter=$letter";
+    $query1 = "username LIKE '$letter%' AND status = 0 AND verified = 1 AND anonymous_until = 0";
+    $q1 = "letter = $letter";
 }
 if (ctype_digit($class)) {
-    $query1 .= " AND class=$class";
+    $query1 .= " AND class = $class";
     $q1 .= ($q1 ? '&amp;' : '') . "class=$class";
 }
 
@@ -99,7 +99,7 @@ if ($arr[0] > 0) {
     if ($arr[0] > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $res = sql_query("SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE $query1 ORDER BY username {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT users.*, countries.name, countries.flagpic FROM users LEFT JOIN countries ON country = countries.id WHERE $query1 ORDER BY username {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $heading = "
                 <tr>
                     <th class='has-text-centered'>{$lang['users_username']}</th>

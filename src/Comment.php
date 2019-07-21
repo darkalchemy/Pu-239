@@ -45,9 +45,9 @@ class Comment
      * @param int $count
      * @param int $perpage
      *
-     * @return array
      * @throws Exception
      *
+     * @return array
      */
     public function get_torrent_comment(int $tid, int $count, int $perpage)
     {
@@ -69,9 +69,9 @@ class Comment
     }
 
     /**
-     * @return array|bool|mixed
      * @throws Exception
      *
+     * @return array|bool|mixed
      */
     public function get_comments()
     {
@@ -136,9 +136,9 @@ class Comment
     /**
      * @param int $id
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function delete(int $id)
     {
@@ -170,9 +170,9 @@ class Comment
     /**
      * @param array $values
      *
-     * @return bool|int
      * @throws Exception
      *
+     * @return bool|int
      */
     public function add(array $values)
     {

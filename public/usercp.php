@@ -415,9 +415,9 @@ if ($action === 'avatar') {
                                             {$lang['usercp_acc_parked_message1']}</p>
                                         </div>", 1);
     }
-    if (get_anonymous() != '0') {
+    if ($user['anonymous_until'] != '0') {
         $HTMLOUT .= tr($lang['usercp_anonymous'], "
-                                        <input type='checkbox' name='anonymous' " . ($user['anonymous'] === 'yes' ? 'checked' : '') . "> {$lang['usercp_default_anonymous']}", 1);
+                                        <input type='checkbox' name='anonymous' " . ($user['anonymous_until'] > TIME_NOW ? 'checked' : '') . "> {$lang['usercp_default_anonymous']}", 1);
     }
     $HTMLOUT .= tr('Hide current seed and leech', "
                                         <input type='radio' name='hidecur' " . ($user['hidecur'] === 'yes' ? 'checked' : '') . " value='yes'> Yes

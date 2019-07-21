@@ -565,7 +565,8 @@ switch ($action) {
             $forum_users_cache = [];
             $query = $fluent->from('now_viewing')
                             ->where('users.perms < ?', PERMS_STEALTH)
-                            ->innerJoin('users ON now_viewing.user_id=users.id');
+                            ->where('users.anonymous_until < ?', TIME_NOW)
+                            ->innerJoin('users ON now_viewing.user_id = users.id');
 
             foreach ($query as $row) {
                 $list[] = format_username((int) $row['user_id']);
@@ -611,8 +612,8 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|void
  */
@@ -633,9 +634,9 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

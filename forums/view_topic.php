@@ -10,6 +10,7 @@ use Pu239\Database;
 use Pu239\Session;
 use Pu239\User;
 
+$user = check_user_status();
 $image = placeholder_image();
 $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $now_viewing = '';
 $members_votes = [];
@@ -236,19 +237,20 @@ $subscribed = $fluent->from('subscriptions')
 $subscriptions = $subscribed ? "<a href='{$site_config['paths']['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'>{$lang['fe_unsubscribe_from_this_topic']}</a>" : "
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=add_subscription&amp;forum_id={$forum_id}&amp;topic_id={$topic_id}'>{$lang['fe_subscribe_to_this_topic']}</a>";
 
-$fluent->deleteFrom('now_viewing')
-       ->where('user_id = ?', $CURUSER['id'])
-       ->execute();
-
 $values = [
     'user_id' => $CURUSER['id'],
     'forum_id' => $forum_id,
     'topic_id' => $topic_id,
     'added' => TIME_NOW,
 ];
-$fluent->insertInto('now_viewing')
-       ->values($values)
+$fluent->deleteFrom('now_viewing')
+       ->where('user_id = ?', $CURUSER['id'])
        ->execute();
+if ($user['anonymous_until'] < TIME_NOW && $user['perms'] < PERMS_STEALTH) {
+    $fluent->insertInto('now_viewing')
+           ->values($values)
+           ->execute();
+}
 $cache = $container->get(Cache::class);
 $topic_users_cache = $cache->get('now_viewing_topic_');
 if ($topic_users_cache === false || is_null($topic_users_cache)) {
@@ -612,7 +614,7 @@ foreach ($posts as $arr) {
 			    <td colspan="3">' . (($usersdata['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
                     <span><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon lazy"> ' . mksize($usersdata['uploaded']) . '</span>  
                     ' . ($site_config['site']['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon lazy"> ' . mksize($usersdata['downloaded']) . '</span>') . '') . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($usersdata['uploaded'], $usersdata['downloaded']) . '
-                    ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy">' : '') . '
+                    ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous_until'] > TIME_NOW ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous_until'] > TIME_NOW ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy">' : '') . '
                     ') . '
                     <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon lazy"> ' . $lang['vt_send_message'] . "</a>
                     <span data-id='{$post_id}' data-type='post' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>

@@ -18,6 +18,7 @@ if ($active === false || is_null($active)) {
                     ->select('id')
                     ->where('last_access > ?', $dt)
                     ->where('perms < ?', PERMS_STEALTH)
+                    ->where('anonymous_until < ?', TIME_NOW)
                     ->where('id != 2')
                     ->orderBy('username')
                     ->fetchAll();

@@ -17,6 +17,7 @@ if ($irc === false || is_null($irc)) {
                     ->select('id')
                     ->where('onirc = ?', 'yes')
                     ->where('perms < ?', PERMS_STEALTH)
+                    ->where('anonymous_until < ?', TIME_NOW)
                     ->where('id != 2')
                     ->orderBy('username')
                     ->fetchAll();

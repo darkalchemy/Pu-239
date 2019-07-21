@@ -3375,4 +3375,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('nfo', 'as_image', 'bool', false, 'Show NFO\'s as an image')",
         'flush' => false,
     ],
+    [
+        'id' => 1563735558,
+        'info' => 'Drop column anonymous',
+        'date' => '21 Jul, 2019',
+        'query' => 'ALTER TABLE `users` DROP COLUMN `anonymous`',
+        'flush' => true,
+    ],
 ];

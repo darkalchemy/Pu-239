@@ -11,16 +11,6 @@ use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @return mixed
- */
-function get_anonymous()
-{
-    global $CURUSER;
-
-    return $CURUSER['anonymous_until'];
-}
-
-/**
  * @param string $msg
  * @param int    $channel
  * @param int    $ttl
@@ -76,7 +66,7 @@ function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, 
             return '<span title="Cache doesn\'t exist or zero length" class="tooltipper">Reputation: Offline</span>';
         }
         $user['g_rep_hide'] = isset($user['g_rep_hide']) ? $user['g_rep_hide'] : 0;
-        $user['username'] = $anonymous || $user['anonymous'] === 'yes' ? 'Anonymous' : $user['username'];
+        $user['username'] = $anonymous || $user['anonymous_until'] > TIME_NOW ? 'Anonymous' : $user['username'];
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
             $user_reputation = $reputations[$max_rep];

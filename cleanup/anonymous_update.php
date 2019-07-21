@@ -45,7 +45,6 @@ function anonymous_update($data)
             'subject' => $subject,
         ];
         $set = [
-            'anonymous' => 'no',
             'anonymous_until' => 0,
             'modcomment' => $modcomment,
         ];

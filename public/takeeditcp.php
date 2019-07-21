@@ -154,11 +154,11 @@ if ($action === 'avatar') {
             }
         }
     }
-    if (get_anonymous() != '0') {
-        $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
-        $updateset[] = 'anonymous = ' . sqlesc($anonymous);
-        $curuser_cache['anonymous'] = $anonymous;
-        $user_cache['anonymous'] = $anonymous;
+    if ($user['anonymous_until'] != 0) {
+        $anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? TIME_NOW + (365 * 86400) : 0;
+        $updateset[] = 'anonymous_until = ' . sqlesc($anonymous);
+        $curuser_cache['anonymous_until'] = $anonymous;
+        $user_cache['anonymous_until'] = $anonymous;
     }
     if (isset($_POST['hidecur']) && ($hidecur = $_POST['hidecur']) != $user['hidecur']) {
         $updateset[] = 'hidecur = ' . sqlesc($hidecur);

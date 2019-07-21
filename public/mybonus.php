@@ -430,7 +430,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $set = [
-                    'smile_until' => $user['anonymous_until'] === 0 ? $dt + 30 * 86400 : $user['smile_until'] + 30 * 86400,
+                    'smile_until' => $user['smile_until'] === 0 ? $dt + 30 * 86400 : $user['smile_until'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month Custom Smilies.\n" . $user['bonuscomment'],
                 ];
