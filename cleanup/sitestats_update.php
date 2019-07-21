@@ -25,13 +25,16 @@ function sitestats_update($data)
                     ->select(null)
                     ->select('status')
                     ->select('verified')
+                    ->select('perms')
+                    ->select('anonymous_until')
                     ->select('donor')
                     ->select('last_access')
                     ->select('gender')
                     ->select('class');
 
-    $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
+    $numanonymous = $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
     foreach ($users as $user) {
+        $numanonymous += $user['anonymous_until'] > TIME_NOW || $user['perms'] >= 8;
         $unverified += $user['verified'] === 'no' ? 1 : 0;
         $donors += $user['donor'] === 'yes' ? 1 : 0;
         $numactive += $user['last_access'] >= $dt ? 1 : 0;
@@ -94,6 +97,7 @@ function sitestats_update($data)
     }
 
     $set = [
+        'numanonymous' => $numanonymous,
         'regusers' => $registered,
         'unconusers' => $unverified,
         'torrents' => $torrent_count,
@@ -127,7 +131,6 @@ function sitestats_update($data)
     ];
     $cache = $container->get(Cache::class);
     $cache->set('site_stats_', $set, 0);
-
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";

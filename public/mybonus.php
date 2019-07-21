@@ -421,6 +421,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', ":woot: You bought [b]{$options[$option]['bonusname']}[/b] for " . number_format($options[$option]['points']) . ' Karma');
+                    $cache->deleteMulti([
+                        'last24_users_',
+                        'birthdayusers_',
+                        'ircusers_',
+                        'activeusers_',
+                        'site_stats_',
+                    ]);
                 } else {
                     $session->set('is-warning', 'Something went wrong');
                 }

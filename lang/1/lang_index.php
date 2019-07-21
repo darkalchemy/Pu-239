@@ -73,6 +73,7 @@ $lang = [
     'index_stats_title' => 'Stats',
     'index_stats_regged' => 'Users',
     'index_stats_online' => 'Users Online',
+    'index_stats_anonymous' => 'Anonymous Users',
     'index_stats_uncon' => 'Unconfirmed Users',
     'index_stats_donor' => 'Donors',
     'index_stats_topics' => 'Topics',

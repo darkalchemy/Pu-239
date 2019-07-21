@@ -14,6 +14,7 @@ if ($stats_cache === false || is_null($stats_cache)) {
 $users = [
     "<tr><td>{$lang['index_stats_online']}</td><td class='w-15 has-text-centered'>{$stats_cache['numactive']}</td></tr>",
     "<tr><td>{$lang['index_stats_regged']}</td><td class='w-15 has-text-centered'>{$stats_cache['regusers']}</td></tr>",
+    "<tr><td>{$lang['index_stats_anonymous']}</td><td class='w-15 has-text-centered'>{$stats_cache['numanonymous']}</td></tr>",
     "<tr><td>{$lang['index_stats_powerusers']}</td><td class='w-15 has-text-centered'>{$stats_cache['powerusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_uploaders']}</td><td class='w-15 has-text-centered'>{$stats_cache['uploaders']}</td></tr>",
     "<tr><td>{$lang['index_stats_vips']}</td><td class='w-15 has-text-centered'>{$stats_cache['vips']}</td></tr>",
