@@ -17,11 +17,15 @@ use Pu239\Session;
 use Pu239\Settings;
 use Pu239\Sitelog;
 use Pu239\User;
+use SlashTrace\SlashTrace;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 $starttime = microtime(true);
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once INCL_DIR . 'app.php';
+require_once CONFIG_DIR . 'session.php';
+
+$container->get(SlashTrace::class);
 
 $env = $container->get('env');
 $settings = $container->get(Settings::class);

@@ -1,7 +1,8 @@
 In no particular order  
 
 
-check: $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1; announce.php
+remove: need for session in announce.php scrape.php  
+check: $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1; announce.php  
 check: thanks  
 fix: forum topic rating  
 update admin/shit_list.php  
