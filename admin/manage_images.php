@@ -60,9 +60,11 @@ if (!empty($images)) {
             <th class='has-text-centered'>TMDb</th>
             <th class='has-text-centered'>TvMaze ID</th>
             <th class='has-text-centered'>ISBN</th>
+            <th class='has-text-centered'>Lang</th>
             <th class='has-text-centeredtooltipper' title='If image has been fetched and is in your filesystem'>Fetched</th>
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb not empty, when it was updated'>Updated</th>
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb is empty, the last time we looked it up'>Checked</th>
+            <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
             <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
         </tr>";
     $body = '';
@@ -79,12 +81,16 @@ if (!empty($images)) {
             <td class='has-text-centered'>{$image['tmdb_id']}</td>
             <td class='has-text-centered'>{$image['tvmaze_id']}</td>
             <td class='has-text-centered'>{$image['isbn']}</td>
+            <td class='has-text-centered'>{$image['lang']}</td>
             <td class='has-text-centered'>{$image['fetched']}</td>
             <td class='has-text-centered'>
                 " . get_date((int) $image['updated'], 'LONG') . "
             </td>
             <td class='has-text-centered'>
                 " . get_date((int) $image['checked'], 'LONG') . "
+            </td>
+            <td class='has-text-centered w-10'>
+                <input type='checkbox' name='images[]' value='{$image['id']}'>
             </td>
             <td class='has-text-centered w-10'>
                 <input type='checkbox' name='images[]' value='{$image['id']}'>

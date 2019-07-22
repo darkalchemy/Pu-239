@@ -99,11 +99,11 @@ die();
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_uploaded(int $userid)
 {
@@ -161,11 +161,11 @@ function get_uploaded(int $userid)
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_seeding(int $userid)
 {
@@ -213,11 +213,11 @@ function get_seeding(int $userid)
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_leeching(int $userid)
 {
@@ -265,11 +265,11 @@ function get_leeching(int $userid)
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_snatched(int $userid)
 {
@@ -305,11 +305,11 @@ function get_snatched(int $userid)
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_snatched_staff(int $userid)
 {
@@ -342,7 +342,7 @@ function get_snatched_staff(int $userid)
                        ->innerJoin('torrents AS t ON s.torrentid = t.id')
                        ->leftJoin('categories AS c ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id = p.id')
-                       ->leftJoin('peers AS z ON t.id = z.torrent')
+                       ->leftJoin('peers AS z ON t.id = z.torrent AND z.userid = s.userid')
                        ->where('s.userid = ?', $userid)
                        ->orderBy('last_action DESC')
                        ->fetchAll();
@@ -430,8 +430,8 @@ function snatchtable(array $torrents)
         </tr>";
     $body = '';
     foreach ($torrents as $torrent) {
-        $upspeed = ($torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0)));
-        $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize($torrent['downloaded'] / $torrent['leechtime']) : mksize(0)));
+        $upspeed = $torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize(intval($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime']))) : mksize(0));
+        $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize(intval($torrent['downloaded'] / $torrent['leechtime'])) : mksize(0)));
         $ratio = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
         $XBT_or_PHP = $torrent['torrentid'];
         $XBT_or_PHP_TIME = $torrent['complete_date'];
@@ -440,7 +440,7 @@ function snatchtable(array $torrents)
         <tr>
             <td>$cat_info</td>
             <td>
-                <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
+                <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$XBT_or_PHP}'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
             </td>
             <td>' . mksize($torrent['uploaded']) . "</td>
             <td>$upspeed/s</td>" . ($site_config['site']['ratio_free'] ? '' : '
@@ -463,10 +463,10 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  *
- * @return string
+ * @throws DependencyException
  */
 function staff_snatchtable(array $torrents, int $userid)
 {
@@ -485,14 +485,14 @@ function staff_snatchtable(array $torrents, int $userid)
     $body = '';
     foreach ($torrents as $arr) {
         if ($arr['upspeed'] > 0) {
-            $ul_speed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
+            $ul_speed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize(intval($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime']))) : mksize(0)));
         } else {
             $ul_speed = mksize(($arr['uploaded'] / ($arr['last_action'] - $arr['start_date'] + 1)));
         }
         if ($arr['downspeed'] > 0) {
-            $dl_speed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
+            $dl_speed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize(intval($arr['downloaded'] / $arr['leechtime'])) : mksize(0)));
         } else {
-            $dl_speed = mksize(($arr['downloaded'] / ($arr['complete_date'] - $arr['start_date'] + 1)));
+            $dl_speed = mksize(intval($arr['downloaded'] / ($arr['complete_date'] - $arr['start_date'] + 1)));
         }
         switch (true) {
             case $dl_speed > 600:
@@ -532,9 +532,9 @@ function staff_snatchtable(array $torrents, int $userid)
                     <b><span class='has-text-danger'>{$lang['userdetails_s_notfin']}</span></b><br>") . '') . $cat_info . "
                 </td>
                 <td>
-                    <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['torrentid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
-                    <span class='is-warning'>{$lang['userdetails_s_started']}" . get_date((int) $arr['start_date'], 0, 1) . "</span><br>
-                    <span class='is-orange'>{$lang['userdetails_s_laction']} " . get_date((int) $arr['last_action'], 0, 1) . '</span>' . ($arr['complete_date'] == '0' ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date((int) $arr['complete_date'], 0, 1) . '' . ($arr['complete_date'] != '0' ? "<br>
+                    <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$arr['torrentid']}'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
+                    <span class='is-warning'>{$lang['userdetails_s_started']}" . get_date($arr['start_date'], 'LONG', 0, 1) . "</span><br>
+                    <span class='is-orange'>{$lang['userdetails_s_laction']} " . get_date($arr['last_action'], 'LONG', 0, 1) . '</span>' . ($arr['complete_date'] === 0 ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date($arr['complete_date'], 'LONG', 0, 1) . '' . ($arr['complete_date'] != 0 ? "<br>
                     <span style='color: silver;'>{$lang['userdetails_s_ttod']}" . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
                     <span style='color: $dlc'>[ {$lang['userdetails_s_dled']} $dl_speed ]</span><br>" : '<br>') . "
                     <span class='is-lightblue'>" . ($arr['seedtime'] != '0' ? $lang['userdetails_s_tseed'] . mkprettytime($arr['seedtime']) . " </span>
@@ -542,12 +542,12 @@ function staff_snatchtable(array $torrents, int $userid)
                     <span class='is-lightgreen'> [ {$lang['userdetails_s_uspeed']} " . $ul_speed . ' ] </span>' . ($arr['complete_date'] == '0' ? "<br>
                     <span style='color: $dlc;'>{$lang['userdetails_s_dspeed']}$dl_speed</span>" : '') . "
                 </td>
-                <td>{$lang['userdetails_s_seed']}" . (int) $arr['seeders'] . "<br>{$lang['userdetails_s_leech']}" . (int) $arr['leechers'] . "</td>
+                <td>{$lang['userdetails_s_seed']}" . $arr['seeders'] . "<br>{$lang['userdetails_s_leech']}" . $arr['leechers'] . "</td>
                 <td>
                     <span class='is-lightgreen'>{$lang['userdetails_s_upld']}<br><b>" . mksize($arr['uploaded']) . '</b></span>' . ($site_config['site']['ratio_free'] ? '' : "<br>
                     <span class='is-orange'>{$lang['userdetails_s_dld']}<br><b>" . mksize($arr['downloaded']) . '</b></span>') . '
                 </td>
-                <td>' . mksize($arr['size']) . '' . ($site_config['site']['ratio_free'] ? '' : "<br>{$lang['userdetails_s_diff']}<br>
+                <td>' . mksize($arr['size']) . ($site_config['site']['ratio_free'] ? '' : "<br>{$lang['userdetails_s_diff']}<br>
                     <span class='is-orange'><b>" . mksize($arr['size'] - $arr['downloaded']) . '</b></span>') . '
                 </td>
                 <td>' . $ratio . '<br>' . ($arr['seeder'] === 'yes' ? "

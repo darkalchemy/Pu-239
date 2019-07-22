@@ -1,4 +1,7 @@
 ### 22 Jul, 2019
+add: ignore, lang columns to images table  
+fix: snatched_torrents_staff torrents_lookup.php  
+add: function to update dead seeders Snatched.php  
 revert: remove session from announce.php  
 add: missing index  
 update: remove session from announce.php  

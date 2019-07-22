@@ -22,10 +22,12 @@ function snatchclean_update($data)
     $dt = TIME_NOW - ($days * 86400);
     $snatched_class = $container->get(Snatched::class);
     $snatched_class->delete_stale($dt);
+    $snatched_class->update_seeder();
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
+
     if ($data['clean_log']) {
         write_log("Snatch List Cleanup: Removed snatches not active for $days days." . $text);
     }

@@ -82,6 +82,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                     'thetvdb_id' => $thetvdb_id,
                     'url' => $image,
                     'type' => $type,
+                    'lang' => !empty($fanart['lang']) ? $fanart['lang'] : 'unknown',
                 ];
                 $fluent->insertInto('images')
                        ->values($values)

@@ -3396,5 +3396,26 @@ KEY `expires` (`expires`)
         'query' => "UPDATE `site_config` SET `description` = 'If this array is empty, then all images will be retrieved from fanart.tv, else only specific languages.\nTo get a specific language add the 2 character language code to the array.\nTo also get the unidentified images add \'empty\' to the array.' WHERE `parent` = 'fanart'",
         'flush' => false,
     ],
+    [
+        'id' => 1563822699,
+        'info' => 'Add column lang',
+        'date' => '22 Jul, 2019',
+        'query' => 'ALTER TABLE `images` ADD COLUMN `lang` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'flush' => false,
+    ],
+    [
+        'id' => 1563822700,
+        'info' => 'Create Index',
+        'date' => '22 Jul, 2019',
+        'query' => 'ALTER TABLE `images` ADD INDEX `lang` (`lang`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1563822701,
+        'info' => 'Add column ignore',
+        'date' => '22 Jul, 2019',
+        'query' => 'ALTER TABLE `images` ADD COLUMN `ignore` tinyint (1) unsigned NOT NULL DEFAULT 0',
+        'flush' => false,
+    ],
 ];
 
