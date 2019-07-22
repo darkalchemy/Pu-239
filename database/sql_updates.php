@@ -3390,10 +3390,10 @@ KEY `expires` (`expires`)
         'flush' => true,
     ],
     [
-        'id' => 1563786362,
+        'id' => 1563786363,
         'info' => 'Update fanart description',
         'date' => '22 Jul, 2019',
-        'query' => "UPDATE `site_config` SET `description` = 'If this array is empty, then all images will be retrieved from fanart.tv, else only specific languages.\nTo get a specific language add the 2 character language code to the array.\nTo also get the unidentified images add \'empty\' to the array.'",
+        'query' => "UPDATE `site_config` SET `description` = 'If this array is empty, then all images will be retrieved from fanart.tv, else only specific languages.\nTo get a specific language add the 2 character language code to the array.\nTo also get the unidentified images add \'empty\' to the array.' WHERE `parent` = 'fanart'",
         'flush' => false,
     ],
 ];
