@@ -47,7 +47,19 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
             $contents = explode("\n", $content);
         }
     } elseif (preg_match('/slow\-fpm\.log/', $name)) {
-        $contents = preg_split('!(\[\d+\-\w+\-\d{4}\s+\d{2}:\d{2}:\d{2}\])!iU', $content, PREG_SPLIT_DELIM_CAPTURE);
+        $temp_contents = preg_split('!(\[\d+\-\w+\-\d{4}\s+\d{2}:\d{2}:\d{2}\])!iU', $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        if (!empty($temp_contents)) {
+            $contents = [];
+            $i = 1;
+            $temp = '';
+            foreach ($temp_contents as $row) {
+                $temp .= $row;
+                if ($i++ % 2 === 0) {
+                    $contents[] = $temp;
+                    $temp = '';
+                }
+            }
+        }
         $state = 'pre';
     } elseif (preg_match('/access\.log/', $name)) {
         preg_match_all('!(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*?)!iU', $content, $matches);
