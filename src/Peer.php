@@ -42,9 +42,9 @@ class Peer
     /**
      * @param int $userid
      *
+     * @return bool|mixed
      * @throws Exception
      *
-     * @return bool|mixed
      */
     public function getPeersFromUserId(int $userid)
     {
@@ -87,9 +87,9 @@ class Peer
     /**
      * @param int $tid
      *
+     * @return array|bool|mixed
      * @throws Exception
      *
-     * @return array|bool|mixed
      */
     public function get_torrent_peers_by_tid(int $tid)
     {
@@ -122,9 +122,9 @@ class Peer
      * @param int $limit
      * @param int $offset
      *
+     * @return array|bool|mixed
      * @throws Exception
      *
-     * @return array|bool|mixed
      */
     public function get_all_peers(int $limit, int $offset)
     {
@@ -133,6 +133,8 @@ class Peer
             $peers = $this->fluent->from('peers AS p')
                                   ->select(null)
                                   ->select('p.id')
+                                  ->select('p.torrent')
+                                  ->select('connectable')
                                   ->select('p.seeder')
                                   ->select('p.peer_id')
                                   ->select('INET6_NTOA(p.ip) AS ip')
@@ -169,9 +171,9 @@ class Peer
      * @param bool   $by_class
      * @param string $peer_id
      *
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function get_torrent_count(int $tid, int $userid, bool $by_class, string $peer_id)
     {
@@ -196,9 +198,9 @@ class Peer
      * @param int    $tid
      * @param string $info_hash
      *
+     * @return bool
      * @throws Exception
      *
-     * @return bool
      */
     public function delete_by_id(int $pid, int $tid, string $info_hash)
     {
@@ -234,9 +236,9 @@ class Peer
     /**
      * @param int $userid
      *
+     * @return bool
      * @throws Exception
      *
-     * @return bool
      */
     public function flush(int $userid)
     {
@@ -248,9 +250,9 @@ class Peer
     }
 
     /**
+     * @return mixed
      * @throws Exception
      *
-     * @return mixed
      */
     public function get_count()
     {

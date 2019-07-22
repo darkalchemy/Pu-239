@@ -1,4 +1,5 @@
 ### 22 Jul, 2019
+add: missing index  
 update: remove session from announce.php  
 update: slow fpm log_viewer.php  
 update: remove empty backup folders  
