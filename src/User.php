@@ -652,7 +652,7 @@ class User
         $group1 = $this->fluent->from('users')
                                ->select(null)
                                ->select('id')
-                               ->where('verified != 0')
+                               ->where('verified = 0')
                                ->where('class < ?', $class)
                                ->where('registered < ?', $registered)
                                ->where('id != ?', $botid)
