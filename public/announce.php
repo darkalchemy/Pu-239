@@ -489,12 +489,6 @@ if ($seeder === 'yes') {
         $torrent_updateset['visible'] = 'yes';
     }
     $torrent_updateset['last_action'] = $dt;
-    $cache->update_row('torrent_details_' . $torrent['id'], [
-        'visible' => 'yes',
-    ], $site_config['expires']['torrent_details']);
-    $cache->update_row('last_action_' . $torrent['id'], [
-        'lastseed' => $dt,
-    ], 1800);
 }
 if (!empty($torrent_updateset)) {
     $torrents_class->update($torrent_updateset, $torrent['id']);
