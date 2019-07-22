@@ -54,7 +54,7 @@ if (!empty($results)) {
         $body .= '
     <tr>
         <td>' . format_username((int) $row['userid']) . '</td>
-        <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
+        <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . $row['torrent'] . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . $row['port'] . '</td>
         <td>' . htmlsafechars(getagent($row['agent'], $row['peer_id'])) . '</td>

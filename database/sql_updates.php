@@ -3389,5 +3389,12 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `bugs` DROP FOREIGN KEY `bugs_ibfk_1`, ADD FOREIGN KEY (`sender`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         'flush' => true,
     ],
+    [
+        'id' => 1563786362,
+        'info' => 'Update fanart description',
+        'date' => '22 Jul, 2019',
+        'query' => "UPDATE `site_config` SET `description` = 'If this array is empty, then all images will be retrieved from fanart.tv, else only specific languages.\nTo get a specific language add the 2 character language code to the array.\nTo also get the unidentified images add \'empty\' to the array.'",
+        'flush' => false,
+    ],
 ];
 

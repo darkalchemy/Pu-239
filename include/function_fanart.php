@@ -12,11 +12,11 @@ use Pu239\Image;
  * @param string $type
  * @param int    $season
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return bool|mixed
+ * @throws \Envms\FluentPDO\Exception
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
@@ -55,7 +55,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
         $images = [];
         $fluent = $container->get(Database::class);
         foreach ($fanart[$type] as $image) {
-            if (!empty($site_config['fanart']['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['fanart']['image_lang']))) {
+            if (!empty($site_config['fanart']['image_lang']) && !empty($image['lang']) && in_array($image['lang'], $site_config['fanart']['image_lang'])) {
                 if ($season != 0) {
                     if ($image['season'] == $season) {
                         $images[] = $image['url'];
@@ -64,6 +64,8 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                     $images[] = $image['url'];
                 }
             } elseif (empty($site_config['fanart']['image_lang'])) {
+                $images[] = $image['url'];
+            } elseif (!empty($site_config['fanart']['image_lang']) && empty($image['lang']) && in_array('empty', $site_config['fanart']['image_lang'])) {
                 $images[] = $image['url'];
             }
         }
@@ -101,11 +103,11 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  * @param bool   $store
  * @param string $type
  *
- * @throws NotFoundException
+ * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return array|bool|mixed
+ * @throws NotFoundException
  */
 function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackground')
 {
@@ -141,10 +143,12 @@ function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackgr
                 'type' => str_replace('movie', '', $type),
                 'updated' => TIME_NOW,
             ];
-            if (!empty($site_config['fanart']['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['fanart']['image_lang']))) {
+            if (!empty($site_config['fanart']['image_lang']) && !empty($image['lang']) && in_array($image['lang'], $site_config['fanart']['image_lang'])) {
                 $images[] = $image;
             } elseif (empty($site_config['fanart']['image_lang'])) {
                 $images[] = $image;
+            } elseif (!empty($site_config['fanart']['image_lang']) && empty($image['lang']) && in_array('empty', $site_config['fanart']['image_lang'])) {
+                $images[] = $image['url'];
             }
         }
         if (!empty($images)) {

@@ -1,3 +1,6 @@
+### 22 Jul, 2019
+update: fanart.tv to only get unidentified images if 'empty' is in the fanart site settings  
+
 ### 21 Jul, 2019
 fix: delete all users  
 update: bugs schema  
