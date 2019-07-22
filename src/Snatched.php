@@ -329,12 +329,12 @@ class Snatched
     {
         $deadtime = TIME_NOW - floor($this->site_config['tracker']['announce_interval'] * 1.3);
         $update = [
-            'seeder' => 'no,',
+            'seeder' => 'no',
         ];
         $this->fluent->update('snatched')
                      ->set($update)
                      ->where('last_action < ?', $deadtime)
-                     ->where('seeder = "no"')
+                     ->where('seeder = "yes"')
                      ->execute();
     }
 }
