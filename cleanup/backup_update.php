@@ -41,7 +41,18 @@ function backup_update($data)
             }
         }
     }
-
+    $remove = [];
+    foreach ($paths as $path => $dt) {
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($objects as $name => $object) {
+            if (is_dir($name) && !(new FilesystemIterator($name))->valid()) {
+                $remove[] = $name;
+            }
+        }
+    }
+    foreach ($remove as $path) {
+        rmdir($path);
+    }
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
