@@ -1,4 +1,5 @@
 ### 21 Jul, 2019
+update: bugs schema  
 merge: user['perms'] user['anonymous_until'] user['paranoia'] into 1 function check_anonymous()  
 update: allow user to reset torrent_pass, auth, api_key  
 add: anonymous users to site stats  

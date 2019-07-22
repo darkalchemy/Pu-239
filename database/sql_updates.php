@@ -3382,4 +3382,12 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `users` DROP COLUMN `anonymous`',
         'flush' => true,
     ],
+    [
+        'id' => 1563756420,
+        'info' => 'Update fk constraint to bugs',
+        'date' => '21 Jul, 2019',
+        'query' => 'ALTER TABLE `bugs` DROP FOREIGN KEY `bugs_ibfk_1`, ADD FOREIGN KEY (`sender`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+        'flush' => true,
+    ],
 ];
+
