@@ -21,7 +21,7 @@ if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
 $HTMLOUT .= $mini_menu;
 
 $HTMLOUT .= "
-    <h1 class='has-text-centered'pan>{$lang['sv_section_view_for']} " . htmlsafechars($over_forums_arr['name']) . '</h1>';
+    <h1 class='has-text-centered'pan>{$lang['sv_section_view_for']} " . format_comment($over_forums_arr['name']) . '</h1>';
 $forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id=' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort') or sqlerr(__FILE__, __LINE__);
 $body = '';
 $cache = $container->get(Cache::class);
@@ -52,7 +52,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 if ($child_boards) {
                     $child_boards .= ', ';
                 }
-                $child_boards .= '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="click to view!" class="is-link tooltipper">' . htmlsafechars($arr['name']) . '</a>';
+                $child_boards .= '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="click to view!" class="is-link tooltipper">' . format_comment($arr['name']) . '</a>';
             }
             $child_boards_cache['child_boards'] = $child_boards;
             $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['sv_child_boards']);
@@ -84,19 +84,19 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         if ($last_post_arr['tan'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . format_comment($last_post_arr['topic_name']) . '">
+		<span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
             } else {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . get_anonymous_name() . ' [' . format_username((int) $last_post_arr['user_id']) . ']</span><br>
-		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
+		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . format_comment($last_post_arr['topic_name']) . '">
+		<span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
             }
         } else {
             $last_post = '' . $lang['fe_last_post_by'] . ': ' . format_username((int) $last_post_arr['user_id']) . '</span><br>
-		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>
+		in &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . format_comment($last_post_arr['topic_name']) . '">
+		<span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>
 		' . get_date((int) $last_post_arr['added'], '') . '<br>';
         }
     } else {
@@ -110,7 +110,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
             <img src='{$site_config['paths']['images_baseurl']}forums/{$img}.gif' alt='" . ucfirst($img) . "' title='" . ucfirst($img) . "' class='tooltipper'>
         </td>
 		<td>
-    		<a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . htmlsafechars($forums_arr['forum_name']) . "</a><p class='top10'>" . htmlsafechars($forums_arr['forum_description']) . $child_boards . $now_viewing . '</p>
+    		<a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . format_comment($forums_arr['forum_name']) . "</a><p class='top10'>" . format_comment($forums_arr['forum_description']) . $child_boards . $now_viewing . '</p>
         </td>
         <td>' . number_format((int) $forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format((int) $forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
         <td>

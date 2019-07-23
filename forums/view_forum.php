@@ -31,7 +31,7 @@ $arr = $fluent->from('forums')
               ->limit(1)
               ->fetch();
 
-$forum_name = !empty($arr['name']) ? htmlsafechars($arr['name']) : '';
+$forum_name = !empty($arr['name']) ? format_comment($arr['name']) : '';
 
 $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
@@ -142,7 +142,7 @@ foreach ($query as $sub_forums_arr) {
                             <img src='{$site_config['paths']['images_baseurl']}forums/{$img}.gif' alt='{$img}' title='{$img}' class='tooltipper icon'>
                         </td>
                         <td>
-                            <a class='is-link' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . htmlsafechars($sub_forums_arr['sub_form_name']) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
+                            <a class='is-link' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . format_comment($sub_forums_arr['sub_form_name']) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
                             <span class='level-right'>
                                 <span class='left10'>
                                     <a href='staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id={$sub_forums_arr['sub_forum_id']}'>
@@ -155,7 +155,7 @@ foreach ($query as $sub_forums_arr) {
                                     </a>
                                 </span>
                             </span>" : '') . '
-                            <span>' . htmlsafechars($sub_forums_arr['sub_form_description']) . '</span>
+                            <span>' . format_comment($sub_forums_arr['sub_form_description']) . '</span>
                         </td>
                     </tr>
                 </table>
@@ -184,7 +184,7 @@ foreach ($query as $sub_forums_arr) {
         $child = "<span>[ {$lang['fe_child_board']} ]</span>";
         $parent_forum_name = "
             <img src='{$site_config['paths']['images_baseurl']}arrow_next.gif' alt='&#9658;' title='&#9658;' class='tooltipper icon'>
-		    <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . htmlsafechars($parent_forum_arr['parent_forum_name']) . '</a>';
+		    <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . format_comment($parent_forum_arr['parent_forum_name']) . '</a>';
     }
 }
 
@@ -248,7 +248,7 @@ if (!empty($topic_arrs)) {
         $locked = $topic_arr['locked'] == 'yes';
         $sticky = $topic_arr['sticky'] == 'yes';
         $topic_poll = (int) $topic_arr['poll_id'] > 0;
-        $topic_status = htmlsafechars($topic_arr['status']);
+        $topic_status = format_comment($topic_arr['status']);
         switch ($topic_status) {
             case 'ok':
                 $topic_status_image = '';
@@ -271,7 +271,7 @@ if (!empty($topic_arrs)) {
 												ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr_post_stuff = mysqli_fetch_assoc($res_post_stuff);
 
-        $post_status = htmlsafechars($arr_post_stuff['status']);
+        $post_status = format_comment($arr_post_stuff['status']);
         switch ($post_status) {
             case 'ok':
                 $post_status_image = '';
@@ -361,7 +361,7 @@ if (!empty($topic_arrs)) {
         }
         $new = ($arr_post_stuff['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
         $topic_pic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-        $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon"> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon"> ' : ' ') . ' <a class="is-link" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name']) . '</a> ' . ($posted ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon"> ' : ' ') . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon">' : '') . $multi_pages;
+        $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon"> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon"> ' : ' ') . ' <a class="is-link" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . format_comment($topic_arr['topic_name']) . '</a> ' . ($posted ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon"> ' : ' ') . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon">' : '') . $multi_pages;
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
 
@@ -390,7 +390,7 @@ if (!empty($topic_arrs)) {
 		        <div>
 		        ' . $rpic . '
     		    </div>
-    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc']) . '</span>' : '') . '</td>
+    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . format_comment($topic_arr['topic_desc']) . '</span>' : '') . '</td>
     		<td class="has-text-centered">' . $thread_starter . '</td>
 	    	<td class="has-text-centered">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		    <td class="has-text-centered">' . number_format($topic_arr['views']) . '</td>

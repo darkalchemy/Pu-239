@@ -177,13 +177,13 @@ if ($action === 'article') {
             <div id="wiki-row">';
         foreach ($results as $result) {
             if ($result['lastedit']) {
-                $edit = '<div class="left10 top20">Last Updated by: ' . format_username($result['lastedituser']) . ' - ' . get_date($result['lastedit'], 'LONG') . '</div>';
+                $edit = '<div class="left10 top20">Last Updated by: ' . format_username((int) $result['lastedituser']) . ' - ' . get_date((int) $result['lastedit'], 'LONG') . '</div>';
             }
             $div = '
                     <h1 class="has-text-centered">
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($result['name']) . '">' . htmlsafechars($result['name']) . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . '</a>
                     </h1>
-                    <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($result['userid']) . '</div>' : '') . '
+                    <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username((int) $result['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($result['body']) . '</div>
                     </div>' . $edit;
             $div .= ($user['class'] >= UC_STAFF || $user['id'] === $result['userid'] ? '
@@ -200,14 +200,14 @@ if ($action === 'article') {
             $results = $wiki->get_by_name($name);
         }
         if (!empty($results)) {
-            $HTMLOUT .= navmenu() . "<h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . '</b></h2>';
+            $HTMLOUT .= navmenu() . "<h2 class='has-text-centered'>Article search results for: <b>" . format_comment($name) . '</b></h2>';
             foreach ($results as $result) {
                 $HTMLOUT .= main_div('
                     <div class="padding20">
                         <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . " </a></h2>
-                        <div>{$lang['wiki_added_by']}: " . format_username($result['userid']) . '</div>
-                        <div>Added on: ' . get_date($result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
-                        <div>Last Edited on: ' . get_date($result['lastedit'], 'LONG') . '</div>
+                        <div>{$lang['wiki_added_by']}: " . format_username((int) $result['userid']) . '</div>
+                        <div>Added on: ' . get_date((int) $result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
+                        <div>Last Edited on: ' . get_date((int) $result['lastedit'], 'LONG') . '</div>
                     </div>' : '</div>'), 'top20');
             }
         } else {
@@ -230,8 +230,8 @@ if ($action === 'edit') {
     if (($user['class'] >= UC_STAFF) || ($user['id'] === $result['userid'])) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' accept-charset='utf-8'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "'>
-                <input type='hidden' name='article-id' value='$id'> " . BBcode(htmlsafechars($result['body'])) . "
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . format_comment($result['name']) . "'>
+                <input type='hidden' name='article-id' value='$id'> " . BBcode($result['body']) . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}'>
                 </div>
@@ -244,22 +244,22 @@ if ($action === 'sort') {
     $results = $wiki->get_by_name($letter);
     if (!empty($results)) {
         $HTMLOUT .= navmenu();
-        $div = " <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b> " . htmlsafechars($letter) . "</b></h2>
+        $div = " <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b> " . format_comment($letter) . "</b></h2>
         <div class='w-100 padding20 round10 bg-02'> ";
         foreach ($results as $result) {
             $div .= '
             <div class="padding20 bottom10 round10 bg-02">
-                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . htmlsafechars($result['name']) . "</a></h2>
-                <div>{$lang['wiki_added_by']}: " . format_username($result['userid']) . '</div>
-                <div>Added on: ' . get_date($result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
-                <div>Last Edited on: ' . get_date($result['lastedit'], 'LONG') . '</div>' : '') . '
+                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . "</a></h2>
+                <div>{$lang['wiki_added_by']}: " . format_username((int) $result['userid']) . '</div>
+                <div>Added on: ' . get_date((int) $result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
+                <div>Last Edited on: ' . get_date((int) $result['lastedit'], 'LONG') . '</div>' : '') . '
             </div>';
         }
         $div .= '
         </div>';
         $HTMLOUT .= main_div($div);
     } else {
-        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b> $letter</b> found.");
+        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b> " . format_comment($letter) . ' </b> found.');
     }
 }
 $HTMLOUT .= '</div>';

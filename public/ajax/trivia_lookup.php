@@ -60,12 +60,12 @@ $answers = [
 ];
 if (!empty($data['question'])) {
     $question = "
-        <h2 class='bg-00 padding10 bottom10 round5'>" . htmlspecialchars_decode($data['question']) . '</h2>';
+        <h2 class='bg-00 padding10 bottom10 round5'>" . format_comment($data['question']) . '</h2>';
 }
 foreach ($answers as $answer) {
     if (!empty($data[$answer])) {
         $output .= "
-        <span id='{$answer}' class='size_4 margin10 trivia-pointer bg-00 round5 padding10' data-answer='{$answer}'  data-qid='{$qid}' data-gamenum='{$gamenum}' onclick=\"process_trivia('$answer')\">" . htmlspecialchars_decode($data[$answer]) . '</span>';
+        <span id='{$answer}' class='size_4 margin10 trivia-pointer bg-00 round5 padding10' data-answer='{$answer}'  data-qid='{$qid}' data-gamenum='{$gamenum}' onclick=\"process_trivia('$answer')\">" . format_comment($data[$answer]) . '</span>';
     }
 }
 if (!empty($output)) {

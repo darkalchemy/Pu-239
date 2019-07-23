@@ -10,6 +10,7 @@ use Pu239\Peer;
 use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
+
 /**
  * @param string $msg
  * @param int    $channel
@@ -30,7 +31,7 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
             'userRole' => 100,
             'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'text' => $msg,
+            'text' => htmlspecialchars_decode($msg),
             'ttl' => $ttl,
         ];
 

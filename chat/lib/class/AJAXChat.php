@@ -3435,6 +3435,8 @@ class AJAXChat
     /**
      * @param $tag
      * @param $tagContent
+     *
+     * @return null
      */
     public function replaceCustomTemplateTags($tag, $tagContent)
     {

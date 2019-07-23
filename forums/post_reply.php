@@ -27,7 +27,7 @@ $quote = isset($_GET['quote_post']) ? (int) $_GET['quote_post'] : 0;
 $key = isset($_GET['key']) ? (int) $_GET['key'] : 0;
 $body = isset($_POST['body']) ? $_POST['body'] : '';
 $post_title = strip_tags((isset($_POST['post_title']) ? $_POST['post_title'] : ''));
-$icon = htmlsafechars((isset($_POST['icon']) ? $_POST['icon'] : ''));
+$icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'no';
 $subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
 $topic_name = htmlsafechars($arr['topic_name']);
@@ -39,9 +39,9 @@ if ($quote !== 0 && $body === '') {
     if ($arr_quote['anonymous'] === 'yes') {
         $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : '' . get_anonymous_name() . '');
     } else {
-        $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : htmlsafechars($arr_quote['username']));
+        $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : format_comment($arr_quote['username']));
     }
-    $body = '[quote=' . $quoted_member . ($quote > 0 ? ' | post=' . $quote : '') . ($key > 0 ? ' | key=' . $key : '') . ']' . htmlsafechars($arr_quote['body']) . '[/quote]';
+    $body = '[quote=' . $quoted_member . ($quote > 0 ? ' | post=' . $quote : '') . ($key > 0 ? ' | key=' . $key : '') . ']' . format_comment($arr_quote['body']) . '[/quote]';
     if ($arr_quote['staff_lock'] != 0) {
         stderr($lang['gl_error'], '' . $lang['pr_this_post_is_staff_locked_nomod_nodel'] . '');
     }
@@ -60,6 +60,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         'bbcode' => $bb_code,
         'anonymous' => $anonymous,
     ];
+
     $posts_class = $container->get(Post::class);
     $post_id = $posts_class->insert($values);
     clr_forums_cache((int) $arr['real_forum_id']);
@@ -68,6 +69,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+        //$topic_name = format_comment($topic_name);
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last#{$post_id}]{$topic_name}[/url][/quote]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
             autoshout($message);
@@ -107,7 +109,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 }
 
 $HTMLOUT .= '
-    <h1 class="has-text-centered">' . $lang['pr_reply_in_topic'] . ' "<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name']) . '</a>"</h1>
+    <h1 class="has-text-centered">' . $lang['pr_reply_in_topic'] . ' "<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . format_comment($arr['topic_name']) . '</a>"</h1>
     <form method="post" action="' . $site_config['paths']['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';

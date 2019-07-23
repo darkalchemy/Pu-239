@@ -1,4 +1,5 @@
 ### 23 Jul, 2019
+update: replace htmlsafechars with format_comment when var is for display  
 update: set last access for anonymous users  
 fix: reply to messages  
 fix: special characters formating messages  

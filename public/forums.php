@@ -438,8 +438,8 @@ switch ($action) {
         foreach ($updated as $arr_forums) {
             $HTMLOUT .= ($arr_forums['over_forum_id'] !== $over_forum_id ? "
                 <h2 class='margin20'>
-	                <a href='{$_SERVER['PHP_SELF']}?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description']) . "' class='tooltipper'>
-	                    <span>" . htmlsafechars($arr_forums['over_forum_name']) . '</span>
+	                <a href='{$_SERVER['PHP_SELF']}?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . format_comment($arr_forums['over_forum_description']) . "' class='tooltipper'>
+	                    <span>" . format_comment($arr_forums['over_forum_name']) . '</span>
 	                </a>
 	            </h2>' : '');
             $body = '';
@@ -488,12 +488,12 @@ switch ($action) {
 
                     if ($last_post_arr['tan'] === 'yes') {
                         if ($user['class'] < UC_STAFF && $last_post_arr['user_id'] != $user['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -512,7 +512,7 @@ switch ($action) {
                                     ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link tooltipper">' . htmlsafechars($arr['name']) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link tooltipper">' . format_comment($arr['name']) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }
@@ -679,11 +679,11 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
         if ($user['class'] >= $arr['min_class_read']) {
             if ($switch !== $arr['overforums_name']) {
                 $body .= '
-                    <option class="head" value="-1">' . htmlsafechars($arr['overforums_name']) . '</option>';
+                    <option class="head" value="-1">' . format_comment($arr['overforums_name']) . '</option>';
             }
-            $switch = htmlsafechars($arr['overforums_name']);
+            $switch = format_comment($arr['overforums_name']);
             $body .= '
-                    <option value="' . (int) $arr['id'] . '">' . ($arr['parent_forum'] != 0 ? '&#176; ' . htmlsafechars($arr['name']) . ' [ child-board ]' : htmlsafechars($arr['name'])) . '</option>';
+                    <option value="' . (int) $arr['id'] . '">' . ($arr['parent_forum'] != 0 ? '&#176; ' . format_comment($arr['name']) . ' [ child-board ]' : format_comment($arr['name'])) . '</option>';
         }
     }
 

@@ -124,7 +124,7 @@ $HTMLOUT .= main_table('
                 <span>' . $lang['fe_name'] . '</span>
             </td>
             <td>
-                <input type="text" maxlength="120" name="topic_name" value="' . trim(strip_tags($topic_name)) . '" class="w-100" placeholder="required" required>
+                <input type="text" maxlength="120" name="topic_name" value="' . format_comment($topic_name) . '" class="w-100" placeholder="required" required>
             </td>
         </tr>' : '') . '
         <tr>
@@ -132,7 +132,7 @@ $HTMLOUT .= main_table('
                 <span>' . $lang['fe_desc'] . '</span>
             </td>
             <td>
-                <input type="text" maxlength="120" name="topic_desc" value="' . trim(strip_tags($topic_desc)) . '" class="w-100" placeholder="optional">
+                <input type="text" maxlength="120" name="topic_desc" value="' . format_comment($topic_desc) . '" class="w-100" placeholder="optional">
             </td>
         </tr>
         <tr>
@@ -140,7 +140,7 @@ $HTMLOUT .= main_table('
                 <span>' . $lang['fe_title'] . '</span>
             </td>
             <td>
-                <input type="text" maxlength="120" name="post_title" value="' . trim(strip_tags($post_title)) . '" class="w-100" placeholder="optional">
+                <input type="text" maxlength="120" name="post_title" value="' . format_comment($post_title) . '" class="w-100" placeholder="optional">
             </td>
         </tr>
         <tr>

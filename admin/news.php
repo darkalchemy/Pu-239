@@ -143,7 +143,7 @@ if ($mode === 'delete') {
                             Title
                         </td>
                         <td>
-                            <input type='text' name='title' class='w-100' value='" . htmlspecialchars_decode($arr['title']) . "'>
+                            <input type='text' name='title' class='w-100' value='" . format_comment($arr['title']) . "'>
                         </td>
                     </tr>
                     <tr>
@@ -151,7 +151,7 @@ if ($mode === 'delete') {
                             BBcode Editor
                         </td>
                         <td class='is-paddingless'>
-                            " . BBcode(htmlspecialchars_decode($arr['body'])) . "
+                            " . BBcode($arr['body']) . "
                         </td>
                     </tr>
                     <tr>

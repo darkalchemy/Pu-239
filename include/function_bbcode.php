@@ -48,6 +48,11 @@ function smilies_frame($smilies_set)
  * @param string $class
  * @param int    $height
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
 function BBcode(string $body = '', string $class = 'w-100', int $height = 600)
@@ -65,8 +70,8 @@ function BBcode(string $body = '', string $class = 'w-100', int $height = 600)
 
     $bbcode = "
             <div class='$class has-text-centered'>
-                <textarea name='body' id='bbcode-editor' style='height: {$height}px;'>$body</textarea>
-            </div>";
+                <textarea name='body' id='bbcode-editor' style='height: {$height}px;'>" . format_comment($body) . '</textarea>
+            </div>';
 
     return $bbcode;
 }
@@ -201,6 +206,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     $image = placeholder_image();
     $s = mb_convert_encoding($text, 'UTF-8');
     unset($text);
+    $s = htmlspecialchars_decode($s);
 
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like>), "), ... - this would be encoded
