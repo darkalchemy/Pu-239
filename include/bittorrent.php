@@ -897,9 +897,7 @@ function check_user_status(string $type = 'browse')
         insert_update_ip($type, $userid);
         force_logout($userid);
         $users_data = $user_class->getUserFromId($userid);
-        if (!get_anonymous($userid)) {
-            $user_class->update_last_access($userid);
-        }
+        $user_class->update_last_access($userid);
         $session = $container->get(Session::class);
         $session->set('UserRole', $users_data['class']);
         $session->set('scheme', get_scheme());
