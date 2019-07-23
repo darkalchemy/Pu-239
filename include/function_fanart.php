@@ -12,11 +12,11 @@ use Pu239\Image;
  * @param string $type
  * @param int    $season
  *
- * @return bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
@@ -104,11 +104,11 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  * @param bool   $store
  * @param string $type
  *
- * @return array|bool|mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return array|bool|mixed
  */
 function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackground')
 {

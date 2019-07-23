@@ -17,6 +17,7 @@ use Pu239\Session;
 use Pu239\Settings;
 use Pu239\Sitelog;
 use Pu239\User;
+use Rakit\Validation\Validator;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 $starttime = microtime(true);
@@ -43,7 +44,7 @@ if (!PRODUCTION) {
 $load = sys_getloadavg();
 $cache = $container->get(Cache::class);
 $cores = $cache->get('cores_');
-if ($cores === false || is_null($cores)) {
+if (!$cores || is_null($cores)) {
     $cores = `grep -c processor /proc/cpuinfo`;
     $cores = empty($cores) ? 1 : (int) $cores;
     $cache->set('cores_', $cores, 0);
@@ -80,11 +81,11 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @return string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return string
  */
 function getip()
 {
@@ -220,11 +221,11 @@ function userlogin()
 }
 */
 /**
- * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function get_stylesheet()
 {
@@ -313,11 +314,11 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function make_freeslots(int $userid, string $key, bool $clear)
 {
@@ -343,11 +344,11 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
- * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function genrelist(bool $grouped)
 {
@@ -465,11 +466,11 @@ function mkprettytime($s)
     }
     $t = [];
     foreach ([
-                 '60:sec',
-                 '60:min',
-                 '24:hour',
-                 '0:day',
-             ] as $x) {
+        '60:sec',
+        '60:min',
+        '24:hour',
+        '0:day',
+    ] as $x) {
         $y = explode(':', $x);
         if ($y[0] > 1) {
             $v = $s % $y[0];
@@ -573,10 +574,10 @@ function write_log($text)
 }
 
 /**
- * @return int
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return int
  */
 function get_userid()
 {
@@ -643,9 +644,9 @@ function CutName(string $txt, int $len = 40)
 /**
  * @param string $file
  *
- * @return array
  * @throws Exception
  *
+ * @return array
  */
 function load_language($file = '')
 {
@@ -876,14 +877,14 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @return bool|mixed|User
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool|mixed|User
  */
 function check_user_status(string $type = 'browse')
 {
@@ -944,11 +945,11 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function user_exists($user_id)
 {
@@ -1023,11 +1024,11 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @return array|bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
  */
 function countries()
 {
@@ -1113,47 +1114,68 @@ function plural(int $int)
 /**
  * @param string $username
  * @param bool   $ajax
+ * @param bool   $in_use
  *
- * @return bool|string
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
- *
  * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|string
  */
-function valid_username(string $username, bool $ajax = false)
+function valid_username(string $username, bool $ajax = false, bool $in_use = false)
 {
-    global $site_config, $lang;
+    global $container, $site_config;
 
-    if ($username === '') {
-        return false;
-    }
-    $namelength = strlen($username);
-    if ($namelength < 3 || $namelength > 64) {
+    $lang = load_language('takesignup');
+    $validator = $container->get(Validator::class);
+    $check = [
+        'username' => $username,
+    ];
+    $validation = $validator->validate($check, [
+        'username' => 'required|between:3,64',
+    ]);
+    if ($validation->fails()) {
         if ($ajax) {
-            return "<span class='has-text-danger'>{$lang['takesignup_username_length']}</span> - $namelength characters";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_username_length']}</div> 3 - 64 characters";
+            die();
         } else {
             stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
         }
     }
-
     if (!preg_match("/^[\p{L}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<span class='has-text-danger'>{$lang['takesignup_allowed_chars']}</span>";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_allowed_chars']}</div>";
             die();
         }
 
         return false;
     }
-    if (preg_match('/' . implode('|', $site_config['site']['badwords']) . '/i', urldecode($username))) {
+    if (preg_match('/' . urldecode($username) . '/i', strtolower(implode('|', $site_config['site']['badwords'])))) {
         if ($ajax) {
-            echo "<span class='has-text-danger'>{$lang['takesignup_badwords']}</span>";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_badwords']}</div>";
             die();
         }
 
         return false;
+    }
+    if ($in_use) {
+        $user = $container->get(User::class);
+        if ($user->get_count_by_username(htmlsafechars($username))) {
+            if ($ajax) {
+                echo "<div class='has-text-danger tooltipper margin10' title='Username Not Available'><i class='icon-thumbs-down icon' aria-hidden='true'></i>Sorry... Username - <b>" . htmlsafechars($_GET['wantusername']) . '</b> is already in use.</div>';
+                die();
+            }
+
+            return false;
+        } else {
+            if ($ajax) {
+                echo "<div class='has-text-success tooltipper margin10' title='Username Available'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>Username is Available</b></div>";
+                die();
+            }
+        }
     }
 
     return true;
@@ -1162,9 +1184,9 @@ function valid_username(string $username, bool $ajax = false)
 /**
  * @param bool $celebrate
  *
- * @return bool
  * @throws Exception
  *
+ * @return bool
  */
 function Christmas($celebrate = true)
 {
@@ -1212,12 +1234,12 @@ function get_anonymous_name()
  * @param int|null $height
  * @param int|null $quality
  *
- * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
+ * @return string
  */
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
@@ -1268,11 +1290,11 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @return bool|mixed|null
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|null
  */
 function get_show_id(string $name)
 {
@@ -1311,11 +1333,11 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @return bool|mixed|null
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|null
  */
 function get_show_id_by_imdb(string $imdbid)
 {
@@ -1347,10 +1369,10 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @return false|mixed|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return false|mixed|string
  */
 function time24to12($timestamp, $sec = false)
 {
@@ -1416,11 +1438,11 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @return bool
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return bool
  */
 function insert_update_ip(string $type, int $userid)
 {
@@ -1447,11 +1469,11 @@ function insert_update_ip(string $type, int $userid)
  * @param bool   $fresh
  * @param bool   $async
  *
- * @return bool|mixed|string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool|mixed|string
  */
 function fetch(string $url, bool $fresh = true, bool $async = false)
 {
@@ -1502,11 +1524,11 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @return mixed|string
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return mixed|string
  */
 function get_body_image(bool $details)
 {
@@ -1572,11 +1594,11 @@ function get_body_image(bool $details)
 }
 
 /**
- * @return bool|mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed
  */
 function get_random_useragent()
 {

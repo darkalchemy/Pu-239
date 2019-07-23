@@ -41,9 +41,9 @@ class Snatched
      * @param int $userid
      * @param int $tid
      *
-     * @return bool|mixed
      * @throws Exception
      *
+     * @return bool|mixed
      */
     public function get_snatched(int $userid, int $tid)
     {
@@ -106,9 +106,9 @@ class Snatched
      * @param array $set
      * @param int   $id
      *
-     * @return bool|int|PDOStatement
      * @throws Exception
      *
+     * @return bool|int|PDOStatement
      */
     public function update_by_id(array $set, int $id)
     {
@@ -135,9 +135,9 @@ class Snatched
     /**
      * @param int $userid
      *
-     * @return bool|int|PDOStatement
      * @throws Exception
      *
+     * @return bool|int|PDOStatement
      */
     public function flush(int $userid)
     {
@@ -152,9 +152,9 @@ class Snatched
     /**
      * @param array $hnr
      *
-     * @return array
      * @throws Exception
      *
+     * @return array
      */
     public function get_hit_and_runs(array $hnr)
     {
@@ -224,9 +224,9 @@ class Snatched
     }
 
     /**
-     * @return array|bool
      * @throws Exception
      *
+     * @return array|bool
      */
     public function get_user_to_remove_hnr()
     {
@@ -246,9 +246,9 @@ class Snatched
     }
 
     /**
-     * @return array|bool
      * @throws Exception
      *
+     * @return array|bool
      */
     public function get_user_to_add_hnr()
     {

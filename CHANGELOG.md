@@ -1,3 +1,9 @@
+### 23 Jul, 2019
+fix: reply to messages  
+fix: special characters formating messages  
+update: margins around code  
+fix: create user does not adhere to naming requirements  
+
 ### 22 Jul, 2019
 add: ignore, lang columns to images table  
 fix: snatched_torrents_staff torrents_lookup.php  

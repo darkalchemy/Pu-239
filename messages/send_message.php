@@ -38,7 +38,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
             stderr($lang['pm_error'], $lang['pm_send_your_acc']);
         }
     }
-    $count = $messages_class->get_count($receiver, 1);
+    $count = $messages_class->get_count($receiver, 1, true);
     if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
         stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
     }
@@ -139,7 +139,6 @@ if ($replyto != 0) {
     if (!valid_username($arr_member['username'])) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
-
     $message = $messages_class->get_by_id($replyto);
     if ($message['sender'] == $CURUSER['id']) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
@@ -191,7 +190,7 @@ $HTMLOUT .= '
             </tr>
             <tr class="no_hover">
                 <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-                <td class="is-paddingless">' . BBcode($msg) . '</td>
+                <td class="is-paddingless">' . BBcode(htmlspecialchars_decode($msg)) . '</td>
             </tr>
             <tr class="no_hover">
                 <td colspan="2">

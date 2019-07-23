@@ -19,7 +19,7 @@ if (!$message) {
 $users_class = $container->get(User::class);
 $arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $user['id'] ? (int) $message['receiver'] : (int) $message['sender']);
 $id = $arr_user_stuff['id'];
-sql_query('UPDATE messages SET unread = "no" WHERE id=' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE messages SET unread = "no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $user['id']);
 if ($message['friend'] > 0) {
     $friends = '
@@ -75,7 +75,7 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td class='has-text-centered w-15 mw-150'>{$avatar}</td>
-                <td>" . format_comment($message['msg'], false) . "</td>
+                <td>" . format_comment(htmlspecialchars_decode($message['msg']), false) . "</td>
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>

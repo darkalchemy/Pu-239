@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Database;
-use Pu239\Message;
 use Pu239\Session;
 use Pu239\User;
 use Rakit\Validation\Validator;
@@ -26,8 +25,13 @@ if ($auth->isLoggedIn()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user = $container->get(User::class);
     $validator = $container->get(Validator::class);
-    $session->set('signup_variables', json_encode($_POST));
+    $ses_vars = [
+        'username' => $_POST['username'],
+        'email' => $_POST['email'],
+    ];
+    $session->set('signup_variables', json_encode($ses_vars));
     $post = $_POST;
     unset($_POST, $_GET, $_FILES);
     $validation = $validator->validate($post, [
@@ -39,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'invite_id' => 'integer',
         'invite_code' => 'alpha_num:between:64,64',
     ]);
-    if ($validation->fails()) {
+    if ($validation->fails() || !valid_username($post['username'], false, true)) {
+        $session->set('is-warning', 'Invalid information provided, please try again.');
         write_log(getip() . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
@@ -174,7 +179,7 @@ $disabled = !empty($email) ? 'disabled' : 'required';
 if (!empty($email)) {
     $email_form = "<input type='hidden' name='email' class='w-100' value='{$email}'>{$email}";
 } else {
-    $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' autocomplete='on' required>
+    $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' value='{$signup_vars['email']}' autocomplete='on' required>
                    <div id='emailcheck'></div>" . ($site_config['signup']['email_confirm'] ? "
                     <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
 }

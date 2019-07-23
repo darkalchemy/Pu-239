@@ -1115,6 +1115,7 @@ body.background-16 {
     box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.75);
     border-radius: .625em;
     padding: 1.25em;
+    margin: 10px 0 10px 0;
 }
 
 .cat-image {

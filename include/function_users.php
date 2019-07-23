@@ -741,10 +741,11 @@ function make_dir(string $dir, int $octal)
 /**
  * @param int $userid
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool
  */
 function get_anonymous(int $userid)
 {

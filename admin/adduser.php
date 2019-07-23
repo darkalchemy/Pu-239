@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'username' => 'required|between:3,64',
         'email' => 'required|email',
     ]);
-    if ($validation->fails()) {
+    if ($validation->fails() || !valid_username($post['username'], false, true)) {
         write_log(getip() . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();

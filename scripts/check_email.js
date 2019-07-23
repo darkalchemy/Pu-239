@@ -23,7 +23,7 @@ function emailcheck() {
         if (request.status === 200) {
             var response = request.responseText;
             document.getElementById('emailcheck').innerHTML = response;
-            document.getElementById('submit').disabled = response.includes('danger');
+            document.getElementById('submit').disabled = !response.includes('success') || !document.getElementById('namecheck').innerHTML.includes('success');
         }
     }
 }
