@@ -1,6 +1,8 @@
 ### 24 Jul, 2019
-remove: auto_enter_abnormal_upload(0 with todays speeds this check is pointless  
-update: better handling of unicode chars, likely more is needed
+update: limit leechers to 1 active peer, limit seeders to 3 active peers
+update: restrict announces to $site_config['tracker']['min_interval'] unless client event is completed and previous announce was seeder = no  
+remove: auto_enter_abnormal_upload() with todays speeds this check is pointless  
+update: better handling of unicode chars, likely more is needed  
 
 ### 23 Jul, 2019
 update: forms add enctype='multipart/form-data'  

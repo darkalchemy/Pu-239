@@ -1,5 +1,6 @@
 In no particular order  
 
+remove all cacheing from peers table, neither ocelot nor xbt can read from or update the cache  
 finish: offers, requests, upcomin and bot replies  
 add: script to check cheaters, make request to client to get random chunk, validate chuck against hash, update db for success, failure to validate, empty response and no response
 remove: need for session in announce.php scrape.php  

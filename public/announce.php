@@ -275,12 +275,12 @@ foreach ($agentarray as $bannedclient) {
     }
 }
 $announce_wait = $site_config['tracker']['min_interval'];
-if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
+if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait) && ($event != 'completed' && $seeder === 'no')) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 if (!isset($self)) {
     $count = $peer_class->get_torrent_count($torrent['id'], $userid, false, $peer_id);
-    if ($count > 1) {
+    if (($count > 1 && $seeder === 'no') || ($count > 3 && $seeder === 'yes')) {
         err('Connection limit exceeded!');
     }
 } else {
@@ -310,7 +310,7 @@ if (!isset($self)) {
         if ($torrent['silver'] != 0 || $issilver) {
             $downthis = $downthis / 2;
         }
-        $crazyhour_on = ($site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false);
+        $crazyhour_on = $site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false;
         if ($downthis > 0) {
             if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
                 $user_updateset['downloaded'] = $user['downloaded'] + ($ratio_free ? 0 : $downthis);
