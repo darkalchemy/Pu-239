@@ -182,47 +182,6 @@ function get_slots(int $torrentid, int $userid)
 }
 
 /**
- * @param $userid
- * @param $rate
- * @param $upthis
- * @param $diff
- * @param $torrentid
- * @param $client
- * @param $realip
- * @param $last_up
- *
- * @throws Exception
- *
- * @return bool
- */
-function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
-{
-    global $container;
-
-    $fluent = $container->get(Database::class);
-    if (!validip($realip)) {
-        return false;
-    }
-
-    $values = [
-        'added' => TIME_NOW,
-        'userid' => $userid,
-        'client' => $client,
-        'rate' => $rate,
-        'beforeup' => $last_up,
-        'upthis' => $upthis,
-        'timediff' => $diff,
-        'userip' => inet_pton($realip),
-        'torrentid' => $torrentid,
-    ];
-    $fluent->insertInto('cheaters')
-           ->values($values)
-           ->execute();
-
-    return true;
-}
-
-/**
  * @param $msg
  */
 function err($msg)

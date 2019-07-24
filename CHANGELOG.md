@@ -1,4 +1,5 @@
 ### 24 Jul, 2019
+remove: auto_enter_abnormal_upload(0 with todays speeds this check is pointless  
 update: better handling of unicode chars, likely more is needed
 
 ### 23 Jul, 2019

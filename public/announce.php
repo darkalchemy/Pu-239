@@ -274,10 +274,10 @@ foreach ($agentarray as $bannedclient) {
         err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1 or any other modern torrent client.');
     }
 }
-//$announce_wait = $site_config['tracker']['min_interval'];
-//if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
-//    err("There is a minimum announce time of $announce_wait seconds");
-//}
+$announce_wait = $site_config['tracker']['min_interval'];
+if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
+    err("There is a minimum announce time of $announce_wait seconds");
+}
 if (!isset($self)) {
     $count = $peer_class->get_torrent_count($torrent['id'], $userid, false, $peer_id);
     if ($count > 1) {
@@ -286,14 +286,6 @@ if (!isset($self)) {
 } else {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
-    if ($user['highspeed'] === 'no' && $upthis > 5000000) {
-        $diff = $dt - $self['ts'];
-        $rate = $upthis / ($diff + 1);
-        $last_up = (int) $user['uploaded'];
-        if ($rate > 5000000) {
-            auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrent['id'], $agent, $realip, $last_up);
-        }
-    }
     if ($happy_multiplier) {
         $upthis = $upthis * $happy_multiplier;
         $downthis = 0;
