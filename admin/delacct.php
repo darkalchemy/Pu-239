@@ -56,7 +56,7 @@ $HTMLOUT = "
 <div class='row'>
     <div class='col-md-12'>
         <h1 class='has-text-centered'>{$lang['text_delete']}</h1>
-            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=delacct&amp;action=delacct' onsubmit='return deleteConfirm();' accept-charset='utf-8'>
+            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=delacct&amp;action=delacct' onsubmit='return deleteConfirm();' enctype='multipart/form-data' accept-charset='utf-8'>
                 <table class='table table-bordered'>
                     <tr>
                         <td class='rowhead'>{$lang['table_userid']}</td>

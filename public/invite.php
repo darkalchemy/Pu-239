@@ -140,7 +140,7 @@ if ($do === 'view_page') {
         }
     }
     $HTMLOUT .= main_table($body, $heading) . "
-            <form action='?do=create_invite' method='post' accept-charset='utf-8'>
+            <form action='?do=create_invite' method='post' enctype='multipart/form-data' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' value='{$lang['invites_create']}'>
                 </div>
@@ -253,7 +253,7 @@ if ($do === 'view_page') {
 
     $HTMLOUT .= "
         <div class='portlet'>
-            <form method='post' action='?do=send_email' accept-charset='utf-8'>
+            <form method='post' action='?do=send_email' enctype='multipart/form-data' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
                 <table class='table table-bordered bottom20'>
                     <thead>
                         <tr>

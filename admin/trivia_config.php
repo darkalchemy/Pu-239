@@ -111,7 +111,7 @@ if (empty($search)) {
 
 $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['triviaconfig_title']}</h1>
-        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered w-50'>
                 <input type='text' class='search w-100' name='keywords' value='{$search}' placeholder='{$lang['triviaconfig_search_placeholder']}'>
                 <input type='submit' name='search' class='button is-small margin20' value='{$lang['triviaconfig_search']}'>
@@ -119,7 +119,7 @@ $HTMLOUT = "
         </form>";
 
 $body = "
-        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='Add' value='New'>
             <h2 class='has-text-centered'>{$lang['triviaconfig_add']}</h2>
             <p class='level-center-center'><input name='question' class='left20 w-75' type='text' value='' placeholder='{$lang['triviaconfig_question_placeholder']}'></p>
@@ -135,7 +135,7 @@ $body = "
 $HTMLOUT .= main_div($body, 'bottom20', 'padding20') . $pager['pagertop'];
 foreach ($questions as $question) {
     $body = "
-        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=trivia_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='id' value='{$question['qid']}'>
             <h2 class='has-text-centered'>#{$question['qid']}: <span class='has-text-weight-bold is-warning'>{$question['question']}</span></h2>
             <p class='level-center-center'><input name='canswer1' type='checkbox' " . ($question['canswer'] === 'answer1' ? 'checked' : '') . " class='right5'><input name='answer1' type='text' class='w-75' value='{$question['answer1']}'></p>

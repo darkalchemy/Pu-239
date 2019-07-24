@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ' . $lang['pm_search_match'] . '' . ($num_result === 1 ? '' : $lang['pm_search_matches']) . $lang['pm_search_excl'] . ($num_result === 0 ? $lang['pm_search_better'] : '') . '
         </h3>';
     if ($num_result > 0) {
-        $results .= " <form action='messages.php' method='post' name='messages' accept-charset='utf-8'>
+        $results .= " <form action='messages.php' method='post' name='messages' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='action' value='move_or_delete_multi'>
         <input type='hidden' name='returnto' value='search'>$table
         <div class='has-text-centered top20'>";

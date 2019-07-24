@@ -130,7 +130,7 @@ if ($CURUSER['class'] >= UC_MAX) {
             <div class='padding20'>
                 <h2>{$lang['text_addban']}</h2>
             </div>
-            <form method='post' action='staffpanel.php?tool=bans' accept-charset='utf-8'>";
+            <form method='post' action='staffpanel.php?tool=bans' enctype='multipart/form-data' accept-charset='utf-8'>";
     $HTMLOUT .= main_table("
                 <tr>
                     <td class='rowhead'>{$lang['table_firstip']}</td>

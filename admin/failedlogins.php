@@ -59,7 +59,7 @@ if (!$where && $count === 0) {
 }
 $HTMLOUT = main_div("
     <h1 class='has-text-centered'>{$lang['failed_main_search']}</h1>
-    <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins' class='has-text-centered' accept-charset='utf-8'>
+    <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins' class='has-text-centered' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='text' name='search' class='w-50' placeholder='Search By IP' value=''><br>
         <input type='submit' value='{$lang['failed_main_search_btn']}' class='button is-small margin20'>
     </form>");

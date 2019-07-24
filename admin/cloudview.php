@@ -32,7 +32,7 @@ if ($count > $perpage) {
 }
 $searches = $seachcloud_class->get($pager['pdo']);
 $HTMLOUT .= "
-<form id='checkbox_container' method='post' action='{$_SERVER['PHP_SELF']}?tool=cloudview&amp;action=cloudview' accept-charset='utf-8'>";
+<form id='checkbox_container' method='post' action='{$_SERVER['PHP_SELF']}?tool=cloudview&amp;action=cloudview' enctype='multipart/form-data' accept-charset='utf-8'>";
 $heading = "
     <tr>
         <th>{$lang['cloudview_phrase']}</th>

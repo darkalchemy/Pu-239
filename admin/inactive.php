@@ -115,7 +115,7 @@ if ($count_inactive > 0) {
     $HTMLOUT .= "
     <div class='row'><div class='col-md-12'>
     <h1 class='has-text-centered'>$count{$lang['inactive_accounts']} $days {$lang['inactive_days']}</h1>
-    <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' accept-charset='utf-8'>
+    <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' enctype='multipart/form-data' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
     <td class='colhead'>{$lang['inactive_username']}</td>

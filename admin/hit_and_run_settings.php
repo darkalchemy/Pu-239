@@ -12,7 +12,6 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
 global $container, $site_config;
 
-//dd($site_config['hnr_config']);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
     $fluent = $container->get(Database::class);
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $HTMLOUT .= "
 <h1 class='has-text-centered'>{$lang['hnr_settings_title']}</h1>
-<form action='staffpanel.php?tool=hit_and_run_settings' method='post' accept-charset='utf-8'>";
+<form action='staffpanel.php?tool=hit_and_run_settings' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 
 $HTMLOUT .= main_table("
     <tr><td class='w-50'>{$lang['hnr_settings_online']}</td><td>{$lang['hnr_settings_yes']}<input type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked' : '') . ">{$lang['hnr_settings_no']}<input type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked' : '') . "></td></tr>

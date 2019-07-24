@@ -30,8 +30,8 @@ $post_title = strip_tags((isset($_POST['post_title']) ? $_POST['post_title'] : '
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'no';
 $subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
-$topic_name = htmlsafechars($arr['topic_name']);
-$topic_desc = htmlsafechars($arr['topic_desc']);
+$topic_name = format_comment($arr['topic_name']);
+$topic_desc = format_comment($arr['topic_desc']);
 $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
 if ($quote !== 0 && $body === '') {
     $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE p.id=' . sqlesc($quote)) or sqlerr(__FILE__, __LINE__);
@@ -39,9 +39,9 @@ if ($quote !== 0 && $body === '') {
     if ($arr_quote['anonymous'] === 'yes') {
         $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : '' . get_anonymous_name() . '');
     } else {
-        $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : format_comment($arr_quote['username']));
+        $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : htmlsafechars($arr_quote['username']));
     }
-    $body = '[quote=' . $quoted_member . ($quote > 0 ? ' | post=' . $quote : '') . ($key > 0 ? ' | key=' . $key : '') . ']' . format_comment($arr_quote['body']) . '[/quote]';
+    $body = '[quote=' . $quoted_member . ($quote > 0 ? ' | post=' . $quote : '') . ($key > 0 ? ' | key=' . $key : '') . ']' . htmlsafechars($arr_quote['body']) . '[/quote]';
     if ($arr_quote['staff_lock'] != 0) {
         stderr($lang['gl_error'], '' . $lang['pr_this_post_is_staff_locked_nomod_nodel'] . '');
     }
@@ -69,14 +69,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
-        //$topic_name = format_comment($topic_name);
-        $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last#{$post_id}]{$topic_name}[/url][/quote]";
+        $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last#{$post_id}]" . format_comment($arr['topic_name']) . '[/url][/quote]';
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
             autoshout($message);
         }
     }
     if ($site_config['bonus']['on']) {
-        sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_post']) . ' WHERE id=' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus']['per_post']);
         $cache->update_row('user_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],

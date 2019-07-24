@@ -32,7 +32,7 @@ if (!file_exists($file) || !is_array($limit = json_decode(file_get_contents($fil
     $limit = [];
 }
 $out = "
-        <form method='post' action='' accept-charset='utf-8'>";
+        <form method='post' action='' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>";
 $heading = "
         <tr>
             <th>{$lang['floodlimit_userclass']}</th>

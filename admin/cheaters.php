@@ -37,7 +37,7 @@ $HTMLOUT = "<h1 class='has-text-centered'>Possible Cheaters</h1>";
 if ($count > 0) {
     $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cheaters&amp;action=cheaters&amp;');
     $HTMLOUT .= "
-    <form action='{$_SERVER['PHP_SELF']}?tool=cheaters&amp;action=cheaters' method='post' accept-charset='utf-8'>";
+    <form action='{$_SERVER['PHP_SELF']}?tool=cheaters&amp;action=cheaters' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }

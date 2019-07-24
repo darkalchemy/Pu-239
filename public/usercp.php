@@ -109,7 +109,7 @@ if ($action === 'reset_api_key') {
 $avatar = get_avatar($user);
 $HTMLOUT .= "
             <div class='w-100'>
-                <form method='post' action='{$site_config['paths']['baseurl']}/takeeditcp.php' accept-charset='utf-8'>
+                <form method='post' action='{$site_config['paths']['baseurl']}/takeeditcp.php' enctype='multipart/form-data' accept-charset='utf-8'>
                     <div class='bottom20'>
                         <ul class='level-center bg-06'>
                             <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>

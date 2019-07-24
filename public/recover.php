@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
             ],
         ]);
         $HTMLOUT = "
-    <form method='post' action='{$site_config['paths']['baseurl']}/recover.php' accept-charset='utf-8'>
+    <form method='post' action='{$site_config['paths']['baseurl']}/recover.php' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='has-text-centered'>
             <h2 class='has-text-centered'>{$lang['set_new_password']}</h2>";
 
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
     }
 } else {
     $HTMLOUT .= "
-        <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
             <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>";
     $HTMLOUT .= main_div("
             <div class='bottom20'>

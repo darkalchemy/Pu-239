@@ -39,7 +39,7 @@ if (empty($mode)) {
 
     if ($backups) {
         $HTMLOUT .= "
-            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=delete' accept-charset='utf-8'>
+            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=delete' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='delete'>
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>

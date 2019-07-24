@@ -113,7 +113,6 @@ class AJAXChat
     /**
      * @throws AuthError
      * @throws DependencyException
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws UnbegunTransaction
@@ -3435,8 +3434,6 @@ class AJAXChat
     /**
      * @param $tag
      * @param $tagContent
-     *
-     * @return null
      */
     public function replaceCustomTemplateTags($tag, $tagContent)
     {

@@ -183,7 +183,7 @@ if ($action === 'app' || $action === 'show') {
         $HTMLOUT .= main_div($lang['uploadapps_noapps'], null, 'padding20 has-text-centered');
     } else {
         $HTMLOUT .= "
-        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=takeappdelete' accept-charset='utf-8'>";
+        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=takeappdelete' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>";
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
@@ -320,7 +320,7 @@ if ($action === 'app' || $action === 'show') {
     if ($arr['status'] === 'pending') {
         $div1 = "
             <h2>{$lang['uploadapps_note']}</h2>
-            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=acceptapp' accept-charset='utf-8'>
+            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=acceptapp' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='id' type='hidden' value='{$arr['id']}'>
                 <input type='text' name='note' class='w-100'>
                 <div class='has-text-centered'>
@@ -329,7 +329,7 @@ if ($action === 'app' || $action === 'show') {
             </form>";
         $div2 = "
             <h2>{$lang['uploadapps_reason']}</h2>
-            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=rejectapp' accept-charset='utf-8'>
+            <form method='post' action='{$_SERVER['PHP_SELF']}?tool=uploadapps&amp;action=rejectapp' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='id' type='hidden' value='{$arr['id']}'>
                 <input type='text' name='reason' class='w-100'>
                 <div class='has-text-centered'>

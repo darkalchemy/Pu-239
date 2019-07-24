@@ -48,7 +48,7 @@ if (isset($_GET['act'])) {
                            ->fetch();
 
         $HTML .= "
-        <form action='{$_SERVER['PHP_SELF']}?tool=themes&amp;action=themes&amp;act=4' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=themes&amp;action=themes&amp;act=4' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' value='{$template['id']}' name='tid'>
             <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
@@ -106,7 +106,7 @@ if (isset($_GET['act'])) {
             }
         }
         $HTML .= "
-        <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post' accept-charset='utf-8'>
+        <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' value='default.css' name='uri'>
             <h1 class='has-text-centered'>{$lang['themes_addnew']}</h1>";
         $body = "

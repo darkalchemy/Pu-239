@@ -31,7 +31,8 @@ if ($oldest === false || is_null($oldest)) {
 $oldest = get_date((int) $oldest, 'FORM', 1, 0);
 $today = get_date((int) TIME_NOW, 'FORM', 1, 0);
 
-$HTMLOUT = $where_is = $q1 = $comment_is = $comments_exc = $email_is = '';
+$HTMLOUT = $q1 = $comment_is = $comments_exc = $email_is = '';
+$where_is = ' i.type = "login" ';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
             <li class='is-link margin10'>
@@ -45,7 +46,7 @@ $HTMLOUT .= "
 
 $HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
 $HTMLOUT .= "
-    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=usersearch' accept-charset='utf-8'>";
+    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=usersearch' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
         <tr>
             <td class='w-1'>{$lang['usersearch_name']}</td>
@@ -805,7 +806,7 @@ if (!empty($search)) {
         }
         $HTMLOUT .= "
 <br>
-<form method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' accept-charset='utf-8'>
+<form method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' enctype='multipart/form-data' accept-charset='utf-8'>
     <div class='has-text-centered margin20'>
         <input name='n_pms' type='hidden' value='" . $count . "'>
         <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>

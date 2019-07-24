@@ -142,7 +142,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($curuser['class'] < UC_STAFF &
     $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <form method='get' action='{$site_config['paths']['baseurl']}/messages.php?action=send_message' accept-charset='utf-8'>
+                    <form method='get' action='{$site_config['paths']['baseurl']}/messages.php?action=send_message' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                         <input type='submit' value='{$lang['userdetails_sendmess']}'>
                     </form>";
@@ -361,7 +361,7 @@ if (($curuser['id'] !== $user['id']) && ($curuser['class'] >= UC_STAFF)) {
                                 {$lang['userdetails_watched_since']} " . get_date((int) $user['watched_user'], '') : $lang['userdetails_not_watched']) . "
                                 $the_flip_box
                                 <div class='has-text-left' id='box_3'>
-                                    <form method='post' action='ajax/member_input.php' name='notes_for_staff' accept-charset='utf-8'>
+                                    <form method='post' action='ajax/member_input.php' name='notes_for_staff' enctype='multipart/form-data' accept-charset='utf-8'>
                                         <input name='id' type='hidden' value='{$user['id']}'>
                                         <input type='hidden' value='watched_user' name='action'>
                                         {$lang['userdetails_add_watch']}
@@ -490,7 +490,7 @@ $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
 if (($curuser['class'] >= UC_STAFF && $user['class'] < $curuser['class']) || $curuser['class'] >= UC_MAX) {
     $HTMLOUT .= "
-    <form method='post' action='./staffpanel.php?tool=modtask' accept-charset='utf-8'>
+    <form method='post' action='./staffpanel.php?tool=modtask' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='action' value='edituser'>
         <input type='hidden' name='userid' value='{$user['id']}'>
         <input type='hidden' name='returnto' value='{$_SERVER['PHP_SELF']}?id=${user['id']}'>

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_banemail_add']}</h1>
-    <form method='post' action='staffpanel.php?tool=bannedemails' accept-charset='utf-8'>";
+    <form method='post' action='staffpanel.php?tool=bannedemails' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
         <tr>
             <td class='rowhead'>{$lang['ad_banemail_email']}</td>

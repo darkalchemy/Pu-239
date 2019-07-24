@@ -50,7 +50,7 @@ $HTMLOUT .= "
             <span class='size_2'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
          </div>
         <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox, $user['id']) . $other_box_info . ($count > $perpage ? $pager['pagertop'] : '') . "
-        <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' name='checkme' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20'>
                 <thead>

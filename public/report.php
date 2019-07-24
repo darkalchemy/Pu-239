@@ -94,7 +94,7 @@ if (isset($_POST['do_it'])) {
 }
 
 $HTMLOUT .= main_div("
-    <form method='post' action='{$site_config['paths']['baseurl']}/report.php' accept-charset='utf-8'>
+    <form method='post' action='{$site_config['paths']['baseurl']}/report.php' enctype='multipart/form-data' accept-charset='utf-8'>
     <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
         {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b> {$lang['report_report1']} <a class='is-link' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
         <p class='top10'><b>{$lang['report_reason']}</b></p>" . BBcode('', 'w-100', 200) . "

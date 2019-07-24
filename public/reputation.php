@@ -264,7 +264,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                         </tr>
                         <tr>
                             <td class='row2'>
-                                <form action='reputation.php' method='post' accept-charset='utf-8'>
+                                <form action='reputation.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                                     <div class='tablepad'>
                                         <fieldset>
                                             <legend>$rep_text</legend>

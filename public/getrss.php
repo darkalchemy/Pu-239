@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT = "
-        <form action='{$_SERVER['PHP_SELF']}' method='post' accept-charset='utf-8'>";
+        <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 require_once PARTIALS_DIR . 'categories.php';
 $HTMLOUT .= main_div("
         <div class='padding20'>

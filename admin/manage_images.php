@@ -65,7 +65,7 @@ if (!empty($images)) {
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb not empty, when it was updated'>Updated</th>
             <th class='has-text-centered tooltipper' title='If IMDb or TMDb is empty, the last time we looked it up'>Checked</th>
             <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
-            <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
+            <th class='has-text-centered tooltipper' title='Ignore'>Ignore</th>
         </tr>";
     $body = '';
     foreach ($images as $image) {
@@ -81,7 +81,7 @@ if (!empty($images)) {
             <td class='has-text-centered'>{$image['tmdb_id']}</td>
             <td class='has-text-centered'>{$image['tvmaze_id']}</td>
             <td class='has-text-centered'>{$image['isbn']}</td>
-            <td class='has-text-centered'>{$image['lang']}</td>
+            <td class='has-text-centered w-10'><input type='text' value='{$image['lang']}' class='w-100'></td>
             <td class='has-text-centered'>{$image['fetched']}</td>
             <td class='has-text-centered'>
                 " . get_date((int) $image['updated'], 'LONG') . "
@@ -93,19 +93,19 @@ if (!empty($images)) {
                 <input type='checkbox' name='images[]' value='{$image['id']}'>
             </td>
             <td class='has-text-centered w-10'>
-                <input type='checkbox' name='images[]' value='{$image['id']}'>
+                <div data-id='{$image['id']}' data-pick='{$image['ignore']}' class='ignore-image tooltipper button is-small' title='" . ($image['ignore'] === 1 ? 'Image is Ignored and will not be displayed' : 'Image is NOT Ignored and will be displayed') . "'>" . ($image['ignore'] === 1 ? 'Ignored' : 'Ignore') . '</div>
             </td>
-        </tr>";
+        </tr>';
     }
     $HTMLOUT .= "
         <h1 class='has-text-centered'>Manage Images</h1>" . ($count > $perpage ? $pager['pagertop'] : '') . "
-        <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='terms' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='terms' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered margin20 tooltipper' title='Search by IMDb, TMDb, TvMaze ID, ISBN, type'>
                 <input type='text' name='terms' value='$terms'>
                 <input type='submit' class='button is-small' name='search' value='Search'>
             </div>
         <form>
-        <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='checkme' accept-charset='utf-8'>" . main_table($body, $heading) . "
+        <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' class='button is-small' name='delete' value='Delete'>
             </div>

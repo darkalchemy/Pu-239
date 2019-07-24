@@ -106,7 +106,7 @@ function show_level(array $input)
                 </span>
             </a>
         </div>";
-    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='show_rep_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='mode' value='doupdate' type='hidden'>";
     $heading = "
         <tr>
@@ -183,7 +183,7 @@ function show_form(array $input, string $type)
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
     $minrep = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
-    $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='reputationlevelid' value='{$replevid}' type='hidden'>
                 <input name='mode' value='{$mode}' type='hidden'>";
     $html .= "<h2>$title</h2><table><tr>
@@ -306,7 +306,7 @@ function show_form_rep(array $input)
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
     }
-    $html = "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' accept-charset='utf-8'>
+    $html = "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='reputationid' value='{$res['reputationid']}' type='hidden'>
                 <input name='oldreputation' value='{$res['reputation']}' type='hidden'>
                 <input name='mode' value='doeditrep' type='hidden'>";
@@ -339,7 +339,7 @@ function view_list(array $now_date, array $input, int $time_offset)
     $title = $lang['rep_ad_view_title'];
     $html = "<h2>{$lang['rep_ad_view_view']}</h2>";
     $html .= "<p>{$lang['rep_ad_view_page']}</p>";
-    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='list_form' method='post' accept-charset='utf-8'>
+    $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='list_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='mode' value='list' type='hidden'>
                 <input name='dolist' value='1' type='hidden'>";
     $html .= '<table>';

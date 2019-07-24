@@ -174,7 +174,7 @@ $htmlout = "
     <h1 class='has-text-centered'>Torrent Catalog</h1>";
 $div = "
     <h2 class='has-text-centered'>{$lang['catol_search']}</h2>
-    <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' accept-charset='utf-8'>
+    <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search'><br>
         <input type='submit' value='search!' class='button is-small margin20'>
     </form>

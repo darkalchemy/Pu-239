@@ -143,7 +143,7 @@ function move_cat_form($params)
     $select .= '
             </select>';
     $htmlout = "
-        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
             <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name']) . "</h2>
@@ -285,7 +285,7 @@ function delete_cat_form($params)
     }
 
     $htmlout = "
-        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takedel_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -385,7 +385,7 @@ function edit_cat_form($params)
     $parents = get_parents($cat);
     $select = get_images($cat);
     $htmlout = "
-        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' accept-charset='utf-8'>
+        <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takeedit_cat'>
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
@@ -415,7 +415,7 @@ function show_categories()
     $parents = get_parents([]);
     $select = get_images([]);
     $htmlout = "
-        <form action='" . $site_config['paths']['baseurl'] . "/staffpanel.php?tool=categories' method='post' accept-charset='utf-8'>";
+        <form action='" . $site_config['paths']['baseurl'] . "/staffpanel.php?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $htmlout .= main_div("
             <input type='hidden' name='mode' value='takeadd_cat'>
             <div class='has-text-centered padding20'>

@@ -80,7 +80,7 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <div class='level-center-center has-text-centered'>
-                        <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' accept-charset='utf-8'>
+                        <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$pm_id}'>
                             <input type='hidden' name='action' value='move'>
                             " . get_all_boxes((int) $message['location'], $user['id']) . "

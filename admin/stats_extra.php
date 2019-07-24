@@ -452,7 +452,7 @@ function main_screen($mode)
     $menu = make_side_menu();
     $htmlout = $menu . "
         <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
-        <form action='{$site_config['paths']['baseurl']}/staffpanel.php' method='get' name='StatsForm' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/staffpanel.php' method='get' name='StatsForm' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered'>
                 <input name='tool' value='stats_extra' type='hidden'>
                 <input name='mode' value='{$form_code}' type='hidden'>

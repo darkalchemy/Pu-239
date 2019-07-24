@@ -60,7 +60,7 @@ if ($user['class'] >= UC_STAFF) {
         $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $currently_editing . '</span> is currently editing this torrent!</h1>';
     }
 }
-$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data' accept-charset='utf-8'>
+$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='id' value='$id'>";
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";
@@ -203,7 +203,7 @@ $HTMLOUT .= "
             </tr>
         </table>
     </form>
-    <form name='delete_form' method='post' action='delete.php' accept-charset='utf-8'>";
+    <form name='delete_form' method='post' action='delete.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
             <tr>
                 <td class='colhead' colspan='2'>{$lang['edit_delete_torrent']}. {$lang['edit_reason']}</td>

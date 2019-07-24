@@ -54,6 +54,6 @@ $body = "
     </tr>";
 $HTMLOUT .= "
 <h1 class='has-text-centered'>{$lang['reset_title']}</h1>
-<form method='post' action='staffpanel.php?tool=reset&amp;action=reset' accept-charset='utf-8'>" . main_table($body) . '
+<form method='post' action='staffpanel.php?tool=reset&amp;action=reset' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body) . '
 </form>';
 echo stdhead($lang['reset_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -123,7 +123,7 @@ $res = sql_query('SELECT * FROM class_promo ORDER BY id');
 if (mysqli_num_rows($res) >= 1) {
     $head_top = "
     <h3 class='has-text-centered top20'>{$lang['classpromo_user_sett']}</h3>
-    <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post' accept-charset='utf-8'>";
+    <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 
     $heading = "
         <tr>
@@ -146,7 +146,7 @@ if (mysqli_num_rows($res) >= 1) {
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'></td>
             <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['low_ratio']) . "'></td>
             <td>
-                <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post' accept-charset='utf-8'>
+                <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
                     <input type='submit' value='{$lang['classpromo_remove']}' class='button is-small'>
                 </form>
@@ -173,7 +173,7 @@ if (mysqli_num_rows($res) >= 1) {
 
 $HTMLOUT .= "
     <h3 class='has-text-centered top20'>{$lang['classpromo_add_new_rule']}</h3>
-    <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post' accept-charset='utf-8'>";
+    <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 $heading = "
         <tr>
             <th class='w-15'>{$lang['classpromo_clsname']}</th>

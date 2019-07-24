@@ -22,6 +22,7 @@ $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();
     $auth->destroySession();
+    $auth->destroySession();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -173,7 +174,7 @@ if (!empty($signup_vars)) {
 }
 
 $HTMLOUT = "
-    <form method='post' action='{$site_config['paths']['baseurl']}/signup.php' accept-charset='utf-8'>";
+    <form method='post' action='{$site_config['paths']['baseurl']}/signup.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 
 $disabled = !empty($email) ? 'disabled' : 'required';
 if (!empty($email)) {

@@ -194,7 +194,6 @@ function staff_panel()
             ];
             $staff_panel = array_msort($staff_panel, ['page_name' => SORT_ASC]);
         }
-        //dd($staff_panel);
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
                 if ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'user') {

@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT .= $top_links . "
-    <form name='compose' method='post' action='messages.php' accept-charset='utf-8'>
+    <form name='compose' method='post' action='messages.php' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='action' value='send_message'>";
 
 if ($receiver) {

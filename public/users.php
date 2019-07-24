@@ -41,7 +41,7 @@ if (ctype_digit($class)) {
 $HTMLOUT = "
     <h1 class='has-text-centered'>Search {$lang['head_users']}</h1>";
 $div = "
-    <form method='get' action='users.php?' accept-charset='utf-8'>
+    <form method='get' action='users.php?' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='level-center-center'>
             <span class='right10 top20'>{$lang['form_search']}</span>
             <input type='text' name='search' class='w-25 top20'>

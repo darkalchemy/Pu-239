@@ -80,7 +80,7 @@ if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=acpmanage&amp;action=acpmanage' method='post' accept-charset='utf-8'>";
+    $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=acpmanage&amp;action=acpmanage' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
       <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\"></td>

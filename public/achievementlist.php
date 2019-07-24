@@ -54,7 +54,7 @@ $HTMLOUT .= main_table($body, $heading);
 if ($user['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <h2>{$lang['achlst_add_an_ach_lst']}</h2>
-    <form method='post' action='achievementlist.php' accept-charset='utf-8'>" . main_table("
+    <form method='post' action='achievementlist.php' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table("
             <tr>
                 <td class='w-15'>{$lang['achlst_achievname']}</td>
                 <td><input class='w-100' type='text' name='achievname'></td>

@@ -54,7 +54,7 @@ if ($action === 'edit' && $user['class'] >= UC_SYSOP) {
         stderr($lang['credits_error'], $lang['credits_nocr']);
     }
     while ($mod = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' accept-charset='utf-8'>
+        $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' enctype='multipart/form-data' accept-charset='utf-8'>
   <table>
     <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
     <td class='rowhead'>{$lang['credits_description']}</td>" . "<td style='padding: 0'>
@@ -194,7 +194,7 @@ $HTMLOUT .= main_table($body, $heading);
 
 if ($user['class'] >= UC_MAX) {
     $HTMLOUT .= "
-    <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+    <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
     <h2 class='has-text-centered top20'>{$lang['credits_add']}</h2>
         <input type='hidden' name='action' value='add'>";
     $body = "

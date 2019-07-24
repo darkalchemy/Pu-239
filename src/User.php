@@ -312,7 +312,7 @@ class User
             if ($userid > 2 && ($this->site_config['site']['autoshout_chat'] || $this->site_config['site']['autoshout_irc'])) {
                 require_once INCL_DIR . 'function_users.php';
                 $classname = get_user_class_name(UC_MIN, true);
-                $message = "Welcome New {$this->site_config['site']['name']} Member: [" . $classname . ']' . htmlsafechars($values['username']) . '[/' . $classname . ']';
+                $message = "Welcome New {$this->site_config['site']['name']} Member: [" . $classname . ']' . format_comment($values['username']) . '[/' . $classname . ']';
                 autoshout($message);
             }
 
@@ -320,7 +320,7 @@ class User
                 $this->session->set('is-success', 'You have successfully registered. Please login');
             }
             $this->cache->set('latestuser_', format_username($userid), $this->site_config['expires']['latestuser']);
-            write_log('User account ' . $userid . ' (' . htmlsafechars($values['username']) . ') was created');
+            write_log('User account ' . $userid . ' (' . format_comment($values['username']) . ') was created');
         }
 
         return $userid;

@@ -31,7 +31,7 @@ if (isset($_POST['form']) != 1) {
     } else {
         $HTMLOUT .= "
         <h1>{$lang['uploadapp_application']}</h1>
-        <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
+        <form action='./uploadapp.php' method='post' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($user['uploaded'], $user['downloaded']);
         $connect = $fluent->from('peers')

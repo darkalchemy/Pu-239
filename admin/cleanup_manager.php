@@ -216,7 +216,7 @@ function cleanup_show_edit()
     $htmlout = "
     <h2 class='has-text-centered'>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>" . main_div("
     <div class='padding20 w-50'>
-    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' accept-charset='utf-8'>
+    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takeedit'>
     <input type='hidden' name='cid' value='{$row['clean_id']}'>
     <input type='hidden' name='clean_time' value='{$row['clean_time']}'>
@@ -339,7 +339,7 @@ function cleanup_show_new()
     $clean_time = strtotime('today midnight');
     $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
-    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' accept-charset='utf-8'>
+    <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takenew'>
     <input type='hidden' name='clean_time' value='{$clean_time}'>
 

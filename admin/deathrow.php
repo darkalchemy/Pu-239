@@ -227,7 +227,7 @@ if ($count) {
 
     $HTMLOUT .= "
         <h1 class='has-text-centered'>$count {$lang['deathrow_title']}</h1>" . ($count > $perpage ? $pager['pagertop'] : '') . "
-        <form action='' method='post' accept-charset='utf-8'>";
+        <form action='' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['deathrow_uname']}</th>

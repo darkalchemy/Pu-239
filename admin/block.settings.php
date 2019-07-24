@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT = "
-    <form action='{$_SERVER['PHP_SELF']}?tool=block.settings' method='post' accept-charset='utf-8'>
+    <form action='{$_SERVER['PHP_SELF']}?tool=block.settings' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>

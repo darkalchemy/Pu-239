@@ -719,7 +719,7 @@ foreach ($options as $gets) {
                             <h2 class='has-text-centered has-text-weight-bold'>" . htmlsafechars($gets['bonusname']) . '</h2>' . htmlsafechars($gets['description']) . "
                         </div>
                         <div>
-                            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' accept-charset='utf-8'>$additional_text
+                            <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>$additional_text
                                 <input type='hidden' name='option' value='" . $gets['id'] . "'>
                                 <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
                                 <input type='hidden' name='menge' value='" . $gets['menge'] . "'>

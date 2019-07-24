@@ -69,7 +69,7 @@ $test = isset($_POST['test']) ? $_POST['test'] : '';
 $HTMLOUT = "<h1 class='has-text-centered'>BBcode Tags</h1>";
 $HTMLOUT .= main_div("<div class='has-text-centered'>
     {$lang['tags_title']}<br><br>
-    <form method='post' action='?' accept-charset='utf-8'>
+    <form method='post' action='?' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
     <textarea name='test' cols='60' rows='3'>" . ($test ? htmlsafechars($test) : '') . "</textarea>
     <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;'>
     </form>

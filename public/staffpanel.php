@@ -258,7 +258,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
             $HTMLOUT .= '<br>';
         }
-        $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+        $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='action' value='{$action}'>";
         if ($action === 'edit') {
             $HTMLOUT .= "<input type='hidden' name='id' value='{$id}'>";
@@ -347,7 +347,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
     <div class='level-center margin20'>
             <input type='submit' class='button is-small' value='{$lang['spanel_submit']}'>
         </form>
-        <form method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}'>
         </form>
     </div>";

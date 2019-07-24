@@ -148,7 +148,7 @@ if (!empty($files)) {
         </tr>';
     }
     $HTMLOUT .= "
-        <form action='{$_SERVER['PHP_SELF']}?tool=log_viewer' method='post' name='checkme' accept-charset='utf-8'>" . main_table($body, $heading) . "
+        <form action='{$_SERVER['PHP_SELF']}?tool=log_viewer' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
                 <input type='submit' class='button is-small' name='delete' value='Delete'>
             </div>

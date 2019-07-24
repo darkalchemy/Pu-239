@@ -114,7 +114,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     </ul>
     <div>
         <h1 class='has-text-centered'>{$lang['non_con_mass']}</h1>
-        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=findnotconnectable&amp;action=findnotconnectable' accept-charset='utf-8'>";
+        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=findnotconnectable&amp;action=findnotconnectable' enctype='multipart/form-data' accept-charset='utf-8'>";
     if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
     }

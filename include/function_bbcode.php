@@ -206,7 +206,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     $image = placeholder_image();
     $s = mb_convert_encoding($text, 'UTF-8');
     unset($text);
-    $s = htmlspecialchars_decode($s);
+    $s = htmlspecialchars_decode(html_entity_decode($s));
 
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like>), "), ... - this would be encoded

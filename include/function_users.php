@@ -10,7 +10,7 @@ use Pu239\Peer;
 use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
-
+require_once INCL_DIR . 'function_bbcode.php';
 /**
  * @param string $msg
  * @param int    $channel
@@ -31,7 +31,7 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
             'userRole' => 100,
             'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'text' => htmlspecialchars_decode($msg),
+            'text' => htmlspecialchars($msg),
             'ttl' => $ttl,
         ];
 
@@ -480,7 +480,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                         <span class='right20'>{$avatar}</span>
                         <span style='min-width: 150px;'>
                             <span class='level is-marginless'>
-                                <span class='level-left " . get_user_class_name((int) $users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
+                                <span class='level-left " . get_user_class_name((int) $users_data['class'], true) . "'>" . format_comment($users_data['username']) . "</span>
                                 <span class='level-right " . get_user_class_name((int) $users_data['class'], true) . "'>" . get_user_class_name((int) $users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>

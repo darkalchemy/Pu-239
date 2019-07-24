@@ -218,7 +218,7 @@ if ($action === 'article') {
 
 if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
-            <form method='post' action='wiki.php' accept-charset='utf-8'>
+            <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title'> " . BBcode() . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}'>
@@ -229,7 +229,7 @@ if ($action === 'edit') {
     $result = $wiki->get_by_id($id);
     if (($user['class'] >= UC_STAFF) || ($user['id'] === $result['userid'])) {
         $HTMLOUT .= navmenu() . "
-            <form method='post' action='wiki.php' accept-charset='utf-8'>
+            <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . format_comment($result['name']) . "'>
                 <input type='hidden' name='article-id' value='$id'> " . BBcode($result['body']) . "
                 <div class='has-text-centered margin20'>

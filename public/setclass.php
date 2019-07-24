@@ -34,7 +34,7 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
 
 $HTMLOUT .= "
 <h2 class='has-text-centered'>{$lang['set_class_allow']}</h2>
-<form method='get' action='{$site_config['paths']['baseurl']}/setclass.php' accept-charset='utf-8'>
+<form method='get' action='{$site_config['paths']['baseurl']}/setclass.php' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='action' value='editclass'>
     <input type='hidden' name='returnto' value='userdetails.php?id=" . $user['id'] . "'>";
 

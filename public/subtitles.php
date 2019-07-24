@@ -147,7 +147,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     }
     $HTMLOUT .= "
     <h1 class='has-text-centered'>" . ($mode === 'upload' ? 'New Subtitle' : 'Edit Subtitle</h1><h2 class="has-text-centered">' . htmlsafechars($arr['name'])) . "</h1>
-    <form enctype='multipart/form-data' method='post' action='subtitles.php' accept-charset='utf-8'>";
+    <form enctype='multipart/form-data' method='post' action='subtitles.php' enctype='multipart/form-data' accept-charset='utf-8'>";
     $body = '';
     if ($mode === 'upload') {
         $body .= "
@@ -328,7 +328,7 @@ if ($mode === 'upload' || $mode === 'edit') {
             $image" . main_table($body) . "
         </div>
         <div class='level-center-center'>
-            <form action='downloadsub.php' method='post' accept-charset='utf-8'>
+            <form action='downloadsub.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='sid' value='" . $arr['id'] . "'>
                 <input type='submit' value='Download' class='button is-small margin20'>
                 <input type='hidden' name='action' value='download'>
@@ -396,7 +396,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     <div class='has-text-centered'>
         <h1>$title</h1>";
     $body = "
-        <form action='subtitles.php' method='get' accept-charset='utf-8'>
+        <form action='subtitles.php' method='get' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered'>
                 <input class='w-50 top20' value='" . $s . "' name='s' type='text'>
                 <select name='w'>

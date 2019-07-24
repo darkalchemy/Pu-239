@@ -298,7 +298,7 @@ $HTMLOUT .= "
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
         <br>
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_config']}</h2>
-        <form name='edit' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
+        <form name='edit' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
@@ -382,7 +382,7 @@ $HTMLOUT .= "
 
 $HTMLOUT .= "
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_del']}</h2>
-        <form name='add' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
+        <form name='add' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <tr>
                     <td colspan='5'>
@@ -411,7 +411,7 @@ $HTMLOUT .= "
 
 $HTMLOUT .= "
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h2>
-        <form name='add' action='staffpanel.php?tool=class_config' method='post' accept-charset='utf-8'>
+        <form name='add' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>

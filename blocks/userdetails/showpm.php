@@ -30,7 +30,7 @@ if (isset($showpmbutton)) {
     $HTMLOUT .= "
     <tr>
         <td colspan='2' class='has-text-centered'>
-            <form method='get' action='messages.php?' accept-charset='utf-8'>
+            <form method='get' action='messages.php?' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='send_message'>
                 <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                 <input type='hidden' name='returnto' value='" . urlencode($_SERVER['REQUEST_URI']) . "'>

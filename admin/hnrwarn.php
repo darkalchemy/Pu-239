@@ -101,7 +101,7 @@ $count = mysqli_num_rows($g);
 if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
-    $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post' accept-charset='utf-8'>
+    $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <table id='checkbox_container' style='border-collapse:separate;'>
         <tr>
             <td class='colhead'>{$lang['hnrwarn_form_user']}</td>

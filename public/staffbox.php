@@ -102,7 +102,7 @@ switch ($do) {
                 $a = mysqli_fetch_assoc($q2);
                 $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
-                    <form action='{$_SERVER['PHP_SELF']}' method='post' accept-charset='utf-8'>
+                    <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                         <div class='bordered top20 bottom20 bg-00'>
                             <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'DATE', 1) . "</div>
                             <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
@@ -174,7 +174,7 @@ switch ($do) {
         } else {
             $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_info']}</h1>
-                    <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>";
+                    <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>";
             $HTMLOUT .= $count_msgs > $perpage ? $pager['pagertop'] : '';
             $head = "
                         <tr>

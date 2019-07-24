@@ -342,7 +342,7 @@ $HTMLOUT .= $links . "
 
 $HTMLOUT .= main_div("
     <div class='has-text-centered padding20'>
-        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents&amp;type=search_modded' accept-charset='utf-8'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents&amp;type=search_modded' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='columns is-gapless level'>
                 <div class='column has-text-right'>
                     <label for='username' class='right10'>" . $lang['mtor_username'] . "</label>

@@ -358,7 +358,7 @@ if ($user['opt1'] & user_options::VIEWSCLOUD) {
 }
 
 $HTMLOUT .= "
-                                <form id='catsids' method='get' action='{$site_config['paths']['baseurl']}/browse.php' accept-charset='utf-8'>";
+                                <form id='catsids' method='get' action='{$site_config['paths']['baseurl']}/browse.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 if ($today) {
     $HTMLOUT .= "
                                     <input type='hidden' name='today' value='$today'>";

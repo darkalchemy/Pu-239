@@ -148,7 +148,7 @@ $html .= main_div($body) . main_table($table, '', 'top20');
 if ($lottery['current_user']['can_buy'] > 0) {
     $available = $lottery['current_user']['could_buy'] < $lottery['current_user']['can_buy'] ? $lottery['current_user']['could_buy'] : $lottery['current_user']['can_buy'];
     $html .= "
-        <form action='lottery.php?action=tickets' method='post' accept-charset='utf-8'>
+        <form action='lottery.php?action=tickets' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered margin20'>
                 <input type='number' min='0' max='$available' name='tickets'>
                 <input type='submit' value='Buy tickets' class='button is-small'>

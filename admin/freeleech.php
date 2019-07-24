@@ -91,7 +91,7 @@ if (isset($free) && (count($free) < 1)) {
                 <td>{$username}</td>
                 <td>{$fl['title']}</td>
                 <td class='has-text-centered'>
-                    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=freeleech&amp;action=remove' accept-charset='utf-8'>
+                    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=freeleech&amp;action=remove' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' class='w-100' value ='" . $fl['expires'] . "' name='expires'>
                         <input type='" . ($fl['expires'] > TIME_NOW ? 'submit' : 'hidden') . "' name='remove' value='{$lang['freeleech_remove']}' class='button is-small'>
                     </form>
@@ -105,7 +105,7 @@ $checked = 'checked';
 
 $HTMLOUT .= "
     <h2 class='has-text-centered'>{$lang['freeleech_set_free']}</h2>
-    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=freeleech&amp;action=freeleech' accept-charset='utf-8'>
+    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=freeleech&amp;action=freeleech' enctype='multipart/form-data' accept-charset='utf-8'>
     <table class='table table-bordered table-striped'>
     <tr><td class='rowhead'>{$lang['freeleech_mode']}</td>
     <td> <table>

@@ -504,7 +504,7 @@ $checkbox_userdetails_showfriends = (($user['blocks']['userdetails_page'] & bloc
 $form = $level1 = $level2 = '';
 $contents = [];
 $form .= "
-    <form action='' method='post' accept-charset='utf-8'>
+    <form action='' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
             <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>Home Page Settings</legend>

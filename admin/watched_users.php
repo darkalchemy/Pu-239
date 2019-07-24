@@ -80,7 +80,7 @@ if (isset($_GET['add'])) {
         //== ok they are not watched yet let's add the info part 1
         if ($_GET['add'] && $_GET['add'] == 1) {
             $text = "
-                <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}' accept-charset='utf-8'>
+                <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}' enctype='multipart/form-data' accept-charset='utf-8'>
                     <h2>{$lang['watched_add']}{$user['username']}{$lang['watched_towu']}</h2>
                     <div class='has-text-centered'>
                         <span><b>{$lang['watched_pleasefil']}" . format_username((int) $member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>

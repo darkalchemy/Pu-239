@@ -146,7 +146,7 @@ if ($action === 'viewbug') {
             $by = format_username($bug['staff']) . ' <i>(' . get_user_class_name($bug['stclass']) . ')</i>';
     }
     $HTMLOUT .= "
-        <form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' accept-charset='utf-8'>
+        <form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='id' value='" . $bug['id'] . "'>
             <input type='hidden' name='problem' value='" . urlencode($bug['problem']) . "'>";
     $body = "
@@ -315,7 +315,7 @@ if ($action === 'viewbug') {
         }
     }
     $HTMLOUT .= "
-    <form method='post' action='{$_SERVER['PHP_SELF']}?action=add' accept-charset='utf-8'>";
+    <form method='post' action='{$_SERVER['PHP_SELF']}?action=add' enctype='multipart/form-data' accept-charset='utf-8'>";
     $body = "
         <tr>
             <td class='rowhead'>{$lang['title']}:</td>

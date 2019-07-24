@@ -494,7 +494,7 @@ if ($torrent_cache['rep']) {
         </div>", 1);
 }
 $audit .= tr('Report Torrent', "
-    <form action='{$site_config['paths']['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post' accept-charset='utf-8'>
+    <form action='{$site_config['paths']['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='level-left'>
             <input class='button is-small left10' type='submit' name='submit' value='Report This Torrent'>
             <div class='left10'>
@@ -511,7 +511,7 @@ if ($owned) {
 }
 if ($moderator) {
     $audit .= tr('Clear Cache', "
-                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
+                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' name='clear_cache' value={$torrent['id']}>
                         <input type='submit' class='button is-small left10' value='Clear Cache'>
                     </form>", 1);
@@ -525,18 +525,18 @@ if ($moderator) {
         $audit .= tr('Checked by', "
                     <div class='bottom10 left10'>" . format_username((int) $torrent['checked_by']) . (isset($torrent['checked_when']) && $torrent['checked_when'] > 0 ? ' checked: ' . get_date((int) $torrent['checked_when'], 'DATE', 0, 1) : '') . "</div>
                     <div class='bottom10 left10'>
-                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
+                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' enctype='multipart/form-data' accept-charset='utf-8'>
                             <input type='hidden' name='rechecked' value={$torrent['id']}>
                             <input type='submit' class='button is-small bottom10' value='Re-Check this torrent'>
                         </form>
-                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' accept-charset='utf-8'>
+                        <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' enctype='multipart/form-data' accept-charset='utf-8'>
                             <input type='hidden' name='clearchecked' value={$torrent['id']}>
                             <input type='submit' class='button is-small' value='Un-Check this torrent'>
                         </form>
                     </div>", 1);
     } else {
         $audit .= tr('Checked by', "
-                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' accept-charset='utf-8'>
+                    <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' name='checked' value={$torrent['id']}>
                         <input type='submit' class='button is-small left10' value='Check this torrent'>
                     </form>", 1);
@@ -555,7 +555,7 @@ if ($torrent['last_reseed'] > 0) {
     $next_reseed = $torrent['last_reseed'] + 172800;
 }
 $audit .= tr('Request Reseed', "
-        <form method='post' action='{$site_config['paths']['baseurl']}/takereseed.php' accept-charset='utf-8'>
+        <form method='post' action='{$site_config['paths']['baseurl']}/takereseed.php' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='level-left is-flex'>
                 <span class='left10'>
                     <select name='pm_what'>
@@ -580,7 +580,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
         <a href='{$site_config['paths']['baseurl']}/takethankyou.php?id={$torrent['id']}'>
             <img src='{$site_config['paths']['images_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"'>
         </a>
-        <form name='comment' method='post' action='{$site_config['paths']['baseurl']}/comment.php' accept-charset='utf-8'>
+        <form name='comment' method='post' action='{$site_config['paths']['baseurl']}/comment.php' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='action' value='add'>
             <input type='hidden' name='tid' value='{$torrent['id']}'>
             " . BBcode('', '', 200) . "

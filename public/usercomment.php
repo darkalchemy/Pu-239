@@ -78,7 +78,7 @@ if ($action === 'add') {
     }
     $HTMLOUT .= "
     <h1 class='has-text-centered'>Add a comment for " . format_username((int) $userid) . "</h1>
-    <form method='post' action='usercomment.php?action=add' accept-charset='utf-8'>
+    <form method='post' action='usercomment.php?action=add' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='userid' value='$userid'>
         <div>" . BBcode() . "</div>
         <div class='has-text-centered margin20'>
@@ -144,7 +144,7 @@ if ($action === 'add') {
     $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
     $HTMLOUT .= '
     <h1 class="has-text-centered">Edit comment for ' . format_username((int) $arr['userid']) . "</h1>
-    <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}' accept-charset='utf-8'>
+    <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='returnto' value='{$referer}'>
     <input type='hidden' name='cid' value='" . (int) $commentid . "'>
     <textarea name='body' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . "</textarea>

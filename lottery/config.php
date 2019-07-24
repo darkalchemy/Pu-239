@@ -64,7 +64,7 @@ if (!empty($lottery_config)) {
         $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>' . $classes . '</b>');
     } else {
         $html .= "
-        <form action='{$site_config['paths']['baseurl']}/lottery.php?action=config' method='post' accept-charset='utf-8'>
+        <form action='{$site_config['paths']['baseurl']}/lottery.php?action=config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='portlet'>";
         $table = "
                     <tr>

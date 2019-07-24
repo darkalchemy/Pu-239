@@ -132,7 +132,7 @@ if ($usessl === 'https') {
 }
 $announce_url = $announce_url . ($site_config['upload']['show_torrent_pass'] ? '?torrent_pass=' . $user['torrent_pass'] : '');
 $HTMLOUT .= "
-    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' accept-charset='utf-8'>
+    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
         <input type='hidden' id='csrf' name='csrf' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>

@@ -1,4 +1,7 @@
 ### 23 Jul, 2019
+update: forms add enctype='multipart/form-data'  
+update: better handling of unicode chars, likely more is needed  
+update: limit ips to login in usersearch.php  
 update: replace htmlsafechars with format_comment when var is for display  
 update: set last access for anonymous users  
 fix: reply to messages  

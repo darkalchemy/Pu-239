@@ -424,7 +424,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         } else {
             $blocks[] = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
-                <form name='p2p' method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+                <form name='p2p' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
                     <h1 class='has-text-centered'>{$site_config['site']['name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
                     <div>{$lang['casino_place_bet']}</div>
                     <div>{$lang['casino_amount_to_bet']}</div>
@@ -478,7 +478,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $table = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
-            <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+            <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
                 <h2 class='has-text-centered'>{$lang['casino_bet_on_a_colour']}</h2>";
 
     $body = "
@@ -526,7 +526,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $table = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
-            <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' accept-charset='utf-8'>
+            <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
                 <h2 class='has-text-centered'>{$lang['casino_bet_on_a_number']}</h2>";
 
     $body = "

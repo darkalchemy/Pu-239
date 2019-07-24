@@ -246,7 +246,7 @@ if (count($hnrs) > 0) {
 
         if ($bp >= $cost && $cost != 0) {
             $buyout = "
-            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' accept-charset='utf-8'>
+            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='seed' value='{$minus_ratio}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
@@ -263,7 +263,7 @@ if (count($hnrs) > 0) {
         $bytes = $a_downloaded - $a['uploaded'];
         if ($diff >= $bytes) {
             $buybytes = "
-            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' accept-charset='utf-8'>
+            <form method='post' action='{$site_config['paths']['baseurl']}/hnrs.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='bytes' value='{$bytes}'>
                 <input type='hidden' name='sid' value='{$a['sid']}'>
                 <input type='hidden' name='tid' value='{$a['tid']}'>
