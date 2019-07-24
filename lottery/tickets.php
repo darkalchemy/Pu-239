@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
                 $end = random_int(0, 5) == 1 ? 'Sucker!' : 'Excellent!';
-                $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just bought $tickets $link Ticket" . plural($tickets) . "!! $end";
+                $msg = "[color=#$classColor][b]" . format_comment($CURUSER['username']) . "[/b][/color] has just bought $tickets $link Ticket" . plural($tickets) . "!! $end";
                 autoshout($msg);
             }
         } else {

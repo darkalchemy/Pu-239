@@ -1,6 +1,7 @@
 In no particular order  
 
-
+finish: offers, requests, upcomin and bot replies  
+add: script to check cheaters, make request to client to get random chunk, validate chuck against hash, update db for success, failure to validate, empty response and no response
 remove: need for session in announce.php scrape.php  
 check: $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1; announce.php  
 check: thanks  

@@ -64,9 +64,9 @@ if ($highScore < $score) {
     $users_class = $container->get(User::class);
     $users_class->update($set, $CURUSER['id']);
 } elseif ($score >= .9 * $highScore) {
-    $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a whopping " . number_format($score) . '. Excellent! The high score remains ' . number_format($highScore) . '.';
+    $message = "[color=#$classColor][b]" . format_comment($CURUSER['username']) . "[/b][/color] has just played $link and scored a whopping " . number_format($score) . '. Excellent! The high score remains ' . number_format($highScore) . '.';
 } else {
-    $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a measly " . number_format($score) . '. Try again. The high score remains ' . number_format($highScore) . '.';
+    $message = "[color=#$classColor][b]" . format_comment($CURUSER['username']) . "[/b][/color] has just played $link and scored a measly " . number_format($score) . '. Try again. The high score remains ' . number_format($highScore) . '.';
 }
 
 require_once INCL_DIR . 'function_users.php';

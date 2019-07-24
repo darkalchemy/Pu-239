@@ -377,7 +377,7 @@ switch ($action) {
                                    ->execute();
 
             $color = get_user_class_name((int) $user['class'], true);
-            $msg = "[{$color}]{$user['username']}[/{$color}] posted a new offer: [url={$site_config['paths']['baseurl']}/offers.php?action=offer_details&id={$new_offer_id}]{$offer_name}[/url]";
+            $msg = "[{$color}]" . format_comment($user['username']) . "[/{$color}] posted a new offer: [url={$site_config['paths']['baseurl']}/offers.php?action=offer_details&id={$new_offer_id}]" . format_comment($offer_name) . '[/url]';
             autoshout($msg);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&new=1&id=' . $new_offer_id);
             die();

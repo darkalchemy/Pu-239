@@ -389,7 +389,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $session->set('is-success', $lang['casino_bet_added_you_will_receive_a_pm_notify']);
         $bet = mksize($nobits);
         $classColor = get_user_class_color($user['class']);
-        $message = "[color=#$classColor][b]{$user['username']}[/b][/color] {$lang['casino_has_just_placed_a']} [color=red][b]{$bet}[/b][/color] {$lang['casino_bet_in_the_casino']}";
+        $message = "[color=#$classColor][b]" . format_comment($user['username']) . "[/b][/color] {$lang['casino_has_just_placed_a']} [color=red][b]{$bet}[/b][/color] {$lang['casino_bet_in_the_casino']}";
         $messages = "{$user['username']} {$lang['casino_has_just_placed_a']} {$bet} {$lang['casino_bet_in_the_casino']}";
         $values = [
             'userid' => $user['id'],

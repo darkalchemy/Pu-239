@@ -492,7 +492,7 @@ if ($game) {
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($user['class']);
                     $opponent = get_user_class_color((int) $a['class']);
-                    $msg = "[color=#$classColor]{$user['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
+                    $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played [color=#$opponent]" . format_comment($a['username']) . "[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
                     }
@@ -515,7 +515,7 @@ if ($game) {
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($user['class']);
-                    $msg = "[color=#$classColor]{$user['username']}[/color] has just played $link.";
+                    $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played $link.";
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
@@ -596,7 +596,7 @@ if ($game) {
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($user['class']);
                     $opponent = get_user_class_color((int) $a['class']);
-                    $msg = "[color=#$classColor]{$user['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
+                    $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played [color=#$opponent]" . format_comment($a['username']) . "[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
                     }
@@ -621,7 +621,7 @@ if ($game) {
 
                 if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                     $classColor = get_user_class_color($user['class']);
-                    $msg = "[color=#$classColor]{$user['username']}[/color] has just played $link.";
+                    $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played $link.";
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
@@ -831,7 +831,7 @@ if ($game) {
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($user['class']);
                 $opponent = get_user_class_color((int) $a['class']);
-                $msg = "[color=#$classColor]{$user['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
+                $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played [color=#$opponent]" . format_comment($a['username']) . "[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
                 autoshout($msg);
             }
 
@@ -858,7 +858,7 @@ if ($game) {
 
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($user['class']);
-                $msg = "[color=#$classColor]{$user['username']}[/color] has just played $link.";
+                $msg = "[color=#$classColor]" . format_comment($user['username']) . "[/color] has just played $link.";
                 autoshout($msg);
             }
             $HTMLOUT .= "

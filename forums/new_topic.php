@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
            ->execute();
 
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
-        $message = $CURUSER['username'] . ' ' . $lang['nt_created_new_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url][/quote]";
+        $message = format_comment($CURUSER['username']) . ' ' . $lang['nt_created_new_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]" . format_comment($topic_name) . '[/url][/quote]';
         if (!in_array($forum_id, $site_config['staff_forums'])) {
             autoshout($message);
         }

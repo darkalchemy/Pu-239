@@ -395,9 +395,9 @@ $peer_class->getPeersFromUserId($owner_id);
 clear_image_cache();
 
 if (!empty($uplver) && $uplver === 'yes') {
-    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
+    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . format_comment($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
-    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user['username']);
+    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . format_comment($torrent) . '[/i][/b][/url] Uploaded by ' . format_comment($user['username']);
 }
 $messages = "{$site_config['site']['name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['paths']['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -406,8 +406,8 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  * @param $arr
  * @param $id
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -428,8 +428,11 @@ if (!bencdec::encode_file($dir, $dict)) {
     $session->set('is-warning', $lang['takeupload_encode_error']);
     why_die($lang['takeupload_encode_error']);
 }
-@unlink($tmpname);
-
+try {
+    unlink($tmpname);
+} catch (Exception $e) {
+    //TODO
+}
 if ($site_config['bonus']['on']) {
     $seedbonus = $user['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_upload']) . ', numuploads = numuploads + 1  WHERE id=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);

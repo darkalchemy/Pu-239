@@ -2836,7 +2836,7 @@ class AJAXChat
             foreach ($matches[1] as $match) {
                 $row['text'] = str_replace($match, str_replace($this->_siteConfig['paths']['images_baseurl'], $this->_siteConfig['paths']['chat_images_baseurl'], url_proxy($match, true)), $row['text']);
             }
-            $message = $this->getChatViewMessageXML((int) $row['id'], (int) $row['timeStamp'], (int) $row['userID'], $row['userName'], (int) $row['userRole'], (int) $row['channelID'], $row['text']);
+            $message = $this->getChatViewMessageXML((int) $row['id'], (int) $row['timeStamp'], (int) $row['userID'], html_entity_decode($row['userName']), (int) $row['userRole'], (int) $row['channelID'], html_entity_decode($row['text']));
             $messages = $message . $messages;
         }
         $messages = '<messages>' . $messages . '</messages>';

@@ -1,3 +1,6 @@
+### 24 Jul, 2019
+update: better handling of unicode chars, likely more is needed
+
 ### 23 Jul, 2019
 update: forms add enctype='multipart/form-data'  
 update: better handling of unicode chars, likely more is needed  
