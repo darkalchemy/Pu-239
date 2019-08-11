@@ -1,4 +1,5 @@
 ### 10 Aug, 2019
+fix: bash function to get logname functions.php  
 update: add user ids to torrent blocks snatched_staff.php, torrents_block.php  
 fix: remove trim for bash function functions.php  
 fix: staff_actions.php  

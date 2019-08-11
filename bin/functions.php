@@ -108,15 +108,17 @@ function get_username()
         $user = null;
         $commands = [
             `logname`,
-            `who | awk "{print $1}"`,
-            exec("echo $SUDO_USER"),
+            `who | awk '{print $1}'`,
+            exec('echo $SUDO_USER'),
         ];
         $i = 0;
         while (empty($user)) {
             $user = $commands[$i];
+            if (!empty($user)) {
+                $user = trim($user);
+            }
             ++$i;
         }
-
         if (!empty($user)) {
             return $user;
         }
