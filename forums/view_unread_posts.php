@@ -121,7 +121,7 @@ if ($count === 0) {
         $locked = $arr_unread['locked'] === 'yes';
         $sticky = $arr_unread['sticky'] === 'yes';
         $topic_poll = $arr_unread['poll_id'] > 0;
-        if ($arr_unread['tan'] === 'yes') {
+        if ($arr_unread['tan'] === '1') {
             if ($user['class'] < UC_STAFF && $arr_unread['user_id'] != $user['id']) {
                 $thread_starter = (!empty($arr_unread['user_id']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['user_id'] . ']') . '<br>' . get_date($arr_unread['post_added'], '');
             } else {

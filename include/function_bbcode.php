@@ -48,11 +48,6 @@ function smilies_frame($smilies_set)
  * @param string $class
  * @param int    $height
  *
- * @throws DependencyException
- * @throws InvalidManipulation
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- *
  * @return string
  */
 function BBcode(string $body = '', string $class = 'w-100', int $height = 600)
@@ -70,7 +65,7 @@ function BBcode(string $body = '', string $class = 'w-100', int $height = 600)
 
     $bbcode = "
             <div class='$class has-text-centered'>
-                <textarea name='body' id='bbcode-editor' style='height: {$height}px;'>" . format_comment($body) . '</textarea>
+                <textarea name='body' id='bbcode-editor' style='height: {$height}px;'>" . $body . '</textarea>
             </div>';
 
     return $bbcode;
@@ -329,9 +324,9 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         '<span class="text-\1">\2</span>',
         "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920' height='1080' src='https://www.youtube.com/embed/\\1?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0&origin={$site_config['paths']['baseurl']}&vq=hd1080&wmode=opaque' allow='fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'></iframe></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded">',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm"><source src="//i.imgur.com/\1.mp4" type="video/mp4">Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls preload="none"><source src="\1"><source src="\1" type="video/mp4">Your browser does not support the video tag.</video></span>',

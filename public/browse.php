@@ -135,7 +135,7 @@ if ($today) {
 $queryed = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
 if ($queryed === 1) {
     $addparam .= 'incldead=1&amp;';
-    if ($user['class'] < UC_ADMINISTRATOR) {
+    if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
         $count->where('t.banned != "yes"');
         $query->where('t.banned != "yes"');
     }

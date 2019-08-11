@@ -82,7 +82,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         if ($now_viewing !== '') {
             $now_viewing = '<hr><span style="font-size: xx-small;">' . $lang['sv_now_viewing'] . ': </span>' . $now_viewing;
         }
-        if ($last_post_arr['tan'] === 'yes') {
+        if ($last_post_arr['tan'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . format_comment($last_post_arr['topic_name']) . '">
 		<span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>

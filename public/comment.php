@@ -87,9 +87,9 @@ if ($action === 'add') {
             stderr($lang['comment_error'], $lang['comment_body']);
         }
         $owner = isset($arr['owner']) ? (int) $arr['owner'] : 0;
-        $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no';
+        $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === '1' ? '1' : '0';
         $arr['comments'] = isset($arr['comments']) ? $arr['comments'] : 0;
-        if ($user['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
+        if ($user['id'] == $owner && $arr['anonymous'] === '1' || (isset($_POST['anonymous']) && $_POST['anonymous'] === '1')) {
             $anon = 'yes';
         } else {
             $anon = 'no';
@@ -156,7 +156,7 @@ if ($action === 'add') {
     $HTMLOUT .= "
         <div class='has-text-centered margin20'>
             <label for='anonymous'>Tick this to post anonymously</label>
-            <input id='anonymous' type='checkbox' name='anonymous' value='yes'><br>
+            <input id='anonymous' type='checkbox' name='anonymous' value='1'><br>
             <input type='submit' class='button is-small top20' value='{$lang['comment_doit']}'>
         </div>
     </form>";

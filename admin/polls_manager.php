@@ -291,12 +291,12 @@ function show_poll_archive($stdfoot)
                 <div class='level-center'>
                     <span>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=edit&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_edit']}' class='tooltipper'>
-                            <i class='icon-edit icon'></i>
+                            <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                         </a>
                     </span>
                     <span>
                         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_delete']}' class='tooltipper'>
-                            <i class='icon-trash-empty icon has-text-danger'></i>
+                            <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                         </a>
                     </span>
                 </div>

@@ -21,9 +21,9 @@ function trivia_update($data)
     global $container;
 
     $time_start = microtime(true);
+    $fluent = $container->get(Database::class);
     $cache = $container->get(Cache::class);
     $count = $cache->get('trivia_questions_count_');
-    $fluent = $container->get(Database::class);
     if ($count === false || is_null($count)) {
         $count = $fluent->from('triviaq')
                         ->select(null)

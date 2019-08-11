@@ -99,8 +99,7 @@ foreach ($query as $sub_forums_arr) {
                 $topic_status_image = ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper icon">';
                 break;
         }
-
-        if ($post_arr['tan'] == 'yes') {
+        if ($post_arr['tan'] === 1) {
             if ($CURUSER['class'] < UC_STAFF && $post_arr['user_id'] != $CURUSER['id']) {
                 $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name']) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name']), 30) . '</span></a>' . $topic_status_image . '<br>
@@ -119,7 +118,6 @@ foreach ($query as $sub_forums_arr) {
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name']), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date((int) $post_arr['added'], '') . '<br></span>';
         }
-
         $first_post_arr = [
             'first_post_id' => 0,
         ];
@@ -142,16 +140,16 @@ foreach ($query as $sub_forums_arr) {
                             <img src='{$site_config['paths']['images_baseurl']}forums/{$img}.gif' alt='{$img}' title='{$img}' class='tooltipper icon'>
                         </td>
                         <td>
-                            <a class='is-link' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . format_comment($sub_forums_arr['sub_form_name']) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
+                            <a class='is-link' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . format_comment($sub_forums_arr['sub_form_name']) . '</a>' . (has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder') ? "
                             <span class='level-right'>
                                 <span class='left10'>
                                     <a href='staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id={$sub_forums_arr['sub_forum_id']}'>
-                                        <i class='icon-edit icon'></i>
+                                        <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                                     </a>
                                 </span>
                                 <span>
                                     <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=delete_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>
-                                        <i class='icon-cancel icon has-text-danger'></i>
+                                        <i class='icon-cancel icon has-text-danger' aria-hidden='true'></i>
                                     </a>
                                 </span>
                             </span>" : '') . '
@@ -188,7 +186,7 @@ foreach ($query as $sub_forums_arr) {
     }
 }
 
-$res = sql_query('SELECT COUNT(id) FROM topics WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM topics WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' status != \'deleted\'  AND' : '')) . '  forum_id = ' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $posts = (int) $row[0];
 
@@ -222,17 +220,18 @@ $query = $fluent->from('topics AS t')
                 ->select('p.id AS post_id')
                 ->select('p.added AS post_added')
                 ->select('p.topic_id AS post_topic_id')
-                ->leftJoin('posts AS p ON t.id=p.topic_id')
+                ->leftJoin('posts AS p ON t.id = p.topic_id')
                 ->where('forum_id = ?', $forum_id);
-if ($CURUSER['class'] < UC_STAFF) {
+if (!has_access($CURUSER['class'], UC_STAFF, 'coder')) {
     $query = $query->where('p.status = "ok"');
 }
-if ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class']) {
+if (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], '')) {
     $query = $query->where('p.status != "deleted"');
 }
 $query = $query->orderBy('sticky, post_added DESC')
-               ->limit($pager['pdo']['limit'])
-               ->offset($pager['pdo']['offset'])
+                // pager not currently working properly
+               //->limit($pager['pdo']['limit'])
+               //->offset($pager['pdo']['offset'])
                ->fetchAll();
 
 $topic_arrs = $topic_ids = [];
@@ -270,7 +269,6 @@ if (!empty($topic_arrs)) {
 												WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? ' p.status != \'deleted\'  AND' : '')) . '  topic_id=' . sqlesc($topic_id) . '
 												ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr_post_stuff = mysqli_fetch_assoc($res_post_stuff);
-
         $post_status = format_comment($arr_post_stuff['status']);
         switch ($post_status) {
             case 'ok':
@@ -291,7 +289,7 @@ if (!empty($topic_arrs)) {
                 break;
         }
 
-        if ($arr_post_stuff['anonymous'] == 'yes') {
+        if ($arr_post_stuff['anonymous'] === 1) {
             if ($CURUSER['class'] < UC_STAFF && $arr_post_stuff['user_id'] != $CURUSER['id']) {
                 $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
             } else {
@@ -311,7 +309,7 @@ if (!empty($topic_arrs)) {
 												topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $first_post_arr = mysqli_fetch_assoc($first_post_res);
 
-        if ($first_post_arr['anonymous'] === 'yes') {
+        if ($first_post_arr['anonymous'] === 1) {
             if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
                 $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
             } else {
@@ -338,7 +336,6 @@ if (!empty($topic_arrs)) {
             case $total_pages == 0:
                 $multi_pages = '';
                 break;
-
             case $total_pages > 11:
                 $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['paths']['images_baseurl'] . 'forums/multipage.gif" alt="+" title="+" class="tooltipper icon">';
                 for ($i = 1; $i < 5; ++$i) {
@@ -376,21 +373,20 @@ if (!empty($topic_arrs)) {
             </td>
     		<td class="has-text-centered">' . $icon . '</td>
 	    	<td>
-		        <div class="level">
-		            <span class="right10">
+		        <div class="level level-wide w-100">
+		            <div class="right10">
         		        ' . $topic_name . '
-                    </span>
-	    	        <span class="right10">
-            		    ' . $first_post_text . '
-                    </span>
-		            <span class="right10">
-        		        ' . $topic_status_image . '
-                    </span>
+                    </div>
+	    	        <div class="left10">
+            		    ' . $first_post_text . (!empty($topic_status_image) ? "
+		                <span class='left10'>
+        		            $topic_status_image
+                        </span>" : '') . '
+                    </div>
 	    	    </div>
 		        <div>
 		        ' . $rpic . '
-    		    </div>
-    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . format_comment($topic_arr['topic_desc']) . '</span>' : '') . '</td>
+    		    </div>' . (!empty($topic_arr['topic_desc'] && $topic_arr['topic_desc'] != $topic_arr['topic_name']) ? '&#9658; <span style="font-size: x-small;">' . format_comment($topic_arr['topic_desc']) . '</span>' : '') . '
     		<td class="has-text-centered">' . $thread_starter . '</td>
 	    	<td class="has-text-centered">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		    <td class="has-text-centered">' . number_format($topic_arr['views']) . '</td>

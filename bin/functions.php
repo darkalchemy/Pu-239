@@ -107,9 +107,9 @@ function get_username()
     if (php_sapi_name() === 'cli') {
         $user = null;
         $commands = [
-            trim(`logname`),
-            trim(`who | awk '{print $1}'`),
-            trim(exec('echo $SUDO_USER')),
+            `logname`,
+            `who | awk "{print $1}"`,
+            exec("echo $SUDO_USER"),
         ];
         $i = 0;
         while (empty($user)) {

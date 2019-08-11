@@ -9,7 +9,7 @@ require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_get_images.php';
 check_user_status();
 $url = htmlsafechars($_POST['url']);
-$tid = !empty($_POST['tid']) ? (int) strip_tags($_POST['tid']) : null;
+$tid = !empty($_POST['tid']) ? (int) htmlsafechars($_POST['tid']) : null;
 $image = !empty($_POST['image']) ? htmlsafechars($_POST['image']) : null;
 header('content-type: application/json');
 global $container;
@@ -19,7 +19,6 @@ if (!empty($url)) {
     preg_match('/(tt[\d]{7,8})/i', $url, $imdb);
     $imdb = !empty($imdb[1]) ? $imdb[1] : null;
 }
-
 if (!empty($imdb)) {
     $banner = $background = null;
     $poster = !empty($image) ? $image : get_image_by_id('movie', $imdb, 'movieposter');

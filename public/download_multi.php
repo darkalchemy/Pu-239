@@ -22,7 +22,7 @@ $yes_no = [
 ];
 $users_class = $container->get(User::class);
 $torrents_class = $container->get(Torrent::class);
-if ($curuser['id'] === $userid || $curuser['class'] >= UC_ADMINISTRATOR) {
+if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
     $session = $container->get(Session::class);
     $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);
@@ -31,7 +31,7 @@ if ($curuser['id'] === $userid || $curuser['class'] >= UC_ADMINISTRATOR) {
         $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_uploaded_torrents.zip";
     } elseif (!empty($_GET['getall']) && in_array($_GET['getall'], $yes_no)) {
         $torrents = $torrents_class->get_all($_GET['getall']);
-        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_all_torrents.zip";
+        $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_" . ($yes_no === 'yes' ? 'all' : 'dead') . '_torrents.zip';
     } else {
         $torrents = $torrents_class->get_all_snatched($userid);
         $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_snatched_torrents.zip";

@@ -210,7 +210,6 @@ class User
     }
 
     /**
-     * @param int    $class
      * @param string $bot
      * @param string $torrent_pass
      * @param string $auth
@@ -219,12 +218,12 @@ class User
      *
      * @return mixed
      */
-    public function get_bot_id(int $class, string $bot, string $torrent_pass, string $auth)
+    public function get_bot_id(string $bot, string $torrent_pass, string $auth)
     {
         $userid = $this->fluent->from('users')
                                ->select(null)
                                ->select('id')
-                               ->where('class >= ?', $class)
+                               ->where('roles_mask & ?', Roles::UPLOADER)
                                ->where('username = ?', $bot)
                                ->where('auth = ?', $auth)
                                ->where('torrent_pass = ?', $torrent_pass)

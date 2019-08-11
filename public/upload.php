@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Roles;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -26,13 +28,15 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$HTMLOUT = $offers = $subs_list = $audios_list = $has_request = $descr = '';
-if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['status'] === 5) {
+$auth = $container->get(Auth::class);
+if (!$auth->hasRole(Roles::UPLOADER) || $user['uploadpos'] != 1 || $user['status'] === 5) {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $cache = $container->get(Cache::class);
 $upload_vars = $cache->get('user_upload_variables_' . $user['id']);
 $poster = $youtube = $strip = $uplver = $allow_comments = $free_length = $half_length = $tags = $description = $body = '';
+$HTMLOUT = $subs_list = $audios_list = $descr = $has_offers = $has_requests = '';
+
 if (!empty($upload_vars)) {
     $upload_vars = json_decode($upload_vars, true);
 }
@@ -74,26 +78,26 @@ foreach ($vars as $var) {
     }
 }
 $fluent = $container->get(Database::class);
-$res_request = $fluent->from('requests')
+$res_requests = $fluent->from('requests')
                       ->select(null)
                       ->select('id')
                       ->select('request_name')
-                      ->where('filled_by_user_id=0')
+                      ->where('filled_by_user_id = 0')
                       ->orderBy('request_name')
                       ->fetchAll();
 
-if ($res_request) {
-    $has_request = "
+if ($res_requests) {
+    $has_requests = "
             <tr>
                 <td>{$lang['upload_request']}:</span></td>
                 <td>
                     <select name='request' class='w-100'>
                         <option value='0'>{$lang['upload_request']}</option>";
     foreach ($res_request as $arr_request) {
-        $has_request .= "
+        $has_requests .= "
                         <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
     }
-    $has_request .= "
+    $has_requests .= "
                     </select>{$lang['upload_request_msg']}
                 </td>
             </tr>";
@@ -109,17 +113,17 @@ $res_offers = $fluent->from('offers')
                      ->fetchAll();
 
 if ($res_offers) {
-    $offers = "
+    $has_offers = "
             <tr>
                 <td>{$lang['upload_offer']}:</td>
                 <td>
                     <select name='offer' class='w-100'>
                         <option value='0'>{$lang['upload_offer']}</option>";
     foreach ($res_offers as $arr_offer) {
-        $offers .= "
+        $has_offers .= "
                         <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['offer_name']) . '</option>';
     }
-    $offers .= "
+    $has_offers .= "
                     </select>{$lang['upload_offer_msg']}:
                 </td>
             </tr>";
@@ -227,8 +231,8 @@ $HTMLOUT .= "
                     <div class='margin10'>({$lang['upload_html_bbcode']})</div>
                 </td>
             </tr>";
-$HTMLOUT .= $offers;
-$HTMLOUT .= $has_request;
+$HTMLOUT .= $has_offers;
+$HTMLOUT .= $has_requests;
 $subs_list .= "
                 <div id='subs' class='level-center'>";
 $subs = $container->get('subtitles');
@@ -279,7 +283,7 @@ if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
         <option value='no' " . ($allow_comments === 'no' ? 'selected' : '') . '>No</option>
     </select>', 1);
 }
-if ($user['class'] >= UC_UPLOADER) {
+if (has_access($user['class'], UC_MIN, 'uploader')) {
     $HTMLOUT .= "
     <tr>
         <td class='rowhead'>{$lang['upload_free']}</td>
@@ -312,7 +316,7 @@ if ($user['class'] >= UC_UPLOADER) {
 }
 require_once PARTIALS_DIR . 'genres.php';
 
-if ($user['class'] >= UC_UPLOADER) {
+if (has_access($user['class'], UC_USER, 'uploader')) {
     $HTMLOUT .= tr($lang['upload_vip'], "<div class='level-left'><input type='checkbox' name='vip' id='vip' value='1' " . ($vip == 1 ? 'checked' : '') . "><label for='vip' class='left5'>{$lang['upload_vip_msg']}</label></div>", 1);
 }
 $HTMLOUT .= "

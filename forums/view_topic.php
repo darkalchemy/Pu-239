@@ -75,7 +75,7 @@ switch ($status) {
 }
 
 $forum_id = $arr['forum_id'];
-$topic_owner = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['user_id']);
+$topic_owner = $arr['anonymous'] === '1' ? get_anonymous_name() : format_username($arr['user_id']);
 $topic_name = !empty($arr['topic_name']) ? format_comment($arr['topic_name']) : '';
 $topic_desc1 = !empty($arr['topic_desc']) ? format_comment($arr['topic_desc']) : '';
 
@@ -443,10 +443,10 @@ foreach ($posts as $arr) {
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . format_comment($arr['icon']) . '.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ';
     $post_title = !empty($arr['post_title']) ? format_comment($arr['post_title']) : 'Post: #' . $post_id . ', ';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy'>" : '';
-    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, (int) $post_id, ($arr['anonymous'] === 'yes' ? true : false)) : '';
+    $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, (int) $post_id, ($arr['anonymous'] === '1' ? true : false)) : '';
     $attachments = $edited_by = '';
     if ($arr['edit_date'] > 0) {
-        if ($arr['anonymous'] === 'yes') {
+        if ($arr['anonymous'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
 				 at ' . get_date((int) $arr['edit_date'], 'LONG') . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . format_comment($arr['edit_reason']) . ' ] <span>' : '') . '
@@ -477,7 +477,7 @@ foreach ($posts as $arr) {
         }
         $attachments .= '</td></tr></table>';
     }
-    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] != 'yes' && !get_anonymous($usersdata['id']) ? format_comment($usersdata['signature']) : '';
+    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] === '1' && !get_anonymous($usersdata['id']) ? format_comment($usersdata['signature']) : '';
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
         case 'ok':
@@ -559,10 +559,10 @@ foreach ($posts as $arr) {
                         <span onclick="copy_to_clipboard(\'' . $dlink . '\')">
                             <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper icon left5 right5 lazy">
                         </span>
-                        <span>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_comment($usersdata['username'])) . '</span>
+                        <span>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_comment($usersdata['username'])) . '</span>
                         <span class="tool left5 right5">
                             <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
-                                <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" title="' . ($arr['anonymous'] === 'yes' ? get_anonymous_name() : format_comment($usersdata['username'])) . ' ' . $moodname . '!" class="tooltipper emoticon lazy">
+                                <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" title="' . ($arr['anonymous'] === '1' ? get_anonymous_name() : format_comment($usersdata['username'])) . ' ' . $moodname . '!" class="tooltipper emoticon lazy">
                             </a>
                         </span>' . (($usersdata['paranoia'] >= 2 && ($CURUSER['class'] < UC_STAFF)) ? '
                         <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy">' : get_user_ratio_image($usersdata['uploaded'], $usersdata['downloaded'])) . '
@@ -589,8 +589,8 @@ foreach ($posts as $arr) {
                 <div class="w-100 padding10">
                     <div class="columns is-marginless">
                         <div class="column round10 bg-02 is-2-widescreen is-12-mobile has-text-centered">
-                            ' . $avatar . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . format_comment($usersdata['title']) . ']</span>') . '<br>
-			                <span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name((int) $usersdata['class'])) . '</span><br>
+                            ' . $avatar . '<br>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['user_id'])) . ($arr['anonymous'] === '1' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . format_comment($usersdata['title']) . ']</span>') . '<br>
+			                <span>' . ($arr['anonymous'] === '1' ? '' : get_user_class_name((int) $usersdata['class'])) . '</span><br>
                             ' . ($usersdata['last_access'] > TIME_NOW - 300 && !get_anonymous($usersdata['id']) ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format((float) $usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . format_comment($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . format_comment($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
 			                <ul class="level-center">
 			                    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . format_comment($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>

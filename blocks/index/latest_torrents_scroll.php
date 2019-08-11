@@ -40,7 +40,7 @@ if (!empty($torrents)) {
         $times_completed = $last['times_completed'];
         $genre = $last['genre'];
 
-        if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+        if ($anonymous === '1' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = '<span>' . get_anonymous_name() . '</span>';
         } else {
             $username = !empty($username) ? htmlsafechars($username) : 'unknown';

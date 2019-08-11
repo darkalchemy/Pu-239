@@ -27,6 +27,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
     global $container, $site_config;
 
     $user = check_user_status();
+
     $users_class = $container->get(User::class);
     if (empty($user)) {
         header("Location: {$site_config['paths']['baseurl']}/404.html");
@@ -41,7 +42,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
         die();
     }
     $userid = $user['id'];
-    if ($user['class'] >= $class) {
+    if (has_access($user['class'], $class, 'coder')) {
         if ($staff) {
             if (($user['class'] > UC_MAX) || (!in_array($user['id'], $site_config['is_staff']))) {
                 $ip = getip();

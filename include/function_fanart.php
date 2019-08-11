@@ -12,9 +12,9 @@ use Pu239\Image;
  * @param string $type
  * @param int    $season
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */
@@ -104,9 +104,9 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  * @param bool   $store
  * @param string $type
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -128,7 +128,6 @@ function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackgr
     }
     $url = 'https://webservice.fanart.tv/v3/movies/';
     $fanart = fetch($url . $id . '?api_key=' . $key, false);
-
     if ($fanart) {
         $fanart = json_decode($fanart, true);
     } else {
@@ -149,7 +148,7 @@ function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackgr
             } elseif (empty($site_config['fanart']['image_lang'])) {
                 $images[] = $image;
             } elseif (!empty($site_config['fanart']['image_lang']) && empty($image['lang']) && in_array('empty', $site_config['fanart']['image_lang'])) {
-                $images[] = $image['url'];
+                $images[] = $image;
             }
         }
         if (!empty($images)) {

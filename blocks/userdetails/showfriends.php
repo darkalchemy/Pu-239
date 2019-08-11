@@ -34,13 +34,13 @@ if ($users_friends === false || is_null($users_friends)) {
     $cache->set($keys['user_friends'], $users_friends, 86400);
 }
 
-if (!empty($users_friends) && !empty($users_friends)) {
+if (!empty($users_friends)) {
     $user_friends = "<table>\n" . "<tr><td class='colhead'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['site']['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
     if ($users_friends) {
         foreach ($users_friends as $a) {
             $avatar = get_avatar($a);
-            $status = "<img style='vertical-align: middle;' src='{$site_config['paths']['images_baseurl']}" . ($a['last_access'] > $dt && !get_anonymous($a['id']) ? 'online.png' : 'offline.png') . "' alt=''>";
-            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username((int) $a['uid']) . "<br></td><td style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : "<td style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td style='padding: 1px'>" . member_ratio($a['uploaded'], $a['downloaded']) . "</td><td style='padding: 1px'>" . $status . "</td></tr>\n";
+            $status = "<img style='vertical-align: middle;' src='{$site_config['paths']['images_baseurl']}" . ($a['last_access'] > $dt && !get_anonymous($a['uid']) ? 'online.png' : 'offline.png') . "' alt=''>";
+            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username($a['uid']) . "<br></td><td style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : "<td style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td style='padding: 1px'>" . member_ratio($a['uploaded'], $a['downloaded']) . "</td><td style='padding: 1px'>" . $status . "</td></tr>\n";
         }
         $user_friends .= '</table>';
         $HTMLOUT .= "

@@ -2,9 +2,11 @@
 
 declare(strict_types = 1);
 
+use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Pu239\Roles;
 use Pu239\User;
 
 require_once INCL_DIR . 'function_users.php';
@@ -49,6 +51,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
         if ($CURUSER['class'] === UC_MAX) {
             $modcomment = $post['modcomment'];
             $update['modcomment'] = $modcomment;
+        }
+        $setbits = $clrbits = 0;
+        if (isset($post['role_coder']) && $post['role_coder'] == 1 && ($user['roles_mask'] ^ Roles::CODER) === Roles::CODER) {
+            $setbits |= Roles::CODER;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_added'], 'CODER') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_added'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - CODER {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        } elseif (!isset($post['role_coder']) && ($user['roles_mask'] & Roles::CODER) === Roles::CODER) {
+            $clrbits |= Roles::CODER;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_removed'], 'CODER') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_removed'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - CODER {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        }
+        if (isset($post['role_uploader']) && $post['role_uploader'] == 1 && ($user['roles_mask'] ^ Roles::UPLOADER) === Roles::UPLOADER) {
+            $setbits |= Roles::UPLOADER;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_added'], 'UPLOADER') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_added'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - UPLOADER {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        } elseif (!isset($post['role_uploader']) && ($user['roles_mask'] & Roles::UPLOADER) === Roles::UPLOADER) {
+            $clrbits |= Roles::UPLOADER;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_removed'], 'UPLOADER') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_removed'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - UPLOADER {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        }
+        if ($setbits > 0 || $clrbits > 0) {
+            $update['roles_mask'] = new Literal('((roles_mask | ' . $setbits . ') & ~' . $clrbits . ')');
         }
         if (isset($post['class']) && (($class = (int) $post['class']) !== $user['class'])) {
             if ($CURUSER['class'] !== UC_MAX && ($class === UC_MAX || $class >= $CURUSER['class'] || $user['class'] >= $CURUSER['class'])) {
@@ -363,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
             'subject' => $subject,
         ];
     }
-    if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
+    if (has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder')) {
         $uploadtoadd = (int) $post['amountup'];
         $downloadtoadd = (int) $post['amountdown'];
         $formatup = $post['formatup'];

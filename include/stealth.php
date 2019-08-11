@@ -34,13 +34,13 @@ function stealth(int $userid, bool $stealth = true)
     }
 
     if ($setbits || $clrbits) {
-        sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
-    $res = sql_query('SELECT username, perms, modcomment FROM users WHERE id=' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT username, perms, modcomment FROM users WHERE id = ' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
     $modcomment = get_date((int) TIME_NOW, '', 1) . ' - ' . $display . ' in Stealth Mode thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
-    sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     $cache = $container->get(Cache::class);
     $cache->update_row('user_' . $userid, [
         'perms' => $row['perms'],

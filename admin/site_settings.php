@@ -110,11 +110,11 @@ $HTMLOUT .= "
 $heading = "
             <tr>
                 <th class='w-1'>ID</th>
-                <th class='w-10'>Key</th>
-                <th class='w-10'>Name</th>
-                <th class='w-10'>Type</th>
-                <th class='w-20'>Value</th>
-                <th class='w-25'>Description</th>
+                <th class='w-10 min-150'>Key</th>
+                <th class='w-10 min-150'>Name</th>
+                <th class='w-10 min-150'>Type</th>
+                <th class='w-20 min-250'>Value</th>
+                <th class='w-25 min-250'>Description</th>
             </tr>";
 
 $body = '';
@@ -180,6 +180,16 @@ $select .= '
 $HTMLOUT .= $select;
 
 foreach ($keys as $key) {
+    if ($key != 'New') {
+        $settings[] = [
+            'id' => 'Add',
+            'parent' => $key,
+            'name' => '',
+            'type' => '',
+            'value' => '',
+            'description' => '',
+        ];
+    }
     $i = 0;
     $key = empty($key) ? 'null' : $key;
     $body = "

@@ -88,7 +88,7 @@ if (mysqli_num_rows($res) > 0) {
     $at_score_res = sql_query('SELECT * FROM highscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username((int) $at_score_arr['user_id']);
-        $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score>' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
+        $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
                 <tr' . ($at_score_arr['user_id'] == $user['id'] ? ' class="has-text-primary text-shadow"' : '') . '>

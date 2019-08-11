@@ -10,6 +10,8 @@ declare(strict_types = 1);
  */
 
 // Class to handle HTML templates
+use DI\DependencyException;
+use DI\NotFoundException;
 
 /**
  * Class AJAXChatTemplate.
@@ -337,6 +339,9 @@ class AJAXChatTemplate
     }
 
     /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     *
      * @return string
      */
     public function getLogsChannelOptionTags()
@@ -344,7 +349,7 @@ class AJAXChatTemplate
         $channelOptions = '';
         $channelOptions .= '<option value="-3">------</option>';
         foreach ($this->ajaxChat->getChannels() as $key => $value) {
-            if ($this->ajaxChat->getUserRole() <= UC_STAFF && $this->ajaxChat->getConfig('logsUserAccessChannelList') && !in_array($value, $this->ajaxChat->getConfig('logsUserAccessChannelList'))) {
+            if (!has_access($this->ajaxChat->getUserRole(), UC_ADMINISTRATOR, 'coder') && $this->ajaxChat->getConfig('logsUserAccessChannelList') && !in_array($value, $this->ajaxChat->getConfig('logsUserAccessChannelList'))) {
                 continue;
             }
             $channelOptions .= '<option value="' . $value . '">' . $this->ajaxChat->htmlEncode($key) . '</option>';

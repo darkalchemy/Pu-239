@@ -11,7 +11,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             <td class='rowhead'>{$lang['userdetails_snatched']}</td>
             <td>
                 <a id='snatched-staff-hash'></a>
-                <fieldset id='snatched-staff' class='header'>
+                <fieldset id='snatched-staff_{$curuser['id']}' class='header'>
                     <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i><span class='has-text-danger'>*Staff Only*</span> View Snatched Torrents</legend>
                     <div id='inner_snatched_staff' style='display: none;' data-uid='{$user['id']}'></div>
                 </fieldset>

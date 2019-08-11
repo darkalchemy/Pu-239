@@ -39,17 +39,19 @@ function tvmaze_update($data)
         if (empty($json)) {
             return false;
         }
-        $shows = @json_decode($json, true);
+        $shows = json_decode($json, true);
         if ($shows) {
             foreach ($shows as $show) {
                 if (!empty($show['id'])) {
                     $values[] = [
-                        'name' => get_or_empty($show['name']),
-                        'tvmaze_id' => get_or_empty($show['id']),
-                        'tvrage_id' => get_or_empty($show['externals']['tvrage']),
-                        'thetvdb_id' => get_or_empty($show['externals']['thetvdb']),
-                        'imdb_id' => get_or_empty($show['externals']['imdb']),
+                        'name' => get_or_empty($show['name'], false),
+                        'tvmaze_id' => get_or_empty($show['id'], true),
+                        'tvrage_id' => get_or_empty($show['externals']['tvrage'], true),
+                        'thetvdb_id' => get_or_empty($show['externals']['thetvdb'], true),
                     ];
+                    if (!empty($update['externals']['imdb']) && preg_match('/tt\d{7,8}$/', $update['externals']['imdb'])) {
+                        $values['imdb_id'] = get_or_empty($update['externals']['imdb'], false);
+                    }
                 }
             }
         }
@@ -71,11 +73,12 @@ function tvmaze_update($data)
 }
 
 /**
- * @param $param
+ * @param      $param
+ * @param bool $int
  *
  * @return mixed|string
  */
-function get_or_empty($param)
+function get_or_empty($param, bool $int)
 {
     if (!empty($param)) {
         if (is_int($param)) {
@@ -83,6 +86,10 @@ function get_or_empty($param)
         }
 
         return htmlsafechars($param);
+    }
+
+    if ($int) {
+        return 0;
     }
 
     return '';

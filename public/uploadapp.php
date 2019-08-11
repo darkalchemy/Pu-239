@@ -2,9 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Pu239\Roles;
+use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
@@ -19,12 +22,13 @@ $HTMLOUT = '';
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 $messages_class = $container->get(Message::class);
+$auth = $container->get(Auth::class);
 if (isset($_POST['form']) != 1) {
-    $res = sql_query('SELECT status FROM uploadapp WHERE userid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    if ($user['class'] >= $site_config['allowed']['upload']) {
+    /*if ($auth->hasRole(Roles::UPLOADER)) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
-    } elseif ($arr['status'] === 'pending') {
+    } else*/if ($arr['status'] === 'pending') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
     } elseif ($arr['status'] === 'rejected') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
@@ -78,7 +82,7 @@ if (isset($_POST['form']) != 1) {
                         {$lang['uploadapp_upspeed']}
                     </td>
                     <td>
-                        <input type='text' name='speed' class='w-100'>
+                        <input type='text' name='speed' class='w-100' maxlength='20'>
                     </td>
                 </tr>
                 <tr>
@@ -86,7 +90,7 @@ if (isset($_POST['form']) != 1) {
                         {$lang['uploadapp_offer']}
                     </td>
                     <td>
-                        <textarea class='w-100' name='offer' rows='1'></textarea>
+                        <textarea class='w-100' name='offer' rows='2'></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -107,7 +111,7 @@ if (isset($_POST['form']) != 1) {
                     <td class='rowhead'>
                         {$lang['uploadapp_sites']}</td>
                     <td>
-                        <textarea class='w-100' name='sitenames' rows='1'></textarea>
+                        <input type='text' class='w-100' name='sitenames' maxlength='150'>
                     </td>
                 </tr>
                 <tr>
@@ -166,7 +170,22 @@ if (isset($_POST['form']) != 1) {
     if (!empty($dupe)) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
     }
-
+    $validator = $container->get(Validator::class);
+    $validation = $validator->validate($_POST, [
+        'userid' => 'required|integer',
+        'connectable' => 'required|in:Pending,Yes,Yo',
+        'speed' => 'required',
+        'offer' => 'required',
+        'reason' => 'required',
+        'sites' => 'required|in:yes,no',
+        'sitenames' => 'required',
+        'scene' => 'required|in:yes,no',
+        'creating' => 'required|in:yes,no',
+        'seeding' => 'required|in:yes,no',
+    ]);
+    if ($validation->fails()) {
+        stderr($lang['uploadapp_error'], 'Invalid data supplied');
+    }
     $values = [
         'userid' => (int) $_POST['userid'],
         'applied' => TIME_NOW,

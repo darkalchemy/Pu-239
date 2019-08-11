@@ -66,7 +66,7 @@ if ($mode === 'delete') {
 } elseif ($mode === 'add') {
     $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
-    $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : 'no';
+    $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : '0';
     if (!$body) {
         stderr($lang['news_error'], $lang['news_add_item']);
     }
@@ -111,7 +111,7 @@ if ($mode === 'delete') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
         $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
-        $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : 'no';
+        $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : '1';
         if ($body == '') {
             stderr($lang['news_error'], $lang['news_edit_body']);
         }
@@ -171,9 +171,9 @@ if ($mode === 'delete') {
                         </td>
                         <td>
                             {$lang['news_anonymous']}
-                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? 'checked' : '') . " name='anonymous' value='yes'>
+                            <input type='radio' " . ($arr['anonymous'] === '1' ? 'checked' : '') . " name='anonymous' value='1'>
                             {$lang['news_yes']}
-                            <input type='radio' " . ($arr['anonymous'] === 'no' ? 'checked' : '') . " name='anonymous' value='no'>
+                            <input type='radio' " . ($arr['anonymous'] === '0' ? 'checked' : '') . " name='anonymous' value='0'>
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -230,9 +230,9 @@ if ($mode === 'delete') {
                             {$lang['news_anonymous']}
                         </td>
                         <td>
-                            <input type='radio' checked name='anonymous' value='yes'>
+                            <input type='radio' name='anonymous' value='1' checked>
                             {$lang['news_yes']}
-                            <input name='anonymous' type='radio' value='no'>
+                            <input type='radio' name='anonymous' value='0'>
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -254,7 +254,7 @@ if ($mode === 'delete') {
         $added = get_date($arr['added'], 'LONG', 0, 1);
         $by = '<b>' . format_username($arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
-        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['userid']);
+        $user = $arr['anonymous'] === '1' ? get_anonymous_name() : format_username($arr['userid']);
         $class = $i++ != 0 ? 'top20' : '';
         $HTMLOUT .= main_div("
             <div class='level bg-01 padding20 round5'>
@@ -263,10 +263,10 @@ if ($mode === 'delete') {
                 </div>
                 <div class='has-text-right'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' title='{$lang['news_edit']}' class='tooltipper'>
-                        <i class='icon-edit icon'></i>
+                        <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='{$lang['news_delete']}' class='has-text-danger tooltipper'>
-                        <i class='icon-cancel icon has-text-danger'></i>
+                        <i class='icon-cancel icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </div>
             </div>

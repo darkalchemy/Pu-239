@@ -204,7 +204,7 @@ function get_seeding(int $userid)
                        ->leftJoin('categories AS p ON c.parent_id = p.id')
                        ->where('z.userid = ?', $userid)
                        ->where('z.seeder = "yes"')
-                       ->orderBy('last_action DESC')
+                       ->orderBy('z.last_action DESC')
                        ->fetchAll();
 
     return $torrents;
@@ -256,7 +256,7 @@ function get_leeching(int $userid)
                        ->leftJoin('categories AS p ON c.parent_id = p.id')
                        ->where('z.userid = ?', $userid)
                        ->where('z.seeder = "no"')
-                       ->orderBy('last_action DESC')
+                       ->orderBy('z.last_action DESC')
                        ->fetchAll();
 
     return $torrents;
@@ -296,7 +296,7 @@ function get_snatched(int $userid)
                        ->leftJoin('categories AS c ON t.category = c.id')
                        ->leftJoin('categories AS p ON c.parent_id = p.id')
                        ->where('s.userid = ?', $userid)
-                       ->orderBy('last_action DESC')
+                       ->orderBy('s.last_action DESC')
                        ->fetchAll();
 
     return $torrents;
@@ -344,7 +344,7 @@ function get_snatched_staff(int $userid)
                        ->leftJoin('categories AS p ON c.parent_id = p.id')
                        ->leftJoin('peers AS z ON t.id = z.torrent AND z.userid = s.userid')
                        ->where('s.userid = ?', $userid)
-                       ->orderBy('last_action DESC')
+                       ->orderBy('s.last_action DESC')
                        ->fetchAll();
 
     return $torrents;
@@ -430,8 +430,8 @@ function snatchtable(array $torrents)
         </tr>";
     $body = '';
     foreach ($torrents as $torrent) {
-        $upspeed = $torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize(intval($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime']))) : mksize(0));
-        $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize(intval($torrent['downloaded'] / $torrent['leechtime'])) : mksize(0)));
+        $upspeed = $torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0));
+        $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize($torrent['downloaded'] / $torrent['leechtime']) : mksize(0)));
         $ratio = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
         $XBT_or_PHP = $torrent['torrentid'];
         $XBT_or_PHP_TIME = $torrent['complete_date'];
@@ -485,14 +485,14 @@ function staff_snatchtable(array $torrents, int $userid)
     $body = '';
     foreach ($torrents as $arr) {
         if ($arr['upspeed'] > 0) {
-            $ul_speed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize(intval($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime']))) : mksize(0)));
+            $ul_speed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
         } else {
             $ul_speed = mksize(($arr['uploaded'] / ($arr['last_action'] - $arr['start_date'] + 1)));
         }
         if ($arr['downspeed'] > 0) {
-            $dl_speed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize(intval($arr['downloaded'] / $arr['leechtime'])) : mksize(0)));
+            $dl_speed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
         } else {
-            $dl_speed = mksize(intval($arr['downloaded'] / ($arr['complete_date'] - $arr['start_date'] + 1)));
+            $dl_speed = mksize($arr['downloaded'] / ($arr['complete_date'] - $arr['start_date'] + 1));
         }
         switch (true) {
             case $dl_speed > 600:

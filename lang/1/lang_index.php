@@ -95,6 +95,7 @@ $lang = [
     'index_stats_gender_male' => 'Males',
     'index_stats_gender_female' => 'Females',
     'index_stats_powerusers' => 'Power Users',
+    'index_stats_superusers' => 'Super Users',
     'index_stats_banned' => 'Disabled',
     'index_stats_uploaders' => 'Uploaders',
     'index_stats_vips' => 'VIPs',

@@ -20,7 +20,7 @@ function visible_update($data)
     $fluent = $container->get(Database::class);
 
     $time_start = microtime(true);
-    $deadtime_tor = TIME_NOW - $site_config['site']['max_dead_torrent_time'];
+    $deadtime_tor = get_date(TIME_NOW - $site_config['site']['max_dead_torrent_time'], 'MYSQL', 1, 0);
     $set = [
         'visible' => 'no',
     ];

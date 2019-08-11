@@ -9,6 +9,11 @@ $lang = [
     'modtask_try_again' => 'Please try again',
     'modtask_error' => 'Error',
     'modtask_bad_id' => 'Bad user ID.',
+    // roles
+    'modtask_role_added' => 'Role Added',
+    'modtask_role_removed' => 'Role Removed',
+    'modtask_has_been_added' => "'%s' Role has been added to your profile",
+    'modtask_has_been_removed' => "'%s' Role has been removed from your profile",
     //change class
     'modtask_promoted' => 'Promoted',
     'modtask_demoted' => 'Demoted',

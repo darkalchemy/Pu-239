@@ -1,5 +1,101 @@
+### 10 Aug, 2019
+update: add user ids to torrent blocks snatched_staff.php, torrents_block.php  
+fix: remove trim for bash function functions.php  
+fix: staff_actions.php  
+fix: topic/post count on main forum page not matching topic/post count on view_forum.php  
+update: uploadapp.php  
+
+### 09 Aug, 2019
+fix: duplicated results for messages when user has friends/blocks  
+fix: and update arcade  
+
+### 07 Aug, 2019
+fix: multiple count queries snatched_torrents.php  
+fix: show users ip:port to everyone with id > UC_STAFF catalog.php  
+fix: limit number of leeches/seeds announce.php  
+fix: uploader not setting complete_date announce.php  
+
+### 06 Aug, 2019
+remove: paranoia from index page blocks  
+fix: undefined $self announce.php  
+update: add Port Check to navbar  
+update: extend timeout optimize_resize_images.php  
+fix: check ports  
+fix: user stats not updating announce.php  
+fix: uploader not setting complete_date announce.php  
+update: imdb id column to accept 7 or 8 digits tvmaze  
+update: truncate tables when deleting all torrents remove_torrents.php  
+add: cleanup tvmaze show update  
+update: get correct type tvmaze_update.php  
+fix: setting correct image tvmaze_schedule_update.php  
+
+### 05 Aug, 2019
+fix: min announce interval announce.php  
+fix: setting incorrect snatched start_date, uploaded, downloaded, seedtime, leechtime announce.php  
+fix: Downloaded Daily average userdetails.php  
+remove: keys  
+
+### 04 Aug, 2019
+fix: get images function_fanart.php  
+fix: type function_torrenttable.php  
+update: allow users to set paranoia levels  
+fix: incorrect time format used delete_torrents_update.php  
+fix: class_promo.php  
+fix: url format to irc  
+update: incorrect constant used  
+remove: Pu-239\Rolls from php-di  
+fix: data_reset.php  
+fix: add, rename, delete user mailboxes  edit_mailboxes.php  
+fix: message count view_mailbox.php  
+update: irc scripts  
+replace: UC_UPLOADER with UC_SUPERUSER  
+add: roles CODER, UPLOADER  
+add: each parent key includes ability to add new child  
+update: min column widths site_settings.php  
+fix: column not found watched_users.php  
+add: has_access() to allow checking for user roles, currently only if user is site coder, site coder would have full site access without the need to promote to UC_MAX  
+update: Mysqli to mysqli  
+update: 1000 vs 1024 blackjack.php, casino.php  
+add: tags.php to navbar  
+add: missing BBcode tags tags.php  
+
+### 30 Jul, 2019
+fix: saving BBcode() items as html instead of bbcode  
+fix: overwriting snatched['start_date'] with each update  
+
+### 29 Jul, 2019
+update: html for youtube iframe function_bbcode.php, chat.js  
+fix: breadcrumbs not showing when checking user password and using staffpanel  
+update: check banned ip status  
+fix: add banned ip  
+fix: update confirmed acpmanage.php  
+fix: isbn lookup  
+add: xbt_files_users, xbt_snatched and xbt_peers_history tables  
+update: allow letters with punctuation valid_username()  
+update: bot triggers  
+update: icons  
+fix: index not found mytorrents.php, function_torrenttable.php  
+fix: column not found postcounter.php, hnrs.php  
+
 ### 24 Jul, 2019
-update: limit leechers to 1 active peer, limit seeders to 3 active peers
+add: xbt_files_users, xbt_snatched and xbt_peers_history tables  
+fix: undefined index showfriends.php  
+update: all tables have a primary key  
+add: user_slots table  
+
+### 24 Jul, 2019
+add: xbt_client_blacklist users_freeleeches tables  
+fix: function undefined  
+update: db files  
+add: torrent['balance'] not sure its purpose  
+add: torrent['snatched'] i think this will be same as times_completed  
+update: all tables['anonymous'] to enum('1', '2')  
+add: torrent['time'] - not sure its needed, may remove later if not  
+update: restrict announces to $site_config['tracker']['min_interval'] and empty event  
+add: torrent['doubletorrent'] - not currently used  
+update: torrent['freetorrent'] to enum - not currently used  
+update: torrent['last_action'] from timestamp to date time  
+update: limit leechers to 1 active peer, limit seeders to 3 active peers  
 update: restrict announces to $site_config['tracker']['min_interval'] unless client event is completed and previous announce was seeder = no  
 remove: auto_enter_abnormal_upload() with todays speeds this check is pointless  
 update: better handling of unicode chars, likely more is needed  

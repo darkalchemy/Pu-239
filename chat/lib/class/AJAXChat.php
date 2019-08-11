@@ -182,9 +182,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -193,7 +193,7 @@ class AJAXChat
         if (!$this->_siteConfig['site']['online']) {
             return false;
         }
-        if ($this->getUserRole() >= UC_ADMINISTRATOR) {
+        if (has_access((int) $this->getUserRole(), UC_ADMINISTRATOR, 'coder')) {
             return true;
         }
         if ($this->getConfig('chatClosed')) {
@@ -224,9 +224,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return mixed|null
      */
@@ -468,9 +468,9 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -485,7 +485,7 @@ class AJAXChat
 
                 return false;
             case 'logs':
-                if ($this->isLoggedIn() && ($this->getUserRole() >= UC_ADMINISTRATOR || ($this->getConfig('logsUserAccess') && ($this->getUserRole() >= UC_MIN)))) {
+                if ($this->isLoggedIn() && (has_access((int) $this->getUserRole(), UC_ADMINISTRATOR, 'coder') || ($this->getConfig('logsUserAccess') && (has_access((int) $this->getUserRole(), UC_MIN, ''))))) {
                     return true;
                 }
 
@@ -520,7 +520,7 @@ class AJAXChat
             }
         }
 
-        if (($this->getUserRole() < UC_STAFF) && $this->isMaxUsersLoggedIn()) {
+        if (!has_access((int) $this->getUserRole(), UC_STAFF, 'coder') && $this->isMaxUsersLoggedIn()) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorMaxUsersLoggedIn');
 
@@ -991,11 +991,11 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return bool
      */
@@ -1030,9 +1030,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1046,8 +1046,8 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
+     * @throws DependencyException
      *
      * @return array|null
      */
@@ -1285,11 +1285,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return mixed|string|null
      */
@@ -1426,7 +1426,7 @@ class AJAXChat
 
         $delete = $result = false;
         if (!empty($message) && $message['channel'] >= 0) {
-            if ($this->getUserRole() >= UC_ADMINISTRATOR) {
+            if (has_access((int) $this->getUserRole(), UC_ADMINISTRATOR, 'coder')) {
                 if ($message['userRole'] === AJAX_CHAT_CHATBOT || $message['userRole'] < $this->getUserRole() || $message['userID'] === $this->getUserID()) {
                     $delete = true;
                 }
@@ -1507,9 +1507,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1769,9 +1769,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -1985,9 +1985,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -2334,8 +2334,8 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -2411,8 +2411,8 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -2615,12 +2615,12 @@ class AJAXChat
      * @param $text
      * @param $textParts
      *
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -2681,12 +2681,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2705,10 +2705,10 @@ class AJAXChat
     }
 
     /**
-     * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
      * @throws InvalidManipulation
+     * @throws NotFoundException
      *
      * @return string
      */
@@ -2802,10 +2802,10 @@ class AJAXChat
     }
 
     /**
-     * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
      * @throws InvalidManipulation
+     * @throws NotFoundException
      *
      * @return string
      */
@@ -2845,8 +2845,8 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2905,12 +2905,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2926,12 +2926,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -2983,11 +2983,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -3007,12 +3007,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3028,12 +3028,12 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return string
      */
@@ -3081,11 +3081,11 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
      *
      * @return string
      */
@@ -3122,7 +3122,7 @@ class AJAXChat
                 }
                 break;
             default:
-                if (($this->getUserRole() >= UC_ADMINISTRATOR || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList'))) && $this->validateChannel($this->getRequestVar('channelID'))) {
+                if ((has_access((int) $this->getUserRole(), UC_ADMINISTRATOR, 'coder') || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList'))) && $this->validateChannel($this->getRequestVar('channelID'))) {
                     $condition .= ' AND channel = ' . sqlesc($this->getRequestVar('channelID'));
                 } else {
                     $condition .= ' AND 0 = 1';

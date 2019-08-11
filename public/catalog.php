@@ -54,7 +54,7 @@ function peer_list(array $array, int $class)
     $heading = "
         <tr>
             <th>{$lang['catol_user']}</th>";
-    if ($class >= UC_STAFF) {
+    if (has_access($class, UC_STAFF, 'coder')) {
         $heading .= "
             <th>{$lang['catol_port']}&amp;{$lang['catol_ip']}</th>";
     }
@@ -71,9 +71,9 @@ function peer_list(array $array, int $class)
         $body .= '
         <tr>
             <td>' . format_username((int) $p['p_uid']) . '</td>';
-        if ($class >= UC_STAFF) {
+        if (has_access($class, UC_STAFF, 'coder')) {
             $body .= '
-            <td>' . ($class >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
+            <td>' . (has_access($class, UC_STAFF, 'coder') ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
         }
         $body .= '
             <td>' . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . '</td>
@@ -199,7 +199,7 @@ if (!empty($rows)) {
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = $images_class->find_images($row['imdb_id']);
         }
-        if ($row['anonymous'] === 'yes' && ($user['class'] < UC_STAFF || $row['owner'] === $user['id'])) {
+        if ($row['anonymous'] === '1' && (!has_access($user['class'], UC_STAFF, 'coder') || $row['owner'] === $user['id'])) {
             $uploader = get_anonymous_name();
         } else {
             $uploader = format_username((int) $row['owner']);
@@ -249,7 +249,7 @@ if (!empty($rows)) {
         </div>
         <div class='w-100'>
             <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
-            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['id'], $user['class']) : main_div("
+            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['class']) : main_div("
             <p class='has-text-centered'>{$lang['catol_no_info_show']}</p>", '', 'padding20')) . '
         </div>';
         $htmlout .= main_div($div, 'top20', 'padding20');

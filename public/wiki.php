@@ -186,7 +186,7 @@ if ($action === 'article') {
                     <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username((int) $result['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($result['body']) . '</div>
                     </div>' . $edit;
-            $div .= ($user['class'] >= UC_STAFF || $user['id'] === $result['userid'] ? '
+            $div .= (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
                     </div>' : '');
@@ -227,7 +227,7 @@ if ($action === 'add') {
 }
 if ($action === 'edit') {
     $result = $wiki->get_by_id($id);
-    if (($user['class'] >= UC_STAFF) || ($user['id'] === $result['userid'])) {
+    if (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid']) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . format_comment($result['name']) . "'>

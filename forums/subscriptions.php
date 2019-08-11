@@ -37,11 +37,11 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $locked = $topic_arr['locked'] === 'yes';
     $sticky = $topic_arr['sticky'] === 'yes';
     $topic_poll = $topic_arr['poll_id'] > 0;
-    $last_post_username = ($topic_arr['pan'] === 'no' && !empty($topic_arr['username']) ? format_username((int) $topic_arr['id']) : '[<i>' . get_anonymous_name() . '</i>]');
+    $last_post_username = ($topic_arr['pan'] === '0' && !empty($topic_arr['username']) ? format_username((int) $topic_arr['id']) : '[<i>' . get_anonymous_name() . '</i>]');
     $last_post_id = (int) $topic_arr['last_post'];
     $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.warned, u.status, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
-    if ($topic_arr['tan'] === 'yes') {
+    if ($topic_arr['tan'] === '1') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
             $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         } else {

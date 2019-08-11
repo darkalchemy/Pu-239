@@ -21,10 +21,11 @@ $stdfoot = [
         get_file_name('parallax_js'),
     ],
 ];
-
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
-
 if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) {
+    include_once INCL_DIR . 'arcade.php';
+}
+if (isset($_POST['module']) && $_POST['module'] === 'pnFlashGames') {
     include_once INCL_DIR . 'arcade.php';
 }
 $HTMLOUT = '';

@@ -666,7 +666,7 @@ function get_avatar($avatar)
         $avatar['avatar'] = url_proxy($avatar['avatar'], true, 150);
     }
     if ($CURUSER['avatars'] === 'yes') {
-        if ($avatar['anonymous'] === 'yes') {
+        if ($avatar['anonymous'] === '1') {
             $avatar = "{$site_config['paths']['images_baseurl']}anonymous_1.jpg";
         } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150'>";

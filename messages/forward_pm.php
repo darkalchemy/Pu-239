@@ -26,18 +26,18 @@ if (empty($to_user)) {
     stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
 }
 
-$count = $messages_class->get_count($to_user['id'], 1);
-if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
+$count = $messages_class->get_count($to_user['id'], 1, false);
+if ($count > ($maxbox * 6) && !has_access($CURUSER['class'], UC_STAFF, '')) {
     stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
 }
 
 if ($CURUSER['status'] === 5) {
-    if ($to_user['class'] < UC_STAFF) {
+    if (!has_access($to_user['class'], UC_STAFF, '')) {
         stderr($lang['pm_error'], $lang['pm_forwardpm_account']);
     }
 }
 
-if ($CURUSER['class'] < UC_STAFF) {
+if (!has_access($CURUSER['class'], UC_STAFF, '')) {
     if ($to_user['acceptpms'] === 'no') {
         stderr($lang['pm_error'], $lang['pm_forwardpm_dont_accept']);
     }

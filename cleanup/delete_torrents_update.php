@@ -24,7 +24,7 @@ function delete_torrents_update($data)
 
     $time_start = microtime(true);
     $hours = 2;
-    $dt = TIME_NOW - ($hours * 3600);
+    $dt = get_date(TIME_NOW - ($hours * 3600), 'MYSQL', 1, 0);
     $fluent = $container->get(Database::class);
     $never_seeded = $fluent->from('torrents')
                            ->select(null)
@@ -32,13 +32,13 @@ function delete_torrents_update($data)
                            ->select('owner')
                            ->select('name')
                            ->select('info_hash')
-                           ->where('last_action = added')
+                           ->where('UNIX_TIMESTAMP(last_action) = added')
                            ->where('last_action < ?', $dt)
                            ->where('seeders = 0')
                            ->where('leechers = 0');
 
     $days = 45;
-    $dt = TIME_NOW - ($days * 86400);
+    $dt = get_date(TIME_NOW - ($days * 86400), 'MYSQL', 1, 0);
     $dead = $fluent->from('torrents')
                    ->select(null)
                    ->select('id')
@@ -50,7 +50,6 @@ function delete_torrents_update($data)
                    ->where('leechers = 0');
 
     $values = [];
-    $dt = TIME_NOW;
     $torrents_class = $container->get(Torrent::class);
     foreach ($never_seeded as $torrent) {
         $torrents_class->delete_by_id((int) $torrent['id']);
@@ -58,7 +57,7 @@ function delete_torrents_update($data)
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (never seeded after $hours hours)";
         $values[] = [
             'receiver' => $torrent['owner'],
-            'added' => $dt,
+            'added' => TIME_NOW,
             'msg' => $msg,
             'subject' => 'Torrent Deleted [Dead]',
         ];
@@ -73,7 +72,7 @@ function delete_torrents_update($data)
         $msg = 'Torrent ' . (int) $torrent['id'] . ' (' . htmlsafechars($torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
             'receiver' => $torrent['owner'],
-            'added' => $dt,
+            'added' => TIME_NOW,
             'msg' => $msg,
             'subject' => 'Torrent Deleted [Dead]',
         ];

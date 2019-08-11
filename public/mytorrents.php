@@ -10,7 +10,7 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
+$lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'), load_language('bookmark'));
 global $container, $site_config;
 
 $HTMLOUT = '';

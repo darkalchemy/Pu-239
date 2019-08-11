@@ -6,10 +6,10 @@ use Delight\Auth\AuthError;
 use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Session;
-use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
@@ -23,29 +23,21 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  *
  * @return string
  */
 function stdhead(?string $title = null, array $stdhead = [], string $class = 'page-wrapper')
 {
-    global $container, $site_config, $CURUSER;
+    global $container, $site_config;
 
+    $curuser = check_user_status('login');
     $session = $container->get(Session::class);
     require_once INCL_DIR . 'function_bbcode.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
     require_once INCL_DIR . 'function_html.php';
     require_once 'navbar.php';
-    if (!$site_config['site']['online']) {
-        if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
-            die('Site is down for maintenance, please check back again later... thanks<br>');
-        } elseif (!empty($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
-            $session->set('is-danger', 'Site is currently offline, only staff can access site.');
-        }
-    }
-    //if (!empty($CURUSER) && $CURUSER['status'] > 0) {
-    //    $user = $container->get(User::class);
-    //    $user->logout($CURUSER['id'], true);
-    //}
+
     if (empty($title)) {
         $title = $site_config['site']['name'];
     } else {
@@ -67,7 +59,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
     $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
-    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['paths']['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}'>
+    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['paths']['baseurl']}/rss.php?torrent_pass={$curuser['torrent_pass']}'>
     <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['paths']['baseurl']}/apple-touch-icon.png'>
     <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['paths']['baseurl']}/favicon-32x32.png'>
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['paths']['baseurl']}/favicon-16x16.png'>
@@ -86,7 +78,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
         <div class='$class'>";
     global $BLOCKS;
 
-    if ($CURUSER) {
+    if (!empty($curuser['id'])) {
         $htmlout .= navbar();
         $htmlout .= "
         <div id='inner-page-wrapper'>";
@@ -121,56 +113,60 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
             </div>";
         }
 
-        $htmlout .= platform_menu();
-        $htmlout .= "
+        if (!empty($curuser['id'])) {
+            $htmlout .= platform_menu();
+            $htmlout .= "
             <div id='base_globelmessage'>
                 <div class='top5 bottom5'>
                     <ul class='level-center tags'>";
 
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
-            require_once BLOCK_DIR . 'global/report.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP && $BLOCKS['global_staff_uploadapp_on']) {
-            require_once BLOCK_DIR . 'global/uploadapp.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR && $BLOCKS['global_happyhour_on']) {
-            require_once BLOCK_DIR . 'global/happyhour.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE && $BLOCKS['global_staff_warn_on']) {
-            require_once BLOCK_DIR . 'global/staffmessages.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_NEWPM && $BLOCKS['global_message_on']) {
-            require_once BLOCK_DIR . 'global/message.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION && $BLOCKS['global_demotion_on']) {
-            require_once BLOCK_DIR . 'global/demotion.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH && $BLOCKS['global_freeleech_on']) {
-            require_once BLOCK_DIR . 'global/freeleech.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR && $BLOCKS['global_crazyhour_on']) {
-            require_once BLOCK_DIR . 'global/crazyhour.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE && $BLOCKS['global_bug_message_on']) {
-            require_once BLOCK_DIR . 'global/bugmessages.php';
-        }
-        if ($CURUSER['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
-            require_once BLOCK_DIR . 'global/freeleech_contribution.php';
-        }
-        require_once BLOCK_DIR . 'global/lottery.php';
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
+                require_once BLOCK_DIR . 'global/report.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP && $BLOCKS['global_staff_uploadapp_on']) {
+                require_once BLOCK_DIR . 'global/uploadapp.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR && $BLOCKS['global_happyhour_on']) {
+                require_once BLOCK_DIR . 'global/happyhour.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE && $BLOCKS['global_staff_warn_on']) {
+                require_once BLOCK_DIR . 'global/staffmessages.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_NEWPM && $BLOCKS['global_message_on']) {
+                require_once BLOCK_DIR . 'global/message.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION && $BLOCKS['global_demotion_on']) {
+                require_once BLOCK_DIR . 'global/demotion.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH && $BLOCKS['global_freeleech_on']) {
+                require_once BLOCK_DIR . 'global/freeleech.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR && $BLOCKS['global_crazyhour_on']) {
+                require_once BLOCK_DIR . 'global/crazyhour.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE && $BLOCKS['global_bug_message_on']) {
+                require_once BLOCK_DIR . 'global/bugmessages.php';
+            }
+            if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
+                require_once BLOCK_DIR . 'global/freeleech_contribution.php';
+            }
+            require_once BLOCK_DIR . 'global/lottery.php';
 
-        $htmlout .= '
+            $htmlout .= '
                     </ul>
                 </div>
             </div>';
+        }
     }
 
     $htmlout .= "
         <div id='base_content' class='bg-05'>
             <div class='inner-wrapper bg-04'>";
 
-    if ($CURUSER) {
+    if (!empty($curuser['id'])) {
         $htmlout .= breadcrumbs();
+    } else {
+        //dd($curuser);
     }
     if ($BLOCKS['global_flash_messages_on']) {
         foreach ($site_config['site']['notifications'] as $notif) {
@@ -195,10 +191,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -434,9 +430,9 @@ function StatusBar()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

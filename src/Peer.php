@@ -98,6 +98,7 @@ class Peer
             $peers = $this->fluent->from('peers')
                                   ->select(null)
                                   ->select('id')
+                                  ->select('torrent AS tid')
                                   ->select('seeder')
                                   ->select('peer_id')
                                   ->select('INET6_NTOA(ip) AS ip')
@@ -105,7 +106,7 @@ class Peer
                                   ->select('uploaded')
                                   ->select('downloaded')
                                   ->select('userid')
-                                  ->select('(UNIX_TIMESTAMP(NOW()) - last_action) AS announcetime')
+                                  ->select('UNIX_TIMESTAMP(NOW()) - last_action AS announcetime')
                                   ->select('last_action AS ts')
                                   ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
                                   ->select('prev_action AS prevts')
@@ -150,8 +151,6 @@ class Peer
                                   ->select('t.size')
                                   ->select('(UNIX_TIMESTAMP(NOW()) - p.last_action) AS announcetime')
                                   ->select('p.last_action AS ts')
-                                  ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
-                                  ->select('p.prev_action AS prevts')
                                   ->select('t.name')
                                   ->leftJoin('torrents AS t On p.torrent = t.id')
                                   ->orderBy('p.id')
@@ -168,29 +167,41 @@ class Peer
     /**
      * @param int    $tid
      * @param int    $userid
-     * @param bool   $by_class
      * @param string $peer_id
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get_torrent_count(int $tid, int $userid, bool $by_class, string $peer_id)
+    public function get_torrent_count(int $tid, int $userid, string $peer_id)
     {
-        $count = $this->fluent->from('peers')
+        $peers = $this->fluent->from('peers')
                               ->select(null)
-                              ->select('COUNT(id) AS count')
-                              ->where('torrent = ?', $tid)
-                              ->where('peer_id != ?', $peer_id)
-                              ->where('userid = ?', $userid);
-
-        if ($by_class) {
-            $count = $count->where('to_go > 0');
+                              ->select('to_go')
+                              ->select('peer_id')
+                              ->select('seeder')
+                              ->select('torrent')
+                              ->where('userid = ?', $userid)
+                              ->fetchAll();
+        $seeder = $leecher = $no_seed = 0;
+        foreach ($peers as $peer) {
+            if ($peer_id === $peer['peer_id'] && $peer['torrent'] === $tid) {
+                if ($peer['seeder'] === 'yes') {
+                    ++$seeder;
+                } else {
+                    ++$leecher;
+                }
+            }
+            if ($peer['to_go'] > 0) {
+                ++$no_seed;
+            }
         }
 
-        $count = $count->fetch('count');
-
-        return $count;
+        return [
+            'seeder' => $seeder,
+            'leecher' => $leecher,
+            'no_seed' => $no_seed,
+        ];
     }
 
     /**
@@ -224,13 +235,17 @@ class Peer
      * @param array $update
      *
      * @throws Exception
+     *
+     * @return bool|int
      */
     public function insert_update(array $values, array $update)
     {
-        $this->fluent->insertInto('peers', $values)
-                     ->onDuplicateKeyUpdate($update)
-                     ->execute();
+        $id = $this->fluent->insertInto('peers', $values)
+                           ->onDuplicateKeyUpdate($update)
+                           ->execute();
         $this->cache->delete('torrent_peers_' . $values['torrent']);
+
+        return $id;
     }
 
     /**

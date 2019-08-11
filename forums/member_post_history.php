@@ -199,7 +199,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
             $arr_edited = mysqli_fetch_assoc($res_edited);
             //== Anonymous
-            if ($arr['anonymous'] === 'yes') {
+            if ($arr['anonymous'] === '1') {
                 if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                     $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . '
 				 at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars((string) $arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
@@ -238,7 +238,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt = "' . $lang['fe_bottom'] . '" class="emoticon"></a></span></td>
 		</tr>
 		<tr>
-		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $member_id)) . ($arr['anonymous'] === 'yes' || empty($user_arr['title']) ? '' : ' < br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
+		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $member_id)) . ($arr['anonymous'] === '1' || empty($user_arr['title']) ? '' : ' < br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
 		<td class="' . $post_status . '" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
         </table>';

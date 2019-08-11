@@ -25,20 +25,20 @@ if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
 }
 
 switch (true) {
-    case $user['class'] == UC_MIN:
-        $days = 2;
+    case $user['class'] === UC_MIN:
+        $days = 3;
         break;
 
     case $user['class'] < UC_VIP:
-        $days = 1.5;
+        $days = 3;
         break;
 
     case $user['class'] >= UC_VIP:
-        $days = 0.5;
+        $days = 3;
         break;
 }
 if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_number'] > 0) {
-    $avg_time_ratio = (($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']) / 86400 / $days);
+    $avg_time_ratio = $cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number'] / 86400 / $days;
     $avg_time_seeding = mkprettytime($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']);
     if ($user['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF) {
         $table_data .= '

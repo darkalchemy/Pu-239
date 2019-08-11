@@ -487,13 +487,13 @@ function build_table(array $data, string $parent_name)
             <td>
                 <div class='level-center'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=edit_cat&amp;id={$data['id']}'>
-                        <i class='icon-edit icon tooltipper' title='{$lang['categories_show_edit']}'></i>
+                        <i class='icon-edit icon has-text-info tooltipper' title='{$lang['categories_show_edit']}'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=del_cat&amp;id={$data['id']}'>
-                        <i class='icon-trash-empty icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
+                        <i class='icon-trash-empty icon has-text-danger tooltipper' aria-hidden='true' title='{$lang['categories_show_delete']}'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=categories&amp;mode=move_cat&amp;id={$data['id']}'>
-                        <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
+                        <i class='icon-plus icon has-text-success tooltipper' aria-hidden='true' title='{$lang['categories_show_move']}'></i>
                     </a>
                 </div>
             </td>

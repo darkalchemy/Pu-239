@@ -88,17 +88,17 @@ class Ban
             $ban = $this->fluent->from('bans')
                                 ->select(null)
                                 ->select('comment')
-                                ->where('? >= first', inet_pton($ip))
-                                ->where('? <= last', inet_pton($ip))
+                                ->where('? = first', inet_pton($ip))
+                                ->where('? = last', inet_pton($ip))
                                 ->limit(1)
                                 ->fetch('comment');
 
             if (!empty($ban)) {
-                $this->cache->set($key, $ban, 86400);
+                $this->cache->set($key, $ban, 60);
 
                 return true;
             } else {
-                $this->cache->set($key, 0, 86400);
+                $this->cache->set($key, 0, 60);
             }
         }
 

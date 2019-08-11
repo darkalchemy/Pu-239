@@ -75,7 +75,7 @@ class Usersachiev
     {
         $this->fluent->update('usersachiev')
             ->set($set)
-            ->where('user_id = ?', $userid)
+            ->where('userid = ?', $userid)
             ->execute();
     }
 }

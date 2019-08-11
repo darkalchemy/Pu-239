@@ -2,9 +2,11 @@
 
 declare(strict_types = 1);
 
+use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Pu239\Roles;
 use Pu239\Session;
 use Pu239\User;
 
@@ -81,8 +83,10 @@ if ($action === 'takeappdelete') {
            ->where('id = ?', $id)
            ->execute();
     $user_class = $container->get(User::class);
+    $clrbits = 0;
+    $setbits |= Roles::UPLOADER;
     $update = [
-        'class' => UC_UPLOADER,
+        'roles_mask' => new Literal('((roles_mask | ' . $setbits . ') & ~' . $clrbits . ')'),
         'modcomment' => $modcomment,
     ];
     $user_class->update($update, $arr['uid']);

@@ -2634,7 +2634,7 @@ var ajaxChat = {
         var regExpUrl = new RegExp('(?:youtu\\.be\\/|youtube.com\\/(?:watch\\?.*\\bv=|embed\\/|v\\/)|ytimg\\.com\\/vi\\/)(.+?)(?:[^-a-zA-Z0-9]|$)', 'i');
         var result = regExpUrl.exec(content);
         if (result[1]) {
-            return '<div class="youtube-embed has-text-centered" style="height: ' + height + 'px; width: ' + width + 'px;"><iframe width="1920" height="1080" src="//www.youtube.com/embed/' + result[1] + '?vq=hd1080" autoplay="false" frameborder="0" /></div>';
+            return '<div class="youtube-embed has-text-centered" style="height: ' + height + 'px; width: ' + width + 'px;"><iframe width="1920" height="1080" src="https://www.youtube.com/embed/' + result[1] + '?autoplay=0&amp;fs=0&amp;iv_load_policy=3&amp;showinfo=0&amp;rel=0&amp;cc_load_policy=0&amp;start=0&amp;end=0&amp;origin=' + window.location.origin + '&amp;vq=hd1080&amp;wmode=opaque" allow="fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;" /></div>';
         }
         return content;
     },

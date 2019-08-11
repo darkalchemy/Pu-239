@@ -8,11 +8,13 @@ use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+use Pu239\Ban;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\ImageProxy;
 use Pu239\IP;
 use Pu239\Referrer;
+use Pu239\Roles;
 use Pu239\Session;
 use Pu239\Settings;
 use Pu239\Sitelog;
@@ -81,9 +83,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -221,9 +223,9 @@ function userlogin()
 }
 */
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -314,9 +316,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -344,9 +346,9 @@ function make_freeslots(int $userid, string $key, bool $clear)
 /**
  * @param bool $grouped
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -414,13 +416,13 @@ function unesc($x)
 }
 
 /**
- * @param int    $bytes
+ * @param        $bytes
  * @param int    $decimals
  * @param string $system
  *
  * @return string
  */
-function mksize(int $bytes, int $decimals = 2, string $system = 'metric')
+function mksize($bytes, int $decimals = 2, string $system = 'metric')
 {
     $mod = ($system === 'binary') ? 1024 : 1000;
 
@@ -592,6 +594,13 @@ function get_userid()
     return 0;
 }
 
+/**
+ * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return float|int
+ */
 function get_time_offset()
 {
     global $container, $site_config;
@@ -877,12 +886,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
- * @throws DependencyException
- * @throws NotFoundException
  *
  * @return bool|mixed|User
  */
@@ -895,10 +904,29 @@ function check_user_status(string $type = 'browse')
         $user_class = $container->get(User::class);
         $userid = $auth->id();
         insert_update_ip($type, $userid);
-        force_logout($userid);
         $users_data = $user_class->getUserFromId($userid);
-        $user_class->update_last_access($userid);
         $session = $container->get(Session::class);
+        if (!$site_config['site']['online']) {
+            if ($users_data['class'] < UC_STAFF) {
+                die('Site is down for maintenance, please check back again later... thanks<br>');
+            } elseif ($users_data['class'] >= UC_STAFF) {
+                $session->set('is-danger', 'Site is currently offline, only staff can access site.');
+            }
+        }
+        if (!($users_data['perms'] & PERMS_BYPASS_BAN)) {
+            $bans_class = $container->get(Ban::class);
+            if ($bans_class->check_bans($auth->getIpAddress())) {
+                $update = [
+                    'status' => 2,
+                ];
+                $users_data['status'] = 2;
+                $user_class->update($update, $userid);
+                $cache = $container->get(Cache::class);
+                $cache->set('forced_logout_' . $userid, TIME_NOW);
+            }
+        }
+        force_logout($userid);
+        $user_class->update_last_access($userid);
         $session->set('UserRole', $users_data['class']);
         $session->set('scheme', get_scheme());
         $GLOBALS['CURUSER'] = $users_data;
@@ -907,7 +935,7 @@ function check_user_status(string $type = 'browse')
         parked($users_data);
         suspended($users_data);
     }
-    if (empty($users_data)) {
+    if ($type != 'login' && empty($users_data)) {
         $returnto = '';
         if (!empty($_SERVER['REQUEST_URI'])) {
             $returnto = '?returnto=' . urlencode($_SERVER['REQUEST_URI']);
@@ -916,7 +944,47 @@ function check_user_status(string $type = 'browse')
         die();
     }
 
+    if (empty($users_data)) {
+        return [
+            'torrent_pass' => '',
+        ];
+    }
+
     return $users_data;
+}
+
+/**
+ * @param int         $userclass
+ * @param int         $class
+ * @param string|null $role
+ *
+ * @throws NotFoundException
+ * @throws DependencyException
+ *
+ * @return bool
+ */
+function has_access(int $userclass, int $class, ?string $role)
+{
+    global $container;
+
+    $auth = $container->get(Auth::class);
+    if (!empty($role)) {
+        if ($role === 'coder') {
+            if ($userclass >= $class || $auth->hasRole(Roles::CODER)) {
+                return true;
+            }
+        } elseif ($role === 'uploader') {
+            if ($userclass >= $class && $auth->hasRole(Roles::UPLOADER)) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } elseif ($userclass >= $class) {
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -943,9 +1011,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1022,9 +1090,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1143,7 +1211,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
             stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
         }
     }
-    if (!preg_match("/^[\p{L}\p{N}]+$/u", urldecode($username))) {
+    if (!preg_match("/^[\p{L}\p{M}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
             echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_allowed_chars']}</div>";
             die();
@@ -1288,9 +1356,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1331,9 +1399,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1367,8 +1435,9 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1436,9 +1505,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1463,17 +1532,17 @@ function insert_update_ip(string $type, int $userid)
 }
 
 /**
- * @param string $url
- * @param bool   $fresh
- * @param bool   $async
+ * @param string    $url
+ * @param bool|null $fresh
+ * @param bool|null $async
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed|string
  */
-function fetch(string $url, bool $fresh = true, bool $async = false)
+function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 {
     global $container;
 
@@ -1522,9 +1591,9 @@ function fetch(string $url, bool $fresh = true, bool $async = false)
 /**
  * @param bool $details
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */
@@ -1592,9 +1661,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

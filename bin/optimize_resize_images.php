@@ -9,7 +9,7 @@ use Pu239\ImageProxy;
 require_once __DIR__ . '/../include/bittorrent.php';
 global $container;
 
-set_time_limit(1800);
+set_time_limit(18000);
 $image_proxy = $container->get(ImageProxy::class);
 $path = IMAGES_DIR . 'proxy/';
 $fluent = $container->get(Database::class);

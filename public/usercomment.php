@@ -116,7 +116,7 @@ if ($action === 'add') {
     if (!$arr) {
         stderr('Error', 'Invalid ID.');
     }
-    if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
+    if ($arr['user'] != $user['id'] && !has_access($user['class'], UC_STAFF, '')) {
         stderr('Error', 'Permission denied.');
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -170,7 +170,7 @@ if ($action === 'add') {
     if ($arr) {
         $userid = (int) $arr['userid'];
     }
-    if ($arr['id'] != $user['id'] && $user['class'] < UC_STAFF) {
+    if ($arr['id'] != $user['id'] && has_access($user['class'], UC_STAFF, 'coder')) {
         stderr('Error', 'Permission denied.');
     }
     $deleted = $fluent->deleteFrom('usercomments')
@@ -197,7 +197,7 @@ if ($action === 'add') {
     }
     die();
 } elseif ($action === 'vieworiginal') {
-    if ($user['class'] < UC_STAFF) {
+    if (!has_access($user['class'], UC_STAFF, 'coder')) {
         stderr('Error', 'Permission denied.');
     }
     $commentid = (int) $_GET['cid'];

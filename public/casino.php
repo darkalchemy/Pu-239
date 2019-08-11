@@ -21,10 +21,11 @@ global $container, $site_config;
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $maxbetGB = 50;
-$maxbet = $maxbetGB * 1024 * 1024 * 1024;
-$mb_basic = 1024 * 1024;
-$max_download_user = $mb_basic * 1024 * 1024 * 1024; //= 255 Gb
-$max_download_global = $mb_basic * $mb_basic * 1024; //== 10.0 Tb
+$mib = 1000; // MiB vs MB
+$maxbet = $maxbetGB * $mib * $mib * $mib;
+$mb_basic = $mib * $mib;
+$max_download_user = $mb_basic * $mib * $mib * $mib; //= 255 Gb
+$max_download_global = $mb_basic * $mb_basic * $mib; //== 10.0 Tb
 $required_ratio = 1.0; //== Min ratio
 $user_everytimewin_mb = $mb_basic * 20; //== Means users that wins under 70 mb get a cheat_value of 0 -> win every time
 $cheat_value = 8; //== Higher value -> less winner
@@ -35,14 +36,14 @@ $cheat_ratio_global = .4; //== Same as user just global
 $win_amount = 3; //== How much do the player win in the first game eg. bet 300, win_amount=3 ---->>> 300*3= 900 win
 $win_amount_on_number = 6; //== Same as win_amount for the number game
 $show_real_chance = false; //== Shows the user the real chance true or false
-$bet_value1 = 1024 * 1024 * 200; //== This is in MB but you can also choose gb or tb
-$bet_value2 = 1024 * 1024 * 500;
-$bet_value3 = 1024 * 1024 * 1020;
-$bet_value4 = 1024 * 1024 * 2560;
-$bet_value5 = 1024 * 1024 * 5120;
-$bet_value6 = 1024 * 1024 * 10240;
-$bet_value7 = 1024 * 1024 * 20480;
-$bet_value8 = 1024 * 1024 * 51200;
+$bet_value1 = $mib * $mib * 200; //== This is in MB but you can also choose gb or tb
+$bet_value2 = $mib * $mib * 500;
+$bet_value3 = $mib * $mib * 1000;
+$bet_value4 = $mib * $mib * 2500;
+$bet_value5 = $mib * $mib * 5000;
+$bet_value6 = $mib * $mib * 10000;
+$bet_value7 = $mib * $mib * 20000;
+$bet_value8 = $mib * $mib * 50000;
 $maxusrbet = 5; //==Amount of bets to allow per person
 $maxtotbet = 30; //== Amount of total open bets allowed
 $alwdebt = 0; //== Allow users to get into debt
@@ -225,7 +226,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         if ((int) $_POST['unit'] === 1) {
             $nobits = $amnt * $mb_basic;
         } else {
-            $nobits = $amnt * $mb_basic * 1024;
+            $nobits = $amnt * $mb_basic * $mib;
         }
     }
     if ($user['uploaded'] == 0 || $user['downloaded'] == 0) {
@@ -358,7 +359,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         if ((int) $_POST['unit'] === 1) {
             $nobits = (int) $_POST['amnt'] * $mb_basic;
         } else {
-            $nobits = (int) $_POST['amnt'] * $mb_basic * 1024;
+            $nobits = (int) $_POST['amnt'] * $mb_basic * $mib;
         }
     }
     if (isset($_POST['unit'])) {

@@ -37,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
             'status' => 0,
         ], $site_config['expires']['user_cache']);
     } elseif ($do == 'confirm') {
-        sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET verified = 1 WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ') AND verified = 0') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $id, [
             'status' => 'confirmed',
         ], $site_config['expires']['user_cache']);
     } elseif ($do == 'delete' && ($CURUSER['class'] >= UC_MAX)) {
         foreach ($ids as $id) {
-            $username = account_delete($id);
+            $username = account_delete((int) $id);
             if ($username) {
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
                 $session->set('is-success', $lang['text_success']);

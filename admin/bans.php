@@ -65,9 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     ];
 
     $fluent->insertInto('bans')
-           ->values('values')
+           ->values($values)
            ->execute();
 
+    $key = 'bans_' . $ip;
     $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }

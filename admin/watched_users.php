@@ -59,7 +59,7 @@ if (isset($_GET['remove'])) {
         }
     }
     //=== Check if members were removed
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     if (mysqli_affected_rows($mysqli) == 0) {
         stderr($lang['watched_stderr'], '' . $lang['watched_stderr2'] . '!');
     } else {
@@ -126,7 +126,7 @@ $ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC'
 $i = 1;
 $HTMLOUT .= $H1_thingie;
 
-$res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, status, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, registered, watched_user_reason, watched_user, uploaded, downloaded, warned, status, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $HTMLOUT .= '

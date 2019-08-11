@@ -22,7 +22,7 @@ $post_title = isset($_POST['post_title']) ? htmlsafechars($_POST['post_title']) 
 $icon = isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : '';
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
 $bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'no';
-$anonymous = isset($_POST['anonymous']) && !empty($_POST['anonymous']) ? 'yes' : 'no';
+$anonymous = isset($_POST['anonymous']) && !empty($_POST['anonymous']) ? '1' : '0';
 $poll_question = isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '';
 $poll_answers = isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '';
 $poll_ends = isset($_POST['poll_ends']) ? (($_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400)) : '';

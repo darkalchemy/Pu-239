@@ -131,31 +131,48 @@ function insert_smilies_frame()
 }
 
 /**
- * @param        $body
- * @param null   $header
- * @param null   $class
- * @param null   $wrapper_class
- * @param string $striped
- * @param null   $id
+ * @param string      $body
+ * @param string|null $header
+ * @param string|null $class
+ * @param string|null $wrapper_class
+ * @param string|null $striped
+ * @param string|null $id
+ * @param bool|null   $wrapper
  *
  * @return string
  */
-function main_table($body, $header = null, $class = null, $wrapper_class = null, $striped = 'table-striped', $id = null)
+function main_table(string $body, ?string $header = null, ?string $class = null, ?string $wrapper_class = null, ?string $striped = 'table-striped', ?string $id = null, ?bool $wrapper = true)
 {
     $id = !empty($id) ? " id='$id'" : '';
     $thead = $header != null ? "
                         <thead>
                             $header
                         </thead>" : '';
-
-    return "
-                <div class='table-wrapper $wrapper_class'>
+    $table = "
                     <table{$id} class='table table-bordered $striped $class'>
                         $thead
                         <tbody>
                             $body
                         </tbody>
-                    </table>
+                    </table>";
+    if ($wrapper) {
+        return table_wrapper($table, $wrapper_class);
+    }
+
+    return $table;
+}
+
+/**
+ * @param string      $table
+ * @param string|null $wrapper_class
+ *
+ * @return string
+ */
+function table_wrapper(string $table, ?string $wrapper_class = null)
+{
+    return "
+                <div class='table-wrapper $wrapper_class'>
+                    $table
                 </div>";
 }
 
@@ -407,9 +424,9 @@ function doc_head()
  * @param $html
  * @param $plain
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \PHPMailer\PHPMailer\Exception
- * @throws DependencyException
  *
  * @return bool
  */
@@ -441,9 +458,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -467,9 +484,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return mixed
  */
@@ -498,9 +515,9 @@ function validate_promo(string $code, bool $full)
 /**
  * @param array $lang
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

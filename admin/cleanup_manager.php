@@ -165,12 +165,12 @@ function cleanup_show_main()
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_edit']}'>
-                    <i class='icon-edit icon'></i>
+                    <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
-                    <i class='icon-trash-empty icon has-text-danger'></i>
+                    <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
@@ -398,7 +398,7 @@ function cleanup_take_new($params)
 {
     global $container, $lang;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     foreach ([
         'clean_increment',
         'clean_log',
@@ -468,7 +468,7 @@ function cleanup_take_delete($params)
 {
     global $container, $lang;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     $opts = [
         'options' => [
             'min_range' => 1,
@@ -500,7 +500,7 @@ function cleanup_take_unlock($params)
 {
     global $container, $lang;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     foreach ([
         'cid',
         'clean_on',

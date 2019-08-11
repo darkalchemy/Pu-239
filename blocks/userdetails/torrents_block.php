@@ -16,7 +16,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['
             <td class='rowhead'>{$lang['userdetails_uploaded_t']}</td>
             <td>
                 <a id='torrents-hash'></a>
-                <fieldset id='torrents' class='header'>
+                <fieldset id='torrents_{$curuser['id']}' class='header'>
                     <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i>View Torrents you uploaded</legend>
                     <div id='inner_torrents' style='display: none;' data-uid='{$user['id']}'></div>
                 </fieldset>
@@ -26,7 +26,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['
             <td class='rowhead'>{$lang['userdetails_cur_seed']}</td>
             <td>
                 <a id='seeding-hash'></a>
-                <fieldset id='seeding' class='header'>
+                <fieldset id='seeding_{$curuser['id']}' class='header'>
                     <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i>View Torrents you are currently seeding</legend>
                     <div id='inner_seeding' style='display: none;' data-uid='{$user['id']}'></div>
                 </fieldset>
@@ -36,7 +36,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['
             <td class='rowhead'>{$lang['userdetails_cur_leech']}</td>
             <td>
                 <a id='leeching-hash'></a>
-                <fieldset id='leeching' class='header'>
+                <fieldset id='leeching_{$curuser['id']}' class='header'>
                     <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i>View Torrents you are currently leeching</legend>
                     <div id='inner_leeching' style='display: none;' data-uid='{$user['id']}'></div>
                 </fieldset>
@@ -46,7 +46,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['
             <td class='rowhead'>{$lang['userdetails_cur_snatched']}</td>
             <td>
                 <a id='snatched-hash'></a>
-                <fieldset id='snatched' class='header'>
+                <fieldset id='snatched_{$curuser['id']}' class='header'>
                     <legend class='flipper size_4'><i class='icon-up-open' aria-hidden='true'></i>View Torrents you have snatched</legend>
                     <div id='inner_snatched' style='display: none;' data-uid='{$user['id']}'></div>
                 </fieldset>

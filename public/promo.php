@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         }
     }
 } elseif ($do === 'addpromo') {
-    if ($user['class'] < UC_STAFF) {
+    if (!has_access($user['class'], UC_STAFF, 'coder')) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $HTMLOUT .= '
@@ -175,7 +175,7 @@ if (empty($_POST)) {
                 </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>';
-    if ($user['class'] < UC_STAFF) {
+    if (!has_access($user['class'], UC_STAFF, 'coder')) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $r = $fluent->from('promo')

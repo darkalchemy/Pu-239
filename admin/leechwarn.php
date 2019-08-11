@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr($lang['leechwarn_stderror'], $lang['leechwarn_wrong']);
     }
     $cache = $container->get(Cache::class);
-    if ($act === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
+    if ($act === 'delete' && has_access($CURUSER['class'], UC_SYSOP, 'coder')) {
         $res_del = sql_query('SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, status FROM users WHERE id IN (' . implode(', ', $_uids) . ') ORDER BY username DESC');
         if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
@@ -136,7 +136,7 @@ if ($count == 0) {
             <select name='action'>
                 <option value='unwarn'>{$lang['leechwarn_unwarn']}</option>
                 <option value='disable'>{$lang['leechwarn_disable']}</option>
-                <option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['leechwarn_delete']}</option>
+                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP, 'coder') ? 'disabled' : '') . ">{$lang['leechwarn_delete']}</option>
             </select>
                 &raquo;
             <input type='submit' value='{$lang['leechwarn_apply']}' class='button is-small'>

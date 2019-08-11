@@ -23,9 +23,9 @@ function validip($ip)
  * @param int  $full_relative
  * @param bool $calc
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return false|mixed|string
  */
@@ -34,10 +34,12 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool 
     global $container, $site_config;
 
     $user = [];
-    $userid = get_userid();
-    if (!empty($userid)) {
-        $user_class = $container->get(User::class);
-        $user = $user_class->getUserFromId($userid);
+    if (function_exists('get_userid')) {
+        $userid = get_userid();
+        if (!empty($userid)) {
+            $user_class = $container->get(User::class);
+            $user = $user_class->getUserFromId($userid);
+        }
     }
     $today_time = $yesterday_time = $tomorrow_time = 0;
     $use_12_hour = !empty($user['use_12_hour']) ? $user['use_12_hour'] : $site_config['site']['use_12_hour'];
@@ -62,7 +64,12 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool 
     if (empty($method)) {
         $method = 'LONG';
     }
-    $user_offset = get_time_offset();
+    if (function_exists('get_time_offset')) {
+        $user_offset = get_time_offset();
+    } else {
+        $user_offset = 0;
+    }
+
     if ($site_config['time']['use_relative']) {
         $today_time = gmdate('d,m,Y', (TIME_NOW + $user_offset));
         $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $user_offset));

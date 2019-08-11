@@ -14,7 +14,7 @@ global $container, $site_config;
 $fluent = $container->get(Database::class);
 $count = $fluent->from('posts')
                 ->select(null)
-                ->select('COUNT(id) AS count')
+                ->select('COUNT(user_id) AS count')
                 ->where('user_id = ?', $user['id'])
                 ->fetch('count');
 $achieve = $container->get(Usersachiev::class);

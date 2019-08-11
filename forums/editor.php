@@ -175,7 +175,7 @@ $HTMLOUT .= main_table('
             <td>
                 <div class="level-left">
                     <span class="level-center">
-                        <input type="checkbox" name="anonymous" value="yes" class="right10">
+                        <input type="checkbox" name="anonymous" value="1" class="right10">
                         ' . $lang['fe_anonymous_topic'] . '
                     </span>
                 </div>

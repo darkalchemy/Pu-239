@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -31,7 +32,7 @@ $stdfoot = [
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
-if (!$site_config['forum_config']['online'] && $user['class'] < UC_STAFF) {
+if (!$site_config['forum_config']['online'] && !has_access($user['class'], UC_STAFF, 'coder')) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
 $HTMLOUT = '';
@@ -42,7 +43,7 @@ $fluent->update('users')
        ->execute();
 
 $posted_action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
-if ($user['class'] >= UC_STAFF) {
+if (has_access($user['class'], UC_STAFF, 'coder')) {
     $valid_actions = [
         'forum',
         'view_forum',
@@ -95,7 +96,7 @@ if ($user['class'] >= UC_STAFF) {
 }
 
 $action = in_array($posted_action, $valid_actions) ? $posted_action : 'forum';
-if ($user['class'] >= UC_ADMINISTRATOR) {
+if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
     $HTMLOUT .= "
     <script>
         function confirm_delete(id) {
@@ -131,7 +132,7 @@ $mini_menu = "
         	</li>
             <li class='margin10'>
         	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_unread'>{$lang['fm_mark_all_as_unread']}</a>
-        	</li>" . ($user['class'] >= UC_SYSOP && $action !== 'member_post_history' ? "
+        	</li>" . (has_access($user['class'], UC_SYSOP, 'coder') && $action !== 'member_post_history' ? "
             <li class='margin10'>
         	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>{$lang['fm_member_post_history']}</a>
         	</li>" : '') . '
@@ -368,7 +369,7 @@ switch ($action) {
         break;
 
     case 'view_post_history':
-        if ($user['class'] < UC_STAFF) {
+        if (!has_access($user['class'], UC_STAFF, 'coder')) {
             stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
         }
         require_once FORUM_DIR . 'view_post_history.php';
@@ -376,14 +377,14 @@ switch ($action) {
         break;
 
     case 'staff_actions':
-        if ($user['class'] < UC_STAFF) {
+        if (!has_access($user['class'], UC_STAFF, 'coder')) {
             stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
         }
         require_once FORUM_DIR . 'staff_actions.php';
         break;
 
     case 'staff_lock':
-        if ($user['class'] < UC_MAX) {
+        if (!has_access($user['class'], UC_MAX, 'coder')) {
             stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
         }
         require_once FORUM_DIR . 'stafflock_post.php';
@@ -408,7 +409,6 @@ switch ($action) {
                         ->where('f.min_class_read <= ?', $user['class'])
                         ->orderBy('ovf.sort, f.sort')
                         ->fetchAll();
-
         $children = [];
         foreach ($query as $forum) {
             if ($forum['parent_forum'] === 0) {
@@ -417,6 +417,7 @@ switch ($action) {
                 $children[] = $forum;
             }
         }
+
         unset($query);
         $i = 0;
         $updated = [];
@@ -425,7 +426,6 @@ switch ($action) {
             foreach ($children as $child) {
                 $parent['children_ids'][] = $parent['real_forum_id'];
                 if ($parent['real_forum_id'] === $child['parent_forum']) {
-                    $original = $parent;
                     $parent['post_count'] += $child['post_count'];
                     $parent['topic_count'] += $child['topic_count'];
                     $parent['children_ids'][] = $child['real_forum_id'];
@@ -434,6 +434,7 @@ switch ($action) {
             $updated[] = $parent;
         }
 
+        $updated = $parents;
         $HTMLOUT .= $mini_menu;
         foreach ($updated as $arr_forums) {
             $HTMLOUT .= ($arr_forums['over_forum_id'] !== $over_forum_id ? "
@@ -444,6 +445,7 @@ switch ($action) {
 	            </h2>' : '');
             $body = '';
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
+                //dd($arr_forums);
                 $forum_id = $arr_forums['real_forum_id'];
                 $forum_name = htmlsafechars($arr_forums['name']);
                 $forum_description = htmlsafechars($arr_forums['description']);
@@ -460,8 +462,8 @@ switch ($action) {
                                     ->select('p.added')
                                     ->select('p.anonymous AS pan')
                                     ->select('p.user_id')
-                                    ->leftJoin('posts AS p ON t.id=p.topic_id');
-                    if ($user['class'] < UC_STAFF) {
+                                    ->leftJoin('posts AS p ON t.id = p.topic_id');
+                    if (!has_access($user['class'], UC_STAFF, 'coder')) {
                         $query = $query->where('p.status = "ok"')
                                        ->where('t.status = "ok"');
                     } elseif ($user['class'] < $site_config['forum_config']['min_delete_view_class']) {
@@ -486,8 +488,8 @@ switch ($action) {
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
 
-                    if ($last_post_arr['tan'] === 'yes') {
-                        if ($user['class'] < UC_STAFF && $last_post_arr['user_id'] != $user['id']) {
+                    if ($last_post_arr['tan'] === '1') {
+                        if (!has_access($user['class'], UC_STAFF, 'coder') && $last_post_arr['user_id'] != $user['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
@@ -526,17 +528,17 @@ switch ($action) {
                             <div class="level">
                                 <span class="level-left">
                                     <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" class="tooltipper emoticon lazy right10">
-                                    ' . bubble('<a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>', $forum_description) . ($user['class'] >= UC_ADMINISTRATOR ? '
+                                    ' . bubble('<a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>', $forum_description) . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? '
                                 </span>
                                 <span class="level-right">
                                     <span class="left10">
                                         <a href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . $forum_id . '">
-                                            <i class="icon-edit icon tooltipper" title="Edit Forum"></i>
+                                            <i class="icon-edit icon has-text-info tooltipper" title="Edit Forum"></i>
                                         </a>
                                     </span>
                                     <span>
                                         <a href="javascript:confirm_delete(\'' . $forum_id . '\');">
-                                            <i class="icon-trash-empty icon has-text-danger tooltipper" title="Delete Forum"></i>
+                                            <i class="icon-trash-empty icon has-text-danger tooltipper" aria-hidden="true" title="Delete Forum"></i>
                                         </a>
                                     </span>
                                 </span>
@@ -638,6 +640,7 @@ function ratingpic_forums($num)
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */

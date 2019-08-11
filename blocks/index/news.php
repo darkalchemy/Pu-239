@@ -42,7 +42,7 @@ if ($news) {
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
-                        <i class='icon-edit icon size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='icon-edit icon has-text-info size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
                         <i class='icon-trash-empty icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
@@ -50,7 +50,7 @@ if ($news) {
                 </div>";
         }
         $username = format_username((int) $array['userid']);
-        if ($array['anonymous'] === 'yes') {
+        if ($array['anonymous'] === '1') {
             if ($CURUSER['class'] < UC_STAFF || $array['userid'] === $CURUSER['id']) {
                 $username = get_anonymous_name();
             } else {

@@ -89,7 +89,7 @@ if ($action === 'viewbug') {
     if (!$id || !is_valid_id($id)) {
         stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
     }
-    if ($curuser['class'] < UC_STAFF) {
+    if (!has_access($curuser['class'], UC_STAFF, 'coder')) {
         stderr($lang['stderr_error'], 'Only staff can view bugs.');
     }
     $bug = $fluent->from('bugs AS b')
@@ -188,7 +188,7 @@ if ($action === 'viewbug') {
             <a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a>
         </div>";
 } elseif ($action === 'bugs') {
-    if ($curuser['class'] < UC_STAFF) {
+    if (!has_access($curuser['class'], UC_STAFF, 'coder')) {
         stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
     }
     $count = $fluent->from('bugs')

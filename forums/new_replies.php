@@ -61,7 +61,7 @@ if ($count === 0) {
             $topic_poll = $arr_unread['poll_id'] > 0;
             $first_unread_poster = sql_query('SELECT added FROM posts WHERE status = \'ok\'  AND topic_id=' . sqlesc($arr_unread['topic_id']) . ' ORDER BY id LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $first_unread_poster_arr = mysqli_fetch_row($first_unread_poster);
-            if ($arr_unread['tan'] === 'yes') {
+            if ($arr_unread['tan'] === '1') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
                     $thread_starter = (!empty($arr_unread['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date((int) $first_unread_poster_arr[0], '');
                 } else {

@@ -2,22 +2,35 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../../include/bittorrent.php';
 $user = check_user_status();
 if (empty($_POST['uid'])) {
     return false;
 }
+global $container;
 
-$uid = $user['class'] < UC_STAFF ? $user['id'] : (int) $_POST['uid'];
-$sql = 'SELECT INET6_NTOA(ip) AS ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-
+$uid = has_access($user['class'], UC_STAFF, '') ? (int) $_POST['uid'] : $user['id'];
+$fluent = $container->get(Database::class);
+$ips = $fluent->from('peers')
+    ->select(null)
+    ->select('INET6_NTOA(ip) AS ip')
+    ->select('port')
+    ->select('agent')
+    ->where('userid = ?', $uid)
+    ->fetchAll();
 $out = '';
-while ($curip = mysqli_fetch_assoc($res)) {
+$used_ips = [];
+foreach ($ips as $curip) {
     $uip = $curip['ip'];
     $uport = $curip['port'];
     $uagent = $curip['agent'];
-    $connection = @fsockopen($uip, $uport, $errno, $errstr, 10);
+    if (in_array($uip . $uport, $used_ips)) {
+        continue;
+    }
+    $used_ips[] = $uip . $uport;
+    $connection = fsockopen($uip, $uport, $errno, $errstr, 10);
     if (is_resource($connection)) {
         $msg = "<span class='has-text-success'> OPEN</span>";
         fclose($connection);
@@ -25,14 +38,12 @@ while ($curip = mysqli_fetch_assoc($res)) {
         $msg = "<span class='has-text-danger'> CLOSED => $errstr </span>";
     }
     $out .= "
-<div class='top20 bottom20 has-text-centered'>
-    <div class='columns is-multiline bg-00 round10'>
+    <div class='columns is-multiline is-gapless padding10'>
         <span class='column is-2 padding5'>{$uip}</span>
         <span class='column is-1 padding5'>{$uport}</span>
         <span class='column is-2 padding5'>{$uagent}</span>
         <span class='column padding5 has-text-left'>$msg</span>
-    </div>
-<div>";
+    </div>";
 }
 $status = ['data' => $out];
 header('content-type: application/json');

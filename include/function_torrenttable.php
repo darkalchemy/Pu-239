@@ -41,10 +41,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string
  */
@@ -58,7 +58,10 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
     $query_strings = explode('&', $_SERVER['QUERY_STRING']);
     foreach ($query_strings as $query_string) {
         $term = explode('=', $query_string);
-        $ignore = ['sa', 'st'];
+        $ignore = [
+            'sa',
+            'st',
+        ];
         if (!in_array($term[0], $ignore) && !empty($term[1])) {
             $lookup[] = "{$term[0]}={$term[1]}";
         }
@@ -288,8 +291,8 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             </div>';
 
         $icons[] = !empty($row['descr']) ? $title : '';
-        $icons[] = $row['freeslot'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
-        $icons[] = $row['doubleslot'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
+        $icons[] = $row['freetorrent'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
+        $icons[] = $row['doubletorrent'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
         $icons[] = $row['nuked'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "'>" : '';
         $icons[] = $row['bump'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>'>" : '';
 
@@ -311,7 +314,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         $top_icons = !empty($top_icons) ? "<div class='left10'>{$top_icons}</div>" : '';
         $name = $row['name'];
         if (!empty($row['username'])) {
-            if ($row['anonymous'] && $curuser['class'] < UC_STAFF && $row['owner'] != $curuser['id']) {
+            if ($row['anonymous'] === '1' && $curuser['class'] < UC_STAFF && $row['owner'] != $curuser['id']) {
                 $uploader = '<span>' . get_anonymous_name() . '</span>';
                 $formatted = "<i>({$uploader})</i>";
             } else {
@@ -481,7 +484,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             $edit_link = ($curuser['class'] >= $site_config['allowed']['fast_edit'] ? "
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/edit.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
-                        <i class='icon-edit icon' aria-hidden='true'></i>
+                        <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
             $del_link = ($curuser['class'] >= $site_config['allowed']['fast_delete'] ? "

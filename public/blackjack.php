@@ -16,7 +16,6 @@ $lang = array_merge(load_language('global'), load_language('blackjack'));
 global $container, $site_config;
 
 $HTMLOUT = $debugout = '';
-
 if ($user['class'] < $site_config['allowed']['play']) {
     stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
 }
@@ -38,7 +37,7 @@ $blackjack['allowed'] = [
     100,
     250,
     500,
-    1024,
+    1000,
 ]; // games allowed
 $blackjack['id'] = isset($_GET['id']) && in_array($_GET['id'], $blackjack['allowed']) ? (int) $_GET['id'] : 1;
 $blackjack['gameid'] = array_search($blackjack['id'], $blackjack['allowed']) + 1;
@@ -50,6 +49,7 @@ $blackjack['min'] = 5; // min upload credit that will required to play any game
 $blackjack['max'] = 5120; // max upload credit that will required to play any game
 $blackjack['gm'] = $blackjack['min_uploaded'] * $blackjack['modifier'];
 $blackjack['required_ratio'] = 1; // min ratio that will required to play any game
+$blackjack['mib'] = 1000; // MiB vs MB
 
 // determine min upload credit required to play this game
 if ($blackjack['gm'] < $blackjack['max'] && $blackjack['gm'] > $blackjack['min']) {
@@ -116,7 +116,7 @@ if ($user['id'] != $nick['userid'] && $nick['gameover'] === 'no') {
 $opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username((int) $nick['id']) . '</h3>' : '';
 $required_ratio = 1.0;
 
-$blackjack['mb'] = 1024 * 1024 * 1024 * $blackjack['modifier'];
+$blackjack['mb'] = $blackjack['mib'] * $blackjack['mib'] * $blackjack['mib'] * $blackjack['modifier'];
 $game_size = mksize($blackjack['mb']);
 $link = '[url=' . $site_config['paths']['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
 $dt = TIME_NOW;
@@ -878,8 +878,8 @@ if ($game) {
     $sql = 'SELECT bjwins, bjlosses FROM users WHERE id=' . sqlesc($user['id']);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($res);
-    $User['bjwins'] = (int) $User['bjwins'] * 1024 * 1024 * 1024;
-    $User['bjlosses'] = (int) $User['bjlosses'] * 1024 * 1024 * 1024;
+    $User['bjwins'] = (int) $User['bjwins'] * $blackjack['mib'] * $blackjack['mib'] * $blackjack['mib'];
+    $User['bjlosses'] = (int) $User['bjlosses'] * $blackjack['mib'] * $blackjack['mib'] * $blackjack['mib'];
     $tot_wins = (int) $User['bjwins'];
     $tot_losses = (int) $User['bjlosses'];
     $tot_games = $tot_wins + $tot_losses;
@@ -962,9 +962,10 @@ if ($game) {
                         </tr>
                 </table>';
     // site stats
-    $sql = 'SELECT id, bjwins * 1024 * 1024 * 1024 AS wins, bjlosses * 1024 * 1024 * 1024 AS losses, (bjwins - bjlosses) * 1024 * 1024 * 1024 AS sum
+    $gig = (int) $blackjack['mib'] * $blackjack['mib'] * $blackjack['mib'];
+    $sql = "SELECT id, bjwins * $gig AS wins, bjlosses * $gig AS losses, (bjwins - bjlosses) * $gig AS sum
                 FROM users
-                WHERE status = 0 AND (bjwins>0 OR bjlosses>0) ORDER BY sum DESC LIMIT 20';
+                WHERE status = 0 AND (bjwins>0 OR bjlosses>0) ORDER BY sum DESC LIMIT 20";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res)) {
         $bjusers[] = $row;
@@ -1220,7 +1221,7 @@ function output($blackjack, $HTMLOUT, $debugout)
                     </tbody>
                 </table>";
 
-    if (($user['class'] >= UC_SYSOP) && $blackjack['debug']) {
+    if (has_access($user['class'], UC_SYSOP, 'coder') && $blackjack['debug']) {
         $HTMLOUT = $HTMLOUT . $debugout;
     }
 

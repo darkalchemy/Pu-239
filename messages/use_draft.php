@@ -70,6 +70,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, unread, location, urgent) VALUES 
                             (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . $receiver . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'yes\', \'yes\', 1,' . $urgent . ')') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $receiver);
+        $cache->increment('messages_count_' . $receiver);
         if (mysqli_affected_rows($mysqli) === 0) {
             stderr($lang['pm_error'], $lang['pm_send_wasnt']);
         }

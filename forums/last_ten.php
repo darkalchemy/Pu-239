@@ -15,14 +15,14 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
             <td>
                 <a id="' . (int) $arr['post_id'] . '"></a>
                 <span style="white-space:nowrap;">#' . (int) $arr['post_id'] . '
-                    <span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span>
+                    <span style="font-weight: bold;">' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span>
                 </span>
             </td>
             <td>
                 <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
             </td>
         </tr>';
-    if ($arr['anonymous'] === 'yes') {
+    if ($arr['anonymous'] === '1') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
             $HTMLOUT .= '
         <tr>

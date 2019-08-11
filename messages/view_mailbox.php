@@ -19,25 +19,26 @@ if ($mailbox > 1) {
                            ->where('userid = ?', $user['id'])
                            ->where('boxnumber = ?', $mailbox)
                            ->fetch('name');
-    if (empty($res_box_name)) {
+    if (empty($arr_box_name)) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
     }
-    $mailbox_name = format_comment($arr_box_name[0]);
+    $mailbox_name = format_comment($arr_box_name);
     $other_box_info = '
-        <p>
+        <div class="has-text-centered top20">
             <span class="has-text-danger">' . $lang['pm_mailbox_asterisc'] . '</span>
-            <span class="has-text-weight-bold">' . $lang['pm_mailbox_note'] . '</span>' . $lang['pm_mailbox_max'] . '
+            <span class="has-text-weight-bold right10">' . $lang['pm_mailbox_note'] . '</span>' . $lang['pm_mailbox_max'] . '
             <span class="has-text-weight-bold">' . $maxbox . '</span>' . $lang['pm_mailbox_either'] . '
-            <span class="has-text-weight-bold">' . $lang['pm_mailbox_inbox'] . '</span>' . $lang['pm_mailbox_or'] . '
-            <span class="has-text-weight-bold">' . $lang['pm_mailbox_sentbox'] . '</span>' . $lang['pm_mailbox_dot'] . '
-        </p>';
+            <span class="has-text-weight-bold">' . $lang['pm_mailbox_sentbox'] . '.</span>
+            <span class="has-text-danger">' . $lang['pm_mailbox_asterisc'] . '</span>
+        </div>';
 }
 
-$count = $message_class->get_count($user['id'], $mailbox, false);
-$filled = $count > 0 ? ($count / $maxbox) * 100 : 0;
+$total_count = $message_class->get_total_count($user['id']);
+$filled = $total_count > 0 ? ($total_count / $maxbox) * 100 : 0;
 $mailbox_pic = get_percent_completed_image(round($filled), $maxpic);
 $num_messages = number_format($filled, 0);
 $link = $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . $mailbox . '&amp;order_by=' . $order_by . $desc_asc . '&amp;';
+$count = $message_class->get_count($user['id'], $mailbox, false);
 $pager = pager($perpage, $count, $link);
 
 $messages = $message_class->get_messages($user['id'], $mailbox, $pager['pdo']['limit'], $pager['pdo']['offset'], $order_by . (isset($_GET['ASC']) ? '' : ' DESC'));
@@ -45,7 +46,7 @@ $HTMLOUT .= "
     $top_links
     <a id='pm'></a>
         <div class='level-center-center'>
-            <span class='size_2'>{$count} / {$maxbox}</span>
+            <span class='size_2'>{$total_count} / {$maxbox}</span>
             <span class='size_7 left20 right20 has-text-weight-bold'>{$mailbox_name}</span>
             <span class='size_2'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
          </div>

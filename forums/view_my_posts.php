@@ -87,7 +87,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     if ($arr['edit_date'] > 0) {
         $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
         $arr_edited = mysqli_fetch_assoc($res_edited);
-        if ($arr['anonymous'] === 'yes') {
+        if ($arr['anonymous'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['fe_last_edited_by'] . ' <i>' . get_anonymous_name() . '</i> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="is-link" href="forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '');
             } else {
@@ -124,7 +124,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
             </td>
 		</tr>
 			<tr>
-		    <td class="has-text-centered w-15 mw-150">' . get_avatar($CURUSER) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $CURUSER['id'])) . ($arr['anonymous'] === 'yes' || empty($CURUSER['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $CURUSER['class'])) . '</span><br></td>
+		    <td class="has-text-centered w-15 mw-150">' . get_avatar($CURUSER) . '<br>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $CURUSER['id'])) . ($arr['anonymous'] === '1' || empty($CURUSER['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $CURUSER['class'])) . '</span><br></td>
     		<td colspan="2">' . $body . $edited_by . '</td>
 		</tr>
     </table>';

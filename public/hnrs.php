@@ -33,7 +33,7 @@ if (isset($_GET['id']) && $user['class'] >= UC_STAFF) {
     $user_stuff = $user;
 }
 $diff = $user_stuff['uploaded'] - $user_stuff['downloaded'];
-if ($user['id'] === $userid || $user['class'] >= UC_ADMINISTRATOR) {
+if ($user['id'] === $userid || has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
     $bp = $user_stuff['seedbonus'];
 } else {
     $bp = 0;
@@ -43,7 +43,7 @@ $ratio_fix = $fluent->from('bonus')
                     ->select(null)
                     ->select('points')
                     ->where('bonusname = "Ratio Fix"')
-                    ->where('status = 0')
+                    ->where('enabled = "yes"')
                     ->fetch('points');
 
 $cost = (!$ratio_fix) ? 0 : (int) $ratio_fix;

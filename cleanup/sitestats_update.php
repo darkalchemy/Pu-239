@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Roles;
 
 /**
  * @param $data
@@ -30,9 +31,10 @@ function sitestats_update($data)
                     ->select('donor')
                     ->select('last_access')
                     ->select('gender')
-                    ->select('class');
+                    ->select('class')
+                    ->select('roles_mask');
 
-    $numanonymous = $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
+    $numanonymous = $unverified = $donors = $numactive = $gender_na = $gender_male = $gender_female = $disabled = $powerusers = $superusers = $uploaders = $moderators = $administrators = $sysops = $registered = $vips = 0;
     foreach ($users as $user) {
         $numanonymous += $user['anonymous_until'] > TIME_NOW || $user['perms'] >= 8;
         $unverified += $user['verified'] === 'no' ? 1 : 0;
@@ -43,7 +45,8 @@ function sitestats_update($data)
         $gender_female += $user['gender'] === 'Female' ? 1 : 0;
         $disabled += $user['status'] === 2 ? 1 : 0;
         $powerusers += $user['class'] === UC_POWER_USER ? 1 : 0;
-        $uploaders += $user['class'] === UC_UPLOADER ? 1 : 0;
+        $superusers += $user['class'] === UC_SUPER_USER ? 1 : 0;
+        $uploaders += $user['roles_mask'] & Roles::UPLOADER ? 1 : 0;
         $vips += $user['class'] === UC_VIP ? 1 : 0;
         $moderators += $user['class'] === UC_MODERATOR ? 1 : 0;
         $administrators += $user['class'] === UC_ADMINISTRATOR ? 1 : 0;
@@ -118,6 +121,7 @@ function sitestats_update($data)
         'gender_male' => $gender_male,
         'gender_female' => $gender_female,
         'powerusers' => $powerusers,
+        'superusers' => $superusers,
         'disabled' => $disabled,
         'uploaders' => $uploaders,
         'vips' => $vips,

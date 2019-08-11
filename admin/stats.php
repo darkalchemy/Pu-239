@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Pu239\Roles;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -30,16 +32,15 @@ if ($uporder === 'lastul') {
 } else {
     $orderby = 'name';
 }
-$query = '
-    SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id=t.owner
-        LEFT JOIN peers as p ON t.id=p.torrent
-        WHERE u.class = ' . UC_UPLOADER . '
+$query = 'SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
+        LEFT JOIN torrents as t ON u.id = t.owner
+        LEFT JOIN peers as p ON t.id = p.torrent
+        WHERE u.roles_mask & ' . Roles::UPLOADER . '
         GROUP BY u.id
         UNION SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id=t.owner
-        LEFT JOIN peers as p ON t.id=p.torrent
-        WHERE u.class>' . UC_UPLOADER . "
+        LEFT JOIN torrents as t ON u.id = t.owner
+        LEFT JOIN peers as p ON t.id = p.torrent
+        WHERE u.roles_mask & ' . Roles::UPLOADER . "
         GROUP BY u.id
         ORDER BY $orderby";
 $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
@@ -47,16 +48,15 @@ $perpage = 25;
 $count = mysqli_num_rows($res);
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;");
 if ($count > $perpage) {
-    $query = '
-    SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id=t.owner
-        LEFT JOIN peers as p ON t.id=p.torrent
-        WHERE u.class = ' . UC_UPLOADER . '
+    $query = 'SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
+        LEFT JOIN torrents as t ON u.id = t.owner
+        LEFT JOIN peers as p ON t.id = p.torrent
+        WHERE u.roles_mask & ' . Roles::UPLOADER . '
         GROUP BY u.id
         UNION SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p FROM users as u
-        LEFT JOIN torrents as t ON u.id=t.owner
-        LEFT JOIN peers as p ON t.id=p.torrent
-        WHERE u.class>' . UC_UPLOADER . "
+        LEFT JOIN torrents as t ON u.id = t.owner
+        LEFT JOIN peers as p ON t.id = p.torrent
+        WHERE u.roles_mask & ' . Roles::UPLOADER . "
         GROUP BY u.id
         ORDER BY $orderby
         {$pager['limit']}";

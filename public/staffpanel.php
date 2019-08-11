@@ -103,12 +103,12 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
-    } elseif (($action === 'flush' && $user['class'] >= UC_SYSOP)) {
+    } elseif ($action === 'flush' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'uglify' && $user['class'] >= UC_SYSOP)) {
+    } elseif ($action === 'uglify' && has_access($user['class'], UC_SYSOP, 'coder')) {
         toggle_site_status(true);
         $result = run_uglify();
         toggle_site_status(false);
@@ -121,14 +121,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'clear_ajaxchat' && $user['class'] >= UC_SYSOP)) {
+    } elseif ($action === 'clear_ajaxchat' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $fluent->deleteFrom('ajax_chat_messages')
                ->where('id>0')
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'toggle_status' && $user['class'] >= UC_SYSOP)) {
+    } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
         if (toggle_site_status($site_config['site']['online'])) {
             $session->set('is-success', 'Site is Online.');
         } else {
@@ -354,7 +354,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     } else {
         $add_button = '';
-        if ($user['class'] >= UC_SYSOP) {
+        if (has_access($user['class'], UC_SYSOP, 'coder')) {
             $add_button = "
                 <ul class='level-center bg-06'>
                     <li class='margin10'>
@@ -443,10 +443,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <td>
                             <div class='level-center'>
                                 <a href='{$_SERVER['PHP_SELF']}?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
-                                    <i class='icon-edit icon'></i>
+                                    <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                                 </a>
                                 <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
-                                    <i class='icon-trash-empty icon has-text-danger'></i>
+                                    <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                                 </a>
                             </div>
                         </td>";

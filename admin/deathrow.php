@@ -108,7 +108,7 @@ $x_time = 604800; // Delete Routine 1 // 7 days
 $y_time = 2419200; // Delete Routine 2 // 28 days
 // Give 'em 2 days to seed back their torrent (no seeder activity within x hours of torrent upload)
 $z_time = 2 * 86400; // Delete Routine 3 // 2 days
-$dx_time = TIME_NOW - $x_time;
+$dx_time = get_date(TIME_NOW - $x_time, 'MYSQL', 1, 0);
 $dy_time = TIME_NOW - $y_time;
 $dz_time = TIME_NOW - $z_time;
 

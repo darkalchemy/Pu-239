@@ -75,8 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto']) && !is_arr
     }
 }
 
-$got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] ? true : false;
-
 $HTMLOUT = "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "

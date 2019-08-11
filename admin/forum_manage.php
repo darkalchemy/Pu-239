@@ -250,12 +250,12 @@ foreach ($forums as $row) {
                 <span class="level-center">
                     <span class="left10 tooltipper" title="Edit">
                         <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int) $row['id'] . '">
-                            <i class="icon-edit icon"></i>
+                            <i class="icon-edit icon has-text-info" aria-hidden="true"></i>
                         </a>
                     </span>
                     <span class="tooltipper" title="Delete">
                         <a href="javascript:confirm_delete(\'' . $row['id'] . '\');">
-                            <i class="icon-cancel icon has-text-danger"></i>
+                            <i class="icon-cancel icon has-text-danger" aria-hidden="true"></i>
                         </a>
                     </span>
                 </span>

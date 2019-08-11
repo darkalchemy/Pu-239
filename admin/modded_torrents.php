@@ -66,7 +66,7 @@ function do_sort($arr, $empty = false)
                     <td>' . get_date((int) $res['added'], 'LONG') . "</td>
                     <td>
                         <a href='{$site_config['paths']['baseurl']}/edit.php?id={$res['id']}{$returnto}' class='tooltipper' title='{$lang['mtor_edit']}'>
-                            <i class='icon-edit icon'></i>
+                            <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                         </a>
                     </td>
                 </tr>";

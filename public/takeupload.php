@@ -2,15 +2,17 @@
 
 declare(strict_types = 1);
 
-use DI\DependencyException;
-use DI\NotFoundException;
+use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Files;
 use Pu239\Message;
 use Pu239\Peer;
+use Pu239\Roles;
 use Pu239\Session;
 use Pu239\Torrent;
 use Pu239\User;
+use Pu239\Usersachiev;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -18,6 +20,7 @@ require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_ircbot.php';
 global $container, $site_config;
 
 $data = $_POST;
@@ -53,20 +56,19 @@ $descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $owner_id = $users_class->get_bot_id($site_config['allowed']['upload'], $bot, $torrent_pass, $auth);
+    $owner_id = $users_class->get_bot_id($bot, $torrent_pass, $auth);
     $user = $users_class->getUserFromId($owner_id);
 } else {
     $user = check_user_status();
     $owner_id = $user['id'];
     $cache->set('user_upload_variables_' . $user['id'], json_encode($data), 3600);
 }
-
 $dt = TIME_NOW;
 ini_set('upload_max_filesize', (string) $site_config['site']['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 $session = $container->get(Session::class);
-if ($user['class'] < $site_config['allowed']['upload'] || $user['uploadpos'] != 1 || $user['status'] === 5) {
+if (!$user['roles_mask'] & Roles::UPLOADER || $user['uploadpos'] != 1 || $user['status'] === 5) {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
     why_die($lang['not_authorized']);
@@ -87,10 +89,10 @@ if (empty($fname)) {
 }
 
 if ($uplver === 'yes') {
-    $anonymous = 'yes';
+    $anonymous = '1';
     $anon = get_anonymous_name();
 } else {
-    $anonymous = 'no';
+    $anonymous = '0';
     $anon = $user['username'];
 }
 
@@ -369,7 +371,7 @@ $values = [
     'youtube' => $youtube,
     'tags' => $tags,
     'added' => $dt,
-    'last_action' => $dt,
+    'last_action' => get_date($dt, 'MYSQL', 1, 0),
     'mtime' => $dt,
     'ctime' => $dt,
     'freetorrent' => $freetorrent,
@@ -380,7 +382,7 @@ if (!empty($imdb)) {
     $values['imdb_id'] = $imdb;
 }
 $torrents_class = $container->get(Torrent::class);
-$id = $torrents_class->add($values);
+$id = (int) $torrents_class->add($values);
 
 if (!$id) {
     $session->set('is-warning', $lang['takeupload_failed']);
@@ -394,35 +396,30 @@ $peer_class = $container->get(Peer::class);
 $peer_class->getPeersFromUserId($owner_id);
 clear_image_cache();
 
-if (!empty($uplver) && $uplver === 'yes') {
-    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . format_comment($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
-} else {
-    $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . format_comment($torrent) . '[/i][/b][/url] Uploaded by ' . format_comment($user['username']);
-}
-$messages = "{$site_config['site']['name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['paths']['baseurl']}/details.php?id=$id";
-sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$files = $container->get(Files::class);
+$files->delete($id);
 
 /**
  * @param $arr
  * @param $id
  *
- * @throws NotFoundException
- * @throws DependencyException
- *
- * @return string
+ * @return array
  */
 function file_list($arr, $id)
 {
     $new = [];
     foreach ($arr as $v) {
-        $new[] = "($id," . sqlesc($v[0]) . ',' . $v[1] . ')';
+        $new[] = [
+            'torrent' => $id,
+            'filename' => $v[0],
+            'size' => $v[1],
+        ];
     }
 
-    return implode(',', $new);
+    return $new;
 }
 
-sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id)) or sqlerr(__FILE__, __LINE__);
-
+$files->insert(file_list($filelist, $id));
 $dir = TORRENTS_DIR . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
     $session->set('is-warning', $lang['takeupload_encode_error']);
@@ -435,22 +432,37 @@ try {
 }
 if ($site_config['bonus']['on']) {
     $seedbonus = $user['seedbonus'];
-    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus']['per_upload']) . ', numuploads = numuploads + 1  WHERE id=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($seedbonus + $site_config['bonus']['per_upload']);
-    $cache->update_row('user_' . $owner_id, [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_cache']);
+    $update = [
+        'seedbonus' => $user['seedbonus'] + $site_config['bonus']['per_upload'],
+        'numuploads' => $user['numuploads'] + 1,
+    ];
+    $users_class->update($update, $owner_id);
 }
-if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+if ($site_config['site']['autoshout_chat']) {
+    if (!empty($uplver) && $uplver === 'yes') {
+        $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
+    } else {
+        $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user['username']);
+    }
     autoshout($msg);
     autoshout($msg, 2, 0);
 }
+if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+    $messages = "\0034New Torrent:\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
+    ircbot($messages);
+}
 $messages_class = $container->get(Message::class);
 if ($offer > 0) {
-    $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . ' AND offer_id=' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
+    $offers = $fluent->from('offer_votes')
+                     ->select(null)
+                     ->select('user_id')
+                     ->where('vote = "yes"')
+                     ->where('user_id != ?', $owner_id)
+                     ->where('offer_id = ?', $offer)
+                     ->fetchAll();
     $subject = $lang['takeupload_offer_subject'];
     $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
-    while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
+    foreach ($offers as $arr_offer) {
         $msgs_buffer[] = [
             'receiver' => $arr_offer['user_id'],
             'added' => $dt,
@@ -463,13 +475,28 @@ if ($offer > 0) {
     }
     write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
     $filled = 1;
+    $set = [
+        'filled_torrent_id' => $id,
+        'updated' => $dt,
+    ];
+    $fluent->update('offers')
+           ->set($set)
+           ->where('id = ?', $offer)
+           ->execute();
 }
 $filled = 0;
 if ($request > 0) {
-    $res_req = sql_query("SELECT user_id FROM request_votes WHERE vote = 'yes' AND request_id=" . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
+    $requests = $fluent->from('request_votes')
+                       ->select(null)
+                       ->select('user_id')
+                       ->where('vote = "yes"')
+                       ->where('user_id != ?', $owner_id)
+                       ->where('request_id = ?', $request)
+                       ->fetchAll();
+
     $subject = $lang['takeupload_request_subject'];
     $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
-    while ($arr_req = mysqli_fetch_assoc($res_req)) {
+    foreach ($requests as $arr_req) {
         $msgs_buffer[] = [
             'receiver' => $arr_req['user_id'],
             'added' => $dt,
@@ -486,8 +513,21 @@ if ($request > 0) {
         ];
         $users_class->update($set, $user['id']);
     }
-    sql_query('UPDATE requests SET filled_by_user_id=' . sqlesc($owner_id) . ', filled_torrent_id=' . sqlesc($id) . ' WHERE id=' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid=' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
+    $set = [
+        'filled_by_user_id' => $owner_id,
+        'filled_torrent_id' => $id,
+        'updated' => $dt,
+    ];
+    $fluent->update('requests')
+           ->set($set)
+           ->where('id = ?', $request)
+           ->execute();
+
+    $users_achieve = $container->get(Usersachiev::class);
+    $update = [
+        'reqfilled' => new Literal('reqfilled + 1'),
+    ];
+    $users_achieve->update($update, $owner_id);
     write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user['username']);
     $filled = 1;
 }
@@ -500,7 +540,6 @@ if (!empty($notify)) {
     $subject = $lang['takeupload_email_subject'];
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
-        file_put_contents('/var/log/nginx/email.log', $notif['notifs'] . PHP_EOL, FILE_APPEND);
         if ($site_config['mail']['smtp_enable'] && strpos($notif['notifs'], 'email') !== false) {
             $body = format_comment($msg);
             send_mail(strip_tags($notif['email']), $subject, $body, strip_tags($body));

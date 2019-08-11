@@ -5,6 +5,8 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Post;
 
+$user = check_user_status();
+
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));
 $valid_staff_actions = [
     'delete_posts',
@@ -25,13 +27,13 @@ $valid_staff_actions = [
     'delete_topic',
     'un_delete_topic',
 ];
-$staff_action = (in_array($posted_staff_action, $valid_staff_actions) ? $posted_staff_action : 1);
-global $container, $site_config, $CURUSER;
+$staff_action = in_array($posted_staff_action, $valid_staff_actions) ? $posted_staff_action : 1;
+global $container, $site_config;
 
-if ($CURUSER['class'] < UC_STAFF) {
+if (!has_access($user['class'], UC_STAFF, 'coder')) {
     stderr($lang['gl_error'], $lang['fe_no_access_for_you_mr']);
 }
-if ($staff_action == 1) {
+if ($staff_action === 1) {
     stderr($lang['gl_error'], $lang['fe_no_action_selected']);
 }
 $post_id = isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0;
@@ -40,7 +42,7 @@ $forum_id = isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0;
 if ($topic_id > 0) {
     $res_check = sql_query('SELECT f.min_class_read FROM forums AS f LEFT JOIN topics AS t ON t.forum_id=f.id WHERE f.id=t.forum_id AND t.id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $arr_check = mysqli_fetch_row($res_check);
-    if ($CURUSER['class'] < $arr_check[0]) {
+    if ($user['class'] < $arr_check[0]) {
         stderr($lang['gl_error'], $lang['gl_bad_id']);
         exit();
     }
@@ -48,7 +50,7 @@ if ($topic_id > 0) {
 switch ($staff_action) {
     case 'delete_posts':
         if (isset($_POST['post_to_mess_with'])) {
-            $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
+            $_POST['post_to_mess_with'] = isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '';
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = (int) $var;
@@ -80,7 +82,7 @@ switch ($staff_action) {
 
     case 'un_delete_posts':
         if (isset($_POST['post_to_mess_with'])) {
-            $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
+            $_POST['post_to_mess_with'] = isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '';
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = (int) $var;
@@ -102,15 +104,15 @@ switch ($staff_action) {
         if (!is_valid_id($topic_id) || !is_valid_id($forum_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
-        $new_topic_name = strip_tags((isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : ''));
-        $new_topic_desc = strip_tags((isset($_POST['new_topic_desc']) ? trim($_POST['new_topic_desc']) : ''));
+        $new_topic_name = strip_tags(isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : '');
+        $new_topic_desc = strip_tags(isset($_POST['new_topic_desc']) ? trim($_POST['new_topic_desc']) : '');
         if ($new_topic_name === '') {
             stderr($lang['gl_error'], $lang['fe_to_split_this_topic_you_must_supply_a_name_for_the_new_topic']);
         }
         if (isset($_POST['post_to_mess_with'])) {
             sql_query('INSERT INTO topics (topic_name, forum_id, topic_desc) VALUES (' . sqlesc($new_topic_name) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($new_topic_desc) . ')') or sqlerr(__FILE__, __LINE__);
             $new_topic_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
-            $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
+            $_POST['post_to_mess_with'] = isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '';
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = (int) $var;
@@ -225,7 +227,7 @@ switch ($staff_action) {
 
     case 'send_to_recycle_bin':
         if (isset($_POST['post_to_mess_with'])) {
-            $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
+            $_POST['post_to_mess_with'] = isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '';
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
@@ -245,7 +247,7 @@ switch ($staff_action) {
 
     case 'remove_from_recycle_bin':
         if (isset($_POST['post_to_mess_with'])) {
-            $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
+            $_POST['post_to_mess_with'] = isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '';
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
@@ -269,7 +271,7 @@ switch ($staff_action) {
         }
         $subject = strip_tags(isset($_POST['subject']) ? trim($_POST['subject']) : '');
         $message = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : '');
-        $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 2 : $CURUSER['id']);
+        $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 2 : $user['id']);
         if ($subject == '' || $message == '') {
             stderr($lang['gl_error'], $lang['fe_you_must_enter_both_a_subj_mes']);
         }

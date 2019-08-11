@@ -47,9 +47,10 @@ if (isset($_POST['action2'])) {
                                 ->select('MAX(boxnumber) AS boxnumber')
                                 ->fetch('boxnumber');
             $box = $boxnumber < 2 ? 2 : $boxnumber++;
-            $new_box = $_POST['new'];
+            $new_box = preg_replace('/[^\da-z\-_]/i', '', $_POST['new']);
             foreach ($new_box as $key => $add_it) {
-                if (valid_username($add_it) && $add_it !== '') {
+                $add_it = preg_replace('/[^\da-z\-_]/i', '', $add_it);
+                if (!empty($add_it)) {
                     $name = htmlsafechars($add_it);
                     $values = [
                         'userid' => $CURUSER['id'],
@@ -78,8 +79,8 @@ if (isset($_POST['action2'])) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
             }
             foreach ($boxes as $row) {
-                if (valid_username($_POST['edit' . $row['id']]) && $_POST['edit' . $row['id']] !== '' && $_POST['edit' . $row['id']] !== $row['name']) {
-                    $name = htmlsafechars($_POST['edit' . $row['id']]);
+                $name = htmlsafechars(preg_replace('/[^\da-z\-_]/i', '', $_POST['edit' . $row['id']]));
+                if (!empty($name) && $name !== $row['name']) {
                     $set = [
                         'name' => $name,
                     ];
@@ -90,8 +91,7 @@ if (isset($_POST['action2'])) {
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo_' . $CURUSER['id']);
                     $worked = '&name=1';
-                }
-                if ($_POST['edit' . $row['id']] == '') {
+                } elseif (empty($name)) {
                     $set = [
                         'location' => 1,
                     ];
@@ -161,7 +161,7 @@ if (isset($_POST['action2'])) {
 
 $boxes = $fluent->from('pmboxes')
                 ->where('userid = ?', $CURUSER['id'])
-                ->orderBy('name')
+                ->orderBy('boxnumber')
                 ->fetchAll();
 $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
@@ -255,7 +255,7 @@ for ($i = 1; $i < 6; ++$i) {
     $body .= '
             <tr>
                 <td><span>box ' . $i . ':</span></td>
-                <td><input type="text" name="new[]" class="w-100" maxlength="100"></td>
+                <td><input type="text" name="new[]" class="w-100" minlength="3" maxlength="15"></td>
             </tr>';
 }
 

@@ -127,25 +127,25 @@ if (mysqli_num_rows($res) >= 1) {
 
     $heading = "
         <tr>
-            <th>{$lang['classpromo_clsname']}</th>
-            <th>&#160;</th>
-            <th>{$lang['classpromo_minratio']}</th>
-            <th>{$lang['classpromo_minupl']}</th>
-            <th>{$lang['classpromo_mintime']}</th>
-            <th>{$lang['classpromo_lowratio']}</th>
-            <th>{$lang['classpromo_remove']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_clsname']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_minratio']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_minupl']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_mintime']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_lowratio']}</th>
+            <th class='has-text-centered'>{$lang['classpromo_remove']}</th>
         </tr>";
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
-        $body .= "
+        $body .= '
         <tr>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name((int) htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
-            <td>&#160;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "'></td>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['min_ratio']) . "'></td>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['uploaded']) . "'></td>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'></td>
-            <td><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['low_ratio']) . "'></td>
             <td>
+                ' . get_user_class_name(constant($arr['name']), false) . ' (' . htmlsafechars($arr['name']) . ")
+            </td>
+            <td class='has-text-centered'>" . htmlsafechars($arr['min_ratio']) . "</td>
+            <td class='has-text-centered'>" . htmlsafechars($arr['uploaded']) . "</td>
+            <td class='has-text-centered'>" . htmlsafechars($arr['time']) . "</td>
+            <td class='has-text-centered'>" . htmlsafechars($arr['low_ratio']) . "</td>
+            <td class='has-text-centered'>
                 <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
                     <input type='submit' value='{$lang['classpromo_remove']}' class='button is-small'>

@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 global $CURUSER, $user, $lang, $site_config;
 
-if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
+if ($user['paranoia'] < 2 || $CURUSER['id'] === $user['id'] || $CURUSER['class'] >= UC_STAFF) {
     if ($user['downloaded'] > 0) {
         $table_data .= '
         <tr>

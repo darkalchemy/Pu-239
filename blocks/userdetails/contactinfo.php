@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 global $CURUSER, $lang, $site_config, $user;
 
-$HTMLOUT .= ($CURUSER['class'] === UC_SYSOP || (($CURUSER['class'] >= UC_STAFF || $user['show_email'] === 'yes')) ? '
+$HTMLOUT .= (has_access($CURUSER['class'], UC_SYSOP, 'coder') || ((has_access($CURUSER['class'], UC_STAFF, 'coder') || $user['show_email'] === 'yes')) ? '
         <tr>
             <td class="rowhead">' . $lang['userdetails_email'] . '</td>
             <td><a class="is-link" href="mailto:' . htmlsafechars($user['email']) . '"  title="' . $lang['userdetails_email_click'] . '" target="_blank"><i class="icon-mail" aria-hidden="true"><i>' . $lang['userdetails_send_email'] . '</a></td>

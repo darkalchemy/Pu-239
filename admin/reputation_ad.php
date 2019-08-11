@@ -124,10 +124,10 @@ function show_level(array $input)
             <td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "'></td>
             <td>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
-                    <i class='icon-edit icon'></i>
+                    <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                 </a>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
-                    <i class='icon-trash-empty icon has-text-danger'></i>
+                    <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                 </a>
             </td>
         </tr>";
@@ -475,10 +475,10 @@ function view_list(array $now_date, array $input, int $time_offset)
                 </td>
                 <td>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'>
-                        <i class='icon-edit icon'></i>
+                        <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'>
-                        <i class='icon-trash-empty icon has-text-danger'></i>
+                        <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </td>
             </tr>";

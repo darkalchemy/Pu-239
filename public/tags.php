@@ -13,6 +13,17 @@ require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('tags'));
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
+
 /**
  * @param string $name
  * @param string $description
@@ -67,19 +78,22 @@ function insert_tag(string $name, string $description, string $syntax, string $e
 
 $test = isset($_POST['test']) ? $_POST['test'] : '';
 $HTMLOUT = "<h1 class='has-text-centered'>BBcode Tags</h1>";
-$HTMLOUT .= main_div("<div class='has-text-centered'>
-    {$lang['tags_title']}<br><br>
-    <form method='post' action='?' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
-    <textarea name='test' cols='60' rows='3'>" . ($test ? htmlsafechars($test) : '') . "</textarea>
-    <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;'>
-    </form>
-    </div>", '', 'padding20');
-if ($test != '') {
-    $HTMLOUT .= '<p><hr>' . format_comment($test) . "<hr></p>\n";
-}
+$HTMLOUT .= main_div("
+    <div class='has-text-centered'>
+        <div class='padding20'>{$lang['tags_title']}</div>
+        <div class='is-paddingless'>" . BBcode() . '</div>
+    </div>', '', 'padding20');
+
 $HTMLOUT .= insert_tag($lang['tags_bold1'], $lang['tags_bold2'], $lang['tags_bold3'], $lang['tags_bold4'], '');
 $HTMLOUT .= insert_tag($lang['tags_italic1'], $lang['tags_italic2'], $lang['tags_italic3'], $lang['tags_italic4'], '');
 $HTMLOUT .= insert_tag($lang['tags_underline1'], $lang['tags_underline2'], $lang['tags_underline3'], $lang['tags_underline4'], '');
+$HTMLOUT .= insert_tag($lang['tags_strike1'], $lang['tags_strike2'], $lang['tags_strike3'], $lang['tags_strike4'], '');
+$HTMLOUT .= insert_tag($lang['tags_sub1'], $lang['tags_sub2'], $lang['tags_sub3'], $lang['tags_sub4'], '');
+$HTMLOUT .= insert_tag($lang['tags_sup1'], $lang['tags_sup2'], $lang['tags_sup3'], $lang['tags_sup4'], '');
+$HTMLOUT .= insert_tag($lang['tags_right1'], $lang['tags_right2'], $lang['tags_right3'], $lang['tags_right4'], '');
+$HTMLOUT .= insert_tag($lang['tags_left1'], $lang['tags_left2'], $lang['tags_left3'], $lang['tags_left4'], '');
+$HTMLOUT .= insert_tag($lang['tags_center1'], $lang['tags_center2'], $lang['tags_center3'], $lang['tags_center4'], '');
+$HTMLOUT .= insert_tag($lang['tags_justify1'], $lang['tags_justify2'], $lang['tags_justify3'], $lang['tags_justify4'], '');
 $HTMLOUT .= insert_tag($lang['tags_color1'], $lang['tags_color2'], $lang['tags_color3'], $lang['tags_color4'], $lang['tags_color5']);
 $HTMLOUT .= insert_tag($lang['tags_color6'], $lang['tags_color7'], $lang['tags_color8'], $lang['tags_color9'], $lang['tags_color10']);
 $HTMLOUT .= insert_tag($lang['tags_size1'], $lang['tags_size2'], $lang['tags_size3'], $lang['tags_size4'], $lang['tags_size5']);
@@ -91,6 +105,10 @@ $HTMLOUT .= insert_tag($lang['tags_image6'], $lang['tags_image7'], $lang['tags_i
 $HTMLOUT .= insert_tag($lang['tags_quote1'], $lang['tags_quote2'], $lang['tags_quote3'], $lang['tags_quote4'], '');
 $HTMLOUT .= insert_tag($lang['tags_quote5'], $lang['tags_quote6'], $lang['tags_quote7'], $lang['tags_quote8'], '');
 $HTMLOUT .= insert_tag($lang['tags_list1'], $lang['tags_list2'], $lang['tags_list3'], $lang['tags_list4'], '');
+$HTMLOUT .= insert_tag($lang['tags_table1'], $lang['tags_table2'], $lang['tags_table3'], $lang['tags_table4'], '');
 $HTMLOUT .= insert_tag($lang['tags_preformat1'], $lang['tags_preformat2'], $lang['tags_preformat3'], $lang['tags_preformat4'], '');
+$HTMLOUT .= insert_tag($lang['tags_code1'], $lang['tags_code2'], $lang['tags_code3'], $lang['tags_code4'], '');
+$HTMLOUT .= insert_tag($lang['tags_youtube1'], $lang['tags_youtube2'], $lang['tags_youtube3'], $lang['tags_youtube4'], $lang['tags_youtube5']);
+$HTMLOUT .= insert_tag($lang['tags_youtube6'], $lang['tags_youtube7'], $lang['tags_youtube8'], $lang['tags_youtube9'], $lang['tags_youtube10']);
 
-echo stdhead($lang['tags_tags']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['tags_tags'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -143,8 +143,8 @@ var ajaxChatConfig = {
         'size_1',
         'user',
         'power_user',
+        'super_user',
         'vip',
-        'uploader',
         'moderator',
         'administrator',
         'sysop'

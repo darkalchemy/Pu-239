@@ -309,12 +309,12 @@ if (!isset($_GET['act'])) {
             <td>
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_edit']}'>
-                        <i class='icon-edit icon'></i>
+                        <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
                 </span>
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=2&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_delete']}'>
-                        <i class='icon-trash-empty icon has-text-danger'></i>
+                        <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </span>
             </td>

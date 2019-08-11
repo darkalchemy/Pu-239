@@ -141,7 +141,7 @@ if ($count_inactive > 0) {
     <td colspan='6' class='colhead'>
     <select name='action'>
     <option value='mail'>{$lang['inactive_sendmail']}</option>
-    <option value='deluser' " . ($CURUSER['class'] < UC_ADMINISTRATOR ? 'disabled' : '') . ">{$lang['inactive_deleteusers']}</option>
+    <option value='deluser' " . (!has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder') ? 'disabled' : '') . ">{$lang['inactive_deleteusers']}</option>
     <option value='disable'>{$lang['inactive_disaccounts']}</option>
     </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' class='button is-small'>&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small'></td></tr>";
     if ($record_mail) {

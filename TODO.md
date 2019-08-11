@@ -1,5 +1,10 @@
 In no particular order  
 
+update: user info for paranoia  
+fix: check user when opening staff pages  
+read up on eggdrop 'simul' partyline command (owners can manipulate other people on the party line) for chat -> irc  
+replace or fix cookie consent, seems lifetime doesn't set or stay set correctly  
+update code to use freetorrent and doubletorrent instead of free and double  
 remove all cacheing from peers table, neither ocelot nor xbt can read from or update the cache  
 finish: offers, requests, upcomin and bot replies  
 add: script to check cheaters, make request to client to get random chunk, validate chuck against hash, update db for success, failure to validate, empty response and no response

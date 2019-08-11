@@ -270,7 +270,7 @@ if (!empty($_POST['isbn']) && ($isbn = $_POST['isbn'] != $fetch_assoc['isbn'])) 
     $torrent_cache['isbn'] = $isbn;
 }
 
-if (($anonymous = (!empty($_POST['anonymous']) ? 'yes' : 'no')) != $fetch_assoc['anonymous']) {
+if (($anonymous = (!empty($_POST['anonymous']) ? '1' : '0')) != $fetch_assoc['anonymous']) {
     $updateset[] = 'anonymous = ' . sqlesc($anonymous);
     $torrent_cache['anonymous'] = $anonymous;
 }
@@ -332,7 +332,7 @@ if ($torrent_cache) {
 }
 $torrents_class = $container->get(Torrent::class);
 $torrents_class->remove_torrent($infohash);
-write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($user['username'])) . '');
+write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] === '1') ? 'Anonymous' : htmlsafechars($user['username'])) . '');
 $cache->delete('editedby_' . $id);
 
 $session->set('is-success', $lang['details_success_edit']);

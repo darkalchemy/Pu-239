@@ -78,7 +78,7 @@ if (!empty($topics) && is_array($topics)) {
             }
         }
         $added = get_date((int) $topicarr['added'], '', 0, 1);
-        if ($topicarr['pan'] === 'yes') {
+        if ($topicarr['pan'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
                 $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
             } else {
@@ -87,7 +87,7 @@ if (!empty($topics) && is_array($topics)) {
         } else {
             $username = (!empty($topicarr['puser_id']) ? format_username((int) $topicarr['puser_id']) : "<i>{$lang['index_fposts_unknow']} [{$topicarr['tuser_id']}]</i>");
         }
-        if ($topicarr['tan'] === 'yes') {
+        if ($topicarr['tan'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
                 $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
             } else {

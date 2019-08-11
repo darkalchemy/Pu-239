@@ -76,7 +76,7 @@ function sql_query($query)
 {
     global $container, $site_config, $ignore;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     if ($site_config['db']['debug'] && !in_array($_SERVER['PHP_SELF'], $ignore)) {
         $query_start_time = microtime(true);
         mysqli_set_charset($mysqli, 'utf8mb4');
@@ -108,7 +108,7 @@ function sqlesc($x)
     }
     global $container;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
 
     return sprintf('\'%s\'', mysqli_real_escape_string($mysqli, $x));
 }
@@ -129,7 +129,7 @@ function sqlesc_noquote($x)
 
     global $container;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
 
     return mysqli_real_escape_string($mysqli, $x);
 }
@@ -140,12 +140,13 @@ function sqlesc_noquote($x)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function sqlerr($file = '', $line = '')
 {
     global $container, $site_config, $CURUSER;
 
-    $mysqli = $container->get(Mysqli::class);
+    $mysqli = $container->get(mysqli::class);
     $the_error = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (!$site_config['db']['debug']) {

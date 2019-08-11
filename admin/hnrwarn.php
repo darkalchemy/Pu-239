@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$act) {
         stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_wrong']);
     }
-    if ($act === 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
+    if ($act === 'delete' && has_access($CURUSER['class'], UC_SYSOP, 'coder')) {
         $res_del = sql_query('SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, status FROM users WHERE id IN (' . implode(', ', $_uids) . ') ORDER BY username DESC');
         if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
@@ -128,7 +128,7 @@ if ($count == 0) {
                     <option value='unwarn'>{$lang['hnrwarn_unwarn']}</option>
                     <option value='disable'>{$lang['hnrwarn_disable2']}</option>
                     ";
-    $HTMLOUT .= "<option value='delete' " . ($CURUSER['class'] < UC_ADMINISTRATOR ? 'disabled' : '') . ">{$lang['hnrwarn_delete']}</option>";
+    $HTMLOUT .= "<option value='delete' " . (!has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder') ? 'disabled' : '') . ">{$lang['hnrwarn_delete']}</option>";
     $HTMLOUT .= "
                     </select>
                 &raquo;

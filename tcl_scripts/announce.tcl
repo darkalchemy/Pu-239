@@ -1,9 +1,9 @@
 package require http
 package require tls
 
-set conf(port) 35789
-set conf(chan) "#09source"
-set conf(pass) "bWFtYWFyZW1lcmU"
+set conf(port) 35791
+set conf(pass) XZ0jMsqZi2va1ENI
+set conf(chan) #announce
 
 listen $conf(port) script idle:listen
 
@@ -13,14 +13,14 @@ proc idle:listen {idx} {
 
 proc idle:process {idx args} {
 	global conf
-	
+
 	set args [join $args]
     set password [lindex [split $args] 0]
     set message [join [lrange [split $args] 1 end]]
-    
+
     if {[string match $password $conf(pass)]} {
         putquick "PRIVMSG $conf(chan) : $message"
     }
 }
 
-putlog "New announce script loaded!"
+putlog "Module loaded: SSL Announce"

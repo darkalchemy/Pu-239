@@ -13,6 +13,8 @@ use Pu239\Ban;
 use Pu239\Block;
 use Pu239\Bonuslog;
 use Pu239\Bookmark;
+use Pu239\BotReplies;
+use Pu239\BotTriggers;
 use Pu239\Cache;
 use Pu239\Casino;
 use Pu239\CasinoBets;
@@ -58,6 +60,8 @@ return [
     Block::class => autowire(),
     Bonuslog::class => autowire(),
     Bookmark::class => autowire(),
+    BotReplies::class => autowire(),
+    BotTriggers::class => autowire(),
     Cache::class => autowire(),
     Casino::class => autowire(),
     CasinoBets::class => autowire(),
@@ -123,7 +127,7 @@ return [
             }
         }
     }),
-    Mysqli::class => DI\factory(function (ContainerInterface $c) {
+    mysqli::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
         if ($env['db']['use_socket']) {
             $mysqli = new mysqli($env['db']['host'], $env['db']['username'], $env['db']['password'], $env['db']['database'], 0, $env['db']['socket']);

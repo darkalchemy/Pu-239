@@ -32,11 +32,11 @@ $bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'n
 $subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
 $topic_name = format_comment($arr['topic_name']);
 $topic_desc = format_comment($arr['topic_desc']);
-$anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
+$anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? '1' : '0';
 if ($quote !== 0 && $body === '') {
     $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE p.id=' . sqlesc($quote)) or sqlerr(__FILE__, __LINE__);
     $arr_quote = mysqli_fetch_array($res_quote);
-    if ($arr_quote['anonymous'] === 'yes') {
+    if ($arr_quote['anonymous'] === '1') {
         $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : '' . get_anonymous_name() . '');
     } else {
         $quoted_member = ($arr_quote['username'] == '' ? '' . $lang['pr_lost_member'] . '' : htmlsafechars($arr_quote['username']));

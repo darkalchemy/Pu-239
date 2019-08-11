@@ -91,34 +91,36 @@ function get_snatched_color($st)
     return "<span class='has-text-danger'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></span>";
 }
 
-$What_Value = 'WHERE complete_date != "0"';
+$What_Value = 'WHERE complete_date != 0';
 global $container;
 
 $fluent = $container->get(Database::class);
 $count = $fluent->from('snatched')
                 ->select(null)
                 ->select('COUNT(id) AS count')
-                ->where('complete_date>0')
                 ->fetch('count');
 
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_snatched_torrents_allsnatched']}</h1>
     <div class='has-text-centered size_4 bottom20'>{$lang['ad_snatched_torrents_currently']}&#160;" . $count . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</div>";
-$res = sql_query('SELECT COUNT(id) FROM snatched') or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = (int) $row[0];
-$snatchedperpage = 15;
+$snatchedperpage = 25;
 $pager = pager($snatchedperpage, $count, 'staffpanel.php?tool=snatched_torrents&amp;action=snatched_torrents&amp;');
 if ($count > $snatchedperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$sql = 'SELECT sn.userid, sn.id, sn.torrentid, sn.timesann, sn.hit_and_run, sn.mark_of_cain, sn.uploaded, sn.downloaded, sn.start_date, sn.complete_date, sn.seeder, sn.leechtime, sn.seedtime, u.username, t.name ' . 'FROM snatched AS sn ' . 'LEFT JOIN users AS u ON u.id=sn.userid ' . "LEFT JOIN torrents AS t ON t.id=sn.torrentid WHERE complete_date != '0'" . 'ORDER BY sn.complete_date DESC ' . $pager['limit'];
-$result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($result) != 0) {
+$snatched = $fluent->from('snatched AS sn')
+                   ->select('t.name')
+                   ->leftJoin('torrents AS t ON sn.torrentid = t.id')
+                   ->orderBy('sn.complete_date DESC')
+                   ->orderBy('sn.start_date DESC')
+                   ->limit($pager['pdo']['limit'])
+                   ->offset($pager['pdo']['offset']);
+
+if ($count > 0) {
     $heading = "
     <tr>
         <th>{$lang['ad_snatched_torrents_name']}</th>
-        <th>{$lang['ad_snatched_torrents_torname']}</th>
+        <th class='min-150'>{$lang['ad_snatched_torrents_torname']}</th>
         <th>{$lang['ad_snatched_torrents_hnr']}</th>
         <th>{$lang['ad_snatched_torrents_marked']}</th>
         <th>{$lang['ad_snatched_torrents_announced']}</th>
@@ -131,32 +133,32 @@ if (mysqli_num_rows($result) != 0) {
         <th>{$lang['ad_snatched_torrents_seeding']}</th>
     </tr>";
     $body = '';
-    while ($row = mysqli_fetch_assoc($result)) {
-        $smallname = substr(htmlsafechars($row['name']), 0, 25);
+    foreach ($snatched as $row) {
+        $smallname = substr(htmlsafechars($row['name']), 0, 35);
         if ($smallname != htmlsafechars($row['name'])) {
             $smallname .= '...';
         }
         $body .= '
     <tr>
-        <td>' . format_username((int) $row['userid']) . "</td>
+        <td>' . format_username($row['userid']) . "</td>
         <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
-        <td><b>' . get_date((int) $row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
-        <td><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
-        <td><b>' . htmlsafechars($row['timesann']) . '</b></td>
-        <td><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td><b>' . mksize($row['downloaded']) . '</b></td>') . '
-        <td><b>' . get_snatched_color($row['seedtime']) . '</b></td>
-        <td><b>' . mkprettytime($row['leechtime']) . '</b></td>
-        <td><b>' . get_date((int) $row['start_date'], 'LONG', 0, 1) . '</b></td>';
+        <td class="has-text-centered"><b>' . get_date((int) $row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
+        <td class="has-text-centered"><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
+        <td class="has-text-centered"><b>' . $row['timesann'] . '</b></td>
+        <td class="has-text-centered"><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['site']['ratio_free'] ? '' : '
+        <td class="has-text-centered"><b>' . mksize($row['downloaded']) . '</b></td>') . '
+        <td class="has-text-centered"><b>' . get_snatched_color($row['seedtime']) . '</b></td>
+        <td class="has-text-centered"><b>' . mkprettytime($row['leechtime']) . '</b></td>
+        <td class="has-text-centered"><b>' . get_date((int) $row['start_date'], 'LONG', 0, 1) . '</b></td>';
         if ($row['complete_date'] > 0) {
             $body .= '
-        <td><b>' . get_date((int) $row['complete_date'], 'LONG', 0, 1) . '</b></td>';
+        <td class="has-text-centered"><b>' . get_date((int) $row['complete_date'], 'LONG', 0, 1) . '</b></td>';
         } else {
             $body .= "
-        <td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td></tr>";
+        <td class='has-text-centered'><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td>";
         }
         $body .= '
-        <td><b>' . ($row['seeder'] === 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['ad_snatched_torrents_yes']}'></i>" : "<i class='icon-trash-empty icon has-text-danger tooltipper' title='{$lang['ad_snatched_torrents_no']}'></i>") . '</b></td>
+        <td class="has-text-centered"><b>' . ($row['seeder'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success tooltipper' title='{$lang['ad_snatched_torrents_yes']}'></i>" : "<i class='icon-thumbs-down icon has-text-danger tooltipper' title='{$lang['ad_snatched_torrents_no']}'></i>") . '</b></td>
     </tr>';
     }
     $HTMLOUT .= main_table($body, $heading);

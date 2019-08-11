@@ -201,7 +201,7 @@ if ($search || $author_id) {
                             <span style="font-style: italic;">by: </span>
                         </div>
                         <div class="column">
-                            ' . ($arr['pan'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . '
+                            ' . ($arr['pan'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . '
                         </div>
                     </div>
                     <div class="columns">
@@ -288,8 +288,8 @@ if ($search || $author_id) {
             </td>
         </tr>
         <tr>
-            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . ($arr['anonymous'] === 'yes' || empty($user['title']) ? '' : '
-                <span class="size_2">[' . htmlsafechars($user['title']) . ']</span>') . '<span> ' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user['class'])) . '</span>
+            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . ($arr['anonymous'] === '1' || empty($user['title']) ? '' : '
+                <span class="size_2">[' . htmlsafechars($user['title']) . ']</span>') . '<span> ' . ($arr['anonymous'] === '1' ? '' : get_user_class_name((int) $user['class'])) . '</span>
             </td>
             <td colspan="2">' . $body . $edited_by . '</td>
         </tr>';

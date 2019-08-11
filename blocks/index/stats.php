@@ -14,8 +14,8 @@ if ($stats_cache === false || is_null($stats_cache)) {
 $users = [
     "<tr><td>{$lang['index_stats_online']}</td><td class='w-15 has-text-centered'>{$stats_cache['numactive']}</td></tr>",
     "<tr><td>{$lang['index_stats_regged']}</td><td class='w-15 has-text-centered'>{$stats_cache['regusers']}</td></tr>",
-    "<tr><td>{$lang['index_stats_anonymous']}</td><td class='w-15 has-text-centered'>{$stats_cache['numanonymous']}</td></tr>",
     "<tr><td>{$lang['index_stats_powerusers']}</td><td class='w-15 has-text-centered'>{$stats_cache['powerusers']}</td></tr>",
+    "<tr><td>{$lang['index_stats_superusers']}</td><td class='w-15 has-text-centered'>{$stats_cache['superusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_uploaders']}</td><td class='w-15 has-text-centered'>{$stats_cache['uploaders']}</td></tr>",
     "<tr><td>{$lang['index_stats_vips']}</td><td class='w-15 has-text-centered'>{$stats_cache['vips']}</td></tr>",
     "<tr><td>{$lang['index_stats_moderators']}</td><td class='w-15 has-text-centered'>{$stats_cache['moderators']}</td></tr>",
@@ -26,6 +26,7 @@ $users = [
 $gender = [
     "<tr><td>{$lang['index_stats_uncon']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconusers']}</td></tr>",
     "<tr><td>{$lang['index_stats_banned']}</td><td class='w-15 has-text-centered'>{$stats_cache['disabled']}</td></tr>",
+    "<tr><td>{$lang['index_stats_anonymous']}</td><td class='w-15 has-text-centered'>{$stats_cache['numanonymous']}</td></tr>",
     "<tr><td>{$lang['index_stats_donor']}</td><td class='w-15 has-text-centered'>{$stats_cache['donors']}</td></tr>",
     "<tr><td>{$lang['index_stats_gender_na']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_na']}</td></tr>",
     "<tr><td>{$lang['index_stats_gender_female']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_female']}</td></tr>",

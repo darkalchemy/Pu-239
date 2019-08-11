@@ -2,36 +2,63 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
+
 /**
- * @param $messages
+ * @param string $messages
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
-function ircbot($messages)
+function ircbot(string $messages)
 {
-    $bot = [
-        'ip' => '127.0.0.1',
-        'port' => 3458,
-        'pass' => 'bWFtYWFyZW1lcmU',
-        'pidfile' => '/home/ircbot/ion/pid.IoN',
-        //path to the pid. file
-        'sleep' => 5,
-    ];
     if (empty($messages)) {
         return;
-    } //die ('Empty message');
-    if (!file_exists($bot['pidfile'])) {
+    }
+    $messages = explode("\n", str_replace([
+        "\r\n",
+        "\n\r",
+        "\r",
+        '\n',
+    ], "\n", $messages));
+    $bot = [
+        // IP or FQDN that points to eggdrop
+        'ip' => 'localhost',
+        'port' => 35791,
+        //change this here and announce.tcl
+        'pass' => 'XZ0jMsqZi2va1ENI',
+        // change this here and eggdrop.conf
+        'pidfile' => '/home/ircbot/ion/pid.IoN',
+        'sleep' => 2,
+    ];
+    $bot = [
+        'ip' => 'pu-239.pw',
+        // IP or FQDN
+        'port' => 4588,
+        'pass' => 'zDOm7kEWoWF4ynqNMSf3NMdxca1JQryF',
+        'sleep' => 1,
+    ];
+    if (!empty($bot['pidfile']) && !file_exists($bot['pidfile'])) {
+        write_log("IRCBOT does not appear to be online\n");
+
         return;
-    } //die ('Bot not online');
-    if ($bot['hand'] = fsockopen($bot['ip'], $bot['port'], $errno, $errstr, 45)) {
-        sleep($bot['sleep']);
-        if (is_array($messages)) {
-            foreach ($messages as $message) {
-                fputs($bot['hand'], $bot['pass'] . ' ' . $message . "\n");
-                sleep($bot['sleep']);
-            }
-        } else {
-            fputs($bot['hand'], $bot['pass'] . ' ' . $messages . "\n");
+    }
+    $fp = fsockopen($bot['ip'], $bot['port'], $errno, $errstr);
+    if (!$fp) {
+        write_log("IRCBOT Failed to connect: $errstr ($errno)\n");
+
+        return;
+    }
+
+    $i = 0;
+    sleep($bot['sleep']);
+    foreach ($messages as $message) {
+        fputs($fp, $bot['pass'] . ' ' . $message . "\n");
+        if ($i++ > 0) {
             sleep($bot['sleep']);
         }
-        fclose($bot['hand']);
     }
+    fclose($fp);
 }

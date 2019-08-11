@@ -17,7 +17,7 @@ $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
 global $container, $site_config;
 
-$mysqli = $container->get(Mysqli::class);
+$mysqli = $container->get(mysqli::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('intval', $_POST['users']) : 0;
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     global $CURUSER;
 
-    if ($act === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
+    if ($act === 'delete' && has_access($CURUSER['class'], UC_SYSOP, 'coder')) {
         $res_del = sql_query('SELECT id, username, registered, downloaded, uploaded, last_access, class, donor, warned, status FROM users WHERE id IN (' . implode(', ', $_uids) . ') ORDER BY username DESC');
         if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
@@ -155,7 +155,7 @@ if ($count == 0) {
             <select name='action'>
                 <option value='unwarn'>{$lang['warn_unwarn']}</option>
                 <option value='disable'>{$lang['warn_disable']}</option>
-                <option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
+                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP) ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
             </select>
             &raquo;
             <input type='submit' value='Apply' class='button is-small'>

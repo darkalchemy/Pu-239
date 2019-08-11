@@ -19,7 +19,7 @@ global $container, $site_config, $CURUSER;
 $HTMLOUT = '';
 
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
-    $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
+    $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable = 'no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
 
     $HTMLOUT .= "
     <ul class='level-center bg-06'>

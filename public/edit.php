@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Roles;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -135,7 +137,8 @@ if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned' " . (($row['banned']) === 'yes' ? 'checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
 }
 $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
-if ($user['class'] >= $site_config['allowed']['upload']) {
+$auth = $container->get(Auth::class);
+if ($auth->hasRole(Roles::UPLOADER)) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked' " . ($row['nuked'] === 'yes' ? 'checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked' " . ($row['nuked'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars((string) $row['nukereason']) . "' class='w-100'>", 1);
 }
@@ -186,7 +189,7 @@ if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
 
 if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky' " . (($row['sticky']) === 'yes' ? 'checked' : '') . " value='yes'>Sticky this torrent !", 1);
-    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous' " . (($row['anonymous'] === 'yes') ? 'checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
+    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous' " . (($row['anonymous'] === '1') ? 'checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
     $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip' " . (($row['vip'] == 1) ? 'checked' : '') . " value='1'> If this one is checked, only VIPs can download this torrent", 1);
 }
 

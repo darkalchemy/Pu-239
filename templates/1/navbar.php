@@ -2,10 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Roles;
 
 /**
  * @throws Exception
@@ -14,8 +16,9 @@ use Pu239\Database;
  */
 function navbar()
 {
-    global $CURUSER, $site_config, $BLOCKS, $lang;
+    global $container, $CURUSER, $site_config, $BLOCKS, $lang;
 
+    $auth = $container->get(Auth::class);
     $navbar = '';
     $staff_links = staff_panel();
     if ($CURUSER) {
@@ -60,14 +63,15 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1' class='has-text-weight-bold has-text-green'>{$lang['gl_newtor']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < $site_config['allowed']['upload'] ? "
+                                <li><a href='{$site_config['paths']['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . (!$auth->hasRole(Roles::UPLOADER) ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "
                                 <li><a href='{$site_config['paths']['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                             </ul>
                         </li>
                         <li id='general_links' class='clickable'>
                             <a href='#' class='has-text-weight-bold'>{$lang['gl_general']}</a>
-                            <ul class='ddFade ddFadeFast'>" . ($site_config['bucket']['allowed'] ? "
+                            <ul class='ddFade ddFadeFast'>
+                                <li><a href='{$site_config['paths']['baseurl']}/tags.php'>{$lang['gl_bbcode']}</a></li>" . ($site_config['bucket']['allowed'] ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
                                 <li><a href='{$site_config['paths']['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
@@ -98,6 +102,7 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/hnrs.php'>{$lang['gl_hnrs']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/invite.php?do=view_page'>{$lang['gl_invites']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/port_check.php'>{$lang['gl_port_check']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default' class='has-text-weight-bold'>{$lang['gl_usercp']}</a></li>
                             </ul>
@@ -148,9 +153,9 @@ function make_link($value)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

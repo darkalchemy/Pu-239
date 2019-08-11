@@ -89,7 +89,7 @@ $HTMLOUT = "
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1024'><div class='has-text-centered $color8'>BlackJack 1TB</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1000'><div class='has-text-centered $color8'>BlackJack 1TB</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='tooltipper round10 w-100' title='BlackJack 1TB'>
                     </a>
                 </div>

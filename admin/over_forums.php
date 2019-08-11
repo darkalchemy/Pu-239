@@ -180,12 +180,12 @@ switch ($action) {
                 <span class="level-center">
                     <span class="left10">
                         <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . $row['id'] . '">
-                            <i class="icon-edit icon"></i>
+                            <i class="icon-edit icon has-text-info" aria-hidden="true"></i>
                         </a>
                     </span>
                     <span>
                         <a href="javascript:confirm_delete(\'' . $row['id'] . '\');">
-                            <i class="icon-trash-empty icon has-text-danger"></i>
+                            <i class="icon-trash-empty icon has-text-danger" aria-hidden="true"></i>
                         </a>
                     </span>
                 </span>

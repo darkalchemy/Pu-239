@@ -20,7 +20,7 @@ if ($users === false || is_null($users)) {
 
     foreach ($all_users as $user) {
         $users[$user['id']]['userRole'] = $user['class'];
-        if ($user['class'] >= UC_ADMINISTRATOR) {
+        if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
             $users[$user['id']]['channels'] = [
                 0,
                 1,
@@ -30,7 +30,7 @@ if ($users === false || is_null($users)) {
                 5,
                 6,
             ];
-        } elseif ($user['class'] >= UC_STAFF) {
+        } elseif (has_access($user['class'], UC_STAFF, 'coder')) {
             $users[$user['id']]['channels'] = [
                 0,
                 1,

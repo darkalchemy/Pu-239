@@ -17,7 +17,7 @@ $stdfoot = [
 $lang = load_language('global');
 global $container, $site_config;
 
-if (empty($user) || $user['class'] < UC_SYSOP) {
+if (empty($user) || !has_access($user['class'], UC_SYSOP, 'coder')) {
     $session = $container->get(Session::class);
     $session->set('is-danger', 'You do not have access to that page.');
     write_log($user['username'] . ' has attempted to access Adminer');

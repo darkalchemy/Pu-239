@@ -39,7 +39,7 @@ function tvmaze_schedule_update($data)
     if (!empty($tvmaze_data)) {
         foreach ($tvmaze_data as $tv) {
             if ($tv['airdate'] >= $start && $tv['airdate'] <= $end && $tv['_embedded']['show']['language'] === 'English') {
-                $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : '';
+                $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : (!empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : '');
                 if (!empty($poster)) {
                     $insert = $cache->get('insert_tvmaze_tvmazeid_' . $tv['id']);
                     if ($insert === false || is_null($insert)) {

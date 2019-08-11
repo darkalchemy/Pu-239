@@ -32,12 +32,12 @@ $images_class = $container->get(Image::class);
 $users_class = $container->get(User::class);
 foreach ($comments as $comment) {
     $torrname = format_comment($comment['name']);
-    $formatted = $comment['anonymous'] === 'yes' ? 'Anonymous' : format_username((int) $comment['user']);
+    $formatted = $comment['anonymous'] === '1' ? 'Anonymous' : format_username((int) $comment['user']);
     if (empty($comment['poster']) && !empty($imdb_id)) {
         $comment['poster'] = $images_class->find_images($imdb_id);
     }
     $comment['poster'] = empty($comment['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='tooltip-poster' alt=''>" : "<img src='" . url_proxy($comment['poster'], true, 250) . "' alt='' class='tooltip-poster'>";
-    if ($comment['anonymous'] === 'yes' && ($user['class'] < UC_STAFF || (int) $comment['owner'] === $user['id'])) {
+    if ($comment['anonymous'] === '1' && ($user['class'] < UC_STAFF || (int) $comment['owner'] === $user['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $users_data = $users_class->getUserFromId((int) $comment['owner']);

@@ -342,7 +342,7 @@ if (isset($torrent['cat_name'])) {
 }
 $lastseed = $torrents_class->get_items(['last_action'], $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
-$info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date((int) $lastseed, '', 0, 1) . '</div>', 1);
+$info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date(strtotime($lastseed), '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
     $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
 }
@@ -482,12 +482,12 @@ if (isset($_GET['returnto'])) {
 }
 $editlink = "<a href='$url' class='button is-small bottom10'>";
 $rowuser = !empty($owner) ? format_username((int) $owner) : $lang['details_unknown'];
-$uprow = $torrent['anonymous'] === 'yes' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
+$uprow = $torrent['anonymous'] === '1' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
 $users_class = $container->get(User::class);
 $torrent_cache['rep'] = $users_class->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
-    $member_reputation = get_reputation($users_class->getUserFromId($owner), 'torrents', true, $id, ($torrent['anonymous'] === 'yes' ? true : false));
+    $member_reputation = get_reputation($users_class->getUserFromId($owner), 'torrents', true, $id, ($torrent['anonymous'] === '1' ? true : false));
     $audit .= tr('Reputation', "
         <div class='level-left left10'>
             $member_reputation counts towards uploaders Reputation

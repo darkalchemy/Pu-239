@@ -92,7 +92,7 @@ switch ($action) {
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && !has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr('Error', 'Permission denied.');
         }
         $set = [
@@ -266,7 +266,7 @@ switch ($action) {
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
-  <td colspan="2"><h1>' . htmlsafechars($arr['offer_name']) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
+  <td colspan="2"><h1>' . htmlsafechars($arr['offer_name']) . (!has_access($CURUSER['class'], UC_STAFF, 'coder') ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
   [ <a href="' . $site_config['paths']['baseurl'] . '/offers.php?action=delete_offer&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
@@ -468,7 +468,7 @@ switch ($action) {
         if (empty($exists)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($exists['offered_by_user_id'] !== $CURUSER['id'] && !has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
@@ -506,7 +506,7 @@ switch ($action) {
         $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
         $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
 
-        if ($CURUSER['class'] < UC_STAFF && $CURUSER['id'] !== $edit_arr['offered_by_user_id']) {
+        if (!has_access($CURUSER['class'], UC_STAFF, 'coder') && $CURUSER['id'] !== $edit_arr['offered_by_user_id']) {
             stderr('Error!', 'This is not your offer to edit!');
         }
         $filled_by = '';
@@ -662,7 +662,7 @@ switch ($action) {
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $CURUSER['id'] && !has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr('Error', 'Permission denied.');
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : $arr['text']));
@@ -723,7 +723,7 @@ switch ($action) {
         if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $CURUSER['id'] && !has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr('Error', 'Permission denied.');
         }
         $set = [
@@ -754,7 +754,7 @@ switch ($action) {
         if (empty($arr)) {
             stderr('Error', 'Invalid ID.');
         }
-        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+        if ($arr['user'] != $CURUSER['id'] && !has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr('Error', 'Permission denied.');
         }
         if (!isset($_GET['do_it'])) {
@@ -777,7 +777,7 @@ switch ($action) {
         break;
 
     case 'vieworiginal':
-        if ($CURUSER['class'] < UC_STAFF) {
+        if (!has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             stderr($lang['comment_error'], $lang['comment_denied']);
         }
         if (!is_valid_id($comment_id)) {

@@ -20,7 +20,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $table_data .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_downloaded']}</td>
-            <td>" . mksize($user['downloaded']) . " {$lang['userdetails_daily']}" . ($days > 1 ? mksize((int) floor($user['uploaded'] / $days)) : mksize($user['downloaded'])) . "</td>
+            <td>" . mksize($user['downloaded']) . " {$lang['userdetails_daily']}" . ($days > 1 ? mksize((int) floor($user['downloaded'] / $days)) : mksize($user['downloaded'])) . "</td>
         </tr>
         <tr>
             <td class='rowhead'>{$lang['userdetails_uploaded']}</td>

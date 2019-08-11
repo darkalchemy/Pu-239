@@ -63,6 +63,7 @@ class Message
         if (count($values) > $count) {
             foreach ($values as $user) {
                 $ids[] = 'inbox_' . $user['receiver'];
+                $ids[] = 'message_count_' . $user['receiver'];
             }
 
             if (!empty($ids)) {
@@ -71,6 +72,7 @@ class Message
         } else {
             foreach ($values as $user) {
                 $this->cache->increment('inbox_' . $user['receiver']);
+                $this->cache->increment('message_count_' . $user['receiver']);
             }
         }
 
@@ -96,6 +98,7 @@ class Message
                                ->execute();
 
         $this->cache->decrement('inbox_' . $userid);
+        $this->cache->decrement('message_count_' . $userid);
 
         return $result;
     }
@@ -161,7 +164,7 @@ class Message
      */
     public function get_count(int $userid, int $location, bool $unread)
     {
-        $pmCount = 0;
+        $pmCount = false;
         if ($location === $this->site_config['pm']['inbox'] && $unread) {
             $pmCount = $this->cache->get('inbox_' . $userid);
         }
@@ -187,6 +190,29 @@ class Message
         }
 
         return is_int($pmCount) ? $pmCount : 0;
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_total_count(int $userid)
+    {
+        $pmCount = $this->cache->get('message_count_' . $userid);
+        if ($pmCount === false || is_null($pmCount)) {
+            $pmCount = $this->fluent->from('messages')
+                                    ->select(null)
+                                    ->select('COUNT(id) AS count')
+                                    ->where('receiver = ?', $userid)
+                                    ->fetch('count');
+
+            $this->cache->set('message_count_' . $userid, $pmCount, $this->site_config['expires']['unread']);
+        }
+
+        return $pmCount;
     }
 
     /**
@@ -271,9 +297,8 @@ class Message
         } else {
             $messages = $messages->leftJoin('users AS u ON m.sender = u.id');
         }
-        $messages = $messages->leftJoin('users AS u ON ')
-                             ->leftJoin('friends AS f ON m.sender = f.friendid')
-                             ->leftJoin('blocks AS b ON m.sender = b.blockid')
+        $messages = $messages->leftJoin('friends AS f ON m.receiver = f.userid AND m.sender = f.friendid')
+                             ->leftJoin('blocks AS b ON m.receiver = b.userid AND m.sender = b.blockid')
                              ->limit($limit)
                              ->offset($offset)
                              ->orderBy($orderby)

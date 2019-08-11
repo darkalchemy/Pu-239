@@ -40,7 +40,7 @@ class CustomAJAXChat extends AJAXChat
                 3,
                 4,
             ];
-            if ($user['class'] >= UC_ADMINISTRATOR) {
+            if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
                 $userData['channels'] = [
                     0,
                     1,
@@ -50,7 +50,7 @@ class CustomAJAXChat extends AJAXChat
                     5,
                     6,
                 ];
-            } elseif ($user['class'] >= UC_STAFF) {
+            } elseif (has_access($user['class'], UC_STAFF, 'coder')) {
                 $userData['channels'] = [
                     0,
                     1,
