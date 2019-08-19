@@ -69,4 +69,6 @@ $lang = [
     'signup_female' => 'Female',
     'signup_na' => 'N/A',
     'signup_gender' => 'Gender',
+    'signup_promo' => 'Site Promotions',
+    'signup_promo_error' => 'The Promotion you have attempted to use does not exist or has expired!',
 ];

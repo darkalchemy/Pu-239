@@ -138,6 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $title .= ' using a Site Promotion';
             $promo = "
                 <input type='hidden' name='promo' value='{$valid}'>";
+        } else {
+            stderr($lang['signup_promo'], $lang['signup_promo_error']);
         }
     }
     $invite_id = !empty($_GET['id']) ? (int) $_GET['id'] : null;

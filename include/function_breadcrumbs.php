@@ -5,12 +5,13 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Database;
+use Pu239\Topic;
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|void
  */
@@ -41,6 +42,12 @@ function breadcrumbs()
         }
     }
     $links[] = get_basepage($lang, $path);
+    if ($path === '/forums.php') {
+        $post_page = get_postpage($lang, $path);
+        if (!empty($post_page)) {
+            $links[] = $post_page;
+        }
+    }
     if (!empty($queries)) {
         $action_page = get_actionpage($lang, $queries, $path);
         if (!empty($action_page)) {
@@ -80,13 +87,6 @@ function breadcrumbs()
     return $crumbs;
 }
 
-/**
- * @param $lang
- * @param $url
- * @param $referer
- *
- * @return bool|string
- */
 function get_prepage($lang, $url, $referer)
 {
     global $CURUSER;
@@ -124,7 +124,7 @@ function get_prepage($lang, $url, $referer)
             }
             break;
         case '/promo.php':
-            if ($CURUSER['class'] >= UC_STAFF) {
+            if (has_access($CURUSER['class'], UC_STAFF, 'coder')) {
                 return get_basepage($lang, '/staffpanel.php');
             }
     }
@@ -136,15 +136,35 @@ function get_prepage($lang, $url, $referer)
  * @param $lang
  * @param $url
  *
- * @return bool|string
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|string
  */
 function get_postpage($lang, $url)
 {
+    global $container;
+
     switch ($url) {
         case '/messages.php':
             return get_basepage($lang, 'view_mailbox');
         case '/topten.php':
             return get_basepage($lang, 'top_users');
+        case '/forums.php':
+            $queries = explode('&', $_SERVER['QUERY_STRING']);
+            $topic_class = $container->get(Topic::class);
+            foreach ($queries as $param) {
+                if (strstr($param, 'topic_id=')) {
+                    $ids = explode('=', $param);
+                    $forum_id = $topic_class->get_forum_id_from_topic_id((int) $ids[1]);
+                    if (!empty($forum_id)) {
+                        $link = get_basepage($lang, '/forums.php', 'action=view_forum&forum_id=' . $forum_id);
+
+                        return str_replace($lang['forums.php'], $lang['forum.php'], $link);
+                    }
+                }
+            }
     }
 
     return false;
@@ -155,9 +175,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -206,9 +226,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -413,9 +433,9 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */

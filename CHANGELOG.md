@@ -1,4 +1,6 @@
 ### 19 Aug, 2019
+update: show error message on invalid or expired promo  
+add: view forum breadcrumb  
 fix: missing closing div usercp.php  
 update: set user status and verified install.php  
 fix: incorrect datetime used ip_update.php  

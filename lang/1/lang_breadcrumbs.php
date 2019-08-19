@@ -37,6 +37,7 @@ $lang = [
     'filelist.php' => 'File List',
     'formats.php' => 'Formats',
     'forums.php' => 'Forums',
+    'forum.php' => 'Forum',
     'friends.php' => 'Friends',
     'games.php' => 'Games',
     'getrss.php' => 'Get RSS',
