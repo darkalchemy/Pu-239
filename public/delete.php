@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;

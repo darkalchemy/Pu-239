@@ -1,4 +1,5 @@
 ### 19 Aug, 2019
+fix: missing closing div usercp.php  
 update: set user status and verified install.php  
 fix: incorrect datetime used ip_update.php  
 

@@ -94,7 +94,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
         <span class='left10'>
             <a href='{$site_config['paths']['baseurl']}/browse.php?c{$cat['id']}'>
-                <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
+                <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "'>
             </a>
         </span>" : "
         <span class='left10'>" . htmlsafechars($cat['name']) . '</span>';
@@ -112,9 +112,9 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 /**
  * @param int $user_cat
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */

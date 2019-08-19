@@ -22,7 +22,7 @@
         "raphael": "^2.3.0",
         "sceditor": "^2.1.3",
         "tar": "^4.4.10",
-        "tooltipster": "^4.2.6",
+        "tooltipster": "^4.2.7",
         "uglify-es": "^3.3.9",
         "uglify-js": "^3.6.0"
     },

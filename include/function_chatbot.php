@@ -34,11 +34,11 @@ if (!$run && $user['channel'] === 0 && $user['random'] === 1 && !empty($user['te
 /**
  * @param $user
  *
- * @return bool
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return bool
  */
 function bot_respond($user)
 {

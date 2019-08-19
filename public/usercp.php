@@ -411,12 +411,13 @@ if ($action === 'avatar') {
                                             <td>
                                                 <a href='{$site_config['paths']['baseurl']}/lottery.php'><div>{$site_config['site']['name']} Lottery</div></a>
                                             </td>
-                                        </tr>
+                                        </tr>";
+    }
+    $HTMLOUT .= '
                                     </tbody>
                                 </table>
                             </div>
-                        </div>";
-    }
+                        </div>';
 } elseif ($action === 'security') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -530,11 +531,11 @@ if ($action === 'avatar') {
     $grouped = genrelist(false);
     if (!empty($grouped)) {
         $categories .= "
-                                            <div id='cat-container'>";
+                                            <div id='cat-container' class='bottom20 left10 right20'>";
         $parent = '';
         for ($i = 1; $i <= $count; ++$i) {
             $categories .= "
-                                                <div class='w-100 bordered level-wide bg-03 bottom20'>";
+                                                <div class='w-100 bordered level-wide bg-03 top20'>";
             foreach ($grouped as $a) {
                 if (empty($a['parent_name'])) {
                     continue;
@@ -553,8 +554,10 @@ if ($action === 'avatar') {
                 }
             }
             $categories .= '
-                                            </div>';
+                                                </div>';
         }
+        $categories .= '
+                                            </div>';
     }
     $HTMLOUT .= tr($lang['usercp_pm_notif'], "
                                             <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pmail]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);

@@ -9,9 +9,9 @@ use Pu239\Database;
 /**
  * @param $data
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|void
  */

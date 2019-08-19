@@ -330,8 +330,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */

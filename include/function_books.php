@@ -18,12 +18,12 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int    $tid
  * @param string $poster
  *
- * @return array|bool
  * @throws Exception
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
  */
 function get_book_info(string $isbn, string $name, int $tid, string $poster)
 {

@@ -30,9 +30,9 @@ class BotReplies
     /**
      * @param array $values
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function insert(array $values)
     {
@@ -53,9 +53,9 @@ class BotReplies
      * @param array $set
      * @param int   $id
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function update(array $set, int $id)
     {
@@ -73,8 +73,9 @@ class BotReplies
     }
 
     /**
-     * @return array|bool
      * @throws Exception
+     *
+     * @return array|bool
      */
     public function get_replies()
     {
@@ -90,9 +91,9 @@ class BotReplies
     /**
      * @param int $id
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public function delete(int $id)
     {
@@ -107,9 +108,9 @@ class BotReplies
     /**
      * @param int $id
      *
-     * @return mixed
      * @throws Exception
      *
+     * @return mixed
      */
     public function get_by_id(int $id)
     {
@@ -123,9 +124,9 @@ class BotReplies
     }
 
     /**
-     * @return array|PDOStatement
      * @throws Exception
      *
+     * @return array|PDOStatement
      */
     public function get_approved_replies()
     {

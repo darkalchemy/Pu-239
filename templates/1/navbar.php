@@ -10,9 +10,9 @@ use Pu239\Database;
 use Pu239\Roles;
 
 /**
- * @return string
  * @throws Exception
  *
+ * @return string
  */
 function navbar()
 {
@@ -153,11 +153,11 @@ function make_link($value)
 }
 
 /**
- * @return string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
  * @throws DependencyException
+ *
+ * @return string
  */
 function staff_panel()
 {
@@ -218,9 +218,9 @@ function staff_panel()
                 <li class='clickable'>
                     <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>[" . substr($key, 1) . "]</a>
                     <ul class='ddFade ddFadeFast'>" . make_link([
-                    'file_name' => 'staffpanel.php',
-                    'page_name' => 'Staff Panel',
-                ]) . implode('', $value) . '
+                'file_name' => 'staffpanel.php',
+                'page_name' => 'Staff Panel',
+            ]) . implode('', $value) . '
                     </ul>
                 </li>';
         }
