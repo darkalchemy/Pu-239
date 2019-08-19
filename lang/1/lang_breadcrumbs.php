@@ -26,6 +26,7 @@ $lang = [
     'comment.php' => 'Comments',
     'contactstaff.php' => 'Contact Staff',
     'credits.php' => 'Credits',
+    'delete.php' => 'Delete Torrent',
     'details.php' => 'Torrent Details',
     'donate.php' => 'Donation',
     'download.php' => 'Download',

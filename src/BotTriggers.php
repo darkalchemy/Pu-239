@@ -43,6 +43,7 @@ class BotTriggers
         if (!$result) {
             return false;
         }
+        $this->cache->delete('bot_replies_');
 
         return true;
     }
@@ -50,24 +51,21 @@ class BotTriggers
     /**
      * @param array $set
      * @param int   $id
-     * @param int   $userid
      *
      * @throws Exception
      *
      * @return bool
      */
-    public function update(array $set, int $id, int $userid)
+    public function update(array $set, int $id)
     {
         $result = $this->fluent->update('bot_triggers')
                                ->set($set)
                                ->where('id = ?', $id)
-                               ->where('added_by != ?', $userid)
                                ->execute();
 
         if (!$result) {
             return false;
         }
-        $this->cache->delete('bot_triggers_');
         $this->cache->delete('bot_replies_');
 
         return true;
@@ -115,8 +113,29 @@ class BotTriggers
      */
     public function delete(int $id)
     {
-        return $this->fluent->deleteFrom('bot_triggers')
-                     ->where('id = ?', $id)
-                     ->execute();
+        $results = $this->fluent->deleteFrom('bot_triggers')
+                                ->where('id = ?', $id)
+                                ->execute();
+        $this->cache->delete('bot_replies_');
+
+        return $results;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_by_id(int $id)
+    {
+        $trigger = $this->fluent->from('bot_triggers')
+                                ->select(null)
+                                ->select('phrase')
+                                ->where('id = ?', $id)
+                                ->fetch('phrase');
+
+        return $trigger;
     }
 }

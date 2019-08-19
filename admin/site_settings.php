@@ -65,10 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $item = !empty($site_config[$parent][$name]) ? $site_config[$parent][$name] : '';
         $parentname = (!empty($parent) ? $parent : '') . '::' . $name;
         if (empty($set['name'])) {
-            $fluent->deleteFrom('site_config')
-                   ->where('id = ?', $id)
-                   ->execute();
-            $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
+            if ($id != 0) {
+                $fluent->deleteFrom('site_config')
+                       ->where('id = ?', $id)
+                       ->execute();
+                $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
+            }
         } elseif ($id === 'Add') {
             if (!empty($item)) {
                 $set['value'] = implode('|', $item) . '|' . $value;
@@ -87,11 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         } else {
-            $fluent->update('site_config')
+            $results = $fluent->update('site_config')
                    ->set($set)
                    ->where('id = ?', $id)
                    ->execute();
-            $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
+            if ($results) {
+                $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
+            }
         }
         $cache->delete('site_settings_');
     }

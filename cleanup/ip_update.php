@@ -16,7 +16,7 @@ use Pu239\IP;
 function ip_update($data)
 {
     $time_start = microtime(true);
-    $dt = TIME_NOW - 365 * 86400;
+    $dt = get_date(TIME_NOW - 365 * 86400, 'MYSQL');
     global $container;
 
     $ips = $container->get(IP::class);

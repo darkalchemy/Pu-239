@@ -18,12 +18,12 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param int    $tid
  * @param string $poster
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return array|bool
  * @throws Exception
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
  *
- * @return array|bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_book_info(string $isbn, string $name, int $tid, string $poster)
 {
@@ -112,21 +112,23 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         }
         $ebook['pageCount'] = get_or_null($book->pageCount);
         $ebook['poster'] = get_or_null($book->imageLinks->thumbnail);
-
         if (!empty($ebook)) {
             if (!empty($ebook['categories'])) {
                 $temp = implode(', ', array_map('strtolower', $ebook['categories']));
                 $temp = explode(', ', $temp);
-                $ebook['newgenre'] = implode(', ', array_map('ucwords', $temp));
+                $set['newgenre'] = implode(', ', array_map('ucwords', $temp));
             }
-            preg_match('/(\d{4})/', $ebook['publishedDate'], $match);
-            $ebook['year'] = !empty($match[1]) ? $match[1] : null;
-            $set = [
-                'year' => $ebook['year'],
-                'newgenre' => $ebook['newgenre'],
-                'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
-            ];
-
+            if (!empty($ebook['publishedDate'])) {
+                preg_match('/(\d{4})/', $ebook['publishedDate'], $match);
+                if (!empty($match[1])) {
+                    $set['year'] = $match[1];
+                }
+            }
+            if (!empty($ebook['isbn13'])) {
+                $set['isbn'] = $ebook['isbn13'];
+            } elseif (!empty($ebook['isbn10'])) {
+                $set['isbn'] = $ebook['isbn10'];
+            }
             if (!empty($ebook['rating'])) {
                 $set['rating'] = $ebook['rating'];
             }
@@ -212,10 +214,14 @@ function get_book_info(string $isbn, string $name, int $tid, string $poster)
         ];
         $torrents_class->update($set, $tid);
         $values = [
-            'isbn' => $ebook['isbn13'],
             'url' => $poster,
             'type' => 'poster',
         ];
+        if (!empty($ebook['isbn13'])) {
+            $values['isbn'] = $ebook['isbn13'];
+        } elseif (!empty($ebook['isbn10'])) {
+            $values['isbn'] = $ebook['isbn10'];
+        }
         $images_class = $container->get(Image::class);
         $images_class->insert($values);
     }

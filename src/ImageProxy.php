@@ -55,6 +55,7 @@ class ImageProxy
         }
 
         $this->set_permissions($path);
+        $this->set_permissions($hash);
 
         return $hash;
     }
@@ -88,8 +89,6 @@ class ImageProxy
             // TODO
         }
         if ($this->optimize($path, false, false)) {
-            $this->set_permissions($path);
-
             return true;
         }
 
@@ -116,6 +115,7 @@ class ImageProxy
                 $optimizerChain->setTimeout(5)
                                ->optimize($path, $temp);
                 rename($temp, $path);
+                $this->set_permissions($path);
                 if ($debug) {
                     $after = filesize($path);
                     $result = ($after - $before) / $before;
@@ -148,7 +148,7 @@ class ImageProxy
      */
     protected function set_permissions(string $path)
     {
-        if (file_exists($path) && is_writable($path)) {
+        if (file_exists($path) && is_writable(dirname($path)) && is_writable($path)) {
             chmod($path, 0775);
         }
     }

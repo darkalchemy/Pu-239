@@ -434,7 +434,6 @@ switch ($action) {
             $updated[] = $parent;
         }
 
-        $updated = $parents;
         $HTMLOUT .= $mini_menu;
         foreach ($updated as $arr_forums) {
             $HTMLOUT .= ($arr_forums['over_forum_id'] !== $over_forum_id ? "
@@ -445,7 +444,6 @@ switch ($action) {
 	            </h2>' : '');
             $body = '';
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
-                //dd($arr_forums);
                 $forum_id = $arr_forums['real_forum_id'];
                 $forum_name = htmlsafechars($arr_forums['name']);
                 $forum_description = htmlsafechars($arr_forums['description']);

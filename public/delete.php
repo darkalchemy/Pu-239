@@ -7,6 +7,7 @@ use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;
 use Pu239\Torrent;
+use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -15,10 +16,11 @@ $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('delete'));
 global $container, $site_config;
 
-if (empty($_GET['id']) && empty($_POST['id'])) {
+$data = array_merge($_GET, $_POST);
+if (empty($data['id'])) {
     stderr($lang['delete_failed'], $lang['delete_missing_data']);
 }
-$id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
+$id = !empty($data['id']) ? (int) $data['id'] : 0;
 if (!is_valid_id($id)) {
     stderr($lang['delete_failed'], $lang['delete_missing_data']);
 }
@@ -43,11 +45,11 @@ if (!$row) {
 if ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF) {
     stderr($lang['delete_failed'], $lang['delete_not_owner']);
 }
-$rt = (int) $_POST['reasontype'];
+$rt = (int) $data['reasontype'];
 if (!is_int($rt) || $rt < 1 || $rt > 5) {
     stderr($lang['delete_failed'], $lang['delete_invalid']);
 }
-$reason = (int) $_POST['reason'];
+$reason = $data['reason'];
 if ($rt === 1) {
     $reasonstr = $lang['delete_dead'];
 } elseif ($rt === 2) {
@@ -71,17 +73,19 @@ $torrents_class->remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$user['username']} ($reasonstr)\n");
 if ($site_config['bonus']['on']) {
+    $user_class = $container->get(User::class);
     $dt = sqlesc($dt - (14 * 86400));
     if ($row['added'] > $dt) {
-        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus']['per_delete']) . ' WHERE id=' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
-        $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus']['per_delete']);
-        $cache = $container->get(Cache::class);
-        $cache->update_row('user_' . $row['owner'], [
-            'seedbonus' => $update['seedbonus'],
-        ], $site_config['expires']['user_cache']);
+        $owner = $user_class->getUserFromId($row['owner']);
+        if (!empty($owner)) {
+            $update = [
+                'seedbonus' => $owner['seedbonus'] - $site_config['bonus']['per_delete'],
+            ];
+            $user_class->update($update, $owner['id']);
+        }
     }
 }
-$msg = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
+$msg = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n\nReason: $reasonstr";
 if ($user['id'] != $row['owner'] && ($user['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
     $subject = 'Torrent Deleted';
     $msgs_buffer[] = [
@@ -95,8 +99,8 @@ if ($user['id'] != $row['owner'] && ($user['opt2'] & user_options_2::PM_ON_DELET
 }
 $session = $container->get(Session::class);
 $session->set('is-success', $msg);
-if (!empty($_POST['returnto'])) {
-    header('Location: ' . htmlsafechars($_POST['returnto']));
+if (!empty($data['returnto'])) {
+    header('Location: ' . htmlsafechars($data['returnto']));
 } else {
     header("Location: {$site_config['paths']['baseurl']}/browse.php");
 }

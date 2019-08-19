@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Delight\Auth\Auth;
 use Envms\FluentPDO\Literal;
 use Pu239\Database;
+use Pu239\Message;
 use Pu239\Session;
 use Pu239\User;
 use Rakit\Validation\Validator;
@@ -21,7 +22,6 @@ $fluent = $container->get(Database::class);
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();
-    $auth->destroySession();
     $auth->destroySession();
 }
 

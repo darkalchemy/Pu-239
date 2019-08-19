@@ -37,7 +37,7 @@ There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit 
 jpegoptim, optipng, pngquant, gifsicle, imagemagick
 
 # required php extensions
-php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common
+php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common, php-readline
 
 # cache repositories(optional)
 redis, php-redis

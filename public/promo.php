@@ -138,18 +138,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if (empty($link)) {
         stderr('Error', 'Invalid Promo ID');
     }
-    $accounts = explode('|', urldecode($_GET['userids']));
-    if (empty($accounts)) {
-        stderr('Error', 'No users have signed up from this promo');
-    }
     $name = $fluent->from('promo')
                    ->select(null)
                    ->select('name')
+                   ->select('users')
                    ->where('link = ?', $link)
-                   ->fetch('name');
+                   ->fetch();
+    $accounts = [];
+    if (!empty($name)) {
+        $accounts = explode('|', $name['users']);
+        if (empty($accounts)) {
+            stderr('Error', 'No users have signed up from this promo');
+        }
+    }
     $users_class = $container->get(User::class);
     $body = '
-                    <h1 class="has-text-centered">Users list for promo: ' . htmlsafechars($name) . '</h1>
+                    <h1 class="has-text-centered">Users list for promo: ' . htmlsafechars($name['name']) . '</h1>
                     <div class="padding20 level-center">';
     foreach ($accounts as $ap) {
         $ap = (int) $ap;
@@ -214,7 +218,7 @@ if (empty($_POST)) {
                 <td class='has-text-centered'>" . get_date($ar['added'], 'LONG') . "</td>
                 <td class='has-text-centered'>" . get_date($ar['added'] + (86400 * $ar['days_valid']), 'LONG', 1, 0) . "</td>
                 <td class='has-text-centered'>" . $ar['max_users'] . "</td>
-                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="' . $_SERVER['PHP_SELF'] . '?do=accounts&amp;link=' . $ar['link'] . '&amp;userids=' . urldecode($ar['users']) . '">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
+                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="' . $_SERVER['PHP_SELF'] . '?do=accounts&amp;link=' . $ar['link'] . '">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
                 <td class='has-text-centered'>" . mksize($ar['bonus_upload'] * 1073741824) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_invites']) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_karma']) . "</td>

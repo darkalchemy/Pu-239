@@ -22,10 +22,10 @@ global $container, $site_config;
  * @param $char
  * @param $link
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return mixed|string
  */
@@ -34,16 +34,17 @@ function readMore($text, $char, $link)
     global $lang;
     $text = strip_tags(format_comment($text));
 
-    return strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : htmlsafechars($text);
+    return strlen($text) > $char ? substr(format_comment($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : format_comment($text);
 }
 
 /**
  * @param array $array
  * @param int   $class
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return string
  */
@@ -73,7 +74,7 @@ function peer_list(array $array, int $class)
             <td>' . format_username((int) $p['p_uid']) . '</td>';
         if (has_access($class, UC_STAFF, 'coder')) {
             $body .= '
-            <td>' . (has_access($class, UC_STAFF, 'coder') ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
+            <td>' . (has_access($class, UC_STAFF, 'coder') ? format_comment($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
         }
         $body .= '
             <td>' . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . '</td>
@@ -227,7 +228,7 @@ if (!empty($rows)) {
                     </tr>";
         $body = "
                     <tr>
-                        <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
+                        <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(format_comment($row['name']), 0, 60) . '</b></a></td>
                         <td>' . get_date((int) $row['added'], 'LONG', 0, 1) . "</td>
                         <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
                         <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>

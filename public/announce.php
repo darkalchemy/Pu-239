@@ -112,7 +112,7 @@ if (empty($user)) {
     err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a VIP By Donating to our site. Donating ensures we stay online to provide you with more Excellent Torrents!');
 } elseif ($user['status'] === 1) {
     err('Your account is parked! (Read the FAQ)');
-} elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
+} elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder === 'no') {
     err('Your downloading privileges have been disabled! (Read the rules)');
 } elseif ($site_config['site']['require_credit'] && ($seeder === 'no' && ($torrent['size'] > ($user['uploaded'] - $user['downloaded'])))) {
     err('You do not have enough upload credit to download this torrent.');
@@ -351,10 +351,11 @@ if (empty($snatched['start_snatch'])) {
 }
 $snatched_values['to_go'] = $left;
 $snatched_values['last_action'] = $dt;
-$snatched_values['seeder'] = $seeder;
 $snatched_values['timesann'] = !empty($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
-if (($event === 'completed' && (empty($snatched) || $snatched['complete_date'] === 0)) || ($event === 'started' && $left === 0)) {
-    $snatched_values['complete_date'] = $dt;
+if ($event === 'completed' || ($event === 'started' && $left === 0)) {
+    if (empty($snatched['complete_date'])) {
+        $snatched_values['complete_date'] = $dt;
+    }
     $snatched_values['finished'] = 'yes';
 }
 if (!empty($snatched)) {
@@ -371,15 +372,13 @@ if (!empty($snatched)) {
     }
 }
 $peer_deleted = false;
+$set = [];
 if ($event === 'stopped') {
+    $seeder = 'no';
     if (!empty($this_user_torrent['id'])) {
         $peer_deleted = $peer_class->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
         $cache->delete('peers_' . $userid);
     }
-}
-if (isset($self) && $event === 'stopped') {
-    $seeder = 'no';
-    $self['announcetime'] = $self['announcetime'] > 0 ? $self['announcetime'] : 1;
     if ($peer_deleted) {
         if ($seeder === 'yes') {
             $torrents_class->adjust_torrent_peers($torrent['id'], -1, 0, 0);
@@ -387,15 +386,17 @@ if (isset($self) && $event === 'stopped') {
             $torrents_class->adjust_torrent_peers($torrent['id'], 0, -1, 0);
         }
     }
+} elseif ($event === 'completed') {
+    $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1;
+    $set = [
+        'finishedat' => $dt,
+    ];
+    $torrents_class->adjust_torrent_peers($torrent['id'], 0, 0, 1);
+}
+$snatched_values['seeder'] = $seeder;
+if (isset($self) && $event === 'stopped') {
+    $self['announcetime'] = $self['announcetime'] > 0 ? $self['announcetime'] : 1;
 } elseif (isset($self)) {
-    $set = [];
-    if ($event === 'completed') {
-        $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1;
-        $set = [
-            'finishedat' => $dt,
-        ];
-        $torrents_class->adjust_torrent_peers($torrent['id'], 0, 0, 1);
-    }
     $values = array_merge($set, [
         'connectable' => $connectable,
         'uploaded' => $uploaded,

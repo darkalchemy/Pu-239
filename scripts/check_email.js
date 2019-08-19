@@ -22,8 +22,9 @@ function emailcheck() {
     if (request.readyState === 4) {
         if (request.status === 200) {
             var response = request.responseText;
+            let namecheck = document.getElementById('namecheck');
             document.getElementById('emailcheck').innerHTML = response;
-            document.getElementById('submit').disabled = !response.includes('success') || !document.getElementById('namecheck').innerHTML.includes('success');
+            document.getElementById('submit').disabled = !response.includes('success') || (namecheck && !namecheck.innerHTML.includes('success'));
         }
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use PDOStatement;
 
 /**
  * Class BotReplies.
@@ -29,9 +30,9 @@ class BotReplies
     /**
      * @param array $values
      *
+     * @return bool
      * @throws Exception
      *
-     * @return bool
      */
     public function insert(array $values)
     {
@@ -43,6 +44,7 @@ class BotReplies
         if (!$result) {
             return false;
         }
+        $this->cache->delete('bot_replies_');
 
         return true;
     }
@@ -50,45 +52,34 @@ class BotReplies
     /**
      * @param array $set
      * @param int   $id
-     * @param int   $userid
-     *
-     * @throws Exception
      *
      * @return bool
+     * @throws Exception
+     *
      */
-    public function update(array $set, int $id, int $userid)
+    public function update(array $set, int $id)
     {
         $result = $this->fluent->update('bot_replies')
                                ->set($set)
                                ->where('id = ?', $id)
-                               ->where('added_by != ?', $userid)
                                ->execute();
 
         if (!$result) {
             return false;
         }
-        $this->cache->delete('bot_triggers_');
         $this->cache->delete('bot_replies_');
 
         return true;
     }
 
     /**
-     * @param bool $approved
-     *
+     * @return array|bool
      * @throws Exception
-     *
-     * @return array
      */
-    public function get_replies(bool $approved)
+    public function get_replies()
     {
-        $result = $this->fluent->from('bot_replies');
-        if ($approved) {
-            $result = $result->where('approved_by > 0');
-        } else {
-            $result = $result->where('approved_by = 0');
-        }
-        $result = $result->fetchAll();
+        $result = $this->fluent->from('bot_replies')
+                               ->fetchAll();
         if (is_array($result)) {
             return $result;
         }
@@ -99,14 +90,54 @@ class BotReplies
     /**
      * @param int $id
      *
+     * @return bool
      * @throws Exception
      *
-     * @return bool
      */
     public function delete(int $id)
     {
-        return $this->fluent->deleteFrom('bot_replies')
-                     ->where('id = ?', $id)
-                     ->execute();
+        $result = $this->fluent->deleteFrom('bot_replies')
+                               ->where('id = ?', $id)
+                               ->execute();
+        $this->cache->delete('bot_replies_');
+
+        return $result;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return mixed
+     * @throws Exception
+     *
+     */
+    public function get_by_id(int $id)
+    {
+        $reply = $this->fluent->from('bot_replies')
+                              ->select(null)
+                              ->select('reply')
+                              ->where('id = ?', $id)
+                              ->fetch('reply');
+
+        return $reply;
+    }
+
+    /**
+     * @return array|PDOStatement
+     * @throws Exception
+     *
+     */
+    public function get_approved_replies()
+    {
+        $results = $this->fluent->from('bot_replies AS r')
+                                ->select(null)
+                                ->select('r.reply')
+                                ->select('t.phrase')
+                                ->innerJoin('bot_triggers AS t ON r.phraseid = t.id')
+                                ->where('r.approved_by > 0')
+                                ->where('t.approved_by > 0')
+                                ->fetchPairs('t.phrase', 'r.reply');
+
+        return $results;
     }
 }

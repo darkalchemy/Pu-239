@@ -33,13 +33,6 @@ function ircbot(string $messages)
         'pidfile' => '/home/ircbot/ion/pid.IoN',
         'sleep' => 2,
     ];
-    $bot = [
-        'ip' => 'pu-239.pw',
-        // IP or FQDN
-        'port' => 4588,
-        'pass' => 'zDOm7kEWoWF4ynqNMSf3NMdxca1JQryF',
-        'sleep' => 1,
-    ];
     if (!empty($bot['pidfile']) && !file_exists($bot['pidfile'])) {
         write_log("IRCBOT does not appear to be online\n");
 

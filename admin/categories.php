@@ -137,7 +137,7 @@ function move_cat_form($params)
     foreach ($cats as $cat) {
         foreach ($cat['children'] as $child) {
             $select .= ($child['id'] != $current_cat['id']) ? "
-                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars($child['name']) . '</option>' : '';
+                <option value='{$child['id']}'>{$cat['name']}::" . format_comment($child['name']) . '</option>' : '';
         }
     }
     $select .= '
@@ -146,7 +146,7 @@ function move_cat_form($params)
         <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
-            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name']) . "</h2>
+            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . format_comment($current_cat['name']) . "</h2>
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
     $body = "
             <div class='w-50 has-text-centered padding20'>
@@ -454,8 +454,8 @@ function show_categories()
         $parent_name = '';
         $body .= build_table($cat, $parent_name);
         foreach ($cat['children'] as $child) {
-            $parent_name = htmlsafechars($cat['name']);
-            $child['name'] = htmlsafechars($cat['name']) . '::' . htmlsafechars($child['name']);
+            $parent_name = format_comment($cat['name']);
+            $child['name'] = format_comment($cat['name']) . '::' . format_comment($child['name']);
             $body .= build_table($child, $parent_name);
         }
     }
@@ -505,9 +505,10 @@ function build_table(array $data, string $parent_name)
 /**
  * @param array $cat
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return string
  */
@@ -523,9 +524,9 @@ function get_parents(array $cat)
                       ->fetchAll();
 
     foreach ($parents as $parent) {
-        $parent['name'] = htmlsafechars($parent['name']);
-        $parent['cat_desc'] = htmlsafechars($parent['cat_desc']);
-        $parent['image'] = htmlsafechars($parent['image']);
+        $parent['name'] = format_comment($parent['name']);
+        $parent['cat_desc'] = format_comment($parent['cat_desc']);
+        $parent['image'] = format_comment($parent['image']);
     }
 
     $out = "
@@ -610,6 +611,11 @@ function set_ordered(array $params)
 /**
  * @param array $cat
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
 function get_images(array $cat)
@@ -636,7 +642,7 @@ function get_images(array $cat)
         foreach ($files as $file) {
             $selected = !empty($cat) && $file == $cat['image'] ? 'selected' : '';
             $select .= "
-                    <option value='" . htmlsafechars($file) . "' {$selected}>" . htmlsafechars($file) . '</option>';
+                    <option value='" . htmlsafechars($file) . "' {$selected}>" . format_comment($file) . '</option>';
         }
         $select .= "
                 </select>
@@ -653,9 +659,10 @@ function get_images(array $cat)
 /**
  * @param int $id
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return mixed
  */
@@ -674,10 +681,10 @@ function get_cat(int $id)
                                          ->where('id = ?', $cat['parent_id'])
                                          ->fetch('name');
 
-    $cat['name'] = htmlsafechars($cat['name']);
-    $cat['cat_desc'] = htmlsafechars($cat['cat_desc']);
-    $cat['image'] = htmlsafechars($cat['image']);
-    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars($cat['parent_name']) : '';
+    $cat['name'] = format_comment($cat['name']);
+    $cat['cat_desc'] = format_comment($cat['cat_desc']);
+    $cat['image'] = format_comment($cat['image']);
+    $cat['parent_name'] = !empty($cat['parent_name']) ? format_comment($cat['parent_name']) : '';
 
     return $cat;
 }

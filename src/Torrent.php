@@ -335,9 +335,11 @@ class Torrent
                 'latest_comments_',
                 'top_torrents_',
                 'latest_torrents_',
+                'latest_torrents_' .  implode('_', $this->site_config['categories']['movies']),
+                'latest_torrents_' .  implode('_', $this->site_config['categories']['tv']),
                 'scroller_torrents_',
                 'torrent_details_' . $tid,
-                'lastest_torrents_',
+                'latest_torrents_',
                 'slider_torrents_',
                 'torrent_poster_count_',
                 'torrent_banner_count_',
@@ -407,6 +409,7 @@ class Torrent
             'visible' => $torrent['visible'],
             'owner' => $torrent['owner'],
             'added' => $torrent['added'],
+            'size' => $torrent['size'],
             'info_hash' => $torrent['info_hash'],
         ];
 

@@ -105,7 +105,7 @@ if ($action === 'viewbug') {
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
-    $comment = !empty($bug['comment']) ? htmlsafechars($bug['comment']) : '';
+    $comment = !empty($bug['comment']) ? format_comment($bug['comment']) : '';
     $problem = !empty($bug['problem']) ? format_comment($bug['problem']) : '';
     switch ($bug['priority']) {
         case 'low':

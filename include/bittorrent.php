@@ -56,14 +56,11 @@ if ($load[0] > $cores * 2) {
 }
 if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_SERVER))) {
     die('Forbidden');
-}
-if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_GET))) {
+} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_GET))) {
     die('Forbidden');
-}
-if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_POST))) {
+} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_POST))) {
     die('Forbidden');
-}
-if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_COOKIE))) {
+} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_COOKIE))) {
     die('Forbidden');
 }
 
@@ -424,6 +421,9 @@ function unesc($x)
  */
 function mksize($bytes, int $decimals = 2, string $system = 'metric')
 {
+    if (empty($bytes)) {
+        return '0 B';
+    }
     $mod = ($system === 'binary') ? 1024 : 1000;
 
     $units = [

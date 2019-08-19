@@ -31,13 +31,13 @@ $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
 while ($templ = mysqli_fetch_assoc($templates)) {
     if (file_exists(ROOT_DIR . "templates/$templ[id]/template.php")) {
-        $stylesheets .= "<option value='" . (int) $templ['id'] . "' " . ($templ['id'] == get_stylesheet() ? 'selected' : '') . '>' . htmlsafechars($templ['name']) . '</option>';
+        $stylesheets .= "<option value='" . (int) $templ['id'] . "' " . ($templ['id'] == get_stylesheet() ? 'selected' : '') . '>' . format_comment($templ['name']) . '</option>';
     }
 }
 $countries = "<option value='0'>---- {$lang['usercp_none']} ----</option>\n";
 $ct_r = sql_query('SELECT id,name FROM countries ORDER BY name') or sqlerr(__FILE__, __LINE__);
 while ($ct_a = mysqli_fetch_assoc($ct_r)) {
-    $countries .= "<option value='" . (int) $ct_a['id'] . "' " . ($user['country'] == $ct_a['id'] ? 'selected' : '') . '>' . htmlsafechars($ct_a['name']) . "</option>\n";
+    $countries .= "<option value='" . (int) $ct_a['id'] . "' " . ($user['country'] == $ct_a['id'] ? 'selected' : '') . '>' . format_comment($ct_a['name']) . "</option>\n";
 }
 $offset = !empty($user['time_offset']) ? $user['time_offset'] : $site_config['time']['offset'];
 $time_select = "
@@ -211,9 +211,9 @@ if ($action === 'avatar') {
                                             <input type="radio" name="signatures" ' . ($user['signatures'] === 'yes' ? 'checked' : '') . ' value="yes"> Yes
                                             <input type="radio" name="signatures" ' . ($user['signatures'] !== 'yes' ? 'checked' : '') . ' value="no"> No', 1);
     $HTMLOUT .= tr('Signature', '
-                                            <textarea name="signature" class="w-100" rows="4">' . htmlsafechars((string) $user['signature']) . '</textarea><br>Must be an image url.', 1);
+                                            <textarea name="signature" class="w-100" rows="4">' . format_comment((string) $user['signature']) . '</textarea><br>Must be an image url.', 1);
     $HTMLOUT .= tr($lang['usercp_info'], "
-                                            <textarea name='info' class='w-100' rows='4'>" . htmlsafechars((string) $user['info']) . "</textarea><br>{$lang['usercp_tags']}", 1);
+                                            <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . "</textarea><br>{$lang['usercp_tags']}", 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -339,7 +339,7 @@ if ($action === 'avatar') {
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>
                                                 <input type='hidden' name='action' value='links'>
-                                                " . htmlsafechars($user['username']) . "'s Menu
+                                                " . format_comment($user['username']) . "'s Menu
                                             </th>
                                         </tr>
                                     </thead>
@@ -376,7 +376,7 @@ if ($action === 'avatar') {
                                 <table class='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
-                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($user['username']) . "'s Entertainment</th>
+                                            <th colspan='2' class='has-text-centered size_6'>" . format_comment($user['username']) . "'s Entertainment</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -483,7 +483,7 @@ if ($action === 'avatar') {
                                         </div>", 1);
     }
     $HTMLOUT .= tr($lang['usercp_email'], "
-                                        <input type='text' name='email' class='w-100' value='" . htmlsafechars($user['email']) . "'>
+                                        <input type='text' name='email' class='w-100' value='" . format_comment($user['email']) . "'>
                                         <p class='top20 bottom10'>{$lang['usercp_email_pass']}</p>
                                         <input type='password' name='chmailpass' class='w-100' placeholder='Current Password'>", 1);
     $HTMLOUT .= "
@@ -540,7 +540,7 @@ if ($action === 'avatar') {
                     continue;
                 }
                 if ($a['parent_id'] === $i) {
-                    $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$user['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
+                    $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['paths']['images_baseurl']}caticons/{$user['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : format_comment($a['name']);
                     $categories .= "
                                                     <span class='padding10 level-center tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                         <input name='cat{$a['id']}' type='checkbox' " . (!empty($user['notifs']) && strpos($user['notifs'], "[cat{$a['id']}]") !== false ? 'checked' : '') . " value='yes'>
@@ -728,4 +728,4 @@ $HTMLOUT .= '
                 </form>
             </div>';
 
-echo stdhead(htmlsafechars($user['username']) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(format_comment($user['username']) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

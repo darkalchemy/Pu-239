@@ -29,11 +29,16 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @return mixed|string
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed|string|string[]|null
  */
 function readMore($text, $char, $link)
 {
-    return strlen($text) > $char ? '<p>' . substr(htmlsafechars($text), 0, $char - 1) . "...</p><br><p><a href='$link' class='has-text-primary'>Read more...</a></p>" : htmlsafechars($text);
+    return strlen($text) > $char ? '<p>' . substr(format_comment($text), 0, $char - 1) . "...</p><br><p><a href='$link' class='has-text-primary'>Read more...</a></p>" : format_comment($text);
 }
 
 /**
@@ -41,10 +46,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -209,8 +214,8 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         } else {
             $to_go = "<div class='has-text-warning tooltipper' title='{$lang['torrenttable_incomplete']}'>" . number_format((int) $row['to_go'], 1) . '%</div>';
         }
-        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $row['cat_name'] = format_comment($change[$row['category']]['name']);
+        $row['cat_pic'] = format_comment($change[$row['category']]['image']);
         $row['parent_id'] = $change[$row['category']]['parent_id'];
         $id = $row['id'];
         $htmlout .= "
@@ -221,7 +226,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
                 $htmlout .= "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' class='tooltipper' alt='{$row['cat_name']}' title='{$row['cat_name']}'>";
             } else {
-                $htmlout .= htmlsafechars($row['cat_name']);
+                $htmlout .= format_comment($row['cat_name']);
             }
             $htmlout .= '</a>';
         } else {
@@ -229,7 +234,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $htmlout .= '</td>';
         $year = !empty($row['year']) ? " ({$row['year']})" : '';
-        $dispname = htmlsafechars($row['name']) . $year;
+        $dispname = format_comment($row['name']) . $year;
         $staff_pick = $row['staff_picks'] > 0 ? "
             <span id='staff_pick_{$row['id']}'>
                 <img src='{$site_config['paths']['images_baseurl']}staff_pick.png' class='tooltipper emoticon is-2x' alt='{$lang['torrenttable_staff_pick']}' title='{$lang['torrenttable_staff_pick']}'>
@@ -246,7 +251,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                         <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                     </div>";
         }
-        $smalldescr = (!empty($row['description']) ? '<div><i>[' . htmlsafechars($row['description']) . ']</i></div>' : '');
+        $smalldescr = (!empty($row['description']) ? '<div><i>[' . format_comment($row['description']) . ']</i></div>' : '');
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = $images_class->find_images($row['imdb_id']);
         }
@@ -318,7 +323,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                 $uploader = '<span>' . get_anonymous_name() . '</span>';
                 $formatted = "<i>({$uploader})</i>";
             } else {
-                $uploader = "<span class='" . get_user_class_name((int) $row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
+                $uploader = "<span class='" . get_user_class_name((int) $row['class'], true) . "'>" . format_comment($row['username']) . '</span>';
                 $formatted = format_username((int) $row['owner']);
             }
         } else {
@@ -327,7 +332,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $block_id = "torrent_{$id}";
         $sticky = $row['sticky'] === 'yes' ? 'sticky' : '';
-        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $row['audios'], $genres, false, null, $sticky);
+        $tooltip = torrent_tooltip(format_comment($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $row['audios'], $genres, false, null, $sticky);
         $subs = $container->get('subtitles');
         $subs_array = explode('|', $row['subs']);
         $Subs = [];

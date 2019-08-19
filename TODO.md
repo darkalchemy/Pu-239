@@ -1,5 +1,7 @@
 In no particular order  
 
+update: "Signups are Invite Only" to "Invalid or expired promotion link"
+add: forum name when viewing topic breadcrumbs  
 update: user info for paranoia  
 fix: check user when opening staff pages  
 read up on eggdrop 'simul' partyline command (owners can manipulate other people on the party line) for chat -> irc  

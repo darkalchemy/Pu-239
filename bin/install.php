@@ -68,13 +68,14 @@ if (count($argv) === 13) {
         ],
     ];
 }
+$clean = preg_replace('/[^\p{L}\p{M}\p{N}]/', '', $vars['site']['name']);
 
 $vars['mysql']['pass'] = quotemeta($vars['mysql']['pass']);
 $vars['admin']['pass'] = quotemeta($vars['admin']['pass']);
 $vars['baseurl'] = str_replace('http://', '', $vars['announce_urls']['http']);
-$vars['session']['name'] = str_replace(' ', '_', $vars['site']['name']);
+$vars['session']['name'] = $clean;
 $vars['session']['domain'] = $vars['baseurl'];
-$vars['session']['prefix'] = $vars['session']['name'] . '_';
+$vars['session']['prefix'] = $clean . '_';
 $vars['cookies']['prefix'] = $vars['session']['prefix'];
 $vars['cookies']['domain'] = $vars['baseurl'];
 
@@ -180,7 +181,7 @@ if (!empty($userId)) {
 }
 $userId = $auth->registerWithUniqueUsername('donkey.kong@nintendo.com', bin2hex(random_bytes(16)), strip_tags($vars['chatbot']['name']));
 if (!empty($userId)) {
-    update_user($userId, UC_MAX);
+    update_user($userId, UC_VIP);
 }
 
 echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
@@ -243,6 +244,9 @@ function update_user(int $userid, int $class)
         'stylesheet' => 1,
         'last_access' => $dt,
         'class' => $class,
+        'status' => 0,
+        'verified' => 1,
+        'roles_mask' => 288,
     ];
     $fluent->update('users')
            ->set($set)

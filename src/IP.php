@@ -118,15 +118,10 @@ class IP
         return $users;
     }
 
-    /**
-     * @param int $timestamp
-     *
-     * @throws Exception
-     */
-    public function delete_by_age(int $timestamp)
+    public function delete_by_age(string $date)
     {
         $this->fluent->deleteFrom('ips')
-                     ->where('last_access < ?', $timestamp)
+                     ->where('last_access < ?', $date)
                      ->execute();
     }
 

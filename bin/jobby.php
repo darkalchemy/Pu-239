@@ -28,7 +28,7 @@ $jobby->add('Fund Table Update', [
     'runAs' => $site_config['webserver']['username'],
     'command' => '/usr/bin/php ' . INCL_DIR . 'cron_controller.php funds_table_update',
     'schedule' => '0 0 1 * *',
-    'output' => LOGS_DIR . 'images/images_' . date('Y.m.d', TIME_NOW) . '.log',
+    'output' => LOGS_DIR . 'cleanup/funds_' . date('Y.m.d', TIME_NOW) . '.log',
     'enabled' => true,
 ]);
 

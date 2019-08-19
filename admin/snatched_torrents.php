@@ -14,6 +14,7 @@ $lang = array_merge($lang, load_language('ad_snatched_torrents'));
 global $site_config;
 
 $HTMLOUT = '';
+
 /**
  * @param $st
  *
@@ -91,7 +92,6 @@ function get_snatched_color($st)
     return "<span class='has-text-danger'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></span>";
 }
 
-$What_Value = 'WHERE complete_date != 0';
 global $container;
 
 $fluent = $container->get(Database::class);
@@ -134,8 +134,8 @@ if ($count > 0) {
     </tr>";
     $body = '';
     foreach ($snatched as $row) {
-        $smallname = substr(htmlsafechars($row['name']), 0, 35);
-        if ($smallname != htmlsafechars($row['name'])) {
+        $smallname = substr(format_comment($row['name']), 0, 35);
+        if ($smallname != format_comment($row['name'])) {
             $smallname .= '...';
         }
         $body .= '
@@ -143,7 +143,7 @@ if ($count > 0) {
         <td>' . format_username($row['userid']) . "</td>
         <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
         <td class="has-text-centered"><b>' . get_date((int) $row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
-        <td class="has-text-centered"><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
+        <td class="has-text-centered"><b>' . format_comment($row['mark_of_cain']) . '</b></td>
         <td class="has-text-centered"><b>' . $row['timesann'] . '</b></td>
         <td class="has-text-centered"><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['site']['ratio_free'] ? '' : '
         <td class="has-text-centered"><b>' . mksize($row['downloaded']) . '</b></td>') . '

@@ -1,3 +1,58 @@
+### 19 Aug, 2019
+update: set user status and verified install.php  
+fix: incorrect datetime used ip_update.php  
+
+### 18 Aug, 2019
+update: clear caches for latest tv/movie when deleting torrent  
+fix: check for empty isbn13 before use  
+fix: check for empty publishedDate before use  
+fix: check for empty isbn10 before use  
+remove: tags.php from navbar  
+update: include required php-readline README  
+fix: set proper descr takeupload.php  
+update: ebook lookup  
+fix: update isbn takeedit.php  
+update: delete torrent delete.php  
+update: use 1:int for odds  
+update: only show updates/inserts on submit site_settings.php  
+add: site settings gift_odds to set user odds for getting free gift from chat bot  
+fix: typo  
+add: missing function  
+fix: not showing all replies  
+update: delete bot_replies_ cache on insert, update or delete trigger or replies  
+add: bot_triggers.php to navbar  
+add: random gifts to AJAX Chat  
+add: bot triggers and responses to AJAX Chat  
+
+### 17 Aug, 2019
+replace: htmlsafechars with format_comment when used for display  
+fix: submit button not working when using invite or promo signup.php  
+remove: passing userids are url parameter promo.php  
+update: breadcrumbs for delete.php  
+fix: format content bugs.php  
+
+### 15 Aug, 2019
+fix: code bbcode block not displayed correctly function_bbcode.php  
+fix: Undefined index: size Torrent.php  
+fix: Undefined index: children_ids forums.php  
+
+### 14 Aug, 2019
+update: clean site name for use with sessions, cookies and cache install.php  
+fix: announce event stopped set seeder = no  
+fix: mksize return 0 B instead of ''  
+
+### 12 Aug, 2019
+fix: typo ImageProxy.php  
+remove: duplicate function tvmaze_shows_update.php  
+fix: typo jobby.php  
+update: check if parent is writable before setting permissions ImageProxy.php  
+fix: image proxy not setting permissions on manipulated files  
+update: funds cleanup log jobby.php  
+update: check if empty first mksize()  
+
+### 11 Aug, 2019
+remove: check for autoshout when sending announce to irc takeupload.php  
+
 ### 10 Aug, 2019
 fix: bash function to get logname functions.php  
 update: add user ids to torrent blocks snatched_staff.php, torrents_block.php  

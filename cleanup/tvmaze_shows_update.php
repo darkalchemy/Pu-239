@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types = 1);
+require_once CLEAN_DIR . 'tvmaze_update.php';
 
 use DI\DependencyException;
 use DI\NotFoundException;
@@ -11,9 +12,9 @@ use Pu239\Image;
 /**
  * @param $data
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|void
  */
@@ -92,27 +93,4 @@ function tvmaze_shows_update($data)
     if ($data['clean_log']) {
         write_log('TVMaze Data Update completed' . $text);
     }
-}
-
-/**
- * @param      $param
- * @param bool $int
- *
- * @return mixed|string
- */
-function get_or_empty($param, bool $int)
-{
-    if (!empty($param)) {
-        if (is_int($param)) {
-            return $param;
-        }
-
-        return htmlsafechars($param);
-    }
-
-    if ($int) {
-        return 0;
-    }
-
-    return '';
 }

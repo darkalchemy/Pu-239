@@ -3915,4 +3915,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `highscores` DROP INDEX `game`, ADD CONSTRAINT `game` UNIQUE (`game`)',
         'flush' => false,
     ],
+    [
+        'id' => 1566110229,
+        'info' => 'Add Chatbot odds',
+        'date' => '18 Aug, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('chatbot', 'gift_odds', 'int', 150, 'The odds 1:NUMBER chance that the use will be selected to receive a free gift from Chat')",
+        'flush' => true,
+    ],
 ];

@@ -10,9 +10,9 @@ use Pu239\Database;
 use Pu239\Roles;
 
 /**
+ * @return string
  * @throws Exception
  *
- * @return string
  */
 function navbar()
 {
@@ -70,9 +70,9 @@ function navbar()
                         </li>
                         <li id='general_links' class='clickable'>
                             <a href='#' class='has-text-weight-bold'>{$lang['gl_general']}</a>
-                            <ul class='ddFade ddFadeFast'>
-                                <li><a href='{$site_config['paths']['baseurl']}/tags.php'>{$lang['gl_bbcode']}</a></li>" . ($site_config['bucket']['allowed'] ? "
+                            <ul class='ddFade ddFadeFast'>" . ($site_config['bucket']['allowed'] ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
+                                <li><a href='{$site_config['paths']['baseurl']}/bot_triggers.php'>{$lang['gl_bot_triggers']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/mybonus.php'>{$lang['gl_karma']}</a></li>
@@ -153,11 +153,11 @@ function make_link($value)
 }
 
 /**
- * @throws DependencyException
+ * @return string
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
- * @return string
+ * @throws DependencyException
  */
 function staff_panel()
 {
@@ -218,9 +218,9 @@ function staff_panel()
                 <li class='clickable'>
                     <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>[" . substr($key, 1) . "]</a>
                     <ul class='ddFade ddFadeFast'>" . make_link([
-                'file_name' => 'staffpanel.php',
-                'page_name' => 'Staff Panel',
-            ]) . implode('', $value) . '
+                    'file_name' => 'staffpanel.php',
+                    'page_name' => 'Staff Panel',
+                ]) . implode('', $value) . '
                     </ul>
                 </li>';
         }

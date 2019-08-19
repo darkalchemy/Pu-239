@@ -35,7 +35,7 @@ $poster = isset($data['poster']) ? htmlsafechars($data['poster']) : '';
 $youtube = isset($data['youtube']) ? htmlsafechars($data['youtube']) : '';
 $tags = isset($data['tags']) ? htmlsafechars($data['tags']) : '';
 $description = isset($data['description']) ? htmlsafechars($data['description']) : '';
-$body = isset($data['body']) ? htmlsafechars($data['body']) : '';
+$descr = isset($data['body']) ? htmlsafechars($data['body']) : '';
 $release_group = isset($data['release_group']) ? htmlsafechars($data['release_group']) : '';
 $free_length = isset($data['free_length']) && is_valid_id((int) $data['free_length']) ? (int) $data['free_length'] : 0;
 $half_length = isset($data['half_length']) && is_valid_id((int) $data['half_length']) ? (int) $data['half_length'] : 0;
@@ -51,7 +51,7 @@ $request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int
 $offer = isset($data['offer']) && is_valid_id((int) $data['offer']) ? (int) $data['offer'] : 0;
 $uplver = isset($data['uplver']) && $data['uplver'] === 'yes' ? 'yes' : 'no';
 $allow_comments = isset($data['allow_comments']) && $data['allow_comments'] === 'no' ? 'no' : 'yes';
-$descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
+//$descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
 
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
@@ -73,7 +73,7 @@ if (!$user['roles_mask'] & Roles::UPLOADER || $user['uploadpos'] != 1 || $user['
     $session->set('is-warning', $lang['not_authorized']);
     why_die($lang['not_authorized']);
 }
-if (empty($body) || empty($catid) || empty($name) || empty($_FILES['file'])) {
+if (empty($descr) || empty($catid) || empty($name) || empty($_FILES['file'])) {
     $session->set('is-warning', $lang['takeupload_no_formdata']);
     why_die($lang['takeupload_no_formdata']);
 }
@@ -89,10 +89,10 @@ if (empty($fname)) {
 }
 
 if ($uplver === 'yes') {
-    $anonymous = '1';
+    $anonymous = 1;
     $anon = get_anonymous_name();
 } else {
-    $anonymous = '0';
+    $anonymous = 0;
     $anon = $user['username'];
 }
 
@@ -165,9 +165,10 @@ if (!empty($half_length)) {
 }
 
 $freetorrent = !empty($freetorrent) && is_valid_id($freetorrent) ? (int) $freetorrent : 0;
-if (!$descr && !empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
+if (empty($descr) && !empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
-} else {
+}
+if (empty($descr)) {
     $session->set('is-warning', $lang['takeupload_no_descr']);
     why_die($lang['takeupload_no_descr']);
 }
@@ -447,7 +448,7 @@ if ($site_config['site']['autoshout_chat']) {
     autoshout($msg);
     autoshout($msg, 2, 0);
 }
-if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
+if ($site_config['site']['autoshout_irc']) {
     $messages = "\0034New Torrent:\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
     ircbot($messages);
 }
@@ -541,8 +542,8 @@ if (!empty($notify)) {
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
         if ($site_config['mail']['smtp_enable'] && strpos($notif['notifs'], 'email') !== false) {
-            $body = format_comment($msg);
-            send_mail(strip_tags($notif['email']), $subject, $body, strip_tags($body));
+            $msg_body = format_comment($msg);
+            send_mail(strip_tags($notif['email']), $subject, $msg_body, strip_tags($msg_body));
         }
         if (strpos($notif['notifs'], 'pmail') !== false) {
             $msgs_buffer[] = [

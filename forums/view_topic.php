@@ -322,7 +322,7 @@ $LIMIT = $pager['limit'];
 $sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason,
             p.status AS post_status, p.anonymous
             FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != "deleted" AND' : '')) . '
-            topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id ' . $LIMIT;
+            topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id ' . $LIMIT;
 
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $posts = [];
@@ -381,7 +381,7 @@ $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
 $like_button = " < div class='level-right margin10'>
                     <span class='tot-{$arr['topic_id']} left10'>{
         $att_str}</span>
-                    <span data-id='{$arr['topic_id']}' data-type = 'topic' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
+                    <span data-id='{$arr['topic_id']}' data-type = 'topic' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
                 </div>';
 
 $locked_or_reply_button = $locked === 'yes' ? "
@@ -389,7 +389,7 @@ $locked_or_reply_button = $locked === 'yes' ? "
     <a href='{$site_config['paths']['baseurl']}/forums.php?action=post_reply&amp;topic_id={$topic_id}'>Add Reply </a>");
 
 if ($arr['parent_forum'] > 0) {
-    $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id=' . sqlesc($arr['parent_forum'])) or sqlerr(__FILE__, __LINE__);
+    $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id = ' . sqlesc($arr['parent_forum'])) or sqlerr(__FILE__, __LINE__);
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '<span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
     $parent_forum_name = '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=" &#9658;" title="&#9658;" class="tooltipper emoticon lazy">

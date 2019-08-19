@@ -21,7 +21,7 @@ function get_isbn(isbn, name, tid) {
         url: './ajax/isbn_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 7500,
+        timeout: 10000,
         context: this,
         data: {
             isbn: isbn,
@@ -31,6 +31,7 @@ function get_isbn(isbn, name, tid) {
         success: function (data) {
             if (data['fail'] === 'invalid') {
                 e.innerHTML = 'Google Books Lookup Failed.';
+                el.appendChild(e);
             } else {
                 e.remove();
                 var node = document.createElement('div');

@@ -201,8 +201,8 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     $image = placeholder_image();
     $s = mb_convert_encoding($text, 'UTF-8');
     unset($text);
-    $s = htmlspecialchars_decode(html_entity_decode($s));
-
+    //$s = htmlspecialchars_decode(html_entity_decode($s));
+    $s = htmlspecialchars_decode(htmlspecialchars($s));
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like>), "), ... - this would be encoded
     // to &xxx;), hence all the extra smilies. I created a new :wink: label, removed
@@ -517,7 +517,8 @@ function format_code(string $s)
         }
         preg_match_all('#\[php\](.*)?\[/php\]#ismU', $s, $matches);
         foreach ($matches[1] as $match) {
-            $s = str_replace(htmlspecialchars($match), $match, $s);
+            //$s = str_replace(htmlspecialchars($match), $match, $s);
+            $s = htmlspecialchars_decode(html_entity_decode($s));
         }
         $s = str_replace('[code]', "<div><fieldset class='code'><legend>code</legend>", $s);
         $s = str_replace('[/code]', '</fieldset></div>', $s);

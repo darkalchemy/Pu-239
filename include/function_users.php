@@ -11,6 +11,7 @@ use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_bbcode.php';
+
 /**
  * @param string $msg
  * @param int    $channel
@@ -50,7 +51,9 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
  * @param bool   $anonymous
  *
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -126,18 +129,18 @@ function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, 
             $rep_level = isset($user_reputation) ? $user_reputation : 'rep_undefined';
 
             for ($i = 0; $i <= $rep_bar; ++$i) {
-                $posneg .= "<span title='Reputation Power $rep_power<br> " . htmlsafechars($user['username']) . " $rep_level' class='tooltipper'>";
+                $posneg .= "<span title='Reputation Power $rep_power<br> " . format_comment($user['username']) . " $rep_level' class='tooltipper'>";
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img_2}.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img_2}.gif' alt=\"Reputation Power $rep_power " . format_comment($user['username']) . " $rep_level\" class='lazy'>";
                 } else {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img}.gif' alt=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img}.gif' alt=\"Reputation Power $rep_power " . format_comment($user['username']) . " $rep_level\" class='lazy'>";
                 }
                 $posneg .= '</span>';
             }
         }
 
         if (!empty($mode)) {
-            return '<div>Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['paths']['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='Add reputation: " . htmlsafechars($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-success'></i></a></span>";
+            return '<div>Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['paths']['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='Add reputation: " . format_comment($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-success'></i></a></span>";
         } else {
             return ' ' . $posneg;
         }
@@ -183,31 +186,31 @@ function get_ratio_color(float $ratio)
     if ($ratio < 1) {
         return '#660000';
     }
-    if (($ratio >= 1.0) && ($ratio < 2.0)) {
+    if ($ratio >= 1.0 && $ratio < 2.0) {
         return '#006600';
     }
-    if (($ratio >= 2.0) && ($ratio < 3.0)) {
+    if ($ratio >= 2.0 && $ratio < 3.0) {
         return '#007700';
     }
-    if (($ratio >= 3.0) && ($ratio < 4.0)) {
+    if ($ratio >= 3.0 && $ratio < 4.0) {
         return '#008800';
     }
-    if (($ratio >= 4.0) && ($ratio < 5.0)) {
+    if ($ratio >= 4.0 && $ratio < 5.0) {
         return '#009900';
     }
-    if (($ratio >= 5.0) && ($ratio < 6.0)) {
+    if ($ratio >= 5.0 && $ratio < 6.0) {
         return '#00aa00';
     }
-    if (($ratio >= 6.0) && ($ratio < 7.0)) {
+    if ($ratio >= 6.0 && $ratio < 7.0) {
         return '#00bb00';
     }
-    if (($ratio >= 7.0) && ($ratio < 8.0)) {
+    if ($ratio >= 7.0 && $ratio < 8.0) {
         return '#00cc00';
     }
-    if (($ratio >= 8.0) && ($ratio < 9.0)) {
+    if ($ratio >= 8.0 && $ratio < 9.0) {
         return '#00dd00';
     }
-    if (($ratio >= 9.0) && ($ratio < 10.0)) {
+    if ($ratio >= 9.0 && $ratio < 10.0) {
         return '#00ee00';
     }
     if ($ratio >= 10) {
@@ -269,31 +272,31 @@ function get_slr_color(float $ratio)
     if ($ratio < 0.375) {
         return '#110000';
     }
-    if (($ratio >= 1.0) && ($ratio < 2.0)) {
+    if ($ratio >= 1.0 && $ratio < 2.0) {
         return '#006600';
     }
-    if (($ratio >= 2.0) && ($ratio < 3.0)) {
+    if ($ratio >= 2.0 && $ratio < 3.0) {
         return '#007700';
     }
-    if (($ratio >= 3.0) && ($ratio < 4.0)) {
+    if ($ratio >= 3.0 && $ratio < 4.0) {
         return '#008800';
     }
-    if (($ratio >= 4.0) && ($ratio < 5.0)) {
+    if ($ratio >= 4.0 && $ratio < 5.0) {
         return '#009900';
     }
-    if (($ratio >= 5.0) && ($ratio < 6.0)) {
+    if ($ratio >= 5.0 && $ratio < 6.0) {
         return '#00aa00';
     }
-    if (($ratio >= 6.0) && ($ratio < 7.0)) {
+    if ($ratio >= 6.0 && $ratio < 7.0) {
         return '#00bb00';
     }
-    if (($ratio >= 7.0) && ($ratio < 8.0)) {
+    if ($ratio >= 7.0 && $ratio < 8.0) {
         return '#00cc00';
     }
-    if (($ratio >= 8.0) && ($ratio < 9.0)) {
+    if ($ratio >= 8.0 && $ratio < 9.0) {
         return '#00dd00';
     }
-    if (($ratio >= 9.0) && ($ratio < 10.0)) {
+    if ($ratio >= 9.0 && $ratio < 10.0) {
         return '#00ee00';
     }
     if ($ratio >= 10) {
@@ -306,8 +309,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -449,8 +452,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws Exception
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string
  */
@@ -519,7 +522,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
         $tooltip = "class='" . get_user_class_name((int) ($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
 
-    $username = $users_data['status'] > 1 ? '<s>' . htmlsafechars($users_data['username']) . '</s>' : $tag . htmlsafechars($users_data['username']);
+    $username = $users_data['status'] > 1 ? '<s>' . format_comment($users_data['username']) . '</s>' : $tag . format_comment($users_data['username']);
     $str = "
                 <span>$tip<a href='{$site_config['paths']['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>{$username}</span></a>";
 
@@ -592,8 +595,8 @@ function member_ratio(float $up, float $down)
  * @param float $up
  * @param float $down
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -642,10 +645,10 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return bool|mixed|string|null
  */
@@ -673,7 +676,7 @@ function get_avatar($avatar)
         } elseif (empty($avatar['avatar'])) {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150'>";
         } else {
-            $avatar = "<img src='" . htmlsafechars($avatar['avatar']) . "' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='" . format_comment($avatar['avatar']) . "' alt='avatar' class='avatar mw-150'>";
         }
 
         return $avatar;
@@ -742,9 +745,9 @@ function make_dir(string $dir, int $octal)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
