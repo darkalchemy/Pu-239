@@ -30,7 +30,7 @@ A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)   
 There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
-##### Please log in as a non-privileged user, NOT root, to install this.  
+##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.  
 #### Prior to install:
 ```
 # required apps
@@ -163,7 +163,7 @@ After changing the setting 'production' you will need to run ```php bin/uglify.p
 
 
 #### Cache Engines  
-couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
+memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. memory cache is only for testing and is not a real cache as it expires at the end of the request. Trivia can not run while using the memory cache. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
 
 #### Image Proxy:  
 An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
@@ -176,4 +176,4 @@ If sudo is necessary to run uglify.php without errors, then you have the permiss
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
 #### Patrons
-Nico
+Nico, Ben9, superlarsen

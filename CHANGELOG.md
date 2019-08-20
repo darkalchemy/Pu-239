@@ -1,4 +1,5 @@
 ### 20 Aug, 2019
+update: README  
 update: group by in Snatched.php karma_update.php  
 fix: allow edit class_promo.php  
 update: show empty block when no results trivia_results.php  
