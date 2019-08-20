@@ -1,3 +1,12 @@
+### 20 Aug, 2019
+update: show empty block when no results trivia_results.php  
+remove: redundant switch block browse.php, mybonus.php, mytorrents.php  
+update: phpDoc blocks  
+update: missing third param warn.php  
+update: incorrect function used comments.php  
+update: group by in query trivia_results.php  
+fix: typo Torrent.php  
+
 ### 19 Aug, 2019
 update: show error message on invalid or expired promo  
 add: view forum breadcrumb  

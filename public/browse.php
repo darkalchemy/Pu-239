@@ -106,11 +106,6 @@ if (isset($_GET['sort'], $_GET['type'])) {
             $linkascdesc = 'asc';
             break;
 
-        case 'desc':
-            $ascdesc = 'DESC';
-            $linkascdesc = 'desc';
-            break;
-
         default:
             $ascdesc = 'DESC';
             $linkascdesc = 'desc';

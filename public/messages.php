@@ -248,6 +248,7 @@ function get_all_boxes(int $box, int $userid)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
  */

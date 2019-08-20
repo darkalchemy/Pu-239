@@ -8,10 +8,10 @@ use Pu239\Database;
 use Pu239\Topic;
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string|void
  */
@@ -87,6 +87,16 @@ function breadcrumbs()
     return $crumbs;
 }
 
+/**
+ * @param $lang
+ * @param $url
+ * @param $referer
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return array|bool|string
+ */
 function get_prepage($lang, $url, $referer)
 {
     global $CURUSER;
@@ -136,9 +146,9 @@ function get_prepage($lang, $url, $referer)
  * @param $lang
  * @param $url
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -175,9 +185,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -226,9 +236,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -433,9 +443,9 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */

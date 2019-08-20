@@ -85,6 +85,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return int
  */

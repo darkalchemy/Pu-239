@@ -26,6 +26,13 @@ function redirect()
     die();
 }
 
+/**
+ * @param array $user
+ *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function mark_as_read(array $user)
 {
     global $container;
@@ -50,6 +57,13 @@ function mark_as_read(array $user)
     }
 }
 
+/**
+ * @param array $user
+ *
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function mark_as_unread(array $user)
 {
     global $container;
@@ -75,6 +89,13 @@ function mark_as_unread(array $user)
     }
 }
 
+/**
+ * @throws \DI\DependencyException
+ * @throws \DI\NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
+ */
 function get_topics()
 {
     global $container, $site_config;

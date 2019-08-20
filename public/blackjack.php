@@ -1085,6 +1085,7 @@ if ($game) {
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed|null
  */

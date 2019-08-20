@@ -85,6 +85,9 @@ class AJAXChatTemplate
     /**
      * @param $tagData
      *
+     * @throws DependencyException
+     * @throws NotFoundException
+     *
      * @return string
      */
     public function replaceTemplateTags($tagData)

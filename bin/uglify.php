@@ -6,6 +6,7 @@ use Delight\Auth\AuthError;
 use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -22,14 +23,14 @@ if (php_sapi_name() === 'cli') {
 /**
  * @param array $argv
  *
+ * @return bool|string
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
- *
- * @return bool
+ * @throws UnbegunTransaction
  */
 function run_uglify($argv = [])
 {
@@ -527,6 +528,11 @@ function write_file($update, $pages)
 
 declare(strict_types = 1);
 
+/**
+ * @param $file
+ *
+ * @return string|null
+ */
 function get_file_name($file)
 {
     global $site_config;
@@ -590,12 +596,13 @@ function get_default_border($folder)
  * @param string $file
  * @param bool   $delete
  *
- * @throws NotFoundException
  * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
- * @throws DependencyException
+ * @throws UnbegunTransaction
  *
  * @return bool
  */

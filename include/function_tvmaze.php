@@ -187,6 +187,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */

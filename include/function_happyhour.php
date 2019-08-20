@@ -143,6 +143,7 @@ function happyFile($act)
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  */
 function happyLog($userid, $torrentid, $multi)
 {

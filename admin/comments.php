@@ -40,9 +40,9 @@ $heading = "
 /**
  * @param $comment
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -136,7 +136,7 @@ switch ($view) {
 
         $body = '';
         while ($comment = mysqli_fetch_assoc($query)) {
-            $body .= format_comment($comment);
+            $body .= format_data($comment);
         }
 
         if ($rows == 0) {

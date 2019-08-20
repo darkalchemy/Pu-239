@@ -639,6 +639,7 @@ foreach ($options as $gets) {
             $additional_text = "
                     <div class='top20 has-text-centered'>Min: {$gets['points_formatted']}</div>";
             break;
+        case $gets['id'] === 34:
         case $gets['id'] === 10:
             $additional_text = "
                     <div class='top20 has-text-centered'>
@@ -700,13 +701,6 @@ foreach ($options as $gets) {
             break;
         case $gets['id'] === 24:
             $additional_text = "<div class='top20 has-text-centered'>Min: {$gets['points_formatted']}</div>";
-            break;
-        case $gets['id'] === 34:
-            $additional_text = "
-                    <div class='top20 has-text-centered'>
-                        <label for='torrent_id'>Enter the <b>Torrent ID:</b></label>
-                        <input type='number' class='w-100' id='torrent_id' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
-                    </div>";
             break;
         default:
             $additional_text = '';

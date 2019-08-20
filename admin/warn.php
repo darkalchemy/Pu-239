@@ -155,7 +155,7 @@ if ($count == 0) {
             <select name='action'>
                 <option value='unwarn'>{$lang['warn_unwarn']}</option>
                 <option value='disable'>{$lang['warn_disable']}</option>
-                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP) ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
+                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP, 'coder') ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
             </select>
             &raquo;
             <input type='submit' value='Apply' class='button is-small'>

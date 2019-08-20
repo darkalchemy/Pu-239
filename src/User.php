@@ -490,6 +490,7 @@ class User
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -528,6 +529,7 @@ class User
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -561,9 +563,10 @@ class User
      * @throws AuthError
      * @throws DependencyException
      * @throws Exception
+     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
-     * @throws InvalidManipulation
+     * @throws UnbegunTransaction
      */
     public function create_reset(string $email, array $lang)
     {

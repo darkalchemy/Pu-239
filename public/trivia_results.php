@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
-$sql = 'SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10';
+$sql = 'SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum, finished, started ORDER BY gamenum DESC LIMIT 10';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $table = "
             <div class='portlet'>";
@@ -30,7 +30,7 @@ while ($result = mysqli_fetch_assoc($res)) {
     if (mysqli_num_rows($query) > 0) {
         $i = 0;
         $date = $result['ended'] >= 1 ? "Ended: $ended" : "Started: $started";
-        $table .= "
+        $div = "
                 <div class='bg-02 has-text-centered top20 round5'>
                     <div class='padtop20'>
                         <h1>Game #{$gamenum} $date</h1>
@@ -49,7 +49,7 @@ while ($result = mysqli_fetch_assoc($res)) {
         while ($player = mysqli_fetch_assoc($query)) {
             $correct = $player['correct'];
             $incorrect = $player['incorrect'];
-            $table .= '
+            $div .= '
                         <tr>
                             <td>' . format_username((int) $player['user_id']) . '</td>
                             <td>' . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
@@ -57,12 +57,15 @@ while ($result = mysqli_fetch_assoc($res)) {
                             <td>$incorrect</td>
                         </tr>";
         }
-        $table .= '
+        $div .= '
                         </tbody>
                     </table>
                 </div>';
     }
 }
-$table .= '
+if (empty($div)) {
+    $div = main_div('No Trivia Results', 'has-text-centered', 'padding20');
+}
+$table .= $div . '
             </div>';
 echo stdhead('Trivia') . wrapper($table) . stdfoot();

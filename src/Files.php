@@ -7,6 +7,9 @@ namespace Pu239;
 use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerInterface;
 
+/**
+ * Class Files.
+ */
 class Files
 {
     protected $cache;

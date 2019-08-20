@@ -90,9 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $results = $fluent->update('site_config')
-                   ->set($set)
-                   ->where('id = ?', $id)
-                   ->execute();
+                              ->set($set)
+                              ->where('id = ?', $id)
+                              ->execute();
             if ($results) {
                 $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
             }

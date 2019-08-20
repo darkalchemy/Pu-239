@@ -2,19 +2,10 @@
 
 declare(strict_types = 1);
 
-use DI\DependencyException;
-use DI\NotFoundException;
-use Spatie\Image\Exceptions\InvalidManipulation;
-
 require_once INCL_DIR . 'function_bbcode.php';
 
 /**
  * @param int $topic_id
- *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
  *
  * @return string
  */

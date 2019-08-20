@@ -243,8 +243,9 @@ function get_movie_id($imdbid, $type)
 /**
  * @param $json
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool
  */

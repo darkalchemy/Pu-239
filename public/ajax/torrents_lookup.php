@@ -463,8 +463,9 @@ function snatchtable(array $torrents)
  * @param array $torrents
  * @param int   $userid
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

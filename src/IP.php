@@ -118,6 +118,11 @@ class IP
         return $users;
     }
 
+    /**
+     * @param string $date
+     *
+     * @throws Exception
+     */
     public function delete_by_age(string $date)
     {
         $this->fluent->deleteFrom('ips')

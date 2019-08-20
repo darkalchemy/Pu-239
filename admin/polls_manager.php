@@ -54,12 +54,13 @@ switch ($params['mode']) {
 /**
  * @param $stdfoot
  *
+ * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function delete_poll($stdfoot)
 {
@@ -236,12 +237,13 @@ function edit_poll_form($stdfoot)
 /**
  * @param $stdfoot
  *
+ * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws AuthError
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function show_poll_archive($stdfoot)
 {

@@ -92,7 +92,6 @@ class AJAXChat
     /**
      * @throws AuthError
      * @throws DependencyException
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws UnbegunTransaction
@@ -182,9 +181,11 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
+     * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -224,9 +225,9 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return mixed|null
      */
@@ -451,6 +452,8 @@ class AJAXChat
 
     /**
      * @throws AuthError
+     * @throws DependencyException
+     * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      */
@@ -468,9 +471,11 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
+     * @throws DependencyException
+     * @throws NotFoundException
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -587,6 +592,7 @@ class AJAXChat
     /**
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      */
     public function removeInactive()
     {
@@ -1048,6 +1054,7 @@ class AJAXChat
     /**
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return array|null
      */
@@ -1248,6 +1255,7 @@ class AJAXChat
     /**
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      */
     public function checkAndRemoveInactive()
     {
@@ -2341,8 +2349,10 @@ class AJAXChat
     /**
      * @param $textParts
      *
+     * @throws DependencyException
+     * @throws NotFoundException
      * @throws UnbegunTransaction
-     * @throws Exception
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -2418,8 +2428,9 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws UnbegunTransaction
-     * @throws Exception
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */

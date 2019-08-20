@@ -20,6 +20,8 @@ class CustomAJAXChat extends AJAXChat
     }
 
     /**
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      * @throws \Envms\FluentPDO\Exception
      *
      * @return bool

@@ -543,11 +543,12 @@ function searchfield($s)
  * @param string|null $outer_class
  * @param string|null $inner_class
  *
+ * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- * @throws AuthError
  * @throws NotLoggedInException
+ * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  */
 function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null)
@@ -1187,6 +1188,7 @@ function plural(int $int)
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
+ * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
