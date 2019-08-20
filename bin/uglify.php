@@ -23,7 +23,6 @@ if (php_sapi_name() === 'cli') {
 /**
  * @param array $argv
  *
- * @return bool|string
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -31,6 +30,8 @@ if (php_sapi_name() === 'cli') {
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ *
+ * @return bool|string
  */
 function run_uglify($argv = [])
 {

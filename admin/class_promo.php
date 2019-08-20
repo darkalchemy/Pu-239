@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Database;
+use Pu239\Session;
 
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
@@ -32,20 +33,19 @@ $possible_modes = [
 ];
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
-    stderr($lang['classpromo_error'], $lang['classpromo_ruffian']);
+    $session->set('is-error', $lang['classpromo_ruffian']);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $session = $container->get(Session::class);
     if ($mode === 'edit') {
         if (!empty($class_config)) {
             foreach ($class_config as $c_name => $value) {
-                // handing from database
                 $c_value = $value['id']; // $key is like 0, 1, 2 etc....
                 $c_name = strtoupper($value['name']);
                 $c_min_ratio = $value['min_ratio'];
                 $c_uploaded = $value['uploaded'];
                 $c_time = $value['time'];
                 $c_low_ratio = $value['low_ratio'];
-                // handling from posting of contents
                 $post_data = $_POST[$c_name]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
                 $value = $post_data[0];
                 $name = $post_data[1];
@@ -59,11 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
-            stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
+            $session->set('is-success', $lang['classpromo_success_saved']);
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_query1']);
+            $session->set('is-error', $lang['classpromo_err_query1']);
         }
-        exit;
     } elseif ($mode === 'add') {
         if (isset($_POST['name'])) {
             $class_id = (int) $_POST['name'];
@@ -76,46 +75,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            ->where('name != ?', 'UC_MAX')
                            ->fetch('name');
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
+            $session->set('is-error', $lang['classpromo_err_clsname']);
         }
         if (isset($_POST['min_ratio'])) {
             $min_ratio = (float) $_POST['min_ratio'];
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
+            $session->set('is-error', $lang['classpromo_err_minratio']);
         }
         if (isset($_POST['uploaded'])) {
             $uploaded = (int) $_POST['uploaded'];
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
+            $session->set('is-error', $lang['classpromo_err_upl']);
         }
         if (isset($_POST['uploaded'])) {
             $time = (int) $_POST['time'];
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
+            $session->set('is-error', $lang['classpromo_err_time']);
         }
         if (isset($_POST['uploaded'])) {
             $low_ratio = (float) $_POST['low_ratio'];
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_lowratio']);
+            $session->set('is-error', $lang['classpromo_err_lowratio']);
         }
         if (sql_query('INSERT INTO class_promo (name, min_ratio,uploaded,time,low_ratio) VALUES(' . sqlesc($name) . ', ' . sqlesc($min_ratio) . ', ' . sqlesc($uploaded) . ', ' . sqlesc($time) . ', ' . sqlesc($low_ratio) . ')')) {
-            stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
+            $session->set('is-success', $lang['classpromo_success_saved']);
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_query2']);
+            $session->set('is-error', $lang['classpromo_err_query2']);
         }
-        exit;
     } elseif ($mode === 'remove') {
         if (isset($_POST['remove'])) {
             $name = htmlsafechars($_POST['remove']);
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_required']);
+            $session->set('is-error', $lang['classpromo_err_required']);
         }
         if (sql_query('DELETE FROM class_promo WHERE name = ' . sqlesc($name) . '')) {
-            stderr($lang['classpromo_success'], $lang['classpromo_success_reset']);
+            $session->set('is-success', $lang['classpromo_success_reset']);
         } else {
-            stderr($lang['classpromo_error'], $lang['classpromo_err_query']);
+            $session->set('is-error', $lang['classpromo_err_query']);
         }
-        exit;
     }
 }
 
@@ -123,7 +120,7 @@ $res = sql_query('SELECT * FROM class_promo ORDER BY id');
 if (mysqli_num_rows($res) >= 1) {
     $head_top = "
     <h3 class='has-text-centered top20'>{$lang['classpromo_user_sett']}</h3>
-    <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
+    <form name='edit' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=class_promo&amp;mode=edit' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 
     $heading = "
         <tr>
@@ -139,12 +136,14 @@ if (mysqli_num_rows($res) >= 1) {
         $body .= '
         <tr>
             <td>
-                ' . get_user_class_name(constant($arr['name']), false) . ' (' . htmlsafechars($arr['name']) . ")
+                ' . get_user_class_name(constant($arr['name']), false) . "
+                <input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['name']) . "'>
+                <input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['id']) . "'>
             </td>
-            <td class='has-text-centered'>" . htmlsafechars($arr['min_ratio']) . "</td>
-            <td class='has-text-centered'>" . htmlsafechars($arr['uploaded']) . "</td>
-            <td class='has-text-centered'>" . htmlsafechars($arr['time']) . "</td>
-            <td class='has-text-centered'>" . htmlsafechars($arr['low_ratio']) . "</td>
+            <td class='has-text-centered'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . format_comment($arr['min_ratio']) . "' class='has-text-centered'></td>
+            <td class='has-text-centered'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . format_comment($arr['uploaded']) . "' class='has-text-centered'></td>
+            <td class='has-text-centered'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . format_comment($arr['time']) . "' class='has-text-centered'></td>
+            <td class='has-text-centered'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . format_comment($arr['low_ratio']) . "' class='has-text-centered'></td>
             <td class='has-text-centered'>
                 <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>

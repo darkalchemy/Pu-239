@@ -1,4 +1,5 @@
 ### 20 Aug, 2019
+fix: allow edit class_promo.php  
 update: show empty block when no results trivia_results.php  
 remove: redundant switch block browse.php, mybonus.php, mytorrents.php  
 update: phpDoc blocks  
