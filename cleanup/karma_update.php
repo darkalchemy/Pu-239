@@ -35,6 +35,7 @@ function karma_update($data)
             $sql = $sql->where('connectable = "yes"');
         }
         $sql = $sql->groupBy('userid')
+                   ->groupBy('seedbonus')
                    ->fetchAll();
         if (!empty($sql)) {
             $total = 0;

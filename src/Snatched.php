@@ -238,6 +238,8 @@ class Snatched
                               ->where('u.downloadpos = 0')
                               ->innerJoin('users AS u ON s.userid = u.id')
                               ->groupBy('s.userid')
+                              ->groupBy('modcomment')
+                              ->groupBy('username')
                               ->having('count <= ?', $this->site_config['hnr_config']['cainallowed'])
                               ->fetchAll();
 
@@ -261,6 +263,9 @@ class Snatched
                               ->where('u.downloadpos = 1')
                               ->innerJoin('users AS u ON s.userid = u.id')
                               ->groupBy('s.userid')
+                              ->groupBy('modcomment')
+                              ->groupBy('username')
+                              ->groupBy('hit_and_run_total')
                               ->having('count > ?', $this->site_config['hnr_config']['cainallowed'])
                               ->fetchAll();
 
