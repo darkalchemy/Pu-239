@@ -148,10 +148,10 @@ if ($count === 0) {
             $res_who = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
             $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username((int) $arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
-            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled>";
+            $checkbox = "<input type='radio' name='id' value='" . $arr_info['id'] . "' disabled>";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";
-            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "'>";
+            $checkbox = "<input type='radio' name='id' value='" . $arr_info['id'] . "'>";
         }
 
         if ($arr_info['reporting_type'] != '') {
@@ -163,52 +163,52 @@ if ($count === 0) {
                 case 'Comment':
                     $res_who2 = sql_query('SELECT comments.user, users.username, torrents.id FROM comments, users, torrents WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_who2['id'] . '&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_who2['id'] . '&amp;viewcomm=' . $arr_info['reporting_what'] . '#comm' . $arr_info['reporting_what'] . "'><b>" . format_comment($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Request_Comment':
                     $res_who2 = sql_query('SELECT comments.request, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_who2['request'] . '&amp;req_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . $arr_who2['request'] . '&amp;req_details=1&amp;viewcomm=' . $arr_info['reporting_what'] . '#comm' . $arr_info['reporting_what'] . "'><b>" . format_comment($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Offer_Comment':
                     $res_who2 = sql_query('SELECT comments.offer, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_who2['offer'] . '&amp;off_details=1&amp;viewcomm=' . (int) $arr_info['reporting_what'] . '#comm' . (int) $arr_info['reporting_what'] . "'><b>" . htmlsafechars($arr_who2['username']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . $arr_who2['offer'] . '&amp;off_details=1&amp;viewcomm=' . $arr_info['reporting_what'] . '#comm' . $arr_info['reporting_what'] . "'><b>" . format_comment($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Request':
                     $res_who2 = sql_query('SELECT request_name FROM requests WHERE id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . (int) $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . htmlsafechars($arr_who2['request_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . format_comment($arr_who2['request_name']) . '</b></a>';
                     break;
 
                 case 'Offer':
                     $res_who2 = sql_query('SELECT offer_name FROM offers WHERE id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . (int) $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . htmlsafechars($arr_who2['offer_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . format_comment($arr_who2['offer_name']) . '</b></a>';
                     break;
 
                 case 'Torrent':
                     $res_who2 = sql_query('SELECT name FROM torrents WHERE id =' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $name = !empty($arr_who2['name']) ? htmlsafechars($arr_who2['name']) : 'Torrent Unknown';
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
+                    $name = !empty($arr_who2['name']) ? format_comment($arr_who2['name']) : 'Torrent Unknown';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $name = !empty($arr_who2['name']) ? htmlsafechars($arr_who2['name']) : '';
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username((int) $arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
+                    $name = !empty($arr_who2['name']) ? format_comment($arr_who2['name']) : '';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username($arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Post':
                     $res_who2 = sql_query('SELECT topic_name FROM topics WHERE id =' . sqlesc($arr_info['2nd_value']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $name = !empty($arr_who2['topic_name']) ? htmlsafechars($arr_who2['topic_name']) : '';
-                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . (int) $arr_info['2nd_value'] . '&amp;page=last#' . (int) $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
+                    $name = !empty($arr_who2['topic_name']) ? format_comment($arr_who2['topic_name']) : '';
+                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . $arr_info['2nd_value'] . '&amp;page=last#' . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
             }
         }
@@ -221,7 +221,7 @@ if ($count === 0) {
             <td>' . $arr_info['reason'] . "</td>
             <td>{$dealtwith} {$delt_link}</td>
             <td>{$checkbox}</td>" . ($CURUSER['class'] >= UC_MAX ? "
-            <td><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
+            <td><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . $arr_info['id'] . "&amp;delete=1'>
                     <i class='icon-trash-empty tooltipper has-text-danger' title='{$lang['reports_delete']}' aria-hidden='true'></i>
                 </a>
             </td>" : '') . '
@@ -229,10 +229,10 @@ if ($count === 0) {
         if ($arr_info['how_delt_with']) {
             $body .= "
         <tr>
-            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'><b>{$lang['reports_with']} " . format_comment($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
-            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'>" . format_comment($arr_info['how_delt_with']) . '<br><br></td>
         </tr>';
         }
     }

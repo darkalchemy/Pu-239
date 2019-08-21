@@ -75,7 +75,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     if (!empty($contents)) {
         $contents = array_reverse($contents);
         $count = count($contents);
-        $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
+        $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . htmlsafechars($file) . '&amp;');
     }
     $i = 0;
     $content = [];
@@ -134,7 +134,7 @@ if (!empty($files)) {
         $body .= "
         <tr>
             <td>
-                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&amp;action=view&amp;file=" . urlencode($file) . "'>$file</a>
+                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&amp;action=view&amp;file=" . htmlsafechars($file) . "'>$file</a>
             </td>
             <td class='has-text-centered'>
                 " . get_date((int) filemtime($file), 'LONG') . "

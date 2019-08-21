@@ -15,7 +15,7 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
             <td>
                 <a id="' . (int) $arr['post_id'] . '"></a>
                 <span style="white-space:nowrap;">#' . (int) $arr['post_id'] . '
-                    <span style="font-weight: bold;">' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span>
+                    <span style="font-weight: bold;">' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_comment($arr['username'])) . '</span>
                 </span>
             </td>
             <td>

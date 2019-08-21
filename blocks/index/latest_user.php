@@ -8,12 +8,7 @@ global $container, $lang, $site_config;
 
 $user_class = $container->get(User::class);
 $userid = $user_class->get_latest_user();
-if (!empty($userid)) {
-    $latestuser = format_username((int) $userid);
-} else {
-    $latestuser = 'Unknown';
-}
-
+$latestuser = format_username((int) $userid);
 $latest_user .= "
         <a id='latestuser-hash'></a>
         <div id='latestuser' class='box'>

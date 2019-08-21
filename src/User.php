@@ -79,8 +79,7 @@ class User
      */
     public function getUserIdFromName(string $username)
     {
-        $user = $this->cache->get('userid_from_' . urlencode($username));
-
+        $user = $this->cache->get('userid_from_' . strtolower($username));
         if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
                                  ->select(null)
@@ -88,7 +87,7 @@ class User
                                  ->where('LOWER(username) = ?', strtolower($username))
                                  ->fetch('id');
 
-            $this->cache->set('userid_from_' . urldecode($username), $user, $this->site_config['expires']['user_cache']);
+            $this->cache->set('userid_from_' . strtolower($username), $user, $this->site_config['expires']['user_cache']);
         }
 
         return $user;
@@ -162,7 +161,6 @@ class User
                                  ->leftJoin('usersachiev AS a ON u.id = a.userid')
                                  ->leftJoin('ips AS i ON u.id = i.userid')
                                  ->where('u.id = ?', $userid)
-                                 ->where('i.type = "login"')
                                  ->orderBy('i.last_access DESC')
                                  ->fetch();
 
@@ -257,7 +255,7 @@ class User
         try {
             if ($this->site_config['signup']['email_confirm'] && !isset($values['send_email'])) {
                 $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
-                    $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+                    $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
                         '<#SITENAME#>',
                         '<#USEREMAIL#>',
@@ -334,8 +332,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */

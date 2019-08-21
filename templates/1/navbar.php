@@ -8,6 +8,7 @@ use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Roles;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @throws Exception
@@ -140,6 +141,11 @@ function navbar()
 /**
  * @param $value
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
+ *
  * @return string
  */
 function make_link($value)
@@ -147,15 +153,16 @@ function make_link($value)
     global $site_config;
 
     $link = "
-                            <li><a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a></li>';
+                            <li><a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . format_comment($value['page_name']) . '</a></li>';
 
     return $link;
 }
 
 /**
+ * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return string
  */

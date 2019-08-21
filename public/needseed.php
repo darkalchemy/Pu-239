@@ -69,7 +69,7 @@ if ($needed === 'leechers') {
             } else {
                 $cat = $needseed['cat_name'];
             }
-            $torrname = htmlsafechars(CutName($arr['name'], 80));
+            $torrname = format_comment(CutName($arr['name'], 80));
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
                 <tr>
@@ -114,7 +114,7 @@ if ($needed === 'leechers') {
             } else {
                 $cat = $needseed['cat_name'];
             }
-            $torrname = htmlsafechars(CutName($arr['name'], 80));
+            $torrname = format_comment(CutName($arr['name'], 80));
             $body .= "
                 <tr>
                     <td class='has-text-centered'>{$cat}</td>

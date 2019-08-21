@@ -13,6 +13,19 @@ if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
 }
 
+exec('which composer', $composer);
+if (empty($composer)) {
+    die("Please install composer\nhttps://getcomposer.org/download/\n\n");
+}
+exec('which npm', $npm);
+if (empty($npm)) {
+    die("Please install nodejs\nhttps://nodejs.org/en/download/package-manager/\n\n");
+}
+exec('which npx', $npx);
+if (empty($npx)) {
+    die("Please install npx\nsudo npm -ig npx\n\n");
+}
+
 if (count($argv) === 13) {
     $vars = [
         'site' => [

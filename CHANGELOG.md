@@ -1,4 +1,8 @@
 ### 21 Aug, 2019
+update: README to include npx requirement  
+fix: unknown user User.php  
+add: check for composer, npm and npx during install  
+replace: htmlsafechars format_comment when for display  
 update: style quick_reply.php  
 update: add ip to usersdata  
 update: forum style on mobile  

@@ -74,13 +74,13 @@ while ($arr = mysqli_fetch_assoc($res)) {
                 <td><input name='id' type='hidden' value='" . (int) $arr['id'] . "'>" . (int) $arr['id'] . "</td>
                 <td><input type='number' name='orderid' value='" . (int) $arr['orderid'] . "' class='w-100'></td>
                 <td><input name='enabled' type='checkbox' " . ($arr['enabled'] === 'yes' ? 'checked' : '') . '></td>
-                <td>' . htmlsafechars($arr['bonusname']) . "</td>
+                <td>' . format_comment($arr['bonusname']) . "</td>
                 <td><input type='number' name='bonuspoints' value='" . (int) $arr['points'] . "' class='w-100'></td>
                 <td><input type='number' name='pointspool' value='" . (int) $arr['pointspool'] . "' class='w-100'></td>
                 <td><input type='number' name='minpoints' value='" . (int) $arr['minpoints'] . "' class='w-100'></td>
                 <td><input type='number' name='minclass' value='" . (int) $arr['minclass'] . "' class='w-100'></td>
-                <td><textarea name='description' rows='4' class='w-100'>" . htmlsafechars($arr['description']) . '</textarea></td>
-                <td>' . htmlsafechars($arr['art']) . '</td>
+                <td><textarea name='description' rows='4' class='w-100'>" . format_comment($arr['description']) . '</textarea></td>
+                <td>' . format_comment($arr['art']) . '</td>
                 <td>' . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
                 <td><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}'></td>
             </form>

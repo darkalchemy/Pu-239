@@ -41,7 +41,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
     if (empty($title)) {
         $title = $site_config['site']['name'];
     } else {
-        $title = $site_config['site']['name'] . ' :: ' . htmlsafechars($title);
+        $title = $site_config['site']['name'] . ' :: ' . format_comment($title);
     }
     $css_incl = '';
     $tmp = [

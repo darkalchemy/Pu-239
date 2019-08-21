@@ -58,9 +58,9 @@ if ($action === 'viewposts') {
         $postid = (int) $arr['id'];
         $posterid = (int) $arr['user_id'];
         $topicid = (int) $arr['t_id'];
-        $topicname = htmlsafechars($arr['topic_name']);
+        $topicname = format_comment($arr['topic_name']);
         $forumid = (int) $arr['f_id'];
-        $forumname = htmlsafechars($arr['name']);
+        $forumname = format_comment($arr['name']);
         $editedby = (int) $arr['edited_by'];
         $dt = TIME_NOW - $site_config['forum_config']['readpost_expiry'];
         $newposts = 0;
@@ -129,7 +129,7 @@ if ($action === 'viewposts') {
 
     while ($arr = mysqli_fetch_assoc($res)) {
         $commentid = (int) $arr['id'];
-        $torrent = !empty($arr['name']) ? htmlsafechars($arr['name']) : '';
+        $torrent = !empty($arr['name']) ? format_comment($arr['name']) : '';
         if (strlen($torrent) > 55) {
             $torrent = substr($torrent, 0, 52) . '...';
         }

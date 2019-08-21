@@ -309,8 +309,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
@@ -452,8 +452,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -471,6 +471,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
+        dd($users_data);
         return "<span class='has-text-danger'>unknown_userid[$user_id]</span>";
     }
     $avatar = get_avatar($users_data);
@@ -561,12 +562,12 @@ function is_valid_id(int $id)
 }
 
 /**
- * @param float $up
- * @param float $down
+ * @param float|null $up
+ * @param float|null $down
  *
  * @return string
  */
-function member_ratio(float $up, float $down)
+function member_ratio(?float $up, ?float $down)
 {
     global $site_config;
 
@@ -592,15 +593,15 @@ function member_ratio(float $up, float $down)
 }
 
 /**
- * @param float $up
- * @param float $down
+ * @param float|null $up
+ * @param float|null $down
  *
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return string
  */
-function get_user_ratio_image(float $up, float $down)
+function get_user_ratio_image(?float $up, ?float $down)
 {
     global $site_config;
 
@@ -645,10 +646,10 @@ function get_user_ratio_image(float $up, float $down)
 /**
  * @param $avatar
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string|null
  */
@@ -745,9 +746,9 @@ function make_dir(string $dir, int $octal)
 /**
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */

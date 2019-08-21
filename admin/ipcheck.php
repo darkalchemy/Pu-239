@@ -48,13 +48,13 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 $body .= '
                 <tr>
                     <td>' . format_username((int) $arr['id']) . '</td>
-                    <td>' . htmlsafechars($arr['email']) . "</td>
+                    <td>' . format_comment($arr['email']) . "</td>
                     <td>$added</td>
                     <td>$last_access</td>" . ($site_config['site']['ratio_free'] ? '' : "
                     <td>$downloaded</td>") . "
                     <td>$uploaded</td>
                     <td>" . member_ratio($arr['uploaded'], $arr['downloaded']) . '</td>
-                    <td><span class="has-text-weight-bold">' . htmlsafechars($arr['ip']) . '</span></td>
+                    <td><span class="has-text-weight-bold">' . format_comment($arr['ip']) . '</span></td>
                 </tr>';
                 $ip = htmlsafechars($arr['ip']);
             }

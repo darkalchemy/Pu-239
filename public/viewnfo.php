@@ -31,7 +31,7 @@ if (empty($nfo) || empty($nfo['nfo'])) {
 }
 
 $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['text_nfofor']}<a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($nfo['name']) . '</a></h1>';
+        <h1 class='has-text-centered'>{$lang['text_nfofor']}<a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . format_comment($nfo['name']) . '</a></h1>';
 
 if ($site_config['nfo']['as_image']) {
     $nfo2png = $container->get(Nfo2Png::class);

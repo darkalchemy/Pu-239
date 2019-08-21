@@ -30,8 +30,8 @@ if (!empty($agents)) {
     foreach ($agents as $arr) {
         $body .= '
         <tr>
-            <td>' . htmlsafechars($arr['agent']) . '</td>
-            <td>' . htmlsafechars($arr['peer_id']) . '</td>
+            <td>' . format_comment($arr['agent']) . '</td>
+            <td>' . format_comment($arr['peer_id']) . '</td>
         </tr>';
     }
     $HTMLOUT = main_table($body, $heading);

@@ -259,7 +259,7 @@ $HTMLOUT .= "
 
 $stealth = $cache->get('display_stealth_' . $user['id']);
 if ($stealth) {
-    $session->set('is-info', htmlsafechars((string) $user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
+    $session->set('is-info', format_comment($user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
 $HTMLOUT .= (has_access($curuser['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_STEALTH) ? "
@@ -370,7 +370,7 @@ if ($curuser['id'] !== $user['id'] && has_access($curuser['class'], UC_STAFF, 'c
                                             * {$lang['userdetails_watch_change1']}<br>
                                             {$lang['userdetails_watch_change2']}
                                         </div>
-                                        <textarea id='watched_reason' class='w-100' rows='6' name='watched_reason'>" . htmlsafechars((string) $user['watched_user_reason']) . "</textarea>
+                                        <textarea id='watched_reason' class='w-100' rows='6' name='watched_reason'>" . format_comment($user['watched_user_reason']) . "</textarea>
                                         <div class='has-text-centered'>
                                             <input id='watched_user_button' type='submit' value='{$lang['userdetails_submit']}' class='button is-small' name='watched_user_button'>
                                         </div>
@@ -386,7 +386,7 @@ if ($curuser['id'] !== $user['id'] && has_access($curuser['class'], UC_STAFF, 'c
                                 <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
                                     <input name="id" type="hidden" value="' . (int) $user['id'] . '">
                                     <input type="hidden" value="staff_notes" name="action" id="action">
-                                    <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars((string) $user['staff_notes']) . '</textarea>
+                                    <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . format_comment($user['staff_notes']) . '</textarea>
                                     <div class="has-text-centered">
                                         <input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button">
                                     </div>
@@ -449,12 +449,12 @@ if (!empty($user['where_is'])) {
 }
 $mood_class = $container->get(Mood::class);
 $moods = $mood_class->get();
-$moodname = (isset($moods['name'][$user['mood']]) ? htmlsafechars((string) $moods['name'][$user['mood']]) : $lang['userdetails_neutral']);
-$moodpic = (isset($moods['image'][$user['mood']]) ? htmlsafechars((string) $moods['image'][$user['mood']]) : 'noexpression.gif');
+$moodname = (isset($moods['name'][$user['mood']]) ? format_comment($moods['name'][$user['mood']]) : $lang['userdetails_neutral']);
+$moodpic = (isset($moods['image'][$user['mood']]) ? format_comment($moods['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '">
-       <span class="tip">' . htmlsafechars((string) $user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
+       <span class="tip">' . format_comment($user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
 if ($curuser['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
 }
@@ -513,15 +513,15 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
 
                <tr>
                       <td class='rowhead'>{$lang['userdetails_signature']}</td>
-                      <td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='signature'>" . htmlsafechars((string) $user['signature']) . "</textarea></td>
+                      <td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='signature'>" . format_comment($user['signature']) . "</textarea></td>
                 </tr>
                 <tr>
                       <td class='rowhead'>{$lang['userdetails_skype']}</td>
-                      <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='skype' value='" . htmlsafechars((string) $user['skype']) . "'></td>
+                      <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='skype' value='" . format_comment($user['skype']) . "'></td>
                 </tr>
                 <tr>
                       <td class='rowhead'>{$lang['userdetails_website']}</td>
-                      <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . htmlsafechars((string) $user['website']) . "'></td>
+                      <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . format_comment($user['website']) . "'></td>
                 </tr>";
 
     if ($curuser['class'] >= UC_MAX) {
@@ -592,7 +592,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
         $HTMLOUT .= '</select></td></tr>';
     }
-    $supportfor = htmlsafechars((string) $user['supportfor']);
+    $supportfor = format_comment($user['supportfor']);
     $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['userdetails_roles']}</td>
@@ -619,15 +619,10 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                     <textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea>
                 </td>
             </tr>";
-    $modcomment = htmlsafechars((string) $user['modcomment']);
-    if ($curuser['class'] < UC_MAX) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' readonly='readonly'>$modcomment</textarea></td></tr>";
-    } else {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment'>$modcomment</textarea></td></tr>";
-    }
+    $modcomment = format_comment($user['modcomment']);
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' " . (!has_access($curuser['class'], UC_MAX, 'coder') ? "readonly='readonly'" : '') . ">$modcomment</textarea></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_add_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='addcomment'></textarea></td></tr>";
-
-    $bonuscomment = htmlsafechars((string) $user['bonuscomment']);
+    $bonuscomment = format_comment($user['bonuscomment']);
     $HTMLOUT .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_bonus_comment']}</td>

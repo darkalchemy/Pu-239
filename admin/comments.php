@@ -54,10 +54,10 @@ function format_data($comment)
         'user' => (int) $comment['user'],
         'torrent' => (int) $comment['torrent'],
         'id' => (int) $comment['id'],
-        'text' => htmlsafechars((string) $comment['text']),
-        'ori_text' => htmlsafechars((string) $comment['ori_text']),
-        'username' => htmlsafechars((string) $comment['username']),
-        'name' => htmlsafechars((string) $comment['name']),
+        'text' => format_comment($comment['text']),
+        'ori_text' => format_comment($comment['ori_text']),
+        'username' => format_comment($comment['username']),
+        'name' => format_comment($comment['name']),
         'added' => (int) $comment['added'],
     ];
 
@@ -132,7 +132,7 @@ switch ($view) {
         $rows = mysqli_num_rows($query);
 
         $HTMLOUT = "
-                <h1 class='has-text-centered'>{$lang['text_results']}: " . htmlsafechars((string) $_POST['keywords']) . '</h1>' . $nav;
+                <h1 class='has-text-centered'>{$lang['text_results']}: " . format_comment($_POST['keywords']) . '</h1>' . $nav;
 
         $body = '';
         while ($comment = mysqli_fetch_assoc($query)) {

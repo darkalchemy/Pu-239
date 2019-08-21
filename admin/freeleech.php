@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fl['setby'] = isset($_POST['setby']) ? htmlsafechars($_POST['setby']) : false;
     $fl['title'] = isset($_POST['title']) ? htmlsafechars($_POST['title']) : false;
     if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false) {
-        echo '' . $lang['freeleech_error_form'] . '';
+        echo $lang['freeleech_error_form'];
         die();
     }
     $i = 0;

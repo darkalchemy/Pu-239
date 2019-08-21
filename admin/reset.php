@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         if ($user_class->reset_password($lang, $details, true)) {
             write_log($lang['reset_pw_log1'] . $username . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
-            stderr($lang['reset_pw_success'], $lang['reset_pw_success1'] . ' <b>' . $username . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($password) . '</b>.');
+            stderr($lang['reset_pw_success'], $lang['reset_pw_success1'] . ' <b>' . $username . '</b>' . $lang['reset_pw_success2'] . '<b>' . format_comment($password) . '</b>.');
         } else {
             stderr('Error', 'Password reset failed.');
         }

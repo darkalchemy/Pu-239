@@ -13,6 +13,14 @@ require_once INCL_DIR . 'function_staff.php';
 require_once BIN_DIR . 'uglify.php';
 require_once BIN_DIR . 'functions.php';
 $user = check_user_status();
+require_once CLASS_DIR . 'class_check.php';
+class_check(UC_STAFF);
+global $container, $site_config;
+
+$lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
+if (!$site_config['site']['staffpanel_online']) {
+    stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
+}
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -25,31 +33,28 @@ $stdfoot = [
     ],
 ];
 
-$HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
-$staff_classes1['name'] = $page_name = $file_name = $navbar = '';
-$staff = sqlesc(UC_STAFF);
-global $container, $site_config;
-
+$HTMLOUT = $page_name = $file_name = $navbar = '';
+$fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value>= '$staff' GROUP BY value ORDER BY value");
-    $staff_classes = [];
-    while (($row = mysqli_fetch_assoc($res))) {
-        $staff_classes[] = $row['value'];
-    }
+    $staff_classes = $fluent->from('class_config')
+                            ->select(null)
+                            ->select('value')
+                            ->where("name != 'UC_MIN'")
+                            ->where("name != 'UC_MAX'")
+                            ->where("name != 'UC_STAFF'")
+                            ->where('value >= ?', UC_STAFF)
+                            ->groupBy('value')
+                            ->orderBy('value')
+                            ->fetchAll();
     $cache->set('staff_classes_', $staff_classes, 0);
 }
 
-if (!$site_config['site']['staffpanel_online']) {
-    stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
-}
-require_once CLASS_DIR . 'class_check.php';
-class_check(UC_STAFF);
-$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null);
-$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
-$tool = !empty($_GET['tool']) ? $_GET['tool'] : (!empty($_POST['tool']) ? $_POST['tool'] : null);
+$data = array_merge($_POST, $_GET);
+$action = isset($data['action']) ? htmlsafechars($data['action']) : null;
+$id = isset($data['id']) ? (int) $data['id'] : 0;
+$tool = !empty($data['tool']) ? $data['tool'] : null;
 write_info("{$user['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
 $staff_tools = [
     'modtask' => 'modtask',
@@ -59,25 +64,26 @@ $staff_tools = [
     'invite_tree' => 'invite_tree',
     'user_hits' => 'user_hits',
 ];
-
-$sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
-while ($list = mysqli_fetch_assoc($sql)) {
+$file_names = $fluent->from('staffpanel')
+                     ->select(null)
+                     ->select('file_name')
+                     ->fetchPairs('id', 'file_name');
+foreach ($file_names as $key => $file_name) {
     $item = str_replace([
         'staffpanel.php?tool=',
         '.php',
         '&mode=news',
         '&action=app',
-    ], '', $list['file_name']);
+    ], '', $file_name);
     $staff_tools[$item] = $item;
 }
 ksort($staff_tools);
-$fluent = $container->get(Database::class);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
     $session = $container->get(Session::class);
     if ($action === 'delete' && is_valid_id($id) && $user['class'] >= UC_MAX) {
-        $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
+        $sure = (isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes';
         $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if ($user['class'] < $arr['av_class']) {
@@ -405,7 +411,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     </tr>';
             $body = '';
             foreach ($mysql_data as $key => $arr) {
-                $end_table = (count($db_classes[$arr['av_class']]) == $i ? true : false);
+                $end_table = count($db_classes[$arr['av_class']]) == $i ? true : false;
 
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
@@ -415,12 +421,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $show_in_nav = $arr['navbar'] == 1 ? '
                 <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">true</span>' : '
                 <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">false</span>';
-
                 $body .= "
                     <tr>
                         <td>
                             <div class='size_4'>
-                                <a href='" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'>" . ucwords(htmlsafechars($arr['page_name'])) . "</a>
+                                <a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'>" . ucwords(htmlsafechars($arr['page_name'])) . "</a>
                             </div>
                         </td>
                         <td>
