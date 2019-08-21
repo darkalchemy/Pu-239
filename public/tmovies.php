@@ -159,7 +159,7 @@ $body .= '
         </div>';
 
 $HTMLOUT .= main_div("
-            <form id='test1' method='get' action='{$site_config['paths']['baseurl']}/tmovies.php' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
+            <form id='test1' method='get' action='{$site_config['paths']['baseurl']}/tmovies.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <div class='padding20'>
                     <div class='padding10 w-100'>
                         <div class='columns'>

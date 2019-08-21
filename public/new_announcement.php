@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <tr>
      <td class='embedded'><div class='has-text-centered'>
      <h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
-    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
+    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' enctype='multipart/form-data' accept-charset='utf-8'>
      <table>
      <tr>
      <td colspan='2'><b>Subject: </b>

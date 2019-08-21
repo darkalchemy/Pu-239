@@ -62,7 +62,7 @@ if ($user['class'] >= UC_STAFF) {
         $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $currently_editing . '</span> is currently editing this torrent!</h1>';
     }
 }
-$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
+$HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='id' value='$id'>";
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";

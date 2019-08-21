@@ -125,7 +125,7 @@ if ($count == 0) {
 } else {
     global $site_config;
 
-    $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=warn&amp;action=warn' method='post' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>";
+    $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=warn&amp;action=warn' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $heading = "
         <tr>
             <th>{$lang['warn_user']}</th>

@@ -358,7 +358,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
         var poll_stat_lang = \"{$lang['poll_pb_allowed']} <%1> {$lang['poll_pb_more']} <%2>  {$lang['poll_pb_choices']}\";
     </script>
     <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
-    <form id='postingform' action='{$_SERVER['PHP_SELF']}?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
+    <form id='postingform' action='{$_SERVER['PHP_SELF']}?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='mode' value='$form_type'>
         <input type='hidden' name='pid' value='$pid'>
         <div>
