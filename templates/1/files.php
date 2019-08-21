@@ -23,9 +23,9 @@ function get_file_name($file)
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_24d5fbb8.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_5c671d90.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_da682fef.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_9c9c02cf.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_603e6983.js";
         case 'vendor_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_a408746c.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_6541fa18.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

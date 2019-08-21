@@ -148,7 +148,7 @@ class User
      *
      * @return bool|mixed
      */
-    public function getUserFromId(int $userid, bool $fresh = false)
+    public function getUserFromId(int $userid, bool $fresh = true)
     {
         $user = $this->cache->get('user_' . $userid);
         if ($fresh || $user === false || is_null($user)) {
@@ -157,9 +157,13 @@ class User
                                  ->select('c.win - c.lost AS casino')
                                  ->select('a.achpoints')
                                  ->select('a.spentpoints')
+                                 ->select('INET6_NTOA(i.ip) AS ip')
                                  ->leftJoin('casino AS c ON u.id = c.userid')
                                  ->leftJoin('usersachiev AS a ON u.id = a.userid')
-                                 ->where('id = ?', $userid)
+                                 ->leftJoin('ips AS i ON u.id = i.userid')
+                                 ->where('u.id = ?', $userid)
+                                 ->where('i.type = "login"')
+                                 ->orderBy('i.last_access DESC')
                                  ->fetch();
 
             if ($user) {

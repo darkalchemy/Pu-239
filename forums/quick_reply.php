@@ -13,13 +13,11 @@ function quick_reply(int $topic_id)
 {
     global $site_config, $lang;
 
-    $output = "
-        <div class='has-text-centered'>
+    $output = main_div("
             <form method='post' action='{$site_config['paths']['baseurl']}/forums.php?action=post_reply&amp;topic_id={$topic_id}' enctype='multipart/form-data' enctype='multipart/form-data' accept-charset='utf-8'>
-                <h3 class='has-text-centered'><i>Quick Reply</i></h3>" . BBcode('', 'w-50 bottom10', 200) . "
+                <h3 class='has-text-centered'><i>Quick Reply</i></h3>" . BBcode('', 'table-wrapper w-50 bottom10', 200) . "
                 <input type='submit' name='button' class='button is-small' value='{$lang['fe_post']}'>
-            </form>
-        </div>";
+            </form>", 'has-text-centered');
 
     return $output;
 }

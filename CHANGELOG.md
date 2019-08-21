@@ -1,4 +1,7 @@
 ### 21 Aug, 2019
+update: add ip to usersdata  
+update: forum style on mobile  
+fix: avatar not showing correctly  
 update: view forum link to 'View Forum' function_breadcrumbs.php  
 fix: provide only integers to mksize  
 

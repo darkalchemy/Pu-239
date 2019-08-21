@@ -676,7 +676,7 @@ function get_avatar($avatar)
         } elseif (empty($avatar['avatar'])) {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150'>";
         } else {
-            $avatar = "<img src='" . format_comment($avatar['avatar']) . "' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='{$avatar['avatar']}' alt='avatar' class='avatar mw-150'>";
         }
 
         return $avatar;
