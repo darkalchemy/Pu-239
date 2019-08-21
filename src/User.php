@@ -148,7 +148,7 @@ class User
      *
      * @return bool|mixed
      */
-    public function getUserFromId(int $userid, bool $fresh = true)
+    public function getUserFromId(int $userid, bool $fresh = false)
     {
         $user = $this->cache->get('user_' . $userid);
         if ($fresh || $user === false || is_null($user)) {

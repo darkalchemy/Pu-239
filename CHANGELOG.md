@@ -1,4 +1,5 @@
 ### 21 Aug, 2019
+update: style quick_reply.php  
 update: add ip to usersdata  
 update: forum style on mobile  
 fix: avatar not showing correctly  
