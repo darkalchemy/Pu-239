@@ -10,9 +10,9 @@ $user = check_user_status();
 $lang = load_language('global');
 global $container, $site_config;
 
-$Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));
-$dayafter = mktime(0, 0, 0, 12, 26, date('Y'));
-$today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
+$Christmasday = mktime(0, 0, 0, 12, 25, (int) date('Y'));
+$dayafter = mktime(0, 0, 0, 12, 26, (int) date('Y'));
+$today = mktime((int) date('G'), (int) date('i'), (int) date('s'), (int) date('m'), (int) date('d'), (int) date('Y'));
 $gifts = [
     'upload',
     'bonus',

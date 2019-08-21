@@ -43,7 +43,7 @@ function crazyhour()
     if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
         $cz_lock = $cache->set('crazyhour_lock_', 1, 10);
         if ($cz_lock !== false) {
-            $crazyhour['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
+            $crazyhour['crazyhour_new'] = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('y'));
             $crazyhour['crazyhour']['var'] = random_int($crazyhour['crazyhour_new'], ($crazyhour['crazyhour_new'] + 86400));
             $crazyhour['crazyhour']['amount'] = 0;
             $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);

@@ -1,3 +1,6 @@
+### 21 Aug, 2019
+fix: provide only integers to mksize  
+
 ### 20 Aug, 2019
 update: README  
 update: group by in Snatched.php karma_update.php  

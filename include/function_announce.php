@@ -44,7 +44,7 @@ function crazyhour_announce()
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
         if (($cz_lock = $cache->set('crazyhour_lock_', 1, 10)) !== false) {
-            $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
+            $cz['crazyhour_new'] = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('y'));
             $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
             $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
@@ -110,9 +110,9 @@ function crazyhour_announce()
  * @param int $torrentid
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int|mixed
  */
@@ -146,9 +146,9 @@ function get_happy(int $torrentid, int $userid)
  * @param int $torrentid
  * @param int $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */

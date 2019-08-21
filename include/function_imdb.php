@@ -357,7 +357,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
                     }
                 } elseif ($boo === 'Runtime') {
-                    $imdb_data['runtime'] = date('G:i', mktime(0, $imdb_data['runtime']));
+                    $imdb_data['runtime'] = date('G:i', mktime(0, (int) $imdb_data['runtime']));
                 }
                 $imdb_info .= "
                     <div class='columns'>

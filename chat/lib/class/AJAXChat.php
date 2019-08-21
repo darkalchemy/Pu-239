@@ -3154,13 +3154,13 @@ class AJAXChat
 
         if ($hour !== null) {
             if ($day === null) {
-                $day = date('j');
+                $day = (int) date('j');
             }
             if ($month === null) {
-                $month = date('n');
+                $month = (int) date('n');
             }
             if ($year === null) {
-                $year = date('Y');
+                $year = (int) date('Y');
             }
         }
 
@@ -3189,7 +3189,7 @@ class AJAXChat
         }
 
         if (isset($periodStart)) {
-            $condition .= ' AND dateTime>\'' . date('Y-m-d H:i:s', $periodStart) . '\' AND dateTime <= \'' . date('Y-m-d H:i:s', $periodEnd) . '\'';
+            $condition .= ' AND dateTime > \'' . date('Y-m-d H:i:s', $periodStart) . '\' AND dateTime <= \'' . date('Y-m-d H:i:s', $periodEnd) . '\'';
         }
 
         // Check the search condition:
