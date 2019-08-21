@@ -1,4 +1,5 @@
 ### 21 Aug, 2019
+update: view forum link to 'View Forum' function_breadcrumbs.php  
 fix: provide only integers to mksize  
 
 ### 20 Aug, 2019

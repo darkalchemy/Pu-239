@@ -171,7 +171,7 @@ function get_postpage($lang, $url)
                     if (!empty($forum_id)) {
                         $link = get_basepage($lang, '/forums.php', 'action=view_forum&forum_id=' . $forum_id);
 
-                        return str_replace($lang['forums.php'], $lang['forum.php'], $link);
+                        return str_replace($lang['forums.php'], $lang['view_forum'], $link);
                     }
                 }
             }
