@@ -168,9 +168,12 @@ return [
     GoogleBooks::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
         if (!empty($env['api']['google'])) {
-            $books = new GoogleBooks(['key' => $env['api']['google']]);
+            $books = new GoogleBooks([
+                'key' => $env['api']['google'],
+                'country' => 'US',
+            ]);
         } else {
-            $books = new GoogleBooks();
+            $books = new GoogleBooks(['country' => 'US']);
         }
 
         return $books;

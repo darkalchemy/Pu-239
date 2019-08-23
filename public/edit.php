@@ -69,7 +69,8 @@ if (isset($_GET['returnto'])) {
 }
 $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
 $HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . htmlsafechars($row['url']) . "'>", 1);
-$HTMLOUT .= tr($lang['edit_isbn'], "<input type='number' name='isbn' min_length='10' max_length='13' class='w-100' value='" . htmlsafechars($row['isbn']) . "'/><br>{$lang['edit_isbn_details']}", 1);
+$HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' min_length='10' max_length='13' class='w-100' value='" . htmlsafechars($row['isbn']) . "'/><br>{$lang['edit_isbn_details']}", 1);
+$HTMLOUT .= tr($lang['edit_title'], "<input type='text' name='title' class='w-100' value='" . htmlsafechars($row['title']) . "'/><br>{$lang['edit_title_details']}", 1);
 $HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . htmlsafechars($row['poster']) . "'><br>{$lang['edit_poster1']}\n", 1);
 $HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . htmlsafechars($row['youtube']) . "'class='w-100'><br>({$lang['edit_youtube_info']})\n", 1);
 $HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . htmlsafechars($row['name']) . "' class='w-100'>", 1);

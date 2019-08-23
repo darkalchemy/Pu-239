@@ -79,7 +79,7 @@ function get_file_name($file)
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':
-            return "{$site_config['paths']['baseurl']}/js/1/upload_b26d29c4.js";
+            return "{$site_config['paths']['baseurl']}/js/1/upload_435f251e.js";
         case 'request_js':
             return "{$site_config['paths']['baseurl']}/js/1/request_14f9d732.js";
         case 'parallax_js':
@@ -89,7 +89,7 @@ function get_file_name($file)
         case 'dragndrop_js':
             return "{$site_config['paths']['baseurl']}/js/1/dragndrop_1e9cee7f.js";
         case 'details_js':
-            return "{$site_config['paths']['baseurl']}/js/1/details_e27f0591.js";
+            return "{$site_config['paths']['baseurl']}/js/1/details_f88bf6e8.js";
         case 'forums_js':
             return "{$site_config['paths']['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

@@ -11,6 +11,8 @@ $lang = [
     //edit options
     'edit_poster' => 'Poster',
     'edit_poster1' => 'Minimum Poster Width should be 400 Px , larger sizes will be scaled.',
+    'edit_title' => 'Title',
+    'edit_title_details' => 'Either this or the ISBN must be set in order to lookup the books details. The ISBN should yield better results.',
     'edit_torrent_name' => 'Torrent name',
     'edit_torrent_description' => 'Small Description',
     'edit_nfo' => 'NFO file',

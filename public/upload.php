@@ -43,6 +43,7 @@ if (!empty($upload_vars)) {
 $vars = [
     'url',
     'isbn',
+    'title',
     'poster',
     'youtube',
     'name',
@@ -136,7 +137,7 @@ if ($usessl === 'https') {
 }
 $announce_url = $announce_url . ($site_config['upload']['show_torrent_pass'] ? '?torrent_pass=' . $user['torrent_pass'] : '');
 $HTMLOUT .= "
-    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
+    <form id='upload_form' name='upload_form' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>
         <input type='hidden' id='csrf' name='csrf' data-ebooks=" . json_encode($site_config['categories']['ebook']) . ' data-movies=' . json_encode(array_merge($site_config['categories']['movie'], $site_config['categories']['tv'])) . ">
         <h1 class='has-text-centered'>{$lang['updload_h1']}</h1>
@@ -172,9 +173,17 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_isbn']}</td>
                 <td>
-                    <input type='text' id='isbn' name='isbn' maxlength='13' class='w-100' value='$isbn'><br>
+                    <input type='text' id='isbn' name='isbn' minlength='10' maxlength='13' class='w-100' value='$isbn'><br>
                     {$lang['upload_isbn_details']}
                     <div id='isbn_outer'></div>
+                </td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['upload_title']}</td>
+                <td>
+                    <input type='text' id='title' name='title' class='w-100' value='$title'><br>
+                    {$lang['upload_book_title_details']}
+                    <div id='title_outer'></div>
                 </td>
             </tr>
             <tr>

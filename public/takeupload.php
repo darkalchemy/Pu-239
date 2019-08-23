@@ -31,6 +31,7 @@ $strip = isset($data['strip']) && is_bool($data['strip']) ? (bool) $data['strip'
 $name = isset($data['name']) ? htmlsafechars($data['name']) : '';
 $url = isset($data['url']) ? htmlsafechars($data['url']) : '';
 $isbn = isset($data['isbn']) ? htmlsafechars($data['isbn']) : '';
+$title = isset($data['title']) ? htmlsafechars($data['title']) : '';
 $poster = isset($data['poster']) ? htmlsafechars($data['poster']) : '';
 $youtube = isset($data['youtube']) ? htmlsafechars($data['youtube']) : '';
 $tags = isset($data['tags']) ? htmlsafechars($data['tags']) : '';
@@ -51,7 +52,6 @@ $request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int
 $offer = isset($data['offer']) && is_valid_id((int) $data['offer']) ? (int) $data['offer'] : 0;
 $uplver = isset($data['uplver']) && $data['uplver'] === 'yes' ? 'yes' : 'no';
 $allow_comments = isset($data['allow_comments']) && $data['allow_comments'] === 'no' ? 'no' : 'yes';
-//$descr = isset($data['descr']) ? htmlsafechars($data['descr']) : '';
 
 $cache = $container->get(Cache::class);
 $users_class = $container->get(User::class);
@@ -343,6 +343,7 @@ $vip = (!empty($vip) ? '1' : '0');
 
 $values = [
     'isbn' => $isbn,
+    'title' => $title,
     'search_text' => searchfield("$shortfname $dname $torrent"),
     'filename' => $fname,
     'owner' => $owner_id,

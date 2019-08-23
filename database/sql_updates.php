@@ -3922,4 +3922,11 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('chatbot', 'gift_odds', 'int', 150, 'The odds 1:NUMBER chance that the use will be selected to receive a free gift from Chat')",
         'flush' => true,
     ],
+    [
+        'id' => 1566471076,
+        'info' => 'Add column title',
+        'date' => '22 Aug, 2019',
+        'query' => 'ALTER TABLE `torrents` ADD COLUMN `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `name`',
+        'flush' => false,
+    ],
 ];

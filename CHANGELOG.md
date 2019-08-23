@@ -1,4 +1,10 @@
+### 23 Aug, 2019
+update: set default location to US for ebook lookup  
+update: ebook lookup  
+add: clean title for ebook lookup  
+
 ### 21 Aug, 2019
+remove: duplicate form items  
 update: README to include npx requirement  
 fix: unknown user User.php  
 add: check for composer, npm and npx during install  

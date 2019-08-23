@@ -29,9 +29,11 @@ $lang = [
     'upload_submit' => 'Upload Torrent',
     'upload_imdb_url' => "<a href='" . url_proxy('https://www.imdb.com') . "' target='_blank'>IMDb Url</a>",
     'upload_isbn' => 'ISBN',
+    'upload_title' => 'Book Title',
     'upload_imdb_tfi' => '(Taken from Imdb - ',
     'upload_imdb_rfmo' => 'Add the Imdb url to display Imdb data on details.)',
-    'upload_isbn_details' => '(Used for Books, ISBN 13 or ISBN 10, no spaces or dashes)',
+    'upload_isbn_details' => '(Used for eBooks, ISBN 13 or ISBN 10, no spaces or dashes. Either the ISBN or a clean title is required for lookup)',
+    'upload_book_title_details' => '(Used for eBooks, either the ISBN or a clean title is required for lookup)',
     'upload_youtube' => "<a href='" . url_proxy('https://youtube.com') . "' target='_blank'>Youtube</a>",
     'upload_youtube_info' => "Direct link to youtube, will be shown on torrent's details page.<br>Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>",
     //upload stdhead

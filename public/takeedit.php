@@ -44,7 +44,7 @@ function valid_torrent_name($torrent_name)
 }
 
 $nfoaction = '';
-$select_torrent = sql_query('SELECT name, descr, isbn, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$select_torrent = sql_query('SELECT name, title, descr, isbn, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
 if ($user['id'] != $fetch_assoc['owner'] && $user['class'] < UC_STAFF) {
@@ -122,6 +122,10 @@ if (isset($_POST['name']) && (($name = $_POST['name']) != $fetch_assoc['name']) 
     $updateset[] = 'search_text = ' . sqlesc(searchfield("$shortfname $dname"));
     $torrent_cache['search_text'] = searchfield("$shortfname $dname");
     $torrent_cache['name'] = $name;
+}
+if (isset($_POST['title']) && ($title = $_POST['title']) != $fetch_assoc['title']) {
+    $updateset[] = 'title = ' . sqlesc($title);
+    $torrent_cache['title'] = $title;
 }
 if (isset($_POST['body']) && ($body = $_POST['body']) != $fetch_assoc['descr']) {
     $updateset[] = 'descr = ' . sqlesc($body);

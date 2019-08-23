@@ -1,15 +1,18 @@
 var count = 0;
 $('#isbn').change(function () {
     var el = document.querySelector('#isbn');
-    get_book(el.value, '');
+    var len = el.value.length;
+    if (len === 10 || len === 13) {
+        get_isbn('./ajax/isbn_lookup.php', el.value, '');
+    }
 });
 
 if ($('#book').length) {
     var el = document.querySelector('#book');
-    get_isbn(el.dataset.isbn, el.dataset.name, el.dataset.tid);
+    get_isbn('./ajax/ebook_lookup.php', el.dataset.isbn, el.dataset.name, el.dataset.tid);
 }
 
-function get_isbn(isbn, name, tid) {
+function get_isbn(url, isbn, name, tid) {
     count++;
     var el = document.querySelector('#isbn_outer');
     var e = document.createElement('div');
@@ -18,7 +21,7 @@ function get_isbn(isbn, name, tid) {
     el.appendChild(e);
 
     $.ajax({
-        url: './ajax/isbn_lookup.php',
+        url: url,
         type: 'POST',
         dataType: 'json',
         timeout: 10000,

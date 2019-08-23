@@ -5,18 +5,21 @@ var el = document.querySelector('#upload_category');
 var url = document.querySelector('#url');
 var youtube = document.querySelector('#youtube');
 var isbn = document.querySelector('#isbn');
+var title = document.querySelector('#title');
 var subs = document.querySelector('#subs');
 var audios = document.querySelector('#audios');
 
 var parent_url = url.parentNode.parentNode;
 var parent_youtube = youtube.parentNode.parentNode;
 var parent_isbn = isbn.parentNode.parentNode;
+var parent_title = title.parentNode.parentNode;
 var parent_subs = subs.parentNode.parentNode;
 var parent_audios = audios.parentNode.parentNode;
 
 parent_url.style.display = 'none';
 parent_youtube.style.display = 'none';
 parent_isbn.style.display = 'none';
+parent_title.style.display = 'none';
 parent_subs.style.display = 'none';
 parent_audios.style.display = 'none';
 
@@ -24,26 +27,23 @@ el.addEventListener('change', function (e) {
     var cat = el.value;
     var movie = search_array(cat, movies);
     var ebook = search_array(cat, ebooks);
-
     if (movie) {
         parent_url.style.display = 'table-row';
         parent_youtube.style.display = 'table-row';
         parent_subs.style.display = 'table-row';
         parent_audios.style.display = 'table-row';
-        url.required = true;
     } else {
         parent_url.style.display = 'none';
         parent_youtube.style.display = 'none';
         parent_subs.style.display = 'none';
-        parent_audio.style.display = 'none';
-        url.required = false;
+        parent_audios.style.display = 'none';
     }
     if (ebook) {
         parent_isbn.style.display = 'table-row';
-        isbn.required = true;
+        parent_title.style.display = 'table-row';
     } else {
         parent_isbn.style.display = 'none';
-        isbn.required = false;
+        parent_title.style.display = 'none';
     }
 });
 

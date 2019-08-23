@@ -217,12 +217,14 @@ if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_confi
 
     $ebook_data = $cache->get('book_fullset_' . $torrent['id']);
     if ($ebook_data === false || is_null($ebook_data)) {
-        $ebook_data = "
+        if (!empty($torrent['isbn']) || !empty($torrent['title'])) {
+            $ebook_data = "
             <a id='book-hash'></a>
-            <div id='book' data-isbn='{$torrent['isbn']}' data-name='{$torrent['name']}' data-tid='{$torrent['id']}'>
+            <div id='book' data-isbn='{$torrent['isbn']}' data-name='{$torrent['title']}' data-tid='{$torrent['id']}'>
                 <div id='isbn_outer'>
                 </div>
             </div>";
+        }
     }
 }
 if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['categories']['tv'])) {

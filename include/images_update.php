@@ -293,11 +293,9 @@ function images_update()
     $books = $fluent->from('torrents')
                     ->select(null)
                     ->select('id')
-                    ->select('name')
+                    ->select('title')
                     ->select('isbn')
                     ->select('poster')
-                    ->where('isbn IS NOT NULL')
-                    ->where('isbn != ""')
                     ->where('info_updated + 3600 < ?', TIME_NOW)
                     ->orderBy('id DESC')
                     ->limit(50)
@@ -305,14 +303,16 @@ function images_update()
 
     echo 'Fetching book data for ' . count($books) . "\n";
     foreach ($books as $book) {
-        if (get_book_info($book['isbn'], $book['name'], $book['id'], $book['poster'])) {
-            $set = [
-                'info_updated' => TIME_NOW,
-            ];
-            $fluent->update('torrents')
-                   ->set($set)
-                   ->where('id = ?', $book['id'])
-                   ->execute();
+        if (!empty($book['isbn']) || !empty($book['title'])) {
+            if (get_book_info($book['isbn'], $book['title'], $book['id'], $book['poster'])) {
+                $set = [
+                    'info_updated' => TIME_NOW,
+                ];
+                $fluent->update('torrents')
+                       ->set($set)
+                       ->where('id = ?', $book['id'])
+                       ->execute();
+            }
         }
     }
     echo count($books) . " torrents google books info cached\n";
