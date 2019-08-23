@@ -8,6 +8,7 @@ $genres = [
     $lang['upload_music'],
     $lang['upload_game'],
     $lang['upload_apps'],
+    $lang['upload_none'],
 ];
 
 $body = "
@@ -28,15 +29,8 @@ for ($x = 0; $x < count($genres); ++$x) {
                             </div>
                         </div>";
 }
-
 $body .= "
-                        <div class='column'>
-                            <div class='level-center-center top20 bottom20'>
-                                <label for='is_none' class='right5'>{$lang['upload_none']}</label>
-                                <input type='radio' name='genre' id='is_none' value='none' " . (empty($row['newgenre']) ? 'checked' : '') . '>
-                            </div>
-                        </div>
-                    </div>';
+                    </div>";
 $genres_text = main_div($body);
 $genres = [
     'keep' => [(!empty($row['newgenre']) ? htmlsafechars($row['newgenre']) : '')],
@@ -45,24 +39,42 @@ $genres = [
         $lang['upload_adult'],
         $lang['upload_adventure'],
         $lang['upload_comedy'],
+        $lang['upload_crime'],
         $lang['upload_documentary'],
         $lang['upload_drama'],
         $lang['upload_family'],
+        $lang['upload_fantasy'],
+        $lang['upload_historical'],
         $lang['upload_horror'],
-        $lang['upload_thriller'],
+        $lang['upload_mystery'],
+        $lang['upload_political'],
+        $lang['upload_reality'],
         $lang['upload_scifi'],
+        $lang['upload_slasher'],
+        $lang['upload_suspense'],
+        $lang['upload_thriller'],
+        $lang['upload_western'],
     ],
     'tv' => [
         $lang['upload_action'],
         $lang['upload_adult'],
         $lang['upload_adventure'],
         $lang['upload_comedy'],
+        $lang['upload_crime'],
         $lang['upload_documentary'],
         $lang['upload_drama'],
         $lang['upload_family'],
+        $lang['upload_fantasy'],
+        $lang['upload_historical'],
         $lang['upload_horror'],
-        $lang['upload_thriller'],
+        $lang['upload_mystery'],
+        $lang['upload_political'],
+        $lang['upload_reality'],
         $lang['upload_scifi'],
+        $lang['upload_slasher'],
+        $lang['upload_suspense'],
+        $lang['upload_thriller'],
+        $lang['upload_western'],
     ],
     'music' => [
         $lang['upload_hiphop'],
@@ -104,7 +116,7 @@ foreach ($genres as $key => $value) {
     for ($x = 0; $x < count($value); ++$x) {
         $body .= "
                         <div id='$key' class='level-center padding20'>
-                            <label for='{$value[$x]}' class='right5'>{$value[$x]}</label>" . ($key === 'keep' || $key === 'none' ? '' : "
+                            <label for='{$value[$x]}' class='right10'>{$value[$x]}</label>" . ($key === 'keep' || $key === 'none' ? '' : "
                             <input type='checkbox' value='{$value[$x]}' id='{$value[$x]}' name='" . $key . "[]}'>") . '
                         </div>';
     }

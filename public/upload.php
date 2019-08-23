@@ -94,7 +94,7 @@ if ($res_requests) {
                 <td>
                     <select name='request' class='w-100'>
                         <option value='0'>{$lang['upload_request']}</option>";
-    foreach ($res_request as $arr_request) {
+    foreach ($res_requests as $arr_request) {
         $has_requests .= "
                         <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
     }

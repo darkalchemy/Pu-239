@@ -1,5 +1,6 @@
 In no particular order  
 
+check: upload/download peers speed showing 0  
 update: "Signups are Invite Only" to "Invalid or expired promotion link"
 add: forum name when viewing topic breadcrumbs  
 update: user info for paranoia  

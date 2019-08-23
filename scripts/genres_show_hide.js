@@ -4,8 +4,5 @@ $('input[name=genre]').click(function () {
     ids.forEach(function (item) {
         document.getElementById(item).classList.add('is_hidden');
     });
-    if (value === 'none') {
-        document.getElementById('none').textContent = 'None';
-    }
     document.getElementById(value).classList.remove('is_hidden');
 });

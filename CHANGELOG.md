@@ -1,4 +1,6 @@
 ### 23 Aug, 2019
+add: more tv/movie genres  
+fix: typo upload.php  
 update: set default location to US for ebook lookup  
 update: ebook lookup  
 add: clean title for ebook lookup  
