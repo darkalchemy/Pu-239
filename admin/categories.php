@@ -12,6 +12,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'function_categories.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_categories'));

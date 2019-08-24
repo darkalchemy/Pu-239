@@ -5,6 +5,7 @@ declare(strict_types = 1);
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_categories.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('needseed'));

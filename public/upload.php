@@ -12,6 +12,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
 global $container, $site_config;
@@ -80,12 +81,12 @@ foreach ($vars as $var) {
 }
 $fluent = $container->get(Database::class);
 $res_requests = $fluent->from('requests')
-                      ->select(null)
-                      ->select('id')
-                      ->select('request_name')
-                      ->where('filled_by_user_id = 0')
-                      ->orderBy('request_name')
-                      ->fetchAll();
+                       ->select(null)
+                       ->select('id')
+                       ->select('request_name')
+                       ->where('filled_by_user_id = 0')
+                       ->orderBy('request_name')
+                       ->fetchAll();
 
 if ($res_requests) {
     $has_requests = "

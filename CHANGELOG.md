@@ -1,4 +1,5 @@
 ### 23 Aug, 2019
+add: get_fullname_from_id() function_categories.php  
 add: more tv/movie genres  
 fix: typo upload.php  
 update: set default location to US for ebook lookup  

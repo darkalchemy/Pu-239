@@ -10,6 +10,8 @@ use Pu239\Image;
 use Pu239\Session;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
+require_once INCL_DIR . 'function_categories.php';
+
 /**
  * @param $num
  *

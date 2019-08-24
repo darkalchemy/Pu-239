@@ -14,6 +14,7 @@ require_once INCL_DIR . 'function_comments.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
 global $site_config;

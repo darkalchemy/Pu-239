@@ -29,8 +29,8 @@ for ($x = 0; $x < count($genres); ++$x) {
                             </div>
                         </div>";
 }
-$body .= "
-                    </div>";
+$body .= '
+                    </div>';
 $genres_text = main_div($body);
 $genres = [
     'keep' => [(!empty($row['newgenre']) ? htmlsafechars($row['newgenre']) : '')],

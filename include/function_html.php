@@ -10,6 +10,8 @@ use Pu239\Cache;
 use Pu239\Database;
 use Pu239\ImageProxy;
 
+require_once INCL_DIR . 'function_categories.php';
+
 /**
  * @return string
  */

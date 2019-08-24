@@ -13,6 +13,7 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CACHE_DIR . 'timezones.php';
+require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
 $stdhead = [
     'css' => [

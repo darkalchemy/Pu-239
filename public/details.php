@@ -17,6 +17,7 @@ require_once INCL_DIR . 'function_comments.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'function_details.php';
+require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('details'));
 global $container, $site_config, $BLOCKS;

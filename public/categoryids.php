@@ -6,6 +6,7 @@ use Pu239\Database;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_categories.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('index'));
 $parents = genrelist(true);

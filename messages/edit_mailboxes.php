@@ -8,6 +8,7 @@ use Pu239\Database;
 use Pu239\Message;
 use Pu239\User;
 
+require_once INCL_DIR . 'function_categories.php';
 global $container, $CURUSER, $site_config;
 
 $all_my_boxes = $user_cache = $categories = '';

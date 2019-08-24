@@ -21,6 +21,7 @@ require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_ircbot.php';
+require_once INCL_DIR . 'function_categories.php';
 global $container, $site_config;
 
 $data = $_POST;
@@ -440,17 +441,22 @@ if ($site_config['bonus']['on']) {
     ];
     $users_class->update($update, $owner_id);
 }
+$cat_name = get_fullname_from_id($catid);
 if ($site_config['site']['autoshout_chat']) {
     if (!empty($uplver) && $uplver === 'yes') {
-        $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . get_anonymous_name();
+        $msg = get_anonymous_name() . " has just added a torrent in [color=lightgreen][b]{$cat_name}[/b][/color]
+        [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url]
+        [b]Size:[/b] ' . mksize($totallen);
     } else {
-        $msg = "New Torrent : [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url] Uploaded by ' . htmlsafechars($user['username']);
+        $msg = htmlsafechars($user['username']) . " has just added a torrent in [color=lightgreen][b]{$cat_name}[/b][/color]
+        [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url]
+        [b]Size:[/b] ' . mksize($totallen);
     }
     autoshout($msg);
     autoshout($msg, 2, 0);
 }
 if ($site_config['site']['autoshout_irc']) {
-    $messages = "\0034New Torrent:\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
+    $messages = "\0034New Torrent\0039 in \0038$cat_name\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
     ircbot($messages);
 }
 $messages_class = $container->get(Message::class);

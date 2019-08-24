@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 
+require_once INCL_DIR . 'function_categories.php';
 $grouped = genrelist(true);
 $cats = genrelist(false);
 $catids = $terms = [];
