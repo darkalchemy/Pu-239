@@ -144,13 +144,20 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
 }
 
 $free2 = 0;
+$free_text = $free_text_irc = '';
 if (!empty($free_length)) {
     if ($free_length === 255) {
         $free2 = 1;
+        $free_text = '[b]Freeleech:[/b] Forever';
+        $free_text_irc = '\0038Freeleech:\0039 Forever ';
     } elseif ($free_length === 42) {
         $free2 = 86400 + $dt;
+        $free_text = '[b]Freeleech:[/b] 24 Hours';
+        $free_text_irc = '\0038Freeleech:\0039 24 Hours ';
     } else {
         $free2 = $dt + $free_length * 604800;
+        $free_text = "[b]Freeleech:[/b] $free_length Weeks";
+        $free_text_irc = "\0038Freeleech:\0039 $free_length Weeks ";
     }
 }
 
@@ -446,17 +453,19 @@ if ($site_config['site']['autoshout_chat']) {
     if (!empty($uplver) && $uplver === 'yes') {
         $msg = get_anonymous_name() . " has just added a torrent in [color=lightgreen][b]{$cat_name}[/b][/color]
         [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url]
-        [b]Size:[/b] ' . mksize($totallen);
+        [b]Size:[/b] ' . mksize($totallen) . (!empty($free_text) ? "
+        $free_text" : '');
     } else {
         $msg = htmlsafechars($user['username']) . " has just added a torrent in [color=lightgreen][b]{$cat_name}[/b][/color]
         [url={$site_config['paths']['baseurl']}/details.php?id=$id&hit=1] [b][i]" . htmlsafechars($torrent) . '[/i][/b][/url]
-        [b]Size:[/b] ' . mksize($totallen);
+        [b]Size:[/b] ' . mksize($totallen) . (!empty($free_text) ? "
+        $free_text" : '');
     }
     autoshout($msg);
     autoshout($msg, 2, 0);
 }
 if ($site_config['site']['autoshout_irc']) {
-    $messages = "\0034New Torrent\0039 in \0038$cat_name\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
+    $messages = "\0034New Torrent\0039 in \0038$cat_name\0039 $torrent \0034Uploaded By:\0039 $anon \0034Size:\0039 " . mksize($totallen) . "{$free_text_irc}\0034 Link:\0038 " . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1';
     ircbot($messages);
 }
 $messages_class = $container->get(Message::class);

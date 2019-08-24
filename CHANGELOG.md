@@ -1,3 +1,6 @@
+### 24 Aug, 2019
+add: freeleech status to torrent autoshout  
+
 ### 23 Aug, 2019
 add: get_fullname_from_id() function_categories.php  
 add: more tv/movie genres  
