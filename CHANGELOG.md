@@ -1,4 +1,5 @@
 ### 25 Aug, 2019
+remove: dd() used  
 add: check is user has been verified recently  
 update: check if user agent is set begore using it  
 update: get $moods before using them  

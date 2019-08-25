@@ -326,12 +326,6 @@ foreach ($below_columns as $item) {
  */
 function wrap_it($item, $data)
 {
-    if (is_array($item)) {
-        dd($item);
-    }
-    if (is_array($data)) {
-        dd($data, 'data');
-    }
     $class = $item === 'tfreak_feed' ? '' : 'portlet';
     if (!empty($data)) {
         return "

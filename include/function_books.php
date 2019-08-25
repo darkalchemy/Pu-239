@@ -14,8 +14,6 @@ use Pu239\Torrent;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
-$user = check_user_status();
-
 /**
  * @param string|null $isbn
  * @param string|null $name
@@ -166,7 +164,7 @@ function format_ebook_html(array $ebook, int $api_hits)
                     </div>";
     }
 
-    if ($user['class'] >= UC_STAFF) {
+    if (!empty($user) && has_access($user['class'], UC_STAFF, 'coder')) {
         $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>API Hits: </span>
                         <span class='column padding5'>$api_hits</span>
@@ -235,7 +233,7 @@ function fetch_book_info(?string $isbn, ?string $name)
             $api_limit = 1000;
         }
         if ($api_hits >= $api_limit) {
-            if (has_access($user['class'], UC_STAFF, 'coder')) {
+            if (!empty($user) && has_access($user['class'], UC_STAFF, 'coder')) {
                 return [
                     "
                 <div class='padding10'>

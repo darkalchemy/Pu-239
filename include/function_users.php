@@ -471,8 +471,6 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
-        dd($users_data);
-
         return "<span class='has-text-danger'>unknown_userid[$user_id]</span>";
     }
     $avatar = get_avatar($users_data);
