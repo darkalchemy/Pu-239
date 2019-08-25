@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Delight\Auth\Auth;
 use Delight\Auth\NotLoggedInException;
 use Delight\Auth\TooManyRequestsException;
+use Pu239\Cache;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -28,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     try {
         if ($auth->reconfirmPassword($_POST['password'])) {
+            $cache = $container->get(Cache::class);
+            $cache->set('verified', TIME_NOW, 1800);
             $session->set('is-success', $lang['spanel_password_confirmed']);
             header("Location: {$url}");
             die();

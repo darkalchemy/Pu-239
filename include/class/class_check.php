@@ -33,7 +33,9 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
         die();
     }
     $auth = $container->get(Auth::class);
-    if ($auth->isRemembered()) {
+    $cache = $container->get(Cache::class);
+    $verified = $cache->get('verified');
+    if ($auth->isRemembered() && !$verified) {
         $session = $container->get(Session::class);
         $session->set('is-danger', $lang['spanel_confirm_password']);
         header("Location: {$site_config['paths']['baseurl']}/verify.php?page=" . urlencode($_SERVER['REQUEST_URI']));
