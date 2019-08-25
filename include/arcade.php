@@ -46,13 +46,14 @@ $game = $site_config['arcade']['game_names'][$game_id];
 $link = '[url=' . $site_config['paths']['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
 $classColor = get_user_class_color($user['class']);
 $scores = $fluent->from('flashscores')
+                 ->select(null)
+                 ->select('score')
                  ->where('game = ?', $gname)
+                 ->where('score != ?', $score)
                  ->orderBy('level DESC')
                  ->orderBy('score DESC')
-                 ->orderBy('id')
-                 ->fetchAll();
+                 ->fetch('score');
 $highScore = !empty($scores) ? $scores[0]['score'] : 0;
-
 if ($highScore < $score) {
     $message = "[color=#$classColor][b]{$user['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['arcade']['top_score_points']} karma points.";
     $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$site_config['arcade']['top_score_points']} Points for setting a new high score in $game.\n ";
@@ -88,7 +89,7 @@ if (!empty($high) && $highScore > $high) {
            ->set($update)
            ->where('game = ?', $gname)
            ->execute();
-} else {
+} elseif (empty($high)) {
     $set = [
         'game' => $gname,
         'score' => $score,

@@ -1,4 +1,5 @@
 ### 24 Aug, 2019
+fix: arcade highscores  
 add: freeleech status to torrent autoshout  
 
 ### 23 Aug, 2019
