@@ -1,4 +1,12 @@
+### 25 Aug, 2019
+update: check if user agent is set begore using it  
+update: get $moods before using them  
+
 ### 24 Aug, 2019
+update: Adminer 4.7.2  
+fix: missing breadcrumbs after verifying identity  
+update: verify password for staff panel  
+update: int to float member_ratio()  
 fix: arcade highscores  
 add: freeleech status to torrent autoshout  
 

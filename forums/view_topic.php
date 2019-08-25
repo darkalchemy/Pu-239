@@ -8,6 +8,7 @@ require_once INCL_DIR . 'function_users.php';
 use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Mood;
 use Pu239\Session;
 use Pu239\User;
 
@@ -435,10 +436,12 @@ $HTMLOUT .= $mini_menu . "
         </div>' . $topic_poll;
 
 $users_class = $container->get(User::class);
+$mood = $container->get(Mood::class);
+$moods = $mood->get();
 foreach ($posts as $arr) {
     $usersdata = $users_class->getUserFromId((int) $arr['user_id']);
-    $moodname = isset($mood['name'][$usersdata['mood']]) ? format_comment($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
-    $moodpic = isset($mood['image'][$usersdata['mood']]) ? format_comment($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
+    $moodname = isset($moods['name'][$usersdata['mood']]) ? format_comment($moods['name'][$usersdata['mood']]) : 'is feeling neutral';
+    $moodpic = isset($moods['image'][$usersdata['mood']]) ? format_comment($moods['image'][$usersdata['mood']]) : 'noexpression.gif';
     $post_id = $arr['post_id'];
     $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . format_comment($arr['icon']) . '.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ' : '<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="Post: #' . $post_id . '" class="tooltipper emoticon lazy"> ';
     $post_title = !empty($arr['post_title']) ? format_comment($arr['post_title']) : 'Post: #' . $post_id . ', ';

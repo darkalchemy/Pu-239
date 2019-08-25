@@ -58,4 +58,10 @@ $lang = [
     'spanel_sorry' => 'Sorry',
     'spanel_nothing_found' => 'Nothing found.',
     'spanel_was_del_sp_by' => 'was deleted from the staff panel by',
+    'spanel_confirm_password' => 'Please confirm your password.',
+    'spanel_password_confirmed' => 'Your identity has been confirmed.',
+    'spanel_not_logged_in' => 'The user is not signed in.',
+    'spanel_not_flood' => 'Too many requests.',
+    'spanel_verify_failed' => 'Password verification failed.',
+    'spanel_invalid_page' => 'Invalid Page Requested.',
 ];

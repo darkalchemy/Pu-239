@@ -1126,7 +1126,7 @@ var ajaxChat = {
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/roll \');">'
                 + this.lang['userMenuRoll']
-                + '</a></li>'
+                + '</a></li>';
             if (this.userRole >= (UC_MIN + 1)) {
                 menu += '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/join\');">'
                     + this.lang['userMenuEnterPrivateRoom']

@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+$user = check_user_status();
 $subscribe = empty($subscribe) ? 'no' : $subscribe;
 $bb_code = empty($bb_code) || $bb_code === 'yes' ? 'yes' : 'no';
 $show_edited_by = empty($show_edited_by) ? 'yes' : 'no';
@@ -12,7 +13,7 @@ $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? "
 		<td>
 			<input type='text' maxlength='60' name='edit_reason' value='" . trim(strip_tags($edit_reason)) . "' class='w-100' placeholder='Optional'>
 		</td>
-	</tr>" . ($CURUSER['class'] >= $site_config['allowed']['show_edited_by'] || $CURUSER['id'] === $arr_post['id'] ? "
+	</tr>" . (has_access($user['class'], $site_config['allowed']['show_edited_by'], 'coder') || $user['id'] === $arr_post['id'] ? "
 	<tr>
 		<td>Edited By</td>
 		<td>

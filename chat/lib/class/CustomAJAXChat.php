@@ -9,6 +9,9 @@ declare(strict_types = 1);
  * @link https://blueimp.net/ajax/
  */
 
+use DI\DependencyException;
+use DI\NotFoundException;
+
 /**
  * Class CustomAJAXChat.
  */
@@ -20,9 +23,8 @@ class CustomAJAXChat extends AJAXChat
     }
 
     /**
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
-     * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return bool
      */

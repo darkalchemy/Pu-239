@@ -17,9 +17,9 @@ if (!isset($id) || !is_valid_id($id)) {
 }
 $HTMLOUT = '';
 /**
- * @param $name
- * @param $arr
- * @param $torrent
+ * @param       $name
+ * @param       $arr
+ * @param       $torrent
  * @param mixed $user
  *
  * @throws \Envms\FluentPDO\Exception
@@ -76,7 +76,7 @@ function dltable($name, $arr, $torrent, $user)
         } else {
             $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
         }
-        $body .= '<td>' . member_ratio((int) $e['uploaded'], (int) $e['downloaded']) . "</td>\n";
+        $body .= '<td>' . member_ratio($e['uploaded'], $e['downloaded']) . "</td>\n";
         $body .= '<td>' . sprintf('%.2f%%', 100 * (1 - ($e['to_go'] / $torrent['size']))) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['st']) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['la']) . "</td>\n";

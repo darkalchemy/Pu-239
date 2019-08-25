@@ -74,7 +74,7 @@ if ($needed === 'leechers') {
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
                 <tr>
-                    <td>' . format_username((int) $arr['id']) . ' (' . member_ratio((int) $arr['uploaded'], (int) $arr['downloaded']) . ")</td>
+                    <td>' . format_username((int) $arr['id']) . ' (' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td>
                     <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $What_ID . "' title='{$torrname}' class='tooltipper'>{$torrname}</a></td>
                     <td>{$cat}</td>
                     <td>{$peers}</td>

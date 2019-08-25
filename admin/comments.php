@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use DI\DependencyException;
 use DI\NotFoundException;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -43,6 +44,7 @@ $heading = "
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */

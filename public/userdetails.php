@@ -66,7 +66,7 @@ if (isset($_GET['delete_hit_and_run']) && has_access($curuser['class'], UC_STAFF
     die();
 }
 $session = $container->get(Session::class);
-if (isset($_GET['force_logout']) && $curuser['id'] != $user['id'] && has_access($curuser['class'], UC_STAFF, 'coder')) {
+if (isset($_GET['force_logout']) && ($curuser['id'] != $user['id'] && has_access($curuser['class'], UC_STAFF, 'coder') || has_access($curuser['class'], UC_MAX, ''))) {
     $cache->set('forced_logout_' . $curuser['id'], TIME_NOW);
     $session->set('is-success', 'This user will be forced to logout on next page view');
 }

@@ -207,7 +207,7 @@ $lang = [
     'userdetails_invincible_def0' => 'and user is logged out and all IP history is deleted. Immune to ban checks.',
     'userdetails_make_invincible' => 'Make Invincible',
     'userdetails_in_stealth' => 'in Stealth Mode!',
-    'userdetails_stealth_def1' => 'Stealth mode means you lurk with intent you will become invisible to all on site including staff =]',
+    'userdetails_stealth_def1' => 'Stealth mode means that you can lurk with the expectation you will be invisible to all on the site including staff =]',
     'userdetails_stealth_def2' => 'Blah blah blah.',
     'userdetails_stealth_disable' => 'De-Activate Stealth',
     'userdetails_stealth_enable' => 'Activate Stealth',

@@ -26,19 +26,17 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
 {
     global $container, $site_config;
 
+    $lang = load_language('staff_panel');
     $user = check_user_status();
-
-    $users_class = $container->get(User::class);
     if (empty($user)) {
         header("Location: {$site_config['paths']['baseurl']}/404.html");
         die();
     }
     $auth = $container->get(Auth::class);
     if ($auth->isRemembered()) {
-        $auth->logOut();
         $session = $container->get(Session::class);
-        $session->set('is-danger', 'Please confirm your identity.');
-        header("Location: {$site_config['paths']['baseurl']}/{$_SERVER['REQUEST_URI']}");
+        $session->set('is-danger', $lang['spanel_confirm_password']);
+        header("Location: {$site_config['paths']['baseurl']}/verify.php?page=" . urlencode($_SERVER['REQUEST_URI']));
         die();
     }
     $userid = $user['id'];
@@ -54,6 +52,7 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
                         'class' => UC_MIN,
                         'status' => 2,
                     ];
+                    $users_class = $container->get(User::class);
                     $users_class->update($update, $userid);
                     write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
                     $HTMLOUT = doc_head() . "
@@ -83,9 +82,9 @@ function class_check(int $class = UC_STAFF, bool $staff = true)
 /**
  * @param $script
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return int
  */

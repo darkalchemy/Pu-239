@@ -36,14 +36,14 @@ if ($invite_by > 0 && $type === 'invite') {
         </tr>';
 }
 $users = $fluent->from('users AS u')
-    ->select(null)
-    ->select('u.id')
-    ->select('i.status')
-    ->leftJoin('invite_codes AS i ON u.id = i.receiver')
-    ->where('u.invitedby = ?', $user['id'])
-    ->where('u.join_type = "invite"')
-    ->orderBy('u.registered')
-    ->fetchAll();
+                ->select(null)
+                ->select('u.id')
+                ->select('i.status')
+                ->leftJoin('invite_codes AS i ON u.id = i.receiver')
+                ->where('u.invitedby = ?', $user['id'])
+                ->where('u.join_type = "invite"')
+                ->orderBy('u.registered')
+                ->fetchAll();
 
 $rez_invited = sql_query('SELECT id, class, username, email, uploaded, downloaded, warned, status, donor, email, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($user['id']) . ' ORDER BY registered') or sqlerr(__FILE__, __LINE__);
 $inviteted_by_this_member = '';
@@ -61,7 +61,7 @@ if (mysqli_num_rows($rez_invited) < 1) {
         <td>' . htmlsafechars($arr_invited['email']) . '</td>
         <td>' . mksize($arr_invited['uploaded']) . '</td>
         ' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
-        <td>' . member_ratio((int) $arr_invited['uploaded'], (int) $arr_invited['downloaded']) . '</td>
+        <td>' . member_ratio($arr_invited['uploaded'], $arr_invited['downloaded']) . '</td>
         <td>' . ($arr_invited['status'] === 'Confirmed' ? '<span class="has-text-success">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span class="has-text-danger">' . $lang['userdetails_pending'] . '</span></td></tr>');
     }
     $inviteted_by_this_member .= '</table>';

@@ -68,6 +68,7 @@ switch ($action) {
 							<th class='has-text-centered'>Notify</th>
 						</tr>";
             $body = '';
+            $work = [];
             foreach ($works as $work) {
                 if (!empty($work['poster'])) {
                     $name = "<a href='{$site_config['paths']['baseurl']}/cooker.php?action=details&amp;id=" . $work['id'] . "&amp;hit=1' title='Dood' class='tooltipper'>" . format_comment($work['name']) . '</a>';
