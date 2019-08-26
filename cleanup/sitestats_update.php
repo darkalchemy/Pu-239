@@ -44,13 +44,13 @@ function sitestats_update($data)
         $gender_male += $user['gender'] === 'Male' ? 1 : 0;
         $gender_female += $user['gender'] === 'Female' ? 1 : 0;
         $disabled += $user['status'] === 2 ? 1 : 0;
-        $powerusers += defined(UC_POWER_USER) && $user['class'] === UC_POWER_USER ? 1 : 0;
-        $superusers += defined(UC_SUPER_USER) && $user['class'] === UC_SUPER_USER ? 1 : 0;
+        $powerusers += defined('UC_POWER_USER') && $user['class'] === UC_POWER_USER ? 1 : 0;
+        $superusers += defined('UC_SUPER_USER') && $user['class'] === UC_SUPER_USER ? 1 : 0;
         $uploaders += $user['roles_mask'] & Roles::UPLOADER ? 1 : 0;
-        $vips += defined(UC_VIP) && $user['class'] === UC_VIP ? 1 : 0;
-        $moderators += defined(UC_MODERATOR) && $user['class'] === UC_MODERATOR ? 1 : 0;
-        $administrators += defined(UC_ADMINISTRATOR) && $user['class'] === UC_ADMINISTRATOR ? 1 : 0;
-        $sysops += defined(UC_SYSOP) && $user['class'] === UC_SYSOP ? 1 : 0;
+        $vips += defined('UC_VIP') && $user['class'] === UC_VIP ? 1 : 0;
+        $moderators += defined('UC_MODERATOR') && $user['class'] === UC_MODERATOR ? 1 : 0;
+        $administrators += defined('UC_ADMINISTRATOR') && $user['class'] === UC_ADMINISTRATOR ? 1 : 0;
+        $sysops += defined('UC_SYSOP') && $user['class'] === UC_SYSOP ? 1 : 0;
         ++$registered;
     }
 
