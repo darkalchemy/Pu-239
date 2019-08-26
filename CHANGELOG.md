@@ -1,3 +1,6 @@
+### 26 Aug, 2019
+fix: check if defined before using sitestats_update.php  
+
 ### 25 Aug, 2019
 remove: dd() used  
 add: check is user has been verified recently  
