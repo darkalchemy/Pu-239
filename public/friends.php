@@ -244,7 +244,7 @@ if (mysqli_num_rows($res) == 0) {
         if (!$title) {
             $title = get_user_class_name((int) $friend['class']);
         }
-        $ratio = member_ratio($friend['uploaded'], $friend['downloaded']);
+        $ratio = member_ratio((float) $friend['uploaded'], (float) $friend['downloaded']);
         $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . (get_anonymous($friend['id']) ? get_date((int) $friend['last_access'], '') : 'Never');
         $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";

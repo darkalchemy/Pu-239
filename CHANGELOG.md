@@ -1,4 +1,6 @@
 ### 27 Aug, 2019
+fix: Argument 1 passed to member_ratio() must be of the type float or null friends.php  
+fix: Argument 1 passed to htmlsafechars() must be of the type string edit.php  
 update: seedbonus column definition  
 
 ### 26 Aug, 2019
