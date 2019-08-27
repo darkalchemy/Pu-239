@@ -1,3 +1,6 @@
+### 27 Aug, 2019
+update: seedbonus column definition  
+
 ### 26 Aug, 2019
 fix: check if defined before using sitestats_update.php  
 

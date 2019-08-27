@@ -3929,4 +3929,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `torrents` ADD COLUMN `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `name`',
         'flush' => false,
     ],
+    [
+        'id' => 1566939620,
+        'info' => 'Update seedbonus to deciaml',
+        'date' => '27 Aug, 2019',
+        'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` decimal(10,1) NOT NULL DEFAULT '200.00'",
+        'flush' => true,
+    ],
 ];
