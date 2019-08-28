@@ -2,6 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Phpzip;
@@ -9,6 +15,7 @@ use Pu239\Session;
 use Pu239\Snatched;
 use Pu239\Torrent;
 use Pu239\User;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -30,15 +37,15 @@ if (!empty($T_Pass)) {
     $user = check_user_status();
 }
 if (!$user) {
-    die($lang['download_passkey']);
+    show_error($lang['download_user_error'], $lang['download_passkey'], 'bottom20');
 } elseif ($user['status'] === 5) {
-    die("Permission denied, you're account is suspended");
+    show_error($lang['download_user_error'], $lang['download_suspended'], 'bottom20');
 } elseif ($user['status'] === 2) {
-    die("Permission denied, you're account is disabled");
+    show_error($lang['download_user_error'], $lang['download_disabled'], 'bottom20');
 } elseif ($user['status'] === 1) {
-    die("Permission denied, you're account is parked");
-} elseif ($user['downloadpos'] != 1) {
-    die('Your download privileges have been removed.');
+    show_error($lang['download_user_error'], $lang['download_parked'], 'bottom20');
+} elseif ($user['downloadpos'] != 1 || $user['can_leech'] === 0 && !$user['id'] === $row['owner']) {
+    show_error($lang['download_user_error'], $lang['download_download_disabled'], 'bottom20');
 }
 
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
@@ -51,21 +58,16 @@ if (!is_valid_id($id)) {
 $row = $torrent_class->get($id);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
-    stderr('Err', 'There was an error with the file or with the query, please contact staff', 'bottom20');
-}
-if (($user['downloadpos'] === 0 || $user['can_leech'] === 0 || $user['downloadpos'] > 1 || $user['status'] === 5) && !$user['id'] === $row['owner']) {
-    stderr('Error', 'Your download rights have been disabled.', 'bottom20');
-}
-if ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
-    stderr('Error', "You don't have enough karma[seedbonus] to download, trying seeding back some torrents =]", 'bottom20');
-}
-if ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
-    stderr('Error', "You don't have enough upload credit to download, trying seeding back some torrents =]", 'bottom20');
-}
-if ($row['vip'] === 1 && $user['class'] < UC_VIP) {
-    stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!', 'bottom20');
-}
-if (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
+    show_error($lang['download_user_error'], $lang['download_not_found'], 'bottom20');
+} elseif (($user['downloadpos'] != 1 || $user['can_leech'] === 0) && !$user['id'] === $row['owner']) {
+    show_error($lang['download_user_error'], $lang['download_download_disabled'], 'bottom20');
+} elseif ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
+    show_error($lang['download_user_error'], $lang['download_insufficient_seedbonus'], 'bottom20');
+} elseif ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
+    show_error($lang['download_user_error'], $lang['download_insufficient_upload'], 'bottom20');
+} elseif ($row['vip'] === 1 && $user['class'] < UC_VIP) {
+    show_error($lang['download_user_error'], $lang['download_vip_access'], 'bottom20');
+} elseif (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
     $values = [
@@ -105,10 +107,10 @@ if (isset($_GET['slot'])) {
     $used_slot = $slot['torrentid'] === $id && $slot['userid'] === $user['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
-            stderr('Doh!', 'Freeleech slot already in use.', 'bottom20');
+            show_error($lang['download_user_error'], $lang['freeslot_in_use'], 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Freeslots left.', 'bottom20');
+            show_error($lang['download_user_error'], $lang['no_freeslots'], 'bottom20');
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -129,10 +131,10 @@ if (isset($_GET['slot'])) {
                ->execute();
     } elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            stderr('Doh!', 'Doubleseed slot already in use.', 'bottom20');
+            show_error($lang['download_user_error'], $lang['doubleslot_in_use'], 'bottom20');
         }
         if ($user['freeslots'] < 1) {
-            stderr('Doh!', 'No Doubleseed Slots left.', 'bottom20');
+            show_error($lang['download_user_error'], $lang['no_doubleslots'], 'bottom20');
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -152,7 +154,7 @@ if (isset($_GET['slot'])) {
                ->onDuplicateKeyUpdate($update)
                ->execute();
     } else {
-        stderr('ERROR', 'What\'s up doc?', 'bottom20');
+        show_error($lang['download_user_error'], $lang['download_unknown'], 'bottom20');
     }
     make_freeslots($user['id'], 'fllslot_', true);
 }
@@ -190,5 +192,31 @@ if ($zipuse) {
         header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['filename'] . '"');
         header('Content-Type: application/x-bittorrent');
         echo $tor;
+    }
+}
+
+/**
+ * @param string $heading
+ * @param string $message
+ * @param string $class
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws InvalidManipulation
+ */
+function show_error(string $heading, string $message, string $class)
+{
+    global $container;
+
+    $auth = $container->get(Auth::class);
+    if ($auth->isLoggedIn()) {
+        get_template();
+        stderr($heading, $message, $class);
+    } else {
+        die($message);
     }
 }

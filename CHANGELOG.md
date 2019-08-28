@@ -1,4 +1,6 @@
 ### 28 Aug, 2019
+fix: Argument 1 passed to get_anonymous() must be of the type int friends.php  
+fix: downloading torrent when not logged in download.php  
 fix: Undefined variable: User in mybonus.php  
 fix: lose post data when confirming identity  
 
