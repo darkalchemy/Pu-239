@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
                         $end = 86400 * 3 + $dt;
                         $message = 'FreeLeech [ON]';
-                        set_event(1, $dt, $end, $User['id'], $message);
+                        set_event(1, $dt, $end, $user['id'], $message);
                         $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
                         $values = [
                             'donation' => $donate,

@@ -13,10 +13,18 @@ require_once INCL_DIR . 'function_staff.php';
 require_once BIN_DIR . 'uglify.php';
 require_once BIN_DIR . 'functions.php';
 $user = check_user_status();
-require_once CLASS_DIR . 'class_check.php';
-class_check(UC_STAFF);
 global $container, $site_config;
 
+$session = $container->get(Session::class);
+if (empty($_POST) || empty($_GET)) {
+    $_POST = $session->get('post_data');
+    $_GET = $session->get('get_data');
+} else {
+    $session->set('post_data', $_POST);
+    $session->set('get_data', $_GET);
+}
+require_once CLASS_DIR . 'class_check.php';
+class_check(UC_STAFF);
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 if (!$site_config['site']['staffpanel_online']) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
@@ -81,7 +89,6 @@ ksort($staff_tools);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
-    $session = $container->get(Session::class);
     if ($action === 'delete' && is_valid_id($id) && $user['class'] >= UC_MAX) {
         $sure = (isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes';
         $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -104,6 +111,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user_bbcode");
             }
+            $session->unset('post_data');
+            $session->unset('get_data');
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
@@ -112,6 +121,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
     } elseif ($action === 'flush' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+        $session->unset('post_data');
+        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'uglify' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -125,6 +136,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             $session->set('is-warning', 'uglify.php failed');
         }
+        $session->unset('post_data');
+        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'clear_ajaxchat' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -132,6 +145,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                ->where('id>0')
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
+        $session->unset('post_data');
+        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -140,6 +155,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             $session->set('is-success', 'Site is Offline.');
         }
+        $session->unset('post_data');
+        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'add' && $user['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $user['class'] >= UC_MAX)) {
@@ -255,6 +272,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user_bbcode");
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
+                    $session->unset('post_data');
+                    $session->unset('get_data');
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die();
                 }

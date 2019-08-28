@@ -919,7 +919,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1'><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
 
     if ($curuser['class'] >= UC_STAFF) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='seedbonus' value='" . (int) $user['seedbonus'] . "'></td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='number' class='w-100' name='seedbonus' min='0' max='999999999' value='" . (int) $user['seedbonus'] . "'></td></tr>";
     }
 
     if ($curuser['class'] >= UC_STAFF) {

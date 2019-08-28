@@ -1,3 +1,7 @@
+### 28 Aug, 2019
+fix: Undefined variable: User in mybonus.php  
+fix: lose post data when confirming identity  
+
 ### 27 Aug, 2019
 fix: Argument 1 passed to member_ratio() must be of the type float or null friends.php  
 fix: Argument 1 passed to htmlsafechars() must be of the type string edit.php  

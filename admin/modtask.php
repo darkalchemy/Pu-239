@@ -7,6 +7,7 @@ use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
 use Pu239\Roles;
+use Pu239\Session;
 use Pu239\User;
 
 require_once INCL_DIR . 'function_users.php';
@@ -17,17 +18,22 @@ require_once INCL_DIR . 'function_staff.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_password.php';
+global $container, $CURUSER, $site_config;
+
+$session = $container->get(Session::class);
+if (empty($_POST)) {
+    $_POST = $session->get('post_data');
+} else {
+    $session->set('post_data', $_POST);
+}
+
 class_check(UC_STAFF);
 $lang = array_merge($lang, load_language('modtask'));
-
 $dt = TIME_NOW;
-global $CURUSER, $site_config;
-
 if ($CURUSER['class'] < UC_STAFF) {
     stderr($lang['modtask_user_error'], $lang['modtask_try_again']);
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
+if (!empty($_POST) && $_POST['action'] === 'edituser') {
     $post = $_POST;
     unset($_POST);
     $userid = !empty($post['userid']) ? (int) $post['userid'] : 0;
@@ -890,6 +896,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edituser') {
     if (!empty($useredit)) {
         write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username((int) $userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit) . "{$lang['modtask_gl_by']}" . format_username((int) $CURUSER['id']));
     }
+    $session->unset('post_data');
     $returnto = htmlsafechars($post['returnto']) . '#edit';
     header("Location: {$site_config['paths']['baseurl']}/$returnto");
 }
