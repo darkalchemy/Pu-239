@@ -16,12 +16,12 @@ $user = check_user_status();
 global $container, $site_config;
 
 $session = $container->get(Session::class);
-if (empty($_POST) || empty($_GET)) {
+if (empty($_POST)) {
     $_POST = $session->get('post_data');
-    $_GET = $session->get('get_data');
+    $_POST = empty($_POST) ? [] : $_POST;
 } else {
+    $_POST = empty($_POST) ? [] : $_POST;
     $session->set('post_data', $_POST);
-    $session->set('get_data', $_GET);
 }
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
@@ -58,7 +58,6 @@ if ($staff_classes === false || is_null($staff_classes)) {
                             ->fetchAll();
     $cache->set('staff_classes_', $staff_classes, 0);
 }
-
 $data = array_merge($_POST, $_GET);
 $action = isset($data['action']) ? htmlsafechars($data['action']) : null;
 $id = isset($data['id']) ? (int) $data['id'] : 0;
@@ -89,9 +88,9 @@ ksort($staff_tools);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
-    if ($action === 'delete' && is_valid_id($id) && $user['class'] >= UC_MAX) {
+    if ($action === 'delete' && is_valid_id($id) && has_access($user['class'], UC_MAX, 'coder')) {
         $sure = (isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes';
-        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if ($user['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
@@ -112,7 +111,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user_bbcode");
             }
             $session->unset('post_data');
-            $session->unset('get_data');
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
@@ -122,7 +120,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
         $session->unset('post_data');
-        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'uglify' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -137,7 +134,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $session->set('is-warning', 'uglify.php failed');
         }
         $session->unset('post_data');
-        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'clear_ajaxchat' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -146,7 +142,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         $session->unset('post_data');
-        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -156,10 +151,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $session->set('is-success', 'Site is Offline.');
         }
         $session->unset('post_data');
-        $session->unset('get_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
-    } elseif (($action === 'add' && $user['class'] >= UC_MAX) || ($action === 'edit' && is_valid_id($id) && $user['class'] >= UC_MAX)) {
+    } elseif (($action === 'add' && has_access($user['class'], UC_MAX, 'coder')) || ($action === 'edit' && is_valid_id($id) && $user['class'] >= UC_MAX)) {
         $names = [
             'page_name',
             'file_name',
@@ -214,15 +208,15 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if ($action === 'add') {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
                                       VALUES (' . implode(', ', array_map('sqlesc', [
-                        $page_name,
-                        $file_name,
-                        $description,
-                        $type,
-                        (int) $_POST['av_class'],
-                        $user['id'],
-                        TIME_NOW,
-                        $navbar,
-                    ])) . ')');
+                            $page_name,
+                            $file_name,
+                            $description,
+                            $type,
+                            (int) $_POST['av_class'],
+                            $user['id'],
+                            TIME_NOW,
+                            $navbar,
+                        ])) . ')');
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
@@ -273,7 +267,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
                     $session->unset('post_data');
-                    $session->unset('get_data');
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die();
                 }
@@ -399,10 +392,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     </li>
                 </ul>";
         }
+        $user_class = $user['class'] >= UC_STAFF ? $user['class'] : UC_MAX;
         $res = sql_query('SELECT s.*, u.username
                                 FROM staffpanel AS s
-                                LEFT JOIN users AS u ON u.id=s.added_by
-                                WHERE s.av_class <= ' . sqlesc($user['class']) . '
+                                LEFT JOIN users AS u ON u.id = s.added_by
+                                WHERE s.av_class <= ' . sqlesc($user_class) . '
                                 ORDER BY s.av_class DESC, s.page_name') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $db_classes = $unique_classes = $mysql_data = [];
@@ -462,7 +456,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                                 <span>" . get_date((int) $arr['added'], 'DATE', 0, 1) . '</span>
                             </div>
                         </td>';
-                if ($user['class'] >= UC_MAX) {
+                if (has_access($user['class'], UC_MAX, 'coder')) {
                     $body .= "
                         <td>
                             <div class='level-center'>

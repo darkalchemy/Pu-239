@@ -3936,4 +3936,11 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` decimal(10,1) NOT NULL DEFAULT '200.00'",
         'flush' => true,
     ],
+    [
+        'id' => 1567074168,
+        'info' => 'Add Staff page',
+        'date' => '01 Dec, 2018',
+        'query' => "INSERT INTO `staffpanel` (`page_name`, `file_name`, `description`, `type`, `av_class`, `added_by`, `added`, `navbar`) VALUES ('Site Promotions', 'staffpanel.php?tool=promo', 'Site Promotions', 'user', 6, 1, 1567074168, 1)",
+        'flush' => true,
+    ],
 ];

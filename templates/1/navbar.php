@@ -80,7 +80,6 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/promo.php'>{$lang['gl_promo']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
                                 <li><a href='{$site_config['paths']['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
                                 <li><a href='{$site_config['paths']['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
@@ -110,7 +109,7 @@ function navbar()
                         </li>
                         <li>
                             <a href='{$site_config['paths']['baseurl']}/forums.php' class='has-text-weight-bold'>{$lang['gl_forums']}</a>
-                        </li>" . ($CURUSER['class'] < UC_STAFF ? "
+                        </li>" . (!has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
                         <li id='staff_links' class='clickable'>
                             <a href='#' class='has-text-weight-bold'>{$lang['gl_help']}</a>
                             <ul class='ddFade ddFadeFast'>
@@ -118,7 +117,7 @@ function navbar()
                                 <li><a href='{$site_config['paths']['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/staff.php'>{$lang['gl_staff_list']}</a></li>
                             </ul>
-                        </li>" : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : ($CURUSER['class'] >= UC_STAFF ? "
+                        </li>" : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : (has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
                         <li>
                             <a href='{$site_config['paths']['baseurl']}/staffpanel.php'>{$lang['gl_staffpanel']}</a>
                         </li>" : '')) . "
@@ -173,17 +172,18 @@ function staff_panel()
     $cache = $container->get(Cache::class);
     $panel = '';
     $panels = [];
-    if ($BLOCKS['global_staff_menu_on'] && $CURUSER['class'] >= UC_STAFF) {
-        $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
+    if ($BLOCKS['global_staff_menu_on'] && has_access($CURUSER['class'], UC_STAFF, 'coder')) {
+        $user_class = $CURUSER['class'] >= UC_STAFF ? $CURUSER['class'] : UC_MAX;
+        $staff_panel = $cache->get('staff_panels_' . $user_class);
         if ($staff_panel === false || is_null($staff_panel)) {
             $fluent = $container->get(Database::class);
             $staff_panel = $fluent->from('staffpanel')
                                   ->where('navbar = 1')
-                                  ->where('av_class <= ?', $CURUSER['class'])
+                                  ->where('av_class <= ?', $user_class)
                                   ->orderBy('page_name')
                                   ->fetchAll();
 
-            $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+            $cache->set('staff_panels_' . $user_class, $staff_panel, 0);
         }
         $staff_panel[] = [
             'id' => 0,
@@ -208,13 +208,13 @@ function staff_panel()
         }
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
-                if ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'user') {
+                if ($value['av_class'] <= $user_class && $value['type'] === 'user') {
                     $panels['0Users'][] = make_link($value);
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'settings') {
+                } elseif ($value['av_class'] <= $user_class && $value['type'] === 'settings') {
                     $panels['1Settings'][] = make_link($value);
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'stats') {
+                } elseif ($value['av_class'] <= $user_class && $value['type'] === 'stats') {
                     $panels['2Stats'][] = make_link($value);
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'other') {
+                } elseif ($value['av_class'] <= $user_class && $value['type'] === 'other') {
                     $panels['3Other'][] = make_link($value);
                 }
             }

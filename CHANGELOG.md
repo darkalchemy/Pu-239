@@ -1,3 +1,8 @@
+### 29 Aug, 2019
+move: promo.php to staffpanel  
+update: coder access to staffpanel  
+fix: array_merge(): Expected parameter 1 to be an array, null given staffpanel.php  
+
 ### 28 Aug, 2019
 fix: Argument 1 passed to get_anonymous() must be of the type int friends.php  
 fix: downloading torrent when not logged in download.php  

@@ -601,7 +601,8 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                         <input type='checkbox' name='role_coder' value='1' " . ($user['roles_mask'] & Roles::CODER ? 'checked' : '') . " class='right5'>{$lang['userdetails_coder']}
                         <input type='checkbox' name='role_uploader' value='1' " . ($user['roles_mask'] & Roles::UPLOADER ? 'checked' : '') . " class='left20 right5'>{$lang['userdetails_uploader']}
                     </div>
-                    <div class='top5 bottom5'>It may take up to 5 minutes for the user to see these changes.</div>
+                    <div class='top5 bottom5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</div>
+                    <div class='top5 bottom5'>{$lang['userdetails_roles_info']}</div>
                 </td>
             </tr>
             <tr>

@@ -10,6 +10,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_password.php';
+require_once CLASS_DIR . 'class_check.php';
+$class = get_access(basename($_SERVER['REQUEST_URI']));
+class_check($class);
 $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('signup'));
 global $container, $site_config;
@@ -86,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
     $HTMLOUT .= '
         <h1 class="has-text-centered">Add Promo Link</h1>
-        <form action="' . $_SERVER['PHP_SELF'] . '" method="post"  accept-charset="utf-8">';
+        <form action="' . $_SERVER['PHP_SELF'] . '" method="post" enctype="multipart/form-data" accept-charset="utf-8">';
     $body = "
             <tr>
                 <td class='has-text-right'>Promo Name</td>
