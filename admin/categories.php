@@ -151,7 +151,7 @@ function move_cat_form($params)
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
     $body = "
             <div class='w-50 has-text-centered padding20'>
-                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='is-primary'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
+                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-primary'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
                 <p class='is-success level'>{$lang['categories_select_new']} $select</p>
                 <div class='has-text-centered'>
                     <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
@@ -292,10 +292,10 @@ function delete_cat_form($params)
     $htmlout .= main_div("
             <div class='w-50 has-text-centered padding20'>
                 <h2 class='has-text-centered'>{$lang['categories_del_about']} {$cat['name']}</h2>
-                <p class='has-text-danger level'>{$lang['categories_del_name']} <span class='is-primary'>{$cat['name']}</span></p>
-                <p class='has-text-danger level'>{$lang['categories_del_parent_name']} <span class='is-primary'>{$cat['parent_name']}</span></p>
-                <p class='has-text-danger level'>{$lang['categories_del_description']} <span class='is-primary'>{$cat['cat_desc']}</span></p>
-                <p class='has-text-danger level'>{$lang['categories_del_image']} <span class='is-primary'>{$cat['image']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_name']} <span class='has-text-primary'>{$cat['name']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_parent_name']} <span class='has-text-primary'>{$cat['parent_name']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_description']} <span class='has-text-primary'>{$cat['cat_desc']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_image']} <span class='has-text-primary'>{$cat['image']}</span></p>
                 <input type='submit' class='button is-small right20' value='{$lang['categories_del_delete']}'>
                 <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");

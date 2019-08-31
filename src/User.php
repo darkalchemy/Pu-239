@@ -332,8 +332,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -579,13 +579,13 @@ class User
             });
             stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
         } catch (InvalidEmailException $e) {
-            stderr($lang['stderr_errorhead'], $lang['stderr_invalidemail']);
+            stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
         } catch (EmailNotVerifiedException $e) {
-            stderr($lang['stderr_errorhead'], 'Email has not been verified');
+            stderr($lang['stderr_errorhead'], $lang['recover_email_not_verified']);
         } catch (ResetDisabledException $e) {
-            stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+            stderr($lang['stderr_errorhead'], $lang['recover_not_enabled']);
         } catch (TooManyRequestsException $e) {
-            stderr($lang['stderr_errorhead'], 'Too many requests');
+            stderr($lang['stderr_errorhead'], $lang['recover_throttle']);
         }
     }
 

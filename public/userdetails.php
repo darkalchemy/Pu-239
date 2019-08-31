@@ -11,7 +11,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_comments.php';
 
-$curuser = check_user_status();
+$viewer = check_user_status();
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 $start = microtime(true);
@@ -35,7 +35,7 @@ global $container, $lang, $site_config;
 $snatched = $container->get(Snatched::class);
 $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
-$id = !empty($_GET['id']) ? (int) $_GET['id'] : $curuser['id'];
+$id = !empty($_GET['id']) ? (int) $_GET['id'] : $viewer['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
 }
@@ -45,12 +45,12 @@ if (empty($user)) {
     stderr($lang['userdetails_error'], $lang['userdetails_invalid']);
 } elseif ($user['verified'] === 0) {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
-} elseif ($user['paranoia'] == 3 && !has_access($curuser['class'], UC_STAFF, 'coder') && $user['id'] != $curuser['id']) {
+} elseif ($user['paranoia'] === 3 && !has_access($viewer['class'], UC_STAFF, 'coder') && $user['id'] != $viewer['id']) {
     stderr($lang['userdetails_error'], '<span><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '">
        ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '"></span>');
     die();
 }
-if (isset($_GET['delete_hit_and_run']) && has_access($curuser['class'], UC_STAFF, 'coder')) {
+if (isset($_GET['delete_hit_and_run']) && has_access($viewer['class'], UC_STAFF, 'coder')) {
     $delete_me = isset($_GET['delete_hit_and_run']) ? (int) $_GET['delete_hit_and_run'] : 0;
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
@@ -62,15 +62,15 @@ if (isset($_GET['delete_hit_and_run']) && has_access($curuser['class'], UC_STAFF
     if (!$snatched->update_by_id($update, $delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
-    header('Location: ?id=' . $user['id'] . '&completed=1');
+    header("Location: {$_SERVER['PHP_SELF']}?id={$user['id']}&completed=1");
     die();
 }
 $session = $container->get(Session::class);
-if (isset($_GET['force_logout']) && ($curuser['id'] != $user['id'] && has_access($curuser['class'], UC_STAFF, 'coder') || has_access($curuser['class'], UC_MAX, ''))) {
-    $cache->set('forced_logout_' . $curuser['id'], TIME_NOW);
+if (isset($_GET['force_logout']) && ($viewer['id'] != $user['id'] && has_access($viewer['class'], UC_STAFF, 'coder') || has_access($viewer['class'], UC_MAX, ''))) {
+    $cache->set('forced_logout_' . $viewer['id'], TIME_NOW);
     $session->set('is-success', 'This user will be forced to logout on next page view');
 }
-if (has_access($curuser['class'], UC_STAFF, 'coder') || $user['id'] == $curuser['id']) {
+if (has_access($viewer['class'], UC_STAFF, 'coder') || $user['id'] === $viewer['id']) {
     $auth = $container->get(Auth::class);
     $ip = $auth->getIpAddress();
     $addr = gethostbyaddr($ip) . "($ip)";
@@ -86,17 +86,23 @@ if ($lastseen == 0 || $user['perms'] & PERMS_STEALTH) {
 } else {
     $lastseen = get_date((int) $user['last_access'], '', 0, 1);
 }
-if ((($user['class'] >= $site_config['allowed']['enable_invincible'] || $user['id'] === $curuser['id']) || ($user['class'] < $site_config['allowed']['enable_invincible']) && $curuser['class'] >= $site_config['allowed']['enable_invincible']) && isset($_GET['invincible'])) {
-    require_once INCL_DIR . 'invincible.php';
-    if ($_GET['invincible'] === 'yes') {
-        invincible($user['id'], true, true);
-    } elseif ($_GET['invincible'] === 'remove_bypass') {
-        invincible($user['id'], false, false);
+if (has_access($viewer['class'], $site_config['allowed']['enable_invincible'], '') && isset($_GET['nologip'])) {
+    require_once INCL_DIR . 'nologip.php';
+    if ($_GET['nologip'] === 'yes') {
+        nologip($user['id'], true);
     } else {
-        invincible($user['id'], false, false);
+        nologip($user['id'], false);
     }
 }
-if (((has_access($curuser['class'], UC_STAFF, 'coder') || $user['id'] == $curuser['id']) || (!has_access($user['class'], UC_STAFF, '') && has_access($curuser['class'], UC_STAFF, ''))) && isset($_GET['stealth'])) {
+if (has_access($viewer['class'], $site_config['allowed']['enable_invincible'], '') && isset($_GET['invincible'])) {
+    require_once INCL_DIR . 'invincible.php';
+    if ($_GET['invincible'] === 'yes') {
+        invincible($user['id'], true);
+    } else {
+        invincible($user['id'], false);
+    }
+}
+if ((has_access($viewer['class'], UC_STAFF, 'coder') || $user['id'] === $viewer['id'] || has_access($user['class'], UC_STAFF, '')) && isset($_GET['stealth'])) {
     require_once INCL_DIR . 'stealth.php';
     if ($_GET['stealth'] === 'yes') {
         stealth($user['id']);
@@ -112,14 +118,14 @@ foreach ($countries as $cntry) {
         break;
     }
 }
-if (!(isset($_GET['hit'])) && $curuser['id'] !== $user['id']) {
+if (!(isset($_GET['hit'])) && $viewer['id'] !== $user['id']) {
     $update = [
         'hits' => $user['hits'] + 1,
     ];
     $users_class->update($update, $user['id']);
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
-if ($user['anonymous_until'] > TIME_NOW && (!has_access($curuser['class'], UC_STAFF, 'coder') && $user['id'] != $curuser['id'])) {
+if ($user['anonymous_until'] > TIME_NOW && (!has_access($viewer['class'], UC_STAFF, 'coder') && $user['id'] != $viewer['id'])) {
     $HTMLOUT .= "
     <div class='table-wrapper'>
         <table class='table table-bordered table-striped two'>
@@ -147,7 +153,7 @@ if ($user['anonymous_until'] > TIME_NOW && (!has_access($curuser['class'], UC_ST
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                         <input type='submit' value='{$lang['userdetails_sendmess']}'>
                     </form>";
-    if (has_access($curuser['class'], UC_STAFF, 'coder') && $user['id'] != $curuser['id']) {
+    if (has_access($viewer['class'], UC_STAFF, 'coder') && $user['id'] != $viewer['id']) {
         echo stdhead($lang['userdetails_anonymoususer']) . $HTMLOUT . stdfoot();
     }
     $HTMLOUT .= '
@@ -157,12 +163,12 @@ if ($user['anonymous_until'] > TIME_NOW && (!has_access($curuser['class'], UC_ST
     </div>';
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
-if ($curuser['id'] != $user['id'] && has_access($curuser['class'], UC_STAFF, 'coder')) {
+if ($viewer['id'] != $user['id'] && has_access($viewer['class'], UC_STAFF, 'coder')) {
     $suspended .= ($user['status'] === 5 ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '"> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '">' : '');
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '"> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=watched_users">' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '">');
 }
-$perms .= (has_access($curuser['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_NO_IP) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
-$stealth .= (has_access($curuser['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
+$perms .= (has_access($viewer['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_BYPASS_BAN) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '">' : '') : '');
+$stealth .= (has_access($viewer['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_STEALTH) ? '  <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '">' : '') : '');
 $enabled = $user['status'] === 0;
 $parked = $user['status'] === 1 ? $lang['userdetails_parked'] : '';
 
@@ -170,14 +176,14 @@ $h1 = "
                 <h1 class='has-text-centered'>" . format_username((int) $user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
 if (!$enabled) {
     $h1 .= $lang['userdetails_disabled'];
-} elseif ($curuser['id'] != $user['id']) {
+} elseif ($viewer['id'] != $user['id']) {
     $friend = $cache->get('Friends_' . $user['id']);
     if ($friend === false || is_null($friend)) {
         $friend = $fluent->from('friends')
                          ->select(null)
                          ->select('COUNT(id) AS count')
                          ->where('userid = ?', $user['id'])
-                         ->where('friendid = ?', $curuser['id'])
+                         ->where('friendid = ?', $viewer['id'])
                          ->fetch('count');
         $cache->set('Friends_' . $user['id'], $friend, $site_config['expires']['user_friends']);
     }
@@ -187,7 +193,7 @@ if (!$enabled) {
                         ->select(null)
                         ->select('COUNT(id) AS count')
                         ->where('userid = ?', $user['id'])
-                        ->where('blockid = ?', $curuser['id'])
+                        ->where('blockid = ?', $viewer['id'])
                         ->fetch('count');
         $cache->set('Blocks_' . $user['id'], $block, $site_config['expires']['user_blocks']);
     }
@@ -203,7 +209,7 @@ if (!$enabled) {
     }
 }
 
-if (has_access($curuser['class'], UC_STAFF, 'coder')) {
+if (has_access($viewer['class'], UC_STAFF, 'coder')) {
     $shitty = '';
     $shit_list = $cache->get('shit_list_' . $user['id']);
     if ($shit_list === false || is_null($shit_list)) {
@@ -211,7 +217,7 @@ if (has_access($curuser['class'], UC_STAFF, 'coder')) {
                           ->select(null)
                           ->select('suspect')
                           ->where('userid = ?', $user['id'])
-                          ->where('suspect = ?', $curuser['id'])
+                          ->where('suspect = ?', $viewer['id'])
                           ->fetchAll();
         $cache->set('shit_list_' . $user['id'], $shit_list, $site_config['expires']['shit_list']);
     }
@@ -220,13 +226,13 @@ if (has_access($curuser['class'], UC_STAFF, 'coder')) {
                 Remove from your
                 <img class='tooltipper right5' src='{$site_config['paths']['images_baseurl']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit'>
             </a></li>";
-    } elseif ($curuser['id'] != $user['id']) {
+    } elseif ($viewer['id'] != $user['id']) {
         $shitty_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$user['id']}&amp;return_to='{$_SERVER['PHP_SELF']}?id={$user['id']}'>
                 {$lang['userdetails_shit3']}
             </a></li>";
     }
 }
-if ($user['donor'] && $curuser['id'] == $user['id'] || has_access($curuser['class'], UC_SYSOP, 'coder')) {
+if ($user['donor'] && $viewer['id'] == $user['id'] || has_access($viewer['class'], UC_SYSOP, 'coder')) {
     $donoruntil = (int) $user['donoruntil'];
     if ($donoruntil === 0) {
         $HTMLOUT .= '';
@@ -238,11 +244,11 @@ if ($user['donor'] && $curuser['id'] == $user['id'] || has_access($curuser['clas
             </div>";
     }
 }
-if ($curuser['id'] == $user['id']) {
+if ($viewer['id'] == $user['id']) {
     $edit_profile = "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></li>
         <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></li>";
 }
-if ($curuser['id'] != $user['id']) {
+if ($viewer['id'] != $user['id']) {
     $sharemark_link .= "<li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/sharemarks.php?id=${user['id']}'>{$lang['userdetails_sharemarks']}</a></li>";
 }
 $HTMLOUT .= "
@@ -251,21 +257,18 @@ $HTMLOUT .= "
         $sharemark_link
         $shitty_link
         $friend_links
-        $edit_profile" . ($curuser['class'] >= UC_MAX ? $user['perms'] & PERMS_NO_IP ? "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & PERMS_BYPASS_BAN) ? "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
-        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
+        $edit_profile";
 
-$stealth = $cache->get('display_stealth_' . $user['id']);
-if ($stealth) {
-    $session->set('is-info', format_comment($user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
-}
-
-$HTMLOUT .= (has_access($curuser['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_STEALTH) ? "
+$HTMLOUT .= $viewer['class'] >= UC_MAX ? ($user['perms'] & PERMS_NO_IP ? "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_nologip_def']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;nologip=no'>{$lang['userdetails_nologip_no']}</a></li>" : "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_nologip_def']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;nologip=yes'>{$lang['userdetails_nologip_yes']}</a></li>") : '';
+$HTMLOUT .= $viewer['class'] >= UC_MAX ? ($user['perms'] & PERMS_BYPASS_BAN ? "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" : "
+        <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_invincible_def9']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>") : '';
+$HTMLOUT .= (has_access($viewer['class'], UC_STAFF, 'coder') ? (($user['perms'] & PERMS_STEALTH) ? "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
             <li class='margin10'><a class='is-link tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '');
-$HTMLOUT .= has_access($curuser['class'], UC_SYSOP, 'coder') ? "
+$HTMLOUT .= has_access($viewer['class'], UC_SYSOP, 'coder') ? "
             <li class='margin10'><a class='has-text-danger tooltipper' title='Reset this users password' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;username={$user['username']}&amp;userid={$user['id']}'>Reset Password</a></li>
             <li class='margin10'><a class='has-text-danger tooltipper' title='Force this user to Logout' href='{$_SERVER['PHP_SELF']}?id={$user['id']}&amp;force_logout=yes'>Force Logout</a></li>" : '';
 $HTMLOUT .= '
@@ -280,7 +283,7 @@ $HTMLOUT .= "
                 <li class='top20'><a href='#general'>{$lang['userdetails_general']}</a></li>
                 <li class='top20'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
                 <li class='top20'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
-if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curuser['class']) || $curuser['class'] >= UC_MAX) {
+if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer['class']) || $viewer['class'] >= UC_MAX) {
     $HTMLOUT .= "
                 <li class='top20'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
@@ -291,10 +294,10 @@ $HTMLOUT .= "
                 <div id='torrents' class='table-wrapper'>";
 
 $table_data = '';
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
     require_once BLOCK_DIR . 'userdetails/flush.php';
 }
-if ($user['id'] === $curuser['id'] || has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
+if ($user['id'] === $viewer['id'] || has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
     $table_data .= "
         <tr>
             <td class='rowhead'>Download Torrents</td>
@@ -306,7 +309,7 @@ if ($user['id'] === $curuser['id'] || has_access($curuser['class'], UC_ADMINISTR
                     <li class='right10'>
                         <a href='{$site_config['paths']['baseurl']}/download_multi.php?owner=true&amp;userid=${user['id']}' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have uploaded'>Uploaded Torrents</a>
                     </li>";
-    if ($user['id'] === $curuser['id'] && has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
+    if ($user['id'] === $viewer['id'] && has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
         $table_data .= "
                     <li class='right10'>
                         <a href='{$site_config['paths']['baseurl']}/download_multi.php?getall=yes' class='button is-small tooltipper' title='Download <i><b>all active</b></i> torrents'>Live Torrents</a>
@@ -320,25 +323,25 @@ if ($user['id'] === $curuser['id'] || has_access($curuser['class'], UC_ADMINISTR
             </td>
         </tr>';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::TRAFFIC && $BLOCKS['userdetails_traffic_on']) {
     require_once BLOCK_DIR . 'userdetails/traffic.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO && $BLOCKS['userdetails_share_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/shareratio.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && $BLOCKS['userdetails_seedtime_ratio_on']) {
     require_once BLOCK_DIR . 'userdetails/seedtimeratio.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
     require_once BLOCK_DIR . 'userdetails/connectable.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
     require_once BLOCK_DIR . 'userdetails/torrents_block.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']) {
     require_once BLOCK_DIR . 'userdetails/completed.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']) {
     require_once BLOCK_DIR . 'userdetails/snatched_staff.php';
 }
 
@@ -349,7 +352,7 @@ $HTMLOUT .= "
                 <div id='general' class='table-wrapper'>
                     <table class='table table-bordered table-striped five'>";
 
-if ($curuser['id'] !== $user['id'] && has_access($curuser['class'], UC_STAFF, 'coder')) {
+if ($viewer['id'] !== $user['id'] && has_access($viewer['class'], UC_STAFF, 'coder')) {
     $the_flip_box = "
         <a id='watched_user'></a>
         <a class='is-link tooltipper' href='#watched_user' onclick=\"flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"flipBox('3')\" src='{$site_config['paths']['images_baseurl']}panel_on.gif' id='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}'></a>";
@@ -398,46 +401,46 @@ if ($curuser['id'] !== $user['id'] && has_access($curuser['class'], UC_STAFF, 'c
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
     }
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
     require_once BLOCK_DIR . 'userdetails/showfriends.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
     require_once BLOCK_DIR . 'userdetails/joined.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::ONLINETIME && $BLOCKS['userdetails_online_time_on']) {
     require_once BLOCK_DIR . 'userdetails/onlinetime.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::BROWSER && $BLOCKS['userdetails_browser_on']) {
     require_once BLOCK_DIR . 'userdetails/browser.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY && $BLOCKS['userdetails_birthday_on']) {
     require_once BLOCK_DIR . 'userdetails/birthday.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO && $BLOCKS['userdetails_contact_info_on']) {
     require_once BLOCK_DIR . 'userdetails/contactinfo.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::IPHISTORY && $BLOCKS['userdetails_iphistory_on']) {
     require_once BLOCK_DIR . 'userdetails/iphistory.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::AVATAR && $BLOCKS['userdetails_avatar_on']) {
     require_once BLOCK_DIR . 'userdetails/avatar.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::USERCLASS && $BLOCKS['userdetails_userclass_on']) {
     require_once BLOCK_DIR . 'userdetails/userclass.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::GENDER && $BLOCKS['userdetails_gender_on']) {
     require_once BLOCK_DIR . 'userdetails/gender.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::USERINFO && $BLOCKS['userdetails_userinfo_on']) {
     require_once BLOCK_DIR . 'userdetails/userinfo.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::REPORT_USER && $BLOCKS['userdetails_report_user_on']) {
     require_once BLOCK_DIR . 'userdetails/report.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::USERSTATUS && $BLOCKS['userdetails_user_status_on']) {
     require_once BLOCK_DIR . 'userdetails/userstatus.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS['userdetails_showpm_on']) {
     require_once BLOCK_DIR . 'userdetails/showpm.php';
 }
 $HTMLOUT .= '</table></div>';
@@ -455,39 +458,38 @@ $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</t
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '">
        <span class="tip">' . format_comment($user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::IRC_STATS && $BLOCKS['userdetails_irc_stats_on']) {
     require_once BLOCK_DIR . 'userdetails/irc.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::REPUTATION && $BLOCKS['userdetails_reputation_on']) {
     require_once BLOCK_DIR . 'userdetails/reputation.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
     require_once BLOCK_DIR . 'userdetails/userhits.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on']) {
     require_once BLOCK_DIR . 'userdetails/freestuffs.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/comments.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS && $BLOCKS['userdetails_forumposts_on']) {
     require_once BLOCK_DIR . 'userdetails/forumposts.php';
 }
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::INVITEDBY && $BLOCKS['userdetails_invitedby_on']) {
     require_once BLOCK_DIR . 'userdetails/invitedby.php';
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='comments' class='table-wrapper'>";
-if ($curuser['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
+if ($viewer['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/usercomments.php';
 }
 $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
-
-if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curuser['class']) || has_access($curuser['class'], UC_MAX, 'coder')) {
+if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer['class']) || has_access($viewer['class'], UC_MAX, 'coder')) {
     $HTMLOUT .= "
     <form method='post' action='./staffpanel.php?tool=modtask' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='action' value='edituser'>
@@ -501,7 +503,6 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         </tr>";
     $avatar = htmlsafechars((string) $user['avatar']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_avatar_url']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='avatar' value='$avatar'></td></tr>";
-
     $HTMLOUT .= "<tr>
     <td class='rowhead'>{$lang['userdetails_signature_rights']}</td>
     <td colspan='3'>
@@ -524,7 +525,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                       <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . format_comment($user['website']) . "'></td>
                 </tr>";
 
-    if ($curuser['class'] >= UC_MAX) {
+    if ($viewer['class'] >= UC_MAX) {
         $donor = $user['donor'] === 'yes';
         $HTMLOUT .= "
                 <tr>
@@ -576,16 +577,16 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                     </td>
                 </tr>';
     }
-    if ($curuser['class'] === UC_STAFF && has_access($user['class'], UC_VIP, '')) {
+    if ($viewer['class'] === UC_STAFF && has_access($user['class'], UC_VIP, '')) {
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}'>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='3' class='has-text-left'><select name='class' class='w-100'>";
-        if (has_access($curuser['class'], UC_MAX, 'coder')) {
+        if (has_access($viewer['class'], UC_MAX, 'coder')) {
             $maxclass = UC_MAX;
-        } elseif ($curuser['class'] === UC_STAFF) {
+        } elseif ($viewer['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
         } else {
-            $maxclass = $curuser['class'] - 1;
+            $maxclass = $viewer['class'] - 1;
         }
         for ($i = 0; $i <= $maxclass; ++$i) {
             $HTMLOUT .= "<option value='$i' " . ($user['class'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
@@ -620,10 +621,10 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                     <textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea>
                 </td>
             </tr>";
-    $modcomment = format_comment($user['modcomment']);
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' " . (!has_access($curuser['class'], UC_MAX, 'coder') ? "readonly='readonly'" : '') . ">$modcomment</textarea></td></tr>";
+    $modcomment = str_replace('<br>', "\n", $user['modcomment']);
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' " . (!has_access($viewer['class'], UC_MAX, 'coder') ? "readonly='readonly'" : '') . ">$modcomment</textarea></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_add_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='addcomment'></textarea></td></tr>";
-    $bonuscomment = format_comment($user['bonuscomment']);
+    $bonuscomment = str_replace('<br>', "\n", $user['bonuscomment']);
     $HTMLOUT .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_bonus_comment']}</td>
@@ -663,7 +664,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                       <td class="rowhead">' . $lang['userdetails_hnr'] . '</td>
                       <td colspan="3" class="has-text-left"><input type="text" class="w-100" name="hit_and_run_total" value="' . (int) $user['hit_and_run_total'] . '"></td>
                 </tr>';
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead'>{$lang['userdetails_freeleech_slots']}</td>
@@ -672,7 +673,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                     </td>
                 </tr>";
     }
-    if (has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
+    if (has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
         $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
                 <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
@@ -695,7 +696,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
                <td class='has-text-left'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -718,7 +719,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $uploadpos = $user['uploadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$uploadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_upos']}</td>
                <td class='has-text-left'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -741,7 +742,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $sendpmpos = $user['sendpmpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_pmpos']}</td>
                <td class='has-text-left'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -764,7 +765,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $chatpost = $user['chatpost'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$chatpost ? ' rowspan="2"' : '') . ">{$lang['userdetails_chatpos']}</td>
                <td class='has-text-left'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -787,7 +788,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $avatarpos = $user['avatarpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$avatarpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_avatarpos']}</td>
           <td class='has-text-left'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -810,7 +811,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $immunity = $user['immunity'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$immunity ? ' rowspan="2"' : '') . ">{$lang['userdetails_immunity']}</td>
                <td class='has-text-left'>" . ($immunity ? "<input name='immunity' value='42' type='radio'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
@@ -833,7 +834,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $leechwarn = $user['leechwarn'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$leechwarn ? ' rowspan="2"' : '') . ">{$lang['userdetails_leechwarn']}</td>
                <td class='has-text-left'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
@@ -856,7 +857,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $warned = $user['warned'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? ' rowspan="2"' : '') . ">{$lang['userdetails_warned']}</td>
                <td class='has-text-left'>" . ($warned ? "<input name='warned' value='42' type='radio'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
@@ -879,7 +880,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $game_access = $user['game_access'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$game_access ? ' rowspan="2"' : '') . ">{$lang['userdetails_games']}</td>
            <td class='has-text-left'>" . ($game_access ? "<input name='game_access' value='42' type='radio'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
@@ -902,7 +903,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
         }
     }
 
-    if ($curuser['class'] >= UC_MAX) {
+    if ($viewer['class'] >= UC_MAX) {
         $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['userdetails_highspeed']}</td>
@@ -919,11 +920,11 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1'><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1'><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='number' class='w-100' name='seedbonus' min='0' max='999999999' value='" . (int) $user['seedbonus'] . "'></td></tr>";
     }
 
-    if ($curuser['class'] >= UC_STAFF) {
+    if ($viewer['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_rep_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='reputation' value='" . (int) $user['reputation'] . "'></td></tr>";
     }
 
@@ -991,7 +992,7 @@ if ((has_access($curuser['class'], UC_STAFF, 'coder') && $user['class'] < $curus
                      </td>
                 </tr>";
 
-    if (has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
+    if (has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
         $HTMLOUT .= "<tr>
          <td class='rowhead'>{$lang['userdetails_addupload']}</td>
          <td class='has-text-centered'>

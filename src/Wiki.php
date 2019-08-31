@@ -113,4 +113,18 @@ class Wiki
 
         return $results;
     }
+
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    public function delete(int $id)
+    {
+        return $this->fluent->deleteFrom('wiki')
+                            ->where('id = ?', $id)
+                            ->execute();
+    }
 }

@@ -21,7 +21,7 @@ $HTMLOUT .= '
         </div>';
 
 $HTMLOUT .= main_div('
-        <div class="has-text-centered size_4 is-primary top10 bottom10">' . $lang['mega_analyze'] . '</div>
+        <div class="has-text-centered size_4 has-text-primary top10 bottom10">' . $lang['mega_analyze'] . '</div>
         <div class="bg-00 round10 padding20">
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '

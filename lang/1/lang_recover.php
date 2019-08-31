@@ -9,7 +9,7 @@ $lang = [
     //stderr
     'stderr_errorhead' => 'Error',
     'stderr_successhead' => 'Success',
-    'stderr_invalidemail' => 'You must enter an email address',
+    'stderr_invalidemail' => 'You must enter the email address used on your account.',
     'stderr_notfound' => 'The email address was not found in the database',
     'stderr_dberror' => 'Database error. Please contact an administrator about this.',
     'stderr_confmailsent' => 'If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.',
@@ -66,4 +66,7 @@ Password:  %s
     'recover_regdemail' => 'Email Address',
     'recover_btn' => 'Do it!',
     'set_new_password' => 'Set your new password',
+    'recover_email_not_verified' => 'Email has not been verified.',
+    'recover_not_enabled', 'Password reset is disabled.',
+    'recover_throttle' => 'Too many requests.',
 ];

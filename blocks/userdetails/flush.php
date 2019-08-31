@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types = 1);
-global $CURUSER;
+global $viewer, $user;
 
-if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
+if (has_access($viewer['class'], UC_STAFF, 'coder') || $viewer['id'] === $user['id']) {
     $table_data .= '
     <tr>
         <td class="rowhead"><a id="flush_hash"></a>' . $lang['userdetails_flush_title'] . '</td>

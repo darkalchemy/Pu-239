@@ -2,9 +2,12 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Pu239\Session;
 use Pu239\Wiki;
 use Rakit\Validation\Validator;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -72,10 +75,10 @@ function navmenu()
 }
 
 /**
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -110,8 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validator = $container->get(Validator::class);
     if (isset($_POST['article-add'])) {
         $validation = $validator->validate($_POST, [
-            'article-name' => 'required|alpha_dash',
-            'article-body' => 'required',
+            'article-name' => 'required|regex:/[A-Za-z][A-Za-z0-9 _-]*/',
+            'body' => 'required',
         ]);
         if (!$validation->fails()) {
             $values = [
@@ -197,6 +200,7 @@ if ($action === 'article') {
             $div .= (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=delete&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_delete'] . '</a>
                     </div>' : '');
             $HTMLOUT .= main_div($div, 'bottom20');
         }
@@ -227,15 +231,27 @@ if ($action === 'article') {
 if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title'> " . BBcode() . "
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' minlength='3' maxlength='100' pattern='[A-Za-z][A-Za-z0-9 _-]*'> " . BBcode() . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}'>
                 </div>
             </form>";
-}
-if ($action === 'edit') {
+} elseif ($action === 'delete') {
     $result = $wiki->get_by_id($id);
-    if (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid']) {
+    if (!empty($result) && (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'])) {
+        if ($wiki->delete($id)) {
+            $session->set('is-success', $lang['wiki_deleted']);
+        } else {
+            $session->set('is-warning', $lang['wiki_not_deleted']);
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
+    } else {
+        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_access_denied']);
+    }
+} elseif ($action === 'edit') {
+    $result = $wiki->get_by_id($id);
+    if (!empty($result) && (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'])) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . format_comment($result['name']) . "'>
@@ -247,8 +263,7 @@ if ($action === 'edit') {
     } else {
         $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_access_denied']);
     }
-}
-if ($action === 'sort') {
+} elseif ($action === 'sort') {
     $results = $wiki->get_by_name($letter);
     if (!empty($results)) {
         $HTMLOUT .= navmenu();

@@ -60,7 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!empty($userid)) {
-        insert_update_ip('register', $userid);
+        if ($site_config['site']['ip_logging']) {
+            insert_update_ip('register', $userid);
+        }
         $invite_id = !empty($post['invite_id']) ? (int) $post['invite_id'] : 0;
         $invite_code = !empty($post['invite_code']) ? $post['invite_code'] : '';
         $promo = !empty($post['promo']) ? $post['promo'] : '';

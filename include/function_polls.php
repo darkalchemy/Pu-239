@@ -8,10 +8,10 @@ use Pu239\PollVoter;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -58,6 +58,9 @@ function parse_poll()
     if ($check === 1) {
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question']));
         $poll_answers = json_decode($poll_data['choices'], true);
+        if (empty($poll_answers)) {
+            $poll_answers = [];
+        }
         reset($poll_answers);
         $tv_poll = 0;
         foreach ($poll_answers as $id => $data) {
@@ -292,7 +295,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
     return "
     <div class='bg-02 round5 padding10'>
         <div>
-            <div class='is-primary size_6 padding10'>
+            <div class='has-text-primary size_6 padding10'>
                 {$question}
             </div>
         </div>

@@ -13,11 +13,11 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_8eb833b0.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_1644374e.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4e40c870.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_f3c0a5b1.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_7cb76ae5.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':

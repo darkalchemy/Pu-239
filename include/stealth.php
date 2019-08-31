@@ -46,14 +46,13 @@ function stealth(int $userid, bool $stealth = true)
         'perms' => $row['perms'],
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_cache']);
-    if ($userid == $CURUSER['id']) {
+    if ($userid === $CURUSER['id']) {
         $cache->update_row('user_' . $CURUSER['id'], [
             'perms' => $row['perms'],
             'modcomment' => $modcomment,
         ], $site_config['expires']['user_cache']);
     }
     write_log('Member [b][url=userdetails.php?id=' . $userid . ']' . (htmlsafechars($row['username'])) . '[/url][/b] ' . $display . ' in Stealth Mode thanks to [b]' . $CURUSER['username'] . '[/b]');
-    $cache->set('display_stealth_' . $CURUSER['id'], $display, 5);
     $session = $container->get(Session::class);
     $session->set('is-info', "{$username} $display Stealthy");
     header("Location: {$site_config['paths']['baseurl']}/userdetails.php?id=$userid");

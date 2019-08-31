@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
         $HTMLOUT .= "<table class='main'>
-     <tr><td class='has-text-centered'><h2><span class='is-primary'>Announcement: 
+     <tr><td class='has-text-centered'><h2><span class='has-text-primary'>Announcement: 
      " . htmlsafechars($subject) . "</span></h2></td></tr>
      <tr><td class='text'>
      " . format_comment($body) . '<br><hr>Expires: ' . get_date((int) $newtime, 'DATE') . '';

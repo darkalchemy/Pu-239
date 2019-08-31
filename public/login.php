@@ -37,15 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
-    $user = $container->get(User::class);
-    if ($user->login($post['email'], $post['password'], (int) isset($post['remember']) ? 1 : 0, $lang)) {
+    $user_class = $container->get(User::class);
+    if ($user_class->login($post['email'], $post['password'], (int) isset($post['remember']) ? 1 : 0, $lang)) {
         $userid = $auth->getUserId();
-        insert_update_ip('login', $userid);
+        $user = $user_class->getUserFromId($userid);
+        if ($site_config['site']['ip_logging'] || !($user['perms'] & PERMS_NO_IP)) {
+            insert_update_ip('login', $userid);
+        }
         if ($site_config['site']['limit_ips']) {
             $ips_class = $container->get(IP::class);
             $count = $ips_class->get_ip_count($userid, 3, 'login');
             if ($count > $site_config['site']['limit_ips_count']) {
-                $user->logout($userid, false);
+                $user_class->logout($userid, false);
                 $session->set('is-danger', 'You have exceeded the maximum number of IPs allowed');
                 stderr('Error', "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
             }

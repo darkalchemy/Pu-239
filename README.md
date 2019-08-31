@@ -23,13 +23,12 @@ This is a fork of U-232 V4.
 PHP 7.2+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
-[NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.10.3.  
+[NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.11.2.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process. (Not tested recently)     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)   
-There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
+
 ##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.  
 #### Prior to install:
 ```

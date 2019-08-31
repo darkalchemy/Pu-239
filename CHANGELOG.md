@@ -1,3 +1,12 @@
+### 31 Aug, 2019
+fix: coder access to staff panel  
+add: delete wiki items  
+update: Adminer 4.7.3  
+update: don't show error if email not found recover.php  
+update: split no log ip from invincible  
+fix: don't log user ip if site ip logging is disabled or user has selected no ip logging  
+fix: show invitees invitedby.php  
+
 ### 29 Aug, 2019
 move: promo.php to staffpanel  
 update: coder access to staffpanel  

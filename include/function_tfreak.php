@@ -53,7 +53,7 @@ function rsstfreakinfo()
                 '',
                 '',
                 'href="' . $site_config['site']['anonymizer_url'],
-            ], preg_replace('/<p>/', "<p class='is-primary'>", $item->getElementsByTagName('description')
+            ], preg_replace('/<p>/', "<p class='has-text-primary'>", $item->getElementsByTagName('description')
                                                                     ->item(0)->nodeValue, 1));
             $link = "
                             <a href='{$site_config['site']['anonymizer_url']}" . $item->getElementsByTagName('link')

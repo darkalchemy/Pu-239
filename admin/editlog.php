@@ -109,7 +109,7 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='is-primary'>{$lang['editlog_no_new']}</td>
+                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_new']}</td>
                 </tr>";
 }
 $HTMLOUT .= "
@@ -140,7 +140,7 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='is-primary'>{$lang['editlog_no_modified']}</td>
+                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_modified']}</td>
                 </tr>";
 }
 $HTMLOUT .= "
@@ -171,7 +171,7 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='is-primary'>{$lang['editlog_no_deleted']}</td>
+                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_deleted']}</td>
                 </tr>";
 }
 $HTMLOUT .= "

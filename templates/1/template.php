@@ -422,7 +422,7 @@ function StatusBar()
     $color = get_user_class_name((int) $CURUSER['class'], true);
     $StatusBar .= "
                     <div id='base_usermenu' class='right20 level-item'>
-                        <div class='tooltipper-ajax'>" . format_username((int) $CURUSER['id'], true, false) . "</div>
+                        <div class='tooltipper-ajax right20'>" . format_username($CURUSER['id'], true, false) . "</div>
                         <div id='clock' class='left20 {$color} tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
                     </div>";
 
@@ -489,7 +489,7 @@ function platform_menu()
                 <div class='columns is-marginless'>
                     <div class='column is-paddingless middle'>
                         <ul class='level-left size_3'>" . (!PRODUCTION ? "
-                            <li class='left10 has-text-primary is-primary'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
+                            <li class='left10 has-text-primary'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
                         </ul>
                     </div>
                     <div class='column is-paddingless middle searchbar'>

@@ -1276,16 +1276,16 @@
         },
         {
             "name": "matthiasmullie/scrapbook",
-            "version": "1.4.6",
+            "version": "1.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/scrapbook.git",
-                "reference": "044ff954e41579ff922ee3341b1695d12bb04840"
+                "reference": "d27ff1ab823f288918d3c593cd3c7e56db0e7745"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/scrapbook/zipball/044ff954e41579ff922ee3341b1695d12bb04840",
-                "reference": "044ff954e41579ff922ee3341b1695d12bb04840",
+                "url": "https://api.github.com/repos/matthiasmullie/scrapbook/zipball/d27ff1ab823f288918d3c593cd3c7e56db0e7745",
+                "reference": "d27ff1ab823f288918d3c593cd3c7e56db0e7745",
                 "shasum": ""
             },
             "require": {
@@ -1359,7 +1359,7 @@
                 "transactional",
                 "value"
             ],
-            "time": "2018-02-14T07:39:26+00:00"
+            "time": "2019-08-30T09:35:02+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3182,16 +3182,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.15.2",
+            "version": "v2.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "c9d30fddfa3feb8b82663104864224f2ce7a3675"
+                "reference": "705490b0f282f21017d73561e9498d2b622ee34c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/c9d30fddfa3feb8b82663104864224f2ce7a3675",
-                "reference": "c9d30fddfa3feb8b82663104864224f2ce7a3675",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/705490b0f282f21017d73561e9498d2b622ee34c",
+                "reference": "705490b0f282f21017d73561e9498d2b622ee34c",
                 "shasum": ""
             },
             "require": {
@@ -3221,9 +3221,10 @@
                 "php-cs-fixer/accessible-object": "^1.0",
                 "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.1",
                 "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.1",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.1",
                 "phpunitgoodpractices/traits": "^1.8",
-                "symfony/phpunit-bridge": "^4.3"
+                "symfony/phpunit-bridge": "^4.3",
+                "symfony/yaml": "^3.0 || ^4.0"
             },
             "suggest": {
                 "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
@@ -3266,7 +3267,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2019-08-27T16:03:01+00:00"
+            "time": "2019-08-31T12:51:54+00:00"
         },
         {
             "name": "mp091689/dump-die",
