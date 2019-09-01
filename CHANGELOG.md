@@ -1,4 +1,5 @@
 ### 01 Sept, 2019
+update: increase max torrent size  
 fix: typo karma_update.php  
 update: truncate peers when removing all torrents remove_torrents.php  
 update: add sort by column view_peers.php snatched_torrents.php  

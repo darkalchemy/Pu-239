@@ -3957,4 +3957,11 @@ KEY `expires` (`expires`)
         'query' => "UPDATE `staffpanel` SET `page_name` = 'Images Overview' WHERE `file_name` = 'staffpanel.php?tool=manage_images'",
         'flush' => true,
     ],
+    [
+        'id' => 1567318847,
+        'info' => 'Increase max torrent size',
+        'date' => '01 Sept, 2019',
+        'query' => "UPDATE `site_config` SET `value` = 5242880 WHERE `parent` = 'site' AND `name`= 'max_torrent_size'",
+        'flush' => true,
+    ],
 ];
