@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Torrent;
 
 /**
@@ -21,19 +22,27 @@ function peer_update($data)
     global $container, $site_config;
 
     $time_start = microtime(true);
+    $fluent = $container->get(Database::class);
+    $cache = $container->get(Cache::class);
     require_once INCL_DIR . 'function_announce.php';
     $torrent_seeds = $torrent_leeches = [];
     $deadtime = TIME_NOW - floor($site_config['tracker']['announce_interval'] * 1.3);
-    $dead_peers = sql_query('SELECT torrent, userid, peer_id, seeder FROM peers WHERE last_action < ' . $deadtime) or sqlerr(__FILE__, __LINE__);
-    $cache = $container->get(Cache::class);
-    while ($dead_peer = mysqli_fetch_assoc($dead_peers)) {
-        $torrentid = (int) $dead_peer['torrent'];
-        $seed = $dead_peer['seeder'] === 'yes';
-        sql_query('DELETE FROM peers WHERE torrent = ' . $torrentid . ' AND peer_id = ' . sqlesc($dead_peer['peer_id'])) or sqlerr(__FILE__, __LINE__);
+    $dead_peers = $fluent->from('peers')
+                         ->select(null)
+                         ->select('id')
+                         ->select('torrent')
+                         ->select('userid')
+                         ->select('seeder')
+                         ->where('last_action < ?', $deadtime);
+    foreach ($dead_peers as $dead_peer) {
+        $torrentid = $dead_peer['torrent'];
+        $fluent->deleteFrom('peers')
+               ->where('id = ?', $dead_peer['id'])
+               ->execute();
         if (!isset($torrent_seeds[$torrentid])) {
             $torrent_seeds[$torrentid] = $torrent_leeches[$torrentid] = 0;
         }
-        if ($seed) {
+        if ($dead_peer['seeder'] === 'yes') {
             ++$torrent_seeds[$torrentid];
         } else {
             ++$torrent_leeches[$torrentid];

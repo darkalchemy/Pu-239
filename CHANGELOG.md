@@ -1,3 +1,10 @@
+### 01 Sept, 2019
+update: add sort by column view_peers.php snatched_torrents.php  
+update: check last_activity before paying seedbonus  
+add: download links to index page torrent blocks  
+update: allow use and log private and reserved ip addresses when PRODUCTION is false  
+update: properly pack ip when IPv6 is used  
+
 ### 31 Aug, 2019
 update: form seedbonus userdetails.php  
 remove: redundant staff check  

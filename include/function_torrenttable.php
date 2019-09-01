@@ -16,6 +16,7 @@ require_once INCL_DIR . 'function_categories.php';
  * @param $num
  *
  * @return string
+ * @return string
  */
 function linkcolor($num)
 {
@@ -31,10 +32,10 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string|string[]|null
  */
@@ -48,10 +49,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -126,25 +127,13 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
     }
     $oldlink = !empty($oldlink) ? implode('&amp;', array_map('htmlsafechars', $oldlink)) . '&amp;' : '';
-    $links = [
-        'link1',
-        'link2',
-        'link3',
-        'link4',
-        'link5',
-        'link6',
-        'link7',
-        'link8',
-        'link9',
-    ];
-    $i = 1;
-    foreach ($links as $link) {
-        if (isset($_GET['sort']) && $_GET['sort'] == $i) {
-            ${$link} = (isset($_GET['type']) && $_GET['type'] === 'desc') ? 'asc' : 'desc';
+    $type = isset($_GET['type']) ? $_GET['type'] : 'desc';
+    for ($i = 1; $i <= 8; ++$i) {
+        if (isset($_GET['sort']) && (int) $_GET['sort'] === $i) {
+            $link[$i] = isset($type) && $type === 'desc' ? 'asc' : 'desc';
         } else {
-            ${$link} = 'desc';
+            $link[$i] = 'desc';
         }
-        ++$i;
     }
     $htmlout .= "
     <div class='table-wrapper'>
@@ -152,7 +141,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             <thead>
                 <tr>
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
-                    <th class='has-text-centered min-350 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
+                    <th class='has-text-centered min-350 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
@@ -166,14 +155,14 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_visible']}'>{$lang['torrenttable_visible']}</th>";
     }
     $htmlout .= "
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link2}'>{$lang['torrenttable_files']}</a></th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link3}'>C</a></th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link4}'>{$lang['torrenttable_added']}</a></th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link5}'>{$lang['torrenttable_size']}</a></th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=6&amp;type={$link6}'>{$lang['torrenttable_snatched']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link[2]}'>{$lang['torrenttable_files']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link[3]}'>C</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link[4]}'>{$lang['torrenttable_added']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link[5]}'>{$lang['torrenttable_size']}</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=6&amp;type={$link[6]}'>{$lang['torrenttable_snatched']}</a></th>
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_to_go']}'>{$lang['torrenttable_to_go']}</th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link7}'>S</a></th>
-                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link8}'>L</a></th>";
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link[7]}'>S</a></th>
+                    <th class='has-text-centered tooltipper' title='{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link[8]}'>L</a></th>";
     if ($variant === 'index') {
         $htmlout .= "
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_uppedby']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=9&amp;type={$link9}'>{$lang['torrenttable_uppedby']}</a></th>";

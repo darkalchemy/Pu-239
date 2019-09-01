@@ -22,6 +22,7 @@ $latest_movies .= "
                         <tr>
                             <th class='has-text-centered w-10 min-100'>{$lang['index_mow_type']}</th>
                             <th class='w-50 min-350'>{$lang['last5torrents_movie_title']}</th>
+                            <th class='has-text-centered tooltipper' title='{$lang['index_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_leechers']}</th>
@@ -49,7 +50,7 @@ foreach ($last5movietorrents as $last) {
 if (count($last5movietorrents) === 0) {
     $latest_movies .= "
                         <tr>
-                            <td colspan='5'>{$lang['last5torrents_no_torrents']}</td>
+                            <td colspan='6'>{$lang['last5torrents_no_torrents']}</td>
                         </tr>";
 }
 $latest_movies .= '

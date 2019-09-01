@@ -100,44 +100,80 @@ $count = $fluent->from('snatched')
                 ->select('COUNT(id) AS count')
                 ->fetch('count');
 
+$valid_sort = [
+    'id',
+    'userid',
+    'name',
+    'hit_and_run',
+    'mark_of_cain',
+    'timesann',
+    'uploaded',
+    'downloaded',
+    'seedtime',
+    'leechtime',
+    'start_date',
+    'complete_date',
+    'seeder',
+];
+$column = isset($_GET['sort'], $valid_sort[$_GET['sort']]) ? $valid_sort[$_GET['sort']] : 'start_date';
+$pagerlink = $ascdesc = '';
+$type = isset($_GET['type']) ? $_GET['type'] : 'desc';
+foreach ($valid_sort as $key => $value) {
+    if ($value === $column) {
+        switch (htmlsafechars($type)) {
+            case 'desc':
+                $ascdesc = 'DESC';
+                $linkascdesc = 'desc';
+                break;
+
+            default:
+                $ascdesc = '';
+                $linkascdesc = 'asc';
+                break;
+        }
+        $pagerlink = "sort={$key}&amp;type={$linkascdesc}&amp;";
+    }
+}
+for ($i = 0; $i <= count($valid_sort); ++$i) {
+    if (isset($_GET['sort']) && (int) $_GET['sort'] === $i) {
+        $link[$i] = isset($type) && $type === 'desc' ? 'asc' : 'desc';
+    } else {
+        $link[$i] = 'desc';
+    }
+}
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['ad_snatched_torrents_allsnatched']}</h1>
     <div class='has-text-centered size_4 bottom20'>{$lang['ad_snatched_torrents_currently']}&#160;" . $count . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</div>";
 $snatchedperpage = 25;
-$pager = pager($snatchedperpage, $count, 'staffpanel.php?tool=snatched_torrents&amp;action=snatched_torrents&amp;');
+$pager = pager($snatchedperpage, $count, $_SERVER['PHP_SELF'] . '?tool=snatched_torrents&amp;' . $pagerlink);
 if ($count > $snatchedperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $snatched = $fluent->from('snatched AS sn')
                    ->select('t.name')
                    ->leftJoin('torrents AS t ON sn.torrentid = t.id')
-                   ->orderBy('sn.complete_date DESC')
-                   ->orderBy('sn.start_date DESC')
+                   ->orderBy("$column $ascdesc")
                    ->limit($pager['pdo']['limit'])
                    ->offset($pager['pdo']['offset']);
-
 if ($count > 0) {
     $heading = "
     <tr>
-        <th>{$lang['ad_snatched_torrents_name']}</th>
-        <th class='min-150'>{$lang['ad_snatched_torrents_torname']}</th>
-        <th>{$lang['ad_snatched_torrents_hnr']}</th>
-        <th>{$lang['ad_snatched_torrents_marked']}</th>
-        <th>{$lang['ad_snatched_torrents_announced']}</th>
-        <th>{$lang['ad_snatched_torrents_upload']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-        <th>{$lang['ad_snatched_torrents_download']}</th>") . "
-        <th>{$lang['ad_snatched_torrents_seedtime']}</th>
-        <th>{$lang['ad_snatched_torrents_leechtime']}</th>
-        <th>{$lang['ad_snatched_torrents_startdate']}</th>
-        <th>{$lang['ad_snatched_torrents_enddate']}</th>
-        <th>{$lang['ad_snatched_torrents_seeding']}</th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=1&amp;type={$link[1]}'>{$lang['ad_snatched_torrents_name']}</a></th>
+        <th class='min-150 has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=2&amp;type={$link[2]}'>{$lang['ad_snatched_torrents_torname']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=3&amp;type={$link[3]}'>{$lang['ad_snatched_torrents_hnr']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=4&amp;type={$link[4]}'>{$lang['ad_snatched_torrents_marked']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=5&amp;type={$link[5]}'>{$lang['ad_snatched_torrents_announced']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=6&amp;type={$link[6]}'>{$lang['ad_snatched_torrents_upload']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=7&amp;type={$link[7]}'>{$lang['ad_snatched_torrents_download']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=8&amp;type={$link[8]}'>{$lang['ad_snatched_torrents_seedtime']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=9&amp;type={$link[9]}'>{$lang['ad_snatched_torrents_leechtime']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=10&amp;type={$link[10]}'>{$lang['ad_snatched_torrents_startdate']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=11&amp;type={$link[11]}'>{$lang['ad_snatched_torrents_enddate']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=12&amp;type={$link[12]}'>{$lang['ad_snatched_torrents_seeding']}</a></th>
     </tr>";
     $body = '';
     foreach ($snatched as $row) {
-        $smallname = substr(format_comment($row['name']), 0, 35);
-        if ($smallname != format_comment($row['name'])) {
-            $smallname .= '...';
-        }
+        $smallname = format_comment($row['name']);
         $body .= '
     <tr>
         <td>' . format_username($row['userid']) . "</td>
@@ -145,8 +181,8 @@ if ($count > 0) {
         <td class="has-text-centered"><b>' . get_date((int) $row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
         <td class="has-text-centered"><b>' . format_comment($row['mark_of_cain']) . '</b></td>
         <td class="has-text-centered"><b>' . $row['timesann'] . '</b></td>
-        <td class="has-text-centered"><b>' . mksize($row['uploaded']) . '</b></td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td class="has-text-centered"><b>' . mksize($row['downloaded']) . '</b></td>') . '
+        <td class="has-text-centered"><b><span class="tooltipper" title="Real Upload: ' . mksize($row['real_uploaded']) . '">' . mksize($row['uploaded']) . '</span></b></td>
+        <td class="has-text-centered"><b><span class="tooltipper" title="Real Download: ' . mksize($row['real_downloaded']) . '">' . mksize($row['downloaded']) . '</span></b></td>
         <td class="has-text-centered"><b>' . get_snatched_color($row['seedtime']) . '</b></td>
         <td class="has-text-centered"><b>' . mkprettytime($row['leechtime']) . '</b></td>
         <td class="has-text-centered"><b>' . get_date((int) $row['start_date'], 'LONG', 0, 1) . '</b></td>';

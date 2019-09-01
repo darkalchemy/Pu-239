@@ -8,10 +8,10 @@ use Pu239\Database;
 use Pu239\Topic;
 
 /**
- * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string|void
  */
@@ -92,8 +92,8 @@ function breadcrumbs()
  * @param $url
  * @param $referer
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return array|bool|string
  */
@@ -146,9 +146,9 @@ function get_prepage($lang, $url, $referer)
  * @param $lang
  * @param $url
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -185,9 +185,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */
@@ -204,6 +204,8 @@ function get_secondarypage($lang, $queries, $path)
         'game_id',
         'userids',
         'userid',
+        'sort',
+        'type',
     ];
 
     if (in_array($list[0], $ignore)) {
@@ -236,9 +238,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */
@@ -270,6 +272,7 @@ function get_infopage($lang, $queries, $path)
         'sent',
         'search_what',
         'link',
+        'sort',
     ];
     $ignore2 = [
         'polls_manager',
@@ -443,9 +446,9 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */

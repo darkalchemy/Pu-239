@@ -22,6 +22,7 @@ $staffpicks .= "
                     <tr>
                         <th class='has-text-centered w-10 min-100'>{$lang['index_mow_type']}</th>
                         <th class='w-50 min-350'>{$lang['staff_picks']}</th>
+                        <th class='has-text-centered tooltipper' title='{$lang['index_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_leechers']}</th>
@@ -49,7 +50,7 @@ foreach ($staff_picks as $last) {
 if (count($staff_picks) === 0) {
     $staffpicks .= "
                         <tr>
-                            <td colspan='5'>{$lang['staff_picks_no_torrents']}</td>
+                            <td colspan='6'>{$lang['staff_picks_no_torrents']}</td>
                         </tr>";
 }
 $staffpicks .= '

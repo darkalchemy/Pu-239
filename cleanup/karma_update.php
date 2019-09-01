@@ -24,13 +24,15 @@ function karma_update($data)
     $fluent = $container->get(Database::class);
     if ($site_config['bonus']['on']) {
         $bmt = $site_config['bonus']['max_torrents'];
+        $last_activity = TIME_NOW - floor($site_config['tracker']['announce_interval']);
         $sql = $fluent->from('peers AS p')
                       ->select(null)
                       ->select('p.userid')
                       ->select('COUNT(p.torrent) AS tcount')
                       ->select('u.seedbonus')
                       ->innerJoin('users AS u ON p.userid = u.id')
-                      ->where('p.seeder = "yes"');
+                      ->where('p.seeder = "yes"')
+                      ->where('last_activity >= ?', $last_activity);
         if ($site_config['tracker']['connectable_check']) {
             $sql = $sql->where('connectable = "yes"');
         }

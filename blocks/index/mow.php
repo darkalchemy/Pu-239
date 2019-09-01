@@ -20,6 +20,7 @@ $torrents_mow .= "
                         <tr>
                             <th class='has-text-centered w-10 min-100'>{$lang['index_mow_type']}</th>
                             <th class='w-50 min-350'>{$lang['index_mow_title']}</th>
+                            <th class='has-text-centered tooltipper' title='{$lang['index_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
@@ -48,7 +49,7 @@ foreach ($motw as $last) {
 if (count($motw) === 0) {
     $torrents_mow .= "
                         <tr>
-                            <td colspan='5'>{$lang['index_mow_no']}!</td>
+                            <td colspan='6'>{$lang['index_mow_no']}!</td>
                         </tr>";
 }
 $torrents_mow .= '

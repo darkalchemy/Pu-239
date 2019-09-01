@@ -6,6 +6,7 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Image;
+use Pu239\Session;
 use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -210,10 +211,13 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
  */
 function torrent_tooltip_wrapper(array $data)
 {
-    global $container, $site_config;
+    global $container, $site_config, $lang;
 
     $cache = $container->get(Cache::class);
+    $cache->delete('torrent_wrapper_' . $data['id']);
     $torrent_wrapper = $cache->get('torrent_wrapper_' . $data['id']);
+    $session = $container->get(Session::class);
+    $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
     if ($torrent_wrapper === false || is_null($torrent_wrapper)) {
         $caticon = !empty($data['image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($data['image']) . "' class='tooltipper' alt='" . format_comment($data['cat']) . "' title='" . format_comment($data['cat']) . "' height='20px' width='auto'>" : format_comment($data['cat']);
         $torrent_wrapper = "
@@ -223,6 +227,16 @@ function torrent_tooltip_wrapper(array $data)
                             <a href='{$site_config['paths']['baseurl']}/details.php?id={$data['id']}'>
                                 " . torrent_tooltip($data['text'], $data['id'], $data['block_id'], $data['name'], $data['poster'], $data['uploader'], $data['added'], $data['size'], $data['seeders'], $data['leechers'], $data['imdb_id'], $data['rating'], $data['year'], $data['subtitles'], $data['audios'], $data['genre']) . "
                             </a>
+                        </td>
+                        <td class='has-text-centered'>
+                            <div class='level-center'>
+                                <div class='flex-inrow'>
+                                    <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$data['id']}" . $scheme . "' class='flex-item'>
+                                        <i class='icon-download icon tooltipper' aria-hidden='true' title='{$lang['index_download']}'></i>
+                                    </a>
+                                </div>
+                            </div>                       
+                        </td>
                         <td class='has-text-centered'>{$data['times_completed']}</td>
                         <td class='has-text-centered'>{$data['seeders']}</td>
                         <td class='has-text-centered'>{$data['leechers']}</td>

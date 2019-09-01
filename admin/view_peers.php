@@ -21,53 +21,94 @@ $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
     <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . $lang['wpeers_peer'] . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
-$pager = pager($peersperpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=view_peers&amp;');
+$valid_sort = [
+    'id',
+    'userid',
+    'name',
+    'ip',
+    'port',
+    'agent',
+    'uploaded',
+    'downloaded',
+    'connectable',
+    'seeder',
+    'started',
+    'ts',
+    'uploadoffset',
+    'downloadoffset',
+    'to_go',
+    'size',
+];
+$column = isset($_GET['sort'], $valid_sort[$_GET['sort']]) ? $valid_sort[$_GET['sort']] : 'started';
+$pagerlink = $ascdesc = '';
+$type = isset($_GET['type']) ? $_GET['type'] : 'desc';
+foreach ($valid_sort as $key => $value) {
+    if ($value === $column) {
+        switch (htmlsafechars($type)) {
+            case 'desc':
+                $ascdesc = 'DESC';
+                $linkascdesc = 'desc';
+                break;
+
+            default:
+                $ascdesc = '';
+                $linkascdesc = 'asc';
+                break;
+        }
+        $pagerlink = "sort={$key}&amp;type={$linkascdesc}&amp;";
+    }
+}
+for ($i = 0; $i <= count($valid_sort); ++$i) {
+    if (isset($_GET['sort']) && (int) $_GET['sort'] === $i) {
+        $link[$i] = isset($type) && $type === 'desc' ? 'asc' : 'desc';
+    } else {
+        $link[$i] = 'desc';
+    }
+}
+$pager = pager($peersperpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=view_peers&amp;' . $pagerlink);
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$results = $peer->get_all_peers($pager['pdo']['limit'], $pager['pdo']['offset']);
+$results = $peer->get_all_peers($pager['pdo']['limit'], $pager['pdo']['offset'], $column, $ascdesc);
 if (!empty($results)) {
     $heading = "
     <tr>
-        <th>{$lang['wpeers_user']}</th>
-        <th>{$lang['wpeers_torrent']}</th>
-        <th>{$lang['wpeers_ip']}</th>
-        <th>{$lang['wpeers_port']}</th>
-        <th>{$lang['wpeers_client']}</th>
-        <th>{$lang['wpeers_up']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-        <th>{$lang['wpeers_dn']}</th>") . "
-        <th>{$lang['wpeers_con']}</th>
-        <th>{$lang['wpeers_seed']}</th>
-        <th>{$lang['wpeers_start']}</th>
-        <th>{$lang['wpeers_last']}</th>
-        <th>{$lang['wpeers_upoff']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-        <th>{$lang['wpeers_dnoff']}</th>") . "
-        <th>{$lang['wpeers_togo']}</th>
-        <th>{$lang['wpeers_size']}</th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=1&amp;type={$link[1]}'>{$lang['wpeers_user']}</a></th>
+        <th class='has-text-centered min-150'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=2&amp;type={$link[2]}'>{$lang['wpeers_torrent']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=3&amp;type={$link[3]}'>{$lang['wpeers_ip']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=4&amp;type={$link[4]}'>{$lang['wpeers_port']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=5&amp;type={$link[5]}'>{$lang['wpeers_client']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=6&amp;type={$link[6]}'>{$lang['wpeers_up']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=7&amp;type={$link[7]}'>{$lang['wpeers_dn']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=8&amp;type={$link[8]}'>{$lang['wpeers_con']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=9&amp;type={$link[9]}'>{$lang['wpeers_seed']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=10&amp;type={$link[10]}'>{$lang['wpeers_start']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=11&amp;type={$link[11]}'>{$lang['wpeers_last']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=12&amp;type={$link[12]}'>{$lang['wpeers_upoff']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=13&amp;type={$link[13]}'>{$lang['wpeers_dnoff']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=14&amp;type={$link[14]}'>{$lang['wpeers_togo']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=15&amp;type={$link[15]}'>{$lang['wpeers_size']}</a></th>
     </tr>";
     $body = '';
     foreach ($results as $row) {
-        $smallname = substr(htmlsafechars($row['name']), 0, 25);
-        if (strlen($smallname) === 25) {
-            $smallname .= '...';
-        }
+        $smallname = format_comment($row['name']);
         $body .= '
     <tr>
-        <td>' . format_username((int) $row['userid']) . '</td>
+        <td class="has-text-centered">' . format_username((int) $row['userid']) . '</td>
         <td><a href="' . $site_config['paths']['baseurl'] . '/details.php?id=' . $row['torrent'] . '">' . $smallname . '</a></td>
-        <td>' . htmlsafechars($row['ip']) . '</td>
-        <td>' . $row['port'] . '</td>
-        <td>' . htmlsafechars(getagent($row['agent'], $row['peer_id'])) . '</td>
-        <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td>' . mksize($row['downloaded']) . '</td>') . '
-        <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td>' . get_date((int) $row['started'], 'DATE', 0, 1) . '</td>
-        <td>' . get_date((int) $row['ts'], 'DATE', 0, 1) . '</td>
-        <td>' . mksize($row['uploadoffset']) . '</td>' . ($site_config['site']['ratio_free'] ? '' : '
-        <td>' . mksize($row['downloadoffset']) . '</td>') . '
-        <td>' . mksize($row['to_go']) . '</td>
-        <td>' . mksize($row['size']) . '</td>
+        <td class="has-text-centered">' . htmlsafechars($row['ip']) . '</td>
+        <td class="has-text-centered">' . $row['port'] . '</td>
+        <td class="has-text-centered">' . htmlsafechars(getagent($row['agent'], $row['peer_id'])) . '</td>
+        <td class="has-text-centered">' . mksize($row['uploaded']) . '</td>
+        <td class="has-text-centered">' . mksize($row['downloaded']) . '</td>
+        <td class="has-text-centered">' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
+        <td class="has-text-centered">' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
+        <td class="has-text-centered">' . get_date((int) $row['started'], 'DATE', 0, 1) . '</td>
+        <td class="has-text-centered">' . get_date((int) $row['ts'], 'DATE', 0, 1) . '</td>
+        <td class="has-text-centered">' . mksize($row['uploadoffset']) . '</td>
+        <td class="has-text-centered">' . mksize($row['downloadoffset']) . '</td>
+        <td class="has-text-centered">' . mksize($row['to_go']) . '</td>
+        <td class="has-text-centered">' . mksize($row['size']) . '</td>
     </tr>';
     }
 

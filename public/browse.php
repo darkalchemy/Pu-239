@@ -87,7 +87,7 @@ $valid_search = [
 ];
 if (isset($_GET['sort'], $_GET['type'])) {
     $column = $ascdesc = '';
-    $_valid_sort = [
+    $valid_sort = [
         'id',
         'name',
         'numfiles',
@@ -99,7 +99,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
         'leechers',
         'owner',
     ];
-    $column = isset($_GET['sort'], $_valid_sort[(int) $_GET['sort']]) ? $_valid_sort[(int) $_GET['sort']] : $_valid_sort[0];
+    $column = isset($_GET['sort'], $valid_sort[$_GET['sort']]) ? $valid_sort[$_GET['sort']] : 'added';
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
             $ascdesc = '';

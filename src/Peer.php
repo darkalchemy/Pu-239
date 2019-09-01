@@ -120,46 +120,43 @@ class Peer
     }
 
     /**
-     * @param int $limit
-     * @param int $offset
+     * @param int    $limit
+     * @param int    $offset
+     * @param string $orderby
+     * @param string $ascdesc
      *
      * @throws Exception
      *
-     * @return array|bool|mixed
+     * @return bool|mixed
      */
-    public function get_all_peers(int $limit, int $offset)
+    public function get_all_peers(int $limit, int $offset, string $orderby, string $ascdesc)
     {
-        $peers = $this->cache->get('torrent_peers_all_' . $limit . '_' . $offset);
-        if ($peers === false || is_null($peers)) {
-            $peers = $this->fluent->from('peers AS p')
-                                  ->select(null)
-                                  ->select('p.id')
-                                  ->select('p.torrent')
-                                  ->select('connectable')
-                                  ->select('p.seeder')
-                                  ->select('p.peer_id')
-                                  ->select('INET6_NTOA(p.ip) AS ip')
-                                  ->select('p.port')
-                                  ->select('p.uploaded')
-                                  ->select('p.downloaded')
-                                  ->select('p.userid')
-                                  ->select('p.agent')
-                                  ->select('p.to_go')
-                                  ->select('p.uploadoffset')
-                                  ->select('p.downloadoffset')
-                                  ->select('p.started')
-                                  ->select('t.size')
-                                  ->select('(UNIX_TIMESTAMP(NOW()) - p.last_action) AS announcetime')
-                                  ->select('p.last_action AS ts')
-                                  ->select('t.name')
-                                  ->leftJoin('torrents AS t On p.torrent = t.id')
-                                  ->orderBy('p.id')
-                                  ->limit($limit)
-                                  ->offset($offset)
-                                  ->fetchAll();
-
-            $this->cache->set('torrent_peers_all_' . $limit . '_' . $offset, $peers, 60);
-        }
+        $peers = $this->fluent->from('peers AS p')
+                              ->select(null)
+                              ->select('p.id')
+                              ->select('p.torrent')
+                              ->select('connectable')
+                              ->select('p.seeder')
+                              ->select('p.peer_id')
+                              ->select('INET6_NTOA(p.ip) AS ip')
+                              ->select('p.port')
+                              ->select('p.uploaded')
+                              ->select('p.downloaded')
+                              ->select('p.userid')
+                              ->select('p.agent')
+                              ->select('p.to_go')
+                              ->select('p.uploadoffset')
+                              ->select('p.downloadoffset')
+                              ->select('p.started')
+                              ->select('t.size')
+                              ->select('(UNIX_TIMESTAMP(NOW()) - p.last_action) AS announcetime')
+                              ->select('p.last_action AS ts')
+                              ->select('t.name')
+                              ->leftJoin('torrents AS t On p.torrent = t.id')
+                              ->orderBy("$orderby $ascdesc")
+                              ->limit($limit)
+                              ->offset($offset)
+                              ->fetchAll();
 
         return $peers;
     }

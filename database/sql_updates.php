@@ -3943,4 +3943,18 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `users` MODIFY COLUMN `seedbonus` decimal(15,2) NOT NULL DEFAULT '200.00'",
         'flush' => true,
     ],
+    [
+        'id' => 1567318845,
+        'info' => 'Rename page name',
+        'date' => '01 Sept, 2019',
+        'query' => "UPDATE `staffpanel` SET `page_name` = 'Peers Overview' WHERE `file_name` = 'staffpanel.php?tool=view_peers'",
+        'flush' => false,
+    ],
+    [
+        'id' => 1567318846,
+        'info' => 'Rename page name',
+        'date' => '01 Sept, 2019',
+        'query' => "UPDATE `staffpanel` SET `page_name` = 'Images Overview' WHERE `file_name` = 'staffpanel.php?tool=manage_images'",
+        'flush' => true,
+    ],
 ];
