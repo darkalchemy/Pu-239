@@ -1,4 +1,5 @@
 ### 31 Aug, 2019
+update: run all updates in a loop update_db.php  
 fix: coder access to staff panel  
 add: delete wiki items  
 update: Adminer 4.7.3  
