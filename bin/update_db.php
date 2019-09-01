@@ -75,7 +75,7 @@ function update_database(array $argv, array $sql_updates, bool $all)
                 ->prepare($sql);
             $query->execute();
             $values = [
-                'id'    => $id,
+                'id' => $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
@@ -119,13 +119,14 @@ function update_database(array $argv, array $sql_updates, bool $all)
                 die(implode("\n", $comment) . "\n");
             }
             echo implode("\n", $comment) . "\n";
+
             return;
         } else {
             echo implode("\n", $comment) . "\n";
         }
     } elseif ($argv[1] === 'ignore') {
         $values = [
-            'id'    => (int) $id,
+            'id' => (int) $id,
             'query' => $sql,
         ];
         $fluent->insertInto('database_updates')
@@ -141,10 +142,11 @@ function update_database(array $argv, array $sql_updates, bool $all)
  * @param array $sql_updates
  * @param bool  $all
  *
- * @return array
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
  */
 function get_updates(array $argv, array $sql_updates, bool $all)
 {

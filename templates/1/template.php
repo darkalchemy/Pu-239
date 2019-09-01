@@ -208,7 +208,7 @@ function stdfoot(array $stdfoot = [])
     $query_stats = $cache->get('query_stats_' . $session_id);
     $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['site']['use_12_hour'];
     $header = $uptime = $htmlfoot = $now = '';
-    $debug = $site_config['db']['debug'] && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']) ? true : false;
+    $debug = $site_config['db']['debug'] && !empty($CURUSER['id']) && has_access($CURUSER['class'], UC_STAFF, 'coder') ? true : false;
     $queries = !empty($query_stats) ? count($query_stats) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);

@@ -13,11 +13,9 @@ $lang = array_merge($lang, load_language('ad_class_promo'));
 global $container, $site_config, $CURUSER;
 
 $fluent = $container->get(Database::class);
-if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
-    stderr($lang['classpromo_error'], $lang['classpromo_denied']);
-}
-$pconf = sql_query('SELECT * FROM class_promo ORDER BY id ') or sqlerr(__FILE__, __LINE__);
-while ($ac = mysqli_fetch_assoc($pconf)) {
+$promos = $fluent->from('class_promo')
+    ->orderBy('id');
+foreach ($promos as $ac) {
     $class_config[$ac['name']]['id'] = $ac['id'];
     $class_config[$ac['name']]['name'] = $ac['name'];
     $class_config[$ac['name']]['min_ratio'] = $ac['min_ratio'];
@@ -67,13 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['name'])) {
             $class_id = (int) $_POST['name'];
             $name = $fluent->from('class_config')
-                           ->select(null)
-                           ->select('name')
-                           ->where('value = ?', $class_id)
-                           ->where('name != ?', 'UC_STAFF')
-                           ->where('name != ?', 'UC_MIN')
-                           ->where('name != ?', 'UC_MAX')
-                           ->fetch('name');
+                ->select(null)
+                ->select('name')
+                ->where('value = ?', $class_id)
+                ->where('name != ?', 'UC_STAFF')
+                ->where('name != ?', 'UC_MIN')
+                ->where('name != ?', 'UC_MAX')
+                ->fetch('name');
         } else {
             $session->set('is-error', $lang['classpromo_err_clsname']);
         }

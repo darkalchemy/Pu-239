@@ -28,7 +28,8 @@ if (isset($_POST['form']) != 1) {
     $arr = mysqli_fetch_assoc($res);
     /*if ($auth->hasRole(Roles::UPLOADER)) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
-    } else*/if ($arr['status'] === 'pending') {
+    } else*/
+    if ($arr['status'] === 'pending') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
     } elseif ($arr['status'] === 'rejected') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
@@ -39,10 +40,10 @@ if (isset($_POST['form']) != 1) {
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($user['uploaded'], $user['downloaded']);
         $connect = $fluent->from('peers')
-                          ->select(null)
-                          ->select('connectable')
-                          ->where('userid = ?', $user['id'])
-                          ->fetch();
+            ->select(null)
+            ->select('connectable')
+            ->where('userid = ?', $user['id'])
+            ->fetch();
         if (!empty($connect)) {
             $Conn_Y = 'yes';
             if ($connect == $Conn_Y) {
@@ -165,8 +166,8 @@ if (isset($_POST['form']) != 1) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
     $dupe = $fluent->from('uploadapp')
-                   ->where('userid = ?', $_POST['userid'])
-                   ->fetch();
+        ->where('userid = ?', $_POST['userid'])
+        ->fetch();
     if (!empty($dupe)) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
     }
@@ -201,8 +202,8 @@ if (isset($_POST['form']) != 1) {
         'seeding' => htmlsafechars($_POST['seeding']),
     ];
     $res = $fluent->insertInto('uploadapp')
-                  ->values($values)
-                  ->execute();
+        ->values($values)
+        ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
@@ -211,10 +212,10 @@ if (isset($_POST['form']) != 1) {
         $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "][b]{$user['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
         $dt = TIME_NOW;
         $subres = $fluent->from('users')
-                         ->select(null)
-                         ->select('id')
-                         ->where('class >= ?', UC_STAFF)
-                         ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->where('class >= ?', UC_STAFF)
+            ->fetchAll();
 
         foreach ($subres as $arr) {
             $msgs_buffer[] = [

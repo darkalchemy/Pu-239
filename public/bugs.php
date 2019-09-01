@@ -35,7 +35,7 @@ $cache = $container->get(Cache::class);
 $session = $container->get(Session::class);
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($curuser['class'] < UC_MAX) {
+        if (!has_access($curuser['class'], UC_MAX, 'coder')) {
             stderr($lang['stderr_error'], $lang['stderr_only_coder']);
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
@@ -45,13 +45,13 @@ if ($action === 'viewbug') {
             stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
         }
         $bug = $fluent->from('bugs')
-                      ->where('id = ?', $id)
-                      ->fetch();
+            ->where('id = ?', $id)
+            ->fetch();
         $user = $user_class->getUserFromId($bug['sender']);
         $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b][code]' . htmlsafechars($bug['problem']) . "[/code]has been treated by one of our coders, and is done.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = sprintf($lang['is_fixed'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -59,11 +59,11 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b][code]' . htmlsafechars($bug['problem']) . "[/code]has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site']['name']}'s coders.\n\n\n$precomment";
+                $msg = sprintf($lang['is_ignored'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
                 break;
 
             case 'na':
-                $msg = 'Hello ' . htmlsafechars($user['username']) . ".\nYour bug: [b]" . htmlsafechars($bug['title']) . '[/b][code]' . htmlsafechars($bug['problem']) . "[/code]needs more information.\n\n\n$precomment";
+                $msg = sprintf($lang['is_na'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
         }
         $msgs_buffer[] = [
             'sender' => $curuser['id'],
@@ -79,9 +79,9 @@ if ($action === 'viewbug') {
             'comment' => !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '',
         ];
         $fluent->update('bugs')
-               ->set($update)
-               ->where('id = ?', $id)
-               ->execute();
+            ->set($update)
+            ->where('id = ?', $id)
+            ->execute();
         $cache->delete('bug_mess_');
         header("location: {$_SERVER['PHP_SELF']}?action=bugs");
     }
@@ -90,17 +90,17 @@ if ($action === 'viewbug') {
         stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
     }
     if (!has_access($curuser['class'], UC_STAFF, 'coder')) {
-        stderr($lang['stderr_error'], 'Only staff can view bugs.');
+        stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
     }
     $bug = $fluent->from('bugs AS b')
-                  ->select('u.username')
-                  ->select('u.class')
-                  ->select('s.username AS st')
-                  ->select('s.class AS stclass')
-                  ->leftJoin('users AS u ON b.sender = u.id')
-                  ->leftJoin('users AS s ON b.staff = u.id')
-                  ->where('b.id = ?', $id)
-                  ->fetch();
+        ->select('u.username')
+        ->select('u.class')
+        ->select('s.username AS st')
+        ->select('s.class AS stclass')
+        ->leftJoin('users AS u ON b.sender = u.id')
+        ->leftJoin('users AS s ON b.staff = u.id')
+        ->where('b.id = ?', $id)
+        ->fetch();
 
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
@@ -192,37 +192,37 @@ if ($action === 'viewbug') {
         stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
     }
     $count = $fluent->from('bugs')
-                    ->select(null)
-                    ->select('COUNT(id) AS count')
-                    ->fetch('count');
+        ->select(null)
+        ->select('COUNT(id) AS count')
+        ->fetch('count');
     $perpage = 25;
     $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/bugs.php?action=bugs&amp;');
     $bugs = $fluent->from('bugs AS b')
-                   ->select(null)
-                   ->select('b.id')
-                   ->select('b.sender')
-                   ->select('b.added')
-                   ->select('b.priority')
-                   ->select('b.problem')
-                   ->select('b.comment')
-                   ->select('b.status')
-                   ->select('b.staff')
-                   ->select('b.title')
-                   ->select('u.username')
-                   ->select('u.class')
-                   ->select('s.username AS st')
-                   ->select('s.class AS stclass')
-                   ->leftJoin('users AS u ON b.sender = u.id')
-                   ->leftJoin('users AS s ON b.staff = s.id')
-                   ->orderBy('b.added DESC')
-                   ->limit($pager['pdo']['limit'])
-                   ->offset($pager['pdo']['offset']);
+        ->select(null)
+        ->select('b.id')
+        ->select('b.sender')
+        ->select('b.added')
+        ->select('b.priority')
+        ->select('b.problem')
+        ->select('b.comment')
+        ->select('b.status')
+        ->select('b.staff')
+        ->select('b.title')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('s.username AS st')
+        ->select('s.class AS stclass')
+        ->leftJoin('users AS u ON b.sender = u.id')
+        ->leftJoin('users AS s ON b.staff = s.id')
+        ->orderBy('b.added DESC')
+        ->limit($pager['pdo']['limit'])
+        ->offset($pager['pdo']['offset']);
 
     $na_count = $fluent->from('bugs')
-                       ->select(null)
-                       ->select('COUNT(id) AS count')
-                       ->where('status = "na"')
-                       ->fetch('count');
+        ->select(null)
+        ->select('COUNT(id) AS count')
+        ->where('status = "na"')
+        ->fetch('count');
 
     if ($count > 0) {
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
@@ -305,10 +305,12 @@ if ($action === 'viewbug') {
             'added' => $dt,
         ];
         $result = $fluent->insertInto('bugs')
-                         ->values($values)
-                         ->execute();
+            ->values($values)
+            ->execute();
         $cache->delete('bug_mess_');
+
         if ($result) {
+            send_staff_message($values, (int) $result, $lang);
             stderr($lang['stderr_sucess'], sprintf($lang['stderr_sucess_2'], $priority));
         } else {
             stderr($lang['stderr_error'], $lang['stderr_something_is_wrong']);
@@ -343,4 +345,29 @@ if ($action === 'viewbug') {
     $HTMLOUT .= main_table($body) . '
     </form>';
 }
+
+function send_staff_message(array $values, int $bug_id, array $lang)
+{
+    global $container, $site_config;
+
+    $fluent = $container->get(Database::class);
+    $messages_class = $container->get(Message::class);
+    $user_class = $container->get(User::class);
+    $user = $user_class->getUserFromId($values['sender']);
+    $link = "{$lang['posted_by']}: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$values['sender']}]{$user['username']}[/url]";
+    $subject = $lang['new_report'];
+    $msg = "[url={$site_config['paths']['baseurl']}/bugs.php?action=viewbug&id={$bug_id}][h1]{$values['title']}[/h1][/url][code]{$values['problem']}[/code]\n{$link}";
+    foreach ($site_config['is_staff'] as $key => $userid) {
+        $msgs_buffer[] = [
+            'receiver' => $userid,
+            'added' => TIME_NOW,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+    }
+    if (!empty($msgs_buffer)) {
+        $messages_class->insert($msgs_buffer);
+    }
+}
+
 echo stdhead($lang['header']) . wrapper($HTMLOUT) . stdfoot();

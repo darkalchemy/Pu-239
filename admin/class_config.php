@@ -19,11 +19,10 @@ global $container, $CURUSER, $site_config;
 
 $style = get_stylesheet();
 $session = $container->get(Session::class);
-if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
-    stderr($lang['classcfg_error'], $lang['classcfg_denied']);
-}
-$pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__, __LINE__);
-while ($ac = mysqli_fetch_assoc($pconf)) {
+$all_classes = $fluent->from('class_config')
+    ->where('template = ', $style)
+    ->orderBy('value');
+foreach ($all_classes as $ac) {
     $class_config[$ac['name']]['value'] = $ac['value'];
     $class_config[$ac['name']]['classname'] = $ac['classname'];
     $class_config[$ac['name']]['classcolor'] = $ac['classcolor'];
@@ -55,48 +54,48 @@ function update_forum_classes(int $value, string $direction)
     $fluent = $container->get(Database::class);
     if ($direction === 'increment') {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Literal('min_class_read + 1')])
-               ->where('min_class_read >= ?', $value)
-               ->execute();
+            ->set(['min_class_read' => new Literal('min_class_read + 1')])
+            ->where('min_class_read >= ?', $value)
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Literal('min_class_write + 1')])
-               ->where('min_class_write >= ?', $value)
-               ->execute();
+            ->set(['min_class_write' => new Literal('min_class_write + 1')])
+            ->where('min_class_write >= ?', $value)
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Literal('min_class_create + 1')])
-               ->where('min_class_create >= ?', $value)
-               ->execute();
+            ->set(['min_class_create' => new Literal('min_class_create + 1')])
+            ->where('min_class_create >= ?', $value)
+            ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Literal('min_delete_view_class + 1')])
-               ->where('min_delete_view_class >= ?', $value)
-               ->execute();
+            ->set(['min_delete_view_class' => new Literal('min_delete_view_class + 1')])
+            ->where('min_delete_view_class >= ?', $value)
+            ->execute();
     } else {
         $fluent->update('forums')
-               ->set(['min_class_read' => new Literal('min_class_read - 1')])
-               ->where('min_class_read >= ?', $value)
-               ->where('min_class_read > 0')
-               ->execute();
+            ->set(['min_class_read' => new Literal('min_class_read - 1')])
+            ->where('min_class_read >= ?', $value)
+            ->where('min_class_read > 0')
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_write' => new Literal('min_class_write - 1')])
-               ->where('min_class_write >= ?', $value)
-               ->where('min_class_write>0')
-               ->execute();
+            ->set(['min_class_write' => new Literal('min_class_write - 1')])
+            ->where('min_class_write >= ?', $value)
+            ->where('min_class_write>0')
+            ->execute();
 
         $fluent->update('forums')
-               ->set(['min_class_create' => new Literal('min_class_create - 1')])
-               ->where('min_class_create >= ?', $value)
-               ->where('min_class_create>0')
-               ->execute();
+            ->set(['min_class_create' => new Literal('min_class_create - 1')])
+            ->where('min_class_create >= ?', $value)
+            ->where('min_class_create>0')
+            ->execute();
 
         $fluent->update('forum_config')
-               ->set(['min_delete_view_class' => new Literal('min_delete_view_class - 1')])
-               ->where('min_delete_view_class >= ?', $value)
-               ->where('min_delete_view_class>0')
-               ->execute();
+            ->set(['min_delete_view_class' => new Literal('min_delete_view_class - 1')])
+            ->where('min_delete_view_class >= ?', $value)
+            ->where('min_delete_view_class>0')
+            ->execute();
     }
 }
 
@@ -132,10 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'classpic' => is_array($classpic) ? implode('|', $classpic) : $classpic,
                     ];
                     $fluent->update('class_config')
-                           ->set($set)
-                           ->where('template = ?', $style)
-                           ->where('name = ?', $current_name)
-                           ->execute();
+                        ->set($set)
+                        ->where('template = ?', $style)
+                        ->where('name = ?', $current_name)
+                        ->execute();
 
                     write_class_files($style);
                     $edited = true;
@@ -168,18 +167,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $color = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
             $color = str_replace('#', '', "$color");
             $pic = isset($_POST['pic']) ? htmlsafechars($_POST['pic']) : '';
-
-            $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ") or sqlerr(__FILE__, __LINE__);
-            while ($arr = mysqli_fetch_array($res)) {
-                $old_max = $arr['value'];
-                $new_max = $arr['value'] + 1;
-                sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'") or sqlerr(__FILE__, __LINE__);
+            $res = $fluent->from('class_config')
+                ->where("name = 'UC_MAX'");
+            foreach ($res as $arr) {
+                $update = [
+                    'value' => $arr['value'] + 1,
+                ];
+                $fluent->update('class_config')
+                    ->set($update)
+                    ->where("name = 'UC_MAX")
+                    ->execute();
             }
-            $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
-            while ($arr = mysqli_fetch_array($res)) {
-                if ($value <= $arr['value']) {
-                    $new_staff = $arr['value'] + 1;
-                    sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'") or sqlerr(__FILE__, __LINE__);
+
+            $res = $fluent->from('class_config')
+                ->where("name = 'UC_STAFF'");
+            foreach ($res as $arr) {
+                foreach ($res as $arr) {
+                    if ($value <= $arr['value']) {
+                        $update = [
+                            'value' => $arr['value'] + 1,
+                        ];
+                        $fluent->update('class_config')
+                            ->set($update)
+                            ->where("name = 'UC_STAFF")
+                            ->execute();
+                    }
                 }
             }
             $i = $old_max;
@@ -199,8 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $stylesheets = $fluent->from('stylesheets')
-                                  ->select(null)
-                                  ->select('id');
+                ->select(null)
+                ->select('id');
 
             $class_id = false;
             foreach ($stylesheets as $stylesheet) {
@@ -213,8 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'template' => $stylesheet['id'],
                 ];
                 $class_id = $fluent->insertInto('class_config')
-                                   ->values($values)
-                                   ->execute();
+                    ->values($values)
+                    ->execute();
 
                 write_class_files($stylesheet['id']);
             }
@@ -229,56 +241,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($mode === 'remove') {
         $value = (int) $_POST['class'];
         $deleted = $fluent->deleteFrom('class_config')
-                          ->where('value = ?', $value)
-                          ->where('name != ?', 'UC_MIN')
-                          ->where('name != ?', 'UC_MAX')
-                          ->where('name != ?', 'UC_STAFF')
-                          ->execute();
+            ->where('value = ?', $value)
+            ->where('name != ?', 'UC_MIN')
+            ->where('name != ?', 'UC_MAX')
+            ->where('name != ?', 'UC_STAFF')
+            ->execute();
         if ($deleted) {
             $max = $fluent->from('class_config')
-                          ->select(null)
-                          ->select('value')
-                          ->where('name = ?', 'UC_MAX')
-                          ->fetch('value');
+                ->select(null)
+                ->select('value')
+                ->where('name = ?', 'UC_MAX')
+                ->fetch('value');
             $set = [
                 'value' => new Literal('value - 1'),
             ];
             $result = $fluent->update('class_config')
-                             ->set($set)
-                             ->where('name = ?', 'UC_MAX')
-                             ->execute();
+                ->set($set)
+                ->where('name = ?', 'UC_MAX')
+                ->execute();
             $fluent->update('class_config')
-                   ->set($set)
-                   ->where('name = ?', 'UC_STAFF')
-                   ->execute();
+                ->set($set)
+                ->where('name = ?', 'UC_STAFF')
+                ->execute();
             $fluent->update('class_config')
-                   ->set($set)
-                   ->where('value > ?', $value)
-                   ->where('value <= ?', $max)
-                   ->where('name != ?', 'UC_MIN')
-                   ->where('name != ?', 'UC_MAX')
-                   ->where('name != ?', 'UC_STAFF')
-                   ->execute();
+                ->set($set)
+                ->where('value > ?', $value)
+                ->where('value <= ?', $max)
+                ->where('name != ?', 'UC_MIN')
+                ->where('name != ?', 'UC_MAX')
+                ->where('name != ?', 'UC_STAFF')
+                ->execute();
             $set = [
                 'class' => new Literal('class - 1'),
             ];
             $fluent->update('users')
-                   ->set($set)
-                   ->where('class > ?', $value)
-                   ->where('class <= ?', $max)
-                   ->execute();
+                ->set($set)
+                ->where('class > ?', $value)
+                ->where('class <= ?', $max)
+                ->execute();
             $set = [
                 'av_class' => new Literal('av_class - 1'),
             ];
             $fluent->update('staffpanel')
-                   ->set($set)
-                   ->where('av_class > ?', $value)
-                   ->where('av_class <= ?', $max)
-                   ->execute();
+                ->set($set)
+                ->where('av_class > ?', $value)
+                ->where('av_class <= ?', $max)
+                ->execute();
 
             $stylesheets = $fluent->from('stylesheets')
-                                  ->select(null)
-                                  ->select('id');
+                ->select(null)
+                ->select('id');
             foreach ($stylesheets as $stylesheet) {
                 write_class_files($stylesheet['id']);
             }
@@ -312,8 +324,8 @@ $HTMLOUT .= "
                 <tbody>";
 
 $classes = $fluent->from('class_config')
-                  ->where('template = ?', $style)
-                  ->orderBy('value');
+    ->where('template = ?', $style)
+    ->orderBy('value');
 
 $base = [
     'UC_MIN',

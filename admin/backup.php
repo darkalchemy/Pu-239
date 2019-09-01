@@ -12,10 +12,6 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_backup'));
 global $container, $CURUSER, $site_config;
 
-if (!in_array($CURUSER['id'], $site_config['is_staff'])) {
-    stderr($lang['backup_stderr'], $lang['backup_stderr1']);
-}
-
 $dt = TIME_NOW;
 $HTMLOUT = '';
 $required_class = UC_MAX;

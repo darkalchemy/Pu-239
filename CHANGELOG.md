@@ -1,4 +1,6 @@
 ### 31 Aug, 2019
+remove: redundant staff check  
+update: send PM to staff when new bugs are posted  
 update: run all updates in a loop update_db.php  
 fix: coder access to staff panel  
 add: delete wiki items  
