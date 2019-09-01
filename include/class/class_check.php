@@ -67,9 +67,9 @@ function class_check(int $class = UC_STAFF)
 /**
  * @param $script
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int
  */

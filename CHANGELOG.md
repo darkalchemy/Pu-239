@@ -1,4 +1,5 @@
 ### 31 Aug, 2019
+update: form seedbonus userdetails.php  
 remove: redundant staff check  
 update: send PM to staff when new bugs are posted  
 update: run all updates in a loop update_db.php  
