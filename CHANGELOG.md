@@ -1,4 +1,6 @@
 ### 01 Sept, 2019
+fix: typo karma_update.php  
+update: truncate peers when removing all torrents remove_torrents.php  
 update: add sort by column view_peers.php snatched_torrents.php  
 update: check last_activity before paying seedbonus  
 add: download links to index page torrent blocks  
