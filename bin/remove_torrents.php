@@ -31,6 +31,8 @@ $query = 'TRUNCATE `torrents`';
 $pdo->exec($query);
 $query = 'TRUNCATE `snatched`';
 $pdo->exec($query);
+$query = 'TRUNCATE `peers`';
+$pdo->exec($query);
 $query = 'TRUNCATE `files`';
 $pdo->exec($query);
 $query = 'SET FOREIGN_KEY_CHECKS = 1';
