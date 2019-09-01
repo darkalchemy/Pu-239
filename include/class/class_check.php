@@ -44,7 +44,7 @@ function class_check(int $class = UC_STAFF)
     $userid = $user['id'];
     if (!has_access($user['class'], $class, 'coder')) {
         write_info("{$user['username']} attempted to access a staff page");
-        stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name((int) $class) . 's and above. Read the FAQ.');
+        stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name((int) $class) . ' and above. Read the FAQ.');
     }
     if ($user['class'] > UC_MAX || (!in_array($user['id'], $site_config['is_staff']) && (!$user['roles_mask'] & Roles::CODER))) {
         $ip = getip();
@@ -67,9 +67,9 @@ function class_check(int $class = UC_STAFF)
 /**
  * @param $script
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return int
  */
