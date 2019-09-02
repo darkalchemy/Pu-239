@@ -1,3 +1,7 @@
+### 02 Sept, 2019
+fix: image quoting function_bbcode.php  
+fix: memcache.php  
+
 ### 01 Sept, 2019
 update: increase max torrent size  
 fix: typo karma_update.php  

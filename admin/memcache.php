@@ -91,9 +91,10 @@ function sendMemcacheCommands($command)
  */
 function sendMemcacheCommand(string $server, int $port, string $command)
 {
-    $s = @fsockopen($server, $port);
-    if (!$s) {
-        die("Can't connect to: {$server}:{$port}");
+    try {
+        $s = fsockopen($server, $port);
+    } catch (Exception $e) {
+        die("Can't connect to: {$server}:{$port}\n" . $e->getMessage());
     }
     fwrite($s, $command . "\r\n");
     $buf = '';
@@ -156,7 +157,7 @@ function parseMemcacheResults($str)
 function dumpCacheSlab($server, $slabId, $limit)
 {
     list($host, $port) = explode(':', $server);
-    $resp = sendMemcacheCommand($host, $port, 'stats cachedump ' . $slabId . ' ' . $limit);
+    $resp = sendMemcacheCommand($host, (int) $port, 'stats cachedump ' . $slabId . ' ' . $limit);
 
     return $resp;
 }
@@ -169,7 +170,7 @@ function dumpCacheSlab($server, $slabId, $limit)
 function flushServer($server)
 {
     list($host, $port) = explode(':', $server);
-    $resp = sendMemcacheCommand($host, $port, 'flush_all');
+    $resp = sendMemcacheCommand($host, (int) $port, 'flush_all');
 
     return $resp;
 }
@@ -457,21 +458,21 @@ if (isset($_GET['IMG'])) {
 
         $x1 = $x + $w - 1;
         $y1 = $y + $h - 1;
-        imagerectangle($im, $x, $y1, $x1 + 1, $y + 1, $col_black);
+        imagerectangle($im, $x, (int) $y1, $x1 + 1, $y + 1, $col_black);
         if ($y1 > $y) {
-            imagefilledrectangle($im, $x, $y, $x1, $y1, $color2);
+            imagefilledrectangle($im, $x, (int) $y, $x1, $y1, $color2);
         } else {
-            imagefilledrectangle($im, $x, $y1, $x1, $y, $color2);
+            imagefilledrectangle($im, $x, (int) $y1, $x1, $y, $color2);
         }
-        imagerectangle($im, $x, $y1, $x1, $y, $color1);
+        imagerectangle($im, $x, (int) $y1, $x1, $y, $color1);
         if ($text) {
             if ($placeindex > 0) {
                 if ($placeindex < 16) {
                     $px = 5;
                     $py = $placeindex * 12 + 6;
-                    imagefilledrectangle($im, $px + 90, $py + 3, $px + 90 - 4, $py - 3, $color2);
+                    imagefilledrectangle($im, $px + 90, (int) $py + 3, $px + 90 - 4, $py - 3, $color2);
                     imageline($im, $x, $y + $h / 2, $px + 90, $py, $color2);
-                    imagestring($im, 2, $px, $py - 6, $text, $color1);
+                    imagestring($im, 2, (int) $px, (int) $py - 6, $text, $color1);
                 } else {
                     if ($placeindex < 31) {
                         $px = $x + 40 * 2;
@@ -480,12 +481,12 @@ if (isset($_GET['IMG'])) {
                         $px = $x + 40 * 2 + 100 * (int) ($placeindex - 15 / 15);
                         $py = ($placeindex % 15) * 12 + 6;
                     }
-                    imagefilledrectangle($im, $px, $py + 3, $px - 4, $py - 3, $color2);
+                    imagefilledrectangle($im, $px, (int) $py + 3, $px - 4, $py - 3, $color2);
                     imageline($im, $x + $w, $y + $h / 2, $px, $py, $color2);
-                    imagestring($im, 2, $px + 2, $py - 6, $text, $color1);
+                    imagestring($im, 2, (int) $px + 2, (int) $py - 6, $text, $color1);
                 }
             } else {
-                imagestring($im, 4, $x + 5, $y1 - 16, $text, $color1);
+                imagestring($im, 4, (int) $x + 5, (int) $y1 - 16, $text, $color1);
             }
         }
     }
@@ -508,9 +509,9 @@ if (isset($_GET['IMG'])) {
         $w = deg2rad((360 + $start + ($end - $start) / 2) % 360);
         if (function_exists('imagefilledarc')) {
             // exists only if GD 2.0.1 is avaliable
-            imagefilledarc($im, $centerX + 1, $centerY + 1, $diameter, $diameter, $start, $end, $color1, IMG_ARC_PIE);
-            imagefilledarc($im, $centerX, $centerY, $diameter, $diameter, $start, $end, $color2, IMG_ARC_PIE);
-            imagefilledarc($im, $centerX, $centerY, $diameter, $diameter, $start, $end, $color1, IMG_ARC_NOFILL | IMG_ARC_EDGED);
+            imagefilledarc($im, $centerX + 1, $centerY + 1, $diameter, $diameter, (int) $start, (int) $end, $color1, IMG_ARC_PIE);
+            imagefilledarc($im, $centerX, $centerY, $diameter, $diameter, (int) $start, (int) $end, $color2, IMG_ARC_PIE);
+            imagefilledarc($im, $centerX, $centerY, $diameter, $diameter, (int) $start, (int) $end, $color1, IMG_ARC_NOFILL | IMG_ARC_EDGED);
         } else {
             imagearc($im, $centerX, $centerY, $diameter, $diameter, $start, $end, $color2);
             imageline($im, $centerX, $centerY, $centerX + cos(deg2rad($start)) * $r, $centerY + sin(deg2rad($start)) * $r, $color2);
@@ -522,9 +523,9 @@ if (isset($_GET['IMG'])) {
         if ($text) {
             if ($placeindex > 0) {
                 imageline($im, $centerX + $r * cos($w) / 2, $centerY + $r * sin($w) / 2, $diameter, $placeindex * 12, $color1);
-                imagestring($im, 4, $diameter, $placeindex * 12, $text, $color1);
+                imagestring($im, 4, (int) $diameter, (int) $placeindex * 12, $text, $color1);
             } else {
-                imagestring($im, 4, $centerX + $r * cos($w) / 2, $centerY + $r * sin($w) / 2, $text, $color1);
+                imagestring($im, 4, intval($centerX + $r * cos($w) / 2), intval($centerY + $r * sin($w) / 2), $text, $color1);
             }
         }
     }
@@ -830,14 +831,14 @@ switch ($_GET['op']) {
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
-        $session->set('is-success', "Deleting $theKey: $r");
+        $session->set('is-success', "Deleting $theKey: " . json_encode($r, JSON_PRETTY_PRINT));
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache");
         break;
 
     case 6:
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         $r = flushServer($theserver);
-        $session->set('is-success', "Flushing $theserver: $r");
+        $session->set('is-success', "Flushing $theserver: " . json_encode($r, JSON_PRETTY_PRINT));
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache");
         break;
 }

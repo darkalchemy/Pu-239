@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -184,10 +184,10 @@ function format_urls($s)
  * @param bool        $urls
  * @param bool        $images
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return mixed|string|string[]|null
  */
@@ -422,9 +422,9 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         $s = preg_replace("/\[img width=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="\\1" height="auto" class="' . $show_image . '"></a>', $s);
         $s = preg_replace("/\[img height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="auto" height="\\1" class="' . $show_image . '"></a>', $s);
         // [img=image services with or without extension
-        $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='' class='" . $show_image . "'></a>", $s);
         // [img]image services with or without extension
-        $s = preg_replace("/\[img\](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img\](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='' class='" . $show_image . "'></a>", $s);
 
         preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $s, $matches);
         $i = 0;
@@ -473,7 +473,6 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     foreach ($custom_smilies as $code => $url) {
         $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
     }
-
     $s = format_quotes($s);
     $s = str_replace([
         "\r\n",
@@ -531,10 +530,10 @@ function format_code(string $s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return mixed|string|string[]|null
  */
