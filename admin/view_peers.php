@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
 use Pu239\Peer;
+use Pu239\Session;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
@@ -38,8 +40,17 @@ $valid_sort = [
     'downloadoffset',
     'to_go',
     'size',
+    'delete',
 ];
 $column = isset($_GET['sort'], $valid_sort[$_GET['sort']]) ? $valid_sort[$_GET['sort']] : 'started';
+if (isset($_GET['delete']) && is_valid_id((int) $_GET['delete'])) {
+    $fluent = $container->get(Database::class);
+    $fluent->deleteFrom('peers')
+        ->where('id = ?', (int) $_GET['delete'])
+        ->execute();
+    $session = $container->get(Session::class);
+    $session->set('is-success', 'Peer ' . $_GET['delete'] . ' has been deleted.');
+}
 $pagerlink = $ascdesc = '';
 $type = isset($_GET['type']) ? $_GET['type'] : 'desc';
 foreach ($valid_sort as $key => $value) {
@@ -88,6 +99,7 @@ if (!empty($results)) {
         <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=13&amp;type={$link[13]}'>{$lang['wpeers_dnoff']}</a></th>
         <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=14&amp;type={$link[14]}'>{$lang['wpeers_togo']}</a></th>
         <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=15&amp;type={$link[15]}'>{$lang['wpeers_size']}</a></th>
+        <th class='has-text-centered'>Delete</th>
     </tr>";
     $body = '';
     foreach ($results as $row) {
@@ -109,6 +121,11 @@ if (!empty($results)) {
         <td class="has-text-centered">' . mksize($row['downloadoffset']) . '</td>
         <td class="has-text-centered">' . mksize($row['to_go']) . '</td>
         <td class="has-text-centered">' . mksize($row['size']) . '</td>
+        <td class="has-text-centered">
+            <a href="' . $_SERVER['PHP_SELF'] . '?tool=view_peers&amp;delete=' . $row["id"] . '" class="tooltipper" title="Delete Peer">
+                <i class="icon-trash-empty icon has-text-danger" aria-hidden="true"></i>
+            </a>
+        </td>
     </tr>';
     }
 

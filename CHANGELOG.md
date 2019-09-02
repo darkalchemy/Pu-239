@@ -1,4 +1,6 @@
 ### 02 Sept, 2019
+add: delete peer view_peers.php  
+fix: typo class_config.php  
 fix: image quoting function_bbcode.php  
 fix: memcache.php  
 
