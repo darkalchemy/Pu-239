@@ -1,3 +1,8 @@
+### 03 Sept, 2019
+update: use try/catch when sending email  
+update: allow multiple attachements per message  
+remove: upload upload from forum config, move to define.php  
+
 ### 02 Sept, 2019
 add: attachment to message  
 move: forum config upload folder to define.php  

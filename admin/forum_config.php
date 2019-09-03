@@ -89,19 +89,19 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
           <tr>
             <td><span class="has-text-weight-bold">' . $lang['forum_config_accepted'] . '</span>  </td>
             <td>
-            <input name="accepted_file_extension" type="text" class="w-100" maxlength="200" value="' . htmlsafechars((string) $accepted_file_extension) . '"><br>
+            <input name="accepted_file_extension" type="text" class="w-100" maxlength="80" value="' . htmlsafechars((string) $accepted_file_extension) . '"><br>
             ' . $lang['forum_config_accepted_desc'] . '</td>
          </tr>
           <tr>
             <td><span class="has-text-weight-bold">' . $lang['forum_config_accepted2'] . '</span>  </td>
             <td>
-            <input name="accepted_file_types" type="text" class="w-100" maxlength="200" value="' . htmlsafechars((string) $accepted_file_types) . '"><br>
+            <input name="accepted_file_types" type="text" class="w-100" value="' . htmlsafechars((string) $accepted_file_types) . '"><br>
             ' . $lang['forum_config_accepted2_desc'] . '</td>
          </tr>
           <tr>
             <td><span class="has-text-weight-bold">' . $lang['forum_config_size'] . '</span>  </td>
             <td>
-            <input name="max_file_size" type="text" class="w-100" maxlength="200" value="' . (int) $arr['max_file_size'] . '"><br>
+            <input name="max_file_size" type="number" class="w-100" value="' . (int) $arr['max_file_size'] . '"><br>
             ' . $lang['forum_config_size_desc'] . '' . mksize($arr['max_file_size']) . '.</td>
          </tr>
         <tr>

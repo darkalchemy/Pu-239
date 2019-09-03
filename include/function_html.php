@@ -2,13 +2,17 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Intervention\Image\Image;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use PHPMailer\PHPMailer\PHPMailer;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\ImageProxy;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_categories.php';
 
@@ -363,8 +367,8 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|Image|mixed|string
  */
@@ -428,7 +432,12 @@ function doc_head()
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  * @throws \PHPMailer\PHPMailer\Exception
+ * @throws InvalidManipulation
  *
  * @return bool
  */
@@ -448,8 +457,12 @@ function send_mail($email, $subject, $html, $plain)
         $mail->Subject = $subject;
         $mail->Body = $html;
         $mail->AltBody = $plain;
-        if ($mail->send()) {
+        try {
+            $mail->send();
+
             return true;
+        } catch (Exception $e) {
+            stderr('PHPPHPMailer Error', $e->getMessage());
         }
     }
 
@@ -460,9 +473,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -486,9 +499,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */
@@ -517,9 +530,9 @@ function validate_promo(string $code, bool $full)
 /**
  * @param array $lang
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

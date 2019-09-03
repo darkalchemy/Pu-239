@@ -219,7 +219,7 @@ $HTMLOUT .= '
                     </div>
                     <div class="level-center-center padding20">
                         <span class="size_6 right10">' . $lang['messages_attachments'] . '</span>
-                        <input type="file" size="30" name="attachment[]" accept="' . $accepted_file_types . '">
+                        <input type="file" size="30" name="attachment[]" accept="' . $accepted_file_types . '" multiple>
                     </div>
                     <div class="has-text-centered">
                         <input type="submit" class="button is-small" id="button" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '"' . $disabled . '>

@@ -14,11 +14,11 @@ $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_ge
 return [
     'env' => [
         'mail' => [
-            'smtp_enable' => false,
+            'smtp_enable' => false, // true, else it won't work
             'smtp_host' => 'smtp.gmail.com',
             'smtp_auth' => true,
-            'smtp_username' => 'gmail username',
-            'smtp_password' => 'gmail password',
+            'smtp_username' => 'gmail username', // your email address you wish to send email from, gmail limits this to 1000 emails per 24 hours
+            'smtp_password' => 'gmail password', // you may need to create an app password or allow insecure apps, this is done with your gmail account, not this code
             'smtp_secure' => 'tls',
             'smtp_port' => 587,
         ],

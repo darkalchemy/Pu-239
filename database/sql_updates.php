@@ -3971,4 +3971,18 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `forum_config` DROP COLUMN `upload_folder`',
         'flush' => true,
     ],
+    [
+        'id' => 1567503162,
+        'info' => 'Alter column to text',
+        'date' => '03 Sept, 2019',
+        'query' => 'ALTER TABLE `forum_config` MODIFY COLUMN `accepted_file_types` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+        'flush' => true,
+    ],
+    [
+        'id' => 1567503163,
+        'info' => 'Alter column to varchar',
+        'date' => '03 Sept, 2019',
+        'query' => "ALTER TABLE `attachments` MODIFY COLUMN `extension` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'zip'",
+        'flush' => true,
+    ],
 ];

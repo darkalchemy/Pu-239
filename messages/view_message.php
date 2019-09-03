@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
 use Pu239\User;
 
 $user = check_user_status();
@@ -9,24 +10,31 @@ global $container, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('messages'));
 $subject = $friends = '';
-
-$res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked, a.id AS attachment, a.file_name, a.size
-                            FROM messages AS m 
-                            LEFT JOIN friends AS f ON f.userid=' . sqlesc($user['id']) . ' AND f.friendid=m.sender
-                            LEFT JOIN blocks AS b ON b.userid=' . sqlesc($user['id']) . ' AND b.blockid=m.sender
-                            LEFT JOIN attachments AS a ON m.added = a.post_id  
-                            WHERE m.id=' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($user['id']) . ' OR (sender = ' . sqlesc($user['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
-$message = mysqli_fetch_assoc($res);
-if (!$message) {
+$fluent = $container->get(Database::class);
+$message = $fluent->from('messages AS m')
+                  ->select('f.id AS friend')
+                  ->select('b.id AS blocked')
+                  ->select('a.id AS attachment')
+                  ->where('m.id = ?', $pm_id)
+                  ->leftJoin('friends AS f ON f.userid = ? AND f.friendid = m.sender', $user['id'])
+                  ->leftJoin('blocks AS b ON b.userid = ? AND b.blockid = m.sender', $user['id'])
+                  ->leftJoin('attachments AS a ON m.added = a.post_id')
+                  ->fetch();
+if (empty($message) || ($message['receiver'] != $user['id'] && $message['sender'] != $user['id'])) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
 $attachment = '';
 if (!empty($message['attachment'])) {
-    $attachment .= "
+    $attachments = $fluent->from('attachments')
+                          ->where('post_id = ?', $message['added'])
+                          ->fetchAll();
+    foreach ($attachments as $file) {
+        $attachment .= "
         <span>
-            <a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/forums.php?action=download_attachment&amp;id={$message['attachment']}' title='{$lang['messages_download_attachment']}' target='_blank'>" . htmlsafechars($message['file_name']) . "</a>
-            <span class='has-text-weight-bold size_2'>[" . mksize($message['size']) . ']</span>
+            <a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/forums.php?action=download_attachment&amp;id={$file['id']}' title='{$lang['messages_download_attachment']}' target='_blank'>" . htmlsafechars($file['file_name']) . "</a>
+            <span class='has-text-weight-bold size_2'>[" . mksize($file['size']) . ']</span>
         </span>';
+    }
 }
 $users_class = $container->get(User::class);
 $arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $user['id'] ? (int) $message['receiver'] : (int) $message['sender']);
