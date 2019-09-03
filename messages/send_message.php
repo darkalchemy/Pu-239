@@ -9,14 +9,14 @@ use Pu239\Message;
 use Pu239\User;
 
 $subject = $msg = '';
-flood_limit('messages');
-
 global $container, $CURUSER, $site_config, $lang;
 
+$lang = array_merge($lang, load_language('messages'));
 $messages_class = $container->get(Message::class);
 $users_class = $container->get(User::class);
 
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
+    flood_limit('messages');
     $receiver = isset($_POST['receiver']) ? (int) $_POST['receiver'] : 0;
     $subject = htmlsafechars($_POST['subject']);
     $msg = trim($_POST['body']);
@@ -67,11 +67,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
                 break;
         }
     }
+    $dt = TIME_NOW;
     $msgs_buffer[] = [
         'sender' => $CURUSER['id'],
         'poster' => $CURUSER['id'],
         'receiver' => $receiver,
-        'added' => TIME_NOW,
+        'added' => $dt,
         'msg' => $msg,
         'subject' => $subject,
         'saved' => $save,
@@ -79,6 +80,15 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'urgent' => $urgent,
     ];
     $messages_class->insert($msgs_buffer);
+    if (!empty($_FILES)) {
+        require_once FORUM_DIR . 'attachment.php';
+        // TODO replace simple timestamp with microtime(true) to ensure unique timestamp
+        // or generate a uniquid and create a new field in messages
+        $uploaded = upload_attachments($dt);
+        $extension_error = $uploaded[0];
+        $size_error = $uploaded[1];
+    }
+
     if (!empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
@@ -203,8 +213,13 @@ if ($replyto) {
                         <input type="checkbox" name="delete" value="' . $replyto . '" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . '>' . $lang['pm_send_delete'];
 }
 $disabled = empty($receiver) && empty($returnto) ? ' disabled' : '';
+$accepted_file_types = str_replace('|', ', ', $site_config['forum_config']['accepted_file_types']);
 $HTMLOUT .= '
                         <input type="checkbox" name="save" value="1" checked>' . $lang['pm_send_savepm'] . '
+                    </div>
+                    <div class="level-center-center padding20">
+                        <span class="size_6 right10">' . $lang['messages_attachments'] . '</span>
+                        <input type="file" size="30" name="attachment[]" accept="' . $accepted_file_types . '">
                     </div>
                     <div class="has-text-centered">
                         <input type="submit" class="button is-small" id="button" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '"' . $disabled . '>

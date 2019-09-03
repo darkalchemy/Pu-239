@@ -9,9 +9,9 @@ use Pu239\Database;
 /**
  * @param int $post_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array
  */
@@ -20,7 +20,7 @@ function upload_attachments(int $post_id)
     global $container, $site_config, $CURUSER;
 
     $max_file_size = (int) $site_config['forum_config']['max_file_size'];
-    $upload_folder = ROOT_DIR . $site_config['forum_config']['upload_folder'];
+    $upload_folder = ATTACHMENT_DIR;
     $extension_error = $size_error = 0;
     if ($CURUSER['class'] >= $site_config['forum_config']['min_upload_class']) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
@@ -46,7 +46,7 @@ function upload_attachments(int $post_id)
 
                     default:
                         $upload_name = $file_name . '(pid-' . $post_id . ').' . $file_extension;
-                        $upload_to = $upload_folder . $upload_name;
+                        $upload_to = ATTACHMENT_DIR . $upload_name;
                         $values = [
                             'post_id' => $post_id,
                             'user_id' => $CURUSER['id'],

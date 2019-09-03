@@ -91,8 +91,8 @@ class Torrent
             unlink(TORRENTS_DIR . $tid . '.torrent');
         }
 
-        if (file_exists(IMAGES_DIR . 'nfo' . DIRECTORY_SEPARATOR . $tid . '.png')) {
-            unlink(IMAGES_DIR . 'nfo' . DIRECTORY_SEPARATOR . $tid . '.png');
+        if (file_exists(NFO_DIR . $tid . '.png')) {
+            unlink(NFO_DIR . $tid . '.png');
         }
     }
 

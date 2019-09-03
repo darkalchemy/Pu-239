@@ -122,7 +122,7 @@ if (!empty($results)) {
         <td class="has-text-centered">' . mksize($row['to_go']) . '</td>
         <td class="has-text-centered">' . mksize($row['size']) . '</td>
         <td class="has-text-centered">
-            <a href="' . $_SERVER['PHP_SELF'] . '?tool=view_peers&amp;delete=' . $row["id"] . '" class="tooltipper" title="Delete Peer">
+            <a href="' . $_SERVER['PHP_SELF'] . '?tool=view_peers&amp;delete=' . $row['id'] . '" class="tooltipper" title="Delete Peer">
                 <i class="icon-trash-empty icon has-text-danger" aria-hidden="true"></i>
             </a>
         </td>

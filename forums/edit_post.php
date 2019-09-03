@@ -136,7 +136,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
             $attachment_to_delete = intval($var);
             $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
             $attachments_arr = mysqli_fetch_array($attachments_res);
-            unlink($upload_folder . $attachments_arr['file']);
+            unlink(ATTACHMENT_DIR . $attachments_arr['file']);
             sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         }
     }

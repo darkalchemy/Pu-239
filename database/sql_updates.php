@@ -3964,4 +3964,11 @@ KEY `expires` (`expires`)
         'query' => "UPDATE `site_config` SET `value` = 5242880 WHERE `parent` = 'site' AND `name`= 'max_torrent_size'",
         'flush' => true,
     ],
+    [
+        'id' => 1567472736,
+        'info' => 'Remove column upload_folder',
+        'date' => '02 Sept, 2019',
+        'query' => 'ALTER TABLE `forum_config` DROP COLUMN `upload_folder`',
+        'flush' => true,
+    ],
 ];

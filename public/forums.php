@@ -196,12 +196,13 @@ $options = '';
 for ($i = 2; $i < 21; ++$i) {
     $options .= '<option value="' . $i . '" ' . ($multi_options === $i ? 'selected' : '') . '>' . $i . ' options</option>';
 }
+$accept_types = str_replace('|', ', ', $site_config['forum_config']['accepted_file_types']);
 $more_options = '
 <div id="staff_tools" ' . ((isset($_POST['poll_question']) && $_POST['poll_question'] !== '') ? '' : 'style="display:none"') . '>' . main_table(($user['class'] < $site_config['forum_config']['min_upload_class'] ? '' : '<tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
-<input type="file" size="30" name="attachment[]"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
+<input type="file" size="30" name="attachment[]" accept="' . $accept_types . '"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
 <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy tooltipper" title="Zip Files">
 <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy tooltipper" title="Rar Files"><br>
 <div id="attach_more" style="display:none">
@@ -613,8 +614,8 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -635,10 +636,10 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string
  */

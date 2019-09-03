@@ -5,16 +5,28 @@ declare(strict_types = 1);
 use Pu239\User;
 
 $user = check_user_status();
-global $container, $site_config;
+global $container, $site_config, $lang;
 
+$lang = array_merge($lang, load_language('messages'));
 $subject = $friends = '';
 
-$res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked
-                            FROM messages AS m LEFT JOIN friends AS f ON f.userid=' . sqlesc($user['id']) . ' AND f.friendid=m.sender
-                            LEFT JOIN blocks AS b ON b.userid=' . sqlesc($user['id']) . ' AND b.blockid=m.sender WHERE m.id=' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($user['id']) . ' OR (sender = ' . sqlesc($user['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked, a.id AS attachment, a.file_name, a.size
+                            FROM messages AS m 
+                            LEFT JOIN friends AS f ON f.userid=' . sqlesc($user['id']) . ' AND f.friendid=m.sender
+                            LEFT JOIN blocks AS b ON b.userid=' . sqlesc($user['id']) . ' AND b.blockid=m.sender
+                            LEFT JOIN attachments AS a ON m.added = a.post_id  
+                            WHERE m.id=' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($user['id']) . ' OR (sender = ' . sqlesc($user['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $message = mysqli_fetch_assoc($res);
 if (!$message) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
+}
+$attachment = '';
+if (!empty($message['attachment'])) {
+    $attachment .= "
+        <span>
+            <a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/forums.php?action=download_attachment&amp;id={$message['attachment']}' title='{$lang['messages_download_attachment']}' target='_blank'>" . htmlsafechars($message['file_name']) . "</a>
+            <span class='has-text-weight-bold size_2'>[" . mksize($message['size']) . ']</span>
+        </span>';
 }
 $users_class = $container->get(User::class);
 $arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $user['id'] ? (int) $message['receiver'] : (int) $message['sender']);
@@ -75,7 +87,12 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td class='has-text-centered w-15 mw-150'>{$avatar}</td>
-                <td>" . format_comment($message['msg'], false) . "</td>
+                <td>
+                    <div class='flex-vertical comments h-100 padding10'>
+                        <div>" . format_comment($message['msg'], false) . "</div>
+                        <div>$attachment</div>
+                    </div>
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>

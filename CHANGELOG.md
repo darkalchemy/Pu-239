@@ -1,4 +1,6 @@
 ### 02 Sept, 2019
+add: attachment to message  
+move: forum config upload folder to define.php  
 add: delete peer view_peers.php  
 fix: typo class_config.php  
 fix: image quoting function_bbcode.php  

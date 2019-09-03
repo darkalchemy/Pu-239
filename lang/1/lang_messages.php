@@ -67,4 +67,7 @@ $lang = [
     'messages_no_delete' => 'Could not delete message.',
     'messages_jump' => 'Jump to',
     'messages_go' => 'Go',
+    'messages_attachments' => 'Add Attachments',
+    'messages_add_more_attachments' => 'Add More Attachments',
+    'messages_download_attachment' => 'Download Attachment',
 ];
