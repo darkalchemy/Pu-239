@@ -1,4 +1,6 @@
 ### 05 Sept, 2019
+fix: typo takeedit.php  
+fix: check if user['notifs'] are empty before checking if should send email  
 fix: don't send 2 emails on PM received  
 update: send email for all PM's if user set to receive them  
 fix: update imdb_id on torrent edit takeedit.php  

@@ -61,7 +61,7 @@ class Message
             $ids[] = 'message_count_' . $user['receiver'];
             if ($send_email && $this->site_config['mail']['smtp_enable']) {
                 $emailer = $this->users->getUserFromId($user['receiver']);
-                if (strpos($emailer['notifs'], 'email') !== false) {
+                if (!empty($emailer['notifs']) && strpos($emailer['notifs'], 'email') !== false) {
                     $msg_body = format_comment($user['msg']);
                     send_mail(strip_tags($emailer['email']), $user['subject'], $msg_body, strip_tags($msg_body));
                 }

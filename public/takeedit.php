@@ -259,7 +259,7 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
             header("Location: {$_SERVER['HTTP_REFERER']}");
             die();
         }
-        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt\d{7})/i', $torrent['url'], $url);
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt\d{7})/i', $url, $imdb_tmp);
         $imdb_id = !empty($imdb_tmp[2]) ? $imdb_tmp[2] : '';
         if (!empty($imdb_id)) {
             $updateset[] = 'imdb_id = ' . sqlesc($imdb_id);
