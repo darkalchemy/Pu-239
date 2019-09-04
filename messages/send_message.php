@@ -15,7 +15,7 @@ $lang = array_merge($lang, load_language('messages'));
 $messages_class = $container->get(Message::class);
 $users_class = $container->get(User::class);
 
-if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) {
     flood_limit('messages');
     $receiver = isset($_POST['receiver']) ? (int) $_POST['receiver'] : 0;
     $subject = htmlsafechars($_POST['subject']);
@@ -79,7 +79,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'location' => 1,
         'urgent' => $urgent,
     ];
-    $messages_class->insert($msgs_buffer);
+    $messageg_id = $messages_class->insert($msgs_buffer, false);
     if (!empty($_FILES)) {
         require_once FORUM_DIR . 'attachment.php';
         // TODO replace simple timestamp with microtime(true) to ensure unique timestamp
@@ -88,8 +88,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $extension_error = $uploaded[0];
         $size_error = $uploaded[1];
     }
-
-    if (!empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
+    if (!empty($messageg_id) && !empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
         $msg = doc_head() . "
@@ -99,7 +98,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['paths']['baseurl']}/messages.php</p>
+<p>{$site_config['paths']['baseurl']}/messages.php?action=view_message&id={$messageg_id}</p>
 <p>--{$site_config['site']['name']}</p>
 </body>
 </html>";

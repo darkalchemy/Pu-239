@@ -44,7 +44,7 @@ class Message
         $this->limit = $this->env['db']['query_limit'];
     }
 
-    public function insert(array $values)
+    public function insert(array $values, bool $send_email = true)
     {
         if (empty($values)) {
             return false;
@@ -59,7 +59,7 @@ class Message
         foreach ($values as $user) {
             $ids[] = 'inbox_' . $user['receiver'];
             $ids[] = 'message_count_' . $user['receiver'];
-            if ($this->site_config['mail']['smtp_enable']) {
+            if ($send_email && $this->site_config['mail']['smtp_enable']) {
                 $emailer = $this->users->getUserFromId($user['receiver']);
                 if (strpos($emailer['notifs'], 'email') !== false) {
                     $msg_body = format_comment($user['msg']);
