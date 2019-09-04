@@ -347,15 +347,14 @@ $lastseed = $torrents_class->get_items(['last_action'], $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
 $info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date(strtotime($lastseed), '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
-    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
+    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'><a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='tooltipper' title='{$lang['details_list']}'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . '</a></div>', 1);
 }
 $info_block .= tr($lang['details_size'], '<div class="left10">' . mksize($torrent['size']) . ' (' . number_format($torrent['size']) . " {$lang['details_bytes']})</div>", 1);
 $info_block .= tr($lang['details_added'], '<div class="left10">' . get_date((int) $torrent['added'], 'LONG') . '</div>', 1);
 $info_block .= tr($lang['details_views'], "<div class='left10'>{$torrent['views']}</div>", 1);
 $info_block .= tr($lang['details_hits'], "<div class='left10'>{$torrent['hits']}</div>", 1);
 $info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
-$info_block .= tr($lang['details_peers'], '<div class="left10">' . $torrent['seeders'] . ' seeder' . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}<br>
-    <a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='top10 button is-small'>{$lang['details_list']}</a></div>", 1);
+$info_block .= tr($lang['details_peers'], "<div class='left10'><a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='tooltipper' title='{$lang['details_list']}'>{$torrent['seeders']} seeder" . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}", 1);
 
 if (!empty($torrent['descr'])) {
     $descr = $cache->get('torrent_descr_' . $id);
@@ -406,11 +405,25 @@ foreach ($tags as $tag) {
 }
 $points = tr($lang['details_tags'], "<div class='left10'>$keywords</div>", 1);
 $coin_class = $container->get(Coin::class);
-$torrent['torrent_points_'] = $coin_class->get($id);
-$my_points = isset($torrent['torrent_points_'][$user['id']]) ? $torrent['torrent_points_'][$user['id']] : 0;
+$coins = $coin_class->get($id);
+$my_points = $total_coins = 0;
+$coin_users = [];
+if (!empty($coins)) {
+    $users_class = $container->get(User::class);
+    foreach ($coins as $coin) {
+        $my_points = $coin['userid'] === $user['id'] ? $coin['points'] : $my_points;
+        $total_coins += $coin['points'];
+        $coin_user = $users_class->getUserFromId($coin['userid']);
+        if ($coin_user['anonymous_until'] < TIME_NOW && $coin_user['perms'] < PERMS_STEALTH) {
+            $coin_users[] = format_username($coin_user['id']);
+        }
+    }
+    $coin_users = !empty($coin_users) ? '
+    <div>Coins provided by: ' . implode(', ', $coin_users) . '</div>' : '';
+}
 $points .= tr('Karma Points', '
                     <div class="left10">
-                        <p>In total ' . (int) $torrent['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
+                        <p>In total ' . $total_coins . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
                         <p>
                             <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10">
                                 <img src="' . $site_config['paths']['images_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points">
@@ -434,7 +447,7 @@ $points .= tr('Karma Points', '
                                 <img src="' . $site_config['paths']['images_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points">
                             </a>
                         </p>
-                        <p>By clicking on the coins you can give Karma Points to the uploader of this torrent.</p>
+                        <div>By clicking on the coins you can give Karma Points to the uploader of this torrent.</div>' . $coin_users . '
                     </div>', 1);
 $downl = $user['downloaded'] + $torrent['size'];
 $sr = $user['uploaded'] / $downl;
@@ -483,7 +496,6 @@ $url = $site_config['paths']['baseurl'] . '/edit.php?id=' . $torrent['id'];
 if (isset($_GET['returnto'])) {
     $url .= '&amp;returnto=' . urlencode($_GET['returnto']);
 }
-$editlink = "<a href='$url' class='button is-small bottom10'>";
 $rowuser = !empty($owner) ? format_username((int) $owner) : $lang['details_unknown'];
 $uprow = $torrent['anonymous'] === '1' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);

@@ -25,6 +25,7 @@ class CustomAJAXChat extends AJAXChat
     /**
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */

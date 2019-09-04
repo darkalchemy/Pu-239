@@ -191,10 +191,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -364,8 +364,10 @@ function stdfoot(array $stdfoot = [])
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
-            $htmlfoot .= "
+            if (!empty($JS)) {
+                $htmlfoot .= "
     <script src='{$JS}'></script>";
+            }
         }
     }
 
@@ -430,9 +432,9 @@ function StatusBar()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

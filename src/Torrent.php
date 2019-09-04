@@ -247,7 +247,7 @@ class Torrent
      * @throws Exception
      * @throws UnbegunTransaction
      */
-    public function adjust_torrent_peers(int $tid, int $seeders = 0, int $leechers = 0, int $times_completed = 0)
+    public function adjust_torrent_peers(int $tid, int $seeders, int $leechers, int $times_completed)
     {
         $torrent = $this->get($tid);
         $set['seeders'] = $torrent['seeders'];
@@ -279,8 +279,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -314,8 +314,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -972,10 +972,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws InvalidManipulation
      * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws InvalidManipulation
      *
      * @return false|mixed|string|string[]|null
      */

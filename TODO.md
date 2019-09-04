@@ -1,5 +1,6 @@
 In no particular order  
 
+fix: parallax scrolling in firefox  
 check: upload/download peers speed showing 0  
 update: "Signups are Invite Only" to "Invalid or expired promotion link"
 update: user info for paranoia  

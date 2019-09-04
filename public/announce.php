@@ -14,8 +14,9 @@ require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_common.php';
 
 // utorrent 2.2.1 sends cookie header, to allow utorrent to work with this tracker you must not block if cookie header is set
-if (/*isset($_SERVER['HTTP_COOKIE']) || */
-    isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+if (PRODUCTION && (/*isset($_SERVER['HTTP_COOKIE']) || */
+        isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])
+)) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 
@@ -24,7 +25,6 @@ $no_peer_id = '';
 $torrent_updateset = $snatched_values = $user_updateset = [];
 global $container, $site_config;
 
-$ratio_free = $site_config['site']['ratio_free'];
 foreach ([
     'torrent_pass',
     'info_hash',
@@ -48,7 +48,7 @@ $uploaded = (int) $_GET['uploaded'];
 $left = (int) $_GET['left'];
 $real_downloaded = $downloaded;
 $real_uploaded = $uploaded;
-$rsize = 30;
+$rsize = 50;
 $compact = $_GET['compact'];
 if (empty($torrent_pass) || !strlen($torrent_pass) === 64) {
     err('Invalid Torrent Pass');
@@ -70,13 +70,17 @@ if (empty($realip)) {
     err('You\'re reported IP (' . $_SERVER['REMOTE_ADDR'] . ') is invalid and not allowed');
 }
 $clientip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $realip;
+if ($clientip === '127.0.0.1') {
+    $ip = $clientip = $realip = '10.0.0.93';
+}
 foreach ([
     'num want',
     'numwant',
     'num_want',
 ] as $x) {
     if (isset($_GET[$x])) {
-        $rsize = (int) $_GET[$x];
+        $num = (int) $_GET[$x];
+        $rsize = $num > 0 && $num < $rsize ? $num : $rsize;
         break;
     }
 }
@@ -102,54 +106,53 @@ if (!$torrent) {
 $users_class = $container->get(User::class);
 $user = $users_class->get_user_from_torrent_pass($torrent_pass);
 $peer_class = $container->get(Peer::class);
-if (empty($user)) {
-    err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
-} elseif ($user['status'] === 5) {
-    err("Permission denied, you're account has been suspended");
-} elseif ($user['status'] === 2) {
-    err("Permission denied, you're account is disabled");
-} elseif ($left > 0 && $torrent['vip'] === 1 && $user['class'] < UC_VIP) {
-    err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a VIP By Donating to our site. Donating ensures we stay online to provide you with more Excellent Torrents!');
-} elseif ($user['status'] === 1) {
-    err('Your account is parked! (Read the FAQ)');
-} elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder === 'no') {
-    err('Your downloading privileges have been disabled! (Read the rules)');
-} elseif ($site_config['site']['require_credit'] && ($seeder === 'no' && ($torrent['size'] > ($user['uploaded'] - $user['downloaded'])))) {
-    err('You do not have enough upload credit to download this torrent.');
-} else {
-    $counts = $peer_class->get_torrent_count($torrent['id'], $user['id'], $peer_id);
-    if ($user['class'] === 0 && $seeder === 'no') {
-        if ($counts['no_seed'] >= 3) {
+if (empty($event) || $event !== 'stopped') {
+    if (empty($user)) {
+        err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
+    } elseif ($user['status'] === 5) {
+        err("Permission denied, you're account has been suspended");
+    } elseif ($user['status'] === 2) {
+        err("Permission denied, you're account is disabled");
+    } elseif ($left > 0 && $torrent['vip'] === 1 && $user['class'] < UC_VIP) {
+        err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a VIP By Donating to our site. Donating ensures we stay online to provide you with more Excellent Torrents!');
+    } elseif ($user['status'] === 1) {
+        err('Your account is parked! (Read the FAQ)');
+    } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder === 'no') {
+        err('Your downloading privileges have been disabled! (Read the rules)');
+    } elseif ($site_config['site']['require_credit'] && ($seeder === 'no' && ($torrent['size'] > ($user['uploaded'] - $user['downloaded'])))) {
+        err('You do not have enough upload credit to download this torrent.');
+    } else {
+        $counts = $peer_class->get_torrent_count($torrent['id'], $user['id'], $peer_id);
+        if ($user['class'] === 0 && $seeder === 'no' && $counts['no_seed'] >= 3) {
             err('You have reached your limit for active downloads. Only 3 active downloads at one time are allowed for this user class.');
+        } elseif (($counts['leecher'] >= 1 && $seeder === 'no') || ($counts['seeder'] >= 3 && $seeder === 'yes')) {
+            err('Connection limit exceeded!');
         }
-    }
-    if (($counts['leecher'] >= 1 && $seeder === 'no') || ($counts['seeder'] >= 3 && $seeder === 'yes')) {
-        err('Connection limit exceeded!');
     }
 }
 $userid = $user['id'];
 $connectable = 'yes';
 $conn_ttl = 300;
 $cache = $container->get(Cache::class);
+$site_config['tracker']['connectable_check'] = false;
 if (portblacklisted($port)) {
     err("Port $port is blacklisted.");
 } elseif ($site_config['tracker']['connectable_check']) {
     $connkey = 'connectable_' . $realip . '_' . $port;
     $connectable = $cache->get($connkey);
     if ($connectable === false || is_null($connectable)) {
-        $sockres = @fsockopen($ip, $port, $errno, $errstr, 5);
-        if (!$sockres) {
+        try {
+            $sockres = fsockopen($ip, $port, $errno, $errstr);
+            fclose($sockres);
+        } catch (Exception $e) {
             $connectable = 'no';
-            $conn_ttl = 15;
-        } else {
-            $connectable = 'yes';
-            @fclose($sockres);
+            $conn_ttl = 60;
         }
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
 if ($site_config['tracker']['require_connectable'] && $connectable === 'no') {
-    err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
+    err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or not properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 if ($site_config['site']['ip_logging']) {
     $no_log_ip = $user['perms'] & PERMS_NO_IP;
@@ -157,7 +160,7 @@ if ($site_config['site']['ip_logging']) {
         $connectable = 'no';
         $ip = '127.0.0.1';
     }
-    $added = get_date($dt, 'MYSQL', 1, 0);
+    $added = date('Y-m-d H:i:s');
     if (!$no_log_ip) {
         $values = [
             'ip' => inet_pton($ip),
@@ -173,12 +176,10 @@ if ($site_config['site']['ip_logging']) {
         unset($values, $update);
     }
 }
-
 $torrent_modifier = get_slots($torrent['id'], $userid);
 $torrent['freeslot'] = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
 $happy_multiplier = $site_config['bonus']['happy_hour'] ? get_happy($torrent['id'], $userid) : 0;
-
 if ($compact != 1) {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['tracker']['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
 } else {
@@ -187,18 +188,26 @@ if ($compact != 1) {
 $peers = $peer_class->get_torrent_peers_by_tid($torrent['id']);
 $res = $this_user_torrent = [];
 foreach ($peers as $peer) {
-    if ($port != $peer['port'] && $realip != $peer['ip'] && $clientip != $peer['ip']) {
-        if ($seeder === 'yes' && $peer['seeder'] === 'no') {
-            $res[] = $peer;
-        } elseif ($seeder === 'no') {
-            $res[] = $peer;
-        }
-    } elseif ($port === $peer['port'] && ($realip === $peer['ip'] || $clientip === $peer['ip']) && bin2hex($peer['peer_id']) === $peer_id) {
+    if ($port === $peer['port'] && ($realip === $peer['ip'] || $clientip === $peer['ip']) && bin2hex($peer['peer_id']) === $peer_id) {
         $this_user_torrent = $peer;
+    } elseif (($seeder === 'yes' && $peer['seeder'] === 'no') || ($seeder === 'no' && $peer['seeder'] === 'yes')) {
+        $res[] = $peer;
     }
 }
 shuffle($res);
 $res = array_slice($res, 0, $rsize);
+if (count($res) < $rsize && $seeder === 'no') {
+    foreach ($peers as $peer) {
+        if ($port === $peer['port'] && ($realip === $peer['ip'] || $clientip === $peer['ip']) && bin2hex($peer['peer_id']) === $peer_id) {
+            continue;
+        } elseif ($peer['seeder'] === 'no') {
+            $res[] = $peer;
+        }
+        if (count($res) > $rsize) {
+            break;
+        }
+    }
+}
 $peer = [];
 $peer_num = 0;
 foreach ($res as $row) {
@@ -214,8 +223,7 @@ foreach ($res as $row) {
         }
         $resp .= benc_str('port') . 'i' . $row['port'] . 'e' . 'e';
     } else {
-        $peer_ip = explode('.', $row['ip']);
-        $peer_ip = pack('C*', $peer_ip[0], $peer_ip[1], $peer_ip[2], $peer_ip[3]);
+        $peer_ip = inet_pton($row['ip']);
         $peer_port = pack('n*', (int) $row['port']);
         $time = (int) ($dt % 7680 / 60);
         if ($left === 0) {
@@ -235,7 +243,6 @@ if ($compact != 1) {
     }
     $resp .= strlen($o) . ':' . $o . 'e';
 }
-
 if (!isset($self)) {
     foreach ($peers as $peer) {
         if (strtolower(bin2hex($peer['peer_id'])) === strtolower($peer_id) || strtolower(bin2hex($peer['peer_id'])) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
@@ -280,25 +287,27 @@ foreach ($agentarray as $bannedclient) {
     }
 }
 $announce_wait = $site_config['tracker']['min_interval'];
-if (isset($self) && empty($event) && $self['announcetime'] < $announce_wait) {
+if (PRODUCTION && isset($self) && empty($event) && $self['announcetime'] < $announce_wait) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 $upthis = $uploaded;
 $downthis = $downloaded;
+$ratio_free = $site_config['site']['ratio_free'] || $user['free_switch'] > 0 || $torrent['free'] > 0 || $torrent['free_slot'] > 0 ? true : false;
 if (isset($self)) {
     $upthis = max(0, $uploaded - $self['uploaded']);
-    $downthis = max(0, $downloaded - $self['downloaded']);
+    $downthis = $ratio_free ? 0 : max(0, $downloaded - $self['downloaded']);
 }
 if ($happy_multiplier) {
     $upthis = $upthis * $happy_multiplier;
     $downthis = 0;
 }
 if ($upthis > 0 || $downthis > 0) {
-    $isfree = $isdouble = $issilver = false;
+    $isdouble = $issilver = false;
+
     $free = $cache->get('site_event_');
     if (!empty($free)) {
         if (($free['modifier'] === 1 || $free['modifier'] === 3) && $free['expires'] > $dt) {
-            $isfree = true;
+            $ratio_free = true;
             $downthis = 0;
         }
         if (($free['modifier'] === 2 || $free['modifier'] === 3) && $free['expires'] > $dt) {
@@ -315,8 +324,8 @@ if ($upthis > 0 || $downthis > 0) {
     }
     $crazyhour_on = $site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false;
     if ($downthis > 0) {
-        if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
-            $user_updateset['downloaded'] = $user['downloaded'] + ($ratio_free ? 0 : $downthis);
+        if (!$crazyhour_on && !$ratio_free) {
+            $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
         }
     }
     if ($upthis > 0) {
@@ -341,7 +350,7 @@ if ($real_uploaded > 0) {
     $snatched_values['real_uploaded'] = $real_uploaded;
 }
 if (!$ratio_free && $downloaded > 0) {
-    $snatched_values['downloaded'] = $ratio_free ? 0 : $downloaded;
+    $snatched_values['downloaded'] = $downloaded;
 }
 if (!$ratio_free && $real_downloaded > 0) {
     $snatched_values['real_downloaded'] = $real_downloaded;
@@ -360,7 +369,9 @@ if ($event === 'completed' || ($event === 'started' && $left === 0)) {
 }
 if (!empty($snatched)) {
     $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
+    $snatched_values['real_uploaded'] = $snatched['real_uploaded'] + $real_uploaded;
     $snatched_values['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
+    $snatched_values['real_downloaded'] = $snatched['real_downloaded'] + ($ratio_free ? 0 : $real_downloaded);
     if (isset($self)) {
         $snatched_values['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
         $snatched_values['downspeed'] = $downthis > 0 && $self['announcetime'] > 0 ? $downthis / $self['announcetime'] : 0;
@@ -374,7 +385,6 @@ if (!empty($snatched)) {
 $peer_deleted = false;
 $set = [];
 if ($event === 'stopped') {
-    $seeder = 'no';
     if (!empty($this_user_torrent['id'])) {
         $peer_deleted = $peer_class->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
         $cache->delete('peers_' . $userid);
@@ -386,12 +396,13 @@ if ($event === 'stopped') {
             $torrents_class->adjust_torrent_peers($torrent['id'], 0, -1, 0);
         }
     }
+    $seeder = 'no';
 } elseif ($event === 'completed') {
     $torrent_updateset['times_completed'] = $torrent['times_completed'] + 1;
     $set = [
         'finishedat' => $dt,
     ];
-    $torrents_class->adjust_torrent_peers($torrent['id'], 0, 0, 1);
+    $torrents_class->adjust_torrent_peers($torrent['id'], 1, -1, 1);
 }
 $snatched_values['seeder'] = $seeder;
 if (isset($self) && $event === 'stopped') {
@@ -413,6 +424,10 @@ if (isset($self) && $event === 'stopped') {
     $values['ip'] = inet_pton($realip);
     $values['port'] = $port;
     $values['userid'] = $userid;
+    if (!empty($peer)) {
+        $update['uploaded'] = $peer['uploaded'] + $uploaded;
+        $update['downloaded'] = $peer['downloaded'] + ($ratio_free ? 0 : $downloaded);
+    }
     $updated = $peer_class->insert_update($values, $update);
     unset($values, $update);
     $cache->delete('peers_' . $userid);
@@ -455,7 +470,7 @@ if (isset($self) && $event === 'stopped') {
         'agent' => $agent,
     ];
     $update_id = $peer_class->insert_update($values, $update);
-    if (empty($update_id)) {
+    if (!isset($self)) {
         if ($seeder === 'yes') {
             $torrents_class->adjust_torrent_peers($torrent['id'], 1, 0, 0);
         } else {
@@ -467,6 +482,7 @@ if (isset($self) && $event === 'stopped') {
     }
     $cache->delete('peers_' . $userid);
 }
+
 if ($seeder === 'yes') {
     if ($torrent['banned'] != 'yes') {
         $torrent_updateset['visible'] = 'yes';

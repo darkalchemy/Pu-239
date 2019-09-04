@@ -1,6 +1,6 @@
-let mnavbar = document.getElementById('navbar');
-let mhamburger = document.getElementById('hamburger');
-if (mnavbar && mhamburger) {
+if (window.screen.width <= 768) {
+    let mnavbar = document.getElementById('navbar');
+    let mhamburger = document.getElementById('hamburger');
     let prevScrollpos = window.pageYOffset;
     window.onscroll = function () {
         let currentScrollPos = window.pageYOffset;

@@ -39,8 +39,6 @@ class AJAXChatLanguage
         $this->_strictMode = $strictMode;
     }
 
-    // Method to detect the language code from the HTTP_ACCEPT_LANGUAGE header:
-
     public function getLangCode()
     {
         if (!$this->_langCode) {

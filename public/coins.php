@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Message;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -67,6 +68,7 @@ $msgs_buffer[] = [
     'msg' => $msg,
     'subject' => $subject,
 ];
+$messages_class = $container->get(Message::class);
 $messages_class->insert($msgs_buffer);
 $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);

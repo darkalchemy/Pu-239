@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
@@ -346,6 +348,15 @@ if ($action === 'viewbug') {
     </form>';
 }
 
+/**
+ * @param array $values
+ * @param int   $bug_id
+ * @param array $lang
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ */
 function send_staff_message(array $values, int $bug_id, array $lang)
 {
     global $container, $site_config;

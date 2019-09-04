@@ -27,7 +27,7 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_84c3bd90.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_603e6983.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_8402eea2.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
