@@ -25,10 +25,14 @@ class Session
     /**
      * @param string $key
      * @param        $value
+     * @param bool   $use_prefix
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value, bool $use_prefix = true)
     {
-        $prefix = $this->site_config['session']['prefix'];
+        $prefix = '';
+        if ($use_prefix) {
+            $prefix = $this->site_config['session']['prefix'];
+        }
         if (in_array($key, $this->site_config['site']['notifications'])) {
             $current = $this->get($key);
             if ($current) {

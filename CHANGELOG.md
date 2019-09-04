@@ -1,3 +1,13 @@
+### 04 Sept, 2019
+update: reset auth remembered when confirming identity as staff  
+update: movies.php  
+fix: imdb upcoming movies  
+update: view_message.php  
+update: poll question style  
+update: immediately unset session['post_data'] after getting modtask.php  
+revert: set post data to session for staffpanel.php  
+fix: typo funtion_html.php  
+
 ### 03 Sept, 2019
 update: use try/catch when sending email  
 update: allow multiple attachements per message  

@@ -462,7 +462,7 @@ function send_mail($email, $subject, $html, $plain)
 
             return true;
         } catch (Exception $e) {
-            stderr('PHPPHPMailer Error', $e->getMessage());
+            stderr('PHPMailer Error', $e->getMessage());
         }
     }
 

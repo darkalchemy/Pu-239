@@ -28,6 +28,7 @@ if (empty($_POST)) {
 }
 
 class_check(UC_STAFF);
+$session->unset('post_data');
 $lang = array_merge($lang, load_language('modtask'));
 $dt = TIME_NOW;
 if ($CURUSER['class'] < UC_STAFF) {
@@ -896,7 +897,6 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     if (!empty($useredit)) {
         write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username((int) $userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit) . "{$lang['modtask_gl_by']}" . format_username((int) $CURUSER['id']));
     }
-    $session->unset('post_data');
     $returnto = htmlsafechars($post['returnto']) . '#edit';
     header("Location: {$site_config['paths']['baseurl']}/$returnto");
 }

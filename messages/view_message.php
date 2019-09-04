@@ -28,10 +28,12 @@ if (!empty($message['attachment'])) {
     $attachments = $fluent->from('attachments')
                           ->where('post_id = ?', $message['added'])
                           ->fetchAll();
+    $i = 0;
     foreach ($attachments as $file) {
+        ++$i;
         $attachment .= "
         <span>
-            <a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/forums.php?action=download_attachment&amp;id={$file['id']}' title='{$lang['messages_download_attachment']}' target='_blank'>" . htmlsafechars($file['file_name']) . "</a>
+            <a class='is-link tooltipper' href='{$site_config['paths']['baseurl']}/forums.php?action=download_attachment&amp;id={$file['id']}' title='{$lang['messages_download_attachment']} #{$i}' target='_blank'>" . htmlsafechars($file['file_name']) . "</a>
             <span class='has-text-weight-bold size_2'>[" . mksize($file['size']) . ']</span>
         </span>';
     }
@@ -39,7 +41,14 @@ if (!empty($message['attachment'])) {
 $users_class = $container->get(User::class);
 $arr_user_stuff = $users_class->getUserFromId((int) $message['sender'] === $user['id'] ? (int) $message['receiver'] : (int) $message['sender']);
 $id = $arr_user_stuff['id'];
-sql_query('UPDATE messages SET unread = "no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($user['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+$update = [
+    'unread' => 'no',
+];
+$fluent->update('messages')
+       ->set($update)
+       ->where('id = ?', $pm_id)
+       ->where('receiver = ?', $user['id'])
+       ->execute();
 $cache->decrement('inbox_' . $user['id']);
 if ($message['friend'] > 0) {
     $friends = '
@@ -64,13 +73,16 @@ if ($message['friend'] > 0) {
 $avatar = get_avatar($arr_user_stuff);
 
 if ($message['location'] > 1) {
-    //== get name of PM box if not in or out
-    $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid=' . sqlesc($user['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr_box_name = mysqli_fetch_row($res_box_name);
-    if (mysqli_num_rows($res) === 0) {
+    $name = $fluent->from('pmboxes')
+                   ->select(null)
+                   ->select('name')
+                   ->where('userid = ?', $user['id'])
+                   ->where('boxnumber = ?', $mailbox)
+                   ->fetch('name');
+    if (empty($name)) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
     }
-    $mailbox_name = htmlsafechars($arr_box_name[0]);
+    $mailbox_name = htmlsafechars($name);
     $other_box_info = '<p><span style="color: red;">' . $lang['pm_mailbox_asterisc'] . '</span><span style="font-weight: bold;">' . $lang['pm_mailbox_note'] . '</span>
                                            ' . $lang['pm_mailbox_max'] . '<span style="font-weight: bold;">' . $maxbox . '</span>' . $lang['pm_mailbox_either'] . '
                                             <span style="font-weight: bold;">' . $lang['pm_mailbox_inbox'] . '</span>' . $lang['pm_mailbox_or'] . '<span style="font-weight: bold;">' . $lang['pm_mailbox_sentbox'] . '</span>.</p>';

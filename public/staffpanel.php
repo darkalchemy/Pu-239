@@ -12,18 +12,11 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_staff.php';
 require_once BIN_DIR . 'uglify.php';
 require_once BIN_DIR . 'functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $user = check_user_status();
 global $container, $site_config;
 
 $session = $container->get(Session::class);
-if (empty($_POST)) {
-    $_POST = $session->get('post_data');
-    $_POST = empty($_POST) ? [] : $_POST;
-} else {
-    $_POST = empty($_POST) ? [] : $_POST;
-    $session->set('post_data', $_POST);
-}
-require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 if (!$site_config['site']['staffpanel_online']) {
@@ -110,7 +103,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user_bbcode");
             }
-            $session->unset('post_data');
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
@@ -119,7 +111,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
     } elseif ($action === 'flush' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
-        $session->unset('post_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'uglify' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -133,7 +124,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             $session->set('is-warning', 'uglify.php failed');
         }
-        $session->unset('post_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'clear_ajaxchat' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -141,7 +131,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                ->where('id>0')
                ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
-        $session->unset('post_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -150,7 +139,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             $session->set('is-success', 'Site is Offline.');
         }
-        $session->unset('post_data');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'add' && has_access($user['class'], UC_MAX, 'coder')) || ($action === 'edit' && is_valid_id($id) && $user['class'] >= UC_MAX)) {
@@ -266,7 +254,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user_bbcode");
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
-                    $session->unset('post_data');
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die();
                 }

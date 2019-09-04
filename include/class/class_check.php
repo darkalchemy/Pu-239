@@ -33,9 +33,7 @@ function class_check(int $class = UC_STAFF)
         die();
     }
     $auth = $container->get(Auth::class);
-    $cache = $container->get(Cache::class);
-    $verified = $cache->get('verified');
-    if ($auth->isRemembered() && !$verified) {
+    if ($auth->isRemembered()) {
         $session = $container->get(Session::class);
         $session->set('is-danger', $lang['spanel_confirm_password']);
         header("Location: {$site_config['paths']['baseurl']}/verify.php?page=" . urlencode($_SERVER['REQUEST_URI']));
@@ -67,9 +65,9 @@ function class_check(int $class = UC_STAFF)
 /**
  * @param $script
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return int
  */

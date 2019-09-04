@@ -589,7 +589,6 @@ function get_upcoming()
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
-
     $imdb_data = $cache->get('imdb_upcoming_');
     if ($imdb_data === false || is_null($imdb_data)) {
         $url = 'https://www.imdb.com/movies-coming-soon/';
@@ -600,13 +599,11 @@ function get_upcoming()
             $cache->set('imdb_upcoming_', 'failed', 3600);
         }
     }
-
     if (empty($imdb_data)) {
         return false;
     }
-
-    preg_match_all('/<h4.*<a id=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
-    $dates = $timestamp[1];
+    preg_match_all('/<h4.*<a (name|id)=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
+    $dates = $timestamp[2];
     $regex = '';
     foreach ($dates as $date) {
         $regex .= '<a name(.*)';
@@ -646,11 +643,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -699,9 +696,9 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -798,9 +795,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -833,9 +830,9 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -868,9 +865,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -903,9 +900,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
