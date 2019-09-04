@@ -557,10 +557,6 @@ if (!empty($notify)) {
     $subject = $lang['takeupload_email_subject'];
     $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($notify as $notif) {
-        if ($site_config['mail']['smtp_enable'] && strpos($notif['notifs'], 'email') !== false) {
-            $msg_body = format_comment($msg);
-            send_mail(strip_tags($notif['email']), $subject, $msg_body, strip_tags($msg_body));
-        }
         if (strpos($notif['notifs'], 'pmail') !== false) {
             $msgs_buffer[] = [
                 'receiver' => $notif['id'],

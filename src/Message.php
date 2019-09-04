@@ -20,6 +20,7 @@ class Message
     protected $limit;
     protected $container;
     protected $site_config;
+    protected $users;
 
     /**
      * Message constructor.
@@ -27,27 +28,22 @@ class Message
      * @param Cache              $cache
      * @param Database           $fluent
      * @param Settings           $settings
+     * @param User               $users
      * @param ContainerInterface $c
      *
      * @throws Exception
      */
-    public function __construct(Cache $cache, Database $fluent, Settings $settings, ContainerInterface $c)
+    public function __construct(Cache $cache, Database $fluent, Settings $settings, User $users, ContainerInterface $c)
     {
         $this->container = $c;
         $this->env = $this->container->get('env');
         $this->site_config = $settings->get_settings();
         $this->fluent = $fluent;
         $this->cache = $cache;
+        $this->users = $users;
         $this->limit = $this->env['db']['query_limit'];
     }
 
-    /**
-     * @param array $values
-     *
-     * @throws Exception
-     *
-     * @return bool|int
-     */
     public function insert(array $values)
     {
         if (empty($values)) {
@@ -60,20 +56,20 @@ class Message
                                    ->execute();
         }
 
-        if (count($values) > $count) {
-            foreach ($values as $user) {
-                $ids[] = 'inbox_' . $user['receiver'];
-                $ids[] = 'message_count_' . $user['receiver'];
+        foreach ($values as $user) {
+            $ids[] = 'inbox_' . $user['receiver'];
+            $ids[] = 'message_count_' . $user['receiver'];
+            if ($this->site_config['mail']['smtp_enable']) {
+                $emailer = $this->users->getUserFromId($user['receiver']);
+                if (strpos($emailer['notifs'], 'email') !== false) {
+                    $msg_body = format_comment($user['msg']);
+                    send_mail(strip_tags($emailer['email']), $user['subject'], $msg_body, strip_tags($msg_body));
+                }
             }
+        }
 
-            if (!empty($ids)) {
-                $this->cache->deleteMulti($ids);
-            }
-        } else {
-            foreach ($values as $user) {
-                $this->cache->increment('inbox_' . $user['receiver']);
-                $this->cache->increment('message_count_' . $user['receiver']);
-            }
+        if (!empty($ids)) {
+            $this->cache->deleteMulti($ids);
         }
 
         if (!empty($result)) {
