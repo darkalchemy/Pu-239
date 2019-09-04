@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Message;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -76,7 +77,8 @@ switch ($do) {
                 'msg' => $msg,
                 'subject' => 'RE: ' . $subject,
             ];
-
+            $messages_class = $container->get(Message::class);
+            $messages_class->insert($msgs_buffer);
             $message = ', answer=' . sqlesc($message);
             if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($user['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
@@ -105,7 +107,7 @@ switch ($do) {
                     <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                         <div class='bordered top20 bottom20 bg-00'>
                             <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'DATE', 1) . "</div>
-                            <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
+                            <div>{$lang['staffbox_pm_subject']}: " . format_comment($a['subject']) . "</div>
                             <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) : '<span>No</span>') . "</div>
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>" . format_comment($a['msg']) . "
@@ -120,6 +122,7 @@ switch ($do) {
                                 <option value='restart' " . ($a['answeredby'] != $user['id'] ? 'disabled' : '') . ">{$lang['staffbox_pm_restart']}</option>
                                 <option value='delete'>{$lang['staffbox_pm_delete']}</option>
                             </select>
+                            <input type='hidden' name='subject' value='" . htmlsafechars($a['subject']) . "'>
                             <input type='hidden' name='reply' value='1'>
                             <input type='hidden' name='id[]' value='" . (int) $a['id'] . "'>
                             <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}'>
