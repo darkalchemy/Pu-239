@@ -1,4 +1,5 @@
 ### 05 Sept, 2019
+fix: update imdb_id on torrent edit takeedit.php  
 fix: reply to staff message contactstaff.php  
 fix: show coins given correctly details.php  
 fix: undefined messages_class coins.php  
