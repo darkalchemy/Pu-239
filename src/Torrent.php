@@ -279,8 +279,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -314,8 +314,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -688,6 +688,7 @@ class Torrent
                                         ->select('t.subs AS subtitles')
                                         ->select('t.audios')
                                         ->select('t.newgenre AS genre')
+                                        ->select('t.comments')
                                         ->select('u.username')
                                         ->select('u.class')
                                         ->select('p.name AS parent_name')
@@ -752,6 +753,7 @@ class Torrent
                                          ->select('t.subs AS subtitles')
                                          ->select('t.audios')
                                          ->select('t.newgenre AS genre')
+                                         ->select('t.comments')
                                          ->select('u.username')
                                          ->select('u.class')
                                          ->select('p.name AS parent_name')
@@ -819,6 +821,7 @@ class Torrent
                                             ->select('t.subs AS subtitles')
                                             ->select('t.audios')
                                             ->select('t.newgenre AS genre')
+                                            ->select('t.comments')
                                             ->select('u.username')
                                             ->select('u.class')
                                             ->select('p.name AS parent_name')
@@ -885,6 +888,7 @@ class Torrent
                                      ->select('t.subs AS subtitles')
                                      ->select('t.audios')
                                      ->select('t.newgenre AS genre')
+                                     ->select('t.comments')
                                      ->select('u.username')
                                      ->select('u.class')
                                      ->select('p.name AS parent_name')
@@ -972,10 +976,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
+     * @throws Exception
      *
      * @return false|mixed|string|string[]|null
      */

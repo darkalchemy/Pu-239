@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Pu239\Image;
 use Pu239\Torrent;
 
+require_once PARTIALS_DIR . 'torrent_table.php';
 global $container, $lang, $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
@@ -14,19 +15,8 @@ $torrents_mow .= "
     <a id='mow-hash'></a>
     <div id='mow' class='box'>
         <div class='has-text-centered'>
-            <div class='table-wrapper module'><div class='badge badge-hot'></div>
-                <table class='table table-bordered table-striped'>
-                    <thead>
-                        <tr>
-                            <th class='has-text-centered w-10 min-100'>{$lang['index_mow_type']}</th>
-                            <th class='w-50 min-350'>{$lang['index_mow_title']}</th>
-                            <th class='has-text-centered tooltipper' title='{$lang['index_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>
-                            <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
-                            <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
-                            <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
+            <div class='table-wrapper module'>
+                <div class='badge badge-hot'></div>" . torrent_table();
 
 $images_class = $container->get(Image::class);
 foreach ($motw as $last) {
@@ -49,7 +39,7 @@ foreach ($motw as $last) {
 if (count($motw) === 0) {
     $torrents_mow .= "
                         <tr>
-                            <td colspan='6'>{$lang['index_mow_no']}!</td>
+                            <td colspan='7'>{$lang['index_mow_no']}!</td>
                         </tr>";
 }
 $torrents_mow .= '

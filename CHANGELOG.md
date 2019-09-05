@@ -1,5 +1,8 @@
 ### 05 Sept, 2019
-update torrent table use more icons  
+update: add comments to torrent blocks  
+update: torrents tables remove column lines  
+update: torrent blocks use more icons  
+update: torrent table use more icons  
 add: site setting to scroll to poll  
 fix: getUserById() must be int  
 

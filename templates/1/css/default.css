@@ -624,6 +624,16 @@ textarea {
     border: none !important;
 }
 
+.table > thead > tr > th.has-no-border-right,
+.table > tbody > tr > td.has-no-border-right {
+    border-right: none;
+}
+
+.table > thead > tr > th.has-no-border-left,
+.table > tbody > tr > td.has-no-border-left {
+    border-left: none;
+}
+
 .has-no-wrap {
     white-space: nowrap;
 }

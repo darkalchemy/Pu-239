@@ -222,13 +222,13 @@ function torrent_tooltip_wrapper(array $data)
         $caticon = !empty($data['image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($data['image']) . "' class='tooltipper' alt='" . format_comment($data['cat']) . "' title='" . format_comment($data['cat']) . "' height='20px' width='auto'>" : format_comment($data['cat']);
         $torrent_wrapper = "
                     <tr>
-                        <td class='has-text-centered'>$caticon</td>
-                        <td>
+                        <td class='has-text-centered has-no-border-right'>$caticon</td>
+                        <td class='has-no-border-right has-no-border-left'>
                             <a href='{$site_config['paths']['baseurl']}/details.php?id={$data['id']}'>
                                 " . torrent_tooltip($data['text'], $data['id'], $data['block_id'], $data['name'], $data['poster'], $data['uploader'], $data['added'], $data['size'], $data['seeders'], $data['leechers'], $data['imdb_id'], $data['rating'], $data['year'], $data['subtitles'], $data['audios'], $data['genre']) . "
                             </a>
                         </td>
-                        <td class='has-text-centered'>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>
                             <div class='level-center'>
                                 <div class='flex-inrow'>
                                     <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$data['id']}" . $scheme . "' class='flex-item'>
@@ -237,9 +237,18 @@ function torrent_tooltip_wrapper(array $data)
                                 </div>
                             </div>                       
                         </td>
-                        <td class='has-text-centered'>{$data['times_completed']}</td>
-                        <td class='has-text-centered'>{$data['seeders']}</td>
-                        <td class='has-text-centered'>{$data['leechers']}</td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>
+                            <a href='{$site_config['paths']['baseurl']}/details.php?id={$data['id']}&amp;hit=1&amp;tocomm=1'>{$data['comments']}</a>
+                        </td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>
+                            <a href='{$site_config['paths']['baseurl']}/snatches.php?id={$data['id']}'>{$data['times_completed']}</a>
+                        </td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>
+                            <a href='{$site_config['paths']['baseurl']}/peerlist.php?id={$data['id']}#seeders'>{$data['seeders']}</a>
+                         </td>
+                        <td class='has-text-centered has-no-border-left'>
+                            <a href='{$site_config['paths']['baseurl']}/peerlist.php?id={$data['id']}#leechers''>{$data['leechers']}</a>
+                        </td>
                     </tr>";
 
         $cache->set('torrent_wrapper_' . $data['id'], $torrent_wrapper, 120);
