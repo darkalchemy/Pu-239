@@ -1,4 +1,5 @@
 ### 05 Sept, 2019
+update: show reply timestamp staffbox.php  
 fix: not all emails being sent to user that sets it
 fix: change allowed class staffpanel.php
 fix: imdb ids can be 8 digits

@@ -4036,4 +4036,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `torrents` MODIFY `imdb_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL',
         'flush' => false,
     ],
+    [
+        'id' => 1567646175,
+        'info' => 'Change answered length',
+        'date' => '04 Sept, 2019',
+        'query' => 'ALTER TABLE `staffmessages` MODIFY COLUMN `answered` int(10) UNSIGNED NOT NULL DEFAULT 0',
+        'flush' => false,
+    ],
 ];

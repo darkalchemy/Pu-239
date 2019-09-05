@@ -80,7 +80,7 @@ switch ($do) {
             $messages_class = $container->get(Message::class);
             $messages_class->insert($msgs_buffer);
             $message = ', answer=' . sqlesc($message);
-            if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($user['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
+            if (sql_query('UPDATE staffmessages SET answered=' . TIME_NOW . ', answeredby=' . sqlesc($user['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 $session->set('is-success', $lang['staffbox_setanswered_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -106,9 +106,9 @@ switch ($do) {
                     <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
                     <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                         <div class='bordered top20 bottom20 bg-00'>
-                            <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'DATE', 1) . "</div>
+                            <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'LONG', 1, 0) . "</div>
                             <div>{$lang['staffbox_pm_subject']}: " . format_comment($a['subject']) . "</div>
-                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) : '<span>No</span>') . "</div>
+                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) . ' at ' . get_date((int) $a['answered'], 'LONG', 1, 0): '<span>No</span>') . "</div>
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>" . format_comment($a['msg']) . "
                         </div>
@@ -195,8 +195,8 @@ switch ($do) {
                         <tr>
                             <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int) $a['id'] . "'>" . htmlsafechars($a['subject']) . '</a></td>
                             <td><b>' . ($a['username'] ? format_username((int) $a['sender']) : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
-                            <td>' . get_date((int) $a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date((int) $a['added'], 0, 1) . '</span></td>
-                            <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username((int) $a['answeredby']) : '<span>No</span>') . "</b></td>
+                            <td>' . get_date((int) $a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date((int) $a['added'], 'LONG', 1, 0) . '</span></td>
+                            <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username((int) $a['answeredby']) . '<br>' . get_date((int) $a['answered'], 'LONG', 1, 0) : '<span>No</span>') . "</b></td>
                             <td><input type='checkbox' name='id[]' value='" . (int) $a['id'] . "'></td>
                         </tr>";
             }
