@@ -51,7 +51,7 @@ if ($staff_classes === false || is_null($staff_classes)) {
                             ->groupBy('value')
                             ->orderBy('value')
                             ->fetchAll();
-    foreach ($available_classes as $class){
+    foreach ($available_classes as $class) {
         $staff_classes[] = $class['value'];
     }
     $cache->set('staff_classes_', $staff_classes, 0);

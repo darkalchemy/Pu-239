@@ -108,7 +108,7 @@ switch ($do) {
                         <div class='bordered top20 bottom20 bg-00'>
                             <div>{$lang['staffbox_pm_from']}: " . format_username((int) $a['sender']) . ' at ' . get_date((int) $a['added'], 'LONG', 1, 0) . "</div>
                             <div>{$lang['staffbox_pm_subject']}: " . format_comment($a['subject']) . "</div>
-                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) . ' at ' . get_date((int) $a['answered'], 'LONG', 1, 0): '<span>No</span>') . "</div>
+                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username((int) $a['answeredby']) . ' at ' . get_date((int) $a['answered'], 'LONG', 1, 0) : '<span>No</span>') . "</div>
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>" . format_comment($a['msg']) . "
                         </div>

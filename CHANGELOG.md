@@ -1,4 +1,4 @@
-### 05 Sept, 2019
+### 04 Sept, 2019
 update: show reply timestamp staffbox.php  
 fix: not all emails being sent to user that sets it
 fix: change allowed class staffpanel.php
@@ -13,8 +13,6 @@ fix: show coins given correctly details.php
 fix: undefined messages_class coins.php  
 revert: Adminer 4.7.2  
 fix: peers not adjusting correctly announce.php  
-
-### 04 Sept, 2019
 update: reset auth remembered when confirming identity as staff  
 update: movies.php  
 fix: imdb upcoming movies  
