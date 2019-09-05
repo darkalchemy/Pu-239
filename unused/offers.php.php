@@ -232,7 +232,7 @@ switch ($action) {
         $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($arr['cat']) . "' title='" . htmlsafechars($arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($arr['cat']);
 
         if (!empty($arr['link'])) {
-            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
+            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $arr['link'], $imdb);
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         }
         $movie_info = get_imdb_info($imdb, false, false, null, null);

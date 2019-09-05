@@ -17,6 +17,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 $session = $container->get(Session::class);
+
 class_check(UC_STAFF);
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 if (!$site_config['site']['staffpanel_online']) {
@@ -37,9 +38,10 @@ $stdfoot = [
 $HTMLOUT = $page_name = $file_name = $navbar = '';
 $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
+$cache->delete('staff_classes_');
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $staff_classes = $fluent->from('class_config')
+    $available_classes = $fluent->from('class_config')
                             ->select(null)
                             ->select('value')
                             ->where("name != 'UC_MIN'")
@@ -49,6 +51,9 @@ if ($staff_classes === false || is_null($staff_classes)) {
                             ->groupBy('value')
                             ->orderBy('value')
                             ->fetchAll();
+    foreach ($available_classes as $class){
+        $staff_classes[] = $class['value'];
+    }
     $cache->set('staff_classes_', $staff_classes, 0);
 }
 $data = array_merge($_POST, $_GET);

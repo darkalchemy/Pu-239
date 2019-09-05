@@ -1,4 +1,7 @@
 ### 05 Sept, 2019
+fix: not all emails being sent to user that sets it
+fix: change allowed class staffpanel.php
+fix: imdb ids can be 8 digits
 fix: typo takeedit.php  
 fix: check if user['notifs'] are empty before checking if should send email  
 fix: don't send 2 emails on PM received  

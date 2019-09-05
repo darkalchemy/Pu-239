@@ -35,14 +35,16 @@ if (!empty($argv[1]) && $argv[1] === 'complete') {
 function update_all(array $argv, array $sql_updates)
 {
     $updates = get_updates($argv, $sql_updates, true);
-    foreach ($updates as $update) {
-        $args = [
-            0 => $argv[0],
-            1 => 'run',
-            2 => $update['id'],
-        ];
-        echo "\nRunning update query #{$update['id']}\n";
-        update_database($args, $sql_updates, true);
+    if (!empty($updates)) {
+        foreach ($updates as $update) {
+            $args = [
+                0 => $argv[0],
+                1 => 'run',
+                2 => $update['id'],
+            ];
+            echo "\nRunning update query #{$update['id']}\n";
+            update_database($args, $sql_updates, true);
+        }
     }
 }
 

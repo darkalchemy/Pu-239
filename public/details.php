@@ -192,11 +192,11 @@ foreach ($categories as $key => $value) {
     ];
 }
 if (empty($torrent['imdb_id']) && !empty($torrent['url'])) {
-    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt\d{7})/i', $torrent['url'], $imdb_tmp);
+    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt\d{7,8})/i', $torrent['url'], $imdb_tmp);
     $imdb_id = !empty($imdb_tmp[2]) ? $imdb_tmp[2] : '';
     if (empty($imdb_id)) {
         $text = preg_replace('/\s+/', '', $torrent['descr']);
-        preg_match('/imdb\.com\/title\/(tt\d{7})/i', $text, $match);
+        preg_match('/imdb\.com\/title\/(tt\d{7,8})/i', $text, $match);
         if (isset($match[1])) {
             $imdb_id = $match[1];
         }

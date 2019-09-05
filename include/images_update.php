@@ -397,7 +397,7 @@ function images_update()
                           ->fetchAll();
 
     foreach ($offer_links as $link) {
-        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
@@ -429,7 +429,7 @@ function images_update()
                             ->fetchAll();
 
     foreach ($request_links as $link) {
-        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
