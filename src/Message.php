@@ -60,7 +60,7 @@ class Message
             $ids[] = 'inbox_' . $user['receiver'];
             $ids[] = 'message_count_' . $user['receiver'];
             if ($send_email && $this->site_config['mail']['smtp_enable']) {
-                $emailer = $this->users->getUserFromId($user['receiver']);
+                $emailer = $this->users->getUserFromId((int) $user['receiver']);
                 if (!empty($emailer['notifs']) && preg_match('#email|pm#', $emailer['notifs'])) {
                     $msg_body = format_comment($user['msg']);
                     send_mail(strip_tags($emailer['email']), $user['subject'], $msg_body, strip_tags($msg_body));

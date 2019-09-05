@@ -1,3 +1,6 @@
+### 05 Sept, 2019
+fix: getUserById() must be int  
+
 ### 04 Sept, 2019
 update: show reply timestamp staffbox.php  
 fix: not all emails being sent to user that sets it
