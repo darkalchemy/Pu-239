@@ -4043,4 +4043,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `staffmessages` MODIFY COLUMN `answered` int(10) UNSIGNED NOT NULL DEFAULT 0',
         'flush' => false,
     ],
+    [
+        'id' => 1567708317,
+        'info' => 'Add forced poll',
+        'date' => '05 Sept, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('poll', 'forced', 'bool', true, 'Wether to force users to respond to poll or not.')",
+        'flush' => true,
+    ],
 ];

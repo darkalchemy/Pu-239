@@ -92,7 +92,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
         'name',
         'numfiles',
         'comments',
-        'added',
+        //'added',
         'size',
         'times_completed',
         'seeders',

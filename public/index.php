@@ -41,19 +41,10 @@ if ($unread >= 1) {
 
 $pollvoter_class = $container->get(PollVoter::class);
 $poll_data = $pollvoter_class->get_user_poll($user['id']);
-if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
-    $HTMLOUT .= "
-<script>
-    window.addEventListener('load', function(){
-        let headerHeight = $('#navbar').outerHeight() + 10;
-        let target = '#poll';
-        let scrollToPosition = $(target).offset().top - headerHeight;
-        $('html, body').animate({
-            scrollTop: scrollToPosition
-        }, animate_duration, 'swing');
-        location.hash = '#poll';
-    });
-</script>";
+if ($site_config['poll']['forced'] && !empty($poll_data['pid']) && empty($poll_data['user_id'])) {
+    $stdfoot['js'] = array_merge($stdfoot['js'], [
+        get_file_name('scroll_to_poll_js'),
+    ]);
 }
 $above_columns = [
     'glide',

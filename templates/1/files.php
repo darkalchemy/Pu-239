@@ -17,7 +17,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_7cb76ae5.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_be3a99ba.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':
@@ -82,6 +82,8 @@ function get_file_name($file)
             return "{$site_config['paths']['baseurl']}/js/1/upload_ef8fe24d.js";
         case 'request_js':
             return "{$site_config['paths']['baseurl']}/js/1/request_14f9d732.js";
+        case 'scroll_to_poll_js':
+            return "{$site_config['paths']['baseurl']}/js/1/scroll_to_poll_01088f95.js";
         case 'parallax_js':
             return "{$site_config['paths']['baseurl']}/js/1/parallax_068e1067.js";
         case 'acp_js':

@@ -262,6 +262,9 @@ function run_uglify($argv = [])
             'request_js' => [
                 SCRIPTS_DIR . 'imdb.js',
             ],
+            'scroll_to_poll_js' => [
+                SCRIPTS_DIR . 'scroll_to_poll.js',
+            ],
             'parallax_js' => [
                 SCRIPTS_DIR . 'parallax.js',
             ],

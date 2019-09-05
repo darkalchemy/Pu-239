@@ -1,4 +1,6 @@
 ### 05 Sept, 2019
+update torrent table use more icons  
+add: site setting to scroll to poll  
 fix: getUserById() must be int  
 
 ### 04 Sept, 2019
