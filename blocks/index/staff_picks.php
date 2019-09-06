@@ -13,10 +13,9 @@ $staff_picks = $torrent->get_staff_picks();
 $staffpicks = "
     <a id='staffpicks-hash'></a>
     <div id='staffpicks' class='box'>
-        <div class='has-text-centered'>";
-
-$staffpicks .= "
-        <div class='table-wrapper'>" . torrent_table($lang['staff_picks']);
+        <div class='has-text-centered'>
+            <div class='table-wrapper'>
+                <!-- <div class='badge badge-new'></div> -->" . torrent_table($lang['staff_picks']);
 $images_class = $container->get(Image::class);
 foreach ($staff_picks as $last) {
     $last['text'] = $last['name'] . '(' . $last['year'] . ')';

@@ -16,7 +16,7 @@ $latest_tv .= "
     <div id='latesttvtorrents' class='box'>
         <div class='has-text-centered'>
             <div class='module table-wrapper'>
-                <div class='badge badge-new'></div>" . torrent_table($lang['last5torrents_tv_title']);
+                <!-- <div class='badge badge-new'></div> -->" . torrent_table($lang['last5torrents_tv_title']);
 
 $images_class = $container->get(Image::class);
 foreach ($last5tvtorrents as $last) {

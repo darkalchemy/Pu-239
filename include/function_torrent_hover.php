@@ -202,10 +202,10 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 /**
  * @param array $data
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */

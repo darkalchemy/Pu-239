@@ -1,3 +1,6 @@
+### 06 Sept, 2019
+update: disable torrent block badges  
+
 ### 05 Sept, 2019
 update: set torrent blocks title correctly  
 update: add comments to torrent blocks  
