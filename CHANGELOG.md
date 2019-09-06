@@ -1,4 +1,5 @@
 ### 06 Sept, 2019
+update: rotate badges to the left site of torrent blocks, if enabled  
 update: disable torrent block badges  
 
 ### 05 Sept, 2019
