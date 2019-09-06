@@ -16,7 +16,7 @@ $staffpicks = "
         <div class='has-text-centered'>";
 
 $staffpicks .= "
-        <div class='table-wrapper'>" . torrent_table();
+        <div class='table-wrapper'>" . torrent_table($lang['staff_picks']);
 $images_class = $container->get(Image::class);
 foreach ($staff_picks as $last) {
     $last['text'] = $last['name'] . '(' . $last['year'] . ')';

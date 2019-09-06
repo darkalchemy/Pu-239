@@ -16,7 +16,7 @@ $torrents_top .= "
     <div id='toptorrents' class='box'>
         <div class='has-text-centered'>
         <div class='module table-wrapper'>
-            <div class='badge badge-top'></div>" . torrent_table();
+            <div class='badge badge-top'></div>" . torrent_table($lang['top5torrents_title']);
 $images_class = $container->get(Image::class);
 foreach ($top5torrents as $last) {
     $last['text'] = $last['name'] . '(' . $last['year'] . ')';

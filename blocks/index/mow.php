@@ -16,7 +16,7 @@ $torrents_mow .= "
     <div id='mow' class='box'>
         <div class='has-text-centered'>
             <div class='table-wrapper module'>
-                <div class='badge badge-hot'></div>" . torrent_table();
+                <div class='badge badge-hot'></div>" . torrent_table($lang['index_mow_title']);
 
 $images_class = $container->get(Image::class);
 foreach ($motw as $last) {

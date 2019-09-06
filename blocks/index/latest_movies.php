@@ -17,7 +17,7 @@ $latest_movies .= "
     <div id='latesttorrents' class='box'>
         <div class='has-text-centered'>
             <div class='module table-wrapper'>
-                <div class='badge badge-new'></div>" . torrent_table();
+                <div class='badge badge-new'></div>" . torrent_table($lang['last5torrents_movie_title']);
 
 $images_class = $container->get(Image::class);
 foreach ($last5movietorrents as $last) {

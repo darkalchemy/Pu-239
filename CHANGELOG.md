@@ -1,4 +1,5 @@
 ### 05 Sept, 2019
+update: set torrent blocks title correctly  
 update: add comments to torrent blocks  
 update: torrents tables remove column lines  
 update: torrent blocks use more icons  
