@@ -23,8 +23,7 @@ header#navbar {
 
 header#navbar #menuWrapper {
     height: auto;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 0 5px;
     display: flex;
     justify-content: space-between;
 }
@@ -49,6 +48,12 @@ header#navbar ul > li > a {
     line-height: 40px;
     height: 100%;
     display: block;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+header#navbar ul > li > a.is-flex {
+    padding: 0;
 }
 
 header#navbar .nav_container ul > li > ul {
@@ -169,6 +174,27 @@ header#navbar .nav_container ul > li > ul a:hover {
     border-bottom: 1px solid var(--main-bdr-color);
     border-bottom-left-radius: .3125em;
     border-bottom-right-radius: .3125em;
+}
+
+@media (max-width: 990px) {
+    header#navbar ul > li > a:not(.is-flex) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media (max-width: 890px) {
+    header#navbar ul > li > a:not(.is-flex) {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (max-width: 790px) {
+    header#navbar ul > li > a:not(.is-flex) {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 @media only screen and (max-width: 768px) {

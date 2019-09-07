@@ -17,7 +17,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_7f46d9a3.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_fbe6129e.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':

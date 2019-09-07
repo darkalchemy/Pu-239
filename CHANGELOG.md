@@ -1,4 +1,5 @@
 ### 07 Sept, 2019
+add: padding around navbar anchor tags  
 update: style function_tfreak.php  
 update: style forum_posts.php  
 fix: hide navbar on scroll  
