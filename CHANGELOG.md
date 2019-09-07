@@ -1,3 +1,9 @@
+### 07 Sept, 2019
+update: style function_tfreak.php  
+update: style forum_posts.php  
+fix: hide navbar on scroll  
+add: navbar delay on hover  
+
 ### 06 Sept, 2019
 update: rotate badges to the left site of torrent blocks, if enabled  
 update: disable torrent block badges  

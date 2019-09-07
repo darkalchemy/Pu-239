@@ -55,7 +55,7 @@ function navbar()
                             </ul>
                         </li>' : '') . "
                         <li id='torrents_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_torrent']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/browse.php'' class='has-text-weight-bold'>{$lang['gl_torrent']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
@@ -140,10 +140,10 @@ function navbar()
 /**
  * @param $value
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -158,10 +158,10 @@ function make_link($value)
 }
 
 /**
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */

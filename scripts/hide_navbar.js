@@ -1,4 +1,4 @@
-if (window.screen.width <= 768) {
+document.addEventListener('DOMContentLoaded', function () {
     let mnavbar = document.getElementById('navbar');
     let mhamburger = document.getElementById('hamburger');
     let prevScrollpos = window.pageYOffset;
@@ -13,4 +13,4 @@ if (window.screen.width <= 768) {
         }
         prevScrollpos = currentScrollPos;
     };
-}
+});

@@ -47,14 +47,16 @@ header#navbar ul > li > a {
     text-decoration: none;
     transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     line-height: 40px;
+    height: 100%;
+    display: block;
 }
 
 header#navbar .nav_container ul > li > ul {
     position: absolute;
-    left: 10px;
+    left: 25%;
     opacity: 0;
     min-width: 200px;
-    margin: 0;
+    margin: 0 0 0 -50px;
     pointer-events: none;
     flex-direction: column;
     -webkit-perspective: 1000px;
@@ -76,11 +78,12 @@ header#navbar .nav_container ul > li > ul > li > a {
 
 .ddFadeFast {
     transition: all .35s ease-in-out;
+    transition-delay: .25s;
 }
 
 li:hover ul.hov {
     animation-duration: .35s;
-    animation-delay: .25s;
+    animation-delay: .35s;
 }
 
 li:hover ul.hov li {

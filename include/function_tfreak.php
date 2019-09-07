@@ -64,8 +64,8 @@ function rsstfreakinfo()
             $html .= "
             <div class='portlet{$top}'>
             <div class='bordered'>
-                <div id='$id' class='header alt_bordered bg-00 has-text-left'>
-                    <div class='has-text-primary size_5 padding10'>$title</div>
+                <div id='$id' class='header alt_bordered bg-00'>
+                    <h4 class='has-text-primary size_5 padding10 text-justify'>$title</h4>
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_2 has-text-primary'>
                             by $creator on $date
