@@ -418,9 +418,10 @@ if (!empty($coins)) {
             $coin_users[] = format_username($coin_user['id']);
         }
     }
-    $coin_users = !empty($coin_users) ? '
-    <div>Coins provided by: ' . implode(', ', $coin_users) . '</div>' : '';
 }
+$coin_users = !empty($coin_users) ? '
+    <div>Coins provided by: ' . implode(', ', $coin_users) . '</div>' : '';
+
 $points .= tr('Karma Points', '
                     <div class="left10">
                         <p>In total ' . $total_coins . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
