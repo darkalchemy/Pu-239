@@ -69,14 +69,14 @@ if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";
 }
 $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
-$HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . htmlsafechars($row['url']) . "'>", 1);
-$HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' min_length='10' max_length='13' class='w-100' value='" . htmlsafechars($row['isbn']) . "'/><br>{$lang['edit_isbn_details']}", 1);
-$HTMLOUT .= tr($lang['edit_title'], "<input type='text' name='title' class='w-100' value='" . (!empty($row['title']) ? htmlsafechars($row['title']) : '') . "'/><br>{$lang['edit_title_details']}", 1);
-$HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . htmlsafechars($row['poster']) . "'><br>{$lang['edit_poster1']}\n", 1);
-$HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . htmlsafechars($row['youtube']) . "' class='w-100'><br>({$lang['edit_youtube_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . htmlsafechars($row['name']) . "' class='w-100'>", 1);
-$HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' class='w-100'><br>({$lang['edit_tags_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' class='w-100'>", 1);
+$HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . (!empty($row['url']) ? htmlsafechars($row['url']) : '') . "'>", 1);
+$HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' min_length='10' max_length='13' class='w-100' value='" . (!empty($row['isbn']) ? htmlsafechars($row['isbn']) : '') . "'><br>{$lang['edit_isbn_details']}", 1);
+$HTMLOUT .= tr($lang['edit_title'], "<input type='text' name='title' class='w-100' value='" . (!empty($row['title']) ? htmlsafechars($row['title']) : '') . "'><br>{$lang['edit_title_details']}", 1);
+$HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . (!empty($row['poster']) ? htmlsafechars($row['poster']) : '') . "'><br>{$lang['edit_poster1']}\n", 1);
+$HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . (!empty($row['youtube']) ? htmlsafechars($row['youtube']) : '') . "' class='w-100'><br>({$lang['edit_youtube_info']})\n", 1);
+$HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . (!empty($row['name']) ? htmlsafechars($row['name']) : '') . "' class='w-100'>", 1);
+$HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . (!empty($row['tags']) ? htmlsafechars($row['tags']) : '') . "' class='w-100'><br>({$lang['edit_tags_info']})\n", 1);
+$HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . (!empty($row['description']) ? htmlsafechars($row['description']) : '') . "' class='w-100'>", 1);
 $HTMLOUT .= tr($lang['edit_nfo'], "
     <label for='nfoaction'>{$lang['edit_keep_current']}</label>
     <input type='radio' id='nfoaction' name='nfoaction' value='keep' checked class='right5'><br>
@@ -142,7 +142,7 @@ $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recom
 $auth = $container->get(Auth::class);
 if ($auth->hasRole(Roles::UPLOADER)) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked' " . ($row['nuked'] === 'yes' ? 'checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked' " . ($row['nuked'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No", 1);
-    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars((string) $row['nukereason']) . "' class='w-100'>", 1);
+    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . (!empty($row['nukereason']) ? htmlsafechars($row['nukereason']) : '') . "' class='w-100'>", 1);
 }
 if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1'> Remove Freeleech" : "
