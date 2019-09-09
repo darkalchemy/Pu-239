@@ -162,45 +162,37 @@ class Upcoming
      */
     public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index)
     {
-        $hash = hash('sha256', "{$limit}_{$offset}_{$orderby}_{$desc}_{$all}");
-        $this->cache->delete('recipes_showindex_' . $hash);
-        $cooker = $this->cache->get('recipes_showindex_' . $hash);
-        if ($cooker === false || is_null($cooker)) {
-            $results = $this->fluent->from('upcoming AS r')
-                                    ->select('u.username')
-                                    ->select('u.class')
-                                    ->select('c.name as cat')
-                                    ->select('c.image')
-                                    ->select('p.name AS parent_name')
-                                    ->leftJoin('users AS u ON r.userid = u.id')
-                                    ->leftJoin('categories AS c ON r.category = c.id')
-                                    ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                    ->limit($limit)
-                                    ->offset($offset);
-            if (!$all) {
-                $results = $results->where('r.status != ?', 'uploaded');
+        $results = $this->fluent->from('upcoming AS r')
+                                ->select('u.username')
+                                ->select('u.class')
+                                ->select('c.name as cat')
+                                ->select('c.image')
+                                ->select('p.name AS parent_name')
+                                ->leftJoin('users AS u ON r.userid = u.id')
+                                ->leftJoin('categories AS c ON r.category = c.id')
+                                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                ->limit($limit)
+                                ->offset($offset);
+        if (!$all) {
+            $results = $results->where('r.status != ?', 'uploaded');
+        }
+        if ($index) {
+            $results = $results->where('show_index = 1');
+        }
+        if (!$desc && $index) {
+            $results = $results->where('expected >= NOW()');
+        }
+        if (!empty($orderby)) {
+            $order = $orderby . ($desc ? ' DESC' : '');
+            $results = $results->orderBy($order);
+        }
+        $results = $results->orderBy('r.userid');
+        $cooker = [];
+        foreach ($results as $result) {
+            if (!empty($result['parent_name'])) {
+                $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
             }
-            if ($index) {
-                $results = $results->where('show_index = 1');
-            }
-            if (!$desc && $index) {
-                $results = $results->where('expected >= NOW()');
-            }
-            if (!empty($orderby)) {
-                $order = $orderby . ($desc ? ' DESC' : '');
-                $results = $results->orderBy($order);
-            }
-            $results = $results->orderBy('r.userid');
-            $cooker = [];
-            foreach ($results as $result) {
-                if (!empty($result['parent_name'])) {
-                    $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
-                }
-                $cooker[] = $result;
-            }
-            if (!empty($cooker)) {
-                $this->cache->set('recipes_showindex_' . $hash, $cooker, $this->site_config['expires']['recipes_index']);
-            }
+            $cooker[] = $result;
         }
 
         return $cooker;

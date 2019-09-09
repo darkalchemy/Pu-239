@@ -430,7 +430,6 @@ class User
     public function get_latest_user()
     {
         require_once CLASS_DIR . 'class_user_options.php';
-        $this->cache->delete('latestuser_');
         $userid = $this->cache->get('latestuser_');
         if ($userid === false || is_null($userid)) {
             $userid = $this->fluent->from('users')

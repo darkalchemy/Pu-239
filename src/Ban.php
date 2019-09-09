@@ -82,7 +82,6 @@ class Ban
             return false;
         }
         $key = 'bans_' . $ip;
-        $this->cache->delete($key);
         $ban = $this->cache->get($key);
         if (($ban === false || is_null($ban)) && $ban != 0) {
             $ban = $this->fluent->from('bans')

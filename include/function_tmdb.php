@@ -25,7 +25,6 @@ function get_tv_by_day($dates)
         return false;
     }
     $cache = $container->get(Cache::class);
-    $cache->delete('tmdb_tv_' . $dates);
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
@@ -40,16 +39,22 @@ function get_tv_by_day($dates)
             return false;
         }
         $json = json_decode($content, true);
-        $pages = $json['total_pages'];
-        $tmdb_data = get_movies($json);
-        for ($i = 2; $i <= $pages; ++$i) {
-            $purl = "$url&page=$i";
-            $content = fetch($purl, false);
-            $json = json_decode($content, true);
-            $tmdb_data = array_merge($tmdb_data, get_movies($json));
+        if (isset($json['results'])) {
+            $pages = $json['total_pages'];
+            $tmdb_data = get_movies($json);
+            for ($i = 2; $i <= $pages; ++$i) {
+                $purl = "$url&page=$i";
+                $content = fetch($purl, false);
+                $json = json_decode($content, true);
+                $tmdb_data = array_merge($tmdb_data, get_movies($json));
+            }
+            usort($tmdb_data, 'nameSort');
+            $cache->set('tmdb_tv_' . $dates, $tmdb_data, 86400);
+        } else {
+            $cache->set('tmdb_tv_' . $dates, [], 3600);
+
+            return false;
         }
-        usort($tmdb_data, 'nameSort');
-        $cache->set('tmdb_tv_' . $dates, $tmdb_data, 86400);
     }
     if (!empty($tmdb_data) && is_array($tmdb_data)) {
         foreach ($tmdb_data as $movie) {

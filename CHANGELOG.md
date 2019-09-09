@@ -1,4 +1,6 @@
 ### 09 Sept, 2019
+fix: check if json is empty before interating function_tmdb.php  
+remove: cache Upcoming.php  
 update: email style Message.php  
 fix: check of index is set before using function_tvmaze.php  
 fix: checked that var is array before iterating function_tmdb.php  
