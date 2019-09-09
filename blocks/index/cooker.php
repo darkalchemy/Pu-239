@@ -19,7 +19,7 @@ $cooker .= "
                 <thead>
                     <tr>
                         <th class='has-text-centered has-no-border-right'>{$local_lang['upcoming_type']}</th>
-                        <th class='has-text-centered min-350 has-no-border-right has-no-border-left'>{$local_lang['upcoming_name']}</th>
+                        <th class='min-350 has-no-border-right has-no-border-left'>{$local_lang['upcoming_name']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'>{$local_lang['upcoming_status']}</th>
                         <th class='has-text-centered has-no-border-left'>{$local_lang['upcoming_expected']}</th>
                     </tr>

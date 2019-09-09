@@ -169,7 +169,7 @@ if ($has_access) {
     }
 }
 $count = $cooker_class->get_count(false);
-$perpage = 2;
+$perpage = 25;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?');
 $menu_top = $count > $perpage ? $pager['pagertop'] : '';
 $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
