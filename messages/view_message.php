@@ -6,19 +6,27 @@ use Pu239\Database;
 use Pu239\User;
 
 $user = check_user_status();
+$image = placeholder_image();
 global $container, $site_config, $lang;
 
-$lang = array_merge($lang, load_language('messages'));
+$lang = array_merge($lang, load_language('messages'), load_language('forums'), load_language('forums_global'));
 $subject = $friends = '';
 $fluent = $container->get(Database::class);
 $message = $fluent->from('messages AS m')
                   ->select('f.id AS friend')
                   ->select('b.id AS blocked')
                   ->select('a.id AS attachment')
+                  ->select('u.title')
+                  ->select('u.last_access')
+                  ->select('u.show_email')
+                  ->select('u.email')
+                  ->select('u.website')
+                  ->select('u.seedbonus')
                   ->where('m.id = ?', $pm_id)
                   ->leftJoin('friends AS f ON f.userid = ? AND f.friendid = m.sender', $user['id'])
                   ->leftJoin('blocks AS b ON b.userid = ? AND b.blockid = m.sender', $user['id'])
                   ->leftJoin('attachments AS a ON m.added = a.post_id')
+                  ->leftJoin('users AS u ON m.sender = u.id')
                   ->fetch();
 if (empty($message) || ($message['receiver'] != $user['id'] && $message['sender'] != $user['id'])) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
@@ -93,6 +101,7 @@ $HTMLOUT .= "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "
         $top_links";
+
 $body = "
             <tr class='no_hover'>
                 <td colspan='2'>
@@ -106,6 +115,38 @@ $body = "
                 </td>
             </tr>
             <tr class='no_hover'>
+		    <td colspan='2'>
+                <div class='w-100 padding20'>
+                    <div class='columns'>
+                        <div class='column round10 bg-02 is-2-desktop is-3-tablet is-12-mobile has-text-centered'>
+                            {$avatar}" . format_username($message['sender']) . (empty($message['title']) ? '' : "
+                            <div class='size_3'>[" . format_comment($message['title']) . ']</div>') . ($message['last_access'] > TIME_NOW - 300 ? "
+                            <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/online.gif' alt='{$lang['fe_online']}' title='{$lang['fe_online']}' class='tooltipper icon is-small lazy'>{$lang['fe_online']}</div>" : "
+                            <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/offline.gif' alt='{$lang['fe_offline']}' title='{$lang['fe_offline']}' class='tooltipper icon is-small lazy'>{$lang['fe_offline']}</div>") . "
+                            <div>{$lang['fe_karma']}: " . number_format((float) $message['seedbonus']) . '</div>' . (!empty($message['website']) ? "
+                            <div>
+                                <a href='" . format_comment($message['website']) . "' target='_blank' title='{$lang['fe_click_to_go_to_website']}'>
+                                    <img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/website.gif' alt='website' class='tooltipper emoticon lazy'>
+                                </a>
+                            </div>" : '') . ($message['show_email'] === 'yes' ? "
+                            <div>
+                                <a href='mailto:" . format_comment($message['email']) . "'  title='{$lang['fe_click_to_email']}' target='_blank'>
+                                    <i class='icon-mail icon tooltipper' aria-hidden='true' title='email'><i>
+                                </a>
+                            </div>" : '') . "
+                        </div>
+                        <div class='column round10 bg-02 left20'>
+                            <div class='flex-vertical comments h-100'>
+                                <div>" . format_comment($message['msg'], false) . "</div>
+                                <div class='size_3'>{$edited_by}</div>
+                                <div>{$attachment}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <!--
                 <td class='has-text-centered min-150 mw-150'>{$avatar}</td>
                 <td>
                     <div class='flex-vertical comments h-100 padding10'>
@@ -113,6 +154,7 @@ $body = "
                         <div>$attachment</div>
                     </div>
                 </td>
+            -->
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>

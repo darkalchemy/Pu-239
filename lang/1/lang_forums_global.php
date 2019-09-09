@@ -92,6 +92,7 @@ $lang = [
     'fe_nothing_removed_from_the_recy' => 'Nothing removed from the recycle bin!',
     'fe_nothing_removed_from_the_trash' => 'Nothing removed from the trash!',
     'fe_nothing_sent_to_recy' => 'Nothing sent to recycle bin!',
+    'fe_online' => 'Online',
     'fe_offline' => 'Offline',
     'fe_pinned' => 'Pinned',
     'fe_poll' => 'Poll',

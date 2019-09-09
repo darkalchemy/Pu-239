@@ -1,4 +1,5 @@
 ### 09 Sept, 2019
+update: style view_message.php view_topic.php  
 fix: check if json is empty before interating function_tmdb.php  
 remove: cache Upcoming.php  
 update: email style Message.php  
