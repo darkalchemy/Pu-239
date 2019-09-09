@@ -67,12 +67,18 @@ function images_update()
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
+    $yesterday = $date->modify('-1 day')
+                      ->format('Y-m-d');
     $tomorrow = $date->modify('+1 day')
+                     ->format('Y-m-d');
+    $day_after = $date->modify('+2 day')
                      ->format('Y-m-d');
 
     get_movies_by_vote_average(100);
+    get_tv_by_day($yesterday);
     get_tv_by_day($today);
     get_tv_by_day($tomorrow);
+    get_tv_by_day($day_after);
 
     $no_posters = $fluent->from('torrents')
                          ->select(null)

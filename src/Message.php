@@ -62,8 +62,11 @@ class Message
             if ($send_email && $this->site_config['mail']['smtp_enable']) {
                 $emailer = $this->users->getUserFromId((int) $user['receiver']);
                 if (!empty($emailer['notifs']) && preg_match('#email|pm#', $emailer['notifs'])) {
-                    $msg_body = format_comment($user['msg']);
-                    send_mail(strip_tags($emailer['email']), $user['subject'], $msg_body, strip_tags($msg_body));
+                    $message_id = $this->get_last_message((int) $user['receiver'], isset($user['sender']) ? (int) $user['sender'] : 2);
+                    $message = !empty($message_id) ? "&id={$message_id}" : '';
+                    $msg_body = format_comment($user['subject']) . '<br><br>' . format_comment($user['msg']) . "<br>
+                    <a href='{$this->site_config['paths']['baseurl']}/messages.php?action=view_message{$message}'>View Message</a>";
+                    send_mail(strip_tags($emailer['email']), 'You have received a Private Message', $msg_body, strip_tags($msg_body));
                 }
             }
         }
@@ -77,6 +80,27 @@ class Message
         }
 
         return false;
+    }
+
+    /**
+     * @param int $receiver
+     * @param int $sender
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_last_message(int $receiver, int $sender)
+    {
+        $message_id = $this->fluent->from('messages')
+                                   ->select(null)
+                                   ->select('id')
+                                   ->where('receiver = ?', $receiver)
+                                   ->where('sender = ?', $sender)
+                                   ->orderBy('id DESC')
+                                   ->fetch('id');
+
+        return $message_id;
     }
 
     /**

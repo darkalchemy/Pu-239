@@ -4050,4 +4050,25 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('poll', 'forced', 'bool', true, 'Wether to force users to respond to poll or not.')",
         'flush' => true,
     ],
+    [
+        'id' => 1567881570,
+        'info' => 'Add recipes_index',
+        'date' => '07 Sept, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('expires', 'recipes_index', 'int', 86400, 'Cache expiration or ttl.')",
+        'flush' => true,
+    ],
+    [
+        'id' => 1567881571,
+        'info' => 'Add recipes_limit',
+        'date' => '07 Sept, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('latest', 'recipes_limit', 'int', 5, 'The maximum number of recipes to include in the cooker block.')",
+        'flush' => true,
+    ],
+    [
+        'id' => 1567881572,
+        'info' => 'Drop column views',
+        'date' => '07 Sept, 2019',
+        'query' => 'ALTER TABLE `upcoming` DROP COLUMN `views`',
+        'flush' => false,
+    ],
 ];

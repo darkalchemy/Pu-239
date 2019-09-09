@@ -367,8 +367,8 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|Image|mixed|string
  */
@@ -473,9 +473,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */
@@ -499,9 +499,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -530,22 +530,24 @@ function validate_promo(string $code, bool $full)
 /**
  * @param array $lang
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
 function category_dropdown(array $lang)
 {
+    global $post_data;
+
     $cats = genrelist(true);
     $s = "
             <select id='upload_category' name='type' class='w-100' required>
-                <option value='0'>({$lang['upload_choose_one']})</option>";
+                <option value='' disabled selected>{$lang['upload_choose_one']}</option>";
     foreach ($cats as $cat) {
         foreach ($cat['children'] as $row) {
             $s .= "
-                <option value='{$row['id']}'>" . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+                <option value='{$row['id']}' " . (!empty($post_data['category']) && $post_data['category'] === $row['id'] ? 'selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
         }
     }
     $s .= '

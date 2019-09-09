@@ -21,19 +21,18 @@ function validip($ip)
 }
 
 /**
- * @param int  $date
- * @param      $method
- * @param int  $norelative
- * @param int  $full_relative
- * @param bool $calc
+ * @param int $date
+ * @param     $method
+ * @param int $norelative
+ * @param int $full_relative
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return false|mixed|string
  */
-function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool $calc = false)
+function get_date(int $date, $method, $norelative = 1, $full_relative = 0)
 {
     global $container, $site_config;
 
@@ -82,7 +81,7 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool 
     if ($site_config['time']['use_relative'] === 3) {
         $full_relative = 1;
     }
-    if ($full_relative && $norelative != false && !$calc) {
+    if ($full_relative && $norelative != false) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -105,7 +104,7 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool 
         } else {
             return gmdate($time_options[$method], ($date + $user_offset));
         }
-    } elseif ($site_config['time']['use_relative'] && $norelative != 1 && !$calc) {
+    } elseif ($site_config['time']['use_relative'] && $norelative != 1) {
         $this_time = gmdate('d,m,Y', ($date + $user_offset));
         if ($site_config['time']['use_relative'] === 2) {
             $diff = TIME_NOW - $date;
@@ -138,35 +137,54 @@ function get_date(int $date, $method, $norelative = 1, $full_relative = 0, bool 
         } else {
             return gmdate($time_options[$method], ($date + $user_offset));
         }
-    } elseif ($calc) {
-        $years = (int) ($date / 31536000);
-        $date -= $years * 31536000;
-        $days = intval($date / 86400);
-        $date -= $days * 86400;
-        $hours = intval($date / 3600);
-        $date -= $hours * 3600;
-        $mins = intval($date / 60);
-        $secs = $date - ($mins * 60);
-        $text = [];
-        if ($years > 0) {
-            $text[] = number_format($years) . ' year' . plural($years);
-        }
-        if ($days > 0) {
-            $text[] = number_format($days) . ' day' . plural($days);
-        }
-        if ($hours > 0) {
-            $text[] = number_format($hours) . ' hour' . plural($hours);
-        }
-        if ($mins > 0) {
-            $text[] = number_format($mins) . ' min' . plural($mins);
-        }
-        if ($secs > 0) {
-            $text[] = number_format($secs) . ' sec' . plural($secs);
-        }
-        if (!empty($text)) {
-            return implode(', ', $text);
-        }
     }
 
     return gmdate($time_options[$method], ($date + $user_offset));
+}
+
+/**
+ * @param int  $diff
+ * @param bool $full
+ *
+ * @return string
+ */
+function calc_time_difference(int $diff, bool $full)
+{
+    $years = (int) ($diff / 31536000);
+    $diff -= $years * 31536000;
+    $days = intval($diff / 86400);
+    $diff -= $days * 86400;
+    $hours = intval($diff / 3600);
+    $diff -= $hours * 3600;
+    $mins = intval($diff / 60);
+    $secs = $diff - ($mins * 60);
+    $text = [];
+    if ($years > 0) {
+        $text[] = number_format($years) . ($full ? ' year' . plural($years) : '');
+    }
+    if ($days > 0) {
+        $text[] = number_format($days) . ($full ? ' day' . plural($days) : '');
+    }
+    if ($hours > 0) {
+        $text[] = number_format($hours) . ($full ? ' hour' . plural($hours) : '');
+    }
+    if ($mins > 0) {
+        if ($full) {
+            $text[] = number_format($mins) . ' min' . plural($mins);
+        } else {
+            $text[] = str_pad((string) $mins, 2, '0', STR_PAD_LEFT);
+        }
+    }
+    if ($secs > 0) {
+        if ($full) {
+            $text[] = number_format($secs) . ' sec' . plural($secs);
+        } else {
+            $text[] = str_pad((string) $secs, 2, '0', STR_PAD_LEFT);
+        }
+    }
+    if (!empty($text)) {
+        return implode(($full ? ', ' : ':'), $text);
+    }
+
+    return null;
 }

@@ -13,7 +13,7 @@ declare(strict_types = 1);
  */
 function pager(int $perpage, int $count, $href, $opts = [], $class = null)
 {
-    $pages = ceil($count / $perpage);
+    $pages = intval(ceil($count / $perpage));
 
     if (!isset($opts['lastpagedefault'])) {
         $pagedefault = 0;
@@ -95,7 +95,6 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
     }
 
     $start = $page * $perpage;
-
     $start = (int) $start;
 
     return [

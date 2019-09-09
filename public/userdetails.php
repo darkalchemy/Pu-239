@@ -598,12 +598,19 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             <tr>
                 <td class='rowhead'>{$lang['userdetails_roles']}</td>
                 <td colspan='3'>
-                    <div class='level-left'>
-                        <input type='checkbox' name='role_coder' value='1' " . ($user['roles_mask'] & Roles::CODER ? 'checked' : '') . " class='right5'>{$lang['userdetails_coder']}
-                        <input type='checkbox' name='role_uploader' value='1' " . ($user['roles_mask'] & Roles::UPLOADER ? 'checked' : '') . " class='left20 right5'>{$lang['userdetails_uploader']}
+                    <div class=''>
+                        <div class='level-left'>
+                            <input type='checkbox' name='role_coder' value='1' " . ($user['roles_mask'] & Roles::CODER ? 'checked' : '') . " class='right5'>{$lang['userdetails_coder']} :
+                            <span class='left5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</span>
+                        </div>
+                        <div class='level-left top10'>
+                            <input type='checkbox' name='role_internal' value='1' " . ($user['roles_mask'] & Roles::INTERNAL ? 'checked' : '') . " class='right5'>{$lang['userdetails_internal']}
+                        </div>
+                        <div class='level-left top10'>
+                            <input type='checkbox' name='role_uploader' value='1' " . ($user['roles_mask'] & Roles::UPLOADER ? 'checked' : '') . " class='right5'>{$lang['userdetails_uploader']}
+                        </div>
                     </div>
-                    <div class='top5 bottom5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</div>
-                    <div class='top5 bottom5'>{$lang['userdetails_roles_info']}</div>
+                    <div class='top5 bottom5 has-text-info'>{$lang['userdetails_roles_info']}</div>
                 </td>
             </tr>
             <tr>

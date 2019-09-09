@@ -6,13 +6,14 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Image;
 
 /**
  * @param $dates
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -49,6 +50,18 @@ function get_tv_by_day($dates)
         usort($tmdb_data, 'nameSort');
         $cache->set('tmdb_tv_' . $dates, $tmdb_data, 86400);
     }
+    if (!empty($tmdb_data)) {
+        foreach ($tmdb_data as $movie) {
+            $imdb_id = get_imdbid($movie['id']);
+            $imdb_id = !empty($imdb_id) ? $imdb_id : '';
+            if (!empty($movie['poster_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['poster_path']}", 'poster');
+            }
+            if (!empty($movie['backdrop_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['backdrop_path']}", 'background');
+            }
+        }
+    }
 
     return $tmdb_data;
 }
@@ -56,9 +69,9 @@ function get_tv_by_day($dates)
 /**
  * @param $dates
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -95,9 +108,9 @@ function get_movies_by_week($dates)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -133,6 +146,21 @@ function get_movies_in_theaters()
         }
         $cache->set('tmdb_movies_in_theaters_', $tmdb_data, 86400);
     }
+    if (!empty($tmdb_data)) {
+        foreach ($tmdb_data as $movie) {
+            $imdb_id = get_imdbid($movie['id']);
+            $imdb_id = !empty($imdb_id) ? $imdb_id : '';
+            if (!empty($movie['poster_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['poster_path']}", 'poster');
+            }
+            if (!empty($movie['backdrop_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['backdrop_path']}", 'background');
+            }
+            if (!empty($imdb_id)) {
+                get_imdb_info_short($imdb_id);
+            }
+        }
+    }
 
     return $tmdb_data;
 }
@@ -140,9 +168,9 @@ function get_movies_in_theaters()
 /**
  * @param $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -156,6 +184,7 @@ function get_movies_by_vote_average($count)
 
     $page = $count / 20;
     $cache = $container->get(Cache::class);
+    $cache->delete('tmdb_movies_vote_average_' . $count);
     $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
@@ -173,7 +202,6 @@ function get_movies_by_vote_average($count)
         $json = json_decode($content, true);
         $pages = $json['total_pages'] <= $page ? $json['total_pages'] : $page;
         $tmdb_data = get_movies($json);
-
         for ($i = 2; $i <= $pages; ++$i) {
             $purl = "$url&page=$i";
             $content = fetch($purl, false);
@@ -181,6 +209,21 @@ function get_movies_by_vote_average($count)
             $tmdb_data = array_merge($tmdb_data, get_movies($json));
         }
         $cache->set('tmdb_movies_vote_average_' . $count, $tmdb_data, 86400);
+    }
+    if (!empty($tmdb_data)) {
+        foreach ($tmdb_data as $movie) {
+            $imdb_id = get_imdbid($movie['id']);
+            $imdb_id = !empty($imdb_id) ? $imdb_id : '';
+            if (!empty($movie['poster_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['poster_path']}", 'poster');
+            }
+            if (!empty($movie['backdrop_path'])) {
+                insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['backdrop_path']}", 'background');
+            }
+            if (!empty($imdb_id)) {
+                get_imdb_info_short($imdb_id);
+            }
+        }
     }
 
     return $tmdb_data;
@@ -243,9 +286,9 @@ function get_movie_id($imdbid, $type)
 /**
  * @param $json
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -263,10 +306,10 @@ function get_movies($json)
             if (!empty($movie['id'])) {
                 $images = '';
                 if (!empty($movie['poster_path'])) {
-                    $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/w185{$movie['poster_path']}', 'poster')";
+                    $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['poster_path']}', 'poster')";
                 }
                 if (!empty($movie['backdrop_path'])) {
-                    $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}', 'background')";
+                    $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['backdrop_path']}', 'background')";
                 }
                 if (!empty($images)) {
                     $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
@@ -325,9 +368,9 @@ function getStartAndEndDate($year, $week)
 /**
  * @param $tmdbid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|null
  */
@@ -374,4 +417,35 @@ function update_tmdb_id($tmdb_id, $imdb_id)
            ->set($set)
            ->where('imdb_id = ?', $imdb_id)
            ->execute();
+}
+
+/**
+ * @param int    $tmdb_id
+ * @param string $imdb_id
+ * @param string $url
+ * @param string $type
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ */
+function insert_image(int $tmdb_id, string $imdb_id, string $url, string $type)
+{
+    global $container;
+
+    $images_class = $container->get(Image::class);
+    $cache = $container->get(Cache::class);
+    $hash = hash('sha256', $url);
+    $inserted = $cache->get('insert_image_' . $hash);
+    if ($inserted === false || is_null($inserted)) {
+        $values = [
+            'tmdb_id' => $tmdb_id,
+            'imdb_id' => $imdb_id,
+            'url' => $url,
+            'type' => $type,
+        ];
+
+        $images_class->insert($values);
+        $cache->get($type . '_' . $imdb_id);
+        $cache->set('insert_image_' . $hash, 'inserted', 86400);
+    }
 }

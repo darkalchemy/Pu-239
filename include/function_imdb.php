@@ -462,6 +462,7 @@ function get_imdb_info_short($imdb_id)
 {
     global $container, $site_config, $BLOCKS;
 
+    $images_class = $container->get(Image::class);
     $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -501,7 +502,6 @@ function get_imdb_info_short($imdb_id)
         ]);
         $imdb_short = $cache->get('imdb_short_' . $imdbid);
         if ($imdb_short === false || is_null($imdb_short)) {
-            $images_class = $container->get(Image::class);
             $images_class->insert($values);
             $cache->set('imdb_short_' . $imdbid, 'inserted', 86400);
         }
@@ -528,41 +528,62 @@ function get_imdb_info_short($imdb_id)
     }
 
     $imdb_data['mpaa_reason'] = !empty($imdb_data['mpaa_reason']) ? $imdb_data['mpaa_reason'] : '?';
+    $background = $images_class->find_images($imdbid, $type = 'background');
     $imdb_info = "
             <div class='masonry-item-clean padding10 bg-04 round10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
-                    <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <a href='" . url_proxy('https://www.imdb.com/title/tt' . $imdb_id . '/', false) . "' target='_blank'>
+                        <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    </a>
                     <div class='has-text-centered top10'>{$imdb_data['title']}</div>
                     <div class='tooltip_templates'>
-                        <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background'>
-                            <div class='is-flex tooltip-torrent bg-09'>
-                                <span class='padding10 w-40'>
-                                    <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
-                                </span>
-                                <div class='padding10'>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary has-text-bold'>Title: </span>
-                                        <span>" . htmlsafechars($imdb_data['title']) . "</span>
-                                    </div>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary'>MPAA: </span>
-                                        <span>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
-                                    </div>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary'>Critics: </span>
-                                        <span>" . htmlsafechars($imdb_data['critics']) . "</span>
-                                    </div>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary'>Rating: </span>
-                                        <span>" . htmlsafechars($imdb_data['rating']) . "</span>
-                                    </div>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary'>Votes: </span>
-                                        <span>" . (int) $imdb_data['vote_count'] . "</span>
-                                    </div>
-                                    <div>
-                                        <span class='size_5 right10 has-text-primary'>Overview: </span>
-                                        <span>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
+                        <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background' " . (!empty($background) ? "style='background-image: url({$background});'" : '') . ">
+                            <div class='columns is-marginless is-paddingless'>
+                                <div class='column padding10 is-4'>
+                                    <span>
+                                        <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    </span>
+                                </div>
+                                <div class='column padding10 is-8'>
+                                    <div class='padding20 is-8 bg-09 round10 h-100'>
+                                        <div class='columns is-multiline'>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Title: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span>" . htmlsafechars($imdb_data['title']) . "</span>
+                                            </div>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>MPAA: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span class='size_4'>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
+                                            </div>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Critics: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span class='size_4'>" . htmlsafechars($imdb_data['critics']) . "</span>
+                                            </div>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Rating: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span class='size_4'>" . htmlsafechars($imdb_data['rating']) . "</span>
+                                            </div>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Votes: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span class='size_4'>" . (int) $imdb_data['vote_count'] . "</span>
+                                            </div>
+                                            <div class='column padding5 is-4'>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Overview: </span>
+                                            </div>
+                                            <div class='column padding5 is-8'>
+                                                <span class='size_4'>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -643,11 +664,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -696,9 +717,9 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -795,9 +816,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -830,9 +851,9 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -865,9 +886,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -900,9 +921,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */

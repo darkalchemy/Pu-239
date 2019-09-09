@@ -6,6 +6,8 @@ namespace Pu239;
 
 use Envms\FluentPDO\Exception;
 use Envms\FluentPDO\Literal;
+use Envms\FluentPDO\Queries\Delete;
+use PDOStatement;
 
 /**
  * Class Upcoming.
@@ -13,15 +15,25 @@ use Envms\FluentPDO\Literal;
 class Upcoming
 {
     protected $fluent;
+    protected $cache;
+    protected $site_config;
+    protected $settings;
 
     /**
-     * Sitelog constructor.
+     * Upcoming constructor.
      *
+     * @param Cache    $cache
      * @param Database $fluent
+     * @param Settings $settings
+     *
+     * @throws Exception
      */
-    public function __construct(Database $fluent)
+    public function __construct(Cache $cache, Database $fluent, Settings $settings)
     {
+        $this->settings = $settings;
+        $this->site_config = $this->settings->get_settings();
         $this->fluent = $fluent;
+        $this->cache = $cache;
     }
 
     /**
@@ -98,15 +110,24 @@ class Upcoming
     }
 
     /**
-     * @param int $id
+     * @param int  $id
+     * @param bool $staff
+     * @param int  $userid
      *
      * @throws Exception
+     *
+     * @return bool|Delete
      */
-    public function delete(int $id)
+    public function delete(int $id, bool $staff, int $userid)
     {
-        $this->fluent->deleteFrom('upcoming')
-                     ->where('id = ?', $id)
-                     ->execute();
+        $result = $this->fluent->deleteFrom('upcoming')
+                               ->where('id = ?', $id);
+        if (!$staff) {
+            $result = $result->where('userid = ?', $userid);
+        }
+        $result = $result->execute();
+
+        return $result;
     }
 
     /**
@@ -114,13 +135,17 @@ class Upcoming
      * @param int   $upcomingid
      *
      * @throws Exception
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $upcomingid)
     {
-        $this->fluent->update('upcoming')
-                     ->set($set)
-                     ->where('id = ?', $upcomingid)
-                     ->execute();
+        $result = $this->fluent->update('upcoming')
+                               ->set($set)
+                               ->where('id = ?', $upcomingid)
+                               ->execute();
+
+        return $result;
     }
 
     /**
@@ -129,37 +154,53 @@ class Upcoming
      * @param string $orderby
      * @param bool   $desc
      * @param bool   $all
+     * @param bool   $index
      *
      * @throws Exception
      *
      * @return array|bool
      */
-    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all)
+    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index)
     {
-        $results = $this->fluent->from('upcoming AS r')
-                               ->select('u.username')
-                               ->select('c.name as cat')
-                               ->select('c.image')
-                               ->select('p.name AS parent_name')
-                               ->leftJoin('users AS u ON r.userid = u.id')
-                               ->leftJoin('categories AS c ON r.category = c.id')
-                               ->leftJoin('categories AS p ON c.parent_id = p.id')
-                               ->limit($limit)
-                               ->offset($offset);
-        if (!$all) {
-            $results->where('r.status != ?', 'uploaded');
-        }
-        if (!empty($orderby)) {
-            $order = $orderby . ($desc ? ' DESC' : '');
-            $results->orderBy($order);
-        }
-        $results = $results->orderBy('r.userid');
-        $cooker = [];
-        foreach ($results as $result) {
-            if (!empty($result['parent_name'])) {
-                $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
+        $hash = hash('sha256', "{$limit}_{$offset}_{$orderby}_{$desc}_{$all}");
+        $this->cache->delete('recipes_showindex_' . $hash);
+        $cooker = $this->cache->get('recipes_showindex_' . $hash);
+        if ($cooker === false || is_null($cooker)) {
+            $results = $this->fluent->from('upcoming AS r')
+                                    ->select('u.username')
+                                    ->select('u.class')
+                                    ->select('c.name as cat')
+                                    ->select('c.image')
+                                    ->select('p.name AS parent_name')
+                                    ->leftJoin('users AS u ON r.userid = u.id')
+                                    ->leftJoin('categories AS c ON r.category = c.id')
+                                    ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                    ->limit($limit)
+                                    ->offset($offset);
+            if (!$all) {
+                $results = $results->where('r.status != ?', 'uploaded');
             }
-            $cooker[] = $result;
+            if ($index) {
+                $results = $results->where('show_index = 1');
+            }
+            if (!$desc && $index) {
+                $results = $results->where('expected >= NOW()');
+            }
+            if (!empty($orderby)) {
+                $order = $orderby . ($desc ? ' DESC' : '');
+                $results = $results->orderBy($order);
+            }
+            $results = $results->orderBy('r.userid');
+            $cooker = [];
+            foreach ($results as $result) {
+                if (!empty($result['parent_name'])) {
+                    $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
+                }
+                $cooker[] = $result;
+            }
+            if (!empty($cooker)) {
+                $this->cache->set('recipes_showindex_' . $hash, $cooker, $this->site_config['expires']['recipes_index']);
+            }
         }
 
         return $cooker;

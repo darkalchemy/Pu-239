@@ -1,5 +1,8 @@
 In no particular order  
 
+update: blocks to include cooker  
+update: upload to look to recipes in cooker  
+add: notifications to cooker  
 fix: parallax scrolling in firefox  
 check: upload/download peers speed showing 0  
 update: "Signups are Invite Only" to "Invalid or expired promotion link"

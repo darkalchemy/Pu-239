@@ -202,10 +202,10 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 /**
  * @param array $data
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -255,4 +255,71 @@ function torrent_tooltip_wrapper(array $data)
     }
 
     return $torrent_wrapper;
+}
+
+/**
+ * @param string $imdb_url
+ * @param string $block_id
+ * @param string $text
+ * @param string $background
+ * @param string $poster
+ * @param string $added
+ * @param string $expected
+ * @param string $chef
+ * @param string $plot
+ * @param array  $lang
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
+ */
+function upcoming_hover(string $imdb_url, string $block_id, string $text, string $background, string $poster, string $added, string $expected, string $chef, string $plot, array $lang)
+{
+    $hover = "
+                            <a class='is-link' href='{$imdb_url}'>
+                                <div class='dt-tooltipper-large torrent-name' data-tooltip-content='#{$block_id}_tooltip'>
+                                    " . htmlsafechars($text) . "
+                                    <div class='tooltip_templates'>
+                                        <div id='{$block_id}_tooltip' class='round10 tooltip-background' {$background}>
+                                            <div class='tooltip-torrent padding10'>
+                                                <div class='columns is-marginless is-paddingless'>
+                                                    <div class='column padding10 is-4'>
+                                                        <span>
+                                                            $poster
+                                                        </span>
+                                                    </div>
+                                                    <div class='column padding10 is-8'>
+                                                        <div class='padding20 is-8 bg-09 round10'>
+                                                            <div class='columns is-multiline'>
+                                                                <div class='column padding5 is-4'>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_name']}</span>
+                                                                </div>
+                                                                <div class='column padding5 is-8 torrent-name'>" . htmlsafechars($text) . "</div>
+                                                                <div class='column padding5 is-4'>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_chef']}</span>
+                                                                </div>
+                                                                <div class='column padding5 is-8'>
+                                                                    $chef
+                                                                </div>
+                                                                <div class='column padding5 is-4'>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_added']}</span>
+                                                                </div>
+                                                                <div class='column padding5 is-8'>" . get_date(strtotime($added), 'LONG', 0, 1) . "</div>
+                                                                <div class='column padding5 is-4'>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_expected']}</span>
+                                                                </div>
+                                                                <div class='column padding5 is-8'>" . get_date(strtotime($expected), 'LONG', 1, 0) . "</div>$plot
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>";
+
+    return $hover;
 }

@@ -115,8 +115,8 @@ switch ($list) {
     case 'tv':
         $title = $lang['movies_tvschedule'];
         $base = $today = date('Y-m-d');
-        if (!empty($date)) {
-            $today = $date;
+        if (!empty($_GET['date'])) {
+            $today = $_GET['date'];
         }
         $date = new DateTime($today);
         $yesterday = $date->modify('-1 day')
@@ -130,19 +130,18 @@ switch ($list) {
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['movies_tv_bydate']}</h1>
     <div class='level-center top20'>
-        <a href='{$_SERVER['PHP_SELF']}?date={$yesterday}' class='tooltipper' title='{$yesterday}'>{$yesterday}</a>
-        <a href='{$_SERVER['PHP_SELF']}?date={$base}' class='tooltipper' title='GoTo {$base}'><h2>{$display}</h2></a>
-        <a href='{$_SERVER['PHP_SELF']}?date={$tomorrow}' class='tooltipper' title='{$tomorrow}'>{$tomorrow}</a>
+        <a href='{$_SERVER['PHP_SELF']}?list=tv&amp;date={$yesterday}' class='tooltipper' title='{$yesterday}'>{$yesterday}</a>
+        <a href='{$_SERVER['PHP_SELF']}?list=tv&amp;date={$base}' class='tooltipper' title='GoTo {$base}'><h2>{$display}</h2></a>
+        <a href='{$_SERVER['PHP_SELF']}?list=tv&amp;date={$tomorrow}' class='tooltipper' title='{$tomorrow}'>{$tomorrow}</a>
     </div>";
-
         $tvs = get_tv_by_day($today);
-
         if (is_array($tvs)) {
             $titles = $body = [];
             foreach ($tvs as $tv) {
                 if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
-                    $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/w185{$tv['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
-                    $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
+                    $imdb_id = get_imdbid($tv['id']);
+                    $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/original{$tv['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
+                    $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/original{$tv['backdrop_path']}" : '';
 
                     $body[] = [
                         'poster' => url_proxy($poster, true, 250),
@@ -179,40 +178,23 @@ switch ($list) {
         $title = $lang['movies_tmdb_in_theaters'];
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['movies_tmdb_in_theaters']}</h1>";
-
         $movies = get_movies_in_theaters();
-
         if (is_array($movies)) {
-            $titles = $body = [];
+            $body = "
+        <div class='masonry padding20'>";
             foreach ($movies as $movie) {
-                if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
-                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
-                    $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
-                    $body[] = [
-                        'poster' => url_proxy($poster, true, 250),
-                        'placeholder' => url_proxy($poster, true, 250, null, 20),
-                        'backdrop' => url_proxy($backdrop, true),
-                        'title' => $movie['title'],
-                        'vote_count' => $movie['vote_count'],
-                        'id' => $movie['id'],
-                        'vote_average' => $movie['vote_average'],
-                        'popularity' => $movie['popularity'],
-                        'overview' => $movie['overview'],
-                        'release_date' => $movie['release_date'],
-                    ];
-                    $titles[] = strtolower($movie['title']);
+                if (!empty($imdb_id)) {
+                    $imdb_id = get_imdbid($movie['id']);
+                    $movie = get_imdb_info_short($imdb_id);
+                    if (!empty($movie)) {
+                        $body .= $movie;
+                    }
                 }
             }
-
-            $div = "
-        <div class='masonry padding20'>";
-            foreach ($body as $data) {
-                $div .= generate_html($data, $lang);
-            }
-            $div .= '
+            $body .= '
         </div>';
 
-            $HTMLOUT .= main_div($div);
+            $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['movies_tmdb_in_theaters']}</h1>" . main_div("<p class='has-text-centered'>{$lang['movies_tmdb_down']}</p>", '', 'padding20');
@@ -224,50 +206,33 @@ switch ($list) {
         $title = $lang['movies_tmdb_top100'];
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$lang['movies_tmdb_top100']}</h1>";
-
         $movies = get_movies_by_vote_average(100);
-
         if (is_array($movies)) {
-            $titles = $body = [];
+            $body = "
+        <div class='masonry padding20'>";
             foreach ($movies as $movie) {
-                if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
-                    $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['paths']['images_baseurl'] . 'noposter.png';
-                    $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
-                    $body[] = [
-                        'poster' => url_proxy($poster, true, 250),
-                        'placeholder' => url_proxy($poster, true, 250, null, 20),
-                        'backdrop' => url_proxy($backdrop, true),
-                        'title' => $movie['title'],
-                        'vote_count' => $movie['vote_count'],
-                        'id' => $movie['id'],
-                        'vote_average' => $movie['vote_average'],
-                        'popularity' => $movie['popularity'],
-                        'overview' => $movie['overview'],
-                        'release_date' => $movie['release_date'],
-                    ];
-                    $titles[] = strtolower($movie['title']);
+                $imdb_id = get_imdbid($movie['id']);
+                if (!empty($imdb_id)) {
+                    $movie = get_imdb_info_short($imdb_id);
+                    if (!empty($movie)) {
+                        $body .= $movie;
+                    }
                 }
             }
-
-            $div = "
-        <div class='masonry padding20'>";
-            foreach ($body as $data) {
-                $div .= generate_html($data, $lang);
-            }
-            $div .= '
+            $body .= '
         </div>';
 
-            $HTMLOUT .= main_div($div);
+            $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['movies_tmdb_top100']}</h1>" . main_div("<p class='has-text-centered'>{$lang['movies_tmdb_down']}</p>", '', 'padding20');
         }
+
         break;
 
     case 'upcoming':
         $title = $lang['movies_imdb_upcoming'];
         $HTMLOUT = '';
-
         $imdbs = get_upcoming();
         if (is_array($imdbs)) {
             foreach ($imdbs as $key => $imdb) {
@@ -296,12 +261,6 @@ switch ($list) {
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
 
-/**
- * @param array $data
- * @param array $lang
- *
- * @return string
- */
 function generate_html(array $data, array $lang)
 {
     $html = "
@@ -328,7 +287,7 @@ function generate_html(array $data, array $lang)
                             </span>
                         </div>
                         <div class='column padding10 is-8'>
-                            <div class='padding20 is-8 bg-09 round10'>
+                            <div class='padding20 is-8 bg-09 round10 h-100'>
                                 <div class='columns is-multiline'>";
 
     if (!empty($data['title'])) {

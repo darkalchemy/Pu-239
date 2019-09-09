@@ -14,6 +14,7 @@ $lang = [
     'gl_imdb' => 'IMDb',
     'gl_tmdb' => 'TMDb',
     'gl_tvmaze' => 'TVMaze',
+    'gl_cooker' => 'Cooker',
     'gl_movies_tv' => 'Movies & TV',
     'gl_movies_upcoming' => 'Upcoming Movies',
     'gl_movies_theaters' => 'In Theaters',

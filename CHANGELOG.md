@@ -1,3 +1,12 @@
+### 08 Sept, 2019
+fix: check if text is empty before manipulating function_torrenttable.php  
+fix: check contents of characters before checking if user exists function_bbcode.php  
+fix: argument 1 passed to htmlsafechars() must be of the type string, null given, called in edit.php
+fix: Array to string conversion details.php
+add: INTERNAL role  
+update: style and images movies.php  
+add: cooker/upcoming  
+
 ### 07 Sept, 2019
 add: padding around navbar anchor tags  
 update: style function_tfreak.php  

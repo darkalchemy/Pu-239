@@ -1,12 +1,13 @@
+let timeoutId = null;
 window.addEventListener('load', event => {
     parallax(event);
-});
+}, true);
 window.addEventListener('resize', event => {
     parallax(event);
-});
+}, true);
 window.addEventListener('scroll', event => {
     parallax(event);
-});
+}, true);
 
 function parallax(event) {
     event.preventDefault();

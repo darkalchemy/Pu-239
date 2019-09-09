@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string|null
  */
@@ -185,9 +185,9 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -227,10 +227,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws UnbegunTransaction
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  *
  * @return bool|string|null
  */
@@ -340,10 +340,10 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
         $set['rating'] = $tvmaze_show_data['rating']['average'];
     }
     if (empty($poster)) {
-        if (!empty($tvmaze_show_data['image']['medium'])) {
-            $poster = $tvmaze_show_data['image']['medium'];
-        } elseif (!empty($tvmaze_show_data['_embedded']['show']) && !empty($tvmaze_show_data['_embedded']['show']['image']['medium'])) {
-            $poster = $tvmaze_show_data['_embedded']['show']['image']['medium'];
+        if (!empty($tvmaze_show_data['image']['original'])) {
+            $poster = $tvmaze_show_data['image']['original'];
+        } elseif (!empty($tvmaze_show_data['_embedded']['show']) && !empty($tvmaze_show_data['_embedded']['show']['image']['original'])) {
+            $poster = $tvmaze_show_data['_embedded']['show']['image']['original'];
         }
         if (!empty($poster)) {
             $set['poster'] = $poster;
@@ -392,9 +392,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */

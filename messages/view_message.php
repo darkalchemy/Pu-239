@@ -92,8 +92,8 @@ $HTMLOUT .= "
     <div class='portlet'>" . ($message['draft'] === 'yes' ? "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "
-        $top_links
-        <table class='table table-bordered top20 bottom20'>
+        $top_links";
+$body = "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <h2>{$lang['pm_send_subject']} " . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : $lang['pm_search_nosubject']) . "</h2>
@@ -106,7 +106,7 @@ $HTMLOUT .= "
                 </td>
             </tr>
             <tr class='no_hover'>
-                <td class='has-text-centered w-15 mw-150'>{$avatar}</td>
+                <td class='has-text-centered min-150 mw-150'>{$avatar}</td>
                 <td>
                     <div class='flex-vertical comments h-100 padding10'>
                         <div>" . format_comment($message['msg'], false) . "</div>
@@ -127,12 +127,12 @@ $HTMLOUT .= "
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_reply']}</a>
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=forward&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_fwd']}</a>") : "
                             <a href='{$site_config['paths']['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_dedit']}</a>
-                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_duse']}</a>") . "
+                            <a href='{$site_config['paths']['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}' class='button is-small margin10'>{$lang['pm_viewmsg_duse']}</a>") . '
                         </form>
                     </div>
                 </td>
-            </tr>
-        </table>
+            </tr>';
+$HTMLOUT .= main_table($body) . "
         <div class='has-text-centered top20 bottom20'>
             " . insertJumpTo(0, $user['id']) . '
         </div>

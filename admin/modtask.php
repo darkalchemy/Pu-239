@@ -54,13 +54,13 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
     $update = $useredit = $msgs = [];
-    if ($user['id'] !== $CURUSER['id']) {
+    if (($user['id'] !== $CURUSER['id']) || ($CURUSER['class'] === UC_MAX && $user['id'] === $CURUSER['id'])) {
         if ($CURUSER['class'] === UC_MAX) {
             $modcomment = $post['modcomment'];
             $update['modcomment'] = $modcomment;
         }
         $setbits = $clrbits = 0;
-        if (isset($post['role_coder']) && $post['role_coder'] == 1 && ($user['roles_mask'] ^ Roles::CODER) === Roles::CODER) {
+        if (isset($post['role_coder']) && $post['role_coder'] == 1 && !($user['roles_mask'] & Roles::CODER)) {
             $setbits |= Roles::CODER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -70,7 +70,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'subject' => $lang['modtask_role_added'],
             ];
             $modcomment = get_date($dt, 'DATE', 1) . " - CODER {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
-        } elseif (!isset($post['role_coder']) && ($user['roles_mask'] & Roles::CODER) === Roles::CODER) {
+        } elseif (!isset($post['role_coder']) && $user['roles_mask'] & Roles::CODER) {
             $clrbits |= Roles::CODER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -81,7 +81,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             ];
             $modcomment = get_date($dt, 'DATE', 1) . " - CODER {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
         }
-        if (isset($post['role_uploader']) && $post['role_uploader'] == 1 && ($user['roles_mask'] ^ Roles::UPLOADER) === Roles::UPLOADER) {
+        if (isset($post['role_uploader']) && $post['role_uploader'] == 1 && !($user['roles_mask'] & Roles::UPLOADER)) {
             $setbits |= Roles::UPLOADER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -91,7 +91,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'subject' => $lang['modtask_role_added'],
             ];
             $modcomment = get_date($dt, 'DATE', 1) . " - UPLOADER {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
-        } elseif (!isset($post['role_uploader']) && ($user['roles_mask'] & Roles::UPLOADER) === Roles::UPLOADER) {
+        } elseif (!isset($post['role_uploader']) && $user['roles_mask'] & Roles::UPLOADER) {
             $clrbits |= Roles::UPLOADER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -101,6 +101,27 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'subject' => $lang['modtask_role_removed'],
             ];
             $modcomment = get_date($dt, 'DATE', 1) . " - UPLOADER {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        }
+        if (isset($post['role_internal']) && $post['role_internal'] == 1 && !($user['roles_mask'] & Roles::INTERNAL)) {
+            $setbits |= Roles::INTERNAL;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_added'], 'INTERNAL') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_added'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - INTERNAL {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        } elseif (!isset($post['role_internal']) && $user['roles_mask'] & Roles::INTERNAL) {
+            $clrbits |= Roles::INTERNAL;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_removed'], 'INTERNAL') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_removed'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - INTERNAL {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
         }
         if ($setbits > 0 || $clrbits > 0) {
             $update['roles_mask'] = new Literal('((roles_mask | ' . $setbits . ') & ~' . $clrbits . ')');

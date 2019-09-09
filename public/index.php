@@ -58,6 +58,7 @@ $left_column = [
 $center_column = [
     'ajaxchat',
     'torrents_scroller',
+    'cooker',
     'torrents_mow',
     'staffpicks',
     'torrents_top',
@@ -81,7 +82,7 @@ $right_column = [
     'christmas_gift',
 ];
 $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $glide = $ajaxchat = '';
-$tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = $latest_movies = $latest_tv = '';
+$tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = $latest_movies = $latest_tv = $cooker = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 $remove_columns = $user['class'] < UC_STAFF ? $site_config['site']['staff_blocks'] : [];
 $torrents_class = $container->get(Torrent::class);
@@ -149,6 +150,12 @@ if (in_array('active_users', $available_columns) && $user['blocks']['index_page'
     include_once $dir . 'active_users.php';
 } else {
     $remove_columns[] = 'active_users';
+}
+
+if (in_array('cooker', $available_columns)) {
+    include_once $dir . 'cooker.php';
+} else {
+    $remove_columns[] = 'cooker';
 }
 
 if (in_array('active_users_24', $available_columns) && $user['blocks']['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {

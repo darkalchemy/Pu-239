@@ -13,8 +13,8 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -184,17 +184,18 @@ function format_urls($s)
  * @param bool        $urls
  * @param bool        $images
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return mixed|string|string[]|null
  */
 function format_comment(?string $text, bool $strip_html = true, bool $urls = true, bool $images = true)
 {
-    global $site_config;
+    global $container, $site_config;
 
+    $users_class = $container->get(User::class);
     if (empty($text)) {
         return null;
     }
@@ -378,10 +379,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         ], $s);
     }
 
-    preg_match_all('/@(.+\b)/imsU', $s, $match);
-    global $container;
-
-    $users_class = $container->get(User::class);
+    preg_match_all('/@([A-Za-z0-9_-]+\b)/imsU', $s, $match);
     foreach ($match[1] as $tmp) {
         $userid = $users_class->getUserIdFromName($tmp);
         if ($userid) {
@@ -530,10 +528,10 @@ function format_code(string $s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return mixed|string|string[]|null
  */

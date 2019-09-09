@@ -58,8 +58,9 @@ function navbar()
                             <a href='{$site_config['paths']['baseurl']}/browse.php'' class='has-text-weight-bold'>{$lang['gl_torrent']}</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li><a href='{$site_config['paths']['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/catalog.php'>{$lang['gl_catalogue']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/upcoming.php'>{$lang['gl_cooker']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders'><span class='has-text-weight-bold has-text-danger'>{$lang['gl_nseeds']}</span></a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1' class='has-text-weight-bold has-text-green'>{$lang['gl_newtor']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>

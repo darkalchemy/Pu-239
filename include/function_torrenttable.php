@@ -32,15 +32,19 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */
 function readMore($text, $char, $link)
 {
+    if (empty($text)) {
+        return '';
+    }
+
     return strlen($text) > $char ? '<p>' . substr(format_comment($text), 0, $char - 1) . "...</p><br><p><a href='$link' class='has-text-primary'>Read more...</a></p>" : format_comment($text);
 }
 
@@ -49,10 +53,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws DependencyException
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

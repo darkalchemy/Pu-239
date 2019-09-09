@@ -17,15 +17,15 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_fbe6129e.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_3f624111.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_98f7bfcb.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_3a62dd76.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_53713c6b.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_d9d63b86.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_5dd035d2.js";
         case 'vendor_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_c6d531b4.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_14ab9de8.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':
@@ -85,7 +85,7 @@ function get_file_name($file)
         case 'scroll_to_poll_js':
             return "{$site_config['paths']['baseurl']}/js/1/scroll_to_poll_01088f95.js";
         case 'parallax_js':
-            return "{$site_config['paths']['baseurl']}/js/1/parallax_068e1067.js";
+            return "{$site_config['paths']['baseurl']}/js/1/parallax_a81ff2f8.js";
         case 'acp_js':
             return "{$site_config['paths']['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':

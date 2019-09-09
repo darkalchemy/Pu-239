@@ -12,6 +12,7 @@ use Delight\Auth\Role;
 final class Roles
 {
     const CODER = Role::DEVELOPER;
+    const INTERNAL = Role::CREATOR;
     const UPLOADER = Role::CONTRIBUTOR;
 
     private function __construct()

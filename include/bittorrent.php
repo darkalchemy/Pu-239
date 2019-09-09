@@ -811,6 +811,10 @@ function has_access(int $userclass, int $class, ?string $role)
             if ($userclass >= $class && $auth->hasRole(Roles::UPLOADER)) {
                 return true;
             }
+        } elseif ($role === 'internal') {
+            if ($userclass >= $class && $auth->hasRole(Roles::INTERNAL)) {
+                return true;
+            }
         } else {
             return false;
         }
