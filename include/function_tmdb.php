@@ -11,9 +11,9 @@ use Pu239\Image;
 /**
  * @param $dates
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -25,16 +25,17 @@ function get_tv_by_day($dates)
         return false;
     }
     $cache = $container->get(Cache::class);
+    $cache->delete('tmdb_tv_' . $dates);
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];
         if (empty($apikey)) {
             return false;
         }
-        $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey&with_original_language={$site_config['language']['tmdb']}";
+        $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key={$apikey}&with_original_language={$site_config['language']['tmdb']}";
         $content = fetch($url, false);
         if (!$content) {
-            $cache->set('tmdb_tv_' . $dates, 'failed', 3600);
+            $cache->set('tmdb_tv_' . $dates, [], 3600);
 
             return false;
         }
@@ -50,7 +51,7 @@ function get_tv_by_day($dates)
         usort($tmdb_data, 'nameSort');
         $cache->set('tmdb_tv_' . $dates, $tmdb_data, 86400);
     }
-    if (!empty($tmdb_data)) {
+    if (!empty($tmdb_data) && is_array($tmdb_data)) {
         foreach ($tmdb_data as $movie) {
             $imdb_id = get_imdbid($movie['id']);
             $imdb_id = !empty($imdb_id) ? $imdb_id : '';
@@ -69,9 +70,9 @@ function get_tv_by_day($dates)
 /**
  * @param $dates
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool
  */
@@ -108,9 +109,9 @@ function get_movies_by_week($dates)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -168,9 +169,9 @@ function get_movies_in_theaters()
 /**
  * @param $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -286,9 +287,9 @@ function get_movie_id($imdbid, $type)
 /**
  * @param $json
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -368,9 +369,9 @@ function getStartAndEndDate($year, $week)
 /**
  * @param $tmdbid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|null
  */

@@ -1,3 +1,8 @@
+### 09 Sept, 2019
+update: email style Message.php  
+fix: check of index is set before using function_tvmaze.php  
+fix: checked that var is array before iterating function_tmdb.php  
+
 ### 08 Sept, 2019
 cleanup: upcoming.php, cooker.php  
 fix: check if text is empty before manipulating function_torrenttable.php  

@@ -64,7 +64,7 @@ class Message
                 if (!empty($emailer['notifs']) && preg_match('#email|pm#', $emailer['notifs'])) {
                     $message_id = $this->get_last_message((int) $user['receiver'], isset($user['sender']) ? (int) $user['sender'] : 2);
                     $message = !empty($message_id) ? "&id={$message_id}" : '';
-                    $msg_body = format_comment($user['subject']) . '<br><br>' . format_comment($user['msg']) . "<br>
+                    $msg_body = '<h1>' . format_comment($user['subject']) . '</h1><br><br>' . format_comment($user['msg']) . "<br>
                     <a href='{$this->site_config['paths']['baseurl']}/messages.php?action=view_message{$message}'>View Message</a>";
                     send_mail(strip_tags($emailer['email']), 'You have received a Private Message', $msg_body, strip_tags($msg_body));
                 }

@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -185,9 +185,9 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -227,10 +227,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws DependencyException
  *
  * @return bool|string|null
  */
@@ -257,16 +257,18 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 'failed', 86400);
         }
     }
-    $episode_info['showtime'] = get_date(strtotime($episode_info['airtime'] . ' ' . $episode_info['airdate']), 'LONG', 1, 0);
-    $episode_info['season_episode'] = 'S' . sprintf('%02d', $episode_info['season']) . 'E' . sprintf('%02d', $episode_info['number']);
-    preg_match('/(\d{4})/', $episode_info['airdate'], $match);
-    if (!empty($match[1])) {
-        $episode_info['year'] = $match[1];
-        $set = [
-            'year' => $episode_info['year'],
-        ];
-        $torrents_class = $container->get(Torrent::class);
-        $torrents_class->update($set, $tid);
+    $episode_info['showtime'] = !empty($episode_info['airtime']) ? get_date(strtotime($episode_info['airtime'] . ' ' . $episode_info['airdate']), 'LONG', 1, 0) : '';
+    $episode_info['season_episode'] = !empty($episode_info['season']) && !empty($episode_info['number']) ? 'S' . sprintf('%02d', $episode_info['season']) . 'E' . sprintf('%02d', $episode_info['number']) : '';
+    if (!empty($episode_info['airdate'])) {
+        preg_match('/(\d{4})/', $episode_info['airdate'], $match);
+        if (!empty($match[1])) {
+            $episode_info['year'] = $match[1];
+            $set = [
+                'year' => $episode_info['year'],
+            ];
+            $torrents_class = $container->get(Torrent::class);
+            $torrents_class->update($set, $tid);
+        }
     }
 
     if (!empty($episode_info)) {
@@ -392,9 +394,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

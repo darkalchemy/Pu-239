@@ -79,7 +79,6 @@ function images_update()
     get_tv_by_day($today);
     get_tv_by_day($tomorrow);
     get_tv_by_day($day_after);
-
     $no_posters = $fluent->from('torrents')
                          ->select(null)
                          ->select('DISTINCT imdb_id')

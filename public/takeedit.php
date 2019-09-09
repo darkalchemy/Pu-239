@@ -96,16 +96,10 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     $updateset[] = "nfo = ''";
     $torrent_cache['nfo'] = '';
 }
-foreach ([
-    $_POST['type'],
-    $_POST['body'],
-    $_POST['name'],
-] as $x) {
-    if (empty($x)) {
-        $session->set('is-warning', $lang['takedit_no_data']);
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
-    }
+if (empty($_POST['type']) || empty($_POST['body']) || empty($_POST['name'])) {
+    $session->set('is-warning', $lang['takedit_no_data']);
+    header("Location: {$_SERVER['HTTP_REFERER']}");
+    die();
 }
 if (!empty($_POST['youtube'])) {
     preg_match('#' . $site_config['youtube']['pattern'] . '#i', $_POST['youtube'], $temp_youtube);
