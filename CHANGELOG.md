@@ -1,4 +1,6 @@
 ### 09 Sept, 2019
+remove: transition_delay navbar.css  
+fix: Undefined variable: edited_by view_message.php  
 update: style view_message.php view_topic.php  
 fix: check if json is empty before interating function_tmdb.php  
 remove: cache Upcoming.php  

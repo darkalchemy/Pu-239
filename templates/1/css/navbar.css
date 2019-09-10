@@ -83,7 +83,7 @@ header#navbar .nav_container ul > li > ul > li > a {
 
 .ddFadeFast {
     transition: all .35s ease-in-out;
-    transition-delay: .35s;
+/*    transition-delay: .35s;*/
 }
 
 li:hover ul.hov {

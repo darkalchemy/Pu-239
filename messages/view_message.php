@@ -119,7 +119,7 @@ $body = "
                 <div class='w-100 padding20'>
                     <div class='columns'>
                         <div class='column round10 bg-02 is-2-desktop is-3-tablet is-12-mobile has-text-centered'>
-                            {$avatar}" . format_username($message['sender']) . (empty($message['title']) ? '' : "
+                            {$avatar}<br>" . format_username($message['sender']) . (empty($message['title']) ? '' : "
                             <div class='size_3'>[" . format_comment($message['title']) . ']</div>') . ($message['last_access'] > TIME_NOW - 300 ? "
                             <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/online.gif' alt='{$lang['fe_online']}' title='{$lang['fe_online']}' class='tooltipper icon is-small lazy'>{$lang['fe_online']}</div>" : "
                             <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/offline.gif' alt='{$lang['fe_offline']}' title='{$lang['fe_offline']}' class='tooltipper icon is-small lazy'>{$lang['fe_offline']}</div>") . "
@@ -138,7 +138,6 @@ $body = "
                         <div class='column round10 bg-02 left20'>
                             <div class='flex-vertical comments h-100'>
                                 <div>" . format_comment($message['msg'], false) . "</div>
-                                <div class='size_3'>{$edited_by}</div>
                                 <div>{$attachment}</div>
                             </div>
                         </div>
