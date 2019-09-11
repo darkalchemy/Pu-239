@@ -37,15 +37,15 @@ if (!empty($T_Pass)) {
     $user = check_user_status();
 }
 if (!$user) {
-    show_error($lang['download_user_error'], $lang['download_passkey'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_passkey']);
 } elseif ($user['status'] === 5) {
-    show_error($lang['download_user_error'], $lang['download_suspended'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_suspended']);
 } elseif ($user['status'] === 2) {
-    show_error($lang['download_user_error'], $lang['download_disabled'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_disabled']);
 } elseif ($user['status'] === 1) {
-    show_error($lang['download_user_error'], $lang['download_parked'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_parked']);
 } elseif ($user['downloadpos'] != 1 || $user['can_leech'] === 0 && !$user['id'] === $row['owner']) {
-    show_error($lang['download_user_error'], $lang['download_download_disabled'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_download_disabled']);
 }
 
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
@@ -53,20 +53,20 @@ $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
-    stderr($lang['download_user_error'], $lang['download_no_id']);
+    show_error($lang['download_user_error'], $lang['download_no_id']);
 }
 $row = $torrent_class->get($id);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
-    show_error($lang['download_user_error'], $lang['download_not_found'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_not_found']);
 } elseif (($user['downloadpos'] != 1 || $user['can_leech'] === 0) && !$user['id'] === $row['owner']) {
-    show_error($lang['download_user_error'], $lang['download_download_disabled'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_download_disabled']);
 } elseif ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
-    show_error($lang['download_user_error'], $lang['download_insufficient_seedbonus'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_insufficient_seedbonus']);
 } elseif ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
-    show_error($lang['download_user_error'], $lang['download_insufficient_upload'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_insufficient_upload']);
 } elseif ($row['vip'] === 1 && $user['class'] < UC_VIP) {
-    show_error($lang['download_user_error'], $lang['download_vip_access'], 'bottom20');
+    show_error($lang['download_user_error'], $lang['download_vip_access']);
 } elseif (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
@@ -107,10 +107,10 @@ if (isset($_GET['slot'])) {
     $used_slot = $slot['torrentid'] === $id && $slot['userid'] === $user['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
-            show_error($lang['download_user_error'], $lang['freeslot_in_use'], 'bottom20');
+            show_error($lang['download_user_error'], $lang['freeslot_in_use']);
         }
         if ($user['freeslots'] < 1) {
-            show_error($lang['download_user_error'], $lang['no_freeslots'], 'bottom20');
+            show_error($lang['download_user_error'], $lang['no_freeslots']);
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -131,10 +131,10 @@ if (isset($_GET['slot'])) {
                ->execute();
     } elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            show_error($lang['download_user_error'], $lang['doubleslot_in_use'], 'bottom20');
+            show_error($lang['download_user_error'], $lang['doubleslot_in_use']);
         }
         if ($user['freeslots'] < 1) {
-            show_error($lang['download_user_error'], $lang['no_doubleslots'], 'bottom20');
+            show_error($lang['download_user_error'], $lang['no_doubleslots']);
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -154,10 +154,11 @@ if (isset($_GET['slot'])) {
                ->onDuplicateKeyUpdate($update)
                ->execute();
     } else {
-        show_error($lang['download_user_error'], $lang['download_unknown'], 'bottom20');
+        show_error($lang['download_user_error'], $lang['download_unknown']);
     }
     make_freeslots($user['id'], 'fllslot_', true);
 }
+
 $cache->deleteMulti([
     'top_torrents_',
     'latest_torrents_',
@@ -198,7 +199,6 @@ if ($zipuse) {
 /**
  * @param string $heading
  * @param string $message
- * @param string $class
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -208,14 +208,14 @@ if ($zipuse) {
  * @throws UnbegunTransaction
  * @throws InvalidManipulation
  */
-function show_error(string $heading, string $message, string $class)
+function show_error(string $heading, string $message)
 {
     global $container;
 
     $auth = $container->get(Auth::class);
     if ($auth->isLoggedIn()) {
         get_template();
-        stderr($heading, $message, $class);
+        stderr($heading, $message);
     } else {
         die($message);
     }

@@ -1,4 +1,5 @@
 ### 11 Sept, 2019
+update: show_error download.php  
 fix: user query count not resetting  
 add: notify user to Cooker  
 add: select recipe during upload  
