@@ -155,12 +155,13 @@ class Upcoming
      * @param bool   $desc
      * @param bool   $all
      * @param bool   $index
+     * @param int    $userid
      *
      * @throws Exception
      *
      * @return array|bool
      */
-    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index)
+    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index, int $userid)
     {
         $results = $this->fluent->from('upcoming AS r')
                                 ->select('u.username')
@@ -168,9 +169,11 @@ class Upcoming
                                 ->select('c.name as cat')
                                 ->select('c.image')
                                 ->select('p.name AS parent_name')
+                                ->select('COALESCE(n.id, false) AS notify')
                                 ->leftJoin('users AS u ON r.userid = u.id')
                                 ->leftJoin('categories AS c ON r.category = c.id')
                                 ->leftJoin('categories AS p ON c.parent_id = p.id')
+                                ->leftJoin('notify AS n ON r.userid = n.userid')
                                 ->limit($limit)
                                 ->offset($offset);
         if (!$all) {
@@ -189,6 +192,8 @@ class Upcoming
         $results = $results->orderBy('r.userid');
         $cooker = [];
         foreach ($results as $result) {
+            $result['notified'] = $result['notify'] == 0 ? 0 : 1;
+            $result['notify'] = $result['notify'] == 0 ? 'Notify' : 'UnNotify';
             if (!empty($result['parent_name'])) {
                 $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
             }

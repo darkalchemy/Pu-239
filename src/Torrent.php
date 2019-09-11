@@ -86,6 +86,14 @@ class Torrent
         $this->fluent->deleteFrom('deathrow')
                      ->where('tid = ?', $tid)
                      ->execute();
+        $update = [
+            'torrentid' => 0,
+            'status' => 'sourcing',
+        ];
+        $this->fluent->update('upcoming')
+                     ->set($update)
+                    ->where('torrentid != 0')
+                     ->execute();
 
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
             unlink(TORRENTS_DIR . $tid . '.torrent');
@@ -279,8 +287,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -314,8 +322,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -976,10 +984,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
      * @throws Exception
+     * @throws DependencyException
      *
      * @return false|mixed|string|string[]|null
      */

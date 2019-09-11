@@ -1,3 +1,7 @@
+### 11 Sept, 2019
+add: notify user to Cooker  
+add: select recipe during upload  
+
 ### 09 Sept, 2019
 remove: transition_delay navbar.css  
 fix: Undefined variable: edited_by view_message.php  

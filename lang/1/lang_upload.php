@@ -115,4 +115,7 @@ $lang = [
     'upload_image' => 'Image',
     'upload_vip_msg' => "If this one is checked, only VIP's can download this torrent",
     'upload_not_authorized' => 'you do not have permission to upload torrents',
+    'upload_select' => 'Select One',
+    'upload_recipes' => 'Recipes',
+    'upload_recipe_msg' => 'If you are completing a recipe from the Cooker, please select it here so interested members can be notified.',
 ];

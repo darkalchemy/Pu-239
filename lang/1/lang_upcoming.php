@@ -12,4 +12,5 @@ $lang = [
     'upcoming_title' => 'Cooker',
     'upcoming_plot' => 'Plot',
     'upcoming_chef' => 'Chef',
+    'upcoming_notify' => 'Notify',
 ];

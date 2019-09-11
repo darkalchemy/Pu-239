@@ -173,7 +173,7 @@ $perpage = 25;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?');
 $menu_top = $count > $perpage ? $pager['pagertop'] : '';
 $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
-$recipes = $cooker_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'expected', true, $view_all, false);
+$recipes = $cooker_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'expected', true, $view_all, false, $user['id']);
 $HTMLOUT .= "
     <ul class='level-center bg-06 padding10'>
         <li><a href='{$_SERVER['PHP_SELF']}?action=add'>Add Recipe</a></li>" . ($view_all ? "

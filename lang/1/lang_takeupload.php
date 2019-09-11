@@ -56,4 +56,5 @@ $lang = [
     'takeupload_offer_subject' => 'An offer you voted for has been uploaded!',
     'takeupload_request_subject' => 'A request you were interested in has been uploaded!',
     'takeupload_email_subject' => 'New Torrent Uploaded!',
+    'takeupload_recipe_subject' => 'A Recipe has just come out of the oven',
 ];

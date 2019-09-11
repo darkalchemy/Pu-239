@@ -36,7 +36,7 @@ if (!$auth->hasRole(Roles::UPLOADER) || $user['uploadpos'] != 1 || $user['status
 $cache = $container->get(Cache::class);
 $upload_vars = $cache->get('user_upload_variables_' . $user['id']);
 $poster = $youtube = $strip = $uplver = $allow_comments = $free_length = $half_length = $tags = $description = $body = '';
-$HTMLOUT = $subs_list = $audios_list = $descr = $has_offers = $has_requests = '';
+$HTMLOUT = $subs_list = $audios_list = $descr = $has_offers = $has_requests = $has_recipes = '';
 
 if (!empty($upload_vars)) {
     $upload_vars = json_decode($upload_vars, true);
@@ -54,6 +54,7 @@ $vars = [
     'type',
     'request',
     'offer',
+    'recipe',
     'release_group',
     'free_length',
     'half_length',
@@ -80,6 +81,30 @@ foreach ($vars as $var) {
     }
 }
 $fluent = $container->get(Database::class);
+$res_cooker = $fluent->from('upcoming')
+                     ->select(null)
+                     ->select('id')
+                     ->select('name')
+                     ->where('torrentid = 0')
+                     ->orderBy('name')
+                     ->fetchAll();
+
+if ($res_cooker) {
+    $has_recipes = "
+            <tr>
+                <td>{$lang['upload_recipes']}:</span></td>
+                <td>
+                    <select name='recipe' class='w-100'>
+                        <option value='0'>{$lang['upload_select']}</option>";
+    foreach ($res_cooker as $arr_recipe) {
+        $has_recipes .= "
+                        <option value='{$arr_recipe['id']}' " . ($recipe == $arr_recipe['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_recipe['name']) . '</option>';
+    }
+    $has_recipes .= "
+                    </select>{$lang['upload_recipe_msg']}
+                </td>
+            </tr>";
+}
 $res_requests = $fluent->from('requests')
                        ->select(null)
                        ->select('id')
@@ -94,7 +119,7 @@ if ($res_requests) {
                 <td>{$lang['upload_request']}:</span></td>
                 <td>
                     <select name='request' class='w-100'>
-                        <option value='0'>{$lang['upload_request']}</option>";
+                        <option value='0'>{$lang['upload_select']}</option>";
     foreach ($res_requests as $arr_request) {
         $has_requests .= "
                         <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
@@ -120,7 +145,7 @@ if ($res_offers) {
                 <td>{$lang['upload_offer']}:</td>
                 <td>
                     <select name='offer' class='w-100'>
-                        <option value='0'>{$lang['upload_offer']}</option>";
+                        <option value='0'>{$lang['upload_select']}</option>";
     foreach ($res_offers as $arr_offer) {
         $has_offers .= "
                         <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['offer_name']) . '</option>';
@@ -243,6 +268,7 @@ $HTMLOUT .= "
             </tr>";
 $HTMLOUT .= $has_offers;
 $HTMLOUT .= $has_requests;
+$HTMLOUT .= $has_recipes;
 $subs_list .= "
                 <div id='subs' class='level-center'>";
 $subs = $container->get('subtitles');
@@ -288,7 +314,7 @@ $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
 $HTMLOUT .= tr($lang['upload_anonymous'], "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1' " . ($uplver ? 'checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     $HTMLOUT .= tr($lang['upload_comment'], "
-    <select name='allow_comments'>
+    <select name='allow_comments' class='w-100'>
         <option value='yes' " . ($allow_comments === 'yes' ? 'selected' : '') . ">Yes</option>
         <option value='no' " . ($allow_comments === 'no' ? 'selected' : '') . '>No</option>
     </select>', 1);

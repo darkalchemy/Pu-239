@@ -49,6 +49,7 @@ $subs = isset($data['subs']) && is_array($data['subs']) ? implode('|', $data['su
 $audios = isset($data['audios']) && is_array($data['audios']) ? implode('|', $data['audios']) : '';
 $genre = isset($data['genre']) ? $data['genre'] : '';
 $catid = isset($data['type']) && is_valid_id((int) $data['type']) ? (int) $data['type'] : 0;
+$recipe = isset($data['recipe']) && is_valid_id((int) $data['recipe']) ? (int) $data['recipe'] : 0;
 $request = isset($data['request']) && is_valid_id((int) $data['request']) ? (int) $data['request'] : 0;
 $offer = isset($data['offer']) && is_valid_id((int) $data['offer']) ? (int) $data['offer'] : 0;
 $uplver = isset($data['uplver']) && $data['uplver'] === 'yes' ? 'yes' : 'no';
@@ -469,6 +470,41 @@ if ($site_config['site']['autoshout_irc']) {
     ircbot($messages);
 }
 $messages_class = $container->get(Message::class);
+if ($recipe > 0) {
+    $update = [
+        'torrentid' => $id,
+        'status' => 'uploaded',
+    ];
+    $cooker = $fluent->update('upcoming')
+                     ->set($update)
+                     ->where('id = ?', $recipe);
+    if ($user['class'] < UC_STAFF) {
+        $cooker = $cooker->where('userid = ?', $user['id']);
+    }
+    $cooker = $cooker->execute();
+    if (!empty($cooker)) {
+        $recipes = $fluent->from('notify')
+                          ->select(null)
+                          ->select('userid')
+                          ->where('upcomingid = ?', $recipe)
+                          ->fetchAll();
+        $subject = $lang['takeupload_recipe_subject'];
+        $msg = "Hi, \n An reciper you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1]' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
+        foreach ($recipes as $arr_recipe) {
+            $msgs_buffer[] = [
+                'receiver' => $arr_recipe['userid'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+        }
+        if (!empty($msgs_buffer)) {
+            $messages_class->insert($msgs_buffer);
+        }
+        write_log('Cooker Recipe: torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
+    }
+}
+
 if ($offer > 0) {
     $offers = $fluent->from('offer_votes')
                      ->select(null)
@@ -478,7 +514,7 @@ if ($offer > 0) {
                      ->where('offer_id = ?', $offer)
                      ->fetchAll();
     $subject = $lang['takeupload_offer_subject'];
-    $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
+    $msg = "Hi, \n An recipe you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1]' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($offers as $arr_offer) {
         $msgs_buffer[] = [
             'receiver' => $arr_offer['user_id'],
@@ -512,7 +548,7 @@ if ($request > 0) {
                        ->fetchAll();
 
     $subject = $lang['takeupload_request_subject'];
-    $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
+    $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . '&hit=1]' . htmlsafechars($torrent) . '[/url] to see the torrent details page!';
     foreach ($requests as $arr_req) {
         $msgs_buffer[] = [
             'receiver' => $arr_req['user_id'],

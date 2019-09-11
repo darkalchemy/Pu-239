@@ -23,13 +23,13 @@ if (php_sapi_name() === 'cli') {
 /**
  * @param array $argv
  *
- * @throws InvalidManipulation
- * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws AuthError
  * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return bool|string
  */
@@ -239,6 +239,7 @@ function run_uglify($argv = [])
             SCRIPTS_DIR . 'replaced.js',
             SCRIPTS_DIR . 'hide_html.js',
             SCRIPTS_DIR . 'hide_navbar.js',
+            SCRIPTS_DIR . 'cooker_notify.js',
         ];
 
         $js_list = array_merge($js_list, [

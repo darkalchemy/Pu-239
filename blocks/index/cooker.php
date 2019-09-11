@@ -5,11 +5,12 @@ declare(strict_types = 1);
 use Pu239\Upcoming;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
+$user = check_user_status();
 global $container, $site_config;
 
 $local_lang = load_language('upcoming');
 $cooker_class = $container->get(Upcoming::class);
-$recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true);
+$recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, $user['id']);
 $cooker .= "
     <a id='cooker-hash'></a>
     <div id='cooker' class='box'>
@@ -21,7 +22,8 @@ $cooker .= "
                         <th class='has-text-centered w-1 min-100 has-no-border-right'>{$local_lang['upcoming_type']}</th>
                         <th class='min-350 has-no-border-right has-no-border-left'>{$local_lang['upcoming_name']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'>{$local_lang['upcoming_status']}</th>
-                        <th class='has-text-centered has-no-border-left'>{$local_lang['upcoming_expected']}</th>
+                        <th class='has-text-centered has-no-border-right has-no-border-left'>{$local_lang['upcoming_expected']}</th>
+                        <th class='has-text-centered has-no-border-left'>{$local_lang['upcoming_notify']}</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -46,21 +48,25 @@ if (!empty($recipes) && is_array($recipes)) {
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
             $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_plot']}:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$local_lang['upcoming_plot']}:</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
         }
-        $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $lang);
-
+        $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $local_lang);
         $cooker .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>
                         <td class='has-no-border-right has-no-border-left'>{$hover}</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'>" . ucfirst($recipe['status']) . "</td>
-                        <td class='has-text-centered has-no-border-left'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . '</span></td>
-                    </tr>';
+                        <td class='has-text-centered has-no-border-right has-no-border-left'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . "</span></td>
+                        <td class='has-text-centered has-no-border-left'>
+                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notified']}' class='cooker_notify tooltipper' title='{$recipe['notify']}'>
+                                <span id='notify_{$recipe['id']}'>{$recipe['notify']}</span>
+                            </div>
+                        </td>
+                    </tr>";
     }
     $cooker .= '
                 </tbody>
@@ -71,7 +77,7 @@ if (!empty($recipes) && is_array($recipes)) {
 } else {
     $cooker .= "
                     <tr>
-                        <td colspan='4'>Nothing Cookin'</td>
+                        <td colspan='5'>Nothing Cookin'</td>
                     </tr>
                 </tbody>
             </table>
