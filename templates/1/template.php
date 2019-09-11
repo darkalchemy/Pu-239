@@ -191,10 +191,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -275,12 +275,12 @@ function stdfoot(array $stdfoot = [])
                                 <td>' . format_comment($params) . '</td>
                             </tr>';
             }
-            $cache->delete('query_stats_' . $session_id);
             $htmlfoot .= main_table($body, $heading) . '
                     </div>
                 </div>';
         }
     }
+    $cache->delete('query_stats_' . $session_id);
     $uptime = $cache->get('uptime_');
     if ($uptime === false || is_null($uptime)) {
         $uptime = explode('up', `uptime`);
@@ -432,9 +432,9 @@ function StatusBar()
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */

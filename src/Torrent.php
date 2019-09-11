@@ -92,7 +92,7 @@ class Torrent
         ];
         $this->fluent->update('upcoming')
                      ->set($update)
-                    ->where('torrentid != 0')
+                     ->where('torrentid != 0')
                      ->execute();
 
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
@@ -287,8 +287,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -322,8 +322,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool
      */
@@ -984,10 +984,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws NotFoundException
      * @throws InvalidManipulation
      * @throws Exception
      * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return false|mixed|string|string[]|null
      */

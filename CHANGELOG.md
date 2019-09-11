@@ -1,4 +1,5 @@
 ### 11 Sept, 2019
+fix: user query count not resetting  
 add: notify user to Cooker  
 add: select recipe during upload  
 
