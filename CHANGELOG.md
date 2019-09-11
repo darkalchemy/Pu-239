@@ -1,4 +1,5 @@
 ### 11 Sept, 2019
+update: allow coder to access staffbox.php  
 update: allow coder to see staff global blocks  
 update: replace global $CURUSER with local $user global blocks  
 update: show_error() download.php  

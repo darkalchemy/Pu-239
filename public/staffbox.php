@@ -18,7 +18,7 @@ global $container, $site_config;
 
 $dt = TIME_NOW;
 $session = $container->get(Session::class);
-if ($user['class'] < UC_STAFF) {
+if (!has_access($user['class'], UC_STAFF, 'coder')) {
     $session->set('is-danger', $lang['staffbox_class']);
     header('Location: ' . $site_config['paths']['baseurl']);
     die();
