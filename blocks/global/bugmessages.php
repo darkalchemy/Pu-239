@@ -5,10 +5,11 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $CURUSER, $container, $lang, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
 $cache = $container->get(Cache::class);
-if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['bug'] && has_access($user['class'], UC_STAFF, 'coder')) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
         $fluent = $container->get(Database::class);
@@ -32,7 +33,7 @@ if ($site_config['alerts']['bug'] && $CURUSER['class'] >= UC_STAFF) {
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         {$lang['gl_bug_alert1']}
                     </div>
-                    <div class='has-text-centered'>{$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? $lang['gl_bugss'] : '') . '!</div>
+                    <div class='has-text-centered'>{$lang['gl_bug_alert2']} {$user['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? $lang['gl_bugss'] : '') . '!</div>
                  </div>
             </div>
         </a>

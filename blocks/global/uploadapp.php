@@ -5,9 +5,10 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $CURUSER, $container, $lang, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
-if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['uploadapp'] && has_access($user['class'], UC_STAFF, 'coder')) {
     $cache = $container->get(Cache::class);
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
@@ -30,7 +31,7 @@ if ($site_config['alerts']['uploadapp'] && $CURUSER['class'] >= UC_STAFF) {
             <div class='tooltip_templates'>
                 <div id='uploadapp_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        {$lang['gl_hey']} {$CURUSER['username']}!
+                        {$lang['gl_hey']} {$user['username']}!
                     </div>
                     <div class='has-text-centered'>
                         $newapp {$lang['gl_uploadapp_ua']}" . ($newapp > 1 ? 's' : '') . " {$lang['gl_uploadapp_dealt']}

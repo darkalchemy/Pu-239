@@ -2,9 +2,10 @@
 
 declare(strict_types = 1);
 
-global $CURUSER, $site_config;
+$user = check_user_status();
+global $site_config;
 
-if ($CURUSER && $CURUSER['override_class'] != 255) {
+if ($user && $user['override_class'] != 255) {
     $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/restoreclass.php'>

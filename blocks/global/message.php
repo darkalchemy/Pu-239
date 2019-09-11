@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 use Pu239\Message;
 
-global $CURUSER, $container, $lang, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
-if ($site_config['alerts']['message'] && $CURUSER) {
+if ($site_config['alerts']['message'] && !empty($user)) {
     $messages_class = $container->get(Message::class);
-    $unread = $messages_class->get_count($CURUSER['id'], $site_config['pm']['inbox'], true);
+    $unread = $messages_class->get_count($user['id'], $site_config['pm']['inbox'], true);
 
     if (!empty($unread)) {
         $htmlout .= "

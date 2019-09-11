@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types = 1);
-global $CURUSER;
+$user = check_user_status();
 
 $free = $cache->get('site_events_');
-if ($CURUSER) {
+if ($user) {
     if (!empty($free) && $free['modifier'] != 0) {
         switch ($free['modifier']) {
             case 1:

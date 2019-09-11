@@ -13,16 +13,16 @@ if ($site_config['bonus']['crazy_hour']) {
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws Exception
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
 function crazyhour()
 {
-    global $CURUSER, $container, $lang, $site_config;
+    global $CURUSER, $container, $lang;
 
     $cache = $container->get(Cache::class);
     $htmlout = $cz = '';

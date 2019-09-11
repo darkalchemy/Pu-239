@@ -5,10 +5,11 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $CURUSER, $container, $lang, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
 $cache = $container->get(Cache::class);
-if ($site_config['alerts']['staffmsg'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['staffmsg'] && has_access($user['class'], UC_STAFF, 'coder')) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
         $fluent = $container->get(Database::class);
@@ -33,7 +34,7 @@ if ($site_config['alerts']['staffmsg'] && $CURUSER['class'] >= UC_STAFF) {
                             {$lang['gl_staff_message']}{$lang['gl_staff_message_news']}") . "
                         </div>
                         <div class='has-text-centered'>
-                            {$lang['gl_hey']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}
+                            {$lang['gl_hey']} {$user['username']}!<br> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}
                         </div>
                     </div>
                 </div>

@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
-global $site_config, $CURUSER, $lang;
-if ($site_config['bonus']['happy_hour'] && !empty($CURUSER)) {
+$user = check_user_status();
+global $site_config, $lang;
+
+if ($site_config['bonus']['happy_hour'] && !empty($user)) {
     require_once INCL_DIR . 'function_happyhour.php';
     if (happyHour('check')) {
         $htmlout .= "

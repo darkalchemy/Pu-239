@@ -5,10 +5,11 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $CURUSER, $container, $lang, $site_config;
+$user = check_user_status();
+global $container, $lang, $site_config;
 
 $cache = $container->get(Cache::class);
-if ($site_config['alerts']['report'] && $CURUSER['class'] >= UC_STAFF) {
+if ($site_config['alerts']['report'] && has_access($user['class'], UC_STAFF, 'coder')) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
         $fluent = $container->get(Database::class);
@@ -33,7 +34,7 @@ if ($site_config['alerts']['report'] && $CURUSER['class'] >= UC_STAFF) {
                         " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
                     </div>
                     <div class='has-text-centered'>
-                        {$lang['gl_hey']} {$CURUSER['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "{$lang['gl_reports_dealt']}
+                        {$lang['gl_hey']} {$user['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "{$lang['gl_reports_dealt']}
                     </div>
                 </div>
             </div>
