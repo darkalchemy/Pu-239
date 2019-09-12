@@ -93,20 +93,20 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
     }
     $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
-        <span class='left10'>
-            <a href='{$site_config['paths']['baseurl']}/browse.php?c{$cat['id']}'>
-                <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "'>
-            </a>
-        </span>" : "
-        <span class='left10'>" . htmlsafechars($cat['name']) . '</span>';
+        <div class='left10'>
+            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "'>
+        </div>" : "
+        <div class='left10'>" . htmlsafechars($cat['name']) . '</div>';
 
     return "
         <a href='{$link}'>
-            <span class='margin10 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
-                <span class='bordered level-center bg-02 cat-image'>
-                    <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js}>$image
-                </span>
-            </span>
+            <div class='margin10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+                <div class='bordered bg-02 level-center-center cat-image'>
+                    <div class='right10'>
+                        <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js}>
+                    </div>$image
+                </div>
+            </div>
         </a>";
 }
 
