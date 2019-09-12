@@ -1,4 +1,5 @@
 ### 12 Sept, 2019
+fix: crazy hour auto run  
 add: undelete soft deleted forum posts  
 fix: category image/title display/search correctly  
 add: FORUM_MOD role with minimal edit/delete permissions  

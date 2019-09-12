@@ -9,9 +9,9 @@ use Pu239\Database;
 
 global $site_config;
 
-//if ($site_config['bonus']['crazy_hour']) {
-$htmlout .= crazyhour();
-//}
+if ($site_config['bonus']['crazy_hour']) {
+    $htmlout .= crazyhour();
+}
 
 /**
  * @throws Exception
