@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Ban;
+use Pu239\Database;
 use Pu239\IP;
 use Pu239\User;
 
@@ -16,6 +17,7 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_iphistory'));
 global $container, $site_config;
 
+$fluent = $container->get(Database::class);
 $id = $color = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
@@ -102,9 +104,9 @@ foreach ($resip as $iphistory) {
         ];
         $ips_class->set($set, $ipid);
     }
-    $lastbrowse = (int) $iphistory['lastbrowse'];
-    $lastlogin = (int) $iphistory['lastlogin'];
-    $lastannounce = (int) $iphistory['lastannounce'];
+    $lastannounce = $iphistory['type'] === 'announce' ? $iphistory['last_access'] : 0;
+    $lastbrowse = $iphistory['type'] === 'browse' ? $iphistory['last_access'] : 0;
+    $lastlogin = $iphistory['type'] === 'login' ? $iphistory['last_access'] : 0;
     $iptype = htmlsafechars($iphistory['type']);
     $queryc = 'SELECT COUNT(id) FROM(SELECT u.id FROM users AS u WHERE INET6_NTOA(u.ip) = ' . sqlesc($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id=ips.userid WHERE INET6_NTOA(ips.ip) = ' . sqlesc($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
     $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);

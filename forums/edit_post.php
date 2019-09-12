@@ -32,8 +32,8 @@ if (!empty($arr_post['file'])) {
     }
     $attachments .= '</table></td></tr>';
 }
-$can_edit = ($arr_post['puser_id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF);
-if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
+$can_edit = $arr_post['puser_id'] == $CURUSER['id'] || has_access($CURUSER['class'], UC_STAFF, 'forum_mod');
+if (!has_access($CURUSER['class'], (int) $arr_post['min_class_read'], '') || !has_access($CURUSER['class'], (int) $arr_post['min_class_write'], '')) {
     stderr($lang['gl_error'], $lang['fe_topic_not_found']);
 }
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5) {

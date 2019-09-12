@@ -1,15 +1,25 @@
 <?php
 
 declare(strict_types = 1);
-global $CURUSER, $site_config;
+
+use Pu239\Database;
+
+global $container, $CURUSER, $site_config;
 
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = 'port_data_';
     $Ident_Client = '';
     $port_data = $cache->get($What_Cache . $id);
     if ($port_data === false || is_null($port_data)) {
-        $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid=' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        $port_data = mysqli_fetch_row($q1);
+        $fluent = $container->get(Database::class);
+        $port_data = $fluent->from('peers')
+                            ->select(null)
+                            ->select('connectable')
+                            ->select('port')
+                            ->select('agent')
+                            ->where('userid = ?', $id)
+                            ->limit(1)
+                            ->fetch();
         $cache->set('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
     }
     if ($port_data > 0) {

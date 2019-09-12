@@ -31,12 +31,16 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             {$lang['userdetails_ip_used']}{$lang['userdetails_ip_users']}
         </a>";
         }
-        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
-        $iphistory['ips'] = mysqli_num_rows($resip);
+        $iphistory['ips'] = $fluent->from('ips')
+                                   ->select(null)
+                                   ->select('INET6_NTOA(ip) AS ip')
+                                   ->where('userid = ?', $id)
+                                   ->groupBy('ip')
+                                   ->fetchAll();
         $cache->set('ip_history_' . $id, $iphistory, $site_config['expires']['iphistory']);
     }
     if (isset($addr)) {
-        if ($CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
+        if ($CURUSER['id'] == $id || has_access($CURUSER['class'], UC_STAFF, '')) {
             $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['userdetails_address']}</td>
@@ -49,12 +53,12 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             </tr>";
         }
     }
-    if ($CURUSER['class'] >= UC_STAFF && $iphistory['ips'] > 0) {
+    if (has_access($CURUSER['class'], UC_STAFF, '') && $iphistory['ips'] > 0) {
         $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['userdetails_ip_history']}</td>
                 <td>
-                    {$lang['userdetails_ip_earlier']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a>
+                    {$lang['userdetails_ip_earlier']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$ipsinuse} {$lang['userdetails_ip_different']}</a>
                 </td>
             </tr>";
     }

@@ -102,6 +102,49 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             ];
             $modcomment = get_date($dt, 'DATE', 1) . " - UPLOADER {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
         }
+
+        if (isset($post['role_forum_mod']) && $post['role_forum_mod'] == 1 && !($user['roles_mask'] & Roles::FORUM_MOD)) {
+            $setbits |= Roles::FORUM_MOD;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_added'], 'FORUM_MOD') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_added'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - FORUM_MOD {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        } elseif (!isset($post['role_forum_mod']) && $user['roles_mask'] & Roles::FORUM_MOD) {
+            $clrbits |= Roles::FORUM_MOD;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_removed'], 'FORUM_MOD') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_removed'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - FORUM_MOD {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        }
+        if (isset($post['role_torrent_mod']) && $post['role_torrent_mod'] == 1 && !($user['roles_mask'] & Roles::TORRENT_MOD)) {
+            $setbits |= Roles::TORRENT_MOD;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_added'], 'TORRENT_MOD') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_added'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - TORRENT_MOD {$lang['modtask_role_added']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        } elseif (!isset($post['role_torrent_mod']) && $user['roles_mask'] & Roles::TORRENT_MOD) {
+            $clrbits |= Roles::TORRENT_MOD;
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => sprintf($lang['modtask_has_been_removed'], 'TORRENT_MOD') . " {$lang['modtask_by']} " . $username,
+                'subject' => $lang['modtask_role_removed'],
+            ];
+            $modcomment = get_date($dt, 'DATE', 1) . " - TORRENT_MOD {$lang['modtask_role_removed']} {$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
+        }
         if (isset($post['role_internal']) && $post['role_internal'] == 1 && !($user['roles_mask'] & Roles::INTERNAL)) {
             $setbits |= Roles::INTERNAL;
             $msgs[] = [

@@ -43,7 +43,7 @@ $fluent->update('users')
        ->execute();
 
 $posted_action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
-if (has_access($user['class'], UC_STAFF, 'coder')) {
+if (has_access($user['class'], UC_STAFF, 'coder') || has_access($user['class'], UC_STAFF, 'forum_mod')) {
     $valid_actions = [
         'forum',
         'view_forum',
@@ -52,6 +52,7 @@ if (has_access($user['class'], UC_STAFF, 'coder')) {
         'view_topic',
         'post_reply',
         'delete_post',
+        'undelete_post',
         'edit_post',
         'subscriptions',
         'delete_subscription',
@@ -312,6 +313,10 @@ switch ($action) {
         require_once FORUM_DIR . 'delete_post.php';
         break;
 
+    case 'undelete_post':
+        require_once FORUM_DIR . 'undelete_post.php';
+        break;
+
     case 'delete_subscription':
         require_once FORUM_DIR . 'delete_subscription.php';
         break;
@@ -370,7 +375,7 @@ switch ($action) {
         break;
 
     case 'view_post_history':
-        if (!has_access($user['class'], UC_STAFF, 'coder')) {
+        if (!has_access($user['class'], UC_STAFF, 'coder') && !has_access($user['class'], UC_STAFF, 'forum_mod')) {
             stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
         }
         require_once FORUM_DIR . 'view_post_history.php';
@@ -378,7 +383,7 @@ switch ($action) {
         break;
 
     case 'staff_actions':
-        if (!has_access($user['class'], UC_STAFF, 'coder')) {
+        if (!has_access($user['class'], UC_STAFF, 'coder') && !has_access($user['class'], UC_STAFF, 'forum_mod')) {
             stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
         }
         require_once FORUM_DIR . 'staff_actions.php';
@@ -636,10 +641,10 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */

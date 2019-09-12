@@ -93,17 +93,17 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
     }
     $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
-        <div class='left10'>
+        <div class='left10 tooltipper' title='Search All " . ($parent === 'child' ? htmlsafechars("'{$cat_name} :: {$cat['name']}'") : htmlsafechars($cat['name'])) . "'>
             <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "'>
         </div>" : "
-        <div class='left10'>" . htmlsafechars($cat['name']) . '</div>';
+        <div class='left10 tooltipper has-text-right' title='Search All " . ($parent === 'child' ? htmlsafechars("'{$cat_name} :: {$cat['name']}'") : htmlsafechars($cat['name'])) . "'>" . htmlsafechars($cat['name']) . '</div>';
 
     return "
         <a href='{$link}'>
-            <div class='margin10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+            <div class='margin10'>
                 <div class='bordered bg-02 level-center-center cat-image'>
-                    <div class='right10'>
-                        <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js}>
+                    <div class='right10 tooltipper'>
+                        <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js} title='Select All " . ($parent === 'child' ? htmlsafechars("'{$cat_name} :: {$cat['name']}'") : htmlsafechars($cat['name'])) . "'>
                     </div>$image
                 </div>
             </div>
@@ -113,9 +113,9 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 /**
  * @param int $user_cat
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */

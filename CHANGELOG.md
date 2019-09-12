@@ -1,3 +1,9 @@
+### 12 Sept, 2019
+add: undelete soft deleted forum posts  
+fix: category image/title display/search correctly  
+add: FORUM_MOD role with minimal edit/delete permissions  
+add: TORRENT_MOD role with minimal edit permissions    
+
 ### 11 Sept, 2019
 update: allow coder to access staffbox.php  
 update: allow coder to see staff global blocks  

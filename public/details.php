@@ -87,7 +87,7 @@ if (isset($_GET['hit'])) {
 }
 $owned = $moderator = 0;
 $owner = $torrent['owner'];
-if ($user['class'] >= UC_STAFF) {
+if (has_access($user['class'], UC_STAFF, 'torrent_mod')) {
     $owned = $moderator = 1;
 } elseif ($user['id'] === $owner) {
     $owned = 1;

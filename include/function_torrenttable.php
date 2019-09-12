@@ -32,10 +32,10 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string|string[]|null
  */
@@ -53,10 +53,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -86,7 +86,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
     $cache = $container->get(Cache::class);
     $free = $cache->get('site_events_');
     $free_display = '';
-    $staff_tools = $curuser['class'] >= $site_config['allowed']['fast_edit'] || $curuser['class'] >= $site_config['allowed']['fast_delete'] || $curuser['class'] >= $site_config['allowed']['staff_picks'];
+    $staff_tools = has_access($curuser['class'], $site_config['allowed']['fast_edit'], 'torrent_mod') || has_access($curuser['class'], $site_config['allowed']['fast_delete'], '') || has_access($curuser['class'], $site_config['allowed']['staff_picks'], '');
     if (!empty($free)) {
         foreach ($free as $fl) {
             if (!empty($fl['modifier'])) {
@@ -145,7 +145,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
-                    <th class='has-text-centered tooltipper has-no-border-right' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
+                    <th class='has-text-centered w-1 tooltipper has-no-border-right' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
                     <th class='has-text-centered min-350 tooltipper has-no-border-right has-no-border-left' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
                     <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>";
     $htmlout .= ($variant === 'index' ? "
@@ -172,7 +172,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
     }
     $htmlout .= "
                     <th class='has-text-centered tooltipper w-1 " . ($staff_tools ? 'has-no-border-right' : '') . " has-no-border-left' title='{$lang['torrenttable_to_go_def']}'><i class='icon-percent icon' aria-hidden='true'></i></th>";
-    if ($curuser['class'] >= $site_config['allowed']['fast_edit'] || $curuser['class'] >= $site_config['allowed']['fast_delete'] || $curuser['class'] >= $site_config['allowed']['staff_picks']) {
+    if (has_access($curuser['class'], $site_config['allowed']['fast_edit'], 'torrent_mod') || has_access($curuser['class'], $site_config['allowed']['fast_delete'], '') || has_access($curuser['class'], $site_config['allowed']['staff_picks'], '')) {
         $htmlout .= "
                     <th class='has-text-centered has-text-success w-5 tooltipper has-no-border-left' title='{$lang['torrenttable_tools']}'><i class='icon-tools icon' aria-hidden='true'></i></th>";
     }
@@ -483,25 +483,25 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         $htmlout .= "<td class='has-text-centered " . ($staff_tools ? 'has-no-border-right' : '') . " has-no-border-left'>$to_go</td>";
         if ($staff_tools) {
             $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
-            $edit_link = ($curuser['class'] >= $site_config['allowed']['fast_edit'] ? "
+            $edit_link = (has_access($curuser['class'], $site_config['allowed']['fast_edit'], 'torrent_mod') ? "
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/edit.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
                         <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
-            $del_link = ($curuser['class'] >= $site_config['allowed']['fast_delete'] ? "
+            $del_link = (has_access($curuser['class'], $site_config['allowed']['fast_delete'], '') ? "
                 <span>
                     <a href='{$site_config['paths']['baseurl']}/fastdelete.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
                         <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
             $staff_pick = '';
-            if ($curuser['class'] >= $site_config['allowed']['staff_picks'] && $row['staff_picks'] > 0) {
+            if (has_access($curuser['class'], $site_config['allowed']['staff_picks'], '') && $row['staff_picks'] > 0) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' class='staff_pick tooltipper' title='Remove from Staff Picks'>
                     <i class='icon-star-empty icon has-text-danger' aria-hidden='true'></i>
                 </span>";
-            } elseif ($curuser['class'] >= $site_config['allowed']['staff_picks']) {
+            } elseif (has_access($curuser['class'], $site_config['allowed']['staff_picks'], '')) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' class='staff_pick tooltipper' title='Add to Staff Picks'>
                     <i class='icon-star-empty icon has-text-success' aria-hidden='true'></i>

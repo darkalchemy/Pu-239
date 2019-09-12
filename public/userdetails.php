@@ -604,6 +604,12 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
                             <span class='left5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</span>
                         </div>
                         <div class='level-left top10'>
+                            <input type='checkbox' name='role_forum_mod' value='1' " . ($user['roles_mask'] & Roles::FORUM_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_forum_mod']}
+                        </div>
+                        <div class='level-left top10'>
+                            <input type='checkbox' name='role_torrent_mod' value='1' " . ($user['roles_mask'] & Roles::TORRENT_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_torrent_mod']}
+                        </div>
+                        <div class='level-left top10'>
                             <input type='checkbox' name='role_internal' value='1' " . ($user['roles_mask'] & Roles::INTERNAL ? 'checked' : '') . " class='right5'>{$lang['userdetails_internal']}
                         </div>
                         <div class='level-left top10'>

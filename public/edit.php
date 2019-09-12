@@ -49,7 +49,7 @@ $row = $fluent->from('torrents')
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }
-if (!isset($user) || ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF)) {
+if (!isset($user) || ($user['id'] != $row['owner'] && !has_access($user['class'], UC_STAFF, 'torrent_mod'))) {
     stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
 }
 $HTMLOUT = $currently_editing = $subs_list = $audios_list = '';

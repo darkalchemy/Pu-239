@@ -26,7 +26,6 @@ $upload_errors_type = isset($_GET['ee']) ? (int) $_GET['ee'] : 0;
 global $container, $site_config, $CURUSER;
 
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
-$where = $CURUSER['class'] < UC_STAFF ? 't.status = "ok" AND ' : $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 't.status != "deleted" AND ' : '';
 $fluent = $container->get(Database::class);
 $arr = $fluent->from('topics AS t')
               ->select(null)
@@ -50,10 +49,15 @@ $arr = $fluent->from('topics AS t')
               ->select('f.min_class_write')
               ->select('f.parent_forum')
               ->innerJoin('forums AS f ON t.forum_id=f.id')
-              ->where("{$where}t.id = ?", $topic_id)
-              ->fetch();
-
-if (empty($arr) || $CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] && $status === 'deleted' || $CURUSER['class'] < UC_STAFF && $status === 'recycled') {
+              ->where('t.id = ?', $topic_id);
+if (!has_access($CURUSER['class'], UC_STAFF, 'forum_mod')) {
+    $arr = $arr->where('t.status = "ok"');
+}
+if (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], 'forum_mod')) {
+    $arr = $arr->where('t.status != "deleted"');
+}
+$arr = $arr->fetch();
+if (empty($arr) || !has_access($CURUSER['class'], $arr['min_class_read'], '') || !is_valid_id($arr['topic_id']) || !has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], '') && $status === 'deleted' || !has_access($CURUSER['class'], UC_STAFF, '') && $status === 'recycled') {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 
@@ -85,7 +89,7 @@ if ($arr['poll_id'] > 0) {
                        ->where('id = ?', $arr['poll_id'])
                        ->fetch();
     if (!empty($arr_poll)) {
-        if ($CURUSER['class'] >= UC_STAFF) {
+        if (has_access($CURUSER['class'], UC_STAFF, '')) {
             $query = $fluent->from('forum_poll_votes')
                             ->where('forum_poll_votes.id>0')
                             ->where('poll_id = ?', $arr['poll_id']);
@@ -294,7 +298,7 @@ $fluent->update('topics')
        ->where('id = ?', $topic_id)
        ->execute();
 
-$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . (!has_access($CURUSER['class'], UC_STAFF, 'forum_mod') ? 'status = \'ok\' AND' : (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], 'forum_mod') ? 'status != \'deleted\' AND' : '')) . ' topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
 $posts_count = (int) $arr_count[0];
 $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -322,7 +326,7 @@ $LIMIT = $pager['limit'];
 
 $sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason,
             p.status AS post_status, p.anonymous
-            FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != "deleted" AND' : '')) . '
+            FROM posts AS p WHERE ' . (!has_access($CURUSER['class'], UC_STAFF, 'forum_mod') ? 'p.status = "ok" AND' : (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], 'forum_mod') ? 'p.status != "deleted" AND' : '')) . '
             topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id ' . $LIMIT;
 
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -541,8 +545,10 @@ foreach ($posts as $arr) {
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
     $dlink = "dLink_{$topic_id}_{$post_id}";
     $avatar = get_avatar($usersdata);
+    $remove_link = '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_remove'] . '</a>';
     switch ($post_status) {
         case 'deleted':
+            $remove_link = '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=undelete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_undelete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_recover'] . '</a>';
             $show_status = "<div class='margin10 has-text-centered'><h3 class='has-text-danger'>Post Soft Deleted</h3></div>";
             break;
         case 'postlocked':
@@ -575,12 +581,11 @@ foreach ($posts as $arr) {
                     </div>
                     <div class="column has-text-right is-half">
                         <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_quote'] . '</a>
-                        ' . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $usersdata['id']) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=edit_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_modify'] . '</a> 
-                        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_remove'] . '</a>' : '') . '
+                        ' . ((has_access($CURUSER['class'], UC_STAFF, 'forum_mod') || $CURUSER['id'] == $usersdata['id']) ? ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=edit_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_modify'] . '</a>' . $remove_link : '') . '
                         <!--<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=report_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_report'] . '</a>-->
                         <a href="' . $site_config['paths']['baseurl'] . '/report.php?type=Post&amp;id=' . $post_id . '&amp;id_2=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon lazy"> ' . $lang['fe_report'] . '</a>
-                        ' . ($CURUSER['class'] >= $site_config['allowed']['lock_topics'] && $arr['staff_lock'] == 1 ? '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=staff_lock&amp;mode=unlock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '" title="' . $lang['fe_un_lock'] . '" class="tooltipper"><i class="icon-key icon"></i>' . $lang['fe_unlock_post'] . '</a>' : '') . '
-                        ' . ($CURUSER['class'] >= $site_config['allowed']['lock_topics'] && $arr['staff_lock'] == 0 ? '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=staff_lock&amp;mode=lock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '" title="' . $lang['fe_lock'] . '" class="tooltipper"><i class="icon-key icon"></i>' . $lang['fe_lock_post'] . '</a>' : '') . $stafflocked . '
+                        ' . (has_access($CURUSER['class'], $site_config['allowed']['lock_topics'], '') && $arr['staff_lock'] == 1 ? '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=staff_lock&amp;mode=unlock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '" title="' . $lang['fe_un_lock'] . '" class="tooltipper"><i class="icon-key icon"></i>' . $lang['fe_unlock_post'] . '</a>' : '') . '
+                        ' . (has_access($CURUSER['class'], $site_config['allowed']['lock_topics'], '') && $arr['staff_lock'] == 0 ? '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=staff_lock&amp;mode=lock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '" title="' . $lang['fe_lock'] . '" class="tooltipper"><i class="icon-key icon"></i>' . $lang['fe_lock_post'] . '</a>' : '') . $stafflocked . '
                         <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#top"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="tooltipper emoticon lazy"></a> 
                         <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#bottom"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="tooltipper emoticon lazy"></a> 
                     </div>

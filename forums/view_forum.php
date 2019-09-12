@@ -229,9 +229,9 @@ if (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view
     $query = $query->where('p.status != "deleted"');
 }
 $query = $query->orderBy('sticky, post_added DESC')
-                // pager not currently working properly
-               //->limit($pager['pdo']['limit'])
-               //->offset($pager['pdo']['offset'])
+    // pager not currently working properly
+    //->limit($pager['pdo']['limit'])
+    //->offset($pager['pdo']['offset'])
                ->fetchAll();
 
 $topic_arrs = $topic_ids = [];
