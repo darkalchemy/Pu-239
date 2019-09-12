@@ -8,10 +8,10 @@ use Pu239\Database;
 use Pu239\Topic;
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -92,8 +92,8 @@ function breadcrumbs()
  * @param $url
  * @param $referer
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|string
  */
@@ -146,9 +146,9 @@ function get_prepage($lang, $url, $referer)
  * @param $lang
  * @param $url
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
  */
@@ -185,9 +185,9 @@ function get_postpage($lang, $url)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -207,12 +207,13 @@ function get_secondarypage($lang, $queries, $path)
         'sort',
         'type',
     ];
-
     if (in_array($list[0], $ignore)) {
         return false;
     }
     if ($list[0] === 'phpinfo') {
         $title = $lang['phpinfo'];
+    } elseif ($list[0] === 'total_donors') {
+        $title = $lang['total_donors'];
     } elseif ($list[0] === 'box') {
         $title = get_mailbox_name($list[1]);
     } elseif ($list[0] === 'file') {
@@ -238,9 +239,9 @@ function get_secondarypage($lang, $queries, $path)
  * @param $queries
  * @param $path
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|string
  */
@@ -446,9 +447,9 @@ function get_basepage(array $lang, string $path, string $query = '')
 /**
  * @param $mailbox
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */

@@ -260,6 +260,7 @@ $lang = [
     'top_users' => 'Top Users',
     'Torrent' => 'Torrent',
     'torrents' => 'Torrent Settings',
+    'total_donors' => 'All Donors',
     'trivia_config' => 'Trivia Config',
     'tv' => 'TMDb TV List',
     'tvmaze' => 'TVMaze TV List',

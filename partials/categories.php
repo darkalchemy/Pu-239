@@ -103,7 +103,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
             <div class='margin10'>
                 <div class='bordered bg-02 level-center-center cat-image'>
                     <div class='right10 tooltipper'>
-                        <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js} title='Select All " . ($parent === 'child' ? htmlsafechars("'{$cat_name} :: {$cat['name']}'") : htmlsafechars($cat['name'])) . "'>
+                        <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' {$checked} {$js} title='Select " . ($parent === 'child' ? htmlsafechars("'{$cat_name} :: {$cat['name']}'") : htmlsafechars($cat['name'])) . "'>
                     </div>$image
                 </div>
             </div>

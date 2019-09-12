@@ -42,15 +42,15 @@ $cache->delete('staff_classes_');
 $staff_classes = $cache->get('staff_classes_');
 if ($staff_classes === false || is_null($staff_classes)) {
     $available_classes = $fluent->from('class_config')
-                            ->select(null)
-                            ->select('value')
-                            ->where("name != 'UC_MIN'")
-                            ->where("name != 'UC_MAX'")
-                            ->where("name != 'UC_STAFF'")
-                            ->where('value >= ?', UC_STAFF)
-                            ->groupBy('value')
-                            ->orderBy('value')
-                            ->fetchAll();
+                                ->select(null)
+                                ->select('value')
+                                ->where("name != 'UC_MIN'")
+                                ->where("name != 'UC_MAX'")
+                                ->where("name != 'UC_STAFF'")
+                                ->where('value >= ?', UC_STAFF)
+                                ->groupBy('value')
+                                ->orderBy('value')
+                                ->fetchAll();
     foreach ($available_classes as $class) {
         $staff_classes[] = $class['value'];
     }
@@ -88,8 +88,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 } else {
     if ($action === 'delete' && is_valid_id($id) && has_access($user['class'], UC_MAX, 'coder')) {
         $sure = (isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes';
-        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $user['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
+        $arr = $fluent->from('staffpanel')
+                      ->select(null)
+                      ->select('navbar')
+                      ->select('added_by')
+                      ->select('av_class')
+                      ->select('page_name')
+                      ->where('id = ?', $id)
+                      ->fetch();
         if ($user['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
         }
@@ -97,12 +103,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
         }
         $cache->delete('staff_classes_');
-        sql_query('DELETE FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $result = $fluent->deleteFrom('staffpanel')
+                         ->where('id = ?', $id)
+                         ->execute();
         $cache->delete('av_class_');
         $cache->delete('staff_panels_6');
         $cache->delete('staff_panels_5');
         $cache->delete('staff_panels_4');
-        if (mysqli_affected_rows($mysqli)) {
+        if ($result >= 1) {
             if ($user['class'] <= UC_MAX) {
                 $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
@@ -156,8 +164,16 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             'navbar',
         ];
         if ($action === 'edit') {
-            $res = sql_query('SELECT ' . implode(', ', $names) . ' FROM staffpanel WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $arr = mysqli_fetch_assoc($res);
+            $arr = $fluent->from('staffpanel')
+                          ->select(null)
+                          ->select('page_name')
+                          ->select('file_name')
+                          ->select('description')
+                          ->select('type')
+                          ->select('av_class')
+                          ->select('navbar')
+                          ->where('id = ?', $id)
+                          ->fetch();
         }
         foreach ($names as $name) {
             ${$name} = (isset($_POST[$name]) ? $_POST[$name] : ($action === 'edit' ? $arr[$name] : ''));
@@ -199,32 +215,31 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
             if (empty($errors)) {
                 if ($action === 'add') {
-                    $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
-                                      VALUES (' . implode(', ', array_map('sqlesc', [
-                        $page_name,
-                        $file_name,
-                        $description,
-                        $type,
-                        (int) $_POST['av_class'],
-                        $user['id'],
-                        TIME_NOW,
-                        $navbar,
-                    ])) . ')');
+                    $values = [
+                        'page_name' => $page_name,
+                        'file_name' => $file_name,
+                        'description' => $description,
+                        'type' => $type,
+                        'av_class' => (int) $_POST['av_class'],
+                        'added_by' => $user['id'],
+                        'added' => TIME_NOW,
+                        'navbar' => $navbar,
+                    ];
+                    try {
+                        $new_id = $fluent->insertInto('staffpanel')
+                                         ->values($values)
+                                         ->execute();
+                    } catch (Exception $e) {
+                        $errors[] = $e->getMessage();
+                    }
                     $cache->delete('staff_classes_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
                                       ->select(null)
                                       ->select('DISTINCT value AS value')
-                                      ->where('value>= ?', UC_STAFF);
+                                      ->where('value >= ?', UC_STAFF);
                     foreach ($classes as $class) {
-                        $cache->delete('staff_panels_' . $class);
-                    }
-                    if (!$res) {
-                        if (((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-                            $errors[] = $lang['spanel_this_fname_sub'];
-                        } else {
-                            $errors[] = $lang['spanel_db_error_msg'];
-                        }
+                        $cache->delete('staff_panels_' . $class['value']);
                     }
                 } else {
                     $set = [
@@ -285,7 +300,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_pg_name']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='page_name' value='{$page_name}'>
+                        <input type='text' class='w-100' name='page_name' value='{$page_name}' required>
                     </td>
                 </tr>
                 <tr>
@@ -293,7 +308,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_filename']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='file_name' value='{$file_name}'>
+                        <input type='text' class='w-100' name='file_name' value='{$file_name}' required>
                     </td>
                 </tr>
                 <tr>
@@ -301,7 +316,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_description']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='description' value='{$description}'>
+                        <input type='text' class='w-100' name='description' value='{$description}' required>
                     </td>
                 </tr>
                 <tr>
@@ -325,10 +340,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 <tr>
                     <td class='rowhead'>{$lang['spanel_type_of_tool']}</td>
                     <td>
-                        <select name='type'>";
-        foreach ($types as $type) {
+                        <select name='type' required>
+                            <option value=''>Choose Type</option>";
+        foreach ($types as $this_type) {
             $body .= '
-                            <option value="' . $type . '" ' . ($arr['type'] === $type ? 'selected' : '') . '>' . ucfirst($type) . '</option>';
+                            <option value="' . $this_type . '" ' . ($type === $this_type ? 'selected' : '') . '>' . ucfirst($this_type) . '</option>';
         }
         $body .= "
                         </select>
@@ -339,11 +355,12 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <span>{$lang['spanel_available_for']}</span>
                         </td>
                     <td>
-                        <select name='av_class'>";
+                        <select name='av_class' required>
+                            <option value=''>Choose Class</option>";
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="' . $class . '" ' . ($arr['av_class'] == $class ? 'selected' : '') . '>' . get_user_class_name((int) $class) . '</option>';
+                           <option value="' . $class . '" ' . (isset($arr['av_class']) && $arr['av_class'] == $class ? 'selected' : '') . '>' . get_user_class_name((int) $class) . '</option>';
         }
         $body .= '
                         </select>
@@ -385,17 +402,16 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 </ul>";
         }
         $user_class = $user['class'] >= UC_STAFF ? $user['class'] : UC_MAX;
-        $res = sql_query('SELECT s.*, u.username
-                                FROM staffpanel AS s
-                                LEFT JOIN users AS u ON u.id = s.added_by
-                                WHERE s.av_class <= ' . sqlesc($user_class) . '
-                                ORDER BY s.av_class DESC, s.page_name') or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) > 0) {
-            $db_classes = $unique_classes = $mysql_data = [];
-            while ($arr = mysqli_fetch_assoc($res)) {
-                $mysql_data[] = $arr;
-            }
-            foreach ($mysql_data as $key => $value) {
+        $data = $fluent->from('staffpanel AS s')
+                       ->select('u.username')
+                       ->leftJoin('users AS u ON s.added_by = u.id')
+                       ->where('s.av_class <= ?', $user_class)
+                       ->orderBy('s.av_class DESC')
+                       ->orderBy('s.page_name')
+                       ->fetchAll();
+        if (!empty($data)) {
+            $db_classes = $unique_classes = [];
+            foreach ($data as $key => $value) {
                 $db_classes[$value['av_class']][] = $value['av_class'];
             }
             $i = 1;
@@ -415,7 +431,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $header .= '
                     </tr>';
             $body = '';
-            foreach ($mysql_data as $key => $arr) {
+            foreach ($data as $key => $arr) {
                 $end_table = count($db_classes[$arr['av_class']]) == $i ? true : false;
 
                 if (!in_array($arr['av_class'], $unique_classes)) {

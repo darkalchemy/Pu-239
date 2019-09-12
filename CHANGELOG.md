@@ -1,4 +1,6 @@
 ### 12 Sept, 2019
+fix: donations.php  
+fix: add/delete staff panel pages staffpanel.php  
 fix: crazy hour auto run  
 add: undelete soft deleted forum posts  
 fix: category image/title display/search correctly  

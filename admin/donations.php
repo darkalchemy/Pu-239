@@ -20,37 +20,53 @@ if (isset($_GET['total_donors'])) {
     if ($total_donors != '1') {
         stderr($lang['donate_err'], $lang['donate_err1']);
     }
-    $res = sql_query("SELECT COUNT(id) FROM users WHERE total_donated != '0.00' AND status = 0") or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_array($res);
-    $count = $row[0];
-    $perpage = 15;
-    $pager = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
-    if (mysqli_num_rows($res) == 0) {
-        stderr($lang['donate_sorry'], $lang['donate_nofound']);
-    }
-    $users = $fluent->from('users')
+    $count = $fluent->from('users')
                     ->select(null)
                     ->select('COUNT(id) AS count')
-                    ->where('total_donated >= 0')
+                    ->where('total_donated > 0')
+                    ->where('status = 0')
                     ->fetch('count');
-    $users = number_format($users);
-    $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
+    $perpage = 15;
+    $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=donations&amp;action=donations&amp;');
+    $sql = $fluent->from('users')
+                  ->select(null)
+                  ->select('id')
+                  ->select('username')
+                  ->select('email')
+                  ->select('registered')
+                  ->select('donated')
+                  ->select('donoruntil')
+                  ->select('total_donated')
+                  ->where('total_donated >= 0')
+                  ->where('status = 0')
+                  ->orderBy('id')
+                  ->limit($pager['pdo']['limit'])
+                  ->offset($pager['pdo']['offset'])
+                  ->fetchAll();
 } else {
-    $res = sql_query("SELECT COUNT(id) FROM users WHERE donor='yes'") or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_array($res);
-    $count = (int) $row[0];
-    $perpage = 15;
-    $pager = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
-    if (mysqli_num_rows($res) == 0) {
-        stderr($lang['donate_sorry'], $lang['donate_nofound']);
-    }
-    $users = $fluent->from('users')
+    $count = $fluent->from('users')
                     ->select(null)
                     ->select('COUNT(id) AS count')
-                    ->where('donor = "yes"')
+                    ->where("donor = 'yes'")
+                    ->where('status = 0')
                     ->fetch('count');
-    $users = number_format($users);
-    $res = sql_query("SELECT id, username, email, added, donated, total_donated, donoruntil FROM users WHERE donor='yes' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
+    $perpage = 15;
+    $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=donations&amp;action=donations&amp;');
+    $sql = $fluent->from('users')
+                  ->select(null)
+                  ->select('id')
+                  ->select('username')
+                  ->select('email')
+                  ->select('registered')
+                  ->select('donated')
+                  ->select('donoruntil')
+                  ->select('total_donated')
+                  ->where("donor = 'yes'")
+                  ->where('status = 0')
+                  ->orderBy('id')
+                  ->limit($pager['pdo']['limit'])
+                  ->offset($pager['pdo']['offset'])
+                  ->fetchAll();
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -78,13 +94,13 @@ $heading = "
         <th>{$lang['donate_pm']}</th>
     </tr>";
 $body = '';
-while ($arr = mysqli_fetch_assoc($res)) {
+foreach ($sql as $arr) {
     $body .= "
     <tr>
         <td>{$arr['id']}</td>
         <td>" . format_username((int) $arr['id']) . "</td>
         <td><a class='is-link' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . "</a></td>
-        <td><span class='size_3'>" . get_date((int) $arr['added'], 'DATE') . '</span></td>
+        <td><span class='size_3'>" . get_date((int) $arr['registered'], 'DATE') . '</span></td>
         <td>';
     $donoruntil = (int) $arr['donoruntil'];
     if ($donoruntil == 0) {
@@ -92,14 +108,18 @@ while ($arr = mysqli_fetch_assoc($res)) {
     } else {
         $body .= '<span class="size_3">' . get_date((int) $arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</span>";
     }
+    setlocale(LC_MONETARY, 'en_US.UTF-8');
     $body .= '
         </td>
-        <td><b>&#36;' . htmlsafechars($arr['donated']) . '</td>
-        <td><b>&#36;' . htmlsafechars($arr['total_donated']) . "</td>
+        <td><b>' . money_format('%.2n', (float) $arr['donated']) . '</td>
+        <td><b>' . money_format('%.2n', (float) $arr['total_donated']) . "</td>
         <td>
             <a class='is-link' href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
         </td>
     </tr>";
+}
+if ($count === 0) {
+    $body = '<td colspan="8">No Donors</td>';
 }
 $HTMLOUT .= main_table($body, $heading);
 if ($count > $perpage) {

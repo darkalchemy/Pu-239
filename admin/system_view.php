@@ -13,10 +13,10 @@ $lang = array_merge($lang, load_language('ad_systemview'));
 global $site_config;
 
 if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
-    @ob_start();
+    ob_start();
     phpinfo();
-    $parsed = @ob_get_contents();
-    @ob_end_clean();
+    $parsed = ob_get_contents();
+    ob_end_clean();
     preg_match('#<body>(.*)</body>#is', $parsed, $match1);
     $php_body = $match1[1];
     $php_body = str_replace('; ', ';<br>', $php_body);
@@ -72,7 +72,7 @@ function sql_get_version()
     return $mysql_version . ' (' . $true_version . ')';
 }
 
-$php_version = phpversion() . ' (' . @php_sapi_name() . ')';
+$php_version = phpversion() . ' (' . php_sapi_name() . ')';
 $server_software = php_uname();
 $load_limit = '--';
 $server_load_found = 0;
