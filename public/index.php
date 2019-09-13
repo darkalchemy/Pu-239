@@ -152,7 +152,7 @@ if (in_array('active_users', $available_columns) && $user['blocks']['index_page'
     $remove_columns[] = 'active_users';
 }
 
-if (in_array('cooker', $available_columns)) {
+if (in_array('cooker', $available_columns) && $user['blocks']['index_page'] & block_index::COOKER && $BLOCKS['cooker_on']) {
     include_once $dir . 'cooker.php';
 } else {
     $remove_columns[] = 'cooker';

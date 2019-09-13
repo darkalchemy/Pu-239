@@ -34,4 +34,5 @@ class block_index
     const STAFF_PICKS = 0x1000000; // 16777216
     const LATEST_MOVIES = 0x2000000; // 33554432
     const LATEST_TV = 0x4000000; // 67108864
+    const COOKER = 0x8000000; // 134217728
 }

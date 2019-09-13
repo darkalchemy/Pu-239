@@ -22,12 +22,11 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
                             ->fetch();
         $cache->set('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
     }
-    if ($port_data > 0) {
+    if (!empty($port_data) && isset($port_data[2])) {
         $connect = $port_data[0];
         $port = (int) $port_data[1];
         $Ident_Client = $port_data[2];
-        $XBT_or_PHP = 'yes';
-        if ($connect == $XBT_or_PHP) {
+        if ($connect === 'yes') {
             $connectable = "
     <div class='has-text-success tooltipper' title='{$lang['userdetails_conn_sort']}'>
         <i class='icon-thumbs-up icon' aria-hidden='true'></i><b>{$lang['userdetails_yes']}</b>

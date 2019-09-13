@@ -107,7 +107,7 @@ $users_class = $container->get(User::class);
 $user = $users_class->get_user_from_torrent_pass($torrent_pass);
 $peer_class = $container->get(Peer::class);
 if (empty($event) || $event !== 'stopped') {
-    if (empty($user)) {
+    if (empty($user) || empty($user['id'])) {
         err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
     } elseif ($user['status'] === 5) {
         err("Permission denied, you're account has been suspended");
@@ -130,7 +130,6 @@ if (empty($event) || $event !== 'stopped') {
         }
     }
 }
-$userid = $user['id'];
 $connectable = 'yes';
 $conn_ttl = 300;
 $cache = $container->get(Cache::class);
@@ -164,7 +163,7 @@ if ($site_config['site']['ip_logging']) {
     if (!$no_log_ip) {
         $values = [
             'ip' => inet_pton($ip),
-            'userid' => $userid,
+            'userid' => $user['id'],
             'type' => 'announce',
             'last_access' => $added,
         ];
@@ -172,14 +171,14 @@ if ($site_config['site']['ip_logging']) {
             'last_access' => $added,
         ];
         $ips_class = $container->get(IP::class);
-        $ips_class->insert($values, $update, $userid);
+        $ips_class->insert($values, $update, $user['id']);
         unset($values, $update);
     }
 }
-$torrent_modifier = get_slots($torrent['id'], $userid);
+$torrent_modifier = get_slots($torrent['id'], $user['id']);
 $torrent['freeslot'] = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
-$happy_multiplier = $site_config['bonus']['happy_hour'] ? get_happy($torrent['id'], $userid) : 0;
+$happy_multiplier = $site_config['bonus']['happy_hour'] ? get_happy($torrent['id'], $user['id']) : 0;
 if ($compact != 1) {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['tracker']['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
 } else {
@@ -245,8 +244,7 @@ if ($compact != 1) {
 }
 if (!isset($self)) {
     foreach ($peers as $peer) {
-        if (strtolower(bin2hex($peer['peer_id'])) === strtolower($peer_id) || strtolower(bin2hex($peer['peer_id'])) === strtolower(preg_replace('/ *$/s', '', $peer_id))) {
-            $userid = $peer['userid'];
+        if ($peer['userid'] === $user['id'] && (strtolower(bin2hex($peer['peer_id'])) === strtolower($peer_id) || strtolower(bin2hex($peer['peer_id'])) === strtolower(preg_replace('/ *$/s', '', $peer_id)))) {
             $self = $peer;
         }
     }
@@ -292,7 +290,7 @@ if (PRODUCTION && isset($self) && empty($event) && $self['announcetime'] < $anno
 }
 $upthis = $uploaded;
 $downthis = $downloaded;
-$ratio_free = $site_config['site']['ratio_free'] || $user['free_switch'] > 0 || $torrent['free'] > 0 || $torrent['free_slot'] > 0 ? true : false;
+$ratio_free = $site_config['site']['ratio_free'] || $user['free_switch'] > 0 || $torrent['free'] > 0 || $torrent['freeslot'] > 0 ? true : false;
 if (isset($self)) {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = $ratio_free ? 0 : max(0, $downloaded - $self['downloaded']);
@@ -337,12 +335,12 @@ if ($upthis > 0 || $downthis > 0) {
     }
 }
 $snatches = $container->get(Snatched::class);
-$snatched = $snatches->get_snatched($userid, $torrent['id']);
+$snatched = $snatches->get_snatched($user['id'], $torrent['id']);
 if (isset($self, $snatched) && empty($event) && $snatched['announcetime'] < $announce_wait) {
     err("There is a minimum announce time of $announce_wait seconds");
 }
 $snatched_values['torrentid'] = $torrent['id'];
-$snatched_values['userid'] = $userid;
+$snatched_values['userid'] = $user['id'];
 if ($uploaded > 0) {
     $snatched_values['uploaded'] = $uploaded;
 }
@@ -387,7 +385,7 @@ $set = [];
 if ($event === 'stopped') {
     if (!empty($this_user_torrent['id'])) {
         $peer_deleted = $peer_class->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
-        $cache->delete('peers_' . $userid);
+        $cache->delete('peers_' . $user['id']);
     }
     if ($peer_deleted) {
         if ($seeder === 'yes') {
@@ -423,14 +421,14 @@ if (isset($self) && $event === 'stopped') {
     $values['peer_id'] = hex2bin($peer_id);
     $values['ip'] = inet_pton($realip);
     $values['port'] = $port;
-    $values['userid'] = $userid;
+    $values['userid'] = $user['id'];
     if (!empty($peer)) {
         $update['uploaded'] = $peer['uploaded'] + $uploaded;
         $update['downloaded'] = $peer['downloaded'] + ($ratio_free ? 0 : $downloaded);
     }
     $updated = $peer_class->insert_update($values, $update);
     unset($values, $update);
-    $cache->delete('peers_' . $userid);
+    $cache->delete('peers_' . $user['id']);
     if (!empty($updated)) {
         if ($seeder != $self['seeder']) {
             if ($seeder === 'yes') {
@@ -445,7 +443,7 @@ if (isset($self) && $event === 'stopped') {
         'torrent' => $torrent['id'],
         'peer_id' => hex2bin($peer_id),
         'ip' => inet_pton($realip),
-        'userid' => $userid,
+        'userid' => $user['id'],
         'port' => $port,
         'connectable' => $connectable,
         'uploaded' => $uploaded,
@@ -460,7 +458,7 @@ if (isset($self) && $event === 'stopped') {
     ];
 
     $update = [
-        'userid' => $userid,
+        'userid' => $user['id'],
         'connectable' => $connectable,
         'uploaded' => $uploaded,
         'downloaded' => $ratio_free ? 0 : $downloaded,
@@ -480,7 +478,7 @@ if (isset($self) && $event === 'stopped') {
             $snatched_values['mark_of_cain'] = 'no';
         }
     }
-    $cache->delete('peers_' . $userid);
+    $cache->delete('peers_' . $user['id']);
 }
 
 if ($seeder === 'yes') {
@@ -498,6 +496,6 @@ if (!empty($snatched_values)) {
     $snatches->insert($snatched_values, $update);
 }
 if (!empty($user_updateset)) {
-    $users_class->update($user_updateset, $userid, true);
+    $users_class->update($user_updateset, $user['id'], true);
 }
 benc_resp_raw($resp);

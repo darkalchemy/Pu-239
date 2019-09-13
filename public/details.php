@@ -300,10 +300,11 @@ if (!empty($torrent['audios'])) {
         $audios = "<span class='level-left'>" . implode(' ', $Audios) . '</span>';
     }
 }
-$banner_image = get_banner($torrent['imdb_id']);
-$banner = !empty($banner_image) && !is_bool($banner_image) ? "<img src='" . url_proxy((string) $banner_image, true, 1000, 185) . "' class='w-100 round10 bottom20'>" : '';
-if (!empty($torrent['name'])) {
-    $title = "
+if (!empty($torrent['imdb_id'])) {
+    $banner_image = get_banner($torrent['imdb_id']);
+    $banner = !empty($banner_image) && !is_bool($banner_image) ? "<img src='" . url_proxy((string) $banner_image, true, 1000, 185) . "' class='w-100 round10 bottom20'>" : '';
+    if (!empty($torrent['name'])) {
+        $title = "
             <div class='bottom20 w-100'>
                 $banner
                 <div class='bg-00 round10 columns padding20 is-gapless level'>
@@ -312,8 +313,8 @@ if (!empty($torrent['name'])) {
                     <span class='column is-1 size_7 has-text-right padding20'>$next</span>
                 </div>
             </div>";
+    }
 }
-
 $torrent['free_color'] = '#0f0';
 $torrent['silver_color'] = 'silver';
 require_once PARTIALS_DIR . 'free_details.php';

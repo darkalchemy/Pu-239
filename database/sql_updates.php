@@ -4211,4 +4211,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `upcoming` DROP COLUMN `description`',
         'flush' => 'true',
     ],
+    [
+        'id' => 1568407461,
+        'info' => 'Update user_blocks',
+        'date' => '13 Sept, 2019',
+        'query' => 'UPDATE `user_blocks` SET `index_page` = `index_page` + 134217728 WHERE `index_page` <= 134217727',
+        'flush' => 'true',
+    ],
 ];

@@ -1,3 +1,9 @@
+### 13 Sept, 2019
+fix: typo announce.php  
+fix: check it port data is set before checking port connectable.php  
+update: check if imdb_id is set before looking for a banner details.php  
+update: user blocks for cooker  
+
 ### 12 Sept, 2019
 remove: unused column description  
 fix: undefined variable staffpanel.php  

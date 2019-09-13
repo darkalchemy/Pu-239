@@ -71,6 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_index_page |= block_index::IRC_ACTIVE_USERS;
     }
+    if (isset($_POST['cooker'])) {
+        $setbits_index_page |= block_index::COOKER;
+    } else {
+        $clrbits_index_page |= block_index::COOKER;
+    }
     if (isset($_POST['birthday_active_users'])) {
         $setbits_index_page |= block_index::BIRTHDAY_ACTIVE_USERS;
     } else {
@@ -431,75 +436,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 //==Index
-$checkbox_index_ie_alert = (($user['blocks']['index_page'] & block_index::IE_ALERT) ? 'checked' : '');
-$checkbox_index_news = (($user['blocks']['index_page'] & block_index::NEWS) ? 'checked' : '');
-$checkbox_index_ajaxchat = (($user['blocks']['index_page'] & block_index::AJAXCHAT) ? 'checked' : '');
-$checkbox_index_active_users = (($user['blocks']['index_page'] & block_index::ACTIVE_USERS) ? 'checked' : '');
-$checkbox_index_trivia = (($user['blocks']['index_page'] & block_index::TRIVIA) ? 'checked' : '');
-$checkbox_index_active_24h_users = (($user['blocks']['index_page'] & block_index::LAST_24_ACTIVE_USERS) ? 'checked' : '');
-$checkbox_index_active_irc_users = (($user['blocks']['index_page'] & block_index::IRC_ACTIVE_USERS) ? 'checked' : '');
-$checkbox_index_active_birthday_users = (($user['blocks']['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS) ? 'checked' : '');
-$checkbox_index_stats = (($user['blocks']['index_page'] & block_index::STATS) ? 'checked' : '');
-$checkbox_index_disclaimer = (($user['blocks']['index_page'] & block_index::DISCLAIMER) ? 'checked' : '');
-$checkbox_index_latest_user = (($user['blocks']['index_page'] & block_index::LATEST_USER) ? 'checked' : '');
-$checkbox_index_latest_comments = (($user['blocks']['index_page'] & block_index::LATESTCOMMENTS) ? 'checked' : '');
-$checkbox_index_latest_forumposts = (($user['blocks']['index_page'] & block_index::FORUMPOSTS) ? 'checked' : '');
-$checkbox_index_staff_picks = (($user['blocks']['index_page'] & block_index::STAFF_PICKS) ? 'checked' : '');
-$checkbox_index_latest_torrents = (($user['blocks']['index_page'] & block_index::LATEST_TORRENTS) ? 'checked' : '');
-$checkbox_index_latest_movies = (($user['blocks']['index_page'] & block_index::LATEST_MOVIES) ? 'checked' : '');
-$checkbox_index_latest_tv = (($user['blocks']['index_page'] & block_index::LATEST_TV) ? 'checked' : '');
-$checkbox_index_latest_torrents_scroll = (($user['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL) ? 'checked' : '');
-$checkbox_index_latest_torrents_slider = (($user['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER) ? 'checked' : '');
-$checkbox_index_announcement = (($user['blocks']['index_page'] & block_index::ANNOUNCEMENT) ? 'checked' : '');
-$checkbox_index_donation_progress = (($user['blocks']['index_page'] & block_index::DONATION_PROGRESS) ? 'checked' : '');
-$checkbox_index_ads = (($user['blocks']['index_page'] & block_index::ADVERTISEMENTS) ? 'checked' : '');
-$checkbox_index_torrentfreak = (($user['blocks']['index_page'] & block_index::TORRENTFREAK) ? 'checked' : '');
-$checkbox_index_christmasgift = (($user['blocks']['index_page'] & block_index::CHRISTMAS_GIFT) ? 'checked' : '');
-$checkbox_index_active_poll = (($user['blocks']['index_page'] & block_index::ACTIVE_POLL) ? 'checked' : '');
-$checkbox_index_mow = (($user['blocks']['index_page'] & block_index::MOVIEOFWEEK) ? 'checked' : '');
+$checkbox_index_ie_alert = $user['blocks']['index_page'] & block_index::IE_ALERT ? 'checked' : '';
+$checkbox_index_news = $user['blocks']['index_page'] & block_index::NEWS ? 'checked' : '';
+$checkbox_index_ajaxchat = $user['blocks']['index_page'] & block_index::AJAXCHAT ? 'checked' : '';
+$checkbox_index_active_users = $user['blocks']['index_page'] & block_index::ACTIVE_USERS ? 'checked' : '';
+$checkbox_index_trivia = $user['blocks']['index_page'] & block_index::TRIVIA ? 'checked' : '';
+$checkbox_index_active_24h_users = $user['blocks']['index_page'] & block_index::LAST_24_ACTIVE_USERS ? 'checked' : '';
+$checkbox_index_active_irc_users = $user['blocks']['index_page'] & block_index::IRC_ACTIVE_USERS ? 'checked' : '';
+$checkbox_index_active_birthday_users = $user['blocks']['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS ? 'checked' : '';
+$checkbox_index_stats = $user['blocks']['index_page'] & block_index::STATS ? 'checked' : '';
+$checkbox_index_cooker = $user['blocks']['index_page'] & block_index::COOKER ? 'checked' : '';
+$checkbox_index_disclaimer = $user['blocks']['index_page'] & block_index::DISCLAIMER ? 'checked' : '';
+$checkbox_index_latest_user = $user['blocks']['index_page'] & block_index::LATEST_USER ? 'checked' : '';
+$checkbox_index_latest_comments = $user['blocks']['index_page'] & block_index::LATESTCOMMENTS ? 'checked' : '';
+$checkbox_index_latest_forumposts = $user['blocks']['index_page'] & block_index::FORUMPOSTS ? 'checked' : '';
+$checkbox_index_staff_picks = $user['blocks']['index_page'] & block_index::STAFF_PICKS ? 'checked' : '';
+$checkbox_index_latest_torrents = $user['blocks']['index_page'] & block_index::LATEST_TORRENTS ? 'checked' : '';
+$checkbox_index_latest_movies = $user['blocks']['index_page'] & block_index::LATEST_MOVIES ? 'checked' : '';
+$checkbox_index_latest_tv = $user['blocks']['index_page'] & block_index::LATEST_TV ? 'checked' : '';
+$checkbox_index_latest_torrents_scroll = $user['blocks']['index_page'] & block_index::LATEST_TORRENTS_SCROLL ? 'checked' : '';
+$checkbox_index_latest_torrents_slider = $user['blocks']['index_page'] & block_index::LATEST_TORRENTS_SLIDER ? 'checked' : '';
+$checkbox_index_announcement = $user['blocks']['index_page'] & block_index::ANNOUNCEMENT ? 'checked' : '';
+$checkbox_index_donation_progress = $user['blocks']['index_page'] & block_index::DONATION_PROGRESS ? 'checked' : '';
+$checkbox_index_ads = $user['blocks']['index_page'] & block_index::ADVERTISEMENTS ? 'checked' : '';
+$checkbox_index_torrentfreak = $user['blocks']['index_page'] & block_index::TORRENTFREAK ? 'checked' : '';
+$checkbox_index_christmasgift = $user['blocks']['index_page'] & block_index::CHRISTMAS_GIFT ? 'checked' : '';
+$checkbox_index_active_poll = $user['blocks']['index_page'] & block_index::ACTIVE_POLL ? 'checked' : '';
+$checkbox_index_mow = $user['blocks']['index_page'] & block_index::MOVIEOFWEEK ? 'checked' : '';
 //==Stdhead
-$checkbox_global_freeleech = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH) ? 'checked' : '');
-$checkbox_global_demotion = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION) ? 'checked' : '');
-$checkbox_global_message_alert = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_NEWPM) ? 'checked' : '');
-$checkbox_global_staff_message_alert = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE) ? 'checked' : '');
-$checkbox_global_staff_report = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_REPORTS) ? 'checked' : '');
-$checkbox_global_staff_uploadapp = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP) ? 'checked' : '');
-$checkbox_global_happyhour = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR) ? 'checked' : '');
-$checkbox_global_crazyhour = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR) ? 'checked' : '');
-$checkbox_global_bugmessage = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE) ? 'checked' : '');
-$checkbox_global_freeleech_contribution = (($user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION) ? 'checked' : '');
+$checkbox_global_freeleech = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH ? 'checked' : '';
+$checkbox_global_demotion = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION ? 'checked' : '';
+$checkbox_global_message_alert = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_NEWPM ? 'checked' : '';
+$checkbox_global_staff_message_alert = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE ? 'checked' : '';
+$checkbox_global_staff_report = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_REPORTS ? 'checked' : '';
+$checkbox_global_staff_uploadapp = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP ? 'checked' : '';
+$checkbox_global_happyhour = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR ? 'checked' : '';
+$checkbox_global_crazyhour = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR ? 'checked' : '';
+$checkbox_global_bugmessage = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE ? 'checked' : '';
+$checkbox_global_freeleech_contribution = $user['blocks']['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION ? 'checked' : '';
 //==Userdetails
-$checkbox_userdetails_flush = (($user['blocks']['userdetails_page'] & block_userdetails::FLUSH) ? 'checked' : '');
-$checkbox_userdetails_joined = (($user['blocks']['userdetails_page'] & block_userdetails::JOINED) ? 'checked' : '');
-$checkbox_userdetails_onlinetime = (($user['blocks']['userdetails_page'] & block_userdetails::ONLINETIME) ? 'checked' : '');
-$checkbox_userdetails_browser = (($user['blocks']['userdetails_page'] & block_userdetails::BROWSER) ? 'checked' : '');
-$checkbox_userdetails_reputation = (($user['blocks']['userdetails_page'] & block_userdetails::REPUTATION) ? 'checked' : '');
-$checkbox_userdetails_userhits = (($user['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS) ? 'checked' : '');
-$checkbox_userdetails_birthday = (($user['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY) ? 'checked' : '');
-$checkbox_userdetails_contact_info = (($user['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO) ? 'checked' : '');
-$checkbox_userdetails_avatar = (($user['blocks']['userdetails_page'] & block_userdetails::AVATAR) ? 'checked' : '');
-$checkbox_userdetails_iphistory = (($user['blocks']['userdetails_page'] & block_userdetails::IPHISTORY) ? 'checked' : '');
-$checkbox_userdetails_traffic = (($user['blocks']['userdetails_page'] & block_userdetails::TRAFFIC) ? 'checked' : '');
-$checkbox_userdetails_shareratio = (($user['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO) ? 'checked' : '');
-$checkbox_userdetails_seedtime_ratio = (($user['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO) ? 'checked' : '');
-$checkbox_userdetails_seedbonus = (($user['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS) ? 'checked' : '');
-$checkbox_userdetails_irc_stats = (($user['blocks']['userdetails_page'] & block_userdetails::IRC_STATS) ? 'checked' : '');
-$checkbox_userdetails_connectable = (($user['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT) ? 'checked' : '');
-$checkbox_userdetails_userclass = (($user['blocks']['userdetails_page'] & block_userdetails::USERCLASS) ? 'checked' : '');
-$checkbox_userdetails_gender = (($user['blocks']['userdetails_page'] & block_userdetails::GENDER) ? 'checked' : '');
-$checkbox_userdetails_freestuffs = (($user['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS) ? 'checked' : '');
-$checkbox_userdetails_torrent_comments = (($user['blocks']['userdetails_page'] & block_userdetails::COMMENTS) ? 'checked' : '');
-$checkbox_userdetails_forumposts = (($user['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS) ? 'checked' : '');
-$checkbox_userdetails_invitedby = (($user['blocks']['userdetails_page'] & block_userdetails::INVITEDBY) ? 'checked' : '');
-$checkbox_userdetails_torrents_block = (($user['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK) ? 'checked' : '');
-$checkbox_userdetails_completed = (($user['blocks']['userdetails_page'] & block_userdetails::COMPLETED) ? 'checked' : '');
-$checkbox_userdetails_snatched_staff = (($user['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF) ? 'checked' : '');
-$checkbox_userdetails_userinfo = (($user['blocks']['userdetails_page'] & block_userdetails::USERINFO) ? 'checked' : '');
-$checkbox_userdetails_showpm = (($user['blocks']['userdetails_page'] & block_userdetails::SHOWPM) ? 'checked' : '');
-$checkbox_userdetails_report = (($user['blocks']['userdetails_page'] & block_userdetails::REPORT_USER) ? 'checked' : '');
-$checkbox_userdetails_userstatus = (($user['blocks']['userdetails_page'] & block_userdetails::USERSTATUS) ? 'checked' : '');
-$checkbox_userdetails_usercomments = (($user['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS) ? 'checked' : '');
-$checkbox_userdetails_showfriends = (($user['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS) ? 'checked' : '');
+$checkbox_userdetails_flush = $user['blocks']['userdetails_page'] & block_userdetails::FLUSH ? 'checked' : '';
+$checkbox_userdetails_joined = $user['blocks']['userdetails_page'] & block_userdetails::JOINED ? 'checked' : '';
+$checkbox_userdetails_onlinetime = $user['blocks']['userdetails_page'] & block_userdetails::ONLINETIME ? 'checked' : '';
+$checkbox_userdetails_browser = $user['blocks']['userdetails_page'] & block_userdetails::BROWSER ? 'checked' : '';
+$checkbox_userdetails_reputation = $user['blocks']['userdetails_page'] & block_userdetails::REPUTATION ? 'checked' : '';
+$checkbox_userdetails_userhits = $user['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS ? 'checked' : '';
+$checkbox_userdetails_birthday = $user['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY ? 'checked' : '';
+$checkbox_userdetails_contact_info = $user['blocks']['userdetails_page'] & block_userdetails::CONTACT_INFO ? 'checked' : '';
+$checkbox_userdetails_avatar = $user['blocks']['userdetails_page'] & block_userdetails::AVATAR ? 'checked' : '';
+$checkbox_userdetails_iphistory = $user['blocks']['userdetails_page'] & block_userdetails::IPHISTORY ? 'checked' : '';
+$checkbox_userdetails_traffic = $user['blocks']['userdetails_page'] & block_userdetails::TRAFFIC ? 'checked' : '';
+$checkbox_userdetails_shareratio = $user['blocks']['userdetails_page'] & block_userdetails::SHARE_RATIO ? 'checked' : '';
+$checkbox_userdetails_seedtime_ratio = $user['blocks']['userdetails_page'] & block_userdetails::SEEDTIME_RATIO ? 'checked' : '';
+$checkbox_userdetails_seedbonus = $user['blocks']['userdetails_page'] & block_userdetails::SEEDBONUS ? 'checked' : '';
+$checkbox_userdetails_irc_stats = $user['blocks']['userdetails_page'] & block_userdetails::IRC_STATS ? 'checked' : '';
+$checkbox_userdetails_connectable = $user['blocks']['userdetails_page'] & block_userdetails::CONNECTABLE_PORT ? 'checked' : '';
+$checkbox_userdetails_userclass = $user['blocks']['userdetails_page'] & block_userdetails::USERCLASS ? 'checked' : '';
+$checkbox_userdetails_gender = $user['blocks']['userdetails_page'] & block_userdetails::GENDER ? 'checked' : '';
+$checkbox_userdetails_freestuffs = $user['blocks']['userdetails_page'] & block_userdetails::FREESTUFFS ? 'checked' : '';
+$checkbox_userdetails_torrent_comments = $user['blocks']['userdetails_page'] & block_userdetails::COMMENTS ? 'checked' : '';
+$checkbox_userdetails_forumposts = $user['blocks']['userdetails_page'] & block_userdetails::FORUMPOSTS ? 'checked' : '';
+$checkbox_userdetails_invitedby = $user['blocks']['userdetails_page'] & block_userdetails::INVITEDBY ? 'checked' : '';
+$checkbox_userdetails_torrents_block = $user['blocks']['userdetails_page'] & block_userdetails::TORRENTS_BLOCK ? 'checked' : '';
+$checkbox_userdetails_completed = $user['blocks']['userdetails_page'] & block_userdetails::COMPLETED ? 'checked' : '';
+$checkbox_userdetails_snatched_staff = $user['blocks']['userdetails_page'] & block_userdetails::SNATCHED_STAFF ? 'checked' : '';
+$checkbox_userdetails_userinfo = $user['blocks']['userdetails_page'] & block_userdetails::USERINFO ? 'checked' : '';
+$checkbox_userdetails_showpm = $user['blocks']['userdetails_page'] & block_userdetails::SHOWPM ? 'checked' : '';
+$checkbox_userdetails_report = $user['blocks']['userdetails_page'] & block_userdetails::REPORT_USER ? 'checked' : '';
+$checkbox_userdetails_userstatus = $user['blocks']['userdetails_page'] & block_userdetails::USERSTATUS ? 'checked' : '';
+$checkbox_userdetails_usercomments = $user['blocks']['userdetails_page'] & block_userdetails::USERCOMMENTS ? 'checked' : '';
+$checkbox_userdetails_showfriends = $user['blocks']['userdetails_page'] & block_userdetails::SHOWFRIENDS ? 'checked' : '';
 
 $form = $level1 = $level2 = '';
 $contents = [];
@@ -514,266 +520,276 @@ $level1 .= "
                 <div class='level-center'>";
 if ($BLOCKS['ie_user_alert']) {
     $contents[] = "
-                <div class='w-100'>Enable IE alert?</div>
+                <div class='w-100 has-text-centered'>Enable IE alert?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='ie_alert' name='ie_alert' value='yes' $checkbox_index_ie_alert>
                     <label for='ie_alert'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the IE user alert.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the IE user alert.</div>";
 }
 
 if ($BLOCKS['news_on']) {
     $contents[] = "
-                <div class='w-100'>Enable News?</div>
+                <div class='w-100 has-text-centered'>Enable News?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='news' name='news' value='yes' $checkbox_index_news>
                     <label for='news'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the News Block.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the News Block.</div>";
 }
 
 if ($BLOCKS['ajaxchat_on']) {
     $contents[] = "
-                <div class='w-100'>Enable AJAX Chat?</div>
+                <div class='w-100 has-text-centered'>Enable AJAX Chat?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='ajaxchat' name='ajaxchat' value='yes' $checkbox_index_ajaxchat>
                     <label for='ajaxchat'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the AJAX Chat.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the AJAX Chat.</div>";
 }
 
 if ($BLOCKS['active_users_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Active Users?</div>
+                <div class='w-100 has-text-centered'>Enable Active Users?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='active_users' name='active_users' value='yes' $checkbox_index_active_users>
                     <label for='active_users'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Active Users.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Active Users.</div>";
 }
 
 if ($BLOCKS['active_24h_users_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Active Users Over 24hours?</div>
+                <div class='w-100 has-text-centered'>Enable Active Users Over 24hours?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='last_24_active_users' name='last_24_active_users' value='yes' $checkbox_index_active_24h_users>
                     <label for='last_24_active_users'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Active Users visited over 24hours.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Active Users visited over 24hours.</div>";
+}
+
+if ($BLOCKS['cooker_on']) {
+    $contents[] = "
+                <div class='w-100 has-text-centered'>Enable Cooker?</div>
+                <div class='slideThree'>
+                    <input type='checkbox' id='cooker' name='cooker' value='yes' $checkbox_index_cooker>
+                    <label for='cooker'></label>
+                </div>
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Cooker.</div>";
 }
 
 if ($BLOCKS['active_irc_users_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Active Irc Users?</div>
+                <div class='w-100 has-text-centered'>Enable Active Irc Users?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='irc_active_users' name='irc_active_users' value='yes' $checkbox_index_active_irc_users>
                     <label for='irc_active_users'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Active Irc Users.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Active Irc Users.</div>";
 }
 
 if ($BLOCKS['active_birthday_users_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Birthday Users?</div>
+                <div class='w-100 has-text-centered'>Enable Birthday Users?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='birthday_active_users' name='birthday_active_users' value='yes' $checkbox_index_active_birthday_users>
                     <label for='birthday_active_users'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Active Birthday Users.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Active Birthday Users.</div>";
 }
 
 if ($BLOCKS['stats_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Site Stats?</div>
+                <div class='w-100 has-text-centered'>Enable Site Stats?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stats' name='stats' value='yes' $checkbox_index_stats>
                 <label for='stats'></label></div>
-                <div class='w-100'>Check this option if you want to enable the Stats.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Stats.</div>";
 }
 
 if ($BLOCKS['trivia_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Trivia?</div>
+                <div class='w-100 has-text-centered'>Enable Trivia?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='trivia' name='trivia' value='yes' $checkbox_index_trivia>
                     <label for='trivia'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Trivia Game.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Trivia Game.</div>";
 }
 
 if ($BLOCKS['disclaimer_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Disclaimer?</div>
+                <div class='w-100 has-text-centered'>Enable Disclaimer?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='disclaimer' name='disclaimer' value='yes' $checkbox_index_disclaimer>
                     <label for='disclaimer'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable Disclaimer.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable Disclaimer.</div>";
 }
 
 if ($BLOCKS['latest_user_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest User?</div>
+                <div class='w-100 has-text-centered'>Enable Latest User?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_user' name='latest_user' value='yes' $checkbox_index_latest_user>
                     <label for='latest_user'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable Latest User.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable Latest User.</div>";
 }
 
 if ($BLOCKS['latest_comments_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Comments?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Comments?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latestcomments' name='latestcomments' value='yes' $checkbox_index_latest_comments>
                     <label for='latestcomments'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest Comments.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest Comments.</div>";
 }
 
 if ($BLOCKS['forum_posts_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Forum Posts?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Forum Posts?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='forumposts' name='forumposts' value='yes' $checkbox_index_latest_forumposts>
                     <label for='forumposts'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest Forum Posts.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest Forum Posts.</div>";
 }
 
 if ($BLOCKS['staff_picks_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Staff Picks?</div>
+                <div class='w-100 has-text-centered'>Enable Staff Picks?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='staff_picks' name='staff_picks' value='yes' $checkbox_index_staff_picks>
                     <label for='staff_picks'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable staff_picks.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable staff_picks.</div>";
 }
 
 if ($BLOCKS['latest_torrents_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Torrents?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Torrents?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_torrents' name='latest_torrents' value='yes' $checkbox_index_latest_torrents>
                     <label for='latest_torrents'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest torrents.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest torrents.</div>";
 }
 
 if ($BLOCKS['latest_movies_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Movie Torrents?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Movie Torrents?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_movies' name='latest_movies' value='yes' $checkbox_index_latest_movies>
                     <label for='latest_movies'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest movie torrents.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest movie torrents.</div>";
 }
 
 if ($BLOCKS['latest_tv_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest TV Torrents?</div>
+                <div class='w-100 has-text-centered'>Enable Latest TV Torrents?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_tv' name='latest_tv' value='yes' $checkbox_index_latest_tv>
                     <label for='latest_tv'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest tv torrents.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest tv torrents.</div>";
 }
 
 if ($BLOCKS['latest_torrents_scroll_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Torrents scroll?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Torrents scroll?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_torrents_scroll' name='latest_torrents_scroll' value='yes' $checkbox_index_latest_torrents_scroll>
                     <label for='latest_torrents_scroll'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest torrents marquee.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest torrents marquee.</div>";
 }
 
 if ($BLOCKS['latest_torrents_slider_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Latest Torrents slider?</div>
+                <div class='w-100 has-text-centered'>Enable Latest Torrents slider?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='latest_torrents_slider' name='latest_torrents_slider' value='yes' $checkbox_index_latest_torrents_slider>
                     <label for='latest_torrents_slider'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable latest torrents banner slider.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable latest torrents banner slider.</div>";
 }
 
 if ($BLOCKS['announcement_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Announcement?</div>
+                <div class='w-100 has-text-centered'>Enable Announcement?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='announcement' name='announcement' value='yes' $checkbox_index_announcement>
                     <label for='announcement'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Announcement Block.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Announcement Block.</div>";
 }
 
 if ($BLOCKS['donation_progress_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Donation Progress?</div>
+                <div class='w-100 has-text-centered'>Enable Donation Progress?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='donation_progress' name='donation_progress' value='yes' $checkbox_index_donation_progress>
                     <label for='donation_progress'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Donation Progress.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Donation Progress.</div>";
 }
 
 if ($BLOCKS['ads_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Advertisements?</div>
+                <div class='w-100 has-text-centered'>Enable Advertisements?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='advertisements' name='advertisements' value='yes' $checkbox_index_ads>
                     <label for='advertisements'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Advertisements.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Advertisements.</div>";
 }
 
 if ($BLOCKS['torrentfreak_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Torrent Freak?</div>
+                <div class='w-100 has-text-centered'>Enable Torrent Freak?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='torrentfreak' name='torrentfreak' value='yes' $checkbox_index_torrentfreak>
                     <label for='torrentfreak'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the torrent freak news.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the torrent freak news.</div>";
 }
 
 if ($BLOCKS['christmas_gift_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Christmas Gift?</div>
+                <div class='w-100 has-text-centered'>Enable Christmas Gift?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='christmas_gift' name='christmas_gift' value='yes' $checkbox_index_christmasgift>
                     <label for='christmas_gift'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Christmas Gift.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Christmas Gift.</div>";
 }
 
 if ($BLOCKS['active_poll_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Poll?</div>
+                <div class='w-100 has-text-centered'>Enable Poll?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='active_poll' name='active_poll' value='yes' $checkbox_index_active_poll>
                     <label for='active_poll'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the Active Poll.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Active Poll.</div>";
 }
 
 if ($BLOCKS['movie_ofthe_week_on']) {
     $contents[] = "
-                <div class='w-100'>Enable Movie of the week?</div>
+                <div class='w-100 has-text-centered'>Enable Movie of the week?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='movie_ofthe_week' name='movie_ofthe_week' value='yes' $checkbox_index_mow>
                     <label for='movie_ofthe_week'></label>
                 </div>
-                <div class='w-100'>Check this option if you want to enable the MOvie of the week.</div>";
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the MOvie of the week.</div>";
 }
 
 foreach ($contents as $content) {
     $level1 .= "
-                <div class='margin10 w-20 min-150'>
+                <div class='margin10 w-15 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
@@ -799,106 +815,106 @@ $level2 .= "
 $contents = [];
 if ($BLOCKS['global_freeleech_on']) {
     $contents[] = "
-                <div class='w-100'>Freeleech?</div>
+                <div class='w-100 has-text-centered'>Freeleech?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stdhead_freeleech' name='stdhead_freeleech' value='yes' $checkbox_global_freeleech>
                     <label for='stdhead_freeleech'></label>
                 </div>
-                <div class='w-100'>Enable 'freeleech mark' in stdhead</div>";
+                <div class='w-100 has-text-centered'>Enable 'freeleech mark' in stdhead</div>";
 }
 if ($user['class'] >= UC_STAFF) {
     if ($BLOCKS['global_staff_report_on']) {
         $contents[] = "
-                    <div class='w-100'>Staff Reports?</div>
+                    <div class='w-100 has-text-centered'>Staff Reports?</div>
                     <div class='slideThree'>
                         <input type='checkbox' id='stdhead_reports' name='stdhead_reports' value='yes' $checkbox_global_staff_report>
                         <label for='stdhead_reports'></label>
                     </div>
-                    <div class='w-100'>Enable reports alert in stdhead</div>";
+                    <div class='w-100 has-text-centered'>Enable reports alert in stdhead</div>";
     }
 
     if ($BLOCKS['global_staff_uploadapp_on']) {
         $contents[] = "
-                    <div class='w-100'>Upload App Alert?</div>
+                    <div class='w-100 has-text-centered'>Upload App Alert?</div>
                     <div class='slideThree'>
                         <input type='checkbox' id='stdhead_uploadapp' name='stdhead_uploadapp' value='yes' $checkbox_global_staff_uploadapp>
                         <label for='stdhead_uploadapp'></label>
                     </div>
-                    <div class='w-100'>Enable upload application alerts in stdhead</div>";
+                    <div class='w-100 has-text-centered'>Enable upload application alerts in stdhead</div>";
     }
 
     if ($BLOCKS['global_demotion_on']) {
         $contents[] = "
-                    <div class='w-100'>Demotion</div>
+                    <div class='w-100 has-text-centered'>Demotion</div>
                     <div class='slideThree'>
                         <input type='checkbox' id='stdhead_demotion' name='stdhead_demotion' value='yes' $checkbox_global_demotion>
                         <label for='stdhead_demotion'></label>
                     </div>
-                    <div class='w-100'>Enable the global demotion alerts block in stdhead</div>";
+                    <div class='w-100 has-text-centered'>Enable the global demotion alerts block in stdhead</div>";
     }
 
     if ($BLOCKS['global_staff_warn_on']) {
         $contents[] = "
-                    <div class='w-100'>Staff Warning?</div>
+                    <div class='w-100 has-text-centered'>Staff Warning?</div>
                     <div class='slideThree'>
                         <input type='checkbox' id='stdhead_staff_message' name='stdhead_staff_message' value='yes' $checkbox_global_staff_message_alert> 
                         <label for='stdhead_staff_message'></label>
                     </div>
-                    <div class='w-100'>Shows if there is a new message for staff alert in stdhead</div>";
+                    <div class='w-100 has-text-centered'>Shows if there is a new message for staff alert in stdhead</div>";
     }
 
     if ($BLOCKS['global_bug_message_on']) {
         $contents[] = "
-                    <div class='w-100'>Bug Alert Message?</div>
+                    <div class='w-100 has-text-centered'>Bug Alert Message?</div>
                     <div class='slideThree'>   
                         <input type='checkbox' id='stdhead_bugmessage' name='stdhead_bugmessage' value='yes' $checkbox_global_bugmessage>
                         <label for='stdhead_bugmessage'></label>
                     </div>
-                    <div class='w-100'>Enable Bug Message alerts in stdhead</div>";
+                    <div class='w-100 has-text-centered'>Enable Bug Message alerts in stdhead</div>";
     }
 }
 
 if ($BLOCKS['global_message_on']) {
     $contents[] = "
-                <div class='w-100'>Message block?</div>
+                <div class='w-100 has-text-centered'>Message block?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stdhead_newpm' name='stdhead_newpm' value='yes' $checkbox_global_message_alert>
                     <label for='stdhead_newpm'></label>
                     </div>
-                <div class='w-100'>Enable message alerts in stdhead</div>";
+                <div class='w-100 has-text-centered'>Enable message alerts in stdhead</div>";
 }
 
 if ($BLOCKS['global_happyhour_on']) {
     $contents[] = "
-                <div class='w-100'>Happyhour?</div>
+                <div class='w-100 has-text-centered'>Happyhour?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stdhead_happyhour' name='stdhead_happyhour' value='yes' $checkbox_global_happyhour>
                     <label for='stdhead_happyhour'></label>
                 </div>
-                <div class='w-100'>Enable happy hour alerts in stdhead</div>";
+                <div class='w-100 has-text-centered'>Enable happy hour alerts in stdhead</div>";
 }
 
 if ($BLOCKS['global_crazyhour_on']) {
     $contents[] = "
-                <div class='w-100'>CrazyHour?</div>
+                <div class='w-100 has-text-centered'>CrazyHour?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stdhead_crazyhour' name='stdhead_crazyhour' value='yes' $checkbox_global_crazyhour>
                     <label for='stdhead_crazyhour'></label></div>
-                <div class='w-100'>Enable crazyhour alerts in stdhead</div>";
+                <div class='w-100 has-text-centered'>Enable crazyhour alerts in stdhead</div>";
 }
 
 if ($BLOCKS['global_freeleech_contribution_on']) {
     $contents[] = "
-                <div class='w-100'>Karma Contributions</div>
+                <div class='w-100 has-text-centered'>Karma Contributions</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='stdhead_freeleech_contribution' name='stdhead_freeleech_contribution' value='yes' $checkbox_global_freeleech_contribution>
                     <label for='stdhead_freeleech_contribution'></label>
                 </div>
-                <div class='w-100'>Enable karma contribution status alert in stdhead</div>";
+                <div class='w-100 has-text-centered'>Enable karma contribution status alert in stdhead</div>";
 }
 foreach ($contents as $content) {
     $level2 .= "
-                <div class='margin10 w-20 min-150'>
+                <div class='margin10 w-15 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
@@ -925,261 +941,261 @@ $contents = [];
 
 if ($BLOCKS['userdetails_flush_on']) {
     $contents[] = "
-                <div class='w-100'>Flush torrents?</div>
+                <div class='w-100 has-text-centered'>Flush torrents?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_flush' name='userdetails_flush' value='yes' $checkbox_userdetails_flush>
                 <label for='userdetails_flush'></label></div>
-                <div class='w-100'>Enable flush torrents</div>";
+                <div class='w-100 has-text-centered'>Enable flush torrents</div>";
 }
 
 if ($BLOCKS['userdetails_joined_on']) {
     $contents[] = "
-                <div class='w-100'>Join date?</div>
+                <div class='w-100 has-text-centered'>Join date?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_joined' name='userdetails_joined' value='yes' $checkbox_userdetails_joined>
                 <label for='userdetails_joined'></label></div>
-                <div class='w-100'>Enable join date</div>";
+                <div class='w-100 has-text-centered'>Enable join date</div>";
 }
 
 if ($BLOCKS['userdetails_online_time_on']) {
     $contents[] = "
-                <div class='w-100'>Online time?</div>
+                <div class='w-100 has-text-centered'>Online time?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_online_time' name='userdetails_online_time' value='yes' $checkbox_userdetails_onlinetime>
                 <label for='userdetails_online_time'></label></div>
-                <div class='w-100'>Enable online time</div>";
+                <div class='w-100 has-text-centered'>Enable online time</div>";
 }
 
 if ($BLOCKS['userdetails_browser_on']) {
     $contents[] = "
-                <div class='w-100'>Browser?</div>
+                <div class='w-100 has-text-centered'>Browser?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_browser' name='userdetails_browser' value='yes' $checkbox_userdetails_browser>
                 <label for='userdetails_browser'></label></div>
-                <div class='w-100'>Enable browser and os detection</div>";
+                <div class='w-100 has-text-centered'>Enable browser and os detection</div>";
 }
 
 if ($BLOCKS['userdetails_reputation_on']) {
     $contents[] = "
-                <div class='w-100'>Reputation?</div>
+                <div class='w-100 has-text-centered'>Reputation?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_reputation' name='userdetails_reputation' value='yes' $checkbox_userdetails_reputation>
                 <label for='userdetails_reputation'></label></div>
-                <div class='w-100'>Enable add reputation link</div>";
+                <div class='w-100 has-text-centered'>Enable add reputation link</div>";
 }
 
 if ($BLOCKS['userdetails_profile_hits_on']) {
     $contents[] = "
-                <div class='w-100'>Profile hits?</div>
+                <div class='w-100 has-text-centered'>Profile hits?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_user_hits' name='userdetails_user_hits' value='yes' $checkbox_userdetails_userhits>
                 <label for='userdetails_user_hits'></label></div>
-                <div class='w-100'>Enable user hits</div>";
+                <div class='w-100 has-text-centered'>Enable user hits</div>";
 }
 
 if ($BLOCKS['userdetails_birthday_on']) {
     $contents[] = "
-                <div class='w-100'>Birthday?</div>
+                <div class='w-100 has-text-centered'>Birthday?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_birthday' name='userdetails_birthday' value='yes' $checkbox_userdetails_birthday>
                 <label for='userdetails_birthday'></label></div>
-                <div class='w-100'>Enable birthdate and age</div>";
+                <div class='w-100 has-text-centered'>Enable birthdate and age</div>";
 }
 
 if ($BLOCKS['userdetails_contact_info_on']) {
     $contents[] = "
-                <div class='w-100'>Contact?</div>
+                <div class='w-100 has-text-centered'>Contact?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_contact_info' name='userdetails_contact_info' value='yes' $checkbox_userdetails_contact_info>
                 <label for='userdetails_contact_info'></label></div>
-                <div class='w-100'>Enable contact infos</div>";
+                <div class='w-100 has-text-centered'>Enable contact infos</div>";
 }
 
 if ($BLOCKS['userdetails_avatar_on']) {
     $contents[] = "
-                <div class='w-100'>Avatar?</div>
+                <div class='w-100 has-text-centered'>Avatar?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_avatar' name='userdetails_avatar' value='yes' $checkbox_userdetails_avatar>
                 <label for='userdetails_avatar'></label></div>
-                <div class='w-100'>Enable Avatar</div>";
+                <div class='w-100 has-text-centered'>Enable Avatar</div>";
 }
 
 if ($BLOCKS['userdetails_iphistory_on']) {
     $contents[] = "
-                <div class='w-100'>IP history?</div>
+                <div class='w-100 has-text-centered'>IP history?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_iphistory' name='userdetails_iphistory' value='yes' $checkbox_userdetails_iphistory>
                 <label for='userdetails_iphistory'></label></div>
-                <div class='w-100'>Enable ip history lists</div>";
+                <div class='w-100 has-text-centered'>Enable ip history lists</div>";
 }
 
 if ($BLOCKS['userdetails_traffic_on']) {
     $contents[] = "
-                <div class='w-100'>User traffic?</div>
+                <div class='w-100 has-text-centered'>User traffic?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_traffic' name='userdetails_traffic' value='yes' $checkbox_userdetails_traffic>
                 <label for='userdetails_traffic'></label></div>
-                <div class='w-100'>Enable uploaded and download</div>";
+                <div class='w-100 has-text-centered'>Enable uploaded and download</div>";
 }
 
 if ($BLOCKS['userdetails_share_ratio_on']) {
     $contents[] = "
-                <div class='w-100'>Share ratio?</div>
+                <div class='w-100 has-text-centered'>Share ratio?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_share_ratio' name='userdetails_share_ratio' value='yes' $checkbox_userdetails_shareratio>
                 <label for='userdetails_share_ratio'></label></div>
-                <div class='w-100'>Enable share ratio</div>";
+                <div class='w-100 has-text-centered'>Enable share ratio</div>";
 }
 
 if ($BLOCKS['userdetails_seedtime_ratio_on']) {
     $contents[] = "
-                <div class='w-100'>Seed time ratio?</div>
+                <div class='w-100 has-text-centered'>Seed time ratio?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_seedtime_ratio' name='userdetails_seedtime_ratio' value='yes' $checkbox_userdetails_seedtime_ratio>
                 <label for='userdetails_seedtime_ratio'></label></div>
-                <div class='w-100'>Enable seed time per torrent average ratio</div>";
+                <div class='w-100 has-text-centered'>Enable seed time per torrent average ratio</div>";
 }
 
 if ($BLOCKS['userdetails_seedbonus_on']) {
     $contents[] = "
-                <div class='w-100'>Seedbonus?</div>
+                <div class='w-100 has-text-centered'>Seedbonus?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_seedbonus' name='userdetails_seedbonus' value='yes' $checkbox_userdetails_seedbonus>
                 <label for='userdetails_seedbonus'></label></div>
-                <div class='w-100'>Enable seed bonus</div>";
+                <div class='w-100 has-text-centered'>Enable seed bonus</div>";
 }
 
 if ($BLOCKS['userdetails_irc_stats_on']) {
     $contents[] = "
-                <div class='w-100'>IRC stats?</div>
+                <div class='w-100 has-text-centered'>IRC stats?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_irc_stats' name='userdetails_irc_stats' value='yes' $checkbox_userdetails_irc_stats>
                 <label for='userdetails_irc_stats'></label></div>
-                <div class='w-100'>Enable irc online stats</div>";
+                <div class='w-100 has-text-centered'>Enable irc online stats</div>";
 }
 
 if ($BLOCKS['userdetails_connectable_port_on']) {
     $contents[] = "
-                <div class='w-100'>Connectable?</div>
+                <div class='w-100 has-text-centered'>Connectable?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_connectable_port' name='userdetails_connectable_port' value='yes' $checkbox_userdetails_connectable>
                 <label for='userdetails_connectable_port'></label></div>
-                <div class='w-100'>Enable connectable and port</div>";
+                <div class='w-100 has-text-centered'>Enable connectable and port</div>";
 }
 
 if ($BLOCKS['userdetails_userclass_on']) {
     $contents[] = "
-                 <div class='w-100'>Userclass?</div>
+                 <div class='w-100 has-text-centered'>Userclass?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_userclass' name='userdetails_userclass' value='yes' $checkbox_userdetails_userclass>
                 <label for='userdetails_userclass'></label></div>
-                 <div class='w-100'>Enable userclass</div>";
+                 <div class='w-100 has-text-centered'>Enable userclass</div>";
 }
 
 if ($BLOCKS['userdetails_gender_on']) {
     $contents[] = "
-                <div class='w-100'>Gender?</div>
+                <div class='w-100 has-text-centered'>Gender?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_gender' name='userdetails_gender' value='yes' $checkbox_userdetails_gender>
                 <label for='userdetails_gender'></label></div>
-                <div class='w-100'>Enable gender</div>";
+                <div class='w-100 has-text-centered'>Enable gender</div>";
 }
 
 if ($BLOCKS['userdetails_freestuffs_on']) {
     $contents[] = "
-                <div class='w-100'>Free stuffs?</div>
+                <div class='w-100 has-text-centered'>Free stuffs?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_freestuffs' name='userdetails_freestuffs' value='yes' $checkbox_userdetails_freestuffs>
                 <label for='userdetails_freestuffs'></label></div>
-                <div class='w-100'>Enable freeslots and freeleech status</div>";
+                <div class='w-100 has-text-centered'>Enable freeslots and freeleech status</div>";
 }
 
 if ($BLOCKS['userdetails_comments_on']) {
     $contents[] = "
-                <div class='w-100'>Comments?</div>
+                <div class='w-100 has-text-centered'>Comments?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_comments' name='userdetails_comments' value='yes' $checkbox_userdetails_torrent_comments>
                 <label for='userdetails_comments'></label></div>
-                <div class='w-100'>Enable torrent comments history</div>";
+                <div class='w-100 has-text-centered'>Enable torrent comments history</div>";
 }
 
 if ($BLOCKS['userdetails_forumposts_on']) {
     $contents[] = "
-                <div class='w-100'>Forumposts?</div>
+                <div class='w-100 has-text-centered'>Forumposts?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_forumposts' name='userdetails_forumposts' value='yes' $checkbox_userdetails_forumposts>
                 <label for='userdetails_forumposts'></label></div>
-                <div class='w-100'>Enable forum posts history</div>";
+                <div class='w-100 has-text-centered'>Enable forum posts history</div>";
 }
 
 if ($BLOCKS['userdetails_invitedby_on']) {
     $contents[] = "
-                <div class='w-100'>Invited by?</div>
+                <div class='w-100 has-text-centered'>Invited by?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_invitedby' name='userdetails_invitedby' value='yes' $checkbox_userdetails_invitedby>
                 <label for='userdetails_invitedby'></label></div>
-                <div class='w-100'>Enable invited by list</div>";
+                <div class='w-100 has-text-centered'>Enable invited by list</div>";
 }
 
 if ($BLOCKS['userdetails_torrents_block_on']) {
     $contents[] = "
-                <div class='w-100'>Torrents blocks?</div>
+                <div class='w-100 has-text-centered'>Torrents blocks?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_torrents_block' name='userdetails_torrents_block' value='yes' $checkbox_userdetails_torrents_block>
                 <label for='userdetails_torrents_block'></label></div>
-                <div class='w-100'>Enable seeding, leeching, snatched and uploaded torrents</div>";
+                <div class='w-100 has-text-centered'>Enable seeding, leeching, snatched and uploaded torrents</div>";
 }
 
 if ($BLOCKS['userdetails_snatched_staff_on']) {
     $contents[] = "
-                <div class='w-100'>Staff snatched?</div>
+                <div class='w-100 has-text-centered'>Staff snatched?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_snatched_staff' name='userdetails_snatched_staff' value='yes' $checkbox_userdetails_snatched_staff>
                 <label for='userdetails_snatched_staff'></label></div>
-                <div class='w-100'>Enable staff snatchlist</div>";
+                <div class='w-100 has-text-centered'>Enable staff snatchlist</div>";
 }
 
 if ($BLOCKS['userdetails_userinfo_on']) {
     $contents[] = "
-                <div class='w-100'>User info?</div>
+                <div class='w-100 has-text-centered'>User info?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_userinfo' name='userdetails_userinfo' value='yes' $checkbox_userdetails_userinfo>
                 <label for='userdetails_userinfo'></label></div>
-                <div class='w-100'>Enable user info</div>";
+                <div class='w-100 has-text-centered'>Enable user info</div>";
 }
 
 if ($BLOCKS['userdetails_showpm_on']) {
     $contents[] = "
-                <div class='w-100'>Show PM?</div>
+                <div class='w-100 has-text-centered'>Show PM?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='userdetails_showpm' name='userdetails_showpm' value='yes' $checkbox_userdetails_showpm>
                     <label for='userdetails_showpm'></label>
                 </div>
-                <div class='w-100'>Enable send message button</div>";
+                <div class='w-100 has-text-centered'>Enable send message button</div>";
 }
 
 if ($BLOCKS['userdetails_showfriends_on']) {
     $contents[] = "
-                <div class='w-100'>Show Friends</div>
+                <div class='w-100 has-text-centered'>Show Friends</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='userdetails_show_friends' name='userdetails_show_friends' value='yes' $checkbox_userdetails_showfriends>
                 <label for='userdetails_show_friends'></label></div>
-                <div class='w-100'>Enable show friends button</div>";
+                <div class='w-100 has-text-centered'>Enable show friends button</div>";
 }
 
 if ($BLOCKS['userdetails_report_user_on']) {
     $contents[] = "
-                <div class='w-100'>Report user?</div>
+                <div class='w-100 has-text-centered'>Report user?</div>
                 <div class='slideThree'>
                     <input type='checkbox' id='userdetails_report_user' name='userdetails_report_user' value='yes' $checkbox_userdetails_report>
                     <label for='userdetails_report_user'></label>
                 </div>
-                <div class='w-100'>Enable report users button</div>";
+                <div class='w-100 has-text-centered'>Enable report users button</div>";
 }
 
 if ($BLOCKS['userdetails_user_status_on']) {
     $contents[] = "
-                <div class='w-100'>User status?</div>
+                <div class='w-100 has-text-centered'>User status?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_user_status' name='userdetails_user_status' value='yes' $checkbox_userdetails_userstatus>
                 <label for='userdetails_user_status'></label></div>
-                <div class='w-100'>Enable user status</div>";
+                <div class='w-100 has-text-centered'>Enable user status</div>";
 }
 
 if ($BLOCKS['userdetails_user_comments_on']) {
     $contents[] = "
-                <div class='w-100'>User comments?</div>
+                <div class='w-100 has-text-centered'>User comments?</div>
                 <div class='slideThree'><input type='checkbox' id='userdetails_user_comments' name='userdetails_user_comments' value='yes' $checkbox_userdetails_usercomments>
                 <label for='userdetails_user_comments'></label></div>
-                <div class='w-100'>Enable user comments</div>";
+                <div class='w-100 has-text-centered'>Enable user comments</div>";
 }
 if ($user['class'] >= UC_STAFF) {
     if ($BLOCKS['news_on']) {
         $contents[] = "
-        <div class='w-100'>Completed?</div>
+        <div class='w-100 has-text-centered'>Completed?</div>
         <div class='slideThree'><input type='checkbox' id='userdetails_completed' name='userdetails_completed' value='yes' $checkbox_userdetails_completed>
         <label for='userdetails_completed'></label></div>
-        <div class='w-100'>Enable completed torrents</div>";
+        <div class='w-100 has-text-centered'>Enable completed torrents</div>";
     }
 }
 
 foreach ($contents as $content) {
     $level3 .= "
-                <div class='margin10 w-20 min-150'>
+                <div class='margin10 w-15 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
