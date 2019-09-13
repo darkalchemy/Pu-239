@@ -146,9 +146,9 @@ After updating composer, npm, changing anything inside the config folder, changi
 ```sudo rm -rf /dev/shm/php-di```
  
 #### API's 
-Fanart.tv API provides posters, backgrounds and banners and needs an api key.  
-TMDb API allows upcoming movies and posters and needs an api key.  
-Google API allows up to 1000 api hits instead of 100 per day, api key is optional.  
+Fanart.tv API provides posters, backgrounds and banners and needs a [Project API Key](https://fanart.tv/get-an-api-key).  
+TMDb API allows upcoming movies and posters and needs an [API Key](https://developers.themoviedb.org/3/getting-started/introduction).  
+Google API allows up to 1000 api hits instead of 100 per day, [API Key](https://cloud.google.com/docs/authentication/api-keys?visit_id=637040083471322830-1883548699&rd=1) is optional.  
 IMDb API allow movies and tv lookup, no key needed.  
 TVMaze allows tv lookup and posters, no key needed.  
 API keys are set in the Staff Panel -> Site Settings.  
