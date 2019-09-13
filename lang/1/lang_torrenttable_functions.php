@@ -75,6 +75,7 @@ $lang = [
     'torrenttable_nov' => 'November',
     'torrenttable_dec' => 'December',
     'torrenttable_health' => 'Health',
+    'torrenttable_sort_by' => 'Sort By: ',
     //commenttable
     'commenttable_by' => 'by',
     'commenttable_donor_alt' => 'Donor',

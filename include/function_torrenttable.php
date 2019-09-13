@@ -32,10 +32,10 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return mixed|string|string[]|null
  */
@@ -53,10 +53,10 @@ function readMore($text, $char, $link)
  * @param array  $curuser
  * @param string $variant
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -146,8 +146,8 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             <thead>
                 <tr>
                     <th class='has-text-centered w-1 tooltipper has-no-border-right' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
-                    <th class='has-text-centered min-350 tooltipper has-no-border-right has-no-border-left' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_download']}'><i class='icon-download icon' aria-hidden='true'></i></th>";
+                    <th class='has-text-centered min-350 tooltipper has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link[2]}'><i class='icon-download icon' aria-hidden='true'></i></a></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['paths']['baseurl']}/bookmarks.php'>
@@ -160,15 +160,15 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                     <th class='has-text-centered tooltipper' title='{$lang['torrenttable_visible']}'>{$lang['torrenttable_visible']}</th>";
     }
     $htmlout .= "
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link[2]}'><i class='icon-docs icon' aria-hidden='true'></i></a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link[3]}'><i class='icon-commenting-o icon has-text-info' aria-hidden='true'></i></a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link[4]}'><i class='icon-doc icon' aria-hidden='true'></i></a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link[5]}'><i class='icon-ok-circled2 icon has-text-success' aria-hidden='true'></i></a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link[6]}'><i class='icon-up-big icon has-text-success' aria-hidden='true'></i></a></th>
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link[7]}'><i class='icon-down-big icon has-text-danger' aria-hidden='true'></i></a></th>";
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_files']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=3&amp;type={$link[3]}'><i class='icon-docs icon' aria-hidden='true'></i></a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_comments']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=4&amp;type={$link[4]}'><i class='icon-commenting-o icon has-text-info' aria-hidden='true'></i></a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_size']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=5&amp;type={$link[5]}'><i class='icon-doc icon' aria-hidden='true'></i></a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_snatched']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=6&amp;type={$link[6]}'><i class='icon-ok-circled2 icon has-text-success' aria-hidden='true'></i></a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_seeders']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=7&amp;type={$link[7]}'><i class='icon-up-big icon has-text-success' aria-hidden='true'></i></a></th>
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_leechers']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link[8]}'><i class='icon-down-big icon has-text-danger' aria-hidden='true'></i></a></th>";
     if ($variant === 'index') {
         $htmlout .= "
-                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_uppedby']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=8&amp;type={$link[8]}'><i class='icon-user icon' aria-hidden='true'></i></a></th>";
+                    <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_uppedby']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=9&amp;type={$link[9]}'><i class='icon-user icon' aria-hidden='true'></i></a></th>";
     }
     $htmlout .= "
                     <th class='has-text-centered tooltipper w-1 " . ($staff_tools ? 'has-no-border-right' : '') . " has-no-border-left' title='{$lang['torrenttable_to_go_def']}'><i class='icon-percent icon' aria-hidden='true'></i></th>";

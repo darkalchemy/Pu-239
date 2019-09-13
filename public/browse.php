@@ -90,9 +90,9 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $valid_sort = [
         'id',
         'name',
+        'added',
         'numfiles',
         'comments',
-        //'added',
         'size',
         'times_completed',
         'seeders',

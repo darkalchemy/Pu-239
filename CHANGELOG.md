@@ -1,4 +1,5 @@
 ### 13 Sept, 2019
+update: sort by columns browse.php  
 fix: typo announce.php  
 fix: check it port data is set before checking port connectable.php  
 update: check if imdb_id is set before looking for a banner details.php  
