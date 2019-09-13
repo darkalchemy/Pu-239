@@ -6,7 +6,7 @@ $lang = [
     //stderr
     'mysql_over_error' => 'MOD ERROR',
     'mysql_over_pg' => 'Pig Dog!',
-    'mysql_over_title' => 'Mysql Server Table Status',
+    'mysql_over_title' => 'MySQL Server Table Status',
     //Texts
     'mysql_over_name' => 'Name',
     'mysql_over_size' => 'Size',
@@ -27,6 +27,7 @@ $lang = [
     'mysql_over_tables' => 'Tables',
     'mysql_over_if' => 'If it is',
     'mysql_over_red' => 'RED',
-    'mysql_over_it_needs' => ' it probably needs optimising!!',
+    'mysql_over_it_needs' => ' it probably needs optimizing!!',
+    'mysql_innodb' => 'Optimizing InnoDB tables is usually not needed.',
     'mysql_over_stdhead' => 'MySQL Overview',
 ];

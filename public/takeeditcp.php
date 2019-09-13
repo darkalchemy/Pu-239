@@ -281,7 +281,12 @@ if ($action === 'avatar') {
     } else {
         $clrbits2 |= user_options_2::BROWSE_ICONS;
     }
-
+    $hidden = isset($_POST['hidden']) ? 1 : 0;
+    if ($hidden != $user['hidden']) {
+        $updateset[] = 'hidden = ' . sqlesc($hidden);
+        $curuser_cache['hidden'] = $hidden;
+        $user_cache['hidden'] = $hidden;
+    }
     if (isset($_POST['categorie_icon']) && (($categorie_icon = (int) $_POST['categorie_icon']) != $user['categorie_icon']) && is_valid_id($categorie_icon)) {
         $updateset[] = 'categorie_icon = ' . sqlesc($categorie_icon);
         $curuser_cache['categorie_icon'] = $categorie_icon;

@@ -1,4 +1,13 @@
 ### 12 Sept, 2019
+remove: unused column description  
+fix: undefined variable staffpanel.php  
+fix: show incorrect user invite status invitedby.php  
+add: hidden column to categories and allow show hidden to users  
+remove: autoincrement column 'id' from anime_titles table, not needed
+remove: autoincrement column 'id' from imdb_role table, not needed  
+remove: autoincrement column 'id' from imdb_person table, not needed
+remove: autoincrement column 'id' from person table, not needed  
+remove: autoincrement column 'id' from images table, not needed  
 fix: donations.php  
 fix: add/delete staff panel pages staffpanel.php  
 fix: crazy hour auto run  

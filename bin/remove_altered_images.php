@@ -35,7 +35,7 @@ $set = [
 ];
 $fluent->update('images')
        ->set($set)
-       ->where('id > 0')
+       ->where('added > 0')
        ->execute();
 
 echo "$i altered images removed

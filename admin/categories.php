@@ -20,6 +20,7 @@ $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 $params['parent_id'] = !empty($params['parent_id']) ? (int) $params['parent_id'] : 0;
 $params['id'] = !empty($params['id']) ? (int) $params['id'] : 0;
+$params['cat_hidden'] = !empty($params['cat_hidden']) ? (int) $params['cat_hidden'] : 0;
 $params['new_cat_id'] = !empty($params['new_cat_id']) ? (int) $params['new_cat_id'] : 0;
 
 switch ($params['mode']) {
@@ -190,6 +191,7 @@ function add_cat($params)
         'cat_desc' => $params['new_cat_desc'],
         'image' => !empty($params['cat_image']) ? $params['cat_image'] : '',
         'parent_id' => $params['parent_id'],
+        'hidden' => $params['new_cat_hidden'],
     ];
     $fluent = $container->get(Database::class);
     $insert = $fluent->insertInto('categories')
@@ -332,12 +334,14 @@ function edit_cat($params)
     if (!empty($params['cat_image']) && !preg_match("/^[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_edit_error2']);
     }
+
     $set = [
         'name' => $params['cat_name'],
         'cat_desc' => $params['cat_desc'],
         'image' => !empty($params['cat_image']) ? $params['cat_image'] : '',
         'ordered' => $params['order_id'],
         'parent_id' => $params['parent_id'],
+        'hidden' => $params['cat_hidden'],
     ];
     $fluent = $container->get(Database::class);
     $update = $fluent->update('categories')
@@ -392,9 +396,18 @@ function edit_cat_form($params)
     $htmlout .= main_div("
             <div class='w-100 has-text-centered padding20'>
                 <h2>{$lang['categories_show_edit2']}</h2>
-                <p class='is-success level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='{$cat['name']}'></p>
+                <p class='is-success level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='{$cat['name']}' required></p>
+                <div class='is-success level-wide'>
+                    {$lang['categories_hidden']}
+                    <select name='cat_hidden' class='w-75' required>
+                        <option value=''>Select</option>
+                        <option value='1' " . ($cat['hidden'] === 1 ? 'selected' : '') . ">Hidden by Default</option>
+                        <option value='0' " . ($cat['hidden'] === 0 ? 'selected' : '') . ">Shown by Default</option>
+                    </select>
+                </div>
+                <div class='has-text-info has-text-centered top10 bottom20'>{$lang['categories_hidden_desc']}</div>
                 $parents
-                <p class='is-success level'>{$lang['categories_edit_order_id']}<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}'></p>
+                <p class='is-success level'>{$lang['categories_edit_order_id']}<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}' required></p>
                 <p class='is-success level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
                 $select
                 <input type='submit' class='button is-small right10' value='{$lang['categories_edit_edit']}'>
@@ -423,8 +436,17 @@ function show_categories()
                 <h2>{$lang['categories_show_make']}</h2>
                 <p class='is-success level'>
                     {$lang['categories_edit_name']}
-                    <input type='text' name='new_cat_name' class='w-75' maxlength='50'>
+                    <input type='text' name='new_cat_name' class='w-75' maxlength='50' placeholder='New Category Name' required>
                 </p>
+                <div class='is-success level-wide'>
+                    {$lang['categories_hidden']}
+                    <select name='cat_hidden' class='w-75' required>
+                        <option value=''>Select</option>
+                        <option value='1'>Hidden by Default</option>
+                        <option value='0'>Shown by Default</option>
+                    </select>
+                </div>
+                <div class='has-text-info has-text-centered top10 bottom20'>{$lang['categories_hidden_desc']}</div>
                 $parents
                 <p class='is-success level'>
                     {$lang['categories_del_description']}
@@ -446,6 +468,7 @@ function show_categories()
             <th class='has-text-centered w-10'>{$lang['categories_show_order_id']}</th>
             <th class='w-25'>{$lang['categories_show_name']}</th>
             <th class='has-text-centered w-1'>{$lang['categories_show_parent']}</th>
+            <th class='has-text-centered'>{$lang['categories_hidden']}</th>
             <th class='has-text-centered'>{$lang['categories_show_descr']}</th>
             <th class='has-text-centered w-10'>{$lang['categories_show_image']}</th>
             <th class='has-text-centered w-10'>{$lang['categories_show_tools']}</th>
@@ -483,6 +506,7 @@ function build_table(array $data, string $parent_name)
             <td class='has-text-centered'>{$data['ordered']}</td>
             <td>" . htmlsafechars($data['name']) . "</td>
             <td class='has-text-centered'>{$parent_name}</td>
+            <td class='has-text-centered'>" . ($data['hidden'] === 1 ? 'true' : 'false') . "</td>
             <td class='has-text-centered'>{$data['cat_desc']}</td>
             <td class='has-text-centered'>{$cat_image}</td>
             <td>
@@ -506,10 +530,10 @@ function build_table(array $data, string $parent_name)
 /**
  * @param array $cat
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -533,7 +557,7 @@ function get_parents(array $cat)
     $out = "
             <p class='is-success level'>{$lang['categories_select_parent']}
                 <select class='w-75' name='parent_id'>
-                    <option value='0'>{$lang['categories_select_parent']}</option>";
+                    <option value=''>{$lang['categories_select_parent']}</option>";
     foreach ($parents as $parent) {
         $selected = !empty($cat) && $parent['id'] === $cat['parent_id'] ? 'selected' : '';
         $out .= "
@@ -612,10 +636,10 @@ function set_ordered(array $params)
 /**
  * @param array $cat
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -660,10 +684,10 @@ function get_images(array $cat)
 /**
  * @param int $id
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */

@@ -535,9 +535,23 @@ if ($action === 'avatar') {
                                             <div id='cat-container' class='bottom20 left10 right20'>";
         $parent = '';
         for ($i = 1; $i <= $count; ++$i) {
+            if (!$user['hidden']) {
+                $hidden = false;
+                foreach ($grouped as $check_hidden) {
+                    if ($check_hidden['id'] === $i && $check_hidden['hidden'] === 1) {
+                        $hidden = true;
+                    }
+                }
+                if ($hidden) {
+                    continue;
+                }
+            }
             $categories .= "
                                                 <div class='w-100 bordered level-wide bg-03 top20'>";
             foreach ($grouped as $a) {
+                if (!$user['hidden'] && $a['hidden'] === 1) {
+                    continue;
+                }
                 if (empty($a['parent_name'])) {
                     continue;
                 }
@@ -564,6 +578,8 @@ if ($action === 'avatar') {
                                             <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pmail]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
     $HTMLOUT .= tr($lang['usercp_email_notif'], "
                                             <input type='checkbox' name='emailnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[email]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
+    $HTMLOUT .= tr($lang['usercp_show_hidden'], "
+                                            <input type='checkbox' name='hidden' value='1' " . ($user['hidden'] === 1 ? 'checked' : '') . "> {$lang['usercp_show_hidden_desc']}", 1);
     $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
     $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes' " . (($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? 'checked' : '') . "> {$lang['usercp_default_clearnewtagmanually']}", 1);

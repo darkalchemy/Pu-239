@@ -15,11 +15,10 @@ $path = IMAGES_DIR . 'proxy/';
 $fluent = $container->get(Database::class);
 $images = $fluent->from('images')
                  ->select(null)
-                 ->select('id')
                  ->select('url')
                  ->select('type')
                  ->where('fetched = "no"')
-                 ->orderBy('id DESC')
+                 ->orderBy('added DESC')
                  ->fetchAll();
 
 $values = [];

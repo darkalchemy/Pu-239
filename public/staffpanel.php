@@ -250,7 +250,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         'type' => $type,
                         'av_class' => (int) $_POST['av_class'],
                     ];
-                    $fluent->update('staffpanel')
+                    $res = $fluent->update('staffpanel')
                            ->set($set)
                            ->where('id=?', $id)
                            ->execute();
@@ -262,7 +262,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class['value']);
                     }
-                    if (!$res) {
+                    if (empty($res)) {
                         $errors[] = $lang['spanel_db_error_msg'];
                     }
                 }

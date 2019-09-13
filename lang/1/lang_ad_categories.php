@@ -68,4 +68,6 @@ $lang = [
     'categories_not_empty' => 'There are still torrents assigned to this category',
     'categories_select_parent' => 'Select Parent Category',
     'categories_del_parent_name' => 'Parent Name',
+    'categories_hidden' => 'Hidden',
+    'categories_hidden_desc' => 'If a parent is hidden, then all of the children are also hidden',
 ];

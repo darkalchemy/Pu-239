@@ -10,9 +10,9 @@ use Pu239\Database;
 /**
  * @param bool $grouped
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -34,7 +34,6 @@ function genrelist(bool $grouped)
                                    ->where('parent_id = ?', $parent['id'])
                                    ->orderBy('ordered')
                                    ->fetchAll();
-
                 $parent['children'] = $children;
                 $ret[] = $parent;
             }
@@ -68,9 +67,9 @@ function genrelist(bool $grouped)
 /**
  * @param int $catid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */

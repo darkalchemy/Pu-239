@@ -97,4 +97,6 @@ $lang = [
     //usercp stdhead
     'usercp_stdhead' => "'s private page",
     'usercp_skype_share' => 'Click your username, then Share profile, then Copy to clipboard. Then paste the link here.',
+    'usercp_show_hidden' => 'Show hidden Categories',
+    'usercp_show_hidden_desc' => '(Check to show all hidden categories!)',
 ];

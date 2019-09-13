@@ -29,7 +29,7 @@ function get_banner($imdb_id)
                              ->select(null)
                              ->select('url')
                              ->where('type = "banner"')
-                             ->where('imdb_id=?', $imdb_id)
+                             ->where('imdb_id = ?', $imdb_id)
                              ->fetchAll();
 
             $cache->set('banners_' . $imdb_id, $images, 86400);
@@ -67,7 +67,7 @@ function get_poster($imdb_id)
                              ->select(null)
                              ->select('url')
                              ->where('type = "poster"')
-                             ->where('imdb_id=?', $imdb_id)
+                             ->where('imdb_id = ?', $imdb_id)
                              ->fetchAll();
             $cache->set('posters_' . $imdb_id, $images, 86400);
         }

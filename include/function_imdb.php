@@ -219,7 +219,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         'plot' => 'Description',
         'composer' => 'Music',
         'plotoutline' => 'Plot Outline',
-        'storyline' => 'Stroyline',
+        'storyline' => 'Storyline',
         'trailers' => 'Trailers',
         'genres' => 'All genres',
         'rating' => 'Rating',
@@ -664,11 +664,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return bool
  */
@@ -717,9 +717,9 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -816,9 +816,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -851,9 +851,9 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -886,9 +886,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -921,9 +921,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */

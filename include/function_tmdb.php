@@ -254,7 +254,7 @@ function get_movie_id($imdbid, $type)
     $id = $fluent->from('images')
                  ->select(null)
                  ->select($type)
-                 ->where('imdb_id=?', $imdbid)
+                 ->where('imdb_id = ?', $imdbid)
                  ->limit(1)
                  ->fetch($type);
 

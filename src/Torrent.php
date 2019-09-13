@@ -287,8 +287,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -322,8 +322,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -984,10 +984,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws InvalidManipulation
      * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws InvalidManipulation
      *
      * @return false|mixed|string|string[]|null
      */

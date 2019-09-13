@@ -72,7 +72,7 @@ function images_update()
     $tomorrow = $date->modify('+1 day')
                      ->format('Y-m-d');
     $day_after = $date->modify('+2 day')
-                     ->format('Y-m-d');
+                      ->format('Y-m-d');
 
     get_movies_by_vote_average(100);
     get_tv_by_day($yesterday);
@@ -111,13 +111,12 @@ function images_update()
 
     $images = $fluent->from('images')
                      ->select(null)
-                     ->select('id')
                      ->select('imdb_id')
                      ->select('url')
                      ->where('imdb_id IS NOT NULL')
                      ->where('tmdb_id = 0')
                      ->where('checked + 3600 < ?', TIME_NOW)
-                     ->orderBy('id DESC')
+                     ->orderBy('added DESC')
                      ->limit(50)
                      ->fetchAll();
 
@@ -139,14 +138,13 @@ function images_update()
 
     $images = $fluent->from('images')
                      ->select(null)
-                     ->select('id')
                      ->select('tmdb_id')
                      ->select('url')
                      ->select('type')
                      ->where('tmdb_id != 0')
                      ->where('imdb_id IS NULL')
                      ->where('checked + 3600 < ?', TIME_NOW)
-                     ->orderBy('id DESC')
+                     ->orderBy('added DESC')
                      ->limit(50)
                      ->fetchAll();
 
@@ -185,12 +183,11 @@ function images_update()
 
     $imdb_ids = $fluent->from('images')
                        ->select(null)
-                       ->select('id')
                        ->select('imdb_id')
                        ->select('url')
                        ->where('imdb_id IS NOT NULL')
                        ->where('updated + 3600 < ?', TIME_NOW)
-                       ->orderBy('id DESC')
+                       ->orderBy('added DESC')
                        ->limit(50)
                        ->fetchAll();
 
@@ -218,12 +215,11 @@ function images_update()
 
     $tmdb_ids = $fluent->from('images')
                        ->select(null)
-                       ->select('id')
                        ->select('tmdb_id')
                        ->select('url')
                        ->where('tmdb_id > 0')
                        ->where('updated + 3600 < ?', TIME_NOW)
-                       ->orderBy('id DESC')
+                       ->orderBy('added DESC')
                        ->limit(50)
                        ->fetchAll();
 
@@ -262,11 +258,10 @@ function images_update()
 
     $images = $fluent->from('images')
                      ->select(null)
-                     ->select('id')
                      ->select('url')
                      ->select('type')
                      ->where('fetched = "no"')
-                     ->orderBy('id DESC')
+                     ->orderBy('added DESC')
                      ->limit(50)
                      ->fetchAll();
 
@@ -457,10 +452,9 @@ function images_update()
 
     $persons = $fluent->from('person')
                       ->select(null)
-                      ->select('id')
                       ->select('imdb_id')
                       ->where('updated + 3600 < ?', TIME_NOW)
-                      ->orderBy('id DESC')
+                      ->orderBy('added DESC')
                       ->limit(50)
                       ->fetchAll();
 

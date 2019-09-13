@@ -122,20 +122,6 @@ class Image
     }
 
     /**
-     * @param int $id
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
-    public function get_image(int $id)
-    {
-        return $this->fluent->from('images')
-                            ->where('id = ?', $id)
-                            ->fetch();
-    }
-
-    /**
      * @param int $limit
      * @param int $offset
      *
@@ -160,7 +146,7 @@ class Image
     {
         return $this->fluent->from('images')
                             ->select(null)
-                            ->select('COUNT(id) AS count')
+                            ->select('COUNT(added) AS count')
                             ->fetch('count');
     }
 
@@ -187,7 +173,7 @@ class Image
     {
         $count = $this->fluent->from('images')
                               ->select(null)
-                              ->select('COUNT(id) AS count');
+                              ->select('COUNT(added) AS count');
         $terms = explode(' ', trim($terms));
         foreach ($terms as $term) {
             $term = trim($term);

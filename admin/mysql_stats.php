@@ -149,7 +149,7 @@ $TRAFFIC_STATS = '';
 $TRAFFIC_STATS_HEAD = "<p class='has-text-centered'>{$lang['mysql_stats_traffic_per_hour']}{$lang['mysql_stats_tables']}</p>";
 $TRAFFIC_STATS .= main_table("
     <tr>
-        <td colspan='3' class='bg-08'>{$lang['mysql_stats_traffic_per_hour']}</td>
+        <td colspan='3' class='bg-08 has-text-centered'>{$lang['mysql_stats_traffic_per_hour']}</td>
     </tr>
     <tr>
         <td>{$lang['mysql_stats_received']}</td>
@@ -168,7 +168,7 @@ $TRAFFIC_STATS .= main_table("
     </tr>');
 $TRAFFIC_STATS2 = main_table("
     <tr>
-        <td colspan='4' class='bg-08'>{$lang['mysql_stats_connection_per_hour']}</td>
+        <td colspan='4' class='bg-08 has-text-centered'>{$lang['mysql_stats_connection_per_hour']}</td>
     </tr>
     <tr>
         <td>{$lang['mysql_stats_failed']}</td>

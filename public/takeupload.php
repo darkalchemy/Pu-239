@@ -80,7 +80,7 @@ if (empty($descr) || empty($catid) || empty($name) || empty($_FILES['file'])) {
     why_die($lang['takeupload_no_formdata']);
 }
 if (!empty($url)) {
-    preg_match('/(tt\d{7})/i', $url, $imdb);
+    preg_match('/(tt\d{7,8})/i', $url, $imdb);
     $imdb = !empty($imdb[1]) ? $imdb[1] : '';
 }
 $f = $_FILES['file'];

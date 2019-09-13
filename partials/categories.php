@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 
+$user = check_user_status();
 require_once INCL_DIR . 'function_categories.php';
 $grouped = genrelist(true);
 $cats = genrelist(false);
@@ -45,10 +46,16 @@ $main_div = "
 
 $children = '';
 foreach ($grouped as $cat) {
+    if (!$user['hidden'] && $cat['hidden'] === 1) {
+        continue;
+    }
     $main_div .= format_row($cat, 'parent', $cat['name'], $grouped, $cats, $terms);
     $children .= "
             <div id='{$cat['name']}' class='top20 level-wide children padding20 bg-03 round10" . (!in_array($cat['id'], $cats) ? ' is_hidden' : '') . "'>";
     foreach ($cat['children'] as $child) {
+        if (!$user['hidden'] && $child['hidden'] === 1) {
+            continue;
+        }
         if (is_array($child)) {
             $children .= format_row($child, 'child', $cat['name'], $grouped, $cats, $terms);
         }
@@ -113,9 +120,9 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 /**
  * @param int $user_cat
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */

@@ -6,8 +6,8 @@ use Pu239\Database;
 
 global $container, $site_config, $viewer;
 
-$type = !empty($viewer['join_type']) ? $viewer['join_type'] : 'open';
-$invite_by = $viewer['invitedby'];
+$type = !empty($user['join_type']) ? $user['join_type'] : 'open';
+$invite_by = $user['invitedby'];
 if ($invite_by > 0 && $type === 'invite') {
     $HTMLOUT .= '
         <tr>
