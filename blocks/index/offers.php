@@ -11,9 +11,9 @@ global $container, $site_config;
 $local_lang = load_language('upcoming');
 $cooker_class = $container->get(Upcoming::class);
 $recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, $user['id']);
-$cooker .= "
-    <a id='cooker-hash'></a>
-    <div id='cooker' class='box'>
+$offers .= "
+    <a id='offers-hash'></a>
+    <div id='offers' class='box'>
         <div class='grid-wrapper'>
         <div class='table-wrapper has-text-centered'>
             <table class='table table-bordered table-striped'>
@@ -55,27 +55,27 @@ if (!empty($recipes) && is_array($recipes)) {
                                                         </div>";
         }
         $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $local_lang);
-        $cooker .= "
+        $offers .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>
                         <td class='has-no-border-right has-no-border-left'>{$hover}</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'>" . ucfirst($recipe['status']) . "</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . "</span></td>
                         <td class='has-text-centered has-no-border-left'>
-                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notified']}' class='cooker_notify tooltipper' title='{$recipe['notify']}'>
+                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notified']}' class='offers_notify tooltipper' title='{$recipe['notify']}'>
                                 <span id='notify_{$recipe['id']}'>{$recipe['notify']}</span>
                             </div>
                         </td>
                     </tr>";
     }
-    $cooker .= '
+    $offers .= '
                 </tbody>
             </table>
         </div>
         </div>
     </div>';
 } else {
-    $cooker .= "
+    $offers .= "
                     <tr>
                         <td colspan='5'>Nothing Cookin'</td>
                     </tr>

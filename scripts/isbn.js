@@ -24,7 +24,7 @@ function get_isbn(url, isbn, name, tid) {
         url: url,
         type: 'POST',
         dataType: 'json',
-        timeout: 10000,
+        timeout: 30000,
         context: this,
         data: {
             isbn: isbn,

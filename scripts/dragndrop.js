@@ -82,7 +82,7 @@ function callback(files) {
                     poster.value = response.urls[i];
                     droppable.classList.add('is-hidden');
                     output.innerHTML = '' +
-                        '<div class="padding20 margin20 round10 bg-00">' +
+                        '<div class="padding20 round10 bg-04">' +
                         '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                     if (textarea[0]) {
@@ -95,7 +95,7 @@ function callback(files) {
                 } else {
                     output.innerHTML += '' +
                         '<div class="padding20">' +
-                        '<div class="padding20 margin10 round10 bg-00">' +
+                        '<div class="padding20 round10 bg-04">' +
                         '<a href="' + response.urls[i] + '" data-lightbox="bitbucket">' +
                         '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</a>' +

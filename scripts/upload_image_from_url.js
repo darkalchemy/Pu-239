@@ -32,7 +32,7 @@ function grab_url(event) {
                     image_url.classList.add('is-hidden');
                     poster.classList.remove('is-hidden');
                     output.innerHTML = '' +
-                        '<div class="padding20 margin20 round10 bg-00">' +
+                        '<div class="padding20 round10 bg-04">' +
                         '<img src="' + response.url + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                     if (textarea[0]) {
@@ -42,7 +42,7 @@ function grab_url(event) {
                     output.innerHTML = '' +
                         '<div class="padding20">' +
                         '<h2 class="top10 bottom20">' + response.msg + '</h2>' +
-                        '<div class="padding20 margin10 round10 bg-00">' +
+                        '<div class="padding20 round10 bg-04">' +
                         '<a href="' + response.url + '" data-lightbox="bitbucket">' +
                         '<img src="' + response.url + '" class="w-50 img-responsive" alt="Your Image">' +
                         '</a>' +

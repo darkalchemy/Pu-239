@@ -15,7 +15,7 @@ function get_descr(tid) {
         url: './ajax/descr_format.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 10000,
+        timeout: 30000,
         context: this,
         data: {
             tid: tid

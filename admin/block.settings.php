@@ -87,6 +87,8 @@ $list = [
     'tvmaze_api_on',
     'anime_api_on',
     'cooker_on',
+    'requests_on',
+    'offers_on',
 ];
 
 global $container, $site_config;
@@ -135,6 +137,16 @@ $contents[] = "
                             <div class='w-100 has-text-centered'>{$lang['block_cooker']}</div>
                             <div class='slideThree'><#cooker_on#></div>
                             <div class='w-100 has-text-centered'>{$lang['block_cooker_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100 has-text-centered'>{$lang['block_requests']}</div>
+                            <div class='slideThree'><#requests_on#></div>
+                            <div class='w-100 has-text-centered'>{$lang['block_requests_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100 has-text-centered'>{$lang['block_offers']}</div>
+                            <div class='slideThree'><#offers_on#></div>
+                            <div class='w-100 has-text-centered'>{$lang['block_offers_set']}</div>";
 
 $contents[] = "
                             <div class='w-100 has-text-centered'>{$lang['block_news']}</div>

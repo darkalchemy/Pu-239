@@ -14,6 +14,7 @@ function get_imdb(url, tid, image) {
     var el = document.querySelector('#imdb_outer');
     var e = document.createElement('div');
     e.classList.add('has-text-centered', 'padding20');
+    el.classList.add('has-text-left', 'padding20', 'bg-04', 'round10', 'top20', 'bottom20');
     e.innerHTML = 'Looking up "' + url + '" from IMDb, please be patient. (' + count + ')';
     el.appendChild(e);
 
@@ -21,7 +22,7 @@ function get_imdb(url, tid, image) {
         url: './ajax/imdb_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 10000,
+        timeout: 30000,
         context: this,
         data: {
             url: url,

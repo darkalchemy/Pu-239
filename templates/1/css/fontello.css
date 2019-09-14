@@ -1,258 +1,101 @@
 @font-face {
-    font-family: 'fontello';
-    src: url('../../fonts/fontello.eot?95690950');
-    src: url('../../fonts/fontello.eot?95690950#iefix') format('embedded-opentype'),
-    url('../../fonts/fontello.woff2?95690950') format('woff2'),
-    url('../../fonts/fontello.woff?95690950') format('woff'),
-    url('../../fonts/fontello.ttf?95690950') format('truetype'),
-    url('../../fonts/fontello.svg?95690950#fontello') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'fontello';
+  src: url('../../fonts/fontello.eot?51249743');
+  src: url('../../fonts/fontello.eot?51249743#iefix') format('embedded-opentype'),
+       url('../../fonts/fontello.woff2?51249743') format('woff2'),
+       url('../../fonts/fontello.woff?51249743') format('woff'),
+       url('../../fonts/fontello.ttf?51249743') format('truetype'),
+       url('../../fonts/fontello.svg?51249743#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
-
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../../fonts/fontello.svg?95690950#fontello') format('svg');
+    src: url('../../fonts/fontello.svg?51249743#fontello') format('svg');
   }
 }
 */
-
-[class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    /* opacity: .8; */
-
-    /* For safety - reset parent styles, that can break glyph codes*/
-    font-variant: normal;
-    text-transform: none;
-
-    /* fix buttons height, for twitter bootstrap */
-    line-height: 1em;
-
-    /* Animation center compensation - margins should be symmetric */
-    /* remove if not needed */
-    margin-left: .2em;
-
-    /* you can be more comfortable with increased icons size */
-    /* font-size: 120%; */
-
-    /* Font smoothing. That was taken from TWBS */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    /* Uncomment for 3D effect */
-    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-
-.icon-key:before {
-    content: '\e800';
-}
-
-/* '' */
-.icon-plus:before {
-    content: '\e801';
-}
-
-/* '' */
-.icon-minus:before {
-    content: '\e802';
-}
-
-/* '' */
-.icon-user:before {
-    content: '\e803';
-}
-
-/* '' */
-.icon-down-open:before {
-    content: '\e804';
-}
-
-/* '' */
-.icon-left-open:before {
-    content: '\e805';
-}
-
-/* '' */
-.icon-right-open:before {
-    content: '\e806';
-}
-
-/* '' */
-.icon-up-open:before {
-    content: '\e807';
-}
-
-/* '' */
-.icon-ok:before {
-    content: '\e808';
-}
-
-/* '' */
-.icon-cancel:before {
-    content: '\e809';
-}
-
-/* '' */
-.icon-home:before {
-    content: '\e80a';
-}
-
-/* '' */
-.icon-edit:before {
-    content: '\e80b';
-}
-
-/* '' */
-.icon-download:before {
-    content: '\e80c';
-}
-
-/* '' */
-.icon-mail:before {
-    content: '\e80d';
-}
-
-/* '' */
-.icon-users:before {
-    content: '\e80e';
-}
-
-/* '' */
-.icon-trash-empty:before {
-    content: '\e80f';
-}
-
-/* '' */
-.icon-search:before {
-    content: '\e810';
-}
-
-/* '' */
-.icon-thumbs-up:before {
-    content: '\e811';
-}
-
-/* '' */
-.icon-thumbs-down:before {
-    content: '\e812';
-}
-
-/* '' */
-.icon-logout:before {
-    content: '\e813';
-}
-
-/* '' */
-.icon-star-empty:before {
-    content: '\e814';
-}
-
-/* '' */
-.icon-up-big:before {
-    content: '\e815';
-}
-
-/* '' */
-.icon-down-big:before {
-    content: '\e816';
-}
-
-/* '' */
-.icon-ok-circled2:before {
-    content: '\e817';
-}
-
-/* '' */
-.icon-doc:before {
-    content: '\e818';
-}
-
-/* '' */
-.icon-tools:before {
-    content: '\e819';
-}
-
-/* '' */
-.icon-bookmark-empty:before {
-    content: '\f097';
-}
-
-/* '' */
-.icon-docs:before {
-    content: '\f0c5';
-}
-
-/* '' */
-.icon-menu:before {
-    content: '\f0c9';
-}
-
-/* '' */
-.icon-comment-empty:before {
-    content: '\f0e5';
-}
-
-/* '' */
-.icon-angle-circled-up:before {
-    content: '\f139';
-}
-
-/* '' */
-.icon-youtube:before {
-    content: '\f167';
-}
-
-/* '' */
-.icon-youtube-play:before {
-    content: '\f16a';
-}
-
-/* '' */
-.icon-toggle-off:before {
-    content: '\f204';
-}
-
-/* '' */
-.icon-toggle-on:before {
-    content: '\f205';
-}
-
-/* '' */
-.icon-user-plus:before {
-    content: '\f234';
-}
-
-/* '' */
-.icon-user-times:before {
-    content: '\f235';
-}
-
-/* '' */
-.icon-commenting-o:before {
-    content: '\f27b';
-}
-
-/* '' */
-.icon-percent:before {
-    content: '\f295';
-}
-
-/* '' */
-.icon-envelope-open-o:before {
-    content: '\f2b7';
-}
-
-/* '' */
+ 
+.icon-plus:before { content: '\e800'; } /* '' */
+.icon-user-plus:before { content: '\e801'; } /* '' */
+.icon-user:before { content: '\e802'; } /* '' */
+.icon-down-open:before { content: '\e803'; } /* '' */
+.icon-up-open:before { content: '\e804'; } /* '' */
+.icon-right-open:before { content: '\e805'; } /* '' */
+.icon-ok:before { content: '\e806'; } /* '' */
+.icon-cancel:before { content: '\e807'; } /* '' */
+.icon-home:before { content: '\e808'; } /* '' */
+.icon-mail:before { content: '\e809'; } /* '' */
+.icon-users:before { content: '\e80a'; } /* '' */
+.icon-trash-empty:before { content: '\e80b'; } /* '' */
+.icon-thumbs-up:before { content: '\e80c'; } /* '' */
+.icon-user-times:before { content: '\e80d'; } /* '' */
+.icon-edit:before { content: '\e80e'; } /* '' */
+.icon-logout:before { content: '\e80f'; } /* '' */
+.icon-youtube:before { content: '\e810'; } /* '' */
+.icon-search:before { content: '\e811'; } /* '' */
+.icon-angle-circled-up:before { content: '\e812'; } /* '' */
+.icon-youtube-play:before { content: '\e813'; } /* '' */
+.icon-comment-empty:before { content: '\e814'; } /* '' */
+.icon-up-big:before { content: '\e815'; } /* '' */
+.icon-down-big:before { content: '\e816'; } /* '' */
+.icon-ok-circled2:before { content: '\e817'; } /* '' */
+.icon-doc:before { content: '\e818'; } /* '' */
+.icon-tools:before { content: '\e819'; } /* '' */
+.icon-clock:before { content: '\e81a'; } /* '' */
+.icon-key:before { content: '\e81b'; } /* '' */
+.icon-minus:before { content: '\e81c'; } /* '' */
+.icon-download:before { content: '\e81d'; } /* '' */
+.icon-thumbs-down:before { content: '\e81e'; } /* '' */
+.icon-left-open:before { content: '\e81f'; } /* '' */
+.icon-envelope-open-o:before { content: '\e820'; } /* '' */
+.icon-bookmark-empty:before { content: '\e821'; } /* '' */
+.icon-star-empty:before { content: '\e822'; } /* '' */
+.icon-menu:before { content: '\e823'; } /* '' */
+.icon-toggle-off:before { content: '\e824'; } /* '' */
+.icon-toggle-on:before { content: '\e825'; } /* '' */
+.icon-docs:before { content: '\f0c5'; } /* '' */
+.icon-angle-circled-down:before { content: '\f13a'; } /* '' */
+.icon-hourglass-1:before { content: '\f251'; } /* '' */
+.icon-hourglass-3:before { content: '\f253'; } /* '' */
+.icon-commenting-o:before { content: '\f27b'; } /* '' */
+.icon-percent:before { content: '\f295'; } /* '' */

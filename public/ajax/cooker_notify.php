@@ -21,7 +21,7 @@ if (empty($id) || !isset($notified)) {
 }
 $fluent = $container->get(Database::class);
 if ($notified) {
-    $fluent->deleteFrom('notify')
+    $fluent->deleteFrom('upcoming_notify')
            ->where('userid = ?', $user['id'])
            ->where('upcomingid = ?', $id)
            ->execute();
@@ -32,7 +32,7 @@ if ($notified) {
         'userid' => $user['id'],
         'upcomingid' => $id,
     ];
-    $notify_id = $fluent->insertInto('notify')
+    $notify_id = $fluent->insertInto('upcoming_notify')
                         ->values($values)
                         ->execute();
 

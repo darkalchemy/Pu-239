@@ -16,7 +16,7 @@ function get_tvmaze(tvmazeid, name, tid) {
         url: './ajax/tvmaze_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 10000,
+        timeout: 30000,
         context: this,
         data: {
             tvmazeid: tvmazeid,

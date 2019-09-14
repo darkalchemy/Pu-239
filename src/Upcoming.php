@@ -173,7 +173,7 @@ class Upcoming
                                 ->leftJoin('users AS u ON r.userid = u.id')
                                 ->leftJoin('categories AS c ON r.category = c.id')
                                 ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                ->leftJoin('notify AS n ON r.userid = n.userid')
+                                ->leftJoin('upcoming_notify AS n ON r.userid = n.userid AND r.id = n.upcomingid')
                                 ->limit($limit)
                                 ->offset($offset);
         if (!$all) {

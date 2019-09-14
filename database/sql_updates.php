@@ -4218,4 +4218,52 @@ KEY `expires` (`expires`)
         'query' => 'UPDATE `user_blocks` SET `index_page` = `index_page` + 134217728 WHERE `index_page` <= 134217727',
         'flush' => 'true',
     ],
+    [
+        'id' => 1568407462,
+        'info' => 'Update user_blocks',
+        'date' => '13 Sept, 2019',
+        'query' => 'UPDATE `user_blocks` SET `index_page` = `index_page` + 805306368 WHERE `index_page` <= 268435455',
+        'flush' => 'true',
+    ],
+    [
+        'id' => 1568477800,
+        'info' => 'Rename table',
+        'date' => '14 Sept, 2019',
+        'query' => 'RENAME TABLE `notify` TO `upcoming_notify`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568477801,
+        'info' => 'Create table request_notify',
+        'date' => '14 Sept, 2019',
+        'query' => "CREATE TABLE `request_notify` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `requestid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `userid_request` (`userid`,`requestid`),
+  KEY `userid` (`userid`),
+  KEY `request` (`requestid`),
+  CONSTRAINT `request_notify_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request_notify_ibfk_2` FOREIGN KEY (`requestid`) REFERENCES `requests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+        'flush' => false,
+    ],
+    [
+        'id' => 1568477802,
+        'info' => 'Create table offer_notify',
+        'date' => '14 Sept, 2019',
+        'query' => "CREATE TABLE `offer_notify` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `offerid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `userid_offer` (`userid`,`offerid`),
+  KEY `userid` (`userid`),
+  KEY `offer` (`offerid`),
+  CONSTRAINT `offer_notify_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `offer_notify_ibfk_2` FOREIGN KEY (`offerid`) REFERENCES `offers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+        'flush' => false,
+    ],
 ];

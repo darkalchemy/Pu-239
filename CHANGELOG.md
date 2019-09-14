@@ -1,4 +1,9 @@
 ### 14 Sept, 2019
+add: additional icons  
+update: cooker breadcrumbs  
+fix: direct link to imdb, showing duplicates cooker.php  
+update: imdb lookup, image download, restrict classes to movies cooker.php  
+fix: typo requests.php offers.php  
 fix: undefinded index function_torrenttable.php  
 fix: update must include a where clause requests.php, offers.php  
 

@@ -483,7 +483,7 @@ if ($recipe > 0) {
     }
     $cooker = $cooker->execute();
     if (!empty($cooker)) {
-        $recipes = $fluent->from('notify')
+        $recipes = $fluent->from('upcoming_notify')
                           ->select(null)
                           ->select('userid')
                           ->where('upcomingid = ?', $recipe)

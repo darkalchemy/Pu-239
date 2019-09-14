@@ -35,4 +35,6 @@ class block_index
     const LATEST_MOVIES = 0x2000000; // 33554432
     const LATEST_TV = 0x4000000; // 67108864
     const COOKER = 0x8000000; // 134217728
+    const REQUESTS = 0x10000000; // 268435456
+    const OFFERS = 0x20000000; // 536870912
 }

@@ -30,12 +30,14 @@ use Pu239\IP;
 use Pu239\Message;
 use Pu239\Mood;
 use Pu239\Notify;
+use Pu239\Offer;
 use Pu239\Peer;
 use Pu239\Phpzip;
 use Pu239\Poll;
 use Pu239\PollVoter;
 use Pu239\Post;
 use Pu239\Referrer;
+use Pu239\Request;
 use Pu239\Searchcloud;
 use Pu239\Session;
 use Pu239\Settings;
@@ -78,6 +80,7 @@ return [
     Message::class => autowire(),
     Mood::class => autowire(),
     Notify::class => autowire(),
+    Offer::class => autowire(),
     Parsedown::class => autowire(),
     Peer::class => autowire(),
     Phpzip::class => autowire(),
@@ -85,6 +88,7 @@ return [
     PollVoter::class => autowire(),
     Post::class => autowire(),
     Referrer::class => autowire(),
+    Request::class => autowire(),
     Searchcloud::class => autowire(),
     Session::class => autowire(),
     Settings::class => autowire(),

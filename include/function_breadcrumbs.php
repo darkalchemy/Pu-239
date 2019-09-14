@@ -117,6 +117,7 @@ function get_prepage($lang, $url, $referer)
             return $links;
         case '/catalog.php':
         case '/needseed.php':
+        case '/upcoming.php':
         case '/offers.php':
         case '/requests.php':
         case '/upload.php':

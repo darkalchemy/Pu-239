@@ -36,7 +36,7 @@ class Notify
      */
     public function delete(int $upcomingid, int $userid)
     {
-        $result = $this->fluent->deleteFrom('notify')
+        $result = $this->fluent->deleteFrom('upcoming_notify')
                                ->where('id = ?', $upcomingid)
                                ->where('userid = ?', $userid)
                                ->execute();
@@ -92,7 +92,7 @@ class Notify
     {
         $count = $this->cache->get('notify_requests_' . $upcomingid);
         if ($count === false || is_null($count)) {
-            $count = $this->fluent->from('notify')
+            $count = $this->fluent->from('upcoming_notify')
                                   ->select(null)
                                   ->select('COUNT(id) AS count')
                                   ->where('upcomingid = ?', $upcomingid)

@@ -76,6 +76,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_index_page |= block_index::COOKER;
     }
+    if (isset($_POST['requests'])) {
+        $setbits_index_page |= block_index::REQUESTS;
+    } else {
+        $clrbits_index_page |= block_index::REQUESTS;
+    }
+    if (isset($_POST['offers'])) {
+        $setbits_index_page |= block_index::OFFERS;
+    } else {
+        $clrbits_index_page |= block_index::OFFERS;
+    }
     if (isset($_POST['birthday_active_users'])) {
         $setbits_index_page |= block_index::BIRTHDAY_ACTIVE_USERS;
     } else {
@@ -446,6 +456,8 @@ $checkbox_index_active_irc_users = $user['blocks']['index_page'] & block_index::
 $checkbox_index_active_birthday_users = $user['blocks']['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS ? 'checked' : '';
 $checkbox_index_stats = $user['blocks']['index_page'] & block_index::STATS ? 'checked' : '';
 $checkbox_index_cooker = $user['blocks']['index_page'] & block_index::COOKER ? 'checked' : '';
+$checkbox_index_requests = $user['blocks']['index_page'] & block_index::OFFERS ? 'checked' : '';
+$checkbox_index_offers = $user['blocks']['index_page'] & block_index::OFFERS ? 'checked' : '';
 $checkbox_index_disclaimer = $user['blocks']['index_page'] & block_index::DISCLAIMER ? 'checked' : '';
 $checkbox_index_latest_user = $user['blocks']['index_page'] & block_index::LATEST_USER ? 'checked' : '';
 $checkbox_index_latest_comments = $user['blocks']['index_page'] & block_index::LATESTCOMMENTS ? 'checked' : '';
@@ -574,6 +586,26 @@ if ($BLOCKS['cooker_on']) {
                 <div class='slideThree'>
                     <input type='checkbox' id='cooker' name='cooker' value='yes' $checkbox_index_cooker>
                     <label for='cooker'></label>
+                </div>
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Cooker.</div>";
+}
+
+if ($BLOCKS['requests_on']) {
+    $contents[] = "
+                <div class='w-100 has-text-centered'>Enable Requests?</div>
+                <div class='slideThree'>
+                    <input type='checkbox' id='requests' name='requests' value='yes' $checkbox_index_requests>
+                    <label for='requests'></label>
+                </div>
+                <div class='w-100 has-text-centered'>Check this option if you want to enable the Requests.</div>";
+}
+
+if ($BLOCKS['offers_on']) {
+    $contents[] = "
+                <div class='w-100 has-text-centered'>Enable Offers?</div>
+                <div class='slideThree'>
+                    <input type='checkbox' id='offers' name='offers' value='yes' $checkbox_index_offers>
+                    <label for='offers'></label>
                 </div>
                 <div class='w-100 has-text-centered'>Check this option if you want to enable the Cooker.</div>";
 }
