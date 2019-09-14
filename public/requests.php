@@ -607,6 +607,7 @@ switch ($action) {
             ];
             $fluent->update('requests')
                    ->set($set)
+                   ->where('request = ?', $id)
                    ->execute();
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();

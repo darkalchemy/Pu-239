@@ -1,3 +1,7 @@
+### 14 Sept, 2019
+fix: undefinded index function_torrenttable.php  
+fix: update must include a where clause requests.php, offers.php  
+
 ### 13 Sept, 2019
 update: sort by columns browse.php  
 fix: typo announce.php  

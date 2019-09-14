@@ -606,6 +606,7 @@ switch ($action) {
             ];
             $fluent->update('offers')
                    ->set($set)
+                   ->where('offer = ?', $id)
                    ->execute();
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();

@@ -133,7 +133,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
     }
     $oldlink = !empty($oldlink) ? implode('&amp;', array_map('htmlsafechars', $oldlink)) . '&amp;' : '';
     $type = isset($_GET['type']) ? $_GET['type'] : 'desc';
-    for ($i = 1; $i <= 8; ++$i) {
+    for ($i = 1; $i <= 9; ++$i) {
         if (isset($_GET['sort']) && (int) $_GET['sort'] === $i) {
             $link[$i] = isset($type) && $type === 'desc' ? 'asc' : 'desc';
         } else {
