@@ -743,13 +743,13 @@ switch ($action) {
         break;
 
     case 'delete_comment':
-        if (!isset($comment_id) || !is_valid_id($comment_id)) {
+        if (!isset($comment_id) || !is_valid_id((int) $comment_id)) {
             stderr('Error', 'Bad ID.');
         }
         $arr = $fluent->from('comments')
                       ->select('user')
                       ->select('request')
-                      ->where('id = ?', $comment_id)
+                      ->where('id = ?', (int) $comment_id)
                       ->fetch();
         if (empty($arr)) {
             stderr('Error', 'Invalid ID.');

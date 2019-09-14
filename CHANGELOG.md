@@ -1,5 +1,6 @@
 ### 14 Sept, 2019
-fix: typo requests.php offers.php
+fix: cast to int requests.php offers.php  
+fix: typo requests.php offers.php  
 add: additional icons  
 update: cooker breadcrumbs  
 fix: direct link to imdb, showing duplicates cooker.php  
