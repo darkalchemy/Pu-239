@@ -485,28 +485,39 @@ function CutName(string $txt, int $len = 40)
 /**
  * @param string $file
  *
- * @throws Exception
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
- * @return array
+ * @return array|bool|string
  */
 function load_language($file = '')
 {
-    $site_lang = get_language();
-    $lang = [];
-    $path = LANG_DIR . "{$site_lang}/lang_{$file}.php";
-    if (file_exists($path)) {
-        require $path;
+    try {
+        $site_lang = get_language();
+        $lang = [];
+        $path = LANG_DIR . "{$site_lang}/lang_{$file}.php";
+        if (file_exists($path)) {
+            require $path;
 
-        return $lang;
+            return $lang;
+        }
+        $path = LANG_DIR . "1/lang_{$file}.php";
+        if (file_exists($path)) {
+            require $path;
+
+            return $lang;
+        }
+    } catch (Exception $e) {
+        return $e->getMessage();
     }
-    $path = LANG_DIR . "1/lang_{$file}.php";
-    if (file_exists($path)) {
-        require $path;
-
-        return $lang;
-    }
-
     stderr('System Error', "Can't find language file specified(user or site)");
+
+    return false;
 }
 
 /**

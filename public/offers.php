@@ -367,12 +367,12 @@ if (!empty($edit_form)) {
 } elseif (!empty($update)) {
     $HTMLOUT .= $update;
 } else {
-    $count = $offer_class->get_count(isset($data['action']) && $data['action'] === 'view_all' ? true : false);
+    $count = $offer_class->get_count((isset($data['action']) && $data['action'] === 'view_all' ? true : false), (bool) $user['hidden']);
     $perpage = 25;
     $pager = pager($perpage, (int) $count, $_SERVER['PHP_SELF'] . '?');
     $menu_top = $count > $perpage ? $pager['pagertop'] : '';
     $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
-    $offers = $offer_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all);
+    $offers = $offer_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all, (bool) $user['hidden']);
     $heading = "
                     <tr>
                         <th class='has-text-centered'>{$lang['offer_cat']}</th>

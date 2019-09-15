@@ -184,12 +184,12 @@ if ($has_access) {
         }
     }
 }
-$count = $cooker_class->get_count(false);
+$count = $cooker_class->get_count(false, (bool) $user['hidden']);
 $perpage = 25;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?');
 $menu_top = $count > $perpage ? $pager['pagertop'] : '';
 $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
-$recipes = $cooker_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'expected', true, $view_all, false, $user['id']);
+$recipes = $cooker_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'expected', true, $view_all, false, (bool) $user['hidden']);
 $HTMLOUT .= "
     <ul class='level-center bg-06 padding10'>
         <li><a href='{$_SERVER['PHP_SELF']}?action=add_recipe'>{$lang['upcoming_add']}</a></li>" . ($view_all ? "

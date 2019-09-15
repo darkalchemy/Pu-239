@@ -108,34 +108,43 @@ if (strlen($search) > 4) {
     $letter = 'a';
 }
 $fluent = $container->get(Database::class);
-$count = $fluent->from('torrents')
+$count = $fluent->from('torrents AS t')
                 ->select(null)
-                ->select('COUNT(id) AS count')
-                ->where('name LIKE :name', $params)
-                ->fetch('count');
+                ->select('COUNT(t.id) AS count')
+                ->where('t.name LIKE :name', $params);
 
+if ($user['hidden'] === 0) {
+    $count->where('c.hidden = 0')
+          ->leftJoin('categories AS c ON t.category = c.id');
+}
+$count = $count->fetch('count');
 $perpage = 10;
 $pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
 $top = $bottom = '';
 $rows = $tids = $peers = [];
 
-$query = $fluent->from('torrents')
+$query = $fluent->from('torrents AS t')
                 ->select(null)
-                ->select('id')
-                ->select('name')
-                ->select('leechers')
-                ->select('seeders')
-                ->select('poster')
-                ->select('times_completed AS snatched')
-                ->select('owner')
-                ->select('size')
-                ->select('added')
-                ->select('descr')
-                ->select('imdb_id')
-                ->select('anonymous')
-                ->where('name LIKE :name', $params)
+                ->select('t.id')
+                ->select('t.name')
+                ->select('t.leechers')
+                ->select('t.seeders')
+                ->select('t.poster')
+                ->select('t.times_completed AS snatched')
+                ->select('t.owner')
+                ->select('t.size')
+                ->select('t.added')
+                ->select('t.descr')
+                ->select('t.imdb_id')
+                ->select('t.anonymous')
+                ->where('t.name LIKE :name', $params)
                 ->limit($pager['pdo']['limit'])
                 ->offset($pager['pdo']['offset']);
+
+if ($user['hidden'] === 0) {
+    $query->where('c.hidden = 0')
+          ->leftJoin('categories AS c ON t.category = c.id');
+}
 
 foreach ($query as $ta) {
     $rows[] = $ta;

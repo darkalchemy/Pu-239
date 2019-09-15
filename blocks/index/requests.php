@@ -10,7 +10,7 @@ global $container, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('requests'));
 $request_class = $container->get(Request::class);
-$requested = $request_class->get_all($site_config['latest']['requests_limit'], 0, 'added', false, false);
+$requested = $request_class->get_all($site_config['latest']['requests_limit'], 0, 'added', false, false, (bool) $user['hidden']);
 $requests .= "
     <a id='requests-hash'></a>
     <div id='requests' class='box'>
@@ -19,8 +19,8 @@ $requests .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='has-text-centered w-1 min-100 has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='min-350 has-no-border-right has-no-border-left'>{$lang['request_title']}</th>
+                        <th class='has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
+                        <th class='min-250 has-no-border-right has-no-border-left'>{$lang['request_title']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-dollar icon has-text-success' aria-hidden='true'></i></th>
                         <th class='has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>

@@ -10,7 +10,7 @@ global $container, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('upcoming'));
 $cooker_class = $container->get(Upcoming::class);
-$recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, $user['id']);
+$recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, (bool) $user['hidden']);
 $cooker .= "
     <a id='cooker-hash'></a>
     <div id='cooker' class='box'>
@@ -19,8 +19,8 @@ $cooker .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='has-text-centered w-1 min-100 has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='min-350 has-no-border-right has-no-border-left'>{$lang['upcoming_name']}</th>
+                        <th class='has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
+                        <th class='min-250 has-no-border-right has-no-border-left'>{$lang['upcoming_name']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-hourglass-3 icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>

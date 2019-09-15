@@ -57,6 +57,12 @@ $query = $fluent->from('torrents AS t')
                 ->leftJoin('users AS cu ON t.checked_by = cu.id')
                 ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $user['id']);
 
+if ($user['hidden'] === 0) {
+    $count->where('c.hidden = 0')
+          ->leftJoin('categories AS c ON t.category = c.id');
+    $query->where('c.hidden = 0')
+          ->leftJoin('categories AS c ON t.category = c.id');
+}
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
     'js' => [

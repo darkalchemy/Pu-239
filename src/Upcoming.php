@@ -75,18 +75,23 @@ class Upcoming
 
     /**
      * @param bool $all
+     * @param bool $show_hidden
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get_count(bool $all)
+    public function get_count(bool $all, bool $show_hidden)
     {
-        $count = $this->fluent->from('upcoming')
+        $count = $this->fluent->from('upcoming AS u')
                               ->select(null)
-                              ->select('COUNT(id) AS count');
+                              ->select('COUNT(u.id) AS count');
+        if (!$show_hidden) {
+            $count->leftJoin('categories AS c ON u.category = c.id')
+                  ->where('c.hidden = 0');
+        }
         if (!$all) {
-            $count->where('status != ?', 'uploaded');
+            $count->where('u.status != ?', 'uploaded');
         }
         $count = $count->fetch('count');
 
@@ -155,13 +160,13 @@ class Upcoming
      * @param bool   $desc
      * @param bool   $all
      * @param bool   $index
-     * @param int    $userid
+     * @param bool   $show_hidden
      *
      * @throws Exception
      *
      * @return array|bool
      */
-    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index, int $userid)
+    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $index, bool $show_hidden)
     {
         $results = $this->fluent->from('upcoming AS r')
                                 ->select('u.username')
@@ -176,6 +181,9 @@ class Upcoming
                                 ->leftJoin('upcoming_notify AS n ON r.userid = n.userid AND r.id = n.upcomingid')
                                 ->limit($limit)
                                 ->offset($offset);
+        if (!$show_hidden) {
+            $results = $results->where('c.hidden = 0');
+        }
         if (!$all) {
             $results = $results->where('r.status != ?', 'uploaded');
         }

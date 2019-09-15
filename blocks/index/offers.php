@@ -10,7 +10,7 @@ global $container, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('offers'));
 $offer_class = $container->get(Offer::class);
-$offered = $offer_class->get_all($site_config['latest']['offers_limit'], 0, 'added', false, false);
+$offered = $offer_class->get_all($site_config['latest']['offers_limit'], 0, 'added', false, false, (bool) $user['hidden']);
 $offers .= "
     <a id='offers-hash'></a>
     <div id='offers' class='box'>
@@ -19,8 +19,8 @@ $offers .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='has-text-centered w-1 min-100 has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='min-350 has-no-border-right has-no-border-left'>{$lang['offer_title']}</th>
+                        <th class='has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
+                        <th class='min-250 has-no-border-right has-no-border-left'>{$lang['offer_title']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>

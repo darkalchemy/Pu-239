@@ -2,20 +2,23 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_categories.php';
-check_user_status();
+$user = check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('needseed'));
-global $site_config;
+global $container, $site_config;
 
 $possible_actions = [
     'leechers',
     'seeders',
 ];
 
+$fluent = $container->get(Database::class);
 $needed = isset($_GET['needed']) && !is_array($_GET['needed']) ? htmlsafechars($_GET['needed']) : 'seeders';
 if (!in_array($needed, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
@@ -42,16 +45,30 @@ if ($needed === 'leechers') {
             </ul>
         </div>";
 
-    $Dur = TIME_NOW - 86400 * 7;
-    $res = sql_query("
-        SELECT p.id, p.userid, p.torrent, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category
-        FROM peers AS p
-        LEFT JOIN users AS u ON u.id = p.userid
-        LEFT JOIN torrents AS t ON t.id = p.torrent
-        WHERE p.seeder = 'yes' AND u.downloaded > 1024 AND u.registered < $Dur
-        ORDER BY u.uploaded / u.downloaded
-        LIMIT 20") or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) > 0) {
+    $Dur = TIME_NOW - (86400 * 7);
+    $res = $fluent->from('peers AS p')
+                  ->select('p.id')
+                  ->select('p.userid')
+                  ->select('p.torrent')
+                  ->select('u.username')
+                  ->select('u.uploaded')
+                  ->select('u.downloaded')
+                  ->select('t.name')
+                  ->select('t.seeders')
+                  ->select('t.leechers')
+                  ->select('t.category')
+                  ->leftJoin('users AS u ON p.userid = u.id')
+                  ->leftJoin('torrents AS t ON p.torrent = t.id')
+                  ->leftJoin('categories AS c ON t.category = c.id')
+                  ->where("p.seeder = 'yes'")
+                  ->where('u.downloaded > 1024')
+                  ->where('u.registered < ?', $Dur)
+                  ->orderBy('u.uploaded / u.downloaded');
+    if ($user['hidden'] === 0) {
+        $res->where('c.hidden = 0');
+    }
+    $res = $res->fetchAll();
+    if (!empty($res)) {
         $header = "
                 <tr>
                     <th>{$lang['needseed_user']}</th>
@@ -60,7 +77,7 @@ if ($needed === 'leechers') {
                     <th>{$lang['needseed_peer']}</th>
                 </tr>";
         $body = '';
-        while ($arr = mysqli_fetch_assoc($res)) {
+        foreach ($res as $arr) {
             $What_ID = $arr['torrent'];
             $What_User_ID = $arr['userid'];
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
@@ -97,8 +114,24 @@ if ($needed === 'leechers') {
                 </li>
             </ul>
         </div>";
-    $res = sql_query('SELECT id, name, seeders, leechers, added, category FROM torrents WHERE leechers >= 0 AND seeders = 0 ORDER BY leechers DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) > 0) {
+    $res = $fluent->from('torrents AS t')
+                  ->select(null)
+                  ->select('t.id')
+                  ->select('t.name')
+                  ->select('t.seeders')
+                  ->select('t.leechers')
+                  ->select('t.added')
+                  ->select('t.category')
+                  ->where('t.leechers >= 0')
+                  ->where('t.seeders = 0')
+                  ->orderBy('t.leechers DESC')
+                  ->limit(20);
+    if ($user['hidden'] === 0) {
+        $res->leftJoin('categories AS c ON t.category = c.id')
+            ->where('c.hidden = 0');
+    }
+    $res = $res->fetchAll();
+    if (!empty($res)) {
         $header = "
                 <tr>
                     <th class='has-text-centered'>{$lang['needseed_cat']}</th>
@@ -107,7 +140,7 @@ if ($needed === 'leechers') {
                     <th class='has-text-centered'>{$lang['needseed_leech']}</th>
                 </tr>";
         $body = '';
-        while ($arr = mysqli_fetch_assoc($res)) {
+        foreach ($res as $arr) {
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
             if (!empty($needseed['cat_pic'])) {

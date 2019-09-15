@@ -38,18 +38,23 @@ class Request
 
     /**
      * @param bool $all
+     * @param bool $show_hidden
      *
      * @throws Exception
      *
      * @return Select|mixed
      */
-    public function get_count(bool $all)
+    public function get_count(bool $all, bool $show_hidden)
     {
-        $count = $this->fluent->from('requests')
+        $count = $this->fluent->from('requests AS r')
                               ->select(null)
-                              ->select('COUNT(id) AS count');
+                              ->select('COUNT(r.id) AS count');
+        if (!$show_hidden) {
+            $count->leftJoin('categories AS c ON r.category = c.id')
+                  ->where('c.hidden = 0');
+        }
         if (!$all) {
-            $count->where('torrentid = 0');
+            $count->where('r.torrentid = 0');
         }
         $count = $count->fetch('count');
 
@@ -62,12 +67,13 @@ class Request
      * @param string $orderby
      * @param bool   $desc
      * @param bool   $all
+     * @param bool   $show_hidden
      *
      * @throws Exception
      *
      * @return array
      */
-    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all)
+    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $show_hidden)
     {
         $results = $this->fluent->from('requests AS r')
                                 ->select('u.username')
@@ -91,6 +97,9 @@ class Request
                                 ->groupBy('b.amount')
                                 ->limit($limit)
                                 ->offset($offset);
+        if (!$show_hidden) {
+            $results = $results->where('c.hidden = 0');
+        }
         if (!$all) {
             $results = $results->where('r.torrentid = 0');
         }

@@ -8,7 +8,7 @@ use Pu239\Image;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
-check_user_status();
+$user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('browse'));
 $valid_search = [
     'sn',
@@ -22,7 +22,7 @@ global $container, $site_config;
 $fluent = $container->get(Database::class);
 $count = $fluent->from('torrents AS t')
                 ->select(null)
-                ->select('COUNT(id) AS count')
+                ->select('COUNT(t.id) AS count')
                 ->where('t.category', $site_config['categories']['movie']);
 
 $select = $fluent->from('torrents AS t')
@@ -37,7 +37,12 @@ $select = $fluent->from('torrents AS t')
                  ->select('t.rating')
                  ->where('t.category', $site_config['categories']['movie'])
                  ->groupBy('t.imdb_id, t.id');
-
+if ($user['hidden'] === 0) {
+    $count->leftJoin('categories AS c ON t.category = c.id')
+          ->where('c.hidden = 0');
+    $select->leftJoin('categories AS c ON t.category = c.id')
+           ->where('c.hidden = 0');
+}
 $title = '';
 $addparam = [];
 foreach ($valid_search as $search) {
@@ -94,12 +99,11 @@ foreach ($select as $torrent) {
     if ($cast === false || is_null($cast)) {
         $cast = $fluent->from('person AS p')
                        ->select(null)
-                       ->select('p.id')
                        ->select('p.name')
-                       ->innerJoin('imdb_person AS i ON p.imdb_id=i.person_id')
+                       ->innerJoin('imdb_person AS i ON p.imdb_id = i.person_id')
                        ->where('i.imdb_id = ?', str_replace('tt', '', $torrent['imdb_id']))
                        ->where('i.type = "cast"')
-                       ->orderBy('p.id')
+                       ->orderBy('p.name')
                        ->limit(7)
                        ->fetchAll();
         $cache->set('cast_' . $torrent['imdb_id'], $cast, 604800);
