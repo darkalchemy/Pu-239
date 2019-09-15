@@ -1,4 +1,5 @@
 ### 15 Sept, 2019
+update: database files  
 fix: hide torrents when category is hidden  
 fix: linking to wrong id  
 add: bounty to index page requests block  
