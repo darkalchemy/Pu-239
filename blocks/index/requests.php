@@ -54,7 +54,7 @@ if (!empty($requested) && is_array($requested)) {
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
         }
-        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'upcoming_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot, $lang);
+        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'request_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot, $lang);
         $requests .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>

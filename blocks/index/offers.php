@@ -54,7 +54,7 @@ if (!empty($offered) && is_array($offered)) {
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
         }
-        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/offers.php?action=view_offer&amp;id=' . $offer['id'], 'upcoming_' . $offer['id'], $offer['name'], $background, $poster, get_date($offer['added'], 'MYSQL'), get_date($offer['added'], 'MYSQL'), $chef, $plot, $lang);
+        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/offers.php?action=view_offer&amp;id=' . $offer['id'], 'offer_' . $offer['id'], $offer['name'], $background, $poster, get_date($offer['added'], 'MYSQL'), get_date($offer['added'], 'MYSQL'), $chef, $plot, $lang);
         $offers .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>

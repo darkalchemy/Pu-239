@@ -1,4 +1,5 @@
 ### 15 Sept, 2019
+fix: linking to wrong id  
 add: bounty to index page requests block  
 remove: dummy log  
 fix: numerous bugs  
