@@ -23,13 +23,13 @@ if (php_sapi_name() === 'cli') {
 /**
  * @param array $argv
  *
- * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws NotLoggedInException
  *
  * @return bool|string
  */
@@ -240,6 +240,14 @@ function run_uglify($argv = [])
             SCRIPTS_DIR . 'hide_html.js',
             SCRIPTS_DIR . 'hide_navbar.js',
             SCRIPTS_DIR . 'cooker_notify.js',
+            SCRIPTS_DIR . 'offer_notify.js',
+            SCRIPTS_DIR . 'offer_vote.js',
+            SCRIPTS_DIR . 'request_notify.js',
+            SCRIPTS_DIR . 'request_vote.js',
+        ];
+
+        $js_list['offer_js'] = [
+            SCRIPTS_DIR . 'offer_status.js',
         ];
 
         $js_list = array_merge($js_list, [
@@ -260,7 +268,7 @@ function run_uglify($argv = [])
                 SCRIPTS_DIR . 'isbn.js',
                 SCRIPTS_DIR . 'upload.js',
             ],
-            'request_js' => [
+            'imdb_js' => [
                 SCRIPTS_DIR . 'imdb.js',
             ],
             'scroll_to_poll_js' => [

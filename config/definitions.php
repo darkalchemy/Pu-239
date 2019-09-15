@@ -15,6 +15,7 @@ use Pu239\Bonuslog;
 use Pu239\Bookmark;
 use Pu239\BotReplies;
 use Pu239\BotTriggers;
+use Pu239\Bounty;
 use Pu239\Cache;
 use Pu239\Casino;
 use Pu239\CasinoBets;
@@ -62,6 +63,7 @@ return [
     Block::class => autowire(),
     Bonuslog::class => autowire(),
     Bookmark::class => autowire(),
+    Bounty::class => autowire(),
     BotReplies::class => autowire(),
     BotTriggers::class => autowire(),
     Cache::class => autowire(),

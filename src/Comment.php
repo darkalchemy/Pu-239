@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use Envms\FluentPDO\Queries\Select;
+use PDOStatement;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -156,15 +158,19 @@ class Comment
      * @param int   $id
      *
      * @throws Exception
+     *
+     * @return bool|int|PDOStatement
      */
     public function update(array $set, int $id)
     {
-        $this->fluent->update('comments')
-                     ->set($set)
-                     ->where('id = ?', $id)
-                     ->execute();
+        $result = $this->fluent->update('comments')
+                               ->set($set)
+                               ->where('id = ?', $id)
+                               ->execute();
 
         $this->cache->delete('latest_comments_');
+
+        return $result;
     }
 
     /**
@@ -181,5 +187,38 @@ class Comment
                            ->execute();
 
         return $id;
+    }
+
+    /**
+     * @param string $column
+     * @param int    $id
+     *
+     * @throws Exception
+     *
+     * @return Select
+     */
+    public function get_comment_by_column(string $column, int $id)
+    {
+        $comments = $this->fluent->from('comments');
+        if ($column === 'request') {
+            $comments = $comments->where('request = ?', $id);
+        } elseif ($column === 'offer') {
+            $comments = $comments->where('offer = ?', $id);
+        } elseif ($column === 'recipe') {
+            $comments = $comments->where('recipe = ?', $id);
+        }
+        $comments = $comments->orderBy('id DESC')
+                             ->fetchAll();
+
+        return $comments;
+    }
+
+    public function get_comment_by_id(int $commentid)
+    {
+        $comment = $this->fluent->from('comments')
+                                ->where('id = ?', $commentid)
+                                ->fetch();
+
+        return $comment;
     }
 }

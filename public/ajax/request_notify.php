@@ -22,9 +22,9 @@ if (empty($id) || !isset($notified)) {
 $fluent = $container->get(Database::class);
 if ($notified) {
     try {
-        $fluent->deleteFrom('upcoming_notify')
+        $fluent->deleteFrom('request_notify')
                ->where('userid = ?', $user['id'])
-               ->where('upcomingid = ?', $id)
+               ->where('requestid = ?', $id)
                ->execute();
         echo json_encode(['notify' => 0]);
         die();
@@ -34,10 +34,10 @@ if ($notified) {
 } else {
     $values = [
         'userid' => $user['id'],
-        'upcomingid' => $id,
+        'requestid' => $id,
     ];
     try {
-        $notify_id = $fluent->insertInto('upcoming_notify')
+        $notify_id = $fluent->insertInto('request_notify')
                             ->values($values)
                             ->execute();
 

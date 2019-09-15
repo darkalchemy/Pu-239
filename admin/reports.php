@@ -173,21 +173,21 @@ if ($count === 0) {
                     break;
 
                 case 'Offer_Comment':
-                    $res_who2 = sql_query('SELECT comments.offer, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id=' . sqlesc($arr_info['reporting_what']));
+                    $res_who2 = sql_query('SELECT comments.offer, comments.user, users.username FROM comments, users WHERE comments.user = users.id AND comments.id = ' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . $arr_who2['offer'] . '&amp;off_details=1&amp;viewcomm=' . $arr_info['reporting_what'] . '#comm' . $arr_info['reporting_what'] . "'><b>" . format_comment($arr_who2['username']) . '</b></a>';
                     break;
 
                 case 'Request':
-                    $res_who2 = sql_query('SELECT request_name FROM requests WHERE id=' . sqlesc($arr_info['reporting_what']));
+                    $res_who2 = sql_query('SELECT name FROM requests WHERE id = ' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . format_comment($arr_who2['request_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/requests.php?id=" . $arr_info['reporting_what'] . "&amp;req_details=1'><b>" . format_comment($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Offer':
-                    $res_who2 = sql_query('SELECT offer_name FROM offers WHERE id=' . sqlesc($arr_info['reporting_what']));
+                    $res_who2 = sql_query('SELECT name FROM offers WHERE id = ' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . format_comment($arr_who2['offer_name']) . '</b></a>';
+                    $link_to_thing = "<a class='is-link' href='{$site_config['paths']['baseurl']}/offers.php?id=" . $arr_info['reporting_what'] . "&amp;off_details=1'><b>" . format_comment($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Torrent':

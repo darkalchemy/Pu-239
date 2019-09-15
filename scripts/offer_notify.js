@@ -1,6 +1,6 @@
-$('.cooker_notify').on('click', function () {
+$('.offer_notify').on('click', function () {
     $.ajax({
-        url: './ajax/cooker_notify.php',
+        url: './ajax/offer_notify.php',
         type: 'POST',
         dataType: 'json',
         context: this,
@@ -9,6 +9,7 @@ $('.cooker_notify').on('click', function () {
             notified: this.dataset.notified
         },
         success: function (data) {
+            console.log(data);
             var el = document.querySelector('#notify_' + this.dataset.id);
             if (data['notify'] === 'invalid') {
                 $(this).html('?');

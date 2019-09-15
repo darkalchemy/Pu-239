@@ -3,802 +3,540 @@
 declare(strict_types = 1);
 
 use Envms\FluentPDO\Literal;
-use Pu239\Database;
+use Pu239\Bounty;
+use Pu239\Comment;
+use Pu239\Image;
+use Pu239\Request;
 use Pu239\Session;
+use Pu239\Torrent;
 use Pu239\User;
+use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
-require_once INCL_DIR . 'function_users.php';
-require_once INCL_DIR . 'function_html.php';
-require_once INCL_DIR . 'function_comments.php';
-require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_pager.php';
-require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_torrent_hover.php';
 require_once INCL_DIR . 'function_categories.php';
+require_once INCL_DIR . 'function_bbcode.php';
+require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'function_comments.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
-global $site_config;
+$lang = array_merge(load_language('global'), load_language('requests'), load_language('upload'), load_language('bitbucket'));
+global $container, $site_config;
 
-$stdhead = [
-    'css' => [
-        get_file_name('sceditor_css'),
-    ],
-];
+$stdhead = [];
 $stdfoot = [
     'js' => [
-        get_file_name('request_js'),
-        get_file_name('sceditor_js'),
+        get_file_name('imdb_js'),
     ],
 ];
-$HTMLOUT = $count2 = '';
-if ($user['class'] < (UC_MIN + 1)) {
-    stderr('Error!', 'Sorry, you need to rank up!');
-}
-$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
-$comment_id = isset($_GET['cid']) ? (int) $_GET['cid'] : (isset($_POST['cid']) ? (int) $_POST['cid'] : 0);
-if (isset($_GET['comment_id']) && $comment_id === 0) {
-    $comment_id = $_GET['comment_id'];
-} elseif (isset($_POST['comment_id']) && $comment_id === 0) {
-    $comment_id = $_POST['comment_id'];
-}
-$category = isset($_GET['category']) ? (int) $_GET['category'] : (isset($_POST['category']) ? (int) $_POST['category'] : 0);
-$requested_by_id = isset($_GET['requested_by_id']) ? (int) $_GET['requested_by_id'] : 0;
-$vote = isset($_POST['vote']) ? (int) $_POST['vote'] : 0;
-$posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars((string) $_GET['action']) : (isset($_POST['action']) ? htmlsafechars((string) $_POST['action']) : '')));
-
-$valid_actions = [
-    'add_new_request',
-    'delete_request',
+$images_class = $container->get(Image::class);
+$request_class = $container->get(Request::class);
+$comment_class = $container->get(Comment::class);
+$torrent = $container->get(Torrent::class);
+$session = $container->get(Session::class);
+$has_access = has_access($user['class'], UC_USER, 'internal') || has_access($user['class'], UC_STAFF, '');
+$actions = [
+    'view_all',
+    'add_request',
     'edit_request',
-    'update_request',
-    'request_details',
-    'vote',
-    'add_comment',
-    'edit',
-    'delete',
-    'vieworiginal',
-    'edit_comment',
+    'delete_request',
+    'view_request',
     'delete_comment',
+    'edit',
+    'edit_comment',
+    'add_comment',
+    'post_comment',
     'add_bounty',
     'pay_bounty',
 ];
-$action = in_array($posted_action, $valid_actions) ? $posted_action : 'default';
-$bounty_note1 = 'Bounties are paid automatically 48 hours after uploaded, if not paid by the requestor before then.';
-$bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded matches this request. If not, notify staff.<br>
-2) You are responsible for paying the bounties or challenging them as not metting your request.<br>
-3) If you do not pay the bounty within 48 hours, or challenge them, the system will force them paid.<br>
-4) After the bounties have been paid, they are not reversable.';
-
-$top_menu = '
-    <div>
-        <ul class="level-center bg-06 bottom20">
-            <li class="is-link margin10">
-                <a href="' . $site_config['paths']['baseurl'] . '/requests.php">View Requests</a>
-            </li>
-            <li class="is-link margin10">
-                <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_new_request">New Request</a>
-            </li>
-        </ul>
-    </div>';
-$session = $container->get(Session::class);
-$fluent = $container->get(Database::class);
-$users_class = $container->get(User::class);
-switch ($action) {
-    case 'update_request':
-        if (!isset($id) || !is_valid_id($id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $exists = $fluent->from('requests')
-                         ->select(null)
-                         ->select('requested_by_user_id')
-                         ->where('id = ?', $id)
-                         ->fetch();
-        if (empty($exists)) {
-            stderr('Error', 'Invalid ID.');
-        }
-        if ($exists['requested_by_user_id'] !== $user['id'] && $user['class'] < UC_STAFF) {
-            stderr('Error', 'Permission denied.');
-        }
-        $set = [
-            'id' => $_POST['id'],
-            'request_name' => $_POST['request_name'],
-            'image' => $_POST['image'],
-            'link' => $_POST['link'],
-            'category' => $_POST['category'],
-            'description' => $_POST['body'],
-            'updated' => TIME_NOW,
-        ];
-        $fluent->update('requests')
-               ->set($set)
-               ->where('id = ?', $id)
-               ->execute();
-
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . sqlesc($id));
-        die();
-        break;
-
-    case 'vote':
-        if (!isset($id) || !is_valid_id($id) || !isset($vote) || !is_valid_id($vote)) {
-            stderr('USER ERROR', 'Bad id / bad vote');
-        }
-        $voted = $fluent->from('request_votes')
-                        ->select(null)
-                        ->select('vote')
-                        ->where('user_id = ?', $user['id'])
-                        ->where('request_id = ?', $id)
-                        ->fetch('vote');
-
-        if (!empty($voted)) {
-            stderr('USER ERROR', 'You have voted on this request before.');
-        } else {
-            $yes_or_no = $vote === 1 ? 'yes' : 'no';
-            $values = [
-                'request_id' => $id,
-                'user_id' => $user['id'],
-                'vote' => $yes_or_no,
-            ];
-            $fluent->insertInto('request_votes')
-                   ->values($values)
-                   ->execute();
-            if ($vote === 1) {
-                $set = [
-                    'vote_yes_count' => new Literal('vote_yes_count + 1'),
-                ];
+$dt = TIME_NOW;
+$session->set('post_request_data', $_POST);
+$data = $_GET;
+$view_all = $add = $edit = $delete = $view = $edit_comment = $add_comment = $post_comment = $add_bounty = $pay_bounty = false;
+if (isset($data['action'])) {
+    switch ($data['action']) {
+        case 'pay_bounty':
+            $pay_bounty = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            $post_data = $request_class->get($id);
+            break;
+        case 'delete_comment':
+            $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
+            $tid = isset($data['tid']) ? (int) $data['tid'] : 0;
+            $comment = $comment_class->get_comment_by_id($cid);
+            if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'formum_mod') || $user['id'] === $comment['user'])) {
+                if ($comment_class->delete($cid)) {
+                    $update = [
+                        'comments' => new Literal('comments - 1'),
+                    ];
+                    $request_class->update($update, $tid);
+                    $session->set('is-success', $lang['request_comment_deleted']);
+                } else {
+                    $session->set('is-warning', $lang['request_comment_not_deleted']);
+                }
             } else {
-                $set = [
-                    'vote_no_count' => new Literal('vote_no_count + 1'),
-                ];
+                $session->set('is-danger', $lang['request_comment_no_access_del']);
             }
-            $fluent->update('requests')
-                   ->set($set)
-                   ->where('id = ?', $id)
-                   ->execute();
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&voted=1&id=' . sqlesc($id));
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $tid);
             die();
-        }
-        break;
-
-    case 'default':
-        $count = $fluent->from('requests')
-                        ->select(null)
-                        ->select('COUNT(id) AS count')
-                        ->fetch('count');
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
-        $link = $site_config['paths']['baseurl'] . '/requests.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
-        $pager = pager($perpage, $count, $link);
-        $menu_top = $pager['pagertop'];
-        $menu_bottom = $pager['pagerbottom'];
-
-        $requests = $fluent->from('requests AS r')
-                           ->select('c.name AS cat_name')
-                           ->select('c.image AS cat_image')
-                           ->select('p.name AS parent_name')
-                           ->leftJoin('categories AS c ON r.category = c.id')
-                           ->leftJoin('categories AS p ON c.parent_id=p.id')
-                           ->orderBy('r.added DESC')
-                           ->limit($pager['pdo']['limit'])
-                           ->offset($pager['pdo']['offset'])
-                           ->fetchAll();
-
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
-        $heading = '
-        <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Added</th>
-            <th>Comm</th>
-            <th>Votes</th>
-            <th>Requested By</th>
-            <th>Filled</th>
-        </tr>';
-        $body = '';
-        foreach ($requests as $request) {
-            $request['cat'] = $request['parent_name'] . '::' . $request['cat_name'];
-            $caticon = !empty($request['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $request['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $request['cat']) . "' title='" . htmlsafechars((string) $request['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $request['cat']);
-            $body .= '
-        <tr>
-            <td>' . $caticon . '</td>
-            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=request_details&amp;id=' . $request['id'] . '">' . htmlsafechars((string) $request['request_name']) . '</a></td>
-            <td>' . get_date((int) $request['added'], 'LONG') . '</td>
-            <td>' . number_format($request['comments']) . '</td>
-            <td>yes: ' . number_format($request['vote_yes_count']) . '<br>
-            no: ' . number_format($request['vote_no_count']) . '</td>
-            <td>' . format_username((int) $request['requested_by_user_id']) . '</td>
-            <td>' . ($request['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $request['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
-        </tr>';
-        }
-        $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no requests</div>');
-        $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
-
-        echo stdhead('Requests', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'request_details':
-        if (!isset($id) || !is_valid_id($id)) {
-            stderr('USER ERROR', 'Bad id');
-        }
-        $arr = $fluent->from('requests AS r')
-                      ->select('r.id AS request_id')
-                      ->select('c.name AS cat_name')
-                      ->select('c.image AS cat_image')
-                      ->select('p.name AS parent_name')
-                      ->leftJoin('categories AS c ON r.category = c.id')
-                      ->leftJoin('categories AS p ON c.parent_id = p.id')
-                      ->where('r.id = ?', $id)
-                      ->fetch();
-
-        $arr['cat'] = $arr['parent_name'] . '::' . $arr['cat_name'];
-        $caticon = !empty($arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars((string) $arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars((string) $arr['cat']) . "' title='" . htmlsafechars((string) $arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars((string) $arr['cat']);
-        if (!empty($arr['link'])) {
-            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $arr['link'], $imdb);
-            $imdb = !empty($imdb[2]) ? $imdb[2] : '';
-        }
-        $movie_info = get_imdb_info($imdb, false, false, null, null);
-
-        $voted = $fluent->from('request_votes')
-                        ->select(null)
-                        ->select('vote')
-                        ->where('user_id = ?', $user['id'])
-                        ->where('request_id = ?', $id)
-                        ->fetch('vote');
-
-        if (!$voted) {
-            $vote_yes = '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php" accept-charset="utf-8">
-                    <input type="hidden" name="action" value="vote">
-                    <input type="hidden" name="id" value="' . $id . '">
-                    <input type="hidden" name="vote" value="1">
-                    <input type="submit" class="button is-small" value="vote yes!">
-                    </form> ~ you will be notified when this request is filled.';
-            $vote_no = '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php" accept-charset="utf-8">
-                    <input type="hidden" name="action" value="vote">
-                    <input type="hidden" name="id" value="' . $id . '">
-                    <input type="hidden" name="vote" value="2">
-                    <input type="submit" class="button is-small" value="vote no!">
-                    </form> ~ you are being a stick in the mud.';
-            $your_vote_was = '';
-        } else {
-            $vote_yes = '';
-            $vote_no = '';
-            $your_vote_was = ' your vote: ' . $voted;
-        }
-        $usersdata = $users_class->getUserFromId($arr['requested_by_user_id']);
-        $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
-  <table class="table table-bordered table-striped">
-  <tr>
-  <td colspan="2"><h1>' . htmlsafechars((string) $arr['request_name']) . ($user['class'] < UC_STAFF ? '' : ' [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
-  [ <a href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
-  </tr>
-  <tr>
-  <td>image:</td>
-  <td>' . $caticon . '</td>
-  </tr>
-  <tr>
-  <td>description:</td>
-  <td>' . format_comment($arr['description']) . '</td>
-  </tr>
-  <tr>
-  <td>category:</td>
-  <td>' . $caticon . '</td>
-  </tr>
-  <tr>
-  <td>link:</td>
-  <td><a class="is-link" href="' . htmlsafechars((string) $arr['link']) . '"  target="_blank">' . htmlsafechars($arr['link']) . '</a></td>
-  </tr>
-    <tr>
-        <td>IMDb</td>
-        <td>' . $movie_info[0] . '</td>
-    </tr>
-  <tr>
-  <td>votes:</td>
-  <td>
-  <span>yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
-  <span>no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
-  </tr>
-  <tr>
-  <td>requested by:</td>
-  <td>' . format_username((int) $usersdata['id']) . ' [ ' . get_user_class_name((int) $usersdata['class']) . ' ]
-  ratio: ' . member_ratio($usersdata['uploaded'], $usersdata['downloaded']) . get_user_ratio_image($usersdata['uploaded'], $usersdata['downloaded']) . '</td>
-  </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
-  <td>filled:</td>
-  <td><a class="is-link" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
-  </tr>' : '') . '
-  <tr>
-  <td>Report Request</td>
-  <td>
-    <form action="' . $site_config['paths']['baseurl'] . '/report.php?type=Request&amp;id=' . $id . '" method="post" accept-charset="utf-8">
-        <div class="has-text-centered margin20">
-            <input type="submit" class="button is-small" value="Report This Request">
-        </div>
-        For breaking the <a class="is-link" href="rules . php">rules</a>
-    </form>
-    </td>
-  </tr>
-  </table>';
-        $HTMLOUT .= '
-            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name']) . '</h1>
-            <a id="startcomments"></a>
-            <div class="has-text-centered margin20">
-                <a class="button is-small" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
-            </div>';
-        $count = (int) $arr['comments'];
-        if (!$count) {
-            $HTMLOUT .= main_div('No comments yet', 'top20 has-text-centered', 'padding20');
-        } else {
-            $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
-            $link = $site_config['paths']['baseurl'] . "/requests.php?action=request_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage ={$perpage}&amp;" : '');
-            $pager = pager($perpage, $count, $link);
-            $menu_top = $pager['pagertop'];
-            $menu_bottom = $pager['pagerbottom'];
-
-            $allrows = $fluent->from('comments')
-                              ->select('id AS comment_id')
-                              ->where('request = ?', $id)
-                              ->orderBy('id DESC')
-                              ->limit($pager['pdo']['limit'])
-                              ->offset($pager['pdo']['offset'])
-                              ->fetchAll();
-
-            $HTMLOUT .= '<a id="comments"></a>';
-            $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
-            $HTMLOUT .= commenttable($allrows, 'request');
-            $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
-        }
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'add_new_request':
-        $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : '');
-        $image = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
-        $body = isset($_POST['body']) ? trim($_POST['body']) : '';
-        $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
-        $category_drop_down = '
-                <select name="category" required>
-                    <option value="">Select Request Category</option>';
-        $cats = genrelist(true);
-        foreach ($cats as $cat) {
-            foreach ($cat['children'] as $row) {
-                $category_drop_down .= "<option value='{$row['id']}' " . ($category == $row['id'] ? 'selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
-            }
-        }
-        $category_drop_down .= '
-                </select>';
-        if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
-            $values = [
-                'request_name' => $request_name,
-                'image' => $image,
-                'description' => $body,
-                'category' => $category,
-                'added' => TIME_NOW,
-                'requested_by_user_id' => $user['id'],
-                'link' => $link,
-            ];
-            $new_request_id = $fluent->insertInto('requests')
-                                     ->values($values)
-                                     ->execute();
-
-            $color = get_user_class_name($user['class'], true);
-            $msg = "[{$color}]{$user['username']}[/{$color}] posted a new request: [url={$site_config['paths']['baseurl']}/requests.php?action=request_details&id={$new_request_id}]" . format_comment($request_name) . '[/url]';
-            autoshout($msg);
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&new=1&id=' . $new_request_id);
-            die();
-        }
-        $stdfoot['js'] = array_merge($stdfoot['js'], [
+        case 'edit':
+            $edit_comment = true;
+            $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
+            $comment = $comment_class->get_comment_by_id($cid);
+            $request = $request_class->get($comment['request']);
+            $edit_form = "
+                <h2 class='has-text-centered'>{$lang['request_edit_comment']}" . htmlsafechars($request['name']) . "</h2>
+                <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=edit_comment' accept-charset='utf-8'>
+                    <input type='hidden' name='id' value='{$comment['request']}'>
+                    <input type='hidden' name='cid' value='{$comment['id']}'>
+                    <div class='columns is-marginless is-paddingless'>
+                        <div class='column is-one-quarter has-text-left'>{$lang['request_comment']}</div>
+                        <div class='column'>" . BBcode($comment['text']) . "</div>
+                    </div>
+                    <div class='has-text-centered padding20'>
+                        <input type='submit' value='{$lang['request_update']}' class='button is-small'>
+                    </div>
+                </form>";
+            break;
+        case 'edit_comment':
+            $edit_comment = true;
+            break;
+        case 'post_comment':
+            $post_comment = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            break;
+        case 'add_comment':
+            $add_comment = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            $request = $request_class->get($id);
+            $edit_form = "
+                <h2 class='has-text-centered'>{$lang['request_add_comment']}" . htmlsafechars($request['name']) . "</h2>
+                <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_comment' accept-charset='utf-8'>
+                    <input type='hidden' name='id' value='{$id}'>
+                    <div class='columns is-marginless is-paddingless'>
+                        <div class='column is-one-quarter has-text-left'>{$lang['request_comment']}</div>
+                        <div class='column'>" . BBcode() . "</div>
+                    </div>
+                    <div class='has-text-centered padding20'>
+                        <input type='submit' value='{$lang['request_add_comment']}' class='button is-small'>
+                    </div>
+                </form>";
+            break;
+        case 'view_request':
+            $view = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            $post_data = $request_class->get($id);
+            break;
+        case 'view_all':
+            $view_all = true;
+            break;
+        case 'add_request':
+            $add = true;
+            $post_data = $session->get('post_request_data');
+            break;
+        case 'edit_request':
+            $edit = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            $post_data = $request_class->get($id);
+            break;
+        case 'delete_request':
+            $delete = true;
+            $id = isset($data['id']) ? (int) $data['id'] : 0;
+            break;
+        case 'add_bounty':
+            $add_bounty = true;
+            break;
+    }
+}
+if ($add || $edit || $edit_comment || $add_comment) {
+    $stdhead = [
+        'css' => [
+            get_file_name('sceditor_css'),
+        ],
+    ];
+    $stdfoot = [
+        'js' => [
+            get_file_name('imdb_js'),
             get_file_name('dragndrop_js'),
+            get_file_name('sceditor_js'),
+        ],
+    ];
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $validator = $container->get(Validator::class);
+    if ($pay_bounty) {
+        $validation = $validator->validate($_POST, [
+            'id' => 'required|numeric',
         ]);
-        $HTMLOUT .= $top_menu . '
-    <h1 class="has-text-centered">New Request</h1>
-    <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_new_request" accept-charset="utf-8">
-    <table class="table table-bordered table-striped">
-    <tbody>
-    <tr>
-    <td colspan="2"><h1>Making a Request</h1></td>
-    </tr>
-    <tr>
-    <td colspan="2">Before you make an request, <a class="is-link" href="browse.php">Search</a>
-    to be sure it has not yet been requested, offered, or uploaded!<br><br>Be sure to fill in all fields!
-    <div class="has-text-centered error size_6 margin20"><span></span></div>
-    </td>
-    </tr>
-    <tr>
-    <td>name:</td>
-    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
-    </tr>
-    <tr>
-    <td>link:</td>
-    <td>
-        <input type="url" id="url" name="link" class="w-100" value="' . htmlsafechars($link) . '" required>
-        <div id="imdb_outer">
-        </div>
-    </td>
-    </tr>
-    <tr>
-    <td>image:</td>
-    <td>
-        <input type="url" id="image_url"  placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
-        <input type="url" id="poster" maxlength="255" name="poster" class="w-100 is-hidden">
-        <div class="poster_container has-text-centered"></div>
-    </td>
-    </tr>
-    <tr>
-    <td class="rowhead"><b>' . $lang['upload_bitbucket'] . '</b></td>
-    <td class="has-text-centered">
-        <div id="droppable" class="droppable bg-03">
-            <span id="comment">' . $lang['bitbucket_dragndrop'] . '</span>
-            <div id="loader" class="is-hidden">
-                <img src="' . $site_config['paths']['images_baseurl'] . 'forums/updating.svg" alt="Loading...">
-            </div>
-        </div>
-        <div class="output-wrapper output"></div>
-    </td>
-    </tr>
-    <tr>
-    <td>category:</td>
-    <td>' . $category_drop_down . '</td>
-    </tr>
-    <tr>
-    <td>description:</td>
-    <td class="is-paddingless">' . BBcode($body) . '</td>
-    </tr>
-    <tr>
-    <td colspan="2">
-    <div class="has-text-centered margin20">
-        <input type="submit" name="button" class="button is-small" value="Submit">
-    </div>
-    </td>
-    </tr>
-    </tbody>
-    </table></form>';
-        echo stdhead('Add new request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'delete_request':
-        if (!isset($id) || !is_valid_id($id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $exists = $fluent->from('requests')
-                         ->select(null)
-                         ->select('request_name')
-                         ->select('requested_by_user_id')
-                         ->where('id = ?', $id)
-                         ->fetch();
-        if (empty($exists)) {
-            stderr('Error', 'Invalid ID.');
-        }
-        if ($exists['requested_by_user_id'] !== $user['id'] && $user['class'] < UC_STAFF) {
-            stderr('Error', 'Permission denied.');
-        }
-        if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'Are you sure you would like to delete the request <b>"' . htmlsafechars($exists['request_name']) . '"</b>? If so click
-        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666">HERE</a>.');
-        } else {
-            $fluent->deleteFrom('requests')
-                   ->where('id = ?', $id)
-                   ->execute();
-            $fluent->deleteFrom('comments')
-                   ->where('request = ?', $id)
-                   ->execute();
-
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?request_deleted=1');
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            stderr('Error', $errors->firstOfAll()['name']);
             die();
         }
-        echo stdhead('Delete Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'edit_request':
-        require_once INCL_DIR . 'function_bbcode.php';
-        if (!isset($id) || !is_valid_id($id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $edit_arr = $fluent->from('requests AS r')
-                           ->select('r.id AS request_id')
-                           ->select('c.name AS cat_name')
-                           ->select('c.image AS cat_image')
-                           ->select('p.name AS parent_name')
-                           ->leftJoin('categories AS c ON r.category = c.id')
-                           ->leftJoin('categories AS p ON c.parent_id=p.id')
-                           ->where('r.id = ?', $id)
-                           ->fetch();
-
-        $edit_arr['cat'] = $edit_arr['parent_name'] . '::' . $edit_arr['cat_name'];
-        $caticon = !empty($edit_arr['cat_image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($edit_arr['cat_image']) . "' class='tooltipper' alt='" . htmlsafechars($edit_arr['cat']) . "' title='" . htmlsafechars($edit_arr['cat']) . "' height='20px' width='auto'>" : htmlsafechars($edit_arr['cat']);
-
-        if ($user['class'] < UC_STAFF && $user['id'] !== $edit_arr['requested_by_user_id']) {
-            stderr('Error!', 'This is not your request to edit!');
-        }
-        $filled_by = '';
-        if ($edit_arr['filled_by_user_id'] > 0) {
-            $filled_by = 'this request was filled by ' . format_username((int) $edit_arr['filled_by_user_id']);
-        }
-        $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : $edit_arr['request_name']);
-        $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
-        $body = isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description'];
-        $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
-        $category = isset($_POST['category']) ? (int) $_POST['category'] : $edit_arr['category'];
-        $category_drop_down = '
-                <select name="category" required><option value="">Select Request Category</option>';
-        $cats = genrelist(true);
-        foreach ($cats as $cat) {
-            foreach ($cat['children'] as $row) {
-                $category_drop_down .= "
-                    <option value='{$row['id']}' " . ($category == $row['id'] ? 'selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
-            }
-        }
-        $category_drop_down .= '
-                </select>';
-        $HTMLOUT .= '<table class="table table-bordered table-striped">
-   <tr>
-   <td class="embedded">
-   <h1 class="has-text-centered">Edit Request</h1>' . $top_menu . '
-   <form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=update_request" accept-charset="utf-8">
-   <input type="hidden" name="id" value="' . $id . '">
-   <table class="table table-bordered table-striped">
-   <tr>
-   <td colspan="2">Be sure to fill in all fields!</td>
-   </tr>
-   <tr>
-   <td>name:</td>
-   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name) . '" class="w-100" required></td>
-   </tr>
-   <tr>
-   <td>image:</td>
-   <td><input type="url" name="image" value="' . htmlsafechars($image) . '" class="w-100" required></td>
-   </tr>
-   <tr>
-   <td>link:</td>
-   <td><input type="url" name="link" value="' . htmlsafechars($link) . '" class="w-100" required></td>
-   </tr>
-   <tr>
-   <td>category:</td>
-   <td>' . $category_drop_down . '</td>
-   </tr>
-   <tr>
-   <td>description:</td>
-   <td class="is-paddingless">' . BBcode($body) . '</td>
-   </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
-   <tr>
-   <td>filled:</td>
-   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . '> check this box to re-set this request. [ removes filled by ]  </td>
-   </tr>') . '
-   <tr>
-   <td colspan="2">
-    <div class="has-text-centered margin20">
-        <input type="submit" name="button" class="button is-small" value="Edit">
-    </div>
-    </td>
-   </tr>
-   </table></form>
-    </td></tr></table><br>';
-        echo stdhead('Edit Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'add_comment':
-        if (!isset($id) || !is_valid_id($id)) {
-            stderr('USER ERROR', 'Bad id');
-        }
-        $arr = $fluent->from('requests')
-                      ->select(null)
-                      ->select('request_name')
-                      ->where('id = ?', $id)
-                      ->fetch();
-
-        if (!$arr) {
-            stderr('Error', 'No request with that ID.');
-        }
-        if (isset($_POST['button']) && $_POST['button'] === 'Save') {
-            $body = trim($_POST['body']);
-            if (!$body) {
-                stderr('Error', 'Comment body cannot be empty!');
-            }
-            $values = [
-                'user' => $user['id'],
-                'request' => $id,
-                'added' => TIME_NOW,
-                'text' => $body,
-                'ori_text' => $body,
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+        $bounty_class = $container->get(Bounty::class);
+        $bounties = $bounty_class->get_sum($id);
+        $user_class = $container->get(User::class);
+        $owner = $user_class->getUserFromId($post_data['owner']);
+        if ($post_data['torrentid'] !== 0 && $post_data['paid'] === 'no' && $post_data['owner'] != 0 && $user['status'] === 0 && $owner['id'] === $post_data['owner'] && (has_access($user['class'], UC_STAFF, '') || $user['id'] === $post_data['id'])) {
+            $update = [
+                'paid' => 'yes',
             ];
-            $newid = $fluent->insertInto('comments')
-                            ->values($values)
-                            ->execute();
-            $set = [
+            $bounty_class->pay($update, $id);
+            $update = [
+                'seedbonus' => $owner['seedbonus'] + $bounties,
+            ];
+            $user_class->update($update, $owner['id']);
+        }
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
+        die();
+    } elseif ($add_bounty) {
+        $validation = $validator->validate($_POST, [
+            'id' => 'required|numeric',
+            'bounty' => 'required|numeric',
+        ]);
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            stderr('Error', $errors->firstOfAll()['name']);
+            die();
+        }
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+        $bounty = isset($_POST['bounty']) ? (int) $_POST['bounty'] : 0;
+        if ($bounty > 0 && $user['seedbonus'] >= $bounty) {
+            $values = [
+                'userid' => $user['id'],
+                'requestid' => $id,
+                'amount' => $bounty,
+            ];
+            $bounty_class = $container->get(Bounty::class);
+            $bounty_id = $bounty_class->add($values);
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
+            die();
+        }
+    } elseif ($add_comment) {
+        $validation = $validator->validate($_POST, [
+            'id' => 'required|numeric',
+            'body' => '',
+        ]);
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            stderr('Error', $errors->firstOfAll()['name']);
+            die();
+        }
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+        $values = [
+            'text' => htmlsafechars($_POST['body']),
+            'request' => $id,
+            'user' => $user['id'],
+            'added' => $dt,
+        ];
+        if ($comment_class->add($values)) {
+            $update = [
                 'comments' => new Literal('comments + 1'),
             ];
-            $fluent->update('requests')
-                   ->set($set)
-                   ->where('id = ?', $id)
-                   ->execute();
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
-            die();
-        }
-        $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-        $HTMLOUT .= $top_menu . '
-    <form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=add_comment" accept-charset="utf-8">
-        <input type="hidden" name="id" value="' . $id . '">
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
-            </tr>
-            <tr>
-                <td><b>Comment:</b></td>
-                <td class="is-paddingless">' . BBcode($body) . '   </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div class="has-text-centered margin20">
-                        <input name="button" type="submit" class="button is-small" value="Save">
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </form>';
-
-        $allrows = $fluent->from('comments')
-                          ->select('id AS comment_id')
-                          ->where('request = ?', $id)
-                          ->orderBy('id DESC')
-                          ->limit(5)
-                          ->fetchAll();
-
-        if ($allrows) {
-            $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
-            $HTMLOUT .= commenttable($allrows, 'request');
-        }
-        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'edit':
-        require_once INCL_DIR . 'function_bbcode.php';
-        if (!isset($comment_id) || !is_valid_id($comment_id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $arr = $fluent->from('comments AS c')
-                      ->select('r.request_name')
-                      ->leftJoin('requests AS r ON c.request = r.id')
-                      ->where('c.id = ?', $comment_id)
-                      ->fetch();
-
-        if (!$arr) {
-            stderr('Error', 'Invalid ID.');
-        }
-        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
-            stderr('Error', 'Permission denied.');
-        }
-        $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : $arr['text']));
-        if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
-            if ($body == '') {
-                stderr('Error', 'Comment body cannot be empty!');
-            }
-            $set = [
-                'text' => $body,
-                'editedat' => TIME_NOW,
-                'editedby' => $user['id'],
-            ];
-            $fluent->update('comments')
-                   ->set($set)
-                   ->where('id = ?', $comment_id)
-                   ->execute();
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
-            die();
-        }
-        if ($user['id'] == $arr['user']) {
-            $avatar = get_avatar($user);
+            $request_class->update($update, $id);
+            $session->set('is-success', $lang['request_comment_added']);
         } else {
-            $arr_user = $users_class->getUserFromId($arr['user']);
-            $avatar = get_avatar($arr_user);
+            $session->set('is-warning', $lang['request_comment_not_added']);
         }
-        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['paths']['baseurl'] . '/requests.php?action=edit" accept-charset="utf-8">
-    <input type="hidden" name="id" value="' . $arr['request'] . '">
-    <input type="hidden" name="cid" value="' . $comment_id . '">
-    <table class="table table-bordered table-striped">
-     <tr>
-    <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name']) . '"</h1></td>
-    </tr>
-     <tr>
-    <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>
-    </tr>
-     <tr>
-        <td colspan="2">
-            <div class="has-text-centered margin20">
-                <input name="button" type="submit" class="button is-small" value="Edit">
-            </div>
-        </td>
-    </tr>
-     </table></form>';
-        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-
-    case 'edit_comment':
-        if (!isset($comment_id) || !is_valid_id($comment_id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $arr = $fluent->from('requests')
-                      ->select(null)
-                      ->select('user')
-                      ->select('request')
-                      ->select('text')
-                      ->where('id  = ?', $comment_id)
-                      ->fetch();
-        if (empty($arr)) {
-            stderr('Error', 'Invalid ID.');
-        }
-        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
-            stderr('Error', 'Permission denied.');
-        }
-        $set = [
-            'editedby' => $user['id'],
-            'editedat' => TIME_NOW,
-            'ori_text' => $arr['text'],
-            'text' => $_POST['body'],
-        ];
-        $fluent->update('comments')
-               ->set($set)
-               ->where('id = ?', $comment_id)
-               ->execute();
-
-        $session->set('is-success', 'Comment Edited Successfully.');
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '#comm' . $comment_id);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
         die();
-        break;
-
-    case 'delete_comment':
-        if (!isset($comment_id) || !is_valid_id((int) $comment_id)) {
-            stderr('Error', 'Bad ID.');
-        }
-        $arr = $fluent->from('comments')
-                      ->select('user')
-                      ->select('request')
-                      ->where('id = ?', (int) $comment_id)
-                      ->fetch();
-        if (empty($arr)) {
-            stderr('Error', 'Invalid ID.');
-        }
-        if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
-            stderr('Error', 'Permission denied.');
-        }
-        if (!isset($_GET['do_it'])) {
-            stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . ' &amp;comment_id=' . $comment_id . '&amp;do_it=666">HERE</a>.');
-        } else {
-            $fluent->deleteFrom('comments')
-                   ->where('id = ?', $comment_id)
-                   ->execute();
-            $set = [
-                'comments' => new Literal('comments - 1'),
-            ];
-            $fluent->update('requests')
-                   ->set($set)
-                   ->where('id = ?', $arr['request'])
-                   ->execute();
-
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?action=request_details&id=' . $id . '&comment_deleted=1');
+    } elseif ($edit_comment) {
+        $validation = $validator->validate($_POST, [
+            'id' => 'required|numeric',
+            'cid' => 'required|numeric',
+            'body' => '',
+        ]);
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            stderr('Error', $errors->firstOfAll()['name']);
             die();
         }
-        break;
-
-    case 'vieworiginal':
-        if ($user['class'] < UC_STAFF) {
-            stderr($lang['comment_error'], $lang['comment_denied']);
+        $cid = isset($_POST['cid']) ? (int) $_POST['cid'] : 0;
+        $comment = $comment_class->get_comment_by_id($cid);
+        $values = [
+            'text' => htmlsafechars($_POST['body']),
+        ];
+        if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'formum_mod') || $user['id'] === $comment['user'])) {
+            if ($comment_class->update($values, $cid)) {
+                $session->set('is-success', $lang['request_comment_updated']);
+            } else {
+                $session->set('is-warning', $lang['request_comment_not_updated']);
+            }
+        } else {
+            $session->set('is-danger', $lang['request_comment_no_access_update']);
         }
-        if (!is_valid_id($comment_id)) {
-            stderr($lang['comment_error'], $lang['comment_invalid_id']);
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
+        die();
+    } else {
+        $validation = $validator->validate($_POST, [
+            'type' => 'required|numeric',
+            'name' => 'required|regex:/[A-Za-z0-9\:_\-\s]/',
+            'poster' => 'required|url:http,https',
+            'url' => 'required|url:http,https',
+            'id' => 'numeric',
+            'body' => '',
+        ]);
+        if ($validation->fails()) {
+            $errors = $validation->errors();
+            stderr('Error', $errors->firstOfAll()['name']);
+            die();
         }
-        $arr = $fluent->from('comments')
-                      ->where('id = ?', $comment_id)
-                      ->fetch();
-
-        if (!$arr) {
-            stderr($lang['comment_error'], "{$lang['comment_invalid_id']} $comment_id . ");
+        $values = [
+            'category' => (int) $_POST['type'],
+            'name' => htmlsafechars($_POST['name']),
+            'poster' => htmlsafechars($_POST['poster']),
+            'url' => htmlsafechars($_POST['url']),
+            'added' => $dt,
+            'userid' => $user['id'],
+            'description' => htmlsafechars($_POST['body']),
+        ];
+        if ($add) {
+            if ($request_class->insert($values)) {
+                $session->unset('post_request_data');
+                $session->set('is-success', sprintf($lang['request_added'], format_comment($_POST['name'])));
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                die();
+            }
+        } elseif ($edit) {
+            $values['updated'] = $dt;
+            unset($values['added']);
+            if ($request_class->update($values, (int) $_POST['id'])) {
+                $session->set('is-success', sprintf($lang['request_updated'], format_comment($_POST['name'])));
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                die();
+            }
         }
-        $HTMLOUT = " < h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
-
-        $returnto = isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '';
-        if ($returnto) {
-            $HTMLOUT .= "
-                <div class='has-text-centered margin20'>
-                    <a href='$returnto' class='button is-small has-text-black'>back</a>
+    }
+}
+$HTMLOUT = $add_new = $update = '';
+$form = "
+                <div class='columns is-marginless is-paddingless'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['request_cat']}</div>
+                    <div class='column'>
+                        " . category_dropdown($lang, $site_config['categories']['movie']) . "
+                    </div>
+                </div>
+                <div class='columns is-marginless is-paddingless'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_name']}</div>
+                    <div class='column'>
+                        <input type='text' class='w-100' name='name' autocomplete='on' value='" . (!empty($post_data['name']) ? htmlsafechars($post_data['name']) : '') . "' required>
+                    </div>
+                </div>
+                <div class='columns is-marginless is-paddingless'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['request_poster']}</div>
+                    <div class='column'>
+                        <input type='url' id='image_url' placeholder='{$lang['request_external']}' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
+                        <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' " . (!empty($post_data['poster']) ? "value='" . htmlsafechars($post_data['poster']) . "'" : '') . ">
+                        <div class='poster_container has-text-centered'></div>
+                        <div id='droppable' class='droppable bg-03 top20'>
+                            <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
+                            <div id='loader' class='is-hidden'>
+                                <img src='{$site_config['paths']['images_baseurl']}/forums/updating.svg' alt='Loading...'>
+                            </div>
+                        </div>
+                        <div class='output-wrapper output'></div>
+                    </div>
+                </div>
+                <div class='columns is-marginless is-paddingless'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['request_imdb']}</div>
+                    <div class='column'>
+                        <input type='url' class='w-100' id='url' name='url' autocomplete='on' value='" . (!empty($post_data['url']) ? htmlsafechars($post_data['url']) : '') . "' required>
+                        <div id='imdb_outer'></div>
+                    </div>
+                </div>
+                <div class='columns is-marginless is-paddingless'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
+                    <div class='column'>" . BBcode(!empty($post_data['description']) ? htmlsafechars($post_data['description']) : '') . '</div>
+                </div>';
+if ($has_access) {
+    if ($add) {
+        $add_new = "
+            <h2 class='has-text-centered'>{$lang['request_add']}</h2>
+            <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=add_request' enctype='multipart/form-data' accept-charset='utf-8'>$form
+                <div class='has-text-centered'>
+                    <input type='submit' value='Add' class='button is-small'>
+                </div>
+            </form>";
+        $add_new = main_div($add_new, 'has-text-centered w-75 min-350', 'padding20');
+    } elseif ($edit && is_valid_id($id)) {
+        $update = "
+            <h2 class='has-text-centered'>{$lang['request_edit']}</h2>
+            <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=edit_request' enctype='multipart/form-data' accept-charset='utf-8'>$form
+                <div class='has-text-centered padding20'>
+                    <input type='hidden' name='id' value='{$id}'>
+                    <input type='submit' value='{$lang['request_update']}' class='button is-small'>
+                </div>
+            </form>";
+        $update = main_div($update, 'has-text-centered w-75 min-350', 'padding20');
+    } elseif ($delete && is_valid_id($id)) {
+        if ($request_class->delete($id, $user['class'] >= UC_STAFF, $user['id']) === 1) {
+            $session->set('is-success', $lang['request_deleted']);
+        } else {
+            $session->set('is-warning', $lang['request_not_deleted']);
+        }
+    }
+}
+$view_request = '';
+if ($view && is_valid_id($id)) {
+    preg_match('/(tt[\d]{7,8})/i', $post_data['url'], $match);
+    if (!empty($match[1])) {
+        $imdb_info = get_imdb_info($match[1], true, false, null, $post_data['poster']);
+        if (isset($imdb_info[0])) {
+            $imdb_info = "
+                <div class='columns has-text-left bg-03 top20 round10'>
+                    <div class='column is-one-quarter'>{$lang['request_imdb_info']}</div>
+                    <div class='column'>{$imdb_info[0]}</div>
                 </div>";
         }
-        stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
+    }
+    $view_request .= "
+                <div class='columns has-text-left bg-03 round10'>
+                    <div class='column is-one-quarter'>{$lang['request_cat']}</div>
+                    <div class='column'>{$post_data['fullcat']}</div>
+                </div>
+                <div class='columns bg-03 top20 round10'>
+                    <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
+                    <div class='column'>" . (!empty($post_data['description']) ? format_comment($post_data['description']) : '') . "</div>
+                </div>{$imdb_info}";
+    if ($post_data['torrentid'] !== 0 && $post_data['paid'] === 'no' && (has_access($user['class'], UC_STAFF, '') || $user['id'] === $post_data['id'])) {
+        $view_request .= "
+                <div class='columns bg-03 top20 round10'>
+                    <div class='has-text-centered padding20'>
+                        <h2 class='has-text-centered'>{$lang['request_accept_torrent']}</h2>
+                        <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=pay_bounty&amp;id={$id}' accept-charset='utf-8'>
+                            <input type='hidden' name='id' value='{$id}'>
+                            <div class='level-center-center'>
+                                <input type='submit' value='" . sprintf($lang['request_pay_bounty'], number_format($post_data['bounties'])) . "' class='button is-small'>
+                            </div>
+                        </form>
+                        <div class='bg-03 padding20 top20 round10'>{$lang['request_bounty_info']}</div>
+                    </div>
+                </div>";
+    } elseif ($post_data['torrentid'] === 0) {
+        $view_request .= "
+                <div class='columns bg-03 top20 round10'>
+                    <div class='has-text-centered padding20'>
+                        <h2 class='has-text-centered'>{$lang['request_add_bounty']}" . htmlsafechars($post_data['name']) . "</h2>
+                        <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . sprintf($lang['request_bounty_user'], $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
+                        <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_bounty' accept-charset='utf-8'>
+                            <input type='hidden' name='id' value='{$id}'>
+                            <div class='level-center-center'>
+                                <input type='number' name='bounty' min='100' max='" . ($user['seedbonus'] > 100000 ? 100000 : $user['seedbonus']) . "' step='100' class='left10 right10' required>
+                                <input type='submit' value='{$lang['request_add_bounty']}' class='button is-small left10 right10'>
+                            </div>
+                        </form>
+                        <div class='bg-03 padding20 top20 round10'>{$lang['request_bounty_info']}</div>
+                    </div>
+                </div>";
+    }
+    $view_request .= "
+                <div class='columns bg-03 top20 round10'>
+                    <div class='has-text-centered padding20'>
+                        <h2 class='has-text-centered'>{$lang['request_adding_comment']}" . htmlsafechars($post_data['name']) . "</h2>
+                        <a class='button is-small' href='{$site_config['paths']['baseurl']}/requests.php?action=add_comment&amp;id={$id}'>Add a comment</a>
+                    </div>
+                </div>";
+    $comments = $comment_class->get_comment_by_column('request', $id);
+    $view_request .= commenttable($comments, 'request');
+    $view_request = main_div($view_request, 'has-text-left', 'padding20');
 }
+
+$HTMLOUT .= "
+    <ul class='level-center bg-06 padding10'>
+        <li><a href='{$_SERVER['PHP_SELF']}?action=add_request'>{$lang['request_add']}</a></li>" . ($view_all ? "
+        <li><a href='{$_SERVER['PHP_SELF']}'>{$lang['request_view']}</a></li>" : "
+        <li><a href='{$_SERVER['PHP_SELF']}?action=view_all'>{$lang['request_view_all']}</a></li>") . "
+    </ul>
+    <h1 class='has-text-centered'>{$site_config['site']['name']}'s {$lang['request_title']}</h1>";
+
+if (!empty($edit_form)) {
+    $HTMLOUT .= $edit_form;
+} elseif (!empty($add_new)) {
+    $HTMLOUT .= $add_new;
+} elseif (!empty($view_request)) {
+    $HTMLOUT .= $view_request;
+} elseif (!empty($update)) {
+    $HTMLOUT .= $update;
+} else {
+    $count = $request_class->get_count(isset($data['action']) && $data['action'] === 'view_all' ? true : false);
+    $perpage = 25;
+    $pager = pager($perpage, (int) $count, $_SERVER['PHP_SELF'] . '?');
+    $menu_top = $count > $perpage ? $pager['pagertop'] : '';
+    $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
+    $requests = $request_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all);
+    $heading = "
+                    <tr>
+                        <th class='has-text-centered'>{$lang['request_cat']}</th>
+                        <th class='has-text-centered min-250'>{$lang['upcoming_name']}</th>
+                        <th class='has-text-centered'>{$lang['upcoming_chef']}</th>
+                        <th class='has-text-centered'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
+                        <th class='has-text-centered'><i class='icon-dollar icon has-text-success' aria-hidden='true'></i></th>
+                        <th class='has-text-centered'><i class='icon-user-plus icon' aria-hidden='true'></i></th>" . ($has_access ? "
+                        <th class='has-text-centered'><i class='icon-tools icon' aria-hidden='true'></i></th>" : '') . '
+                    </tr>';
+    $body = '';
+    if (!empty($requests)) {
+        foreach ($requests as $request) {
+            $has_full_access = $user['id'] === $request['userid'] || has_access($user['class'], UC_STAFF, '') && $has_access;
+            $caticon = !empty($request['image']) ? "<img src='{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . '/' . format_comment($request['image']) . "' class='tooltipper' alt='" . format_comment($request['cat']) . "' title='" . format_comment($request['cat']) . "' height='20px' width='auto'>" : format_comment($request['cat']);
+            $poster = !empty($request['poster']) ? "<div class='has-text-centered'><img src='" . url_proxy($request['poster'], true, 250) . "' alt='image' class='img-polaroid'></div>" : '';
+            $background = $imdb_id = '';
+            preg_match('#(tt\d{7,8})#', $request['url'], $match);
+            if (!empty($match[1])) {
+                $imdb_id = $match[1];
+                $background = $images_class->find_images($imdb_id, $type = 'background');
+                $background = !empty($background) ? "style='background-image: url({$background});'" : '';
+                $poster = !empty($request['poster']) ? $request['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
+                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$request['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$request['name']}' class='tooltip-poster'>";
+            }
+            $chef = "<span class='" . get_user_class_name($request['class'], true) . "'>" . $request['username'] . '</span>';
+            $plot = $torrent->get_plot($imdb_id);
+            if (!empty($plot)) {
+                $stripped = strip_tags($plot);
+                $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
+                $plot = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['request_plot']}:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$plot}</span>
+                                                        </div>";
+            }
+            $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'upcoming_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot, $lang);
+            $body .= "
+                    <tr>
+                        <td class='has-text-centered'>{$caticon}</td>
+                        <td>$hover</td>
+                        <td class='has-text-centered'>{$chef}</td>
+                        <td class='has-text-centered'><span class='tooltipper' title='{$lang['request_comments']}'>" . number_format($request['comments']) . "</span></td>
+                        <td class='has-text-centered'><span class='tooltipper' title='{$lang['request_bounty']}'>" . number_format($request['bounty']) . ' / ' . number_format($request['bounties']) . "</span></td>
+                        <td class='has-text-centered w-10'>
+                            <div class='level-center'>
+                                <div data-id='{$request['id']}' data-voted='{$request['voted']}' class='request_vote tooltipper' title='" . ($request['voted'] === 'yes' ? $lang['request_voted_yes'] : ($request['voted'] === 'no' ? $lang['request_voted_no'] : $lang['request_not_voted'])) . "'>
+                                    <span id='vote_{$request['id']}'>" . ($request['voted'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>" : ($request['voted'] === 'no' ? "<i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>" : "<i class='icon-thumbs-up icon is-marginless' aria-hidden='true'></i>")) . "</span>
+                                </div>
+                                <div data-id='{$request['id']}' data-notified='{$request['notify']}' class='request_notify tooltipper' title='" . ($request['notify'] === 1 ? $lang['request_notified'] : $lang['request_not_notified']) . "'>
+                                    <span id='notify_{$request['id']}'>" . ($request['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
+                                </div>
+                            </div>
+                        </td>' . ($has_access ? "
+                        <td class='has-text-centered'>" . ($has_full_access ? "
+                            <a href='{$_SERVER['PHP_SELF']}?action=edit_request&amp;id={$request['id']}'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
+                            <a href='{$_SERVER['PHP_SELF']}?action=delete_request&amp;id={$request['id']}'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '
+                        </td>' : '') . '
+                    </tr>';
+        }
+    } else {
+        $cols = $has_access ? 7 : 6;
+        $body = "
+                    <tr>
+                        <td colspan='{$cols}' class='has-text-centered'>{$lang['request_no_requests']}</td>
+                    </tr>";
+    }
+    $HTMLOUT .= $menu_top . main_table($body, $heading) . $menu_bottom;
+}
+
+echo stdhead($lang['request_title'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

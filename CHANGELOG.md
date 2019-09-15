@@ -1,3 +1,7 @@
+### 15 Sept, 2019
+fix: numerous bugs  
+update: requests.php, offers.php and upcoming.php  
+
 ### 14 Sept, 2019
 fix: cast to int requests.php offers.php  
 fix: typo requests.php offers.php  

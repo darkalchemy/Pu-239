@@ -529,7 +529,7 @@ if ($offer > 0) {
     write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
     $filled = 1;
     $set = [
-        'filled_torrent_id' => $id,
+        'torrentid' => $id,
         'updated' => $dt,
     ];
     $fluent->update('offers')
@@ -568,7 +568,7 @@ if ($request > 0) {
     }
     $set = [
         'filled_by_user_id' => $owner_id,
-        'filled_torrent_id' => $id,
+        'torrentid' => $id,
         'updated' => $dt,
     ];
     $fluent->update('requests')

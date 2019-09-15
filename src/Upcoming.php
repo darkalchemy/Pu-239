@@ -169,7 +169,7 @@ class Upcoming
                                 ->select('c.name as cat')
                                 ->select('c.image')
                                 ->select('p.name AS parent_name')
-                                ->select('COALESCE(n.id, false) AS notify')
+                                ->select('(n.id IS NOT NULL) AS notify')
                                 ->leftJoin('users AS u ON r.userid = u.id')
                                 ->leftJoin('categories AS c ON r.category = c.id')
                                 ->leftJoin('categories AS p ON c.parent_id = p.id')
@@ -192,8 +192,6 @@ class Upcoming
         $results = $results->orderBy('r.userid');
         $cooker = [];
         foreach ($results as $result) {
-            $result['notified'] = $result['notify'] == 0 ? 0 : 1;
-            $result['notify'] = $result['notify'] == 0 ? 'Notify' : 'UnNotify';
             if (!empty($result['parent_name'])) {
                 $result['cat'] = $result['parent_name'] . '::' . $result['cat'];
             }

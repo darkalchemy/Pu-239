@@ -1,6 +1,6 @@
-$('.cooker_notify').on('click', function () {
+$('.request_notify').on('click', function () {
     $.ajax({
-        url: './ajax/cooker_notify.php',
+        url: './ajax/request_notify.php',
         type: 'POST',
         dataType: 'json',
         context: this,

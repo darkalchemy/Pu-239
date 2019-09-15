@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Pu239;
 
-use Envms\FluentPDO\Exception;
+use PDOStatement;
 
 /**
  * Class Wiki.
@@ -24,107 +24,117 @@ class Wiki
     }
 
     /**
-     * @throws Exception
-     *
-     * @return mixed
+     * @return string
      */
     public function get_last()
     {
-        $name = $this->fluent->from('wiki')
-                             ->select(null)
-                             ->select('name')
-                             ->orderBy('id DESC')
-                             ->limit(1)
-                             ->fetch('name');
-
-        return $name;
+        try {
+            return $this->fluent->from('wiki')
+                                ->select(null)
+                                ->select('name')
+                                ->orderBy('id DESC')
+                                ->limit(1)
+                                ->fetch('name');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param array $values
      *
-     * @throws Exception
+     * @return string
      */
     public function add(array $values)
     {
-        $this->fluent->insertInto('wiki')
-                     ->values($values)
-                     ->execute();
+        try {
+            return $this->fluent->insertInto('wiki')
+                                ->values($values)
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param array $update
      * @param int   $id
      *
-     * @throws Exception
+     * @return bool|int|PDOStatement|string
      */
     public function update(array $update, int $id)
     {
-        $this->fluent->update('wiki')
-                     ->set($update)
-                     ->where('id = ?', $id)
-                     ->execute();
+        try {
+            return $this->fluent->update('wiki')
+                                ->set($update)
+                                ->where('id = ?', $id)
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param string $name
      *
-     * @throws Exception
-     *
-     * @return array|bool
+     * @return string
      */
     public function get_by_name(string $name)
     {
-        $results = $this->fluent->from('wiki')
+        try {
+            return $this->fluent->from('wiki')
                                 ->where('name LIKE ?', "%{$name}%")
                                 ->orderBy('GREATEST(time, lastedit) DESC')
                                 ->fetchAll();
-
-        return $results;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param int $id
      *
-     * @throws Exception
-     *
-     * @return mixed
+     * @return mixed|string
      */
     public function get_by_id(int $id)
     {
-        $result = $this->fluent->from('wiki')
-                               ->where('id = ?', $id)
-                               ->fetch();
-
-        return $result;
+        try {
+            return $this->fluent->from('wiki')
+                                ->where('id = ?', $id)
+                                ->fetch();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
-     * @throws Exception
-     *
-     * @return array|bool
+     * @return string
      */
     public function get_latest()
     {
-        $results = $this->fluent->from('wiki')
+        try {
+            return $this->fluent->from('wiki')
                                 ->orderBy('GREATEST(time, lastedit) DESC')
                                 ->limit(25)
                                 ->fetchAll();
-
-        return $results;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param int $id
      *
-     * @throws Exception
-     *
-     * @return bool
+     * @return bool|string
      */
     public function delete(int $id)
     {
-        return $this->fluent->deleteFrom('wiki')
-                            ->where('id = ?', $id)
-                            ->execute();
+        try {
+            return $this->fluent->deleteFrom('wiki')
+                                ->where('id = ?', $id)
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

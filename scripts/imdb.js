@@ -1,4 +1,3 @@
-var count = 0;
 $('#url').change(function () {
     var el = document.querySelector('#url');
     get_imdb(el.value);
@@ -10,19 +9,17 @@ if ($('#imdb').length) {
 }
 
 function get_imdb(url, tid, image) {
-    count++;
     var el = document.querySelector('#imdb_outer');
     var e = document.createElement('div');
     e.classList.add('has-text-centered', 'padding20');
     el.classList.add('has-text-left', 'padding20', 'bg-04', 'round10', 'top20', 'bottom20');
-    e.innerHTML = 'Looking up "' + url + '" from IMDb, please be patient. (' + count + ')';
+    e.innerHTML = 'Looking up "' + url + '" from IMDb, please be patient.';
     el.appendChild(e);
 
     $.ajax({
         url: './ajax/imdb_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 30000,
         context: this,
         data: {
             url: url,
@@ -41,13 +38,8 @@ function get_imdb(url, tid, image) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            if (textStatus === 'timeout') {
-                e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
-                el.appendChild(e);
-            } else {
-                e.innerHTML = 'Another *unknown* was returned';
-                el.appendChild(e);
-            }
+            e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+            el.appendChild(e);
         }
     });
 }

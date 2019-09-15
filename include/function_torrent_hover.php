@@ -31,11 +31,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param null   $is_comment
  * @param string $sticky
  *
- * @return string
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
+ * @return string
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $audios, $genre, $icons = false, $is_comment = null, $sticky = '')
 {
@@ -202,12 +202,12 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 /**
  * @param array $data
  *
- * @return bool|mixed|string
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return bool|mixed|string
  */
 function torrent_tooltip_wrapper(array $data)
 {
@@ -258,7 +258,7 @@ function torrent_tooltip_wrapper(array $data)
 }
 
 /**
- * @param string $imdb_url
+ * @param string $url
  * @param string $block_id
  * @param string $text
  * @param string $background
@@ -269,16 +269,18 @@ function torrent_tooltip_wrapper(array $data)
  * @param string $plot
  * @param array  $lang
  *
- * @return string
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
-function upcoming_hover(string $imdb_url, string $block_id, string $text, string $background, string $poster, string $added, string $expected, string $chef, string $plot, array $lang)
+function upcoming_hover(string $url, string $block_id, string $text, string $background, string $poster, string $added, string $expected, string $chef, string $plot, array $lang)
 {
+    $target = stripos($url, 'imdb.com') !== false ? "target='_blank'" : '';
     $hover = "
-                            <a class='is-link' href='" . url_proxy($imdb_url, false) . "' target='_blank'>
+                            <a class='is-link' href='" . url_proxy($url, false) . "' $target>
                                 <div class='dt-tooltipper-large torrent-name' data-tooltip-content='#{$block_id}_tooltip'>
                                     " . htmlsafechars($text) . "
                                     <div class='tooltip_templates'>

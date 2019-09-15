@@ -14,11 +14,11 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @param        $rows
  * @param string $variant
  *
- * @throws InvalidManipulation
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return string|null
  */
@@ -46,7 +46,7 @@ function commenttable($rows, $variant = 'torrent')
     $delete = ($variant === 'request' || $variant === 'offer') ? 'action=delete_comment' : 'action=delete';
     $htmlout = '';
     $i = 0;
-    $variantc = '';
+    $variantc = $variant;
     foreach ($rows as $row) {
         $cid = $row['id'];
         if ($variant === 'torrent') {
@@ -136,12 +136,26 @@ function commenttable($rows, $variant = 'torrent')
         $image = placeholder_image();
         $user = $users_class->getUserFromId($row['user']);
         $member_reputation = !empty($usersdata['username']) ? get_reputation($user, 'comments', true, 0, ($row['anonymous']) === '1' ? true : false) : '';
-        $htmlout .= main_div("
+        if ($variant === 'request' || $variant === 'offer') {
+            $htmlout .= format_table_no_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $member_reputation, $lang);
+        } else {
+            $htmlout .= format_table_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $top, $member_reputation, $lang);
+        }
+    }
+
+    return $htmlout;
+}
+
+function format_table_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $top, $member_reputation, $lang)
+{
+    global $site_config;
+
+    return main_div("
             <a id='comm{$row['id']}'></a>
             $this_text
             <div class='w-100 padding10'>
                 <div class='columns is-marginless'>
-                    <div class='column round10 bg-02 is-2-widescreen is-12-mobile has-text-centered'>
+                    <div class='column round10 bg-02 is-2-widescreen is-3-desktop is-4-tablet is-12-mobile has-text-centered'>
                         " . $avatar . '<br>' . ($row['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $row['user'])) . ($row['anonymous'] === '1' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
                         <span>' . ($row['anonymous'] === '1' ? '' : get_user_class_name((int) $usersdata['class'])) . '</span><br>
                         ' . ($usersdata['last_access'] > (TIME_NOW - 300) && get_anonymous($usersdata['id']) ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format((float) $usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
@@ -154,7 +168,32 @@ function commenttable($rows, $variant = 'torrent')
                     </div>
                 </div>
             </div>", $top);
-    }
+}
 
-    return $htmlout;
+function format_table_no_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $member_reputation, $lang)
+{
+    global $site_config;
+
+    return "
+        <div class='columns bg-03 top20 round10'>
+            <div class='column'>
+            <a id='comm{$row['id']}'></a>
+            $this_text
+            <div class='w-100 padding10'>
+                <div class='columns is-marginless'>
+                    <div class='column round10 bg-02 is-2-widescreen is-3-desktop is-4-tablet is-12-mobile has-text-centered'>
+                        " . $avatar . '<br>' . ($row['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $row['user'])) . ($row['anonymous'] === '1' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
+                        <span>' . ($row['anonymous'] === '1' ? '' : get_user_class_name((int) $usersdata['class'])) . '</span><br>
+                        ' . ($usersdata['last_access'] > (TIME_NOW - 300) && get_anonymous($usersdata['id']) ? ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy"> Online' : ' <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy"> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format((float) $usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy"></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><i class="icon-mail icon tooltipper" aria-hidden="true" title="email"><i></a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+                        <ul class="level-center">
+                            <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
+                        </ul>' : '') . "
+                    </div>
+                    <div class='column round10 bg-02 left10'>
+                        $text
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>";
 }

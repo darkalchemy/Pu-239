@@ -332,8 +332,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -741,36 +741,36 @@ class User
     /**
      * @param string $email
      *
-     * @throws Exception
-     *
-     * @return mixed
+     * @return mixed|string
      */
     public function get_count_by_email(string $email)
     {
-        $count = $this->fluent->from('users')
-                              ->select(null)
-                              ->select('COUNT(id) AS count')
-                              ->where('email = ?', $email)
-                              ->fetch('count');
-
-        return $count;
+        try {
+            return $this->fluent->from('users')
+                                ->select(null)
+                                ->select('COUNT(id) AS count')
+                                ->where('email = ?', $email)
+                                ->fetch('count');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param string $username
      *
-     * @throws Exception
-     *
-     * @return mixed
+     * @return mixed|string
      */
     public function get_count_by_username(string $username)
     {
-        $count = $this->fluent->from('users')
-                              ->select(null)
-                              ->select('COUNT(id) AS count')
-                              ->where('username = ?', $username)
-                              ->fetch('count');
-
-        return $count;
+        try {
+            return $this->fluent->from('users')
+                                ->select(null)
+                                ->select('COUNT(id) AS count')
+                                ->where('username = ?', $username)
+                                ->fetch('count');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

@@ -1,22 +1,19 @@
-var count = 0;
 if ($('#tvmaze').length) {
     var el = document.querySelector('#tvmaze');
     get_tvmaze(el.dataset.tvmazeid, el.dataset.name, el.dataset.tid);
 }
 
 function get_tvmaze(tvmazeid, name, tid) {
-    count++;
     var el = document.querySelector('#tvmaze_outer');
     var e = document.createElement('div');
     e.classList.add('has-text-centered', 'padding20');
-    e.innerHTML = 'Looking up "' + name + '" from TVMaze, please be patient. (' + count + ')';
+    e.innerHTML = 'Looking up "' + name + '" from TVMaze, please be patient.';
     el.appendChild(e);
 
     $.ajax({
         url: './ajax/tvmaze_lookup.php',
         type: 'POST',
         dataType: 'json',
-        timeout: 30000,
         context: this,
         data: {
             tvmazeid: tvmazeid,
@@ -35,14 +32,8 @@ function get_tvmaze(tvmazeid, name, tid) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            if (textStatus === 'timeout') {
-                e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
-                el.appendChild(e);
-            } else {
-                e.innerHTML = 'No TVMaze Data found for ' + name;
-                el.appendChild(e);
-                console.log('failed');
-            }
+            e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+            el.appendChild(e);
         }
     });
 }

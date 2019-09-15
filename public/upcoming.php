@@ -19,7 +19,7 @@ global $container, $site_config;
 
 $stdfoot = [
     'js' => [
-        get_file_name('request_js'),
+        get_file_name('imdb_js'),
         get_file_name('dragndrop_js'),
     ],
 ];
@@ -250,10 +250,10 @@ if (!empty($add_new)) {
                         <td class='has-text-centered'>" . ucfirst($recipe['status']) . "</td>
                         <td class='has-text-centered'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . "</span></td>
                         <td class='has-text-centered'>
-                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notified']}' class='cooker_notify tooltipper' title='{$recipe['notify']}'>
-                                <span id='notify_{$recipe['id']}'>{$recipe['notify']}</span>
+                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notify']}' class='cooker_notify tooltipper' title='" . ($recipe['notify'] === 1 ? $lang['upcoming_notified'] : $lang['upcoming_not_notified']) . "'>
+                                <span id='notify_{$recipe['id']}'>" . ($recipe['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
                             </div>
-                        </td>" . ($has_access ? "
+                        </td>' . ($has_access ? "
                         <td class='has-text-centered'>" . ($has_full_access ? "
                             <a href='{$_SERVER['PHP_SELF']}?action=edit_recipe&amp;id={$recipe['id']}'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
                             <a href='{$_SERVER['PHP_SELF']}?action=delete_recipe&amp;id={$recipe['id']}'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '

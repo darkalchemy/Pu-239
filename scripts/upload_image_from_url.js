@@ -36,7 +36,7 @@ function grab_url(event) {
                         '<img src="' + response.url + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                     if (textarea[0]) {
-                        textarea[0].value = '[img]' + response.url + '[/img][br]' + editor;
+                        textarea[0].value = '[img width=300]' + response.url + '[/img][br]' + editor;
                     }
                 } else {
                     output.innerHTML = '' +

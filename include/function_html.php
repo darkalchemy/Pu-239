@@ -367,10 +367,10 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @return bool|Image|mixed|string
  * @throws NotFoundException
- *
  * @throws DependencyException
+ *
+ * @return bool|Image|mixed|string
  */
 function placeholder_image(int $size = 10)
 {
@@ -430,7 +430,6 @@ function doc_head()
  * @param $html
  * @param $plain
  *
- * @return bool
  * @throws DependencyException
  * @throws NotFoundException
  * @throws AuthError
@@ -440,6 +439,7 @@ function doc_head()
  * @throws \PHPMailer\PHPMailer\Exception
  * @throws InvalidManipulation
  *
+ * @return bool
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -473,11 +473,11 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @return mixed
  * @throws DependencyException
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed
  */
 function validate_invite(int $id, string $code)
 {
@@ -499,11 +499,11 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @return mixed
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return mixed
  */
 function validate_promo(string $code, bool $full)
 {
@@ -531,10 +531,11 @@ function validate_promo(string $code, bool $full)
  * @param array $lang
  * @param array $classes
  *
- * @return string
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
  */
 function category_dropdown(array $lang, array $classes = [])
 {

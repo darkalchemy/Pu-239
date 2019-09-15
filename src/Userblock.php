@@ -36,28 +36,30 @@ class Userblock
     /**
      * @param int $userid
      *
-     * @throws Exception
-     *
-     * @return bool|mixed
+     * @return bool|mixed|string
      */
     public function get(int $userid)
     {
-        $blocks = $this->cache->get('userblocks_' . $userid);
-        if ($blocks === false || is_null($blocks)) {
-            while (!$blocks) {
-                $blocks = $this->fluent->from('user_blocks')
-                                       ->select(null)
-                                       ->select('index_page')
-                                       ->select('global_stdhead')
-                                       ->select('userdetails_page')
-                                       ->where('userid = ?', $userid)
-                                       ->fetch();
-                if (!$blocks) {
-                    $this->add(['userid' => $userid]);
+        try {
+            $blocks = $this->cache->get('userblocks_' . $userid);
+            if ($blocks === false || is_null($blocks)) {
+                while (!$blocks) {
+                    $blocks = $this->fluent->from('user_blocks')
+                                           ->select(null)
+                                           ->select('index_page')
+                                           ->select('global_stdhead')
+                                           ->select('userdetails_page')
+                                           ->where('userid = ?', $userid)
+                                           ->fetch();
+                    if (!$blocks) {
+                        $this->add(['userid' => $userid]);
+                    }
                 }
-            }
 
-            $this->cache->set('userblocks_' . $userid, $blocks, $this->site_config['expires']['u_status']);
+                $this->cache->set('userblocks_' . $userid, $blocks, $this->site_config['expires']['u_status']);
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
         return $blocks;
@@ -66,13 +68,17 @@ class Userblock
     /**
      * @param array $values
      *
-     * @throws Exception
+     * @return bool|int|string
      */
     public function add(array $values)
     {
-        $this->fluent->insertInto('user_blocks')
-                     ->values($values)
-                     ->ignore()
-                     ->execute();
+        try {
+            return $this->fluent->insertInto('user_blocks')
+                                ->values($values)
+                                ->ignore()
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

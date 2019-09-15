@@ -19,6 +19,7 @@ $user = check_user_status();
 $stdfoot = [
     'js' => [
         get_file_name('parallax_js'),
+        has_access($user['class'], UC_STAFF, '') ? get_file_name('offer_js') : '',
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
@@ -59,6 +60,8 @@ $center_column = [
     'ajaxchat',
     'torrents_scroller',
     'cooker',
+    'requests',
+    'offers',
     'torrents_mow',
     'staffpicks',
     'torrents_top',
@@ -82,7 +85,7 @@ $right_column = [
     'christmas_gift',
 ];
 $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $glide = $ajaxchat = '';
-$tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = $latest_movies = $latest_tv = $cooker = '';
+$tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = $latest_movies = $latest_tv = $cooker = $requests = $offers = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 $remove_columns = $user['class'] < UC_STAFF ? $site_config['site']['staff_blocks'] : [];
 $torrents_class = $container->get(Torrent::class);
@@ -156,6 +159,18 @@ if (in_array('cooker', $available_columns) && $user['blocks']['index_page'] & bl
     include_once $dir . 'cooker.php';
 } else {
     $remove_columns[] = 'cooker';
+}
+
+if (in_array('requests', $available_columns) && $user['blocks']['index_page'] & block_index::REQUESTS && $BLOCKS['requests_on']) {
+    include_once $dir . 'requests.php';
+} else {
+    $remove_columns[] = 'requests';
+}
+
+if (in_array('offers', $available_columns) && $user['blocks']['index_page'] & block_index::OFFERS && $BLOCKS['offers_on']) {
+    include_once $dir . 'offers.php';
+} else {
+    $remove_columns[] = 'offers';
 }
 
 if (in_array('active_users_24', $available_columns) && $user['blocks']['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {

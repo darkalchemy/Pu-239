@@ -86,7 +86,7 @@ function callback(files) {
                         '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                     if (textarea[0]) {
-                        textarea[0].value = '[img]' + response.urls[i] + '[/img][br]' + editor;
+                        textarea[0].value = '[img width=300]' + response.urls[i] + '[/img][br]' + editor;
                     }
                     let image_url = document.querySelector('#image_url');
                     if(image_url && image_url.value === '') {

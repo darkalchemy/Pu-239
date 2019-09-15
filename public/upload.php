@@ -108,9 +108,9 @@ if ($res_cooker) {
 $res_requests = $fluent->from('requests')
                        ->select(null)
                        ->select('id')
-                       ->select('request_name')
+                       ->select('name')
                        ->where('filled_by_user_id = 0')
-                       ->orderBy('request_name')
+                       ->orderBy('name')
                        ->fetchAll();
 
 if ($res_requests) {
@@ -122,7 +122,7 @@ if ($res_requests) {
                         <option value='0'>{$lang['upload_select']}</option>";
     foreach ($res_requests as $arr_request) {
         $has_requests .= "
-                        <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['request_name']) . '</option>';
+                        <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['name']) . '</option>';
     }
     $has_requests .= "
                     </select>{$lang['upload_request_msg']}
@@ -133,10 +133,10 @@ if ($res_requests) {
 $res_offers = $fluent->from('offers')
                      ->select(null)
                      ->select('id')
-                     ->select('offer_name')
-                     ->where('offered_by_user_id = ?', $user['id'])
+                     ->select('name')
+                     ->where('userid = ?', $user['id'])
                      ->where('status = "approved"')
-                     ->orderBy('offer_name')
+                     ->orderBy('name')
                      ->fetchAll();
 
 if ($res_offers) {
@@ -148,7 +148,7 @@ if ($res_offers) {
                         <option value='0'>{$lang['upload_select']}</option>";
     foreach ($res_offers as $arr_offer) {
         $has_offers .= "
-                        <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['offer_name']) . '</option>';
+                        <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['name']) . '</option>';
     }
     $has_offers .= "
                     </select>{$lang['upload_offer_msg']}:

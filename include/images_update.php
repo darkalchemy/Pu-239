@@ -389,13 +389,12 @@ function images_update()
     $offer_links = $fluent->from('offers')
                           ->select(null)
                           ->select('id')
-                          ->select('link as url')
-                          ->where('link IS NOT NULL')
+                          ->select('url')
+                          ->where('url IS NOT NULL')
                           ->where('updated + 3600 < ?', TIME_NOW)
                           ->orderBy('id DESC')
                           ->limit(50)
                           ->fetchAll();
-
     foreach ($offer_links as $link) {
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
@@ -421,8 +420,8 @@ function images_update()
     $request_links = $fluent->from('requests')
                             ->select(null)
                             ->select('id')
-                            ->select('link as url')
-                            ->where('link IS NOT NULL')
+                            ->select('url')
+                            ->where('url IS NOT NULL')
                             ->where('updated + 3600 < ?', TIME_NOW)
                             ->orderBy('id DESC')
                             ->limit(50)

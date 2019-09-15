@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Pu239;
 
 use Envms\FluentPDO\Exception;
+use PDOStatement;
 
 /**
  * Class Usersachiev.
@@ -40,42 +41,56 @@ class Usersachiev
      * @param array $values
      * @param array $update
      *
-     * @throws Exception
+     * @return bool|string
      */
     public function insert(array $values, array $update)
     {
-        $count = (int) ($this->limit / max(array_map('count', $values)));
-        foreach (array_chunk($values, $count) as $t) {
-            $this->fluent->insertInto('usersachiev', $t)
-                         ->onDuplicateKeyUpdate($update)
-                         ->execute();
+        try {
+            $count = (int) ($this->limit / max(array_map('count', $values)));
+            foreach (array_chunk($values, $count) as $t) {
+                $this->fluent->insertInto('usersachiev', $t)
+                             ->onDuplicateKeyUpdate($update)
+                             ->execute();
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
+
+        return true;
     }
 
     /**
      * @param array $values
      *
-     * @throws Exception
+     * @return bool|int|string
      */
     public function add(array $values)
     {
-        $this->fluent->insertInto('usersachiev')
-                     ->values($values)
-                     ->ignore()
-                     ->execute();
+        try {
+            return $this->fluent->insertInto('usersachiev')
+                                ->values($values)
+                                ->ignore()
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
      * @param array $set
      * @param int   $userid
      *
-     * @throws Exception
+     * @return bool|int|PDOStatement|string
      */
     public function update(array $set, int $userid)
     {
-        $this->fluent->update('usersachiev')
-            ->set($set)
-            ->where('userid = ?', $userid)
-            ->execute();
+        try {
+            return $this->fluent->update('usersachiev')
+                                ->set($set)
+                                ->where('userid = ?', $userid)
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

@@ -17,10 +17,10 @@ require_once INCL_DIR . 'function_html.php';
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
@@ -77,6 +77,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         $birthday = $died = $birthplace = $history = '';
         $update = [];
         if (!empty($person_info)) {
+            file_put_contents('/var/log/nginx/tvmaze.log', json_encode($person_info, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND);
             if (empty($person_info['photo']) && !empty($role['image'])) {
                 $update['photo'] = $role['image'];
             }
@@ -87,7 +88,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                 $update['died'] = $role['deathday'];
             }
             if (!empty($update)) {
-                $person_class->update($update, $person_info['id']);
+                $person_class->update($update, $person_info['imdb_id']);
                 $person_info = $person_class->get_person_by_name($role['name']);
             }
 
@@ -185,9 +186,9 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_data
  * @param $tvmaze_type
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
  */
@@ -227,10 +228,10 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|string|null
  */
@@ -257,7 +258,19 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 'failed', 86400);
         }
     }
-    $episode_info['showtime'] = !empty($episode_info['airtime']) ? get_date(strtotime($episode_info['airtime'] . ' ' . $episode_info['airdate']), 'LONG', 1, 0) : '';
+    if ($episode_info === 'failed' || !is_array($episode_info)) {
+        return false;
+    }
+    if (!empty($episode_info['timestamp'])) {
+        $episode_info['showtime'] = get_date($episode_info['timestamp'], 'LONG', 1, 0);
+    } elseif (!empty($episode_info['airstamp'])) {
+        $episode_info['showtime'] = get_date(strtotime($episode_info['airstamp']), 'LONG', 1, 0);
+    } elseif (!empty($episode_info['airtime']) && !empty($episode_info['airdate'])) {
+        $episode_info['showtime'] = get_date(strtotime($episode_info['airtime'] . ' ' . $episode_info['airdate']), 'LONG', 1, 0);
+    }
+    if (empty($episode_info['showtime'])) {
+        dd($episode_info, 'crap');
+    }
     $episode_info['season_episode'] = !empty($episode_info['season']) && !empty($episode_info['number']) ? 'S' . sprintf('%02d', $episode_info['season']) . 'E' . sprintf('%02d', $episode_info['number']) : '';
     if (!empty($episode_info['airdate'])) {
         preg_match('/(\d{4})/', $episode_info['airdate'], $match);
@@ -394,9 +407,9 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
 /**
  * @param bool $use_cache
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed
  */

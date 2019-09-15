@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Pu239;
 
-use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -33,30 +32,34 @@ class Person
     /**
      * @param string $name
      *
-     * @throws Exception
-     *
-     * @return mixed
+     * @return mixed|string
      */
     public function get_person_by_name(string $name)
     {
-        $result = $this->fluent->from('person')
-                               ->where('name = ?', $name)
-                               ->fetch();
-
-        return $result;
+        try {
+            return $this->fluent->from('person')
+                                ->where('name = ?', $name)
+                                ->fetch();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
-     * @param array $update
-     * @param int   $id
+     * @param array  $update
+     * @param string $imdb_id
      *
-     * @throws Exception
+     * @return bool|int|\PDOStatement|string
      */
-    public function update(array $update, int $id)
+    public function update(array $update, string $imdb_id)
     {
-        $this->fluent->update('person')
-                     ->set($update)
-                     ->where('id = ?', $id)
-                     ->execute();
+        try {
+            return $this->fluent->update('person')
+                                ->set($update)
+                                ->where('imdb_id = ?', $imdb_id)
+                                ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

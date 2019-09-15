@@ -25,4 +25,6 @@ $lang = [
     'upcoming_updated' => 'Recipe: %s Updated',
     'upcoming_deleted' => 'Recipe Deleted',
     'upcoming_not_deleted' => 'Recipe was NOT Deleted',
+    'upcoming_notified' => 'You will be notified when this has been uploaded.',
+    'upcoming_not_notified' => 'You will NOT be notified when this has been uploaded.',
 ];

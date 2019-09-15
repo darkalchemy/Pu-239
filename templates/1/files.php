@@ -17,7 +17,7 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
         case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_48091ad2.css";
+            return "{$site_config['paths']['baseurl']}/css/1/css_9875ead7.css";
         case 'vendor_css':
             return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
         case 'cookieconsent_css':
@@ -27,7 +27,7 @@ function get_file_name($file)
         case 'main_css':
             return "{$site_config['paths']['baseurl']}/css/1/main_47ae14b4.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_01e20a02.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_5e0b865c.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
@@ -72,6 +72,8 @@ function get_file_name($file)
             return "{$site_config['paths']['baseurl']}/js/1/tooltipster_602738b1.js";
         case 'site_config_js':
             return "{$site_config['paths']['baseurl']}/js/1/site_config_07db2f4b.js";
+        case 'offer_js':
+            return "{$site_config['paths']['baseurl']}/js/1/offer_0947814a.js";
         case 'checkport_js':
             return "{$site_config['paths']['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':
@@ -79,9 +81,9 @@ function get_file_name($file)
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':
-            return "{$site_config['paths']['baseurl']}/js/1/upload_f1609106.js";
-        case 'request_js':
-            return "{$site_config['paths']['baseurl']}/js/1/request_8b3c6887.js";
+            return "{$site_config['paths']['baseurl']}/js/1/upload_219237a1.js";
+        case 'imdb_js':
+            return "{$site_config['paths']['baseurl']}/js/1/imdb_16b88402.js";
         case 'scroll_to_poll_js':
             return "{$site_config['paths']['baseurl']}/js/1/scroll_to_poll_01088f95.js";
         case 'parallax_js':
@@ -89,9 +91,9 @@ function get_file_name($file)
         case 'acp_js':
             return "{$site_config['paths']['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':
-            return "{$site_config['paths']['baseurl']}/js/1/dragndrop_376aa183.js";
+            return "{$site_config['paths']['baseurl']}/js/1/dragndrop_c06ac504.js";
         case 'details_js':
-            return "{$site_config['paths']['baseurl']}/js/1/details_082e8f8e.js";
+            return "{$site_config['paths']['baseurl']}/js/1/details_c57f59ed.js";
         case 'forums_js':
             return "{$site_config['paths']['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

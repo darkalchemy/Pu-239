@@ -22,7 +22,6 @@ $params['parent_id'] = !empty($params['parent_id']) ? (int) $params['parent_id']
 $params['id'] = !empty($params['id']) ? (int) $params['id'] : 0;
 $params['cat_hidden'] = !empty($params['cat_hidden']) ? (int) $params['cat_hidden'] : 0;
 $params['new_cat_id'] = !empty($params['new_cat_id']) ? (int) $params['new_cat_id'] : 0;
-
 switch ($params['mode']) {
     case 'takemove_cat':
         move_cat($params);
@@ -191,7 +190,7 @@ function add_cat($params)
         'cat_desc' => $params['new_cat_desc'],
         'image' => !empty($params['cat_image']) ? $params['cat_image'] : '',
         'parent_id' => $params['parent_id'],
-        'hidden' => $params['new_cat_hidden'],
+        'hidden' => $params['cat_hidden'],
     ];
     $fluent = $container->get(Database::class);
     $insert = $fluent->insertInto('categories')
