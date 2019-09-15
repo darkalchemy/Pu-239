@@ -1,4 +1,5 @@
 ### 15 Sept, 2019
+add: bounty to index page requests block  
 remove: dummy log  
 fix: numerous bugs  
 update: requests.php, offers.php and upcoming.php  

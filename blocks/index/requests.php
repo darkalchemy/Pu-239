@@ -22,6 +22,7 @@ $requests .= "
                         <th class='has-text-centered w-1 min-100 has-no-border-right'>{$lang['upcoming_type']}</th>
                         <th class='min-350 has-no-border-right has-no-border-left'>{$lang['request_title']}</th>
                         <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
+                        <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-dollar icon has-text-success' aria-hidden='true'></i></th>
                         <th class='has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>
                     </tr>
                 </thead>
@@ -59,6 +60,7 @@ if (!empty($requested) && is_array($requested)) {
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>
                         <td class='has-no-border-right has-no-border-left'>{$hover}</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'>" . number_format($request['comments']) . "</td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'><span class='tooltipper' title='{$lang['request_bounty']}'>" . number_format($request['bounty']) . ' / ' . number_format($request['bounties']) . "</span></td>
                         <td class='has-text-centered has-no-border-left'>
                             <div class='level-center'>
                                 <div data-id='{$request['id']}' data-voted='{$request['voted']}' class='request_vote tooltipper' title='" . ($request['voted'] === 'yes' ? $lang['request_voted_yes'] : ($request['voted'] === 'no' ? $lang['request_voted_no'] : $lang['request_not_voted'])) . "'>
