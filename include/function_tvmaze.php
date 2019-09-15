@@ -77,7 +77,6 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         $birthday = $died = $birthplace = $history = '';
         $update = [];
         if (!empty($person_info)) {
-            file_put_contents('/var/log/nginx/tvmaze.log', json_encode($person_info, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND);
             if (empty($person_info['photo']) && !empty($role['image'])) {
                 $update['photo'] = $role['image'];
             }

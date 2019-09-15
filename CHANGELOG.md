@@ -1,4 +1,5 @@
 ### 15 Sept, 2019
+remove: dummy log  
 fix: numerous bugs  
 update: requests.php, offers.php and upcoming.php  
 
