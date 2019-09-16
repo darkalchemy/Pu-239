@@ -52,6 +52,7 @@ $scores = $fluent->from('flashscores')
                  ->where('score != ?', $score)
                  ->orderBy('level DESC')
                  ->orderBy('score DESC')
+                 ->limit(1)
                  ->fetch('score');
 $highScore = !empty($scores) ? $scores[0]['score'] : 0;
 if ($highScore < $score) {
