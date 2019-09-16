@@ -1,4 +1,5 @@
 ### 15 Sept, 2019
+add: vote counts, staff only requests.php offers.php  
 update: database files  
 fix: hide torrents when category is hidden  
 fix: linking to wrong id  

@@ -55,4 +55,7 @@ $lang = [
     'request_bounty_info' => 'Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded.',
     'request_accept_torrent' => 'Accept the torrent and pay the bounty',
     'request_pay_bounty' => 'Pay %s Bounty',
+    'request_vote' => 'User Votes',
+    'request_vote_yes' => 'Users voting for this Request.',
+    'request_vote_no' => 'Users voting against this Request.',
 ];

@@ -100,7 +100,7 @@ if (isset($data['action'])) {
         case 'add_comment':
             $add_comment = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $offer = $offer_class->get($id);
+            $offer = $offer_class->get($id, false);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['offer_add_comment']}" . htmlsafechars($offer['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/offers.php?action=post_comment' accept-charset='utf-8'>
@@ -117,7 +117,7 @@ if (isset($data['action'])) {
         case 'view_offer':
             $view = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $offer_class->get($id);
+            $post_data = $offer_class->get($id, has_access($user['class'], UC_STAFF, ''));
             break;
         case 'view_all':
             $view_all = true;
@@ -129,7 +129,7 @@ if (isset($data['action'])) {
         case 'edit_offer':
             $edit = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $offer_class->get($id);
+            $post_data = $offer_class->get($id, false);
             break;
         case 'delete_offer':
             $delete = true;
@@ -318,7 +318,7 @@ if ($has_access) {
         }
     }
 }
-$view_offer = '';
+$view_offer = $has_votes = '';
 if ($view && is_valid_id($id)) {
     preg_match('/(tt[\d]{7,8})/i', $post_data['url'], $match);
     if (!empty($match[1])) {
@@ -331,6 +331,14 @@ if ($view && is_valid_id($id)) {
                 </div>";
         }
     }
+    if (isset($post_data['vote_yes']) || isset($post_data['vote_no'])) {
+        $has_votes = "
+                <div class='columns has-text-left bg-03 top20 round10'>
+                    <div class='column is-one-quarter'>{$lang['offer_vote']}</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_yes']} {$lang['offer_vote_yes']}'><i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>{$post_data['vote_yes']}</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_no']} {$lang['offer_vote_no']}'><i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>{$post_data['vote_no']}</div>
+                </div>";
+    }
     $view_offer .= "
                 <div class='columns has-text-left bg-03 round10'>
                     <div class='column is-one-quarter'>{$lang['offer_cat']}</div>
@@ -339,7 +347,7 @@ if ($view && is_valid_id($id)) {
                 <div class='columns bg-03 top20 round10'>
                     <div class='column is-one-quarter has-text-left'>{$lang['offer_desc']}</div>
                     <div class='column'>" . (!empty($post_data['description']) ? format_comment($post_data['description']) : '') . "</div>
-                </div>{$imdb_info}
+                </div>{$imdb_info}{$has_votes}
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
                         <a class='button is-small' href='{$site_config['paths']['baseurl']}/offers.php?action=add_comment&amp;id={$id}'>Add a comment</a>

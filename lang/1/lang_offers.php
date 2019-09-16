@@ -50,4 +50,7 @@ $lang = [
     'offer_denied' => 'This offer has been denied.',
     'offer_approved' => 'This offer has been approved.',
     'offer_pending' => 'This offer is still pending.',
+    'offer_vote' => 'User Votes',
+    'offer_vote_yes' => 'Users voting for this Offer.',
+    'offer_vote_no' => 'Users voting against this Offer.',
 ];

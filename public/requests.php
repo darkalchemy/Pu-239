@@ -59,7 +59,7 @@ if (isset($data['action'])) {
         case 'pay_bounty':
             $pay_bounty = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id);
+            $post_data = $request_class->get($id, false);
             break;
         case 'delete_comment':
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
@@ -84,7 +84,7 @@ if (isset($data['action'])) {
             $edit_comment = true;
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
             $comment = $comment_class->get_comment_by_id($cid);
-            $request = $request_class->get($comment['request']);
+            $request = $request_class->get($comment['request'], false);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['request_edit_comment']}" . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=edit_comment' accept-charset='utf-8'>
@@ -109,7 +109,7 @@ if (isset($data['action'])) {
         case 'add_comment':
             $add_comment = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $request = $request_class->get($id);
+            $request = $request_class->get($id, false);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['request_add_comment']}" . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_comment' accept-charset='utf-8'>
@@ -126,7 +126,7 @@ if (isset($data['action'])) {
         case 'view_request':
             $view = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id);
+            $post_data = $request_class->get($id, has_access($user['class'], UC_STAFF, ''));
             break;
         case 'view_all':
             $view_all = true;
@@ -138,7 +138,7 @@ if (isset($data['action'])) {
         case 'edit_request':
             $edit = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id);
+            $post_data = $request_class->get($id, false);
             break;
         case 'delete_request':
             $delete = true;
@@ -379,7 +379,7 @@ if ($has_access) {
         }
     }
 }
-$view_request = '';
+$view_request = $has_votes = '';
 if ($view && is_valid_id($id)) {
     preg_match('/(tt[\d]{7,8})/i', $post_data['url'], $match);
     if (!empty($match[1])) {
@@ -392,6 +392,14 @@ if ($view && is_valid_id($id)) {
                 </div>";
         }
     }
+    if (isset($post_data['vote_yes']) || isset($post_data['vote_no'])) {
+        $has_votes = "
+                <div class='columns has-text-left bg-03 top20 round10'>
+                    <div class='column is-one-quarter'>{$lang['request_vote']}</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_yes']} {$lang['request_vote_yes']}'><i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>{$post_data['vote_yes']}</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_no']} {$lang['request_vote_no']}'><i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>{$post_data['vote_no']}</div>
+                </div>";
+    }
     $view_request .= "
                 <div class='columns has-text-left bg-03 round10'>
                     <div class='column is-one-quarter'>{$lang['request_cat']}</div>
@@ -400,7 +408,7 @@ if ($view && is_valid_id($id)) {
                 <div class='columns bg-03 top20 round10'>
                     <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
                     <div class='column'>" . (!empty($post_data['description']) ? format_comment($post_data['description']) : '') . "</div>
-                </div>{$imdb_info}";
+                </div>{$imdb_info}{$has_votes}";
     if ($post_data['torrentid'] !== 0 && $post_data['paid'] === 'no' && (has_access($user['class'], UC_STAFF, '') || $user['id'] === $post_data['id'])) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>

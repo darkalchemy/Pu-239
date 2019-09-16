@@ -4469,4 +4469,32 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Bounties Update', 'bounties_update.php', 1568477832, 3600, 1, 'Pay Unpaid Bounties', 1, 'bounties_update')",
         'flush' => true,
     ],
+    [
+        'id' => 1568590201,
+        'info' => 'Drop column',
+        'date' => '15 Sept, 2019',
+        'query' => 'ALTER TABLE `offers` DROP COLUMN `vote_yes_count`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568590202,
+        'info' => 'Drop column',
+        'date' => '15 Sept, 2019',
+        'query' => 'ALTER TABLE `offers` DROP COLUMN `vote_no_count`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568590203,
+        'info' => 'Drop column',
+        'date' => '15 Sept, 2019',
+        'query' => 'ALTER TABLE `requests` DROP COLUMN `vote_yes_count`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568590204,
+        'info' => 'Drop column',
+        'date' => '15 Sept, 2019',
+        'query' => 'ALTER TABLE `requests` DROP COLUMN `vote_no_count`',
+        'flush' => false,
+    ],
 ];

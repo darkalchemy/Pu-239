@@ -122,13 +122,14 @@ class Request
     }
 
     /**
-     * @param int $requestid
+     * @param int  $requestid
+     * @param bool $is_staff
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get(int $requestid)
+    public function get(int $requestid, bool $is_staff)
     {
         $result = $this->fluent->from('requests AS r')
                                ->select('u.username')
@@ -155,6 +156,22 @@ class Request
         $result['bounties'] = !empty($result['bounties']) ? (int) $result['bounties'] : 0;
         $result['bounty'] = !empty($result['bounty']) ? (int) $result['bounty'] : 0;
         $result['owner'] = !empty($result['owner']) ? (int) $result['owner'] : 0;
+        if ($is_staff) {
+            $vote_yes = $this->fluent->from('request_votes')
+                                     ->select(null)
+                                     ->select('COUNT(id) AS count')
+                                     ->where('vote = "yes"')
+                                     ->where('request_id = ?', $result['id'])
+                                     ->fetch('count');
+            $vote_no = $this->fluent->from('request_votes')
+                                    ->select(null)
+                                    ->select('COUNT(id) AS count')
+                                    ->where('vote = "no"')
+                                    ->where('request_id = ?', $result['id'])
+                                    ->fetch('count');
+            $result['vote_yes'] = (int) $vote_yes;
+            $result['vote_no'] = (int) $vote_no;
+        }
 
         return $result;
     }

@@ -114,13 +114,14 @@ class Offer
     }
 
     /**
-     * @param int $offerid
+     * @param int  $offerid
+     * @param bool $is_staff
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get(int $offerid)
+    public function get(int $offerid, bool $is_staff)
     {
         $result = $this->fluent->from('offers AS r')
                                ->select('u.username')
@@ -134,6 +135,22 @@ class Offer
                                ->fetch();
         if (!empty($result['parent_name'])) {
             $result['fullcat'] = $result['parent_name'] . '::' . $result['cat'];
+        }
+        if ($is_staff) {
+            $vote_yes = $this->fluent->from('offer_votes')
+                                     ->select(null)
+                                     ->select('COUNT(id) AS count')
+                                     ->where('vote = "yes"')
+                                     ->where('offer_id = ?', $result['id'])
+                                     ->fetch('count');
+            $vote_no = $this->fluent->from('offer_votes')
+                                    ->select(null)
+                                    ->select('COUNT(id) AS count')
+                                    ->where('vote = "no"')
+                                    ->where('offer_id = ?', $result['id'])
+                                    ->fetch('count');
+            $result['vote_yes'] = (int) $vote_yes;
+            $result['vote_no'] = (int) $vote_no;
         }
 
         return $result;
