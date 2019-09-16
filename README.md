@@ -1,6 +1,6 @@
 # Pu-239 v0.7
 
-######I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.14.2 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.14.2 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
 1. Update to PHP 7.3 - default settings
@@ -141,6 +141,14 @@ php bin/import_tables.php
 php bin/validate_images.php
 ```
 
+#### User Roles
+  * Coder : Has access to the site, very similar to that of a Sysop
+  * Forum Mod : Can moderate forum posts
+  * Torrent Mod : Can moderate torrents and their descriptions
+  * Internal : Can and is required to post to the Cooker
+  * Uploader : Can and is required to upload to the site
+
+
 #### Making Changes
 After updating composer, npm, changing anything inside the config folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
 ```sudo rm -rf /dev/shm/php-di```
@@ -157,11 +165,11 @@ API keys are set in the Staff Panel -> Site Settings.
 Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:  
 ```php bin/uglify.php```
 
-#### Production
+#### Production Mode
 Production creates minified javascript and css files when running uglify.php.  
 After changing the setting 'production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
-```config/define.php define('PRODUCTION', false);```
-
+```config/define.php define('PRODUCTION', false);```  
+This also creates a cache for php-di, significantly improving its performance.
 
 #### Cache Engines  
 memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. memory cache is only for testing and is not a real cache as it expires at the end of the request. Trivia can not run while using the memory cache. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
@@ -169,6 +177,20 @@ memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the defaul
 #### Image Proxy:  
 An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
 ```$site_config['site']['image_proxy'] = true;```
+
+#### CLI Scripts
+  * clear_cache.php : clears the entire cache that is currenlty in use
+  * import_tables.php : can import any table listed as an argument or imports trivia and tvmaze by default
+  * install.php : installs/reinstalls the site
+  * jobby.php : runs all of the sites cleanup scripts through cron
+  * optimize_resize_images.php : creates an optimized version and multiple sizes of each image in the images table, this is done automatically during cleanup, 50 images per run
+  * remove_altered_images.php : removes every image that is not in the images table
+  * remove_torrents.php : removes all torrents, truncates tables and removes all traces of all torrents
+  * set_perms.php : ensures all files have correct the user:owner and permissions set, also removes the DI_CACHE_DIR directory
+  * uglify.php : generates the needed js/css files seen in public/js and public/css, also removes the DI_CACHE_DIR directory
+  * update_db.php : updates the database to the current schema 
+  * usersfix.php : adds users to userblocks and userachiev tables, usually not needed
+  * validate_images.php : verfies the images in public/images/proxy/ are valid images, removes those that may be invalid
 
 #### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.

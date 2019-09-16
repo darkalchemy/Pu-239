@@ -1,3 +1,6 @@
+### 16 Sept, 2019
+update: readme  
+
 ### 15 Sept, 2019
 add: vote counts, staff only requests.php offers.php  
 update: database files  
