@@ -1,4 +1,5 @@
 ### 16 Sept, 2019
+fix: arcade score 0 should not be inserted into the db arcade.php  
 update: readme  
 fix: get highscore arcade.php  
 

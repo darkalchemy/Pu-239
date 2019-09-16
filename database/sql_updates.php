@@ -4497,4 +4497,17 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `requests` DROP COLUMN `vote_no_count`',
         'flush' => false,
     ],
-];
+    [
+        'id' => 1568669099,
+        'info' => 'Update scores',
+        'date' => '16 Sept, 2019',
+        'query' => 'DELETE FROM `highscores` WHERE `score` = 0',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568669100,
+        'info' => 'Update scores',
+        'date' => '16 Sept, 2019',
+        'query' => 'DELETE FROM `flashscores` WHERE `score` = 0',
+        'flush' => false,
+    ],];

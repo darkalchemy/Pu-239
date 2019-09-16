@@ -77,18 +77,17 @@ $high = $fluent->from('highscores')
                ->select('score')
                ->where('game = ?', $gname)
                ->fetch('score');
-
-$update = [
-    'score' => $score,
-    'level' => $level,
-    'user_id' => $user['id'],
-];
-if (!empty($high) && $highScore > $high) {
+if (!empty($high) && $score > $high) {
+    $update = [
+        'score' => $score,
+        'level' => $level,
+        'user_id' => $user['id'],
+    ];
     $fluent->update('highscores')
            ->set($update)
            ->where('game = ?', $gname)
            ->execute();
-} elseif (empty($high)) {
+} elseif (empty($high) && $score > 0) {
     $set = [
         'game' => $gname,
         'score' => $score,
