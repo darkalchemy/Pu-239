@@ -52,10 +52,9 @@ $scores = $fluent->from('flashscores')
                  ->where('score != ?', $score)
                  ->orderBy('level DESC')
                  ->orderBy('score DESC')
-                 ->limit(1)
                  ->fetch('score');
-$highScore = !empty($scores) ? $scores[0]['score'] : 0;
-if ($highScore < $score) {
+$highScore = !empty($scores) ? $scores : 0;
+if ($highScore < $score && $score != 0) {
     $message = "[color=#$classColor][b]{$user['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['arcade']['top_score_points']} karma points.";
     $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$site_config['arcade']['top_score_points']} Points for setting a new high score in $game.\n ";
     $set = [
@@ -69,7 +68,6 @@ if ($highScore < $score) {
 } else {
     $message = "[color=#$classColor][b]" . format_comment($user['username']) . "[/b][/color] has just played $link and scored a measly " . number_format($score) . '. Try again. The high score remains ' . number_format($highScore) . '.';
 }
-
 if ($site_config['site']['autoshout_chat']) {
     require_once INCL_DIR . 'function_users.php';
     autoshout($message);
