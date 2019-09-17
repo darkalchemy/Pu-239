@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Database;
+use Pu239\Session;
 use Pu239\User;
 
 $user = check_user_status();
@@ -37,6 +38,12 @@ $values = [
     'level' => $level,
     'score' => $score,
 ];
+if ($score === 0) {
+    $session = $container->get(Session::class);
+    $session->set('is-info', "Wow!! That was pretty bad. Don't worry, we will tell anyone about it.");
+    header('Location: ' . $site_config['paths']['baseurl'] . "/arcade_top_scores.php#{$gname}");
+    die();
+}
 $fluent->insertInto('flashscores')
        ->values($values)
        ->execute();
@@ -54,7 +61,7 @@ $scores = $fluent->from('flashscores')
                  ->orderBy('score DESC')
                  ->fetch('score');
 $highScore = !empty($scores) ? $scores : 0;
-if ($highScore < $score && $score != 0) {
+if ($highScore < $score) {
     $message = "[color=#$classColor][b]{$user['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['arcade']['top_score_points']} karma points.";
     $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - {$site_config['arcade']['top_score_points']} Points for setting a new high score in $game.\n ";
     $set = [
@@ -87,7 +94,7 @@ if (!empty($high) && $score > $high) {
            ->set($update)
            ->where('game = ?', $gname)
            ->execute();
-} elseif (empty($high) && $score > 0) {
+} elseif (empty($high)) {
     $set = [
         'game' => $gname,
         'score' => $score,

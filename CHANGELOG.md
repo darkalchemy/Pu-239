@@ -1,3 +1,6 @@
+### 17 Sept, 2019
+update: arcade scores of 0 will not be inserted into db or posted in AJAX Chat  
+
 ### 16 Sept, 2019
 fix: arcade score 0 should not be inserted into the db arcade.php  
 update: readme  

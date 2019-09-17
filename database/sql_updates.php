@@ -4501,13 +4501,14 @@ KEY `expires` (`expires`)
         'id' => 1568669099,
         'info' => 'Update scores',
         'date' => '16 Sept, 2019',
-        'query' => 'DELETE FROM `highscores` WHERE `score` = 0',
+        'query' => 'UPDATE `highscores` SET `score` = 0 WHERE `score` = 0',
         'flush' => false,
     ],
     [
         'id' => 1568669100,
         'info' => 'Update scores',
         'date' => '16 Sept, 2019',
-        'query' => 'DELETE FROM `flashscores` WHERE `score` = 0',
+        'query' => 'UPDATE `flashscores` SET `score` = 0 WHERE `score` = 0',
         'flush' => false,
-    ],];
+    ],
+];
