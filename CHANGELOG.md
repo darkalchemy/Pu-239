@@ -1,4 +1,5 @@
 ### 17 Sept, 2019
+fix: set $plot = '' if $plot is null  
 merge: css files  
 update: arcade scores of 0 will not be inserted into db or posted in AJAX Chat  
 

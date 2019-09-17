@@ -53,6 +53,8 @@ if (!empty($recipes) && is_array($recipes)) {
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
+        } else {
+            $plot = '';
         }
         $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $lang);
         $cooker .= "

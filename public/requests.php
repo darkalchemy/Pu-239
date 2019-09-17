@@ -512,6 +512,8 @@ if (!empty($edit_form)) {
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
+            } else {
+                $plot = '';
             }
             $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'upcoming_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot, $lang);
             $body .= "
