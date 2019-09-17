@@ -1,4 +1,7 @@
 ### 17 Sept, 2019
+fix: FOUC    
+update: pre style  
+test: remove css/js files  
 remove: require internal role to submit offers/requests  
 fix: set $plot = '' if $plot is null  
 merge: css files  

@@ -414,8 +414,9 @@ function doc_head()
     global $site_config;
 
     return "<!doctype html>
-<html lang='en'>
+<html lang='en-US' class='no-js'>
 <head>
+    <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>

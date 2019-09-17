@@ -32,6 +32,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
     global $container, $site_config;
 
     $curuser = check_user_status('login');
+
     $session = $container->get(Session::class);
     require_once INCL_DIR . 'function_bbcode.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
@@ -372,7 +373,8 @@ function stdfoot(array $stdfoot = [])
     $htmlfoot .= "
     <script>
         document.body.style.fontSize = '{$font_size}%';
-    </script>
+    </script>";
+    $htmlfoot .= "
     </div>
 </body>
 </html>";

@@ -4511,4 +4511,11 @@ KEY `expires` (`expires`)
         'query' => 'UPDATE `flashscores` SET `score` = 0 WHERE `score` = 0',
         'flush' => false,
     ],
+    [
+        'id' => 1568759251,
+        'info' => 'Remove column',
+        'date' => '17 Sept, 2019',
+        'query' => 'ALTER TABLE `users` DROP COLUMN `internal`',
+        'flush' => true,
+    ],
 ];
