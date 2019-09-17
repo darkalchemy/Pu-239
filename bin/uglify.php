@@ -69,7 +69,7 @@ function run_uglify($argv = [])
 
     $purpose = '--beautify';
     $short = 'Beautified';
-    $spurpose = '-O2 --skip-rebase --format beautify';
+    $spurpose = "-02 'all:on;mergeSemantically:off;removeUnusedAtRules:off' --skip-rebase --format beautify";
     $css_ext = '.css';
     $js_ext = '.js';
     $jstmp = BIN_DIR . 'temp.js';
@@ -78,7 +78,7 @@ function run_uglify($argv = [])
     if (PRODUCTION) {
         $purpose = '--compress --mangle';
         $short = 'Minified';
-        $spurpose = '--skip-rebase -O2';
+        $spurpose = "-02 'all:on;mergeSemantically:off;removeUnusedAtRules:off' --skip-rebase";
         $css_ext = '.min.css';
         $js_ext = '.min.js';
     }
@@ -343,13 +343,13 @@ function run_uglify($argv = [])
             TEMPLATE_DIR . "{$folder}/css/fonts.css",
             TEMPLATE_DIR . "{$folder}/css/fontello.css",
             TEMPLATE_DIR . "{$folder}/css/navbar.css",
+            TEMPLATE_DIR . "{$folder}/css/skins.css",
             TEMPLATE_DIR . "{$folder}/css/tables.css",
             TEMPLATE_DIR . "{$folder}/css/cards.css",
             ROOT_DIR . 'node_modules/tooltipster/dist/css/tooltipster.bundle.css',
             ROOT_DIR . 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css',
             TEMPLATE_DIR . "{$folder}/css/tooltipster.css",
             TEMPLATE_DIR . "{$folder}/css/classcolors.css",
-            TEMPLATE_DIR . "{$folder}/css/skins.css",
             BIN_DIR . 'lightbox.css',
             TEMPLATE_DIR . "{$folder}/css/default.css",
             TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
@@ -455,8 +455,8 @@ function process_js($key, $list, $purpose, $jstmp, $folder, $js_ext)
         gzwrite($fp, $data);
         gzclose($fp);
         chmod(PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}.gz", 0664);
-        copy($jstmp, PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}");
-        chmod(PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}", 0664);
+        //copy($jstmp, PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}");
+        //chmod(PUBLIC_DIR . "js/{$folder}/{$lkey}_{$hash}{$js_ext}", 0664);
 
         return [
             $key,
@@ -504,8 +504,8 @@ function process_css($key, $list, $spurpose, $csstmp, $folder, $css_ext)
         gzwrite($fp, $data);
         gzclose($fp);
         chmod(PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}.gz", 0664);
-        copy($csstmp, PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}");
-        chmod(PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}", 0664);
+        //copy($csstmp, PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}");
+        //chmod(PUBLIC_DIR . "css/{$folder}/{$lkey}_{$hash}{$css_ext}", 0664);
         $lkey = str_replace('_css', '', $key);
         if ($key === 'sceditor_css') {
             copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");

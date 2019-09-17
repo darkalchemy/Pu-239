@@ -13,17 +13,17 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_1644374e.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_e2ce56e7.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_9d8737c4.css";
         case 'index_css':
-            return "{$site_config['paths']['baseurl']}/css/1/index_c3306b88.css";
+            return "{$site_config['paths']['baseurl']}/css/1/index_64c2c5b0.css";
         case 'cookieconsent_css':
-            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
+            return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_2f4ef440.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_dbe61a25.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_cbbe77e0.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_5e579822.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_3b9e4d60.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_5e0b865c.js";
         case 'vendor_js':
@@ -59,7 +59,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_e643f9ab.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_875ab725.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

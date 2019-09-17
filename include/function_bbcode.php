@@ -13,10 +13,10 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @throws NotFoundException
+ * @return string
  * @throws DependencyException
  *
- * @return string
+ * @throws NotFoundException
  */
 function smilies_frame($smilies_set)
 {
@@ -184,12 +184,12 @@ function format_urls($s)
  * @param bool        $urls
  * @param bool        $images
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return mixed|string|string[]|null
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  *
- * @return mixed|string|string[]|null
+ * @throws \Envms\FluentPDO\Exception
  */
 function format_comment(?string $text, bool $strip_html = true, bool $urls = true, bool $images = true)
 {
@@ -307,7 +307,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         '<s>\1</s>',
         '<s>\1</s>',
         '<span class="pre padding20">\1</span>',
-        '<pre class="pre round10 h-100">\1</pre>',
+        '<pre class="pre round10">\1</pre>',
         '<div class="marquee"><span>\1</span></div>',
         '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display===\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size_\1">\2</span>',
@@ -528,12 +528,12 @@ function format_code(string $s)
  * @param      $text
  * @param bool $strip_html
  *
- * @throws \Envms\FluentPDO\Exception
+ * @return mixed|string|string[]|null
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  *
- * @return mixed|string|string[]|null
+ * @throws \Envms\FluentPDO\Exception
  */
 function format_comment_no_bbcode($text, $strip_html = true)
 {
