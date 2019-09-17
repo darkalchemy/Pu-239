@@ -16,16 +16,14 @@ function get_file_name($file)
             return "{$site_config['paths']['baseurl']}/css/1/chat_trans_1644374e.css";
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_4c5c6845.css";
-        case 'css':
-            return "{$site_config['paths']['baseurl']}/css/1/css_9875ead7.css";
-        case 'vendor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/vendor_620cdb5e.css";
+        case 'index_css':
+            return "{$site_config['paths']['baseurl']}/css/1/index_c3306b88.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_861434c7.css";
         case 'sceditor_css':
             return "{$site_config['paths']['baseurl']}/css/1/sceditor_dbe61a25.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_f66be271.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_5e579822.css";
         case 'main_js':
             return "{$site_config['paths']['baseurl']}/js/1/main_5e0b865c.js";
         case 'vendor_js':

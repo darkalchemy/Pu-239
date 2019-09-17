@@ -16,6 +16,11 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_torrent_hover.php';
 $user = check_user_status();
+$stdhead = [
+    'css' => [
+        get_file_name('index_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('parallax_js'),
@@ -347,4 +352,4 @@ function wrap_it($item, $data)
     }
 }
 
-echo stdhead('Home') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('Home', $stdhead) . $HTMLOUT . stdfoot($stdfoot);

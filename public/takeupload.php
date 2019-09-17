@@ -114,15 +114,13 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     if ($nfofile['name'] == '') {
         $session->set('is-warning', $lang['takeupload_no_nfo']);
         why_die($lang['takeupload_no_nfo']);
-    }
-    if ($nfofile['size'] == 0) {
+    } elseif ($nfofile['size'] == 0) {
         $session->set('is-warning', $lang['takeupload_0_byte']);
         why_die($lang['takeupload_0_byte']);
-    }
-    if ($nfofile['size'] > $site_config['site']['nfo_size']) {
+    } elseif ($nfofile['size'] > $site_config['site']['nfo_size']) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
         why_die($lang['takeupload_nfo_big']);
-    }
+    } else
     $nfofilename = $nfofile['tmp_name'];
     if (@!is_uploaded_file($nfofilename)) {
         $session->set('is-warning', $lang['takeupload_nfo_failed']);

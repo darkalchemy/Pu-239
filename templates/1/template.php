@@ -53,22 +53,19 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
-            $css_incl .= "<link rel='stylesheet' href='{$CSS}'>";
+            $css_incl .= "
+    <link rel='stylesheet' href='{$CSS}'>";
         }
     }
     $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
-    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['paths']['baseurl']}/rss.php?torrent_pass={$curuser['torrent_pass']}'>
     <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['paths']['baseurl']}/apple-touch-icon.png'>
     <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['paths']['baseurl']}/favicon-32x32.png'>
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['paths']['baseurl']}/favicon-16x16.png'>
     <link rel='manifest' href='{$site_config['paths']['baseurl']}/manifest.json'>
     <link rel='mask-icon' href='{$site_config['paths']['baseurl']}/safari-pinned-tab.svg' color='#5bbad5'>
-    <meta name='theme-color' content='#fff'>
-    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
-    <link rel='stylesheet' href='" . get_file_name('css') . "'>
-    {$css_incl}
+    <meta name='theme-color' content='#fff'>{$css_incl}
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>";
     $htmlout .= "
 </head>

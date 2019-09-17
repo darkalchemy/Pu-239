@@ -304,12 +304,7 @@ function run_uglify($argv = [])
         ]);
 
         $css_list = [];
-        $css_list['css'] = [];
-        $css_list['vendor_css'] = [
-            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-            BIN_DIR . 'pu239.css',
-        ];
-
+        $css_list['index_css'] = [];
         $css_list['cookieconsent_css'] = [
             ROOT_DIR . 'node_modules/cookieconsent/src/styles/base.css',
             ROOT_DIR . 'node_modules/cookieconsent/src/styles/layout.css',
@@ -319,31 +314,17 @@ function run_uglify($argv = [])
         ];
 
         if ($BLOCKS['latest_torrents_scroll_on']) {
-            $css_list['css'] = array_merge($css_list['css'], [
+            $css_list['index_css'] = array_merge($css_list['index_css'], [
                 TEMPLATE_DIR . "{$folder}/css/iCarousel.css",
             ]);
         }
 
         if ($BLOCKS['latest_torrents_slider_on']) {
-            $css_list['css'] = array_merge($css_list['css'], [
+            $css_list['index_css'] = array_merge($css_list['index_css'], [
                 ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.core.css',
                 ROOT_DIR . 'node_modules/@glidejs/glide/dist/css/glide.theme.css',
             ]);
         }
-
-        $css_list['css'] = array_merge($css_list['css'], [
-            TEMPLATE_DIR . "{$folder}/css/fonts.css",
-            TEMPLATE_DIR . "{$folder}/css/fontello.css",
-            TEMPLATE_DIR . "{$folder}/css/navbar.css",
-            TEMPLATE_DIR . "{$folder}/css/tables.css",
-            TEMPLATE_DIR . "{$folder}/css/cards.css",
-            ROOT_DIR . 'node_modules/tooltipster/dist/css/tooltipster.bundle.css',
-            ROOT_DIR . 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css',
-            TEMPLATE_DIR . "{$folder}/css/tooltipster.css",
-            TEMPLATE_DIR . "{$folder}/css/classcolors.css",
-            TEMPLATE_DIR . "{$folder}/css/skins.css",
-            BIN_DIR . 'lightbox.css',
-        ]);
 
         $css_list['sceditor_css'] = [
             ROOT_DIR . 'node_modules/normalize.css/normalize.css',
@@ -356,7 +337,20 @@ function run_uglify($argv = [])
         ];
 
         $css_list['main_css'] = [
+            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+            BIN_DIR . 'pu239.css',
             TEMPLATE_DIR . "{$folder}/variables.css",
+            TEMPLATE_DIR . "{$folder}/css/fonts.css",
+            TEMPLATE_DIR . "{$folder}/css/fontello.css",
+            TEMPLATE_DIR . "{$folder}/css/navbar.css",
+            TEMPLATE_DIR . "{$folder}/css/tables.css",
+            TEMPLATE_DIR . "{$folder}/css/cards.css",
+            ROOT_DIR . 'node_modules/tooltipster/dist/css/tooltipster.bundle.css',
+            ROOT_DIR . 'node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css',
+            TEMPLATE_DIR . "{$folder}/css/tooltipster.css",
+            TEMPLATE_DIR . "{$folder}/css/classcolors.css",
+            TEMPLATE_DIR . "{$folder}/css/skins.css",
+            BIN_DIR . 'lightbox.css',
             TEMPLATE_DIR . "{$folder}/css/default.css",
             TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
             TEMPLATE_DIR . "{$folder}/custom.css/",
