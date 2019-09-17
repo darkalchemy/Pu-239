@@ -35,7 +35,7 @@ $request_class = $container->get(Request::class);
 $comment_class = $container->get(Comment::class);
 $torrent = $container->get(Torrent::class);
 $session = $container->get(Session::class);
-$has_access = has_access($user['class'], UC_USER, 'internal') || has_access($user['class'], UC_STAFF, '');
+$has_access = has_access($user['class'], UC_USER, '');
 $actions = [
     'view_all',
     'add_request',
