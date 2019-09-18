@@ -120,8 +120,9 @@ if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     } elseif ($nfofile['size'] > $site_config['site']['nfo_size']) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
         why_die($lang['takeupload_nfo_big']);
-    } else
-    $nfofilename = $nfofile['tmp_name'];
+    } else {
+        $nfofilename = $nfofile['tmp_name'];
+    }
     if (@!is_uploaded_file($nfofilename)) {
         $session->set('is-warning', $lang['takeupload_nfo_failed']);
         why_die($lang['takeupload_nfo_failed']);

@@ -13,10 +13,10 @@ require_once INCL_DIR . 'function_users.php';
 /**
  * @param $smilies_set
  *
- * @return string
  * @throws DependencyException
- *
  * @throws NotFoundException
+ *
+ * @return string
  */
 function smilies_frame($smilies_set)
 {
@@ -184,12 +184,12 @@ function format_urls($s)
  * @param bool        $urls
  * @param bool        $images
  *
- * @return mixed|string|string[]|null
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed|string|string[]|null
  */
 function format_comment(?string $text, bool $strip_html = true, bool $urls = true, bool $images = true)
 {
@@ -528,12 +528,12 @@ function format_code(string $s)
  * @param      $text
  * @param bool $strip_html
  *
- * @return mixed|string|string[]|null
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
- *
  * @throws \Envms\FluentPDO\Exception
+ *
+ * @return mixed|string|string[]|null
  */
 function format_comment_no_bbcode($text, $strip_html = true)
 {

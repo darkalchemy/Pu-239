@@ -1,4 +1,5 @@
 ### 17 Sept, 2019
+fix: browse.php not recoginizing site wide free/double/silver  
 fix: FOUC    
 update: pre style  
 test: remove css/js files  

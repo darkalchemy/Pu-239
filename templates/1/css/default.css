@@ -19,6 +19,16 @@ body {
     background: no-repeat center center fixed;
 }
 
+.no-js {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.js {
+    visibility: visible;
+    opacity: 1;
+}
+
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 .5em rgba(0, 0, 0, .1);
     border-radius: .3125em;

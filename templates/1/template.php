@@ -374,10 +374,10 @@ function stdfoot(array $stdfoot = [])
     <script>
         document.body.style.fontSize = '{$font_size}%';
     </script>";
-    $htmlfoot .= "
+    $htmlfoot .= '
     </div>
 </body>
-</html>";
+</html>';
 
     return $htmlfoot;
 }
