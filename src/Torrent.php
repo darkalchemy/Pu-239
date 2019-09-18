@@ -59,7 +59,7 @@ class Torrent
                               ->prepare('DELETE likes, comments
                        FROM likes
                        LEFT JOIN comments ON comments.id=likes.comment_id
-                       WHERE comments.torrent = ? AND comments.');
+                       WHERE comments.torrent = ?');
         $query->bindParam(1, $tid);
         $query->execute();
 
@@ -287,8 +287,8 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -322,8 +322,8 @@ class Torrent
      * @param int|null $owner
      * @param int|null $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
      */
@@ -984,10 +984,10 @@ class Torrent
     /**
      * @param int $torrentid
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws InvalidManipulation
      * @throws Exception
+     * @throws DependencyException
      *
      * @return false|mixed|string|string[]|null
      */

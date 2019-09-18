@@ -1,4 +1,5 @@
 ### 18 Sept, 2019
+remove: incomplete statement Torrent.php  
 update: move title to doc_head()  
 fix: deleting incorrect comments torrents_normalize.php  
 fix: edit comment offers.php  
