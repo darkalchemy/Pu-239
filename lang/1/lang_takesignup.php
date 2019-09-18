@@ -31,8 +31,7 @@ $lang = [
     'takesignup_badusername' => 'The username your trying to use <b>(%s)</b> is on our black list chose another one',
     'takesignup_bannedmail' => 'This email address is banned!<br><br><strong>Reason</strong>:',
     'takesignup_from' => 'From:',
-    'takesignup_email_body' => doc_head() . "
-    <title>{$site_config['site']['name']} Registration</title>
+    'takesignup_email_body' => doc_head($site_config['site']['name'] . ' Registration') . '
 </head>
 <body>
 <p>You have requested a new user account on <#SITENAME#> and you have specified this address (<#USEREMAIL#>) as user contact.</p>
@@ -41,5 +40,5 @@ $lang = [
 <p><#REG_LINK#></p>
 <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within a few days. We urge you to read the RULES and FAQ before you start using <#SITENAME#>.</p>
 </body>
-</html>",
+</html>',
 ];

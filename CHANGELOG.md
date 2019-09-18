@@ -1,4 +1,6 @@
 ### 18 Sept, 2019
+update: move title to doc_head()  
+fix: deleting incorrect comments torrents_normalize.php  
 fix: edit comment offers.php  
 fix: add comment requests.php  
 update: user longer of free/silver/double for display browse.php  

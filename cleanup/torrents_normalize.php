@@ -40,7 +40,10 @@ function torrents_normalize($data)
     foreach ($objects as $name => $object) {
         $ext = pathinfo($name, PATHINFO_EXTENSION);
         if ($ext === 'torrent') {
-            $ids[] = basename($name, '.torrent');
+            $id = basename($name, '.torrent');
+            if (is_numeric($id)) {
+                $ids[] = (int) $id;
+            }
         }
     }
     sort($ids);

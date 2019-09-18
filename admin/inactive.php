@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlsafechars($arr['username']);
             $added = get_date((int) $arr['registered'], 'DATE');
             $last_access = get_date((int) $arr['last_access'], 'DATE');
-            $body = doc_head() . "
-    <meta property='og:title' content='{$lang['inactive_youracc']}'>
-    <title>{$lang['inactive_youracc']}</title>
+            $body = doc_head($lang['inactive_youracc']) . "
 </head>
 <body>
 <p>{$lang['inactive_hey']} $username,</p>

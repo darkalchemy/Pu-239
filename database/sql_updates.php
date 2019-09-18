@@ -4518,4 +4518,18 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `users` DROP COLUMN `internal`',
         'flush' => true,
     ],
+    [
+        'id' => 1568838761,
+        'info' => 'Create Index',
+        'date' => '18 Sept, 2019',
+        'query' => 'ALTER TABLE `comments` ADD INDEX `request` (`request`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1568838762,
+        'info' => 'Create Index',
+        'date' => '18 Sept, 2019',
+        'query' => 'ALTER TABLE `comments` ADD INDEX `offer` (`offer`)',
+        'flush' => false,
+    ],
 ];

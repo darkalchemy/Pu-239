@@ -2,6 +2,11 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Session;
@@ -351,15 +356,20 @@ cheers,\n
  * @param int    $secret
  * @param string $invite
  *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ *
  * @return string
  */
 function get_body(string $title, string $inviter, string $email, int $secret, string $invite)
 {
     global $site_config;
 
-    return doc_head() . "
-<meta property='og:title' content='{$title}'>
-<title>{$title} Invitation</title>
+    return doc_head("{$title} Invitation") . "
 </head>
 <body>
     <p>

@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
@@ -590,15 +592,20 @@ function html_out($html = '', $title = '')
  * @param     $url
  * @param     $text
  * @param int $time
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
  */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
 
-    $html = doc_head() . "
+    $html = doc_head($lang['rep_ad_redirect_title']) . "
 <meta http-equiv='refresh' content='{$time}; url={$site_config['paths']['baseurl']}/{$url}'>
-<meta property='og:title' content='{$lang['rep_ad_redirect_title']}'>
-<title>{$lang['rep_ad_redirect_title']}</title>
 <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>

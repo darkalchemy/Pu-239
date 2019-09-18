@@ -13,8 +13,7 @@ global $site_config, $CURUSER;
 if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');
 }
-$htmlout = doc_head() . "
-    <title>Custom Smilies</title>
+$htmlout = doc_head('Custom Smilies') . "
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>

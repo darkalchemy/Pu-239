@@ -58,9 +58,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
     <link rel='stylesheet' href='{$CSS}'>";
         }
     }
-    $htmlout = doc_head() . "
-    <meta property='og:title' content='{$title}'>
-    <title>{$title}</title>
+    $htmlout = doc_head($title) . "
     <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['paths']['baseurl']}/apple-touch-icon.png'>
     <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['paths']['baseurl']}/favicon-32x32.png'>
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['paths']['baseurl']}/favicon-16x16.png'>
@@ -189,10 +187,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -368,12 +366,6 @@ function stdfoot(array $stdfoot = [])
             }
         }
     }
-
-    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
-    $htmlfoot .= "
-    <script>
-        document.body.style.fontSize = '{$font_size}%';
-    </script>";
     $htmlfoot .= '
     </div>
 </body>
@@ -431,9 +423,9 @@ function StatusBar()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */

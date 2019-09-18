@@ -407,16 +407,31 @@ function validate_url($url)
 }
 
 /**
+ * @param string $title
+ *
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return string
  */
-function doc_head()
+function doc_head(string $title)
 {
     global $site_config;
+
+    $user = check_user_status();
+    $font_size = !empty($user['font_size']) ? $user['font_size'] : 85;
 
     return "<!doctype html>
 <html lang='en-US' class='no-js'>
 <head>
     <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+    <script>document.body.style.fontSize = '{$font_size}%';</script>
+    <meta property='og:title' content='{$title}'>
+    <title>{$title}</title>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>

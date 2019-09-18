@@ -10,9 +10,7 @@ $lang = load_language('global');
 global $ontainer, $site_config;
 
 $body_class = 'background-16 skin-2';
-$htmlout = doc_head() . "
-    <meta property='og:title' content='All Smiles'>
-    <title>All Smilies</title>
+$htmlout = doc_head('All Smiles') . "
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>

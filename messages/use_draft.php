@@ -78,9 +78,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
             $username = htmlsafechars($CURUSER['username']);
             $title = $site_config['site']['name'];
-            $body = doc_head() . "
-    <meta property='og:title' content='{$title}'>
-    <title>{$title} PM received</title>
+            $body = doc_head("{$title} PM received") . "
 </head>
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>

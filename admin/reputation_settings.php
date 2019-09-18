@@ -2,6 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -210,14 +216,19 @@ function template_out(array $matches)
  * @param     $url
  * @param     $text
  * @param int $time
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
 
-    $html = doc_head() . "
-<meta property='og:title' content='{$lang['repset_adminredir']}'>
-<title>{$lang['repset_adminredir']}</title>
+    $html = doc_head($lang['repset_adminredir']) . "
 <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>

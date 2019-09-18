@@ -26,9 +26,7 @@ if ($string === '400') {
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }
 $domain = htmlsafechars($_SERVER['HTTP_HOST']);
-$htmlout = doc_head() . "
-    <meta property='og:title' content='{$page}'>
-    <title>{$page}</title>
+$htmlout = doc_head($page) . "
     <style>
     <!--
     body     {

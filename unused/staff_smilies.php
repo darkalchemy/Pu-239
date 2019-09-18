@@ -15,9 +15,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     die();
 }
 
-$htmlout = doc_head() . "
-    <meta property='og:title' content='Staff Smiles'>
-    <title>Staff Smilies</title>
+$htmlout = doc_head('Staff Smilies') . "
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>

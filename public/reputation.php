@@ -2,6 +2,11 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
+use DI\DependencyException;
+use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -309,9 +314,17 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     }
     rep_output('', $html);
 }
+
 /**
  * @param string $msg
  * @param string $html
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
  */
 function rep_output($msg = '', $html = '')
 {
@@ -325,9 +338,7 @@ function rep_output($msg = '', $html = '')
             </td>
         </tr>";
     }
-    $htmlout = doc_head() . "
-    <meta property='og:title' content='Reputation System'>
-    <title>Reputation System</title>
+    $htmlout = doc_head('Reputation System') . "
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>

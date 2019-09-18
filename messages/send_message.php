@@ -91,9 +91,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) 
     if (!empty($messageg_id) && !empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
-        $msg = doc_head() . "
-    <meta property='og:title' content='{$title}'>
-    <title>{$title} PM received</title>
+        $msg = doc_head("{$title} PM Received") . "
 </head>
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>

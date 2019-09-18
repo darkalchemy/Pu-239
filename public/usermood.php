@@ -27,9 +27,7 @@ if (isset($_GET['id'])) {
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');
         write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $user['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
-        $HTMLOUT = doc_head() . '
-        <meta property="og:title" content=' . $lang['user_mood_title'] . '>
-        <title>' . $lang['user_mood_title'] . "</title>
+        $HTMLOUT = doc_head($lang['user_mood_title']) . "
         <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
         <link rel='stylesheet' href='" . get_file_name('css') . "'>
         <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
@@ -44,9 +42,7 @@ if (isset($_GET['id'])) {
     }
 }
 $body_class = 'background-16 skin-2';
-$HTMLOUT .= doc_head() . '
-    <meta property="og:title" content=' . $lang['user_mood_title'] . '>
-    <title>' . $lang['user_mood_title'] . "</title>
+$HTMLOUT .= doc_head($lang['user_mood_title']) . "
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
