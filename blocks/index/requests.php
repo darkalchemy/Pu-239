@@ -10,7 +10,7 @@ global $container, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('requests'));
 $request_class = $container->get(Request::class);
-$requested = $request_class->get_all($site_config['latest']['requests_limit'], 0, 'added', false, false, (bool) $user['hidden']);
+$requested = $request_class->get_all($site_config['latest']['requests_limit'], 0, 'added', false, false, (bool) $user['hidden'], $user['id']);
 $requests .= "
     <a id='requests-hash'></a>
     <div id='requests' class='box'>

@@ -68,12 +68,13 @@ class Request
      * @param bool   $desc
      * @param bool   $all
      * @param bool   $show_hidden
+     * @param int    $userid
      *
      * @throws Exception
      *
      * @return array
      */
-    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $show_hidden)
+    public function get_all(int $limit, int $offset, string $orderby, bool $desc, bool $all, bool $show_hidden, int $userid)
     {
         $results = $this->fluent->from('requests AS r')
                                 ->select('u.username')
@@ -90,7 +91,7 @@ class Request
                                 ->leftJoin('categories AS p ON c.parent_id = p.id')
                                 ->leftJoin('request_notify AS n ON r.userid = n.userid AND r.id = n.requestid')
                                 ->leftJoin('request_votes AS v ON r.userid = v.user_id AND r.id = v.request_id')
-                                ->leftJoin('bounties AS b ON r.userid = b.userid AND r.id = b.requestid')
+                                ->leftJoin('bounties AS b ON b.userid = ? AND r.id = b.requestid', $userid)
                                 ->leftJoin('bounties AS a ON r.id = a.requestid')
                                 ->groupBy('r.id')
                                 ->groupBy('v.vote')
@@ -124,12 +125,13 @@ class Request
     /**
      * @param int  $requestid
      * @param bool $is_staff
+     * @param int  $userid
      *
      * @throws Exception
      *
      * @return mixed
      */
-    public function get(int $requestid, bool $is_staff)
+    public function get(int $requestid, bool $is_staff, int $userid)
     {
         $result = $this->fluent->from('requests AS r')
                                ->select('u.username')
@@ -143,12 +145,13 @@ class Request
                                ->leftJoin('users AS u ON r.userid = u.id')
                                ->leftJoin('categories AS c ON r.category = c.id')
                                ->leftJoin('categories AS p ON c.parent_id = p.id')
-                               ->leftJoin('bounties AS b ON r.userid = b.userid AND r.id = b.requestid')
+                               ->leftJoin('bounties AS b ON b.userid = ? AND r.id = b.requestid', $userid)
                                ->leftJoin('bounties AS a ON r.id = a.requestid')
                                ->leftJoin('torrents AS t ON r.torrentid = t.id')
                                ->where('r.id = ?', $requestid)
                                ->groupBy('r.id')
                                ->groupBy('b.amount')
+                               ->groupBy('b.paid')
                                ->fetch();
         if (!empty($result['parent_name'])) {
             $result['fullcat'] = $result['parent_name'] . '::' . $result['cat'];

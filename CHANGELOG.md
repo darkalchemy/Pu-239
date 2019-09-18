@@ -1,3 +1,9 @@
+### 18 Sept, 2019
+update: user longer of free/silver/double for display browse.php  
+fix: name is ambiguous browse.php  
+fix: show bounties by user/total requests.php  
+add: show user who offer bounty  
+
 ### 17 Sept, 2019
 fix: browse.php not recoginizing site wide free/double/silver  
 fix: FOUC    

@@ -35,10 +35,10 @@ function linkcolor($num)
  * @param $char
  * @param $link
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string|string[]|null
  */
@@ -89,37 +89,8 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
     require_once CLASS_DIR . 'class_user_options_2.php';
     require_once INCL_DIR . 'function_torrent_hover.php';
     $lang = array_merge($lang, load_language('index'));
-    $free = get_event(true);
     $staff_tools = has_access($curuser['class'], $site_config['allowed']['fast_edit'], 'torrent_mod') || has_access($curuser['class'], $site_config['allowed']['fast_delete'], '') || has_access($curuser['class'], $site_config['allowed']['staff_picks'], '');
-    $is_free = [
-        'free' => 0,
-        'double' => 0,
-        'silver' => 0,
-    ];
-    if (!empty($free)) {
-        foreach ($free as $fl) {
-            if (!empty($fl['modifier'])) {
-                switch ($fl['modifier']) {
-                    case 1:
-                        $is_free['free'] = $fl['expires'];
-                        break;
-
-                    case 2:
-                        $is_free['double'] = $fl['expires'];
-                        break;
-
-                    case 3:
-                        $is_free['free'] = $fl['expires'];
-                        $is_free['double'] = $fl['expires'];
-                        break;
-
-                    case 4:
-                        $is_free['silver'] = $fl['expires'];
-                        break;
-                }
-            }
-        }
-    }
+    $is_free = get_events_data();
     foreach ($_GET as $key => $var) {
         if (in_array($key, [
             'sort',
@@ -237,7 +208,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         $dispname = format_comment($row['name']) . $year;
         $staff_pick = $row['staff_picks'] > 0 ? "
             <span id='staff_pick_{$row['id']}'>
-                <img src='{$site_config['paths']['images_baseurl']}staff_pick.png' class='tooltipper emoticon is-2x' alt='{$lang['torrenttable_staff_pick']}' title='{$lang['torrenttable_staff_pick']}'>
+                <img src='{$site_config['paths']['images_baseurl']}staff_pick.png' class='tooltipper emoticon' alt='{$lang['torrenttable_staff_pick']}' title='{$lang['torrenttable_staff_pick']}'>
             </span>" : "
             <span id='staff_pick_{$row['id']}'>
             </span>";
@@ -268,9 +239,9 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
                 <div class='level-wide min-350'>
                     <div>";
         $icons = $top_icons = [];
-        $row['free'] = empty($row['free']) && !empty($is_free['free']) ? $is_free['free'] : $row['free'];
-        $row['doubletorrent'] = empty($row['doubletorrent']) && !empty($is_free['double']) ? $is_free['double'] : $row['doubletorrent'];
-        $row['silver'] = empty($row['silver']) && !empty($is_free['silver']) ? $is_free['silver'] : $row['silver'];
+        $row['free'] = $row['free'] < $is_free['free'] ? $is_free['free'] : $row['free'];
+        $row['doubletorrent'] = $row['doubletorrent'] < $is_free['double'] ? $is_free['double'] : $row['doubletorrent'];
+        $row['silver'] = $row['silver'] < $is_free['silver'] ? $is_free['silver'] : $row['silver'];
         $top_icons[] = $row['added'] >= $curuser['last_browse'] ? "<span class='tag is-danger'>New!</span>" : '';
         $icons[] = $row['sticky'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}sticky.gif' class='tooltipper icon' alt='{$lang['torrenttable_sticky']}' title='{$lang['torrenttable_sticky']}'>" : '';
         $icons[] = $row['vip'] == 1 ? "<img src='{$site_config['paths']['images_baseurl']}star.png' class='tooltipper icon' alt='{$lang['torrenttable_vip']}' title='<div class=\"size_5 has-text-centered has-text-success\">VIP</div>{$lang['torrenttable_vip']}'>" : '';

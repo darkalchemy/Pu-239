@@ -41,27 +41,27 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 }
 
 $count = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('COUNT(t.id) AS count');
+                ->select(null)
+                ->select('COUNT(t.id) AS count');
 
 $query = $fluent->from('torrents AS t')
-    ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
-    ->select('u.username')
-    ->select('cu.username AS checked_by_username')
-    ->select('u.class')
-    ->select('f.doubleup AS doubleslot')
-    ->select('f.free AS freeslot')
-    ->select('f.addedup')
-    ->select('f.addedfree')
-    ->leftJoin('users AS u ON t.owner = u.id')
-    ->leftJoin('users AS cu ON t.checked_by = cu.id')
-    ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $user['id']);
+                ->select("IF(t.num_ratings < {$site_config['site']['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS user_rating")
+                ->select('u.username')
+                ->select('cu.username AS checked_by_username')
+                ->select('u.class')
+                ->select('f.doubleup AS doubleslot')
+                ->select('f.free AS freeslot')
+                ->select('f.addedup')
+                ->select('f.addedfree')
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('users AS cu ON t.checked_by = cu.id')
+                ->leftJoin('freeslots AS f ON t.id = f.torrentid AND u.id = ?', $user['id']);
 
 if ($user['hidden'] === 0) {
     $count->where('c.hidden = 0')
-        ->leftJoin('categories AS c ON t.category = c.id');
+          ->leftJoin('categories AS c ON t.category = c.id');
     $query->where('c.hidden = 0')
-        ->leftJoin('categories AS c ON t.category = c.id');
+          ->leftJoin('categories AS c ON t.category = c.id');
 }
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
@@ -121,8 +121,8 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $pagerlink = 'sort=' . (int) $_GET['sort'] . "&amp;type={$linkascdesc}&amp;";
 } else {
     $query->orderBy('t.staff_picks DESC')
-        ->orderBy('t.sticky')
-        ->orderBy('t.added DESC');
+          ->orderBy('t.sticky')
+          ->orderBy('t.added DESC');
     $pagerlink = '';
 }
 
@@ -168,14 +168,14 @@ if (isset($_GET['vip'])) {
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
     $count->where('s.to_go IS NULL')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id'])
-        ->having('to_go = -1');
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id'])
+          ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-        ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
+          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
 }
 
 $cats = [];
@@ -243,20 +243,20 @@ foreach ($valid_search as $search) {
         }
         $addparam .= "{$search}=" . urlencode((string) $cleaned) . '&amp;';
         if ($search === 'sns') {
-            $count->where('name LIKE ?', "%$cleaned%");
-            $query->where('name LIKE ?', "%$cleaned%");
+            $count->where('t.name LIKE ?', "%$cleaned%");
+            $query->where('t.name LIKE ?', "%$cleaned%");
         } else {
             if ($search === 'sna') {
                 $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
                 $query->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
             if ($search === 'sd') {
-                $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-                $query->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $count->where('MATCH (t.search_text, t.descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (t.search_text, t.descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
             if ($search === 'sg') {
-                $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-                $query->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $count->where('MATCH (t.newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
+                $query->where('MATCH (t.newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             }
             if ($search === 'so') {
                 $count->where('u.username = ?', $cleaned);
@@ -294,25 +294,25 @@ foreach ($valid_search as $search) {
             }
             if ($search === 'sp') {
                 $count->where('p.name = ?', $cleaned)
-                    ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                    ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
                 $query->where('p.name = ?', $cleaned)
-                    ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                    ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
             }
             if ($search === 'spf') {
                 $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                    ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                    ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
                 $query->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                    ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
-                    ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+                      ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                      ->innerJoin('person AS p ON i.person_id = p.imdb_id');
             }
             if ($search === 'sr') {
                 $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                    ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+                      ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
                 $query->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
-                    ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
+                      ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)');
             }
             if ($search === 'st') {
                 $subs = explode(' ', $cleaned);
@@ -351,8 +351,8 @@ if ($count > 0) {
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['paths']['baseurl']}/browse.php?" . $addparam);
     $query = $query->limit($pager['pdo']['limit'])
-        ->offset($pager['pdo']['offset'])
-        ->fetchAll();
+                   ->offset($pager['pdo']['offset'])
+                   ->fetchAll();
 }
 if ($user['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');

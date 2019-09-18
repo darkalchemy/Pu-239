@@ -35,6 +35,7 @@ $request_class = $container->get(Request::class);
 $comment_class = $container->get(Comment::class);
 $torrent = $container->get(Torrent::class);
 $session = $container->get(Session::class);
+$bounty_class = $container->get(Bounty::class);
 $has_access = has_access($user['class'], UC_USER, '');
 $actions = [
     'view_all',
@@ -59,7 +60,7 @@ if (isset($data['action'])) {
         case 'pay_bounty':
             $pay_bounty = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id, false);
+            $post_data = $request_class->get($id, false, $user['id']);
             break;
         case 'delete_comment':
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
@@ -84,7 +85,7 @@ if (isset($data['action'])) {
             $edit_comment = true;
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
             $comment = $comment_class->get_comment_by_id($cid);
-            $request = $request_class->get($comment['request'], false);
+            $request = $request_class->get($comment['request'], false, $user['id']);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['request_edit_comment']}" . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=edit_comment' accept-charset='utf-8'>
@@ -109,7 +110,7 @@ if (isset($data['action'])) {
         case 'add_comment':
             $add_comment = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $request = $request_class->get($id, false);
+            $request = $request_class->get($id, false, $user['id']);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['request_add_comment']}" . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_comment' accept-charset='utf-8'>
@@ -126,7 +127,7 @@ if (isset($data['action'])) {
         case 'view_request':
             $view = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id, has_access($user['class'], UC_STAFF, ''));
+            $post_data = $request_class->get($id, has_access($user['class'], UC_STAFF, ''), $user['id']);
             break;
         case 'view_all':
             $view_all = true;
@@ -138,7 +139,7 @@ if (isset($data['action'])) {
         case 'edit_request':
             $edit = true;
             $id = isset($data['id']) ? (int) $data['id'] : 0;
-            $post_data = $request_class->get($id, false);
+            $post_data = $request_class->get($id, false, $user['id']);
             break;
         case 'delete_request':
             $delete = true;
@@ -175,7 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die();
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
-        $bounty_class = $container->get(Bounty::class);
         $bounties = $bounty_class->get_sum($id);
         $user_class = $container->get(User::class);
         $owner = $user_class->getUserFromId($post_data['owner']);
@@ -209,7 +209,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'requestid' => $id,
                 'amount' => $bounty,
             ];
-            $bounty_class = $container->get(Bounty::class);
             $bounty_id = $bounty_class->add($values);
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
             die();
@@ -409,6 +408,21 @@ if ($view && is_valid_id($id)) {
                     <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
                     <div class='column'>" . (!empty($post_data['description']) ? format_comment($post_data['description']) : '') . "</div>
                 </div>{$imdb_info}{$has_votes}";
+    $bounties = $bounty_class->get_bounties($post_data['id']);
+    $show_bounties = '';
+    if (!empty($bounties)) {
+        $show_bounties .= "
+            <div class='has-text-centered w-10 min-250 bottom20'>";
+        foreach ($bounties as $bounty) {
+            $show_bounties .= "
+                <div class='level-wide'>
+                    <div>" . format_username($bounty['userid']) . '</div>
+                    <div>' . number_format((float) $bounty['amount']) . '</div>
+                </div>';
+        }
+        $show_bounties .= '
+            </div>';
+    }
     if ($post_data['torrentid'] !== 0 && $post_data['paid'] === 'no' && (has_access($user['class'], UC_STAFF, '') || $user['id'] === $post_data['id'])) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>
@@ -429,6 +443,7 @@ if ($view && is_valid_id($id)) {
                     <div class='has-text-centered padding20'>
                         <h2 class='has-text-centered'>{$lang['request_add_bounty']}" . htmlsafechars($post_data['name']) . "</h2>
                         <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . sprintf($lang['request_bounty_user'], $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
+                        {$show_bounties}
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_bounty' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$id}'>
                             <div class='level-center-center'>
@@ -474,7 +489,7 @@ if (!empty($edit_form)) {
     $pager = pager($perpage, (int) $count, $_SERVER['PHP_SELF'] . '?');
     $menu_top = $count > $perpage ? $pager['pagertop'] : '';
     $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
-    $requests = $request_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all, (bool) $user['hidden']);
+    $requests = $request_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all, (bool) $user['hidden'], $user['id']);
     $heading = "
                     <tr>
                         <th class='has-text-centered'>{$lang['request_cat']}</th>

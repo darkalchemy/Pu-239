@@ -72,9 +72,9 @@ function update_event(int $expires, int $new_expires)
 /**
  * @param bool $all
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -111,4 +111,40 @@ function get_event(bool $all)
     }
 
     return $free;
+}
+
+function get_events_data()
+{
+    $is_free = [
+        'free' => 0,
+        'double' => 0,
+        'silver' => 0,
+    ];
+    $free = get_event(true);
+    if (!empty($free)) {
+        foreach ($free as $fl) {
+            if (!empty($fl['modifier'])) {
+                switch ($fl['modifier']) {
+                    case 1:
+                        $is_free['free'] = $fl['expires'];
+                        break;
+
+                    case 2:
+                        $is_free['double'] = $fl['expires'];
+                        break;
+
+                    case 3:
+                        $is_free['free'] = $fl['expires'];
+                        $is_free['double'] = $fl['expires'];
+                        break;
+
+                    case 4:
+                        $is_free['silver'] = $fl['expires'];
+                        break;
+                }
+            }
+        }
+    }
+
+    return $is_free;
 }

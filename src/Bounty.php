@@ -123,4 +123,25 @@ class Bounty
             return $e->getMessage();
         }
     }
+
+    /**
+     * @param int $requestid
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_bounties(int $requestid)
+    {
+        $bounties = $this->fluent->from('bounties')
+                                 ->select(null)
+                                 ->select('userid')
+                                 ->select('SUM(amount) AS amount')
+                                 ->where('requestid = ?', $requestid)
+                                 ->orderBy('amount DESC')
+                                 ->groupBy('userid')
+                                 ->fetchAll();
+
+        return $bounties;
+    }
 }
