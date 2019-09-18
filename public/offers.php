@@ -75,7 +75,7 @@ if (isset($data['action'])) {
             $edit_comment = true;
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
             $comment = $comment_class->get_comment_by_id($cid);
-            $offer = $offer_class->get($comment['offer']);
+            $offer = $offer_class->get($comment['offer'], false);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['offer_edit_comment']}" . htmlsafechars($offer['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/offers.php?action=edit_comment' accept-charset='utf-8'>

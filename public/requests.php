@@ -113,7 +113,7 @@ if (isset($data['action'])) {
             $request = $request_class->get($id, false, $user['id']);
             $edit_form = "
                 <h2 class='has-text-centered'>{$lang['request_add_comment']}" . htmlsafechars($request['name']) . "</h2>
-                <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_comment' accept-charset='utf-8'>
+                <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=post_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$id}'>
                     <div class='columns is-marginless is-paddingless'>
                         <div class='column is-one-quarter has-text-left'>{$lang['request_comment']}</div>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
             die();
         }
-    } elseif ($add_comment) {
+    } elseif ($post_comment) {
         $validation = $validator->validate($_POST, [
             'id' => 'required|numeric',
             'body' => '',
