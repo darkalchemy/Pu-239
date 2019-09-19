@@ -250,17 +250,18 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         $icons[] = !empty($row['checked_by_username']) ? "<i class='icon-thumbs-up icon has-text-success tooltipper' aria-hidden='true' title='<div class=\"size_5 has-text-primary has-text-centered\">CHECKED</div><span class=\"right10\">By: </span><span>" . format_comment($row['checked_by_username']) . '</span><br><span class="right10">On: </span><span>' . get_date((int) $row['checked_when'], 'DATE') . "</span>'></i>" : '';
         $icons[] = $row['free'] != 0 ? "<img src='{$site_config['paths']['images_baseurl']}gold.png' class='tooltipper icon' alt='{$lang['torrenttable_free']}' title='<div class=\"has-text-centered size_5 has-text-success\">{$lang['torrenttable_free']}</div><div class=\"has-text-centered\">" . ($row['free'] > 1 ? 'Expires: ' . get_date((int) $row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '';
         $icons[] = $row['silver'] != 0 ? "<img src='{$site_config['paths']['images_baseurl']}silver.png' class='tooltipper icon' alt='{$lang['torrenttable_silver']}' title='<div class=\"has-text-centered size_5 has-text-success\">{$lang['torrenttable_silver']}</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date((int) $row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '';
-        $title = "
-            <div class='dt-tooltipper-large' data-tooltip-content='#desc_{$row['id']}_tooltip'>
+        if (!empty($row['descr'])) {
+            $icons[] = "
+            <span class='dt-tooltipper-large' data-tooltip-content='#desc_{$row['id']}_tooltip'>
                 <i class='icon-search icon' aria-hidden='true'></i>
                 <div class='tooltip_templates'>
                     <div id='desc_{$row['id']}_tooltip'>
                         " . format_comment($descr, false, true, false) . '
                     </div>
                 </div>
-            </div>';
+            </span>';
+        }
 
-        $icons[] = !empty($row['descr']) ? $title : '';
         $icons[] = $row['freetorrent'] != 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
         $icons[] = $row['doubletorrent'] != 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
         $icons[] = $row['nuked'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . format_comment($row['nukereason']) . "'>" : '';

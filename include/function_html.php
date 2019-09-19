@@ -408,15 +408,12 @@ function validate_url($url)
 
 function doc_head(string $title)
 {
-    global $site_config, $CURUSER;
-
-    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
+    global $site_config;
 
     return "<!doctype html>
 <html lang='en-US' class='no-js'>
 <head>
     <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
-    <script>document.body.style.fontSize = '{$font_size}%';</script>
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
     <meta charset='utf-8'>

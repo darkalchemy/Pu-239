@@ -1,4 +1,5 @@
 ### 19 Sept, 2019
+update: style browse.php  
 fix: login loop login.php  
 remove: access to login.php and recover.php pages when logged in  
 

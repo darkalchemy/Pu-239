@@ -366,10 +366,13 @@ function stdfoot(array $stdfoot = [])
             }
         }
     }
-    $htmlfoot .= '
+    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
+
+    $htmlfoot .= "
+        <script>document.body.style.fontSize = '{$font_size}%';</script>
     </div>
 </body>
-</html>';
+</html>";
 
     return $htmlfoot;
 }
