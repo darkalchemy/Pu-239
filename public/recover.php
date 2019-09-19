@@ -19,8 +19,8 @@ global $container, $site_config;
 get_template();
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
-    $auth->logOutEverywhere();
-    $auth->destroySession();
+    header("Location: {$site_config['paths']['baseurl']}");
+    die();
 }
 if (!$site_config['mail']['smtp_enable']) {
     stderr('Error', 'Mail functions have not been enabled.');

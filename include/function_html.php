@@ -406,24 +406,11 @@ function validate_url($url)
     return $url;
 }
 
-/**
- * @param string $title
- *
- * @throws AuthError
- * @throws DependencyException
- * @throws NotFoundException
- * @throws NotLoggedInException
- * @throws UnbegunTransaction
- * @throws \Envms\FluentPDO\Exception
- *
- * @return string
- */
 function doc_head(string $title)
 {
-    global $site_config;
+    global $site_config, $CURUSER;
 
-    $user = check_user_status();
-    $font_size = !empty($user['font_size']) ? $user['font_size'] : 85;
+    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
 
     return "<!doctype html>
 <html lang='en-US' class='no-js'>

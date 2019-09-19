@@ -9,20 +9,19 @@ use Pu239\User;
 use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
-require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_returnto.php';
 global $container, $site_config;
 
+$auth = $container->get(Auth::class);
+if ($auth->isLoggedIn()) {
+    header("Location: {$site_config['paths']['baseurl']}");
+    die();
+}
+
 $lang = array_merge(load_language('global'), load_language('login'));
 get_template();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $auth = $container->get(Auth::class);
-    if ($auth->isLoggedIn()) {
-        $auth->logOutEverywhere();
-        $auth->destroySession();
-        stderr('Error', 'You were already logged in, you have now been logged out, everywhere.');
-    }
     $session = $container->get(Session::class);
     $validator = $container->get(Validator::class);
     $post = $_POST;

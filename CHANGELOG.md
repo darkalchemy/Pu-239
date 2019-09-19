@@ -1,3 +1,7 @@
+### 19 Sept, 2019
+fix: login loop login.php  
+remove: access to login.php and recover.php pages when logged in  
+
 ### 18 Sept, 2019
 remove: incomplete statement Torrent.php  
 update: move title to doc_head()  
