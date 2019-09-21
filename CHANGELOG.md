@@ -1,4 +1,5 @@
 ### 21 Sept, 2019
+update: forum block title length  
 add: bin/rename_image_hashes.php you should run this immediately after updating else all of your images will be redownloaded and reprocessed  
 fix: torrent name breaking template  
 update: check if image is in person.photo before removing remove_altered_images.php  
