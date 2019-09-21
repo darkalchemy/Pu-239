@@ -105,7 +105,6 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         foreach ($members as $member) {
             if (count($imdb_data[$member]) > 0) {
                 foreach ($imdb_data[$member] as $person) {
-                    $all_people[] = $person;
                     if (!empty($person['imdb'])) {
                         $persons[] = [
                             'name' => $person['name'],
@@ -664,11 +663,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -718,6 +717,7 @@ function update_torrent_data(string $imdb_id)
  * @param $person_id
  *
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
@@ -732,8 +732,8 @@ function get_imdb_person($person_id)
         return false;
     }
     $imdb_person = $cache->get('imdb_person_' . $person_id);
+    $fluent = $container->get(Database::class);
     if ($imdb_person === false || is_null($imdb_person)) {
-        $fluent = $container->get(Database::class);
         $imdb_person = $fluent->from('person')
                               ->where('imdb_id = ?', $person_id)
                               ->where('updated + 2592000 > ?', TIME_NOW)
@@ -757,7 +757,7 @@ function get_imdb_person($person_id)
             ];
             $fluent->update('person')
                    ->set($set)
-                   ->where('idmb_id = ?', $person_id)
+                   ->where('imdb_id = ?', $person_id)
                    ->execute();
 
             return false;
@@ -796,7 +796,11 @@ function get_imdb_person($person_id)
 
         if (!empty($person->photo(false))) {
             $data = $person->photo(false);
-            $imdb_person['photo'] = $data;
+            if (strpos($data, 'nopicture') === false) {
+                $imdb_person['photo'] = $data;
+                url_proxy($data, true, null, 110);
+                url_proxy($data, true, 250);
+            }
         }
 
         $imdb_person['imdb_id'] = $person_id;
@@ -808,6 +812,14 @@ function get_imdb_person($person_id)
                ->execute();
 
         $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
+    } else {
+        $set = [
+            'updated' => TIME_NOW,
+        ];
+        $fluent->update('person')
+               ->set($set)
+               ->where('imdb_id = ?', $person_id)
+               ->execute();
     }
 
     return $imdb_person;
@@ -816,9 +828,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -851,9 +863,9 @@ function get_top_movies(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -886,9 +898,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -921,9 +933,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */

@@ -12,11 +12,20 @@ $image_proxy = $container->get(ImageProxy::class);
 $path = IMAGES_DIR . 'proxy/';
 $fluent = $container->get(Database::class);
 $urls = $fluent->from('images')
-               ->select('url');
+               ->select('url')
+               ->fetchAll();
+
+$photos = $fluent->from('person')
+                 ->select(null)
+                 ->select('photo AS url')
+                 ->where('photo IS NOT NULL')
+                 ->fetchAll();
+
+$urls = array_merge($urls, $photos);
+
 $images = [];
 foreach ($urls as $url) {
-    $hash = hash('sha512', $url['url']);
-    $images[] = PROXY_IMAGES_DIR . $hash;
+    $images[] = PROXY_IMAGES_DIR . hash('sha256', $url['url']);
 }
 $filesize = $i = 0;
 $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);

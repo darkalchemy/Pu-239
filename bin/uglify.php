@@ -353,7 +353,11 @@ function run_uglify($argv = [])
             BIN_DIR . 'lightbox.css',
             TEMPLATE_DIR . "{$folder}/css/default.css",
             TEMPLATE_DIR . "{$folder}/css/breadcrumbs.css",
-            TEMPLATE_DIR . "{$folder}/custom.css/",
+            TEMPLATE_DIR . "{$folder}/custom.css",
+        ];
+
+        $css_list['last_css'] = [
+            TEMPLATE_DIR . "{$folder}/css/show.css",
         ];
 
         if ($BLOCKS['ajaxchat_on']) {

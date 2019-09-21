@@ -19,11 +19,11 @@ $posted_comments .= "
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='has-text-centered w-10'>Type</th>
+                            <th class='w-1 has-text-centered w-10'>Type</th>
                             <th class='w-50 min-150'>Last 5 Comments</th>
-                            <th class='has-text-centered'>User</th>
-                            <th class='has-text-centered'>When</th>
-                            <th class='has-text-centered'>Likes</th>
+                            <th class='w-1 has-text-centered'>User</th>
+                            <th class='w-1 has-text-centered'>When</th>
+                            <th class='w-1 has-text-centered'>Likes</th>
                         </tr>
                     </thead>
                     <tbody>";

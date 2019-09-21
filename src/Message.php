@@ -44,6 +44,21 @@ class Message
         $this->limit = $this->env['db']['query_limit'];
     }
 
+    /**
+     * @param array $values
+     * @param bool  $send_email
+     *
+     * @throws Exception
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \Delight\Auth\AuthError
+     * @throws \Delight\Auth\NotLoggedInException
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     *
+     * @return bool|int
+     */
     public function insert(array $values, bool $send_email = true)
     {
         if (empty($values)) {

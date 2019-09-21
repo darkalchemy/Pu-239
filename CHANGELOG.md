@@ -1,3 +1,20 @@
+### 21 Sept, 2019
+add: bin/rename_image_hashes.php you should run this immediately after updating else all of your images will be redownloaded and reprocessed  
+fix: torrent name breaking template  
+update: check if image is in person.photo before removing remove_altered_images.php  
+add: cli options to delete, validate or optimize images validate_images.php    
+add: images from person.photo optimize_resize_images.php  
+update: change image proxy naming from sha512 to sha256  
+update: another attempt to fix FOUC  
+update: check/updated to 1 week instead of 1 hour images_update.php  
+fix: person.updated not updating get_imdb_person()  
+add: rename images to sha256 bin/rename_image_hashes.php  
+update: do not insert person photo when photo is nopicture  
+update: run jobby log permission every 15 min instead of every min  
+
+### 20 Sept, 2019
+move: glide to center column  
+
 ### 19 Sept, 2019
 fix: glide loading when not in the dom  
 update: style browse.php  

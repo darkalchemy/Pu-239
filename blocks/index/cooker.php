@@ -19,11 +19,11 @@ $cooker .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='min-250 has-no-border-right has-no-border-left'>{$lang['upcoming_name']}</th>
-                        <th class='has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
-                        <th class='has-text-centered has-no-border-right has-no-border-left'><i class='icon-hourglass-3 icon' aria-hidden='true'></i></th>
-                        <th class='has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>
+                        <th class='w-1 min-100 has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
+                        <th class='w-50 min-350 has-no-border-right has-no-border-left'>{$lang['upcoming_name']}</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'><i class='icon-hourglass-3 icon' aria-hidden='true'></i></th>
+                        <th class='w-1 has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>
                     </tr>
                 </thead>
                 <tbody>";

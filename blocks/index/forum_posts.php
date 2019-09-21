@@ -40,9 +40,9 @@ $forum_posts .= "
                 <thead>
                     <tr>
                         <th class='w-50 min-350'>{$lang['latestposts_topic_title']}</th>
-                        <th class='has-text-centered'>{$lang['latestposts_replies']}</th>
-                        <th class='has-text-centered'>{$lang['latestposts_views']}</th>
-                        <th class='has-text-centered'>{$lang['latestposts_last_post']}</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>{$lang['latestposts_replies']}</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>{$lang['latestposts_views']}</th>
+                        <th class='w-1 has-text-centered has-no-border-left'>{$lang['latestposts_last_post']}</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -103,9 +103,9 @@ if (!empty($topics) && is_array($topics)) {
         $forum_posts .= "
                     <tr>
                         <td>{$topic_name}</td>
-                        <td class='has-text-centered'>{$replies}</td>
-                        <td class='has-text-centered'>" . number_format((int) $topicarr['views']) . "</td>
-                        <td class='has-text-centered'>{$username}</td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>{$replies}</td>
+                        <td class='has-text-centered has-no-border-right has-no-border-left'>" . number_format((int) $topicarr['views']) . "</td>
+                        <td class='has-text-centered has-no-border-left'>{$username}</td>
                     </tr>";
     }
     $forum_posts .= '

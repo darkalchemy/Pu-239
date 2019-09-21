@@ -146,6 +146,25 @@ function commenttable($rows, $variant = 'torrent')
     return $htmlout;
 }
 
+/**
+ * @param $row
+ * @param $image
+ * @param $this_text
+ * @param $avatar
+ * @param $CURUSER
+ * @param $usersdata
+ * @param $text
+ * @param $top
+ * @param $member_reputation
+ * @param $lang
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string|void
+ */
 function format_table_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $top, $member_reputation, $lang)
 {
     global $site_config;
@@ -170,6 +189,24 @@ function format_table_border($row, $image, $this_text, $avatar, $CURUSER, $users
             </div>", $top);
 }
 
+/**
+ * @param $row
+ * @param $image
+ * @param $this_text
+ * @param $avatar
+ * @param $CURUSER
+ * @param $usersdata
+ * @param $text
+ * @param $member_reputation
+ * @param $lang
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
+ */
 function format_table_no_border($row, $image, $this_text, $avatar, $CURUSER, $usersdata, $text, $member_reputation, $lang)
 {
     global $site_config;

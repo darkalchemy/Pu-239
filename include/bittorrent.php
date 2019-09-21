@@ -1229,7 +1229,7 @@ function get_show_id(string $name)
         return null;
     }
     $name = get_show_name($name);
-    $hash = hash('sha512', $name);
+    $hash = hash('sha256', $name);
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
         $fluent = $container->get(Database::class);

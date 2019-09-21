@@ -19,16 +19,6 @@ body {
     background: no-repeat center center fixed;
 }
 
-.no-js {
-    visibility: hidden;
-    opacity: 0;
-}
-
-.js {
-    visibility: visible;
-    opacity: 1;
-}
-
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 .5em rgba(0, 0, 0, .1);
     border-radius: .3125em;
@@ -310,7 +300,6 @@ span {
     height: 16px;
     padding: 0;
     font-size: 16px !important;
-    margin-right: 5px;
 }
 
 .emoticon {
@@ -471,13 +460,15 @@ span {
     text-shadow: -1px 0 var(--main-bdr-color), 0 1px var(--main-bdr-color), 1px 0 var(--main-bdr-color), 0 -1px var(--main-bdr-color);
 }
 
+.torrent-box {
+    max-width: calc(100% - 75px);
+}
 .torrent-name {
     display: inline-block;
-    max-width: 450px;
+    max-width: 100%;
     overflow: hidden;
     text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    word-wrap: break-word;
 }
 
 .inner-wrapper {
@@ -549,8 +540,17 @@ textarea {
 .level-center {
     align-items: center;
     justify-content: space-around;
-    display: flex;
     flex-wrap: wrap;
+}
+
+.comments,
+.flex-grid,
+.level-left,
+.level-right,
+.level-center,
+.level-center-center,
+.level-wide {
+    display: flex;
 }
 
 .level-right li:not(:first-child) {
@@ -560,12 +560,10 @@ textarea {
 .level-center-center {
     align-items: center;
     justify-content: center;
-    display: flex;
 }
 
 .level-wide {
     justify-content: space-between;
-    display: flex;
     flex-wrap: wrap;
 }
 
@@ -1027,7 +1025,6 @@ option.head {
 }
 
 .comments {
-    display: flex;
     justify-content: space-between;
 }
 
@@ -1195,7 +1192,6 @@ ul li ul li {
 }
 
 .flex-grid {
-    display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }

@@ -140,7 +140,7 @@ if ($moderator) {
             'latest_torrents_',
             'tvshow_ids_' . $torrent['imdb_id'],
             'staff_picks_',
-            'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
+            'tvshow_ids_' . hash('sha256', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
             'imdb_' . str_replace('tt', '', $torrent['imdb_id']),
             'book_fullset_' . $torrent['id'],

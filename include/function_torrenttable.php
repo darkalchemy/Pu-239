@@ -121,7 +121,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             <thead>
                 <tr>
                     <th class='has-text-centered w-1 tooltipper has-no-border-right' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
-                    <th class='has-text-centered min-350 tooltipper has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
+                    <th class='has-text-centered tooltipper has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link[1]}'>{$lang['torrenttable_name']}</a></th>
                     <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['torrenttable_sort_by']}{$lang['torrenttable_added']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=2&amp;type={$link[2]}'><i class='icon-clock icon' aria-hidden='true'></i></a></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper w-1 has-no-border-right has-no-border-left' title='{$lang['bookmark_goto']}'>
@@ -207,11 +207,10 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         $year = !empty($row['year']) ? " ({$row['year']})" : '';
         $dispname = format_comment($row['name']) . $year;
         $staff_pick = $row['staff_picks'] > 0 ? "
-            <span id='staff_pick_{$row['id']}'>
-                <img src='{$site_config['paths']['images_baseurl']}staff_pick.png' class='tooltipper emoticon' alt='{$lang['torrenttable_staff_pick']}' title='{$lang['torrenttable_staff_pick']}'>
-            </span>" : "
-            <span id='staff_pick_{$row['id']}'>
-            </span>";
+                    <div id='staff_pick_{$row['id']}'>
+                        <img src='{$site_config['paths']['images_baseurl']}staff_pick.png' class='tooltipper emoticon' alt='{$lang['torrenttable_staff_pick']}' title='{$lang['torrenttable_staff_pick']}'>
+                    </div>" : "
+                    <div id='staff_pick_{$row['id']}'></div>";
 
         $imdb_info = '';
         if (in_array($row['category'], $site_config['categories']['movie']) || in_array($row['category'], $site_config['categories']['tv'])) {
@@ -236,8 +235,7 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
         }
         $htmlout .= "
             <td class='has-no-border-right has-no-border-left'>
-                <div class='level-wide min-350'>
-                    <div>";
+                <div class='level-wide min-350'>";
         $icons = $top_icons = [];
         $row['free'] = $row['free'] < $is_free['free'] ? $is_free['free'] : $row['free'];
         $row['doubletorrent'] = $row['doubletorrent'] < $is_free['double'] ? $is_free['double'] : $row['doubletorrent'];
@@ -334,7 +332,9 @@ function torrenttable(array $res, array $curuser, string $variant = 'index')
             $audios = '<span>' . implode(' ', $Audios) . '</span>';
         }
         $added = get_date((int) $row['added'], 'LONG', 0, 1);
-        $htmlout .= $tooltip . "</div>{$staff_pick}{$top_icons}</div>
+        $htmlout .= "
+                    <div class='torrent-box'>{$tooltip}</div><div class='level-right'>{$staff_pick}{$top_icons}</div>
+                </div>
                 <div class='level-wide top5'>{$icon_string}{$imdb_info}</div>
                 <div class='level-wide top5'>{$genre_icons_string}{$user_rating}{$smalldescr}{$added}</div>
                 <div class='level-wide top5'>{$audios}{$subtitles}</div>

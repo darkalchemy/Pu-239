@@ -406,14 +406,19 @@ function validate_url($url)
     return $url;
 }
 
+/**
+ * @param string $title
+ *
+ * @return string
+ */
 function doc_head(string $title)
 {
     global $site_config;
 
     return "<!doctype html>
-<html lang='en-US' class='no-js'>
+<html lang='en-US'>
 <head>
-    <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+    <style>html{visibility: hidden;opacity:0;}</style>
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
     <meta charset='utf-8'>

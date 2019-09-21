@@ -237,7 +237,7 @@ if (!empty($rows)) {
                     </tr>";
         $body = "
                     <tr>
-                        <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(format_comment($row['name']), 0, 60) . '</b></a></td>
+                        <td class='w-50'><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><div class='torrent-name min-150'>" . format_comment($row['name']) . '</div></a></td>
                         <td>' . get_date((int) $row['added'], 'LONG', 0, 1) . "</td>
                         <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
                         <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>

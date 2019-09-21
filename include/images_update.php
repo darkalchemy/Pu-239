@@ -115,7 +115,7 @@ function images_update()
                      ->select('url')
                      ->where('imdb_id IS NOT NULL')
                      ->where('tmdb_id = 0')
-                     ->where('checked + 3600 < ?', TIME_NOW)
+                     ->where('checked + 604800 < ?', TIME_NOW)
                      ->orderBy('added DESC')
                      ->limit(50)
                      ->fetchAll();
@@ -143,7 +143,7 @@ function images_update()
                      ->select('type')
                      ->where('tmdb_id != 0')
                      ->where('imdb_id IS NULL')
-                     ->where('checked + 3600 < ?', TIME_NOW)
+                     ->where('checked + 604800 < ?', TIME_NOW)
                      ->orderBy('added DESC')
                      ->limit(50)
                      ->fetchAll();
@@ -186,7 +186,7 @@ function images_update()
                        ->select('imdb_id')
                        ->select('url')
                        ->where('imdb_id IS NOT NULL')
-                       ->where('updated + 3600 < ?', TIME_NOW)
+                       ->where('updated + 604800 < ?', TIME_NOW)
                        ->orderBy('added DESC')
                        ->limit(50)
                        ->fetchAll();
@@ -218,7 +218,7 @@ function images_update()
                        ->select('tmdb_id')
                        ->select('url')
                        ->where('tmdb_id > 0')
-                       ->where('updated + 3600 < ?', TIME_NOW)
+                       ->where('updated + 604800 < ?', TIME_NOW)
                        ->orderBy('added DESC')
                        ->limit(50)
                        ->fetchAll();
@@ -296,7 +296,9 @@ function images_update()
                     ->select('title')
                     ->select('isbn')
                     ->select('poster')
-                    ->where('info_updated + 3600 < ?', TIME_NOW)
+                    ->where('info_updated + 604800 < ?', TIME_NOW)
+                    ->where('isbn IS NOT NULL')
+                    ->where("isbn != ''")
                     ->orderBy('id DESC')
                     ->limit(50)
                     ->fetchAll();
@@ -322,7 +324,7 @@ function images_update()
                       ->select('id')
                       ->select('imdb_id')
                       ->where('imdb_id IS NOT NULL')
-                      ->where('info_updated + 3600 < ?', TIME_NOW)
+                      ->where('info_updated + 604800 < ?', TIME_NOW)
                       ->orderBy('id DESC')
                       ->limit(50)
                       ->fetchAll();
@@ -391,7 +393,7 @@ function images_update()
                           ->select('id')
                           ->select('url')
                           ->where('url IS NOT NULL')
-                          ->where('updated + 3600 < ?', TIME_NOW)
+                          ->where('updated + 604800 < ?', TIME_NOW)
                           ->orderBy('id DESC')
                           ->limit(50)
                           ->fetchAll();
@@ -422,7 +424,7 @@ function images_update()
                             ->select('id')
                             ->select('url')
                             ->where('url IS NOT NULL')
-                            ->where('updated + 3600 < ?', TIME_NOW)
+                            ->where('updated + 604800 < ?', TIME_NOW)
                             ->orderBy('id DESC')
                             ->limit(50)
                             ->fetchAll();
@@ -452,7 +454,8 @@ function images_update()
     $persons = $fluent->from('person')
                       ->select(null)
                       ->select('imdb_id')
-                      ->where('updated + 3600 < ?', TIME_NOW)
+                      ->select('photo')
+                      ->where('updated + 604800 < ?', TIME_NOW)
                       ->orderBy('added DESC')
                       ->limit(50)
                       ->fetchAll();
@@ -463,6 +466,19 @@ function images_update()
 
     if (!empty($persons)) {
         echo count($persons) . " persons imdb info cached\n";
+    }
+
+    $i = 0;
+    foreach ($persons as $person) {
+        if (!empty($person['photo'])) {
+            url_proxy($person['photo'], true, 250);
+            url_proxy($person['photo'], true, null, 110);
+            ++$i;
+        }
+    }
+
+    if (!empty($persons)) {
+        echo $i . " persons photo proxied\n";
     }
 
     $cache->delete('backgrounds_');

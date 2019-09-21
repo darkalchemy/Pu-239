@@ -113,6 +113,13 @@ function get_event(bool $all)
     return $free;
 }
 
+/**
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array
+ */
 function get_events_data()
 {
     $is_free = [

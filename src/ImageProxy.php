@@ -24,10 +24,10 @@ class ImageProxy
      * @param int|null $height
      * @param int|null $quality
      *
-     * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
      * @throws InvalidManipulation
+     * @throws NotFoundException
      *
      * @return bool|string
      */
@@ -37,7 +37,7 @@ class ImageProxy
             return false;
         }
 
-        $hash = hash('sha512', $url);
+        $hash = hash('sha256', $url);
         $path = PROXY_IMAGES_DIR . $hash;
 
         if (file_exists($path) && !exif_imagetype($path)) {
@@ -64,9 +64,9 @@ class ImageProxy
      * @param string $url
      * @param string $path
      *
-     * @throws \Envms\FluentPDO\Exception
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -164,7 +164,7 @@ class ImageProxy
      */
     protected function convert_image(string $url, string $path, int $quality)
     {
-        $hash = hash('sha512', $url . '_converted_' . $quality);
+        $hash = hash('sha256', $url . '_converted_' . $quality);
         $new_path = PROXY_IMAGES_DIR . $hash;
 
         if (!file_exists($path)) {
@@ -203,7 +203,7 @@ class ImageProxy
     protected function resize_image(string $url, string $path, int $width = null, int $height = null)
     {
         $manager = new ImageManager(['driver' => 'imagick']);
-        $hash = hash('sha512', $url . (!empty($width) ? "_$width" : "_$height"));
+        $hash = hash('sha256', $url . (!empty($width) ? "_$width" : "_$height"));
         $new_path = PROXY_IMAGES_DIR . $hash;
 
         if (file_exists($new_path)) {

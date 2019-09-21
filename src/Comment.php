@@ -213,6 +213,13 @@ class Comment
         return $comments;
     }
 
+    /**
+     * @param int $commentid
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
     public function get_comment_by_id(int $commentid)
     {
         $comment = $this->fluent->from('comments')

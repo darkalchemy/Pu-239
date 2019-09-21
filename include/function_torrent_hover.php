@@ -142,8 +142,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     $background = !empty($background) ? "style='background-image: url({$background});'" : '';
     $torrent_hover = "
                             <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1{$is_comment}'>
-                                <div class='dt-tooltipper-large torrent-name $sticky' data-tooltip-content='#{$block_id}_tooltip'>
-                                    $text
+                                <div class='dt-tooltipper-large $sticky' data-tooltip-content='#{$block_id}_tooltip'>$text
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background' {$background}>
                                             <div class='tooltip-torrent padding10'>
@@ -214,7 +213,6 @@ function torrent_tooltip_wrapper(array $data)
     global $container, $site_config, $lang;
 
     $cache = $container->get(Cache::class);
-    $cache->delete('torrent_wrapper_' . $data['id']);
     $torrent_wrapper = $cache->get('torrent_wrapper_' . $data['id']);
     $session = $container->get(Session::class);
     $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
@@ -282,7 +280,7 @@ function upcoming_hover(string $url, string $block_id, string $text, string $bac
     $hover = "
                             <a class='is-link' href='" . url_proxy($url, false) . "' $target>
                                 <div class='dt-tooltipper-large torrent-name' data-tooltip-content='#{$block_id}_tooltip'>
-                                    " . htmlsafechars($text) . "
+                                    <div class='torrent-name'>" . format_comment($text) . "</div>
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background' {$background}>
                                             <div class='tooltip-torrent padding10'>
@@ -298,7 +296,7 @@ function upcoming_hover(string $url, string $block_id, string $text, string $bac
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_name']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8 torrent-name'>" . htmlsafechars($text) . "</div>
+                                                                <div class='column padding5 is-8 torrent-name'>" . format_comment($text) . "</div>
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_chef']}</span>
                                                                 </div>

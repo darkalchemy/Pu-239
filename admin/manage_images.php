@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete']) && $_POST[
         $item = $image->get_image($id);
         if (!empty($item)) {
             $hashes = [
-                hash('sha512', $item['url'] . '_converted_' . 20),
-                hash('sha512', $item['url'] . '_450'),
-                hash('sha512', $item['url'] . '_250'),
-                hash('sha512', $item['url'] . '_150'),
-                hash('sha512', $item['url']),
+                hash('sha256', $item['url'] . '_converted_' . 20),
+                hash('sha256', $item['url'] . '_450'),
+                hash('sha256', $item['url'] . '_250'),
+                hash('sha256', $item['url'] . '_150'),
+                hash('sha256', $item['url']),
             ];
             foreach ($hashes as $hash) {
                 $file = PROXY_IMAGES_DIR . $hash;

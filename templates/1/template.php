@@ -370,6 +370,7 @@ function stdfoot(array $stdfoot = [])
 
     $htmlfoot .= "
         <script>document.body.style.fontSize = '{$font_size}%';</script>
+        <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
     </div>
 </body>
 </html>";

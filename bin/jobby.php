@@ -34,7 +34,7 @@ $jobby->add('Fund Table Update', [
 
 $jobby->add('Fix log permissions', [
     'command' => 'sudo chown -R ' . $site_config['webserver']['username'] . ':' . $site_config['webserver']['username'] . ' ' . LOGS_DIR,
-    'schedule' => '* * * * *',
+    'schedule' => '*/15 * * * *',
     'enabled' => true,
 ]);
 

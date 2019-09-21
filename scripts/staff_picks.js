@@ -20,7 +20,7 @@ $('.staff_pick').on('click', function () {
                 $(this).html('<i class="icon-star-empty icon has-text-danger"></i>');
                 $(this).tooltipster('content', 'Remove from Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
-                el.innerHTML = '<img src="./images/staff_pick.png" class="tooltipper emoticon is-2x" alt="Staff Pick!" title="Staff Pick!">';
+                el.innerHTML = '<img src="./images/staff_pick.png" class="tooltipper emoticon" alt="Staff Pick!" title="Staff Pick!">';
             } else {
                 $(this).html('<i class="icon-star-empty icon has-text-success"></i>');
                 $(this).tooltipster('content', 'Add to Staff Picks');
