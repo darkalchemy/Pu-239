@@ -59,10 +59,20 @@ function images_update()
     $fluent->deleteFrom('person')
            ->where("imdb_id = '' OR imdb_id IS NULL")
            ->execute();
-
+    get_upcoming();
     get_upcoming();
     get_in_theaters();
-    get_top_movies(100);
+    $item_count = (int) $cache->get('item_count_') + 10;
+    $item_count = $item_count >= 1000 ? 1000 : $item_count;
+    echo "Caching IMDb Top {$item_count} Movies\n";
+    get_top_movies($item_count);
+    echo "Caching IMDb Top {$item_count} TV Shows\n";
+    get_top_tvshows($item_count);
+    echo "Caching IMDb {$item_count} Newest Movies\n";
+    movies_by_release_date($item_count);
+    echo "Caching TMDb Top 150 Movies\n";
+    get_movies_by_vote_average(150);
+    $cache->set('item_count_', $item_count, 0);
     get_movies_in_theaters();
     get_bluray_info();
     get_schedule();
@@ -76,7 +86,6 @@ function images_update()
     $day_after = $date->modify('+2 day')
                       ->format('Y-m-d');
 
-    get_movies_by_vote_average(100);
     get_tv_by_day($yesterday);
     get_tv_by_day($today);
     get_tv_by_day($tomorrow);

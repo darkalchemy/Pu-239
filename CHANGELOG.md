@@ -1,3 +1,8 @@
+### 22 Sept, 2019
+fix: cache latest user id, not formatted user  
+fix: don't anonymize local urls url_proxy()  
+add: cache more imdb info  
+
 ### 21 Sept, 2019
 add: get_in_theaters() get_top_movies(100) to images_update.php  
 add: IMDB In Theaters  

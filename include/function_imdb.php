@@ -602,7 +602,11 @@ function get_imdb_info_short($imdb_id)
 }
 
 /**
- * @throws Exception
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool
  */
@@ -667,11 +671,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -720,10 +724,10 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -832,9 +836,11 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -857,6 +863,9 @@ function get_top_movies(int $count)
             }
         }
         if (!empty($top)) {
+            foreach ($top as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
             $cache->set('imdb_top_movies_' . $count, $top, 604800);
         }
     }
@@ -865,11 +874,11 @@ function get_top_movies(int $count)
 }
 
 /**
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return array|bool
  */
@@ -899,10 +908,8 @@ function get_in_theaters()
         $imdbs[] = $match;
     }
     if (!empty($imdbs)) {
-        foreach ($imdbs as $day) {
-            foreach ($day as $imdb) {
-                get_imdb_info($imdb, true, true, null, null);
-            }
+        foreach ($imdbs as $imdb) {
+            get_imdb_info($imdb, true, true, null, null);
         }
 
         return $imdbs;
@@ -914,9 +921,54 @@ function get_in_theaters()
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool|mixed
+ */
+function movies_by_release_date(int $count)
+{
+    global $container, $BLOCKS;
+
+    $cache = $container->get(Cache::class);
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+    $top = $cache->get('movies_by_release_date_' . $count);
+    if ($top === false || is_null($top)) {
+        $top = [];
+        for ($i = 1; $i <= $count; $i += 50) {
+            $url = 'https://www.imdb.com/search/title/?title_type=feature&sort=release_date,desc&view=simple&start=' . $i;
+            $html = fetch($url);
+            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
+            foreach ($matches[1] as $match) {
+                if (!in_array($match, $top)) {
+                    $top[] = $match;
+                }
+            }
+        }
+        if (!empty($top)) {
+            foreach ($top as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
+            $cache->set('movies_by_release_date_' . $count, $top, 604800);
+        }
+    }
+
+    return $top;
+}
+
+/**
+ * @param int $count
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -939,6 +991,9 @@ function get_top_tvshows(int $count)
             }
         }
         if (!empty($top)) {
+            foreach ($top as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
             $cache->set('imdb_top_tvshows_' . $count, $top, 604800);
         }
     }
@@ -949,9 +1004,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -984,9 +1039,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */

@@ -1168,8 +1168,7 @@ function get_anonymous_name()
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
     global $container, $site_config;
-
-    if (empty($url) || stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false) {
+    if (empty($url) || stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) {
         return $url;
     }
     if (!$image) {

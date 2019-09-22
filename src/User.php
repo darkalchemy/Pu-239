@@ -320,7 +320,7 @@ class User
             if (!$this->site_config['signup']['email_confirm']) {
                 $this->session->set('is-success', 'You have successfully registered. Please login');
             }
-            $this->cache->set('latestuser_', format_username($userid), $this->site_config['expires']['latestuser']);
+            $this->cache->set('latestuser_', $userid, $this->site_config['expires']['latestuser']);
             write_log('User account ' . $userid . ' (' . format_comment($values['username']) . ') was created');
         }
 
