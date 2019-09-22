@@ -61,6 +61,8 @@ function images_update()
            ->execute();
 
     get_upcoming();
+    get_in_theaters();
+    get_top_movies(100);
     get_movies_in_theaters();
     get_bluray_info();
     get_schedule();

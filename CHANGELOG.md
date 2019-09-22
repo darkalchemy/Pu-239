@@ -1,4 +1,5 @@
 ### 21 Sept, 2019
+add: get_in_theaters() get_top_movies(100) to images_update.php  
 add: IMDB In Theaters  
 add: IMDb Top 100 movies  
 fix: delete and search images manage_images.php  
