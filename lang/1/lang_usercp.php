@@ -99,4 +99,10 @@ $lang = [
     'usercp_skype_share' => 'Click your username, then Share profile, then Copy to clipboard. Then paste the link here.',
     'usercp_show_hidden' => 'Show hidden Categories',
     'usercp_show_hidden_desc' => '(Check to show all hidden categories!)',
+    'usercp_external_url' => 'External Image URL',
+    'usercp_drag_drop' => 'Drop images or click here to select images.',
+    'usercp_avatar_size' => 'Width should be 150px. (Will be resized if necessary)',
+    'usercp_bitbucket' => 'Bitbucket',
+    'usercp_dragndrop' => 'Drop images or click here to select images.',
+    'usercp_backgrounds' => 'Background Images',
 ];

@@ -22,6 +22,7 @@ $stdhead = [
 ];
 $stdfoot = [
     'js' => [
+        get_file_name('dragndrop_js'),
         get_file_name('sceditor_js'),
     ],
 ];
@@ -156,13 +157,17 @@ if ($action === 'avatar') {
                                     <tr>
                                         <td class='rowhead'>{$lang['usercp_avatar']}</td>
                                         <td>
-                                            <input type='text' name='avatar' class='w-100' value='" . htmlsafechars((string) $user['avatar']) . "'>
-                                            <p class='small'>
-                                                Width should be 150px. (Will be resized if necessary)
-                                            </p>
-                                            <p class='small'>
-                                                If you need a host for your image, try our  <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>Bitbucket</a>.
-                                            </p>
+                                            <input type='url' id='image_url' placeholder='{$lang['usercp_external_url']}' class='w-100' onchange=\"return grab_url(event)\">
+                                            <input type='url' id='poster' maxlength='255' name='avatar' class='w-100 is-hidden' value='" . htmlsafechars((string) $user['avatar']) . "'>
+                                            <br>{$lang['usercp_avatar_size']}
+                                            <div class='poster_container has-text-centered'></div>
+                                            <div id='droppable' class='has-text-centered droppable bg-03 top20'>
+                                                <span id='comment'>{$lang['usercp_dragndrop']}</span>
+                                                <div id='loader' class='is-hidden'>
+                                                    <img src='{$site_config['paths']['images_baseurl']}forums/updating.svg' alt='Loading...'>
+                                                </div>
+                                            </div>
+                                            <div class='output-wrapper output'></div>
                                         </td>
                                     </tr>";
     } else {

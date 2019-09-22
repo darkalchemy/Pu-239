@@ -23,6 +23,8 @@ $lists = [
     'tv',
     'tvmaze',
     'bluray',
+    'imdb_top100',
+    'imdb_theaters',
 ];
 $list = 'upcoming';
 if (!empty($_GET['list']) && in_array($_GET['list'], $lists)) {
@@ -183,12 +185,10 @@ switch ($list) {
             $body = "
         <div class='masonry padding20'>";
             foreach ($movies as $movie) {
-                if (!empty($imdb_id)) {
-                    $imdb_id = get_imdbid($movie['id']);
-                    $movie = get_imdb_info_short($imdb_id);
-                    if (!empty($movie)) {
-                        $body .= $movie;
-                    }
+                $imdb_id = get_imdbid($movie['id']);
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
                 }
             }
             $body .= '
@@ -202,10 +202,59 @@ switch ($list) {
 
         break;
 
+    case 'imdb_theaters':
+        $title = $lang['movies_imdb_theaters'];
+        $HTMLOUT = "
+    <h1 class='has-text-centered'>{$title}</h1>";
+        $movies = get_in_theaters();
+        if (is_array($movies)) {
+            $body = "
+        <div class='masonry padding20'>";
+            foreach ($movies as $imdb_id) {
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
+                }
+            }
+            $body .= '
+        </div>';
+
+            $HTMLOUT .= main_div($body);
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>{$lang['movies_imdb_upcoming']}</h1>" . main_div("<p class='has-text-centered'>{$lang['movies_imdb_down']}</p>", '', 'padding20');
+        }
+
+        break;
+
+    case 'imdb_top100':
+        $title = $lang['movies_imdb_top100'];
+        $HTMLOUT = "
+    <h1 class='has-text-centered'>{$title}</h1>";
+        $movies = get_top_movies(100);
+        if (is_array($movies)) {
+            $body = "
+        <div class='masonry padding20'>";
+            foreach ($movies as $imdb_id) {
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
+                }
+            }
+            $body .= '
+        </div>';
+
+            $HTMLOUT .= main_div($body);
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>{$lang['movies_imdb_upcoming']}</h1>" . main_div("<p class='has-text-centered'>{$lang['movies_imdb_down']}</p>", '', 'padding20');
+        }
+
+        break;
     case 'top100':
         $title = $lang['movies_tmdb_top100'];
         $HTMLOUT = "
-    <h1 class='has-text-centered'>{$lang['movies_tmdb_top100']}</h1>";
+    <h1 class='has-text-centered'>{$title}</h1>";
         $movies = get_movies_by_vote_average(100);
         if (is_array($movies)) {
             $body = "

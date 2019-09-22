@@ -82,7 +82,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                     'thetvdb_id' => $thetvdb_id,
                     'url' => $image,
                     'type' => $type,
-                    'lang' => !empty($fanart['lang']) ? $fanart['lang'] : 'unknown',
+                    'lang' => !empty($image['lang']) ? $image['lang'] : 'unknown',
                 ];
                 $fluent->insertInto('images')
                        ->values($values)
@@ -142,6 +142,7 @@ function getMovieImagesByID(string $id, bool $store, string $type = 'moviebackgr
                 'url' => $image['url'],
                 'type' => str_replace('movie', '', $type),
                 'updated' => TIME_NOW,
+                'lang' => !empty($image['lang']) ? $image['lang'] : 'unknown',
             ];
             if (!empty($site_config['fanart']['image_lang']) && !empty($image['lang']) && in_array($image['lang'], $site_config['fanart']['image_lang'])) {
                 $images[] = $image;

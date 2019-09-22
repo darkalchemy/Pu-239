@@ -461,6 +461,9 @@ function get_imdb_info_short($imdb_id)
 {
     global $container, $site_config, $BLOCKS;
 
+    if (empty($imdb_id)) {
+        return false;
+    }
     $images_class = $container->get(Image::class);
     $cache = $container->get(Cache::class);
     if (!$BLOCKS['imdb_api_on']) {
@@ -473,8 +476,8 @@ function get_imdb_info_short($imdb_id)
     if (empty($imdb_data)) {
         return false;
     }
-    $poster = $imdb_data['poster'];
-    if (empty($imdb_data['poster'])) {
+    $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
+    if (empty($poster)) {
         $poster = getMovieImagesByID($imdbid, true, 'movieposter');
     }
     if (empty($poster)) {
@@ -518,6 +521,8 @@ function get_imdb_info_short($imdb_id)
     }
     if (empty($imdb_data['vote_count'])) {
         $imdb_data['vote_count'] = '?';
+    } else {
+        $imdb_data['vote_count'] = number_format($imdb_data['vote_count']);
     }
     if (empty($imdb_data['rating'])) {
         $imdb_data['rating'] = '?';
@@ -574,7 +579,7 @@ function get_imdb_info_short($imdb_id)
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>Votes: </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span class='size_4'>" . (int) $imdb_data['vote_count'] . "</span>
+                                                <span class='size_4'>" . $imdb_data['vote_count'] . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>Overview: </span>
@@ -640,13 +645,12 @@ function get_upcoming()
     $imdbs = [];
     foreach ($dates as $date) {
         foreach ($temp[$date] as $code) {
-            preg_match('/title\/(tt[\d]{7})/i', $code, $imdb);
+            preg_match('#<a href=\"/title/(tt\d{7,8})/\?ref_=cs_ov_i\"\s*>#', $code, $imdb);
             if (!empty($imdb[1])) {
                 $imdbs[$date][] = $imdb[1];
             }
         }
     }
-
     if (!empty($imdbs)) {
         foreach ($imdbs as $day) {
             foreach ($day as $imdb) {
@@ -663,11 +667,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
  *
  * @return bool
  */
@@ -716,10 +720,10 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -828,9 +832,9 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -845,7 +849,7 @@ function get_top_movies(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('/(tt\d{7})/', $html, $matches);
+            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;
@@ -861,11 +865,58 @@ function get_top_movies(int $count)
 }
 
 /**
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return array|bool
+ */
+function get_in_theaters()
+{
+    global $container, $BLOCKS;
+
+    $cache = $container->get(Cache::class);
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+    $imdb_data = $cache->get('imdb_in_theaters_');
+    if ($imdb_data === false || is_null($imdb_data)) {
+        $url = 'https://www.imdb.com/movies-in-theaters';
+        $imdb_data = fetch($url);
+        if ($imdb_data) {
+            $cache->set('imdb_in_theaters_', $imdb_data, 86400);
+        } else {
+            $cache->set('imdb_in_theaters_', 'failed', 3600);
+        }
+    }
+    if (empty($imdb_data)) {
+        return false;
+    }
+    preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=[a-z_]*\"\s*>#', $imdb_data, $imdb);
+    foreach ($imdb[1] as $match) {
+        $imdbs[] = $match;
+    }
+    if (!empty($imdbs)) {
+        foreach ($imdbs as $day) {
+            foreach ($day as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
+        }
+
+        return $imdbs;
+    }
+
+    return false;
+}
+
+/**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -880,7 +931,7 @@ function get_top_tvshows(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('/data-tconst="(tt\d{7})"/', $html, $matches);
+            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;
@@ -898,9 +949,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -915,7 +966,7 @@ function get_top_anime(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('/(tt\d{7})/', $html, $matches);
+            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;
@@ -933,9 +984,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -950,7 +1001,7 @@ function get_oscar_winners(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=oscar_winner&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('/(tt\d{7})/', $html, $matches);
+            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;

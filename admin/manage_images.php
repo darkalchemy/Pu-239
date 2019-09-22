@@ -14,14 +14,13 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $container, $site_config;
 
-$perpage = 50;
+$perpage = 25;
 $image = $container->get(Image::class);
 $session = $container->get(Session::class);
 $terms = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete']) && $_POST['delete'] === 'Delete') {
-    foreach ($_POST['images'] as $id) {
-        $id = (int) $id;
-        $item = $image->get_image($id);
+    foreach ($_POST['images'] as $url) {
+        $item = $image->get_image($url);
         if (!empty($item)) {
             $hashes = [
                 hash('sha256', $item['url'] . '_converted_' . 20),
@@ -36,20 +35,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete']) && $_POST[
                     unlink($file);
                 }
             }
-            $image->delete_image($id);
+            $image->delete_image($item['url']);
+            $session->set('is-success', $item['url'] . ' was deleted.');
         }
     }
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['search']) && $_POST['search'] === 'Search') {
-    $count = (int) $image->count_search_images(strip_tags($_POST['terms']));
-    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=manage_images&amp;");
-    $images = $image->search_images(strip_tags($_POST['terms']), $pager['pdo']['limit'], $pager['pdo']['offset']);
-    $terms = $_POST['terms'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['terms'])) {
+    $terms = strip_tags($_POST['terms']);
+    $search = '&amp;search=' . urlencode($terms);
+    $count = (int) $image->count_search_images($terms);
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=manage_images{$search}&amp;");
+    $images = $image->search_images($terms, $pager['pdo']['limit'], $pager['pdo']['offset']);
 } else {
-    $count = $image->get_image_count();
-    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=manage_images&amp;");
-    $images = $image->get_images($pager['pdo']['limit'], $pager['pdo']['offset']);
+    $terms = !empty($_GET['search']) ? strip_tags($_GET['search']) : '';
+    $search = !empty($_GET['search']) ? '&amp;search=' . urlencode($terms) : '';
+    if (empty($terms)) {
+        $count = $image->get_image_count();
+    } else {
+        $count = (int) $image->count_search_images($terms);
+    }
+    $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=manage_images{$search}&amp;");
+    if (empty($terms)) {
+        $images = $image->get_images($pager['pdo']['limit'], $pager['pdo']['offset']);
+    } else {
+        $images = $image->search_images($terms, $pager['pdo']['limit'], $pager['pdo']['offset']);
+    }
 }
 if (!empty($images)) {
     $heading = "
@@ -69,11 +79,14 @@ if (!empty($images)) {
         </tr>";
     $body = '';
     foreach ($images as $image) {
+        $hash = hash('sha256', $image['url']);
+        $dims = getimagesize(PROXY_IMAGES_DIR . $hash);
+        $size = mksize(filesize(PROXY_IMAGES_DIR . $hash));
         $body .= "
         <tr>
             <td class='has-text-centered'>
-                <a href='{$image['url']}'>
-                    <img src='" . url_proxy($image['url'], true, 150) . "' alt='Poster' class='img-responsive'>
+                <a href='{$image['url']}' class='tooltipper' title='<span class=\"has-text-success\">Hash: </span>{$hash}<br><span class=\"has-text-success\">Size: </span>{$size}<br><span class=\"has-text-success\">Dims: </span>{$dims[0]}x{$dims[1]}'>
+                    <img src='" . url_proxy($image['url'], true, 250) . "' alt='Poster' class='img-responsive'>
                 </a>
             </td>
             <td class='has-text-centered'>{$image['type']}</td>
@@ -90,10 +103,10 @@ if (!empty($images)) {
                 " . get_date((int) $image['checked'], 'LONG') . "
             </td>
             <td class='has-text-centered w-10'>
-                <input type='checkbox' name='images[]' value='{$image['id']}'>
+                <input type='checkbox' name='images[]' value='{$image['url']}'>
             </td>
             <td class='has-text-centered w-10'>
-                <div data-id='{$image['id']}' data-pick='{$image['ignore']}' class='ignore-image tooltipper button is-small' title='" . ($image['ignore'] === 1 ? 'Image is Ignored and will not be displayed' : 'Image is NOT Ignored and will be displayed') . "'>" . ($image['ignore'] === 1 ? 'Ignored' : 'Ignore') . '</div>
+                <div data-id='{$image['url']}' data-pick='{$image['ignore']}' class='ignore-image tooltipper button is-small' title='" . ($image['ignore'] === 1 ? 'Image is Ignored and will not be displayed' : 'Image is NOT Ignored and will be displayed') . "'>" . ($image['ignore'] === 1 ? 'Ignored' : 'Ignore') . '</div>
             </td>
         </tr>';
     }

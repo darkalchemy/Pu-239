@@ -138,6 +138,20 @@ class Image
     }
 
     /**
+     * @param string $url
+     *
+     * @throws Exception
+     *
+     * @return mixed
+     */
+    public function get_image(string $url)
+    {
+        return $this->fluent->from('images')
+                            ->where('url = ?', $url)
+                            ->fetch();
+    }
+
+    /**
      * @throws Exception
      *
      * @return mixed
@@ -151,14 +165,14 @@ class Image
     }
 
     /**
-     * @param int $id
+     * @param string $url
      *
      * @throws Exception
      */
-    public function delete_image(int $id)
+    public function delete_image(string $url)
     {
         $this->fluent->deleteFrom('images')
-                     ->where('id = ?', $id)
+                     ->where('url = ?', $url)
                      ->execute();
     }
 
@@ -184,12 +198,17 @@ class Image
             ])) {
                 $count = $count->where('type = :type', [':type' => $term]);
             } else {
-                $count = $count->where('(imdb_id = :imdb OR tmdb_id = :tmdb OR tvmaze_id = :tvmaze OR isbn = :isbn)', [
-                    ':imdb' => $term,
-                    ':tmdb' => $term,
-                    ':tvmaze' => $term,
-                    ':isbn' => $term,
-                ]);
+                if (is_numeric($term)) {
+                    $count = $count->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
+                        ':tmdb' => $term,
+                        ':tvmaze' => $term,
+                    ]);
+                } else {
+                    $count = $count->where('imdb_id = :imdb OR isbn = :isbn', [
+                        ':imdb' => $term,
+                        ':isbn' => $term,
+                    ]);
+                }
             }
         }
         $count = $count->fetch('count');
@@ -219,12 +238,17 @@ class Image
             ])) {
                 $query = $query->where('type = :type', [':type' => $term]);
             } else {
-                $query = $query->where('(imdb_id = :imdb OR tmdb_id = :tmdb OR tvmaze_id = :tvmaze OR isbn = :isbn)', [
-                    ':imdb' => $term,
-                    ':tmdb' => $term,
-                    ':tvmaze' => $term,
-                    ':isbn' => $term,
-                ]);
+                if (is_numeric($term)) {
+                    $query = $query->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
+                        ':tmdb' => $term,
+                        ':tvmaze' => $term,
+                    ]);
+                } else {
+                    $query = $query->where('imdb_id = :imdb OR isbn = :isbn', [
+                        ':imdb' => $term,
+                        ':isbn' => $term,
+                    ]);
+                }
             }
         }
         $query = $query->limit($limit)

@@ -53,7 +53,7 @@ if ($site_config['poll']['forced'] && !empty($poll_data['pid']) && empty($poll_d
     ]);
 }
 $above_columns = [
-    'glide',
+    //    'glide',
 ];
 $below_columns = [
     'disclaimer',
@@ -62,6 +62,7 @@ $left_column = [
     'tfreak_feed',
 ];
 $center_column = [
+    'glide',
     'ajaxchat',
     'torrents_scroller',
     'cooker',

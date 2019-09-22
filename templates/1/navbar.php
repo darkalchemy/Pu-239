@@ -45,6 +45,8 @@ function navbar()
                                 <li><span class='left10 has-text-weight-bold'>{$lang['gl_bluray']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>" : '') . ($BLOCKS['imdb_api_on'] ? "
                                 <li><span class='left10 has-text-weight-bold'>{$lang['gl_imdb']}</span></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top100'>{$lang['gl_movies_top_100']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_theaters'>{$lang['gl_movies_theaters']}</a></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>" : '') . ($BLOCKS['tmdb_api_on'] ? "
                                 <li><span class='left10 has-text-weight-bold'>{$lang['gl_tmdb']}</span></li>
                                 <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>

@@ -1,4 +1,10 @@
 ### 21 Sept, 2019
+add: IMDB In Theaters  
+add: IMDb Top 100 movies  
+fix: delete and search images manage_images.php  
+update: no duplicate banner titles in glide block  
+add: site setting users['backgrounds'][] for an array of images that uses can select instead of random images  
+update: add user avatar by bitbucket usercp.php  
 update: forum block title length  
 add: bin/rename_image_hashes.php you should run this immediately after updating else all of your images will be redownloaded and reprocessed  
 fix: torrent name breaking template  

@@ -4532,4 +4532,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `comments` ADD INDEX `offer` (`offer`)',
         'flush' => false,
     ],
+    [
+        'id' => 1569117982,
+        'info' => 'Add background_images',
+        'date' => '21 Sept, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('users', 'backgrounds', 'array', '', 'An array of images that a user can select from, if the want images but not random images.\nRecommended dimensions are 1920x1080.')",
+        'flush' => true,
+    ],
 ];

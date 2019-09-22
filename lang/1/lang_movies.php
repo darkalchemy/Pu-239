@@ -26,4 +26,6 @@ $lang = [
     'movies_popularity' => 'Popularity',
     'movies_votes' => 'Votes',
     'movies_overview' => 'Overview',
+    'movies_imdb_top100' => 'IMDb Top 100 Movies',
+    'movies_imdb_theaters' => 'IMDb In Theaters',
 ];
