@@ -498,7 +498,7 @@ function platform_menu()
                             <li>
                                 <form action='{$site_config['paths']['baseurl']}/browse.php'>
                                     <div class='search round5 middle bg-light has-text-centered'>
-                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\">
+                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
                                     </div>
                                 </form>
                             </li>
