@@ -42,6 +42,8 @@ require_once CACHE_DIR . 'block_settings_cache.php';
 if (!PRODUCTION) {
     $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
     $site_config['sourcecode']['version'] = $pu239_version->getVersion();
+} else {
+    $site_config['sourcecode']['version'] = 'Pu-239 0.7';
 }
 $load = sys_getloadavg();
 $cache = $container->get(Cache::class);

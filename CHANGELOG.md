@@ -1,4 +1,5 @@
 ### 23 Sept, 2019
+fix: $site_config['sourcecode']['version'] not set  
 update: disable autocomplete platform-wrapper search  
 update: platform-wrapper search  
 add: movie, tv shows, forums and messages links to platform-wrapper  
