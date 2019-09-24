@@ -92,8 +92,9 @@ if ($user['class'] >= UC_STAFF) {
 $htmlout .= '
     </div>';
 $htmlout .= main_div($list);
-$htmlout .= '
+$htmlout .= "
+    <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
 </body>
-</html>';
+</html>";
 
 echo $htmlout;

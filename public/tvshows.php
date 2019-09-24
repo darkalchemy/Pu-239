@@ -23,7 +23,7 @@ $fluent = $container->get(Database::class);
 $count = $fluent->from('torrents AS t')
                 ->select(null)
                 ->select('COUNT(t.id) AS count')
-                ->where('t.category', $site_config['categories']['movie']);
+                ->where('t.category', $site_config['categories']['tv']);
 
 $select = $fluent->from('torrents AS t')
                  ->select(null)
@@ -35,7 +35,7 @@ $select = $fluent->from('torrents AS t')
                  ->select('t.leechers')
                  ->select('t.year')
                  ->select('t.rating')
-                 ->where('t.category', $site_config['categories']['movie'])
+                 ->where('t.category', $site_config['categories']['tv'])
                  ->groupBy('t.imdb_id, t.id');
 if ($user['hidden'] === 0) {
     $count->leftJoin('categories AS c ON t.category = c.id')
@@ -89,7 +89,7 @@ $select->limit($pager['pdo']['limit'])
        ->offset($pager['pdo']['offset'])
        ->orderBy('t.added DESC');
 $HTMLOUT = "
-    <h1 class='has-text-centered top20'>Movies</h1>";
+    <h1 class='has-text-centered top20'>TV Shows</h1>";
 
 $body = "
         <div class='masonry padding20'>";
@@ -208,4 +208,4 @@ $HTMLOUT .= main_div("
 
 $HTMLOUT .= "<div class='top20'>" . ($count > $perpage ? $pager['pagertop'] : '') . main_div($body, 'top20') . ($count > $perpage ? $pager['pagertop'] : '') . '</div>';
 
-echo stdhead('Movies' . $title) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('TV Shows' . $title) . wrapper($HTMLOUT) . stdfoot();

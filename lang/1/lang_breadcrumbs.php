@@ -83,6 +83,7 @@ $lang = [
     'trivia.php' => 'Trivia',
     'trivia_results.php' => 'Trivia Results',
     'topten.php' => 'Top 10',
+    'tvshows.php' => 'TV Shows',
     'upcoming.php' => 'The Cooker',
     'upload.php' => 'Upload Torrent',
     'uploadapp.php' => 'Uploaders App',

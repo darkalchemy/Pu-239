@@ -244,6 +244,7 @@ function run_uglify($argv = [])
             SCRIPTS_DIR . 'offer_vote.js',
             SCRIPTS_DIR . 'request_notify.js',
             SCRIPTS_DIR . 'request_vote.js',
+            SCRIPTS_DIR . 'hide_menu_items.js',
         ];
 
         $js_list['offer_js'] = [

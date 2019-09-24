@@ -138,10 +138,38 @@ select:invalid, input:invalid {
     margin: 2px auto;
 }
 
+.user-buttons {
+    transition: all .5s ease-in-out;
+    transition-delay: 250ms;
+    opacity: 1;
+}
+
+.user-buttons.hidden {
+    transition: all .5s ease-in-out;
+    transition-delay: 50ms;
+    visibility: hidden;
+    opacity: 0;
+    font-size: 1px;
+}
+
 .search > input {
+    width: 10em;
+    max-width: calc(100% - 10px);
     border: none;
     padding: 0;
-    width: 10em;
+    transition: all .5s ease-in-out;
+    transition-delay: 50ms;
+}
+
+.search > input:focus {
+    width: 25em;
+    max-width: calc(100% - 10px);
+    transition: all .5s ease-in-out;
+    transition-delay: 250ms;
+}
+
+.search > input::placeholder {
+    text-align: center;
 }
 
 .masonry-item, .trivia-pointer {
@@ -463,6 +491,7 @@ span {
 .torrent-box {
     max-width: calc(100% - 75px);
 }
+
 .torrent-name {
     display: inline-block;
     max-width: 100%;
@@ -613,6 +642,10 @@ textarea {
 
 .box {
     text-align: justify;
+}
+
+.hide {
+    opacity: 0;
 }
 
 #IE_ALERT, #autocomplete, .accordion-content, .back-to-top, .is_hidden, .navbar-menu.box, .slideThree [type=checkbox] {

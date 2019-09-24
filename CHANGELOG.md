@@ -1,3 +1,9 @@
+### 23 Sept, 2019
+update: platform-wrapper search  
+add: movie, tv shows, forums and messages links to platform-wrapper  
+add: tvshows.php  
+update: IMDb movies/tv link to search site movies.php  
+
 ### 22 Sept, 2019
 fix: cache latest user id, not formatted user  
 fix: don't anonymize local urls url_proxy()  

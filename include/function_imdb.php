@@ -536,7 +536,7 @@ function get_imdb_info_short($imdb_id)
     $imdb_info = "
             <div class='masonry-item-clean padding10 bg-04 round10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
-                    <a href='" . url_proxy('https://www.imdb.com/title/tt' . $imdb_id . '/', false) . "' target='_blank'>
+                    <a href='{$site_config['paths']['baseurl']}/browse.php?si=tt{$imdb_id}'>
                         <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     </a>
                     <div class='has-text-centered top10'>{$imdb_data['title']}</div>
@@ -602,11 +602,11 @@ function get_imdb_info_short($imdb_id)
 }
 
 /**
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
  */
@@ -671,11 +671,11 @@ function get_upcoming()
 /**
  * @param string $imdb_id
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return bool
  */
@@ -724,10 +724,10 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -836,11 +836,11 @@ function get_imdb_person($person_id)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -874,11 +874,11 @@ function get_top_movies(int $count)
 }
 
 /**
- * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -921,11 +921,11 @@ function get_in_theaters()
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -964,11 +964,11 @@ function movies_by_release_date(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1004,9 +1004,9 @@ function get_top_tvshows(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1039,9 +1039,9 @@ function get_top_anime(int $count)
 /**
  * @param int $count
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */

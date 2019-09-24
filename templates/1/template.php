@@ -418,9 +418,9 @@ function StatusBar()
     $StatusBar = $clock = '';
     $color = get_user_class_name((int) $CURUSER['class'], true);
     $StatusBar .= "
-                    <div id='base_usermenu' class='right20 level-item'>
-                        <div class='tooltipper-ajax right20'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left20 {$color} tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
+                    <div id='base_usermenu' class='right10 left10 level-item'>
+                        <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
+                        <div id='clock' class='left10 {$color} tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
                     </div>";
 
     return $StatusBar;
@@ -483,27 +483,56 @@ function platform_menu()
     $menu = "
         <div id='platform-menu' class='platform-menu'>
             <div class='platform-wrapper'>
-                <div class='columns is-marginless'>
-                    <div class='column is-paddingless middle'>
-                        <ul class='level-left size_3'>" . (!PRODUCTION ? "
-                            <li class='left10 has-text-primary'>Pu-239 v{$site_config['sourcecode']['version']}</li>" : '') . "
+                <div class='columns is-marginless searchbar'>
+                    <div class='column is-paddingless middle user-buttons'>
+                        <ul class='level-left size_3'>
+                            <li class='has-text-info left10'>
+                                <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "' " . (PRODUCTION ? " class='hide'" : '') . ">
+                                    Pu-239 v{$site_config['sourcecode']['version']}
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    <div class='column is-paddingless middle searchbar'>
+                    <div class='column is-paddingless middle'>
                         <ul class='level-center'>
                             <li>
                                 <form action='{$site_config['paths']['baseurl']}/browse.php'>
-                                    <div class='search round5 middle bg-light'>
-                                        <i class='icon-search has-text-black' aria-hidden='true'></i>
-                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black'>
-                                        <button type='submit' class='button is-small round5'>{$lang['gl_go']}</button>
+                                    <div class='search round5 middle bg-light has-text-centered'>
+                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\">
                                     </div>
                                 </form>
                             </li>
                         </ul>
                     </div>
-                    <div class='column is-paddingless middle'>
-                        <div class='level-right size_3'>" . StatusBar() . $styles . '</div>
+                    <div class='column is-paddingless middle user-buttons'>
+                        <ul class='level-right'>
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/tmovies.php' class='tooltipper has-text-info' title='{$lang['gl_movies']}'>
+                                    <i class='icon-video icon' aria-hidden='true'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/tvshows.php' class='tooltipper has-text-info' title='{$lang['gl_tvshows']}'>
+                                    <i class='icon-television icon' aria-hidden='true'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/forums.php' class='tooltipper has-text-info' title='{$lang['gl_forums']}'>
+                                    <i class='icon-chat-empty icon' aria-hidden='true'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/messages.php' class='tooltipper has-text-info' title='{$lang['gl_messages']}'>
+                                    <i class='icon-comment-empty icon' aria-hidden='true'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/user_blocks.php' class='tooltipper has-text-info' title='{$lang['gl_myblocks']}'>
+                                    <i class='icon-cubes icon' aria-hidden='true'></i>
+                                </a>
+                            </li>
+                            <div class='level-right size_3'>" . StatusBar() . $styles . '</div>
+                        </ul>
                     </div>
                 </div>
             </div>

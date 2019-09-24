@@ -3,22 +3,18 @@ let animation = 'grow';
 let update_animation = 'rotate';
 let short = 250;
 let long = 500;
-let distance = 12;
 let width = window.innerWidth * .75;
 let maxWidth = Math.min(width, 600);
-let sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {
     $('.tooltipper').tooltipster({
         theme: 'tooltipster-borderless',
-        side: sides,
         interactive: false,
         animation: animation,
         animationDuration: animation_duration,
         delay: short,
         arrow: true,
         contentAsHTML: true,
-        distance: distance,
         maxWidth: maxWidth
     });
     initAll();
@@ -34,7 +30,6 @@ function initAll() {
         delay: long,
         arrow: true,
         contentAsHTML: true,
-        distance: distance,
         trigger: 'custom',
         maxWidth: maxWidth,
         triggerOpen: {
@@ -52,25 +47,21 @@ function initAll() {
     });
     $('.dt-tooltipper-links').tooltipster({
         theme: 'tooltipster-borderless',
-        side: sides,
         interactive: true,
         animation: animation,
         animationDuration: animation_duration,
         dealy: short,
         arrow: true,
         contentAsHTML: true,
-        distance: distance
     });
     $('.dt-tooltipper-small').tooltipster({
         theme: 'tooltipster-borderless',
-        side: sides,
         interactive: false,
         animation: animation,
         animationDuration: animation_duration,
         delay: long,
         arrow: true,
         contentAsHTML: true,
-        distance: distance,
         maxWidth: maxWidth
     });
     $('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
@@ -89,7 +80,6 @@ function initAll() {
             touchLeave: true
         },
         theme: ['tooltipster-borderless', 'tooltipster-custom'],
-        side: sides,
         contentAsHTML: true,
         interactive: true,
         animation: animation,
@@ -97,7 +87,6 @@ function initAll() {
         delay: long,
         updateAnimation: update_animation,
         arrow: true,
-        distance: distance,
         minWidth: 250,
         maxWidth: maxWidth,
         content: 'patience, grasshopper...',

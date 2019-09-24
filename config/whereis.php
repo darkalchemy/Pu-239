@@ -43,6 +43,7 @@ return [
         'friends' => '%s is viewing the <a href="%s">Friends List</a>',
         'users' => '%s is searching the <a href="%s">Users</a>',
         'tmovies' => '%s is viewing the <a href="%s">Movies</a>',
+        'tvshows' => '%s is viewing the <a href="%s">TV Shows</a>',
         'unknown' => '%s location is unknown',
     ],
 ];
