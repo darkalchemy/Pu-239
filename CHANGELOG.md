@@ -1,4 +1,5 @@
 ### 23 Sept, 2019
+update: disable autocomplete platform-wrapper search  
 update: platform-wrapper search  
 add: movie, tv shows, forums and messages links to platform-wrapper  
 add: tvshows.php  
