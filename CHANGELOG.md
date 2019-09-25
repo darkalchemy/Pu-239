@@ -1,4 +1,5 @@
 ### 25 Sept, 2019
+update: sql files  
 update: allow value of 0 site_settings.php  
 move: AJAX Chat channels and access to staff panel -> site settings  
 fix: disable users forums access  
