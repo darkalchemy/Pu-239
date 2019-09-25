@@ -128,7 +128,7 @@ $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
 if ($user['anonymous_until'] > TIME_NOW && (!has_access($viewer['class'], UC_STAFF, 'coder') && $user['id'] != $viewer['id'])) {
     $HTMLOUT .= "
     <div class='table-wrapper'>
-        <table class='table table-bordered table-striped two'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td colspan='3' class='has-text-centered'>{$lang['userdetails_anonymous']}</td>
             </tr>";
@@ -350,7 +350,7 @@ $HTMLOUT .= main_table($table_data);
 $HTMLOUT .= "
                 </div>
                 <div id='general' class='table-wrapper'>
-                    <table class='table table-bordered table-striped five'>";
+                    <table class='table table-bordered table-striped'>";
 
 if ($viewer['id'] !== $user['id'] && has_access($viewer['class'], UC_STAFF, 'coder')) {
     $the_flip_box = "
@@ -445,7 +445,7 @@ if ($viewer['blocks']['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='activity' class='table-wrapper'>";
-$HTMLOUT .= "<table class='table table-bordered table-striped six'>";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>";
 
 if (!empty($user['where_is'])) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_location']}</td><td class='has-text-left'>" . format_urls($user['where_is']) . '</td></tr>';
@@ -495,7 +495,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
         <input type='hidden' name='action' value='edituser'>
         <input type='hidden' name='userid' value='{$user['id']}'>
         <input type='hidden' name='returnto' value='{$_SERVER['PHP_SELF']}?id=${user['id']}'>
-        <table class='table table-bordered table-striped seven'>
+        <table class='table table-bordered table-striped'>
         <tr>
             <td class='rowhead'>{$lang['userdetails_title']}</td><td colspan='3' class='has-text-left'>
                 <input type='text' class='w-100' name='title' value='" . htmlsafechars((string) $user['title']) . "'>
@@ -598,23 +598,21 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             <tr>
                 <td class='rowhead'>{$lang['userdetails_roles']}</td>
                 <td colspan='3'>
-                    <div class=''>
-                        <div class='level-left'>
-                            <input type='checkbox' name='role_coder' value='1' " . ($user['roles_mask'] & Roles::CODER ? 'checked' : '') . " class='right5'>{$lang['userdetails_coder']} :
-                            <span class='left5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</span>
-                        </div>
-                        <div class='level-left top10'>
-                            <input type='checkbox' name='role_forum_mod' value='1' " . ($user['roles_mask'] & Roles::FORUM_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_forum_mod']}
-                        </div>
-                        <div class='level-left top10'>
-                            <input type='checkbox' name='role_torrent_mod' value='1' " . ($user['roles_mask'] & Roles::TORRENT_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_torrent_mod']}
-                        </div>
-                        <div class='level-left top10'>
-                            <input type='checkbox' name='role_internal' value='1' " . ($user['roles_mask'] & Roles::INTERNAL ? 'checked' : '') . " class='right5'>{$lang['userdetails_internal']}
-                        </div>
-                        <div class='level-left top10'>
-                            <input type='checkbox' name='role_uploader' value='1' " . ($user['roles_mask'] & Roles::UPLOADER ? 'checked' : '') . " class='right5'>{$lang['userdetails_uploader']}
-                        </div>
+                    <div class='level-left'>
+                        <input type='checkbox' name='role_coder' value='1' " . ($user['roles_mask'] & Roles::CODER ? 'checked' : '') . " class='right5'>{$lang['userdetails_coder']} :
+                        <span class='left5 has-text-danger has-text-weight-bold'>{$lang['userdetails_coder_info']}</span>
+                    </div>
+                    <div class='level-left top10'>
+                        <input type='checkbox' name='role_forum_mod' value='1' " . ($user['roles_mask'] & Roles::FORUM_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_forum_mod']}
+                    </div>
+                    <div class='level-left top10'>
+                        <input type='checkbox' name='role_torrent_mod' value='1' " . ($user['roles_mask'] & Roles::TORRENT_MOD ? 'checked' : '') . " class='right5'>{$lang['userdetails_torrent_mod']}
+                    </div>
+                    <div class='level-left top10'>
+                        <input type='checkbox' name='role_internal' value='1' " . ($user['roles_mask'] & Roles::INTERNAL ? 'checked' : '') . " class='right5'>{$lang['userdetails_internal']}
+                    </div>
+                    <div class='level-left top10'>
+                        <input type='checkbox' name='role_uploader' value='1' " . ($user['roles_mask'] & Roles::UPLOADER ? 'checked' : '') . " class='right5'>{$lang['userdetails_uploader']}
                     </div>
                     <div class='top5 bottom5 has-text-info'>{$lang['userdetails_roles_info']}</div>
                 </td>
@@ -658,7 +656,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             <td class='rowhead'>{$lang['userdetails_park']}</td>
             <td colspan='3' class='has-text-left'>
                 <div class='level-left'>
-                    <input name='status' value='1' type='radio' " . ($user['status'] === 1 ? 'checked' : '') . " class='right5'>{$lang['userdetails_yes']}
+                    <input name='status' value='1' type='checkbox' " . ($user['status'] === 1 ? 'checked' : '') . " class='right5'>{$lang['userdetails_yes']}
                 </div>
             </td>
         </tr>
@@ -666,7 +664,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             <td class='rowhead'>{$lang['userdetails_suspended']}</td>
             <td colspan='3' class='has-text-left'>
                 <div class='level-left'>
-                    <input name='status' value='5' type='radio' " . ($user['status'] === 5 ? 'checked' : '') . " class='right5'>{$lang['userdetails_yes']}
+                    <input name='status' value='5' type='checkbox' " . ($user['status'] === 5 ? 'checked' : '') . " class='right5'>{$lang['userdetails_yes']}
                 </div>
                 <br>{$lang['userdetails_suspended_reason']}<br>
                 <input type='text' class='w-100 top10' name='suspended_reason'>
@@ -689,7 +687,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if (has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
         $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
-                <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
+                <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
         if ($free_switch) {
             if ($user['free_switch'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -712,7 +710,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
-               <td class='has-text-left'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='level-left'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($downloadpos) {
             if ($user['downloadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -735,7 +733,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $uploadpos = $user['uploadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$uploadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_upos']}</td>
-               <td class='has-text-left'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='level-left'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($uploadpos) {
             if ($user['uploadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -758,7 +756,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $sendpmpos = $user['sendpmpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_pmpos']}</td>
-               <td class='has-text-left'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='level-left'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($sendpmpos) {
             if ($user['sendpmpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -781,7 +779,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $chatpost = $user['chatpost'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$chatpost ? ' rowspan="2"' : '') . ">{$lang['userdetails_chatpos']}</td>
-               <td class='has-text-left'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+               <td class='level-left'>" . ($chatpost ? "<input name='chatpost' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($chatpost) {
             if ($user['chatpost'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -804,7 +802,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $avatarpos = $user['avatarpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$avatarpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_avatarpos']}</td>
-          <td class='has-text-left'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+          <td class='level-left'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($avatarpos) {
             if ($user['avatarpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -827,7 +825,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $immunity = $user['immunity'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$immunity ? ' rowspan="2"' : '') . ">{$lang['userdetails_immunity']}</td>
-               <td class='has-text-left'>" . ($immunity ? "<input name='immunity' value='42' type='radio'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
+               <td class='level-left'>" . ($immunity ? "<input name='immunity' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
         if ($immunity) {
             if ($user['immunity'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -850,7 +848,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $leechwarn = $user['leechwarn'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$leechwarn ? ' rowspan="2"' : '') . ">{$lang['userdetails_leechwarn']}</td>
-               <td class='has-text-left'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
+               <td class='level-left'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
         if ($leechwarn) {
             if ($user['leechwarn'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -873,7 +871,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $warned = $user['warned'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? ' rowspan="2"' : '') . ">{$lang['userdetails_warned']}</td>
-               <td class='has-text-left'>" . ($warned ? "<input name='warned' value='42' type='radio'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
+               <td class='level-left'>" . ($warned ? "<input name='warned' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
         if ($warned) {
             if ($user['warned'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -896,7 +894,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
     if ($viewer['class'] >= UC_STAFF) {
         $game_access = $user['game_access'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$game_access ? ' rowspan="2"' : '') . ">{$lang['userdetails_games']}</td>
-           <td class='has-text-left'>" . ($game_access ? "<input name='game_access' value='42' type='radio'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
+           <td class='level-left'>" . ($game_access ? "<input name='game_access' value='42' type='checkbox' class='right5'>{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($game_access) {
             if ($user['game_access'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
@@ -929,9 +927,9 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             </tr>";
     }
 
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><input type='checkbox' name='reset_torrent_pass' value='1'><span class='small left10'>{$lang['userdetails_pass_msg']}</span></td></tr>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1'><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1'><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><div class='level-left'><input type='checkbox' name='reset_torrent_pass' value='1'><span class='left5'>{$lang['userdetails_pass_msg']}</span></div></td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><div class='level-left'><input type='checkbox' name='reset_auth' value='1'><span class='left5'>{$lang['userdetails_auth_msg']}</span></div></td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><div class='level-left'><input type='checkbox' name='reset_apikey' value='1'><span class='left5'>{$lang['userdetails_apikey_msg']}</span></div></td></tr>";
 
     if ($viewer['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='number' class='w-100' name='seedbonus' min='0' max='9999999999999' value='" . (int) $user['seedbonus'] . "'></td></tr>";

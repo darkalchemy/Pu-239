@@ -17,11 +17,9 @@ global $container, $site_config;
 
 $HTMLOUT = $debugout = '';
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
-}
-
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
-    stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!', 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled'], 'bottom20');
 }
 
 $user_class = $container->get(User::class);
@@ -1083,9 +1081,9 @@ if ($game) {
 /**
  * @param $cardid
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed|null
  */

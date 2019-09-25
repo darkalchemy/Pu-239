@@ -187,10 +187,10 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -427,9 +427,9 @@ function StatusBar()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -479,33 +479,7 @@ function platform_menu()
                 </div>
             </div>';
     }
-
-    $menu = "
-        <div id='platform-menu' class='platform-menu'>
-            <div class='platform-wrapper'>
-                <div class='columns is-marginless searchbar'>
-                    <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-left size_3'>
-                            <li class='has-text-info left10'>
-                                <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "' " . (PRODUCTION ? " class='hide'" : '') . ">
-                                    Pu-239 v{$site_config['sourcecode']['version']}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class='column is-paddingless middle'>
-                        <ul class='level-center'>
-                            <li>
-                                <form action='{$site_config['paths']['baseurl']}/browse.php'>
-                                    <div class='search round5 middle bg-light has-text-centered'>
-                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-right'>
+    $buttons = "
                             <li>
                                 <a href='{$site_config['paths']['baseurl']}/tmovies.php' class='tooltipper has-text-info' title='{$lang['gl_movies']}'>
                                     <i class='icon-video icon' aria-hidden='true'></i>
@@ -530,7 +504,33 @@ function platform_menu()
                                 <a href='{$site_config['paths']['baseurl']}/user_blocks.php' class='tooltipper has-text-info' title='{$lang['gl_myblocks']}'>
                                     <i class='icon-cubes icon' aria-hidden='true'></i>
                                 </a>
+                            </li>";
+    $menu = "
+        <div id='platform-menu' class='platform-menu'>
+            <div class='platform-wrapper'>
+                <div class='columns is-marginless searchbar'>
+                    <div class='column is-paddingless middle user-buttons'>
+                        <ul class='level-left size_3'>" . (PRODUCTION ? $buttons : "
+                            <li class='has-text-info left10'>
+                                <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>
+                                    Pu-239 v{$site_config['sourcecode']['version']}
+                                </a>
+                            </li>") . "
+                        </ul>
+                    </div>
+                    <div class='column is-paddingless middle'>
+                        <ul class='level-center'>
+                            <li>
+                                <form action='{$site_config['paths']['baseurl']}/browse.php'>
+                                    <div class='search round5 middle bg-light has-text-centered'>
+                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
+                                    </div>
+                                </form>
                             </li>
+                        </ul>
+                    </div>
+                    <div class='column is-paddingless middle user-buttons'>
+                        <ul class='level-right'>" . (!PRODUCTION ? $buttons : '') . "
                             <div class='level-right size_3'>" . StatusBar() . $styles . '</div>
                         </ul>
                     </div>

@@ -17,7 +17,7 @@ $lang = array_merge($lang, load_language('ad_adduser'));
 global $container, $site_config;
 
 $cache = $container->get(Cache::class);
-$cache->delete('chat_users_list');
+$cache->delete('chat_users_list_');
 
 $stdfoot = [
     'js' => [

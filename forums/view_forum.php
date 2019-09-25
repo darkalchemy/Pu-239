@@ -37,7 +37,7 @@ $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['class'] >= $arr['min_class_create'] && $CURUSER['forum_post'] == 'yes' && $CURUSER['status'] != 5;
+$may_post = $CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['class'] >= $arr['min_class_create'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['status'] === 0;
 
 $query = $fluent->from('forums')
                 ->select(null)

@@ -20,7 +20,7 @@ if ($arr['locked'] === 'yes') {
 if ($CURUSER['class'] < $arr['min_class_read'] || $CURUSER['class'] < $arr['min_class_write']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5) {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 $quote = isset($_GET['quote_post']) ? (int) $_GET['quote_post'] : 0;

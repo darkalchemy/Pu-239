@@ -11,7 +11,10 @@ $lang = load_language('global');
 global $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play in the arcade!');
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play in the arcade!', 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20', 'bottom20');
+    die();
 }
 
 $HTMLOUT = "

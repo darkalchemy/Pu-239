@@ -1,3 +1,13 @@
+### 25 Sept, 2019
+update: allow value of 0 site_settings.php  
+move: AJAX Chat channels and access to staff panel -> site settings  
+fix: disable users forums access  
+fix: disable users pm access  
+fix: disable users games access  
+fix: disable users download torrents access  
+fix: disable users AJAX Chat access  
+move: sebastian/version to require-dev  
+
 ### 23 Sept, 2019
 fix: $site_config['sourcecode']['version'] not set  
 update: disable autocomplete platform-wrapper search  

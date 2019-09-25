@@ -18,6 +18,15 @@ $user = check_user_status();
 $lang = array_merge(load_language('global'), load_language('casino'));
 global $container, $site_config;
 
+if ($user['class'] < $site_config['allowed']['play']) {
+    stderr('Error!', 'Sorry, you must be a ' . [$site_config['allowed']['play']] . ' to play in the casino!', 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20');
+    die();
+} elseif ($user['uploaded'] < 1073741824 * 100) {
+    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
+}
+
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $maxbetGB = 50;
@@ -56,23 +65,7 @@ $users_class = $container->get(User::class);
 $casino = $container->get(Casino::class);
 $casino_bets = $container->get(CasinoBets::class);
 $session = $container->get(Session::class);
-if (empty($user)) {
-    stderr($lang['gl_error'], 'Invalid User Data', 'bottom20');
-    die();
-}
-if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . [$site_config['allowed']['play']] . ' to play in the casino!', 'bottom20');
-}
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
-    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20');
-    die();
-}
-
 $min_text = mksize(100 * 1073741824);
-if ($user['uploaded'] < 1073741824 * 100) {
-    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
-}
-
 $hours = 2;
 $dt = TIME_NOW - $hours * 3600;
 $casino->reset_trys($user['id']);

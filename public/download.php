@@ -2,12 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\Auth;
-use Delight\Auth\AuthError;
-use Delight\Auth\NotLoggedInException;
-use DI\DependencyException;
-use DI\NotFoundException;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Phpzip;
@@ -15,7 +9,6 @@ use Pu239\Session;
 use Pu239\Snatched;
 use Pu239\Torrent;
 use Pu239\User;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -44,7 +37,7 @@ if (!$user) {
     show_error($lang['download_user_error'], $lang['download_disabled']);
 } elseif ($user['status'] === 1) {
     show_error($lang['download_user_error'], $lang['download_parked']);
-} elseif ($user['downloadpos'] != 1 || $user['can_leech'] === 0 && !$user['id'] === $row['owner']) {
+} elseif (($user['downloadpos'] !== 1 || $user['can_leech'] !== 1) && $user['id'] !== $row['owner']) {
     show_error($lang['download_user_error'], $lang['download_download_disabled']);
 }
 
@@ -59,8 +52,6 @@ $row = $torrent_class->get($id);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     show_error($lang['download_user_error'], $lang['download_not_found']);
-} elseif (($user['downloadpos'] != 1 || $user['can_leech'] === 0) && !$user['id'] === $row['owner']) {
-    show_error($lang['download_user_error'], $lang['download_download_disabled']);
 } elseif ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
     show_error($lang['download_user_error'], $lang['download_insufficient_seedbonus']);
 } elseif ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
@@ -193,30 +184,5 @@ if ($zipuse) {
         header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['filename'] . '"');
         header('Content-Type: application/x-bittorrent');
         echo $tor;
-    }
-}
-
-/**
- * @param string $heading
- * @param string $message
- *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws AuthError
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
- * @throws InvalidManipulation
- */
-function show_error(string $heading, string $message)
-{
-    global $container;
-
-    $auth = $container->get(Auth::class);
-    if ($auth->isLoggedIn()) {
-        get_template();
-        stderr($heading, $message);
-    } else {
-        die($message);
     }
 }

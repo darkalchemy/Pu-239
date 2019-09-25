@@ -9,6 +9,11 @@ $user = check_user_status();
 $lang = load_language('global');
 global $site_config;
 
+if ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr('Error', 'Your gaming rights have been disabled.', 'bottom20');
+    die();
+}
+
 $html = '';
 $lottery_config = [];
 $lottery_root = ROOT_DIR . 'lottery' . DIRECTORY_SEPARATOR;
@@ -28,10 +33,6 @@ $valid = [
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
 
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
-    stderr('Error', 'Your gaming rights have been disabled.');
-    die();
-}
 switch (true) {
     case $do === 'config' && $user['class'] >= $valid['config']['minclass']:
         require_once $valid['config']['file'];

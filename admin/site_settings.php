@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = array_keys($_post);
     foreach ($post as $key) {
         preg_match('/([\d|Add]+)_id/', $key, $match);
-        if (!empty($match[1])) {
+        if (isset($match[1])) {
             $keys[] = $match[1];
         }
     }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($type === 'array') {
             $values[] = isset($_post["{$id}_value"]) ? $_post["{$id}_value"] : '';
             for ($i = 1; $i <= 1000; ++$i) {
-                if (!empty($_post["{$id}_value_{$i}"])) {
+                if (isset($_post["{$id}_value_{$i}"])) {
                     $values[] = $_post["{$id}_value_{$i}"];
                 }
             }
@@ -59,12 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'value' => $value,
             'description' => $description,
         ];
-        if (empty($description)) {
+        if (!isset($description)) {
             unset($set['description']);
         }
-        $item = !empty($site_config[$parent][$name]) ? $site_config[$parent][$name] : '';
-        $parentname = (!empty($parent) ? $parent : '') . '::' . $name;
-        if (empty($set['name'])) {
+        $item = isset($site_config[$parent][$name]) ? $site_config[$parent][$name] : '';
+        $parentname = (isset($parent) ? $parent : '') . '::' . $name;
+        if (!isset($set['name'])) {
             if ($id != 0) {
                 $fluent->deleteFrom('site_config')
                        ->where('id = ?', $id)
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
             }
         } elseif ($id === 'Add') {
-            if (!empty($item)) {
+            if (isset($item)) {
                 $set['value'] = implode('|', $item) . '|' . $value;
                 $fluent->update('site_config')
                        ->set($set)
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        ->execute();
                 $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
             } else {
-                if (empty($item)) {
+                if (!isset($item)) {
                     $fluent->insertInto('site_config')
                            ->values($set)
                            ->execute();
@@ -97,10 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
             }
         }
-        $cache->delete('site_settings_');
     }
 
-    $cache->delete('site_settings_');
+    $cache->deleteMulti([
+        'site_settings_',
+        'chat_users_list_',
+    ]);
 }
 
 $HTMLOUT .= "
@@ -140,7 +142,7 @@ foreach ($sql as $row) {
             $row['value'] = (bool) $row['value'];
             break;
         case 'array':
-            if (empty($row['value'])) {
+            if (!isset($row['value'])) {
                 $row['value'] = [];
             } else {
                 $value = explode('|', $row['value']);
@@ -174,7 +176,7 @@ $select = "
             <select id='select_key' name='select_key' class='w-100' onchange='show_key()'>";
 
 foreach ($keys as $key) {
-    $key = empty($key) ? 'null' : $key;
+    $key = !isset($key) ? 'null' : $key;
     $select .= "
                 <option value='{$key}' " . ($key === $home ? 'selected' : '') . ">{$key}</option>";
 }
@@ -195,7 +197,7 @@ foreach ($keys as $key) {
         ];
     }
     $i = 0;
-    $key = empty($key) ? 'null' : $key;
+    $key = !isset($key) ? 'null' : $key;
     $body = "
                 <form action='{$_SERVER['PHP_SELF']}?tool=site_settings' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 
@@ -243,7 +245,7 @@ foreach ($keys as $key) {
                     <div class='top5 bottom5'>
                         <input type='number' name='{$row['id']}_value' value='{$row['value']}' placeholder='value' class='w-100 margin5'>
                     </div>";
-            } elseif ($row['type'] === 'array' && is_array($row['value']) && !empty($row['value'])) {
+            } elseif ($row['type'] === 'array' && is_array($row['value']) && isset($row['value'])) {
                 foreach ($row['value'] as $value) {
                     ++$i;
                     $body .= "
@@ -251,7 +253,7 @@ foreach ($keys as $key) {
                         <input type='text' name='{$row['id']}_value_{$i}' value='{$value}' placeholder='value' class='w-100 margin5'>
                     </div>";
                 }
-            } elseif ($row['type'] === 'array' && is_array($row['value']) && empty($row['value'])) {
+            } elseif ($row['type'] === 'array' && is_array($row['value']) && !isset($row['value'])) {
                 $body .= "
                     <div class='top5 bottom5'>
                         <input type='text' name='{$row['id']}_value' value='' placeholder='value' class='w-100 margin5'>
@@ -269,7 +271,7 @@ foreach ($keys as $key) {
                         <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='{$lang['sitesettings_info']}'>{$row['description']}</textarea>
                     </div>
                 </td>
-            </tr>" . (!empty($row['parent']) ? "
+            </tr>" . (isset($row['parent']) ? "
             <tr><td colspan='6' class='has-text-warning has-text-weight-bold has-text-centered'>Usage: \$site_config['{$row['parent']}']['{$row['name']}']</td></tr>
             <tr><td colspan='6'></td></tr>" : '');
         }

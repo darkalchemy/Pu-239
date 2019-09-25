@@ -20,7 +20,7 @@ $can_lock = ($CURUSER['class'] >= UC_MAX);
 if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
     stderr($lang['gl_error'], $lang['fe_topic_not_found']);
 }
-if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] === 5) {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 if (!$can_lock) {

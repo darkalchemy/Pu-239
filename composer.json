@@ -40,7 +40,6 @@
         "phpmailer/phpmailer": "^6.0",
         "rakit/validation": "^1.1",
         "scriptotek/google-books": "^0.2.4",
-        "sebastian/version": "^2.0",
         "slashtrace/slashtrace": "^1.1",
         "slashtrace/slashtrace-sentry": "^1.0",
         "spatie/image": "^1.7",
@@ -67,6 +66,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
-        "mp091689/dump-die": "^1.0"
+        "mp091689/dump-die": "^1.0",
+        "sebastian/version": "^2.0"
     }
 }

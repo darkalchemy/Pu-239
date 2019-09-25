@@ -162,6 +162,9 @@ class AJAXChat
      */
     public function initSession()
     {
+        if (!$this->canChat()) {
+            return;
+        }
         if (!$this->isChatOpen()) {
             if ($this->isLoggedIn()) {
                 if ($this->getRequestVar('logout')) {
@@ -180,12 +183,49 @@ class AJAXChat
         }
     }
 
+    public function canChat()
+    {
+        $user = $this->_user->getUserFromId($this->getUserID());
+        if ($user['chatpost'] !== 1 || $user['status'] !== 0) {
+            $this->addInfoMessage('errorBanned');
+
+            return false;
+        }
+
+        return true;
+    }
+
     /**
-     * @throws AuthError
+     * @return int
+     */
+    public function getUserID()
+    {
+        return (int) $this->_auth->getUserId();
+    }
+
+    /**
+     * @param        $info
+     * @param string $type
+     */
+    public function addInfoMessage($info, $type = 'error')
+    {
+        if (!isset($this->_infoMessages)) {
+            $this->_infoMessages = [];
+        }
+        if (!isset($this->_infoMessages[$type])) {
+            $this->_infoMessages[$type] = [];
+        }
+        if (!in_array($info, $this->_infoMessages[$type])) {
+            array_push($this->_infoMessages[$type], $info);
+        }
+    }
+
+    /**
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -225,9 +265,9 @@ class AJAXChat
     }
 
     /**
-     * @throws AuthError
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return mixed|null
      */
@@ -239,14 +279,6 @@ class AJAXChat
         }
 
         return $userRole;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUserID()
-    {
-        return (int) $this->_auth->getUserId();
     }
 
     /**
@@ -473,11 +505,11 @@ class AJAXChat
     /**
      * @param $view
      *
-     * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
+     * @throws AuthError
      *
      * @return bool
      */
@@ -509,7 +541,7 @@ class AJAXChat
      */
     public function login()
     {
-        if (!$this->_auth->isLoggedIn() || !$this->isChatOpen()) {
+        if (!$this->_auth->isLoggedIn() || !$this->isChatOpen() || !$this->canChat()) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorInvalidUser');
 
@@ -546,23 +578,6 @@ class AJAXChat
         }
 
         return true;
-    }
-
-    /**
-     * @param        $info
-     * @param string $type
-     */
-    public function addInfoMessage($info, $type = 'error')
-    {
-        if (!isset($this->_infoMessages)) {
-            $this->_infoMessages = [];
-        }
-        if (!isset($this->_infoMessages[$type])) {
-            $this->_infoMessages[$type] = [];
-        }
-        if (!in_array($info, $this->_infoMessages[$type])) {
-            array_push($this->_infoMessages[$type], $info);
-        }
     }
 
     /**
@@ -999,11 +1014,11 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      *
      * @return bool
      */
@@ -1038,9 +1053,9 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -1054,9 +1069,9 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return array|null
      */
@@ -1295,11 +1310,11 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      *
      * @return mixed|string|null
      */
@@ -1517,9 +1532,9 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -1786,9 +1801,9 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -2002,9 +2017,9 @@ class AJAXChat
     }
 
     /**
-     * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws NotLoggedInException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
@@ -2351,10 +2366,10 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws UnbegunTransaction
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return bool
      */
@@ -2430,10 +2445,10 @@ class AJAXChat
     /**
      * @param $textParts
      *
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws UnbegunTransaction
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return bool
      */
@@ -2636,12 +2651,12 @@ class AJAXChat
      * @param $text
      * @param $textParts
      *
-     * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws NotFoundException
      *
      * @return bool
      */
@@ -2702,12 +2717,12 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -2726,10 +2741,10 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2823,10 +2838,10 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
+     * @throws DependencyException
      *
      * @return string
      */
@@ -2866,14 +2881,14 @@ class AJAXChat
     }
 
     /**
-     * @throws DependencyException
      * @throws NotFoundException
+     * @throws DependencyException
      *
      * @return string
      */
     public function getMessageCondition()
     {
-        $condition = 'id>' . sqlesc($this->getRequestVar('lastID')) . '
+        $condition = 'id > ' . sqlesc($this->getRequestVar('lastID')) . '
                         AND (
                             channel = ' . sqlesc($this->getChannel()) . '
                             OR
@@ -2926,12 +2941,12 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -2947,12 +2962,12 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -3004,11 +3019,11 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      *
      * @return string
      */
@@ -3028,12 +3043,12 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -3049,12 +3064,12 @@ class AJAXChat
     }
 
     /**
-     * @throws InvalidManipulation
      * @throws NotFoundException
      * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
+     * @throws InvalidManipulation
      *
      * @return string
      */
@@ -3102,11 +3117,11 @@ class AJAXChat
     }
 
     /**
-     * @throws NotLoggedInException
      * @throws \Envms\FluentPDO\Exception
      * @throws AuthError
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws NotLoggedInException
      *
      * @return string
      */

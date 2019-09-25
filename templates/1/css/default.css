@@ -511,7 +511,6 @@ input, select, textarea {
     border: 1px solid var(--main-bdr-color);
     padding: 5px;
     border-radius: .3125em;
-    line-height: 1.25em;
 }
 
 textarea {

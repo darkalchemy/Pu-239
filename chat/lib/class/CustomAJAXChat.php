@@ -9,9 +9,6 @@ declare(strict_types = 1);
  * @link https://blueimp.net/ajax/
  */
 
-use DI\DependencyException;
-use DI\NotFoundException;
-
 /**
  * Class CustomAJAXChat.
  */
@@ -20,65 +17,6 @@ class CustomAJAXChat extends AJAXChat
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * @throws DependencyException
-     * @throws NotFoundException
-     * @throws \Envms\FluentPDO\Exception
-     *
-     * @return bool
-     */
-    public function getValidLoginUserData()
-    {
-        $user = $this->_user->getUserFromId($this->getUserID());
-
-        if (!empty($user) && $user['status'] === 0 && $user['chatpost'] === 1) {
-            $userData['userID'] = $user['id'];
-            $userData['userName'] = $this->trimUserName($user['username']);
-            $userData['userClass'] = get_user_class_name((int) $user['class']);
-            $userData['userRole'] = $user['class'];
-            $userData['channels'] = [
-                0,
-                1,
-                2,
-                3,
-                4,
-            ];
-            if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
-                $userData['channels'] = [
-                    0,
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                ];
-            } elseif (has_access($user['class'], UC_STAFF, 'coder')) {
-                $userData['channels'] = [
-                    0,
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                ];
-            }
-
-            return $userData;
-        }
-
-        if ($user['chatpost'] !== 1) {
-            $this->_session->unset('Channel');
-            $this->addInfoMessage('errorBanned');
-        }
-
-        if ($user['status'] > 0) {
-            $this->_session->destroy();
-        }
-
-        return false;
     }
 
     /**

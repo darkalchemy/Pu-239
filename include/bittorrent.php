@@ -42,8 +42,6 @@ require_once CACHE_DIR . 'block_settings_cache.php';
 if (!PRODUCTION) {
     $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
     $site_config['sourcecode']['version'] = $pu239_version->getVersion();
-} else {
-    $site_config['sourcecode']['version'] = 'Pu-239 0.7';
 }
 $load = sys_getloadavg();
 $cache = $container->get(Cache::class);
@@ -56,13 +54,8 @@ if (!$cores || is_null($cores)) {
 if ($load[0] > $cores * 2) {
     die("Load is too high. Don't continuously refresh, or you will just make the problem last longer");
 }
-if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_SERVER))) {
-    die('Forbidden');
-} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_GET))) {
-    die('Forbidden');
-} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_POST))) {
-    die('Forbidden');
-} elseif (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_COOKIE))) {
+
+if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize(array_merge($_SERVER, $_GET, $_POST, $_COOKIE)))) {
     die('Forbidden');
 }
 
@@ -82,9 +75,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -111,9 +104,9 @@ function getip()
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -204,9 +197,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -410,8 +403,8 @@ function write_log($text)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int
  */
@@ -429,9 +422,9 @@ function get_userid()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return float|int
  */
@@ -487,13 +480,13 @@ function CutName(string $txt, int $len = 40)
 /**
  * @param string $file
  *
- * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws AuthError
  *
  * @return array|bool|string
  */
@@ -731,12 +724,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws NotLoggedInException
  *
  * @return bool|mixed|User
  */
@@ -805,8 +798,8 @@ function check_user_status(string $type = 'browse')
  * @param int         $class
  * @param string|null $role
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -870,9 +863,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -949,9 +942,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1215,9 +1208,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1258,9 +1251,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1294,9 +1287,9 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1364,9 +1357,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1395,9 +1388,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool|null $fresh
  * @param bool|null $async
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
  */
@@ -1450,9 +1443,9 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 /**
  * @param bool $details
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */
@@ -1520,9 +1513,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

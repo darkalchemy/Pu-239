@@ -9,8 +9,7 @@ declare(strict_types = 1);
  * @link https://blueimp.net/ajax/
  */
 
-// List containing the custom channels:
-$channels = [];
+// List containing the custom channels, DO NO MODIFY
 $channels = [
     $this->_siteConfig['site']['name'],
     'Support',
@@ -20,3 +19,4 @@ $channels = [
     'Staff',
     'Sysop',
 ];
+$channels = array_merge($channels, $this->_siteConfig['ajaxchat']['channels']);

@@ -26,6 +26,17 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     $session = $container->get(Session::class);
     $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);
+    if (!$user) {
+        show_error($lang['download_user_error'], $lang['download_passkey']);
+    } elseif ($user['status'] === 5) {
+        show_error($lang['download_user_error'], $lang['download_suspended']);
+    } elseif ($user['status'] === 2) {
+        show_error($lang['download_user_error'], $lang['download_disabled']);
+    } elseif ($user['status'] === 1) {
+        show_error($lang['download_user_error'], $lang['download_parked']);
+    } elseif (($user['downloadpos'] !== 1 || $user['can_leech'] !== 1) && $user['id'] !== $row['owner']) {
+        show_error($lang['download_user_error'], $lang['download_download_disabled']);
+    }
     if (!empty($_GET['owner'])) {
         $torrents = $torrents_class->get_all_by_owner($userid);
         $zipfile = USER_TORRENTS_DIR . '[' . $site_config['site']['name'] . "]-{$user['username']}_uploaded_torrents.zip";

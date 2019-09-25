@@ -778,13 +778,13 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         if ($status === 0) {
             $update['status'] = 0;
             $update['parked_until'] = 0;
-            $update['downloadpos'] = 1;
-            $update['uploadpos'] = 1;
-            $update['sendpmpos'] = 1;
-            $update['game_access'] = 1;
-            $update['forum_post'] = 'yes';
-            $update['invite_on'] = 'yes';
-            $update['chatpost'] = 1;
+            $update['downloadpos'] = isset($update['downloadpos']) ? $update['downloadpos'] : 1;
+            $update['uploadpos'] = isset($update['uploadpos']) ? $update['uploadpos'] : 1;
+            $update['sendpmpos'] = isset($update['sendpmpos']) ? $update['sendpmpos'] : 1;
+            $update['game_access'] = isset($update['game_access']) ? $update['game_access'] : 1;
+            $update['forum_post'] = isset($update['forum_post']) ? $update['forum_post'] : 'yes';
+            $update['invite_on'] = isset($update['invite_on']) ? $update['invite_on'] : 'yes';
+            $update['chatpost'] = isset($update['chatpost']) ? $update['chatpost'] : 1;
         } elseif ($status === 2 || $status === 3) {
             $update['downloadpos'] = 0;
             $update['uploadpos'] = 0;
@@ -940,11 +940,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     }
     if (!empty($update)) {
         $update['modcomment'] = $modcomment;
-        $users_class->update($update, $userid);
-        if ($post['status'] !== 0) {
-            $cache->delete('user_' . $userid);
-        }
-        if ((isset($post['class'])) && (($class = $post['class']) !== $user['class'])) {
+        $users_class->update($update, $userid, false);
+        if (isset($post['class']) && $post['class'] !== $user['class']) {
             $cache->delete('is_staff_');
         }
         $cache->deleteMulti([
@@ -952,6 +949,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             'birthdayusers_',
             'ircusers_',
             'activeusers_',
+            'chat_users_list_',
         ]);
     }
     if (!empty($msgs)) {

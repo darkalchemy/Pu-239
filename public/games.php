@@ -13,11 +13,9 @@ global $container, $site_config;
 
 $HTMLOUT = '';
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play these games!');
-}
-
-if ($user['game_access'] == 0 || $user['game_access'] > 1 || $user['status'] === 5) {
-    stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play these games!', 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled'], 'bottom20');
 }
 
 $width = 100 / 3;

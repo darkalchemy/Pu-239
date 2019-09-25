@@ -4539,4 +4539,32 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('users', 'backgrounds', 'array', '', 'An array of images that a user can select from, if the want images but not random images.\nRecommended dimensions are 1920x1080.')",
         'flush' => true,
     ],
+    [
+        'id' => 1569449156,
+        'info' => 'Add AJAX Chat to site_config',
+        'date' => '25 Sept 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('ajaxchat', 'channels', 'array', '', 'Array of AJAX Chat Channels')",
+        'flush' => 'site_settings_',
+    ],
+    [
+        'id' => 1569449157,
+        'info' => 'Add AJAX Chat to site_config',
+        'date' => '25 Sept 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('ajaxchat', 'admin_access', 'array', '0|1|2|3|4|5|6', 'UC_ADMINISTRATOR Channels Access')",
+        'flush' => 'site_settings_',
+    ],
+    [
+        'id' => 1569449158,
+        'info' => 'Add AJAX Chat to site_config',
+        'date' => '25 Sept 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('ajaxchat', 'staff_access', 'array', '0|1|2|3|4|5', 'UC_STAFF Channels Access')",
+        'flush' => 'site_settings_',
+    ],
+    [
+        'id' => 1569449159,
+        'info' => 'Add AJAX Chat to site_config',
+        'date' => '25 Sept 2019',
+        'query' => "INSERT INTO `site_config` (parent, name, type, value, description) VALUES ('ajaxchat', 'user_access', 'array', '0|1|2|3|4', 'UC_MIN Channels Access')",
+        'flush' => 'site_settings_',
+    ],
 ];

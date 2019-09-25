@@ -306,7 +306,7 @@ class User
 
             $this->cache->deleteMulti([
                 'birthdayusers_',
-                'chat_users_list',
+                'chat_users_list_',
                 'is_staff_',
                 'all_users_',
             ]);
@@ -332,8 +332,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */

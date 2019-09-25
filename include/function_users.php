@@ -2,8 +2,12 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\Auth;
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Peer;
@@ -309,8 +313,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|null
  */
@@ -452,8 +456,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws Exception
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string
  */
@@ -595,8 +599,8 @@ function member_ratio(?float $up, ?float $down)
  * @param float|null $up
  * @param float|null $down
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string
  */
@@ -645,10 +649,10 @@ function get_user_ratio_image(?float $up, ?float $down)
 /**
  * @param $avatar
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string|null
  */
@@ -745,9 +749,9 @@ function make_dir(string $dir, int $octal)
 /**
  * @param int $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -762,4 +766,29 @@ function get_anonymous(int $userid)
     }
 
     return false;
+}
+
+/**
+ * @param string $heading
+ * @param string $message
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws InvalidManipulation
+ */
+function show_error(string $heading, string $message)
+{
+    global $container;
+
+    $auth = $container->get(Auth::class);
+    if ($auth->isLoggedIn()) {
+        get_template();
+        stderr($heading, $message, 'bottom20');
+    } else {
+        die($message);
+    }
 }
