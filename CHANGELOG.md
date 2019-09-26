@@ -1,3 +1,6 @@
+### 26 Sept, 2019
+update: platform-wrapper buttons style  
+
 ### 25 Sept, 2019
 update: sql files  
 update: allow value of 0 site_settings.php  

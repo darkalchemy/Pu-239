@@ -585,6 +585,10 @@ textarea {
     margin-left: 5px;
 }
 
+.level-left li:not(:last-child) {
+    margin-right: 5px;
+}
+
 .level-center-center {
     align-items: center;
     justify-content: center;
@@ -1110,6 +1114,7 @@ option.head {
 .middle {
     height: 27px;
     line-height: 27px;
+    text-align: center;
 }
 
 .droppable {

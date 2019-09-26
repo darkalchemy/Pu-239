@@ -416,22 +416,21 @@ function StatusBar()
         return '';
     }
     $StatusBar = $clock = '';
-    $color = get_user_class_name((int) $CURUSER['class'], true);
     $StatusBar .= "
-                    <div id='base_usermenu' class='right10 left10 level-item'>
+                    <div id='base_usermenu' class='left10 level-item'>
                         <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left10 {$color} tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
+                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
                     </div>";
 
     return $StatusBar;
 }
 
 /**
+ * @return string
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- *
- * @return string
  */
 function platform_menu()
 {
@@ -480,28 +479,28 @@ function platform_menu()
             </div>';
     }
     $buttons = "
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/tmovies.php' class='tooltipper has-text-info' title='{$lang['gl_movies']}'>
+                            <li class='tooltipper has-text-info' title='{$lang['gl_movies']}'>
+                                <a href='{$site_config['paths']['baseurl']}/tmovies.php'>
                                     <i class='icon-video icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/tvshows.php' class='tooltipper has-text-info' title='{$lang['gl_tvshows']}'>
+                            <li class='tooltipper has-text-info' title='{$lang['gl_tvshows']}'>
+                                <a href='{$site_config['paths']['baseurl']}/tvshows.php'>
                                     <i class='icon-television icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/forums.php' class='tooltipper has-text-info' title='{$lang['gl_forums']}'>
+                            <li class='tooltipper has-text-info' title='{$lang['gl_forums']}'>
+                                <a href='{$site_config['paths']['baseurl']}/forums.php'>
                                     <i class='icon-chat-empty icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/messages.php' class='tooltipper has-text-info' title='{$lang['gl_messages']}'>
+                            <li class='tooltipper has-text-info' title='{$lang['gl_messages']}'>
+                                <a href='{$site_config['paths']['baseurl']}/messages.php'>
                                     <i class='icon-comment-empty icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/user_blocks.php' class='tooltipper has-text-info' title='{$lang['gl_myblocks']}'>
+                            <li class='tooltipper has-text-info' title='{$lang['gl_myblocks']}'>
+                                <a href='{$site_config['paths']['baseurl']}/user_blocks.php'>
                                     <i class='icon-cubes icon' aria-hidden='true'></i>
                                 </a>
                             </li>";
@@ -510,8 +509,8 @@ function platform_menu()
             <div class='platform-wrapper'>
                 <div class='columns is-marginless searchbar'>
                     <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-left size_3'>" . (PRODUCTION ? $buttons : "
-                            <li class='has-text-info left10'>
+                        <ul class='level-left size_3 left10'>" . (PRODUCTION ? $buttons : "
+                            <li>
                                 <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>
                                     Pu-239 v{$site_config['sourcecode']['version']}
                                 </a>
@@ -530,8 +529,7 @@ function platform_menu()
                         </ul>
                     </div>
                     <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-right'>" . (!PRODUCTION ? $buttons : '') . "
-                            <div class='level-right size_3'>" . StatusBar() . $styles . '</div>
+                        <ul class='level-right size_3 right10'>" . (!PRODUCTION ? $buttons : '') . StatusBar() . $styles . '
                         </ul>
                     </div>
                 </div>
