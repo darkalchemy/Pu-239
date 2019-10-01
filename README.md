@@ -1,5 +1,7 @@
 # Pu-239 v0.7
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 ##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.14.2 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
@@ -38,7 +40,7 @@ There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit 
 jpegoptim, optipng, pngquant, gifsicle, imagemagick
 
 # required php extensions
-php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common, php-readline
+php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common, php-readline, php-gettext, php-intl
 
 # cache repositories(optional)
 redis, php-redis
